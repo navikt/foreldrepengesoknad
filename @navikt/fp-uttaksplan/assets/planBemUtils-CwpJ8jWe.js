@@ -1,0 +1,5 @@
+import{g as c}from"./_commonjsHelpers-Cpj98o6Y.js";var i={exports:{}};/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/var f;function l(){return f||(f=1,function(s){(function(){var e={}.hasOwnProperty;function r(){for(var t="",n=0;n<arguments.length;n++){var o=arguments[n];o&&(t=a(t,p(o)))}return t}function p(t){if(typeof t=="string"||typeof t=="number")return t;if(typeof t!="object")return"";if(Array.isArray(t))return r.apply(null,t);if(t.toString!==Object.prototype.toString&&!t.toString.toString().includes("[native code]"))return t.toString();var n="";for(var o in t)e.call(t,o)&&t[o]&&(n=a(n,o));return n}function a(t,n){return n?t?t+" "+n:t+n:t}s.exports?(r.default=r,s.exports=r):window.classNames=r})()}(i)),i.exports}var m=l();const d=c(m),u=s=>({block:s,element:(e,r)=>`${s}__${e}${r?` ${s}__${e}--${r}`:""}`,modifier:e=>`${s}--${e}`,modifierConditional:(e,r)=>r===!0&&e!==void 0?`${s}--${e}`:void 0,child:e=>u(u(s).element(e)),classNames:d});export{d as c,u as p};

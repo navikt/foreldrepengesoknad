@@ -1,7 +1,0 @@
-import{j as r}from"./jsx-runtime-DCY474Ph.js";import{a as n}from"./chunk-D5ZWXAHU-DlerbUHg.js";import{F as p,C as l}from"./FpDataContext-jML7Xeq2.js";import{M as c,S as d}from"./useFpNavigator-BYPjgol8.js";import{U as e}from"./UtenlandsoppholdSteg-1wQrGLyU.js";import"./index-f9CH5uyH.js";import"./v4-CtRu48qb.js";import"./Uttaksplan-UBpNbi5A.js";import"./dates-B17XcA27.js";import"./Label-BPBaHb1Y.js";import"./iframe-BzsXOWJ1.js";import"../sb-preview/runtime.js";import"./VStack-DCKXGmgz.js";import"./index-BGpIzb10.js";import"./TidligereUtenlandsoppholdPanel-C7eKJz4a.js";import"./ErrorSummaryHookForm-Bbniny-k.js";import"./ConfirmationPanel-CMDz1p2e.js";import"./ExpansionCard-DhDJOMIL.js";import"./Plus-CoYVFkUh.js";const u=()=>(...o)=>(n("button-click")(...o),Promise.resolve()),T={title:"steps/UtenlandsoppholdSteg",component:e,render:({gåTilNesteSide:o,...m})=>r.jsx(c,{initialEntries:[d.UTENLANDSOPPHOLD],children:r.jsx(p,{onDispatch:o,initialState:{[l.SØKERSITUASJON]:{situasjon:"fødsel",rolle:"mor"}},children:r.jsx(e,{...m})})})},t={args:{arbeidsforhold:[],mellomlagreSøknadOgNaviger:u(),avbrytSøknad:n("button-click")}};var a,i,s;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
-  args: {
-    arbeidsforhold: [],
-    mellomlagreSøknadOgNaviger: promiseAction(),
-    avbrytSøknad: action('button-click')
-  }
-}`,...(s=(i=t.parameters)==null?void 0:i.docs)==null?void 0:s.source}}};const _=["Default"];export{t as Default,_ as __namedExportsOrder,T as default};

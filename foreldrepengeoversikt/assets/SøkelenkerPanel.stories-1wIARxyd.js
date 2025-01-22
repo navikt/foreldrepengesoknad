@@ -1,0 +1,5 @@
+import{j as o}from"./jsx-runtime-CLpGMVip.js";import{L as d}from"./LayoutWrapper-Cvi31uXS.js";import{S as t}from"./SøkelenkerPanel-DP56Vjra.js";import{M as u}from"./chunk-SYFQ2XB5-D9pMU80H.js";import"./index-BDNcHBiq.js";import"./index-CR__hKHy.js";import"./index-DjWdgH6H.js";import"./links-Cq4ifjPA.js";import"./dates-Cs9kK9kw.js";import"./LenkePanel-C6FGDLin.js";import"./VStack-BsKxbgho.js";import"./Label-uxnjPK_2.js";import"./useId-BsEbCovs.js";import"./HGrid-BRpZMx9b.js";const L={title:"SøkelenkerPanel",component:t,render:c=>o.jsx(u,{children:o.jsx(d,{className:"pt-1 pb-1 pl-4 pr-4",children:o.jsx(t,{...c})})})},r={},e={args:{doBleed:!0}};var a,s,m;r.parameters={...r.parameters,docs:{...(a=r.parameters)==null?void 0:a.docs,source:{originalSource:"{}",...(m=(s=r.parameters)==null?void 0:s.docs)==null?void 0:m.source}}};var p,n,i;e.parameters={...e.parameters,docs:{...(p=e.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  args: {
+    doBleed: true
+  }
+}`,...(i=(n=e.parameters)==null?void 0:n.docs)==null?void 0:i.source}}};const P=["Default","MedBakgrunn"];export{r as Default,e as MedBakgrunn,P as __namedExportsOrder,L as default};

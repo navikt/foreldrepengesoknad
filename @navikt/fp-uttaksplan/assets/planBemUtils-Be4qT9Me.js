@@ -1,5 +1,0 @@
-import{g as u}from"./index-BX3iQpgp.js";var a={exports:{}};/*!
-	Copyright (c) 2018 Jed Watson.
-	Licensed under the MIT License (MIT), see
-	http://jedwatson.github.io/classnames
-*/(function(s){(function(){var e={}.hasOwnProperty;function r(){for(var t="",n=0;n<arguments.length;n++){var o=arguments[n];o&&(t=i(t,p(o)))}return t}function p(t){if(typeof t=="string"||typeof t=="number")return t;if(typeof t!="object")return"";if(Array.isArray(t))return r.apply(null,t);if(t.toString!==Object.prototype.toString&&!t.toString.toString().includes("[native code]"))return t.toString();var n="";for(var o in t)e.call(t,o)&&t[o]&&(n=i(n,o));return n}function i(t,n){return n?t?t+" "+n:t+n:t}s.exports?(r.default=r,s.exports=r):window.classNames=r})()})(a);var c=a.exports;const l=u(c),f=s=>({block:s,element:(e,r)=>`${s}__${e}${r?` ${s}__${e}--${r}`:""}`,modifier:e=>`${s}--${e}`,modifierConditional:(e,r)=>r===!0&&e!==void 0?`${s}--${e}`:void 0,child:e=>f(f(s).element(e)),classNames:l});export{l as c,f as p};
