@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const OppsummeringModalStep = ({ modalData, closeModal, handleAddPeriode, setModalData }: Props) => {
-    const { fom, tom } = modalData;
+    const { fom, tom, kontoType, forelder } = modalData;
 
     return (
         <>
@@ -47,6 +47,8 @@ export const OppsummeringModalStep = ({ modalData, closeModal, handleAddPeriode,
                                 tom: tom!,
                                 id: `${fom} - ${tom} - ${'kontoType'}`,
                                 readOnly: false,
+                                kontoType: kontoType,
+                                forelder: forelder,
                             });
                             closeModal();
                         }}

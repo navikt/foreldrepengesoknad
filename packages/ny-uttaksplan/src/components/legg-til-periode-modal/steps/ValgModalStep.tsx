@@ -17,10 +17,8 @@ interface FormValues {
 }
 
 enum HvaVilDuGjøre {
-    ENDRE_TIDSROM = 'endreTidsrom',
-    ENDRE_KVOTE = 'endreKvote',
-    OVERFØRE = 'overføre',
-    GRADERE = 'gradere',
+    LEGG_TIL_PERIODE = 'leggTilPeriode',
+    LEGG_TIL_OPPHOLD = 'leggTilOpphold',
 }
 
 export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) => {
@@ -40,13 +38,11 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
 
     return (
         <>
-            <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
+            <Heading size="medium">Hva vil du gjøre?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <RhfRadioGroup name="hvaVilDuGjøre">
-                    <Radio value={HvaVilDuGjøre.ENDRE_TIDSROM}>Endre tidsrommet</Radio>
-                    <Radio value={HvaVilDuGjøre.OVERFØRE}>Overfør perioden til andre part</Radio>
-                    <Radio value={HvaVilDuGjøre.GRADERE}>Jeg vil jobbe delvis i perioden</Radio>
-                    <Radio value={HvaVilDuGjøre.ENDRE_KVOTE}>Jeg vil endre hvilken kvote som er brukt</Radio>
+                    <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>Legge til periode med foreldrepenger</Radio>
+                    <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>Legge til periode uten foreldrepenger</Radio>
                 </RhfRadioGroup>
                 <div
                     style={{

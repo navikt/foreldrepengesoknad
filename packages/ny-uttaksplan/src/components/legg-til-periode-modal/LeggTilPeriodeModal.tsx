@@ -3,24 +3,29 @@ import { forwardRef, useState } from 'react';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+
 import { Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
 import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
 import { ValgModalStep } from './steps/ValgModalStep';
+import { VelgKontotypeModalStep } from './steps/VelgKontotypeModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
     handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
-export type ModalStep = 'step1' | 'step2' | 'step3';
+export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
 
 export interface ModalData {
     hvaVilDuGjøre: string | undefined;
     currentStep: ModalStep;
     fom?: string;
     tom?: string;
+    kontoType?: StønadskontoType;
+    forelder?: Forelder;
 }
 
 export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ closeModal, handleAddPeriode }, ref) => {
@@ -29,6 +34,7 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ close
         fom: undefined,
         tom: undefined,
         currentStep: 'step1',
+        kontoType: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
@@ -56,6 +62,14 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ close
                     />
                 );
             case 'step3':
+                return (
+                    <VelgKontotypeModalStep
+                        modalData={modalData}
+                        setModalData={setModalData}
+                        closeModal={closeModalWrapper}
+                    />
+                );
+            case 'step4':
                 return (
                     <OppsummeringModalStep
                         modalData={modalData}

@@ -18,10 +18,11 @@ interface FormValues {
 }
 
 export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+    const { fom, tom } = modalData;
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            fom: '',
-            tom: '',
+            fom: fom ?? '',
+            tom: tom ?? '',
         },
     });
 
@@ -36,11 +37,11 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
 
     return (
         <>
-            <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
+            <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                    <RhfDatepicker label="Fra og med dato" name="fom" />
-                    <RhfDatepicker label="Til og med dato" name="tom" />
+                    <RhfDatepicker disableWeekends={true} label="Fra og med dato" name="fom" />
+                    <RhfDatepicker disableWeekends={true} label="Til og med dato" name="tom" />
                 </div>
                 <div
                     style={{
@@ -60,7 +61,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step2' });
+                                setModalData({ ...modalData, currentStep: 'step1' });
                             }}
                         >
                             Gå tilbake
