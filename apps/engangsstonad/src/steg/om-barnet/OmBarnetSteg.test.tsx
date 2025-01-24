@@ -243,7 +243,7 @@ describe('<OmBarnetSteg>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: Path.TERMINBEKREFTELSE,
+            data: Path.UTENLANDSOPPHOLD,
             key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });

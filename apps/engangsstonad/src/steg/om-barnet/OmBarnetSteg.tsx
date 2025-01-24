@@ -23,7 +23,7 @@ const utledNesteSteg = (formValues: FormValues, søkersituasjon: Søkersituasjon
     if (søkersituasjon.situasjon === 'adopsjon') {
         return Path.ADOPSJONSBEKREFTELSE;
     }
-    if (formValues.termindato !== undefined) {
+    if (!formValues.erBarnetFødt && formValues.termindato !== undefined) {
         return Path.TERMINBEKREFTELSE;
     }
     return Path.UTENLANDSOPPHOLD;
