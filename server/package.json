@@ -16,9 +16,9 @@
     },
     "devDependencies": {
         "@navikt/fp-server-utils": "workspace:*",
-        "@types/express": "4.17.21",
+        "@types/express": "5.0.0",
         "@types/morgan": "^1.9.9",
-        "@types/node": "^22.10.6",
+        "@types/node": "^22.10.7",
         "@vercel/ncc": "0.38.3",
         "axios": "^1.7.9",
         "morgan": "^1.10.0",

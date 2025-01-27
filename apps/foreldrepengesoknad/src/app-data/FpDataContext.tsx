@@ -1,5 +1,5 @@
 import { SøknadRoutes } from 'appData/routes';
-import { ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';

@@ -444,7 +444,10 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
         aktørType: AktørType.NAV,
         dokumenter: [],
         manglendeVedlegg: [],
-        merInformasjon: intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' }),
+        merInformasjon:
+            ytelse === Ytelse.ENGANGSSTØNAD
+                ? intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon.engangsstønad' })
+                : intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' }),
         linkTittel: intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.linkTittel' }),
         eksternalUrl: url,
     };
