@@ -38,6 +38,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
         });
     };
 
+    const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
     return (
@@ -70,6 +71,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                         disableWeekends={true}
                         label="Til og med dato"
                         name="tom"
+                        defaultMonth={fomValue}
                     />
                 </div>
                 <div
