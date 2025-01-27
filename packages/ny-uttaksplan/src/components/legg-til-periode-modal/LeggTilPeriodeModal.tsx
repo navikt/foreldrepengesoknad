@@ -35,6 +35,7 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ close
         tom: undefined,
         currentStep: 'step1',
         kontoType: undefined,
+        forelder: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);

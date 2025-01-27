@@ -133,20 +133,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
             }}
         >
             <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
-            <Button
-                onClick={openModal}
-                // onClick={() =>
-                //     handleAddPeriode({
-                //         kontoType: StønadskontoType.Mødrekvote,
-                //         forelder: Forelder.mor,
-                //         fom: '2025-06-02',
-                //         tom: '2025-06-13',
-                //         id: '123',
-                //         readOnly: false,
-                //     })
-            >
-                Legg til periode
-            </Button>
+            <Button onClick={openModal}>Legg til periode</Button>
             <LeggTilPeriodeModal ref={ref} closeModal={closeModal} handleAddPeriode={handleAddPeriode} />
         </UttaksplanDataContext>
     );

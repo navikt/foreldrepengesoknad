@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { Button, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
 
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -19,6 +21,7 @@ interface FormValues {
 }
 
 export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: Props) => {
+    const intl = useIntl();
     const { kontoType, forelder } = modalData;
 
     const formMethods = useForm<FormValues>({
@@ -58,13 +61,21 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <VStack gap="4">
                     <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
-                    <RhfRadioGroup label="Velg kontotype" name="kontoType">
+                    <RhfRadioGroup
+                        validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
+                        label="Velg kontotype"
+                        name="kontoType"
+                    >
                         <Radio value={StønadskontoType.Fedrekvote}>Fedrekvote</Radio>
                         <Radio value={StønadskontoType.Mødrekvote}>Mødrekvote</Radio>
                         <Radio value={StønadskontoType.Fellesperiode}>Fellesperiode</Radio>
                     </RhfRadioGroup>
                     {kontoTypeValue === StønadskontoType.Fellesperiode && (
-                        <RhfRadioGroup label="Hvem gjelder fellesperioden?" name="forelder">
+                        <RhfRadioGroup
+                            validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
+                            label="Hvem gjelder fellesperioden?"
+                            name="forelder"
+                        >
                             <Radio value={Forelder.mor}>Mor</Radio>
                             <Radio value={Forelder.farMedmor}>Far eller medmor</Radio>
                         </RhfRadioGroup>

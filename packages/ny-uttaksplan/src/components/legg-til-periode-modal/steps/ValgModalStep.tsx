@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { Button, Heading, Radio } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
 
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -22,6 +24,8 @@ enum HvaVilDuGjøre {
 }
 
 export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+    const intl = useIntl();
+
     const formMethods = useForm<FormValues>({
         defaultValues: {
             hvaVilDuGjøre: modalData.hvaVilDuGjøre,
@@ -40,7 +44,10 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
         <>
             <Heading size="medium">Hva vil du gjøre?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                <RhfRadioGroup name="hvaVilDuGjøre">
+                <RhfRadioGroup
+                    name="hvaVilDuGjøre"
+                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
+                >
                     <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>Legge til periode med foreldrepenger</Radio>
                     <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>Legge til periode uten foreldrepenger</Radio>
                 </RhfRadioGroup>
