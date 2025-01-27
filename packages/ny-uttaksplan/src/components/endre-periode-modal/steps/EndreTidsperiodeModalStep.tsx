@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
+import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { ModalData } from '../EndrePeriodeModal';
 
@@ -18,6 +20,7 @@ interface FormValues {
 }
 
 export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+    const intl = useIntl();
     const formMethods = useForm<FormValues>({
         defaultValues: {
             fom: modalData.valgtPeriode?.fom,
@@ -34,13 +37,41 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
         });
     };
 
+    const tomValue = formMethods.watch('tom');
+
     return (
         <>
             <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                    <RhfDatepicker label="Fra og med dato" name="fom" />
-                    <RhfDatepicker label="Til og med dato" name="tom" />
+                    <RhfDatepicker
+                        label="Fra og med dato"
+                        name="fom"
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd' }),
+                            ),
+                            isValidDate(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato' }),
+                            ),
+                            isBeforeOrSame(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
+                                tomValue,
+                            ),
+                        ]}
+                    />
+                    <RhfDatepicker
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd' }),
+                            ),
+                            isValidDate(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
+                            ),
+                        ]}
+                        label="Til og med dato"
+                        name="tom"
+                    />
                 </div>
                 <div
                     style={{
