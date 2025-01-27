@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -38,6 +38,8 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
         });
     };
 
+    const tomValue = formMethods.watch('tom');
+
     return (
         <>
             <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
@@ -48,6 +50,10 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.påkrevd' })),
                             isValidDate(
                                 intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.gyldigDato' }),
+                            ),
+                            isBeforeOrSame(
+                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.førTilDato' }),
+                                tomValue,
                             ),
                         ]}
                         disableWeekends={true}
