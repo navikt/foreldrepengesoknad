@@ -1,9 +1,0 @@
-{
-    "app": "veiviser-hva-skjer-nar",
-    "autentisering": false,
-    "ingress": "https://www.intern.dev.nav.no/foreldrepenger/hva-skjer-nar",
-    "env": {
-        "PUBLIC_PATH": "/foreldrepenger/hva-skjer-nar",
-        "ENV": "dev"
-    }
-}

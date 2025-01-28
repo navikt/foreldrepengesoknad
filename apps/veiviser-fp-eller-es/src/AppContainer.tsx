@@ -55,7 +55,7 @@ export const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary
-                appName="veiviser-hva-skjer-nar"
+                appName="veiviser-fp-eller-es"
                 customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
             >
                 <QueryClientProvider client={queryClient}>
