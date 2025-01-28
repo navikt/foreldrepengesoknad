@@ -90,8 +90,8 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+            <div style={{ width: '100%' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'auto auto', marginLeft: '1rem', gap: '1rem' }}>
                     <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
                     <BodyShort>
                         {getVarighetString(
