@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -47,6 +48,10 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                     <RhfDatepicker
+                        showMonthAndYearDropdowns
+                        // TODO: Bruk familiehendelsedato
+                        minDate={dayjs().subtract(3, 'weeks').toDate()}
+                        maxDate={dayjs().add(3, 'years').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.påkrevd' })),
                             isValidDate(
@@ -62,6 +67,9 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                         name="fom"
                     />
                     <RhfDatepicker
+                        showMonthAndYearDropdowns
+                        minDate={dayjs(fomValue).subtract(3, 'weeks').toDate()}
+                        maxDate={dayjs(fomValue).add(3, 'years').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.påkrevd' })),
                             isValidDate(
