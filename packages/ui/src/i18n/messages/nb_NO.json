@@ -12,6 +12,7 @@
     "FileInput.Vedlegg.HeaderWithName": "Lastet opp ({length}) - {name}",
     "FileInput.Vedlegg.Slett": "Slett filen",
     "FileInput.Vedlegg.WithErrors": "Vedlegg med feil",
+    "FailedAttachment.Vedlegg.Feilmelding.Vedlegg.IngenData": "Filen har ikke noe innhold",
     "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "Ops noe gikk galt prøv igjen",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "Filen er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}MB.",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "Vedlegg er ikke av gyldig type",

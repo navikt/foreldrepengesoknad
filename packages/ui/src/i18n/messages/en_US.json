@@ -12,6 +12,7 @@
     "FileInput.Vedlegg.Uploading": "Uploading...",
     "FileInput.Vedlegg.Slett": "Remove attachment",
     "FileInput.Vedlegg.WithErrors": "Attachments with errors",
+    "FailedAttachment.Vedlegg.Feilmelding.Vedlegg.IngenData": "The file has no content",
     "FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet": "Something went wrong. Try again.",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse": "The attachment must be less than {maxStørrelse} MB.",
     "FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type": "Attachment type is not valid",

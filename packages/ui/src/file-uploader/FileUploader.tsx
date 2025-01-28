@@ -89,7 +89,7 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileU
         { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
-    [FileUploadError.NO_DATA]: 'Filen må ha innhold',
+    [FileUploadError.NO_DATA]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Vedlegg.IngenData' }),
     [FileUploadError.GENERAL]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet' }),
     [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
 });
