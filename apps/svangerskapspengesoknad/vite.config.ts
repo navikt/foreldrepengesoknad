@@ -36,6 +36,10 @@ export default defineConfig({
         sourcemap: true,
     },
     server: {
+        // Whitelist dev.nav.no for bruk med "vite-mode"
+        cors: {
+            origin: new RegExp('dev.nav.no$'),
+        },
         port: 8080,
     },
     test: {
