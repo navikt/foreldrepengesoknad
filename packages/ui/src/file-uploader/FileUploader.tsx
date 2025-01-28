@@ -28,7 +28,11 @@ const getPendingAttachmentFromFile = (
     skjemanummer: Skjemanummer,
 ): FileUploaderAttachment => {
     const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
-    newAttachment.attachmentData.pending = true;
+
+    if (!file.error) {
+        newAttachment.attachmentData.pending = true;
+    }
+
     return newAttachment;
 };
 
@@ -85,6 +89,7 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileU
         { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
+    [FileUploadError.NO_DATA]: 'Filen må ha innhold',
     [FileUploadError.GENERAL]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet' }),
     [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
 });
@@ -157,11 +162,11 @@ export const FileUploader = ({
                 }
             };
 
-            const allPendingAttachments = files
-                .filter((file) => !file.error)
-                .map((file) => getPendingAttachmentFromFile(file, attachmentType, skjemanummer));
+            const allPendingAttachments = files.map((file) =>
+                getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
+            );
             addOrReplaceAttachments(setAttachments, allPendingAttachments);
-            uploadAttachments(allPendingAttachments);
+            uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
         },
         [attachmentType, skjemanummer, saveAttachment],
     );
@@ -199,6 +204,13 @@ export const FileUploader = ({
                 maxSizeInBytes={MAX_FIL_STØRRELSE_BYTES}
                 fileLimit={{ max: multiple ? 40 : 1, current: uploadedAttachments.length }}
                 onSelect={saveFiles}
+                validator={(file: File) => {
+                    if (file.size === 0) {
+                        return FileUploadError.NO_DATA;
+                    }
+
+                    return true;
+                }}
             />
             {skjemanummerTextMap && uploadedAttachments.length > 0 && (
                 <>
