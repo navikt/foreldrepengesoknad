@@ -1,1 +1,0 @@
-import{j as t}from"./Uttaksplan-B6Kb2NO6.js";const i=/^\d+([,.]\d+)?$/,o=s=>i.test(s.toString()),r=/^\s*\d+\s*$/,l=s=>n=>t(n)||o(n)?null:s,m=s=>n=>t(n)||r.test(n.toString())?null:s,u=(s,n)=>e=>e>=n?null:s;export{m as a,u as h,l as i};
