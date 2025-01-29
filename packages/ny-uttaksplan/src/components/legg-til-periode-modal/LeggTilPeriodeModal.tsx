@@ -4,9 +4,7 @@ import { forwardRef, useState } from 'react';
 import { Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
@@ -31,75 +29,80 @@ export interface ModalData {
     forelder?: Forelder;
 }
 
-export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ closeModal, handleAddPeriode }, ref) => {
-    const initialModalState: ModalData = {
-        hvaVilDuGjøre: undefined,
-        fom: undefined,
-        tom: undefined,
-        currentStep: 'step1',
-        kontoType: undefined,
-        forelder: undefined,
-    };
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(
+    ({ closeModal, handleAddPeriode, familiehendelsedato }, ref) => {
+        const initialModalState: ModalData = {
+            hvaVilDuGjøre: undefined,
+            fom: undefined,
+            tom: undefined,
+            currentStep: 'step1',
+            kontoType: undefined,
+            forelder: undefined,
+        };
 
-    const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { currentStep } = modalData;
+        const [modalData, setModalData] = useState<ModalData>(initialModalState);
+        const { currentStep } = modalData;
 
-    const ariaLabelId = 'legg-til-periode-modal-heading';
+        const ariaLabelId = 'legg-til-periode-modal-heading';
 
-    const closeModalWrapper = () => {
-        setModalData(initialModalState);
-        closeModal();
-    };
+        const closeModalWrapper = () => {
+            setModalData(initialModalState);
+            closeModal();
+        };
 
-    const renderContent = () => {
-        switch (currentStep) {
-            case 'step1':
-                return (
-                    <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModalWrapper} />
-                );
-            case 'step2':
-                return (
-                    <EndreTidsperiodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        familiehendelsedato={familiehendelsedato}
-                    />
-                );
-            case 'step3':
-                return (
-                    <VelgKontotypeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                    />
-                );
-            case 'step4':
-                return (
-                    <OppsummeringModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        handleAddPeriode={handleAddPeriode}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
+        const renderContent = () => {
+            switch (currentStep) {
+                case 'step1':
+                    return (
+                        <ValgModalStep
+                            modalData={modalData}
+                            setModalData={setModalData}
+                            closeModal={closeModalWrapper}
+                        />
+                    );
+                case 'step2':
+                    return (
+                        <EndreTidsperiodeModalStep
+                            modalData={modalData}
+                            setModalData={setModalData}
+                            closeModal={closeModalWrapper}
+                            familiehendelsedato={familiehendelsedato}
+                        />
+                    );
+                case 'step3':
+                    return (
+                        <VelgKontotypeModalStep
+                            modalData={modalData}
+                            setModalData={setModalData}
+                            closeModal={closeModalWrapper}
+                        />
+                    );
+                case 'step4':
+                    return (
+                        <OppsummeringModalStep
+                            modalData={modalData}
+                            setModalData={setModalData}
+                            closeModal={closeModalWrapper}
+                            handleAddPeriode={handleAddPeriode}
+                        />
+                    );
+                default:
+                    return null;
+            }
+        };
 
-    return (
-        <Modal className={styles.modal} ref={ref} aria-labelledby={ariaLabelId}>
-            <Modal.Header className={styles.header} closeButton={false}>
-                <div className={styles.headerContent}>
-                    <PencilIcon aria-hidden={true} width={24} height={24} />
-                    <Heading size="medium" id={ariaLabelId}>
-                        Legg til periode
-                    </Heading>
-                </div>
-            </Modal.Header>
-            <Modal.Body>{renderContent()}</Modal.Body>
-        </Modal>
-    );
-});
+        return (
+            <Modal className={styles.modal} ref={ref} aria-labelledby={ariaLabelId}>
+                <Modal.Header className={styles.header} closeButton={false}>
+                    <div className={styles.headerContent}>
+                        <PencilIcon aria-hidden={true} width={24} height={24} />
+                        <Heading size="medium" id={ariaLabelId}>
+                            Legg til periode
+                        </Heading>
+                    </div>
+                </Modal.Header>
+                <Modal.Body>{renderContent()}</Modal.Body>
+            </Modal>
+        );
+    },
+);

@@ -5,9 +5,8 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -20,12 +19,10 @@ interface Props {
 interface FormValues {
     fom: string | undefined;
     tom: string | undefined;
-    familiehendelsedato: string;
 }
 
-export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal, familiehendelsedato }: Props) => {
     const intl = useIntl();
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const { fom, tom } = modalData;
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -71,8 +68,8 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                     />
                     <RhfDatepicker
                         showMonthAndYearDropdowns
-                        minDate={dayjs(fomValue).subtract(3, 'weeks').toDate()}
-                        maxDate={dayjs(fomValue).add(3, 'years').toDate()}
+                        minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
+                        maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.påkrevd' })),
                             isValidDate(

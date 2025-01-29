@@ -29,11 +29,10 @@ export interface ModalData {
     currentStep: ModalStep;
     fom?: string;
     tom?: string;
-    familiehendelsedato?: string;
 }
 
 export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
-    ({ closeModal, permisjonsperiode, handleUpdatePeriode }, ref) => {
+    ({ closeModal, permisjonsperiode, handleUpdatePeriode, familiehendelsedato }, ref) => {
         const kunEnPeriode = permisjonsperiode.perioder.length === 1;
         const initialModalState: ModalData = {
             valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
@@ -41,9 +40,8 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
             fom: undefined,
             tom: undefined,
             currentStep: kunEnPeriode ? 'step2' : 'step1',
-            familiehendelsedato: undefined,
         };
-        const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+
         const [modalData, setModalData] = useState<ModalData>(initialModalState);
         const { currentStep } = modalData;
 
