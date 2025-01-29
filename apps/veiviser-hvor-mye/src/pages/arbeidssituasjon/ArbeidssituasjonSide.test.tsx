@@ -58,9 +58,9 @@ describe('<ArbeidssituasjonSide>', () => {
         expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
 
         expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jeg får utbetaling fra Nav'));
+        await userEvent.click(screen.getByText('Jeg får utbetalinger fra Nav'));
 
-        expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene før skatt?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene, før skatt?')).toBeInTheDocument();
         expect(screen.queryByText('Oppgi lønnen din før skatt')).not.toBeInTheDocument();
         const forrigeMåned = dayjs().subtract(1, 'month');
         const måned1 = utils.getByLabelText(
@@ -100,9 +100,9 @@ describe('<ArbeidssituasjonSide>', () => {
 
         expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Arbeidstaker eller frilanser'));
-        await userEvent.click(screen.getByText('Jeg får utbetaling fra Nav'));
+        await userEvent.click(screen.getByText('Jeg får utbetalinger fra Nav'));
 
-        expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene før skatt?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene, før skatt?')).toBeInTheDocument();
         const forrigeMåned = dayjs().subtract(1, 'month');
         const måned1 = utils.getByLabelText(
             capitalizeFirstLetter(forrigeMåned.subtract(2, 'month').format('MMMM YYYY')),
