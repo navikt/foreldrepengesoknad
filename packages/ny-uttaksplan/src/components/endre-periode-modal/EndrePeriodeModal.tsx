@@ -3,9 +3,6 @@ import { forwardRef, useState } from 'react';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
-import { notEmpty } from '@navikt/fp-validation';
-
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
