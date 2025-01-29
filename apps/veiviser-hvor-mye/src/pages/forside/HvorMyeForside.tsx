@@ -14,9 +14,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-// @ts-expect-error
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- ubrukt frem til languageToggle skal tas i bruk
-export const HvorMyeForside = (props: Props) => {
+export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -28,6 +26,8 @@ export const HvorMyeForside = (props: Props) => {
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
                 goToNextDefaultStep={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
                 icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
+                locale={locale}
+                changeLocale={changeLocale}
             />
             <AndreVeivisereLinkPanel
                 links={[

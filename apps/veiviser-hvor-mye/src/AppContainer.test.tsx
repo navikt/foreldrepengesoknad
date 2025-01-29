@@ -38,7 +38,7 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Se resultatet'));
         await expect(screen.findByText('Oppsummering')).resolves.toBeInTheDocument();
         // expect(screen.getByText('Oppsummering')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 100% foreldrepenger i 49 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
         expect(screen.getByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
