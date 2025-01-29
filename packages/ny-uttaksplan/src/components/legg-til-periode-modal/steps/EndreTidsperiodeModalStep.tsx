@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -12,6 +13,7 @@ interface Props {
     modalData: ModalData;
     setModalData: (data: ModalData) => void;
     closeModal: () => void;
+    familiehendelsedato: string;
 }
 
 interface FormValues {
@@ -19,7 +21,7 @@ interface FormValues {
     tom: string | undefined;
 }
 
-export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal, familiehendelsedato }: Props) => {
     const intl = useIntl();
     const { fom, tom } = modalData;
     const formMethods = useForm<FormValues>({
@@ -47,6 +49,9 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                     <RhfDatepicker
+                        showMonthAndYearDropdowns
+                        minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
+                        maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.påkrevd' })),
                             isValidDate(
@@ -62,6 +67,9 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                         name="fom"
                     />
                     <RhfDatepicker
+                        showMonthAndYearDropdowns
+                        minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
+                        maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.påkrevd' })),
                             isValidDate(
