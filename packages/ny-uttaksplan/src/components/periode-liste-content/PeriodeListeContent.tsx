@@ -121,6 +121,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -146,6 +147,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
                 </Button>
             </div>
             <EndrePeriodeModal
+                familiehendelsedato={familiehendelsedato}
                 ref={ref}
                 closeModal={closeModal}
                 handleUpdatePeriode={handleUpdatePeriode}

@@ -4,7 +4,9 @@ import { forwardRef, useState } from 'react';
 import { Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
@@ -15,6 +17,7 @@ import { VelgKontotypeModalStep } from './steps/VelgKontotypeModalStep';
 interface Props {
     closeModal: () => void | undefined;
     handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
+    familiehendelsedato: string;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -37,6 +40,7 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ close
         kontoType: undefined,
         forelder: undefined,
     };
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
     const { currentStep } = modalData;
@@ -60,6 +64,7 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(({ close
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
+                        familiehendelsedato={familiehendelsedato}
                     />
                 );
             case 'step3':

@@ -5,9 +5,8 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { ModalData } from '../EndrePeriodeModal';
 
 interface Props {
@@ -23,9 +22,8 @@ interface FormValues {
     familiehendelsedato: string;
 }
 
-export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal, familiehendelsedato }: Props) => {
     const intl = useIntl();
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
