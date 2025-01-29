@@ -3,6 +3,9 @@ import { forwardRef, useState } from 'react';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
+import { notEmpty } from '@navikt/fp-validation';
+
+import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
@@ -15,6 +18,7 @@ interface Props {
     closeModal: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
+    familiehendelsedato: string;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -37,7 +41,7 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
             tom: undefined,
             currentStep: kunEnPeriode ? 'step2' : 'step1',
         };
-
+        const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
         const [modalData, setModalData] = useState<ModalData>(initialModalState);
         const { currentStep } = modalData;
 
@@ -71,6 +75,7 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
                 case 'step3':
                     return (
                         <EndreTidsperiodeModalStep
+                            familiehendelsedato={familiehendelsedato}
                             modalData={modalData}
                             setModalData={setModalData}
                             closeModal={closeModalWrapper}
