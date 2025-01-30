@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { ModalData } from '../EndrePeriodeModal';
 
