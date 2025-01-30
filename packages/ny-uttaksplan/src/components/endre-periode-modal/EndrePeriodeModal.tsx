@@ -15,6 +15,7 @@ interface Props {
     closeModal: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
+    familiehendelsedato: string;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -28,7 +29,7 @@ export interface ModalData {
 }
 
 export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
-    ({ closeModal, permisjonsperiode, handleUpdatePeriode }, ref) => {
+    ({ closeModal, permisjonsperiode, handleUpdatePeriode, familiehendelsedato }, ref) => {
         const kunEnPeriode = permisjonsperiode.perioder.length === 1;
         const initialModalState: ModalData = {
             valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
@@ -71,6 +72,7 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
                 case 'step3':
                     return (
                         <EndreTidsperiodeModalStep
+                            familiehendelsedato={familiehendelsedato}
                             modalData={modalData}
                             setModalData={setModalData}
                             closeModal={closeModalWrapper}

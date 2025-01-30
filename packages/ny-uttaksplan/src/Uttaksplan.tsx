@@ -134,7 +134,12 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         >
             <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
             <Button onClick={openModal}>Legg til periode</Button>
-            <LeggTilPeriodeModal ref={ref} closeModal={closeModal} handleAddPeriode={handleAddPeriode} />
+            <LeggTilPeriodeModal
+                ref={ref}
+                closeModal={closeModal}
+                handleAddPeriode={handleAddPeriode}
+                familiehendelsedato={familiehendelsedato}
+            />
         </UttaksplanDataContext>
     );
 };
