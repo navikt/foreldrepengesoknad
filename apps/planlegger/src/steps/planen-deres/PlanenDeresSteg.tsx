@@ -298,7 +298,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => {
                             lagreUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
-                            navigator.goToSpecificStep(PlanleggerRoutes.OPPSUMMERING);
+                            navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
                         }}
                         isJumpToEndButton
                         useSimplifiedTexts
