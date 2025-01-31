@@ -156,6 +156,11 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                             size="xsmall"
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
+                            disabled={uttaksplan.length <= 1}
+                            onClick={() => {
+                                uttaksplan.pop();
+                                lagreUttaksplan([...uttaksplan]);
+                            }}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                         </Button>

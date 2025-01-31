@@ -21,6 +21,8 @@
     "StepButtons.Neste": "Neste steg",
     "StepButtons.NesteSimple": "Neste",
     "StepButtons.Send": "Send søknaden",
+    "StepButtons.GåTilOppsummering": "Gå til oppsummering",
+    "StepButtons.GåTilOppsummeringSimple": "Oppsummering",
     "ErrorPage.Engangsstønad": "Engangsstønad",
     "ErrorPage.Foreldrepenger": "Foreldrepenger",
     "ErrorPage.Svangerskapspenger": "Svangerskapspenger",

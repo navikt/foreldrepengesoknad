@@ -36,6 +36,10 @@ export const usePlanleggerNavigator = (locale: string) => {
         setPath(nextPath);
     }, [stepConfig]);
 
+    const goToSpecificStep = useCallback((specificPath: PlanleggerRoutes) => {
+        setPath(specificPath);
+    }, []);
+
     const avbrytSøknad = useCallback(() => {
         setPath(PlanleggerRoutes.OM_PLANLEGGEREN);
     }, []);
@@ -45,6 +49,7 @@ export const usePlanleggerNavigator = (locale: string) => {
             goToPreviousDefaultStep,
             goToNextStep,
             goToNextDefaultStep,
+            goToSpecificStep,
             avbrytSøknad,
         }),
         [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],

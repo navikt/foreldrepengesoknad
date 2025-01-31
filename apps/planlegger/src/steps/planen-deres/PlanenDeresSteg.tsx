@@ -298,8 +298,9 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => {
                             lagreUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
-                            navigator.goToNextDefaultStep();
+                            navigator.goToSpecificStep(PlanleggerRoutes.OPPSUMMERING);
                         }}
+                        isJumpToEndButton
                         useSimplifiedTexts
                     />
                 </VStack>
