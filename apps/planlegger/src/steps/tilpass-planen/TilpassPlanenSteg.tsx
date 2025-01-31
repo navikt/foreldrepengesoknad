@@ -159,10 +159,12 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                         </Button>
+                        {/* // TODO: Legg til modal som dobbeltsjekker at bruker vil fjerne alt */}
                         <Button
                             size="xsmall"
                             variant="secondary"
                             icon={<TrashIcon aria-hidden height={24} width={24} />}
+                            onClick={() => lagreUttaksplan([])}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                         </Button>
