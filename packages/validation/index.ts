@@ -8,6 +8,7 @@ export {
     hasMinLength,
     hasMaxLength,
     hasLegalChars,
+    isEmpty,
 } from './src/form/generalFormValidation';
 export {
     isValidNumberForm,

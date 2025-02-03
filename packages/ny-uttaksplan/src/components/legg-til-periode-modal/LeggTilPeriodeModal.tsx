@@ -8,8 +8,8 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
-import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-import { ValgModalStep } from './steps/ValgModalStep';
+// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
+// import { ValgModalStep } from './steps/ValgModalStep';
 import { VelgKontotypeModalStep } from './steps/VelgKontotypeModalStep';
 
 interface Props {
@@ -52,15 +52,15 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(
 
         const renderContent = () => {
             switch (currentStep) {
+                // case 'step1':
+                //     return (
+                //         <ValgModalStep
+                //             modalData={modalData}
+                //             setModalData={setModalData}
+                //             closeModal={closeModalWrapper}
+                //         />
+                //     );
                 case 'step1':
-                    return (
-                        <ValgModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
-                        />
-                    );
-                case 'step2':
                     return (
                         <EndreTidsperiodeModalStep
                             modalData={modalData}
@@ -69,23 +69,24 @@ export const LeggTilPeriodeModal = forwardRef<HTMLDialogElement, Props>(
                             familiehendelsedato={familiehendelsedato}
                         />
                     );
-                case 'step3':
+                case 'step2':
                     return (
                         <VelgKontotypeModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
-                        />
-                    );
-                case 'step4':
-                    return (
-                        <OppsummeringModalStep
                             modalData={modalData}
                             setModalData={setModalData}
                             closeModal={closeModalWrapper}
                             handleAddPeriode={handleAddPeriode}
                         />
                     );
+                // case 'step3':
+                //     return (
+                //         <OppsummeringModalStep
+                //             modalData={modalData}
+                //             setModalData={setModalData}
+                //             closeModal={closeModalWrapper}
+                //             handleAddPeriode={handleAddPeriode}
+                //         />
+                //     );
                 default:
                     return null;
             }

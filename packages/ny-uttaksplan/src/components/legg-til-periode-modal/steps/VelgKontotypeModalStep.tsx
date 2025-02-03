@@ -7,12 +7,14 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
     modalData: ModalData;
     closeModal: () => void;
     setModalData: (data: ModalData) => void;
+    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
 interface FormValues {
@@ -20,9 +22,9 @@ interface FormValues {
     forelder: Forelder;
 }
 
-export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: Props) => {
+export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, handleAddPeriode }: Props) => {
     const intl = useIntl();
-    const { kontoType, forelder } = modalData;
+    const { fom, tom, forelder, kontoType } = modalData;
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -30,6 +32,9 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
             kontoType: kontoType ?? undefined,
         },
     });
+
+    const kontoTypeValue = formMethods.watch('kontoType');
+    const forelderValue = formMethods.watch('forelder');
 
     const getForelderFromKontoType = (
         kontoTypeValue: StønadskontoType,
@@ -49,12 +54,19 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
         setModalData({
             ...modalData,
             kontoType: values.kontoType,
-            currentStep: 'step4',
+            currentStep: 'step3',
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
         });
+        handleAddPeriode({
+            fom: fom!,
+            tom: tom!,
+            id: `${fom} - ${tom} - ${'kontoType'}`,
+            readOnly: false,
+            kontoType: kontoTypeValue,
+            forelder: forelderValue,
+        });
+        closeModal();
     };
-
-    const kontoTypeValue = formMethods.watch('kontoType');
 
     return (
         <>
@@ -99,12 +111,12 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step2' });
+                                setModalData({ ...modalData, currentStep: 'step1' });
                             }}
                         >
                             Gå tilbake
                         </Button>
-                        <Button>Gå videre</Button>
+                        <Button>Ferdig, legg til i planen</Button>
                     </div>
                 </div>
             </RhfForm>
