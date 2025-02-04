@@ -7,8 +7,8 @@ import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
-import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-import { ValgModalStep } from './steps/ValgModalStep';
+// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
+// import { ValgModalStep } from './steps/ValgModalStep';
 import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
 interface Props {
@@ -60,33 +60,34 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
                             closeModal={closeModalWrapper}
                         />
                     );
+                // case 'step2':
+                //     return (
+                //         <ValgModalStep
+                //             modalData={modalData}
+                //             setModalData={setModalData}
+                //             closeModal={closeModalWrapper}
+                //             kunEnPeriode={kunEnPeriode}
+                //         />
+                //     );
                 case 'step2':
-                    return (
-                        <ValgModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
-                            kunEnPeriode={kunEnPeriode}
-                        />
-                    );
-                case 'step3':
                     return (
                         <EndreTidsperiodeModalStep
                             familiehendelsedato={familiehendelsedato}
                             modalData={modalData}
                             setModalData={setModalData}
                             closeModal={closeModalWrapper}
-                        />
-                    );
-                case 'step4':
-                    return (
-                        <OppsummeringModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
                             handleUpdatePeriode={handleUpdatePeriode}
                         />
                     );
+                // case 'step3':
+                //     return (
+                //         <OppsummeringModalStep
+                //             modalData={modalData}
+                //             setModalData={setModalData}
+                //             closeModal={closeModalWrapper}
+                //             handleUpdatePeriode={handleUpdatePeriode}
+                //         />
+                //     );
                 default:
                     return null;
             }
