@@ -47,6 +47,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
+    const gjeldendeUttaksplan = uttaksplan[uttaksplan.length - 1];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -80,17 +81,19 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     });
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        lagreUttaksplan(perioder);
+        const nyUttaksplan = [...uttaksplan];
+        nyUttaksplan.push(perioder);
+        lagreUttaksplan(nyUttaksplan);
     };
 
     const getSøkersPerioder = () => {
-        return uttaksplan.filter((p) =>
+        return gjeldendeUttaksplan.filter((p) =>
             erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
         );
     };
 
     const getAnnenpartsPerioder = () => {
-        return uttaksplan.filter((p) =>
+        return gjeldendeUttaksplan.filter((p) =>
             erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
         );
     };
@@ -153,13 +156,12 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                     )}
                     <HStack gap="4">
                         <Button
+                            // TODO: Legg til funksjonalitet som gjør at denne ikke er klikkbar hvis det ikke er noe å angre.
                             size="xsmall"
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
-                            disabled={uttaksplan.length <= 1}
                             onClick={() => {
-                                uttaksplan.pop();
-                                lagreUttaksplan([...uttaksplan]);
+                                lagreUttaksplan([uttaksplan[0]]);
                             }}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
