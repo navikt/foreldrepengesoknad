@@ -10,14 +10,12 @@ import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from './DinPlan';
 
-const queryClient = new QueryClient();
-
 const meta = {
     title: 'DinPlan',
     component: DinPlan,
     render: (props) => {
         return (
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={new QueryClient()}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
                     <Routes>
                         <Route element={<DinPlan {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
