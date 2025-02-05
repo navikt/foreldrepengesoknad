@@ -102,6 +102,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+            {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
@@ -191,6 +192,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                     <HStack gap="4">
                         <Button
                             // TODO: Legg til funksjonalitet som gjør at denne gir feilmelding dersom det ikke er noe å angre på
+                            size="xsmall"
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
                             onClick={() => {
