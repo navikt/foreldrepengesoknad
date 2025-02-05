@@ -190,8 +190,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                     )}
                     <HStack gap="4">
                         <Button
-                            // TODO: Legg til funksjonalitet som gjør at denne ikke er klikkbar hvis det ikke er noe å angre.
-                            size="xsmall"
+                            // TODO: Legg til funksjonalitet som gjør at denne gir feilmelding dersom det ikke er noe å angre på
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
                             onClick={() => {
@@ -200,14 +199,11 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                         </Button>
-                        {/* // TODO: Legg til modal som dobbeltsjekker at bruker vil fjerne alt */}
                         <Button
                             size="xsmall"
                             variant="secondary"
                             icon={<TrashIcon aria-hidden height={24} width={24} />}
                             onClick={() => setOpen(true)}
-
-                            // onClick={() => lagreUttaksplan([])}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                         </Button>
