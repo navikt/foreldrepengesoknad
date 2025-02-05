@@ -1,0 +1,1 @@
+var N=(A=>(A.ORGANISASJON="ORGANISASJON",A.PRIVAT="PRIVAT",A))(N||{});export{N as A};
