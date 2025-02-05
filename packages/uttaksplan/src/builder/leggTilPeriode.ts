@@ -76,10 +76,17 @@ export const splittPeriodePåDato = (periode: Periode, dato: Date): Periode[] =>
     return [periodeFørDato, periodeFraOgMedDato];
 };
 
-export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiode, famDato: Date): Uttaksperiode[] => {
+export const splittUttaksperiodePåFamiliehendelsesdato = (
+    periode: Uttaksperiode,
+    famDato: Date,
+    harAktivitetsfriKvote: boolean = false,
+): Uttaksperiode[] => {
     const periodeFørFamDato: Periode = {
         ...periode,
-        konto: periode.konto == StønadskontoType.Foreldrepenger ? StønadskontoType.AktivitetsfriKvote : periode.konto,
+        konto:
+            periode.konto == StønadskontoType.Foreldrepenger && harAktivitetsfriKvote
+                ? StønadskontoType.AktivitetsfriKvote
+                : periode.konto,
         morsAktivitetIPerioden:
             periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitetIPerioden,
         erMorForSyk: periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.erMorForSyk,

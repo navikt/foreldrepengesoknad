@@ -21,6 +21,7 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
@@ -154,6 +155,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
+    const harAktivitetsfriKvote =
+        stønadskontoer.kontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -186,6 +189,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 oppdatertPeriode as Uttaksperiode,
                 famHendelsesdato,
+                harAktivitetsfriKvote,
             );
 
             resultat = builder.oppdaterPerioder(perioder);
