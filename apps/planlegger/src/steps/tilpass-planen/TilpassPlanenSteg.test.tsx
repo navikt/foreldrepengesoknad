@@ -10,7 +10,6 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         render(<MorOgFarBeggeHarRett />);
 
         expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
-        expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
 
         expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('true');
