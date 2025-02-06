@@ -12,10 +12,11 @@ import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
+import { KvoteOversikt } from './KvoteOppsummering';
 
 interface Props {
-    annenPartsPerioder?: SaksperiodeNy[];
     navnPåForeldre: NavnPåForeldre;
+    annenPartsPerioder: SaksperiodeNy[];
 }
 
 export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
@@ -35,10 +36,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
     const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
     const rettighetType = gjeldendeSak.rettighetType;
 
-    const getRelevantePerioder = () => {
-        return søkersPerioder ?? perioderSomErSøktOm;
-    };
-
+    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
@@ -79,21 +77,24 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                     />
                 </ToggleGroup>
                 {!visKalender && (
-                    <UttaksplanNy
-                        barn={barn}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        familiehendelsedato={familiehendelseDato}
-                        navnPåForeldre={navnPåForeldre}
-                        annenPartsPerioder={annenPartsPerioder}
-                        søkersPerioder={getRelevantePerioder() || []}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        bareFarHarRett={bareFarHarRett}
-                        familiesituasjon={familiesituasjon}
-                        førsteUttaksdagNesteBarnsSak={undefined}
-                        harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                        handleOnPlanChange={() => null}
-                        planleggerModus={false}
-                    />
+                    <>
+                        <UttaksplanNy
+                            barn={barn}
+                            erFarEllerMedmor={søkerErFarEllerMedmor}
+                            familiehendelsedato={familiehendelseDato}
+                            navnPåForeldre={navnPåForeldre}
+                            annenPartsPerioder={annenPartsPerioder}
+                            søkersPerioder={relevantePerioder}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            bareFarHarRett={bareFarHarRett}
+                            familiesituasjon={familiesituasjon}
+                            førsteUttaksdagNesteBarnsSak={undefined}
+                            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                            planleggerModus={false}
+                            handleOnPlanChange={() => null}
+                        />
+                        <KvoteOversikt />
+                    </>
                 )}
                 {visKalender && (
                     <UttaksplanKalender
@@ -101,7 +102,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                         barn={barn}
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                        søkersPerioder={getRelevantePerioder() || []}
+                        søkersPerioder={relevantePerioder}
                         annenPartsPerioder={annenPartsPerioder}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />

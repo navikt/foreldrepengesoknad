@@ -32,7 +32,7 @@ export const erAdopsjon = (omBarnet: OmBarnet): omBarnet is Adopsjon => {
     return false;
 };
 
-export const erBarnetIkkeFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
+export const harBarnetTermindato = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
     if ((omBarnet as BarnetErIkkeFødt).termindato) {
         return true;
     }

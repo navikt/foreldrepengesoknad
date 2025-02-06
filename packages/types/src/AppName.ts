@@ -8,5 +8,4 @@ export type AppName =
     | 'planlegger'
     | 'svangerskapspengesoknad'
     | 'veiviser-fp-eller-es'
-    | 'veiviser-hva-skjer-nar'
     | 'veiviser-hvor-mye';

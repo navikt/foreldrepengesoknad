@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { erAdopsjon, harBarnetTermindato } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -33,7 +33,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erBarnetAdoptert = erAdopsjon(omBarnet);
-    const harTermindato = erBarnetIkkeFødt(omBarnet);
+    const harTermindato = harBarnetTermindato(omBarnet);
 
     const formMethods = useForm<Dokumentasjon>({
         defaultValues: dokumentasjon,
