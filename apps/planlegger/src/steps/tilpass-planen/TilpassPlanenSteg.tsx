@@ -107,7 +107,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                 open={open}
                 onClose={() => setOpen(false)}
                 header={{
-                    heading: 'Er du sikker?',
+                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
                     size: 'small',
                     closeButton: false,
                 }}
