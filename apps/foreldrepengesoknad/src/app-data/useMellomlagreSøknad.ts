@@ -109,7 +109,7 @@ export const useMellomlagreSøknad = (
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
-    const promiseRef = useRef<() => void>();
+    const promiseRef = useRef<() => void>(null);
 
     useEffect(() => {
         if (skalMellomlagre) {

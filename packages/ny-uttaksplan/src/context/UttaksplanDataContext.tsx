@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+import { FunctionComponent, JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { Barn, NavnPåForeldre } from '@navikt/fp-common';
 import { Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';

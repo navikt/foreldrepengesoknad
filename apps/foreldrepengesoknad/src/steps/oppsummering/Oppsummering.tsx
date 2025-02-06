@@ -143,21 +143,24 @@ export const Oppsummering = (props: Props) => {
                 onContinueLater={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                <BarnOppsummering barn={barn} onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.OM_BARNET)} />
-                <AnnenForelderOppsummering
-                    annenForelder={annenForelder}
-                    søkerrolle={søkersituasjon.rolle}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANNEN_FORELDER)}
-                />
-                <>
-                    {!erEndringssøknad && (
+                {!erEndringssøknad && (
+                    <>
+                        <BarnOppsummering
+                            barn={barn}
+                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.OM_BARNET)}
+                        />
+                        <AnnenForelderOppsummering
+                            annenForelder={annenForelder}
+                            søkerrolle={søkersituasjon.rolle}
+                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANNEN_FORELDER)}
+                        />
                         <BoIUtlandetOppsummering
                             onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
                             tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                             senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                         />
-                    )}
-                </>
+                    </>
+                )}
                 <ArbeidsforholdOppsummering
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}

@@ -42,7 +42,7 @@ function FormikTimeInput<FieldName, ErrorType>({
     ...restProps
 }: FormikTimeInputProps<FieldName, ErrorType>) {
     const context = React.useContext(TypedFormikFormContext);
-    const ref = useRef<any>();
+    const ref = useRef<any>(null);
     const FieldComponent = useFastField ? FastField : Field;
 
     const skjemagruppeClassName = classNames(

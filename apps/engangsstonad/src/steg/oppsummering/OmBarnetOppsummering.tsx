@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -26,7 +26,7 @@ function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) 
 
 export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
     const harAdoptert = erAdopsjon(omBarnet);
-    const harTermin = erBarnetIkkeFødt(omBarnet);
+    const harTermin = harBarnetTermindato(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
 
     return (

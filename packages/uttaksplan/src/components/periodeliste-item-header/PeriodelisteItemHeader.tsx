@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, JSX } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Label } from '@navikt/ds-react';
