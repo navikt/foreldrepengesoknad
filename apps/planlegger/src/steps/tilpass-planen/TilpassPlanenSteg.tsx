@@ -7,7 +7,7 @@ import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
-import { Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
@@ -34,6 +34,8 @@ interface Props {
 }
 
 export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
+    const [open, setOpen] = useState(false);
+
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -47,6 +49,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
+    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -80,23 +83,58 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     });
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        lagreUttaksplan(perioder);
+        const nyUttaksplan = [...uttaksplan];
+        nyUttaksplan.push(perioder);
+        lagreUttaksplan(nyUttaksplan);
     };
 
     const getSøkersPerioder = () => {
-        return uttaksplan.filter((p) =>
+        return gjeldendeUttaksplan.filter((p) =>
             erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
         );
     };
 
     const getAnnenpartsPerioder = () => {
-        return uttaksplan.filter((p) =>
+        return gjeldendeUttaksplan.filter((p) =>
             erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
         );
     };
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+            {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                header={{
+                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
+                    size: 'small',
+                    closeButton: false,
+                }}
+                width="small"
+            >
+                <Modal.Body>
+                    <BodyLong>
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Body" />
+                    </BodyLong>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        type="button"
+                        variant="danger"
+                        onClick={() => {
+                            lagreUttaksplan([]);
+                            setOpen(false);
+                        }}
+                    >
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft" />
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt" />
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             <VStack gap="6">
                 <Heading size="medium" spacing level="2">
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
@@ -153,9 +191,13 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                     )}
                     <HStack gap="4">
                         <Button
+                            // TODO: Legg til funksjonalitet som gjør at denne gir feilmelding dersom det ikke er noe å angre på
                             size="xsmall"
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
+                            onClick={() => {
+                                lagreUttaksplan([uttaksplan[0]]);
+                            }}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                         </Button>
@@ -163,6 +205,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                             size="xsmall"
                             variant="secondary"
                             icon={<TrashIcon aria-hidden height={24} width={24} />}
+                            onClick={() => setOpen(true)}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                         </Button>

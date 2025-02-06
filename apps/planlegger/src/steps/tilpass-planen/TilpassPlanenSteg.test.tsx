@@ -9,7 +9,7 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
     it('skal vise expansion card: Hva er mulig når man tilpasser?', async () => {
         render(<MorOgFarBeggeHarRett />);
 
-        expect(screen.getAllByText('Tilpass planen')).toHaveLength(2);
+        expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
 
         expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('true');

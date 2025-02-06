@@ -55,7 +55,7 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.UTTAKSPLAN]: [uttaksplan],
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />

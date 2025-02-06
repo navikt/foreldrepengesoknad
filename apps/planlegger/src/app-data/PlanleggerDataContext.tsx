@@ -16,6 +16,7 @@ export enum ContextDataType {
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
     UTTAKSPLAN = 'UTTAKSPLAN',
+    TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
 export type ContextDataMap = {
@@ -25,7 +26,8 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[];
+    [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[][];
+    [ContextDataType.TILPASS_PLAN]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;
