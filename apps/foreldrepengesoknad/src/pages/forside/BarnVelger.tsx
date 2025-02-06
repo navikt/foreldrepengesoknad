@@ -10,7 +10,7 @@ import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-export enum SelectableBarnOptions {
+enum SelectableBarnOptions {
     SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
 }
 
