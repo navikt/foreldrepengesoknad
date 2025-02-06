@@ -1,4 +1,3 @@
-
 # Selvbetjeningsløsninger for Team Foreldrepenger sine ytelser - foreldrepenger, svangerskapspenger og engangsstønad.
 
 ## Lokal utvikling
@@ -6,9 +5,10 @@
 ### Førstegangsoppsett
 
 Dette monorepoet bruker følgende verktøy:
-* node (v22)
-* pnpm - som npm, men mer plasseffektiv
-* turbo - for å kjøre tasks parrallelt i et monorepo.
+
+- node (v22)
+- pnpm - som npm, men mer plasseffektiv.
+- turbo - for å kjøre tasks parrallelt i et monorepo.
 
 1. Installer node hvis du ikke allerede har det.
 2. Installer pnpm: `npm install -g pnpm`.
@@ -30,7 +30,6 @@ Vi har en utviklingsmetode vi kaller for "Vite mode".
 Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
-
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
 2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:8080/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
@@ -38,6 +37,7 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
    Dette setter en cookie `use-local-vite-server` som ber deployet server om å gi deg en index.html som heller leter etter javascript på `localhost:8080/foreldrepenger/oversikt` istedetfor assets som er bundlet på server.
 
 #### 2. Storybook
+
 1. cd til ønsket app. f.eks `cd apps/svangerskapspengesoknad`
 2. Kjør `pnpm run storybook`
 3. Browser vil automatisk åpne på riktig localhost port
@@ -50,6 +50,7 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 4. Kjør `pnpm run dev`
 
 ### Tester
+
 For å kjøre tester for en app:
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
