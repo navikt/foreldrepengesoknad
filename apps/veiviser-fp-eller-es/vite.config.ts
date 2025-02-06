@@ -36,7 +36,7 @@ export default defineConfig({
     server: {
         // Whitelist dev.nav.no for bruk med "vite-mode"
         cors: {
-            origin: [new RegExp('^https://www.intern.dev.nav.no$'), new RegExp('^http://localhost:')],
+            origin: ['https://www.intern.dev.nav.no', new RegExp('^http://localhost:')],
         },
         port: 8080,
     },
