@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Heading, Radio } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { formatDate } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { ModalData } from '../EndrePeriodeModal';
@@ -50,7 +51,12 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                     ]}
                 >
                     {perioder.map((p) => {
-                        return <Radio key={p.id} value={p.id}>{`${p.id}`}</Radio>;
+                        return (
+                            <Radio
+                                key={p.id}
+                                value={p.id}
+                            >{`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${p.kontoType}`}</Radio>
+                        );
                     })}
                 </RhfRadioGroup>
                 <div

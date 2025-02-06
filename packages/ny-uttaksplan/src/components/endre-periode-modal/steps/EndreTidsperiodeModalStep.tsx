@@ -7,6 +7,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { ModalData } from '../EndrePeriodeModal';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
     setModalData: (data: ModalData) => void;
     closeModal: () => void;
     familiehendelsedato: string;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
 interface FormValues {
@@ -21,7 +23,14 @@ interface FormValues {
     tom: string | undefined;
 }
 
-export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal, familiehendelsedato }: Props) => {
+export const EndreTidsperiodeModalStep = ({
+    modalData,
+    setModalData,
+    closeModal,
+    familiehendelsedato,
+    handleUpdatePeriode,
+}: Props) => {
+    const { valgtPeriode } = modalData;
     const intl = useIntl();
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -35,10 +44,11 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
             ...modalData,
             fom: values.fom,
             tom: values.tom,
-            currentStep: 'step4',
+            currentStep: 'step3',
         });
     };
 
+    const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
     return (
@@ -83,7 +93,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '100%',
-                        padding: '1rem 0',
+                        paddingTop: '1rem',
                     }}
                 >
                     <div>
@@ -96,12 +106,23 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step2' });
+                                setModalData({ ...modalData, currentStep: 'step1' });
                             }}
                         >
                             Gå tilbake
                         </Button>
-                        <Button>Gå videre</Button>
+                        <Button
+                            onClick={() => {
+                                handleUpdatePeriode({
+                                    ...valgtPeriode!,
+                                    fom: fomValue ?? valgtPeriode!.fom,
+                                    tom: tomValue ?? valgtPeriode!.tom,
+                                });
+                                closeModal();
+                            }}
+                        >
+                            Ferdig, legg til i planen
+                        </Button>
                     </div>
                 </div>
             </RhfForm>

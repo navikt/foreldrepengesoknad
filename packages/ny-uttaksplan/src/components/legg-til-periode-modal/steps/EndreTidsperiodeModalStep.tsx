@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isEmpty, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -36,7 +36,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
             ...modalData,
             fom: values.fom,
             tom: values.tom,
-            currentStep: 'step3',
+            currentStep: 'step2',
         });
     };
 
@@ -65,6 +65,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         disableWeekends={true}
                         label="Fra og med dato"
                         name="fom"
+                        defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
                     />
                     <RhfDatepicker
                         showMonthAndYearDropdowns
@@ -79,7 +80,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         disableWeekends={true}
                         label="Til og med dato"
                         name="tom"
-                        defaultMonth={fomValue}
+                        defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
                     />
                 </div>
                 <div
@@ -96,7 +97,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
+                        {/* <Button
                             type="button"
                             variant="secondary"
                             onClick={() => {
@@ -104,7 +105,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                             }}
                         >
                             Gå tilbake
-                        </Button>
+                        </Button> */}
                         <Button>Gå videre</Button>
                     </div>
                 </div>
