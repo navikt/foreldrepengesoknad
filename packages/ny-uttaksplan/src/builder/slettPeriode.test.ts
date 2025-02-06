@@ -12,7 +12,7 @@ const perioder: Planperiode[] = [
         tom: '2022-05-04',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -20,7 +20,7 @@ const perioder: Planperiode[] = [
         tom: '2022-08-17',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -28,7 +28,7 @@ const perioder: Planperiode[] = [
         tom: '2022-10-12',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -39,7 +39,7 @@ const perioder2: Planperiode[] = [
         tom: '2022-05-31',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -47,7 +47,7 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-09',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -55,7 +55,7 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-23',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '4',
@@ -63,7 +63,7 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-30',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '5',
@@ -71,7 +71,7 @@ const perioder2: Planperiode[] = [
         tom: '2022-10-12',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -127,7 +127,7 @@ const perioderFar: Planperiode[] = [
         tom: '2022-08-01',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -135,14 +135,14 @@ const perioderFar: Planperiode[] = [
         tom: '2022-08-08',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
         fom: '2022-08-11',
         tom: '2022-09-11',
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '4',
@@ -150,7 +150,7 @@ const perioderFar: Planperiode[] = [
         tom: '2022-09-19',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '5',
@@ -158,7 +158,7 @@ const perioderFar: Planperiode[] = [
         tom: '2022-10-25',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 

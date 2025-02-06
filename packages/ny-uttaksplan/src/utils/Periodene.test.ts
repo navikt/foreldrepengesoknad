@@ -15,7 +15,7 @@ const uttakBase: Planperiode = {
     fom: førsteUttaksdagTidsperiode.tom,
     tom: førsteUttaksdagTidsperiode.fom,
     id: '1',
-    gjelderAnnenPart: false,
+    readOnly: false,
 };
 
 const oppholdsBase: Planperiode = {
@@ -24,13 +24,13 @@ const oppholdsBase: Planperiode = {
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
     forelder: Forelder.farMedmor,
-    gjelderAnnenPart: false,
+    readOnly: false,
 };
 
 const infoBase: Planperiode = {
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
-    gjelderAnnenPart: false,
+    readOnly: false,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
     id: '3',
 };

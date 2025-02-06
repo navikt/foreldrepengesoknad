@@ -30,17 +30,17 @@ export const CalendarIconLabel = ({ children, iconType }: Props) => {
             <div className={styles.purplePanel}>
                 <HStack gap="2" align="center">
                     {children}
-                    <div className={styles.margin}>{<LillaSirkel />} </div>
+                    <div>{<LillaSirkel />} </div>
                 </HStack>
             </div>
         );
     } else {
         return (
             <div className={iconType === 'blue' ? styles.bluePanel : styles.greenPanel}>
-                <HStack gap="2" align="end" wrap={false}>
+                <HStack gap="2" align="center" wrap={false}>
                     {children}
 
-                    <div className={styles.margin}>{iconType === 'blue' ? <BlåSirkel /> : <GrønnSirkel />}</div>
+                    <div>{iconType === 'blue' ? <BlåSirkel /> : <GrønnSirkel />}</div>
                 </HStack>
             </div>
         );

@@ -1,0 +1,14 @@
+.headerContent {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.header {
+    background-color: var(--a-grayalpha-100);
+    margin-bottom: 1rem;
+}
+
+.modal {
+    width: 100%;
+}

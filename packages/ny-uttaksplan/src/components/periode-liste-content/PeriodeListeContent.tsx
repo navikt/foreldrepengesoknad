@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useRef } from 'react';
 
-import { BodyShort, Stack } from '@navikt/ds-react';
+import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
@@ -18,6 +18,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
+import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
 import FamiliehendelseContent from './components/FamiliehendelseContent';
 import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
 import OverføringsperiodeContent from './components/OverføringsperiodeContent';
@@ -29,6 +30,7 @@ import UttaksperiodeContent from './components/UttaksperiodeContent';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
 const renderPeriode = (
@@ -106,17 +108,27 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+const PeriodeListeContent: FunctionComponent<Props> = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+}) => {
+    const ref = useRef<HTMLDialogElement>(null);
+
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
+
+    const closeModal = () => ref.current?.close();
+    const openModal = () => ref.current?.showModal();
 
     return (
         <div style={{ marginTop: '1rem' }}>
@@ -126,6 +138,21 @@ const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFa
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <Button type="button" variant="secondary" onClick={openModal}>
+                    Endre
+                </Button>
+                <Button type="button" variant="secondary">
+                    Slett
+                </Button>
+            </div>
+            <EndrePeriodeModal
+                familiehendelsedato={familiehendelsedato}
+                ref={ref}
+                closeModal={closeModal}
+                handleUpdatePeriode={handleUpdatePeriode}
+                permisjonsperiode={permisjonsperiode}
+            />
         </div>
     );
 };

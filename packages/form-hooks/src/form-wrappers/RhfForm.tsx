@@ -7,6 +7,7 @@ interface OwnProps<FormValues extends FieldValues> {
     onSubmit?: SubmitHandler<FormValues>;
     className?: string;
     shouldUseFlexbox?: boolean;
+    id?: string;
 }
 
 export const RhfForm = <FormValues extends FieldValues>({
@@ -15,6 +16,7 @@ export const RhfForm = <FormValues extends FieldValues>({
     onSubmit,
     className,
     shouldUseFlexbox = false,
+    id,
 }: OwnProps<FormValues>) => {
     const { handleSubmit } = formMethods;
 
@@ -24,6 +26,7 @@ export const RhfForm = <FormValues extends FieldValues>({
                 style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
                 className={className}
                 onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
+                id={id}
             >
                 {children}
             </form>

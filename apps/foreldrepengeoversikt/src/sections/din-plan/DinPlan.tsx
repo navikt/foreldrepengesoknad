@@ -90,6 +90,8 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             familiesituasjon={familiesituasjon}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                            planleggerModus={false}
+                            handleOnPlanChange={() => null}
                         />
                         <KvoteOversikt />
                     </>

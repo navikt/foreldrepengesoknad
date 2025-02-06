@@ -11,7 +11,7 @@ const perioder: Planperiode[] = [
         tom: '2022-05-04',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -19,7 +19,7 @@ const perioder: Planperiode[] = [
         tom: '2022-08-17',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -27,7 +27,7 @@ const perioder: Planperiode[] = [
         tom: '2022-10-12',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -38,14 +38,14 @@ const perioderMedHull: Planperiode[] = [
         tom: '2022-03-31',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
         fom: '2022-04-01',
         tom: '2022-04-29',
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '4',
@@ -53,7 +53,7 @@ const perioderMedHull: Planperiode[] = [
         tom: '2022-05-31',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -64,7 +64,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         tom: '2024-04-30',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -72,14 +72,14 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         tom: '2024-05-31',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
         fom: '2024-06-03',
         tom: '2024-06-28',
         forelder: Forelder.farMedmor,
-        gjelderAnnenPart: true,
+        readOnly: true,
         oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
     },
 ];
@@ -91,7 +91,7 @@ const perioderKunAnnenPartsUttak: Planperiode[] = [
         tom: '2022-12-12',
         forelder: Forelder.mor,
         oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-        gjelderAnnenPart: true,
+        readOnly: true,
     },
 ];
 
@@ -102,7 +102,7 @@ const toPerioder: Planperiode[] = [
         tom: '2024-05-31',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -110,7 +110,7 @@ const toPerioder: Planperiode[] = [
         tom: '2024-06-28',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -125,7 +125,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: '2022-07-22',
                 forelder: Forelder.mor,
                 kontoType: StønadskontoType.Fellesperiode,
-                gjelderAnnenPart: false,
+                readOnly: false,
             };
 
             const result = leggTilPeriode({
@@ -156,7 +156,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-04-15',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -193,7 +193,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-05-12',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -225,7 +225,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-04-29',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -252,7 +252,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2024-05-22',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -281,7 +281,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2024-05-24',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result2 = leggTilPeriode({
@@ -306,7 +306,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-07-22',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -331,7 +331,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-04-13',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -356,7 +356,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-04-07',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -382,7 +382,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-10-26',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -407,7 +407,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-11-08',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -433,7 +433,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-05-18',
             forelder: Forelder.mor,
             utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -460,7 +460,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-05-06',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -483,7 +483,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2022-10-14',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Mødrekvote,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -516,7 +516,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: '2023-09-19',
                 forelder: Forelder.mor,
                 kontoType: StønadskontoType.Fellesperiode,
-                gjelderAnnenPart: false,
+                readOnly: false,
             };
 
             const result = leggTilPeriode({
@@ -548,7 +548,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             tom: '2024-07-15',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Fellesperiode,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = leggTilPeriode({
@@ -589,7 +589,7 @@ describe('Test av split periode i uttaksplan', () => {
         tom: '2022-05-02',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     };
 
     const splitPeriodeBFHRMedAktivitetskrav: Planperiode = {
@@ -599,7 +599,7 @@ describe('Test av split periode i uttaksplan', () => {
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Foreldrepenger,
         morsAktivitet: MorsAktivitet.Arbeid,
-        gjelderAnnenPart: false,
+        readOnly: false,
     };
 
     it('Skal spitte periode med fedrekvote med familiehendelsesdato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {

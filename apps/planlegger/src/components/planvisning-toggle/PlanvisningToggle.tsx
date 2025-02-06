@@ -19,17 +19,17 @@ export const PlanvisningToggle = ({ setVisningsmodus }: Props) => {
 
     return (
         <ToggleGroup
-            defaultValue="kalender"
+            defaultValue="liste"
             variant="neutral"
             onChange={(value) => onChangeHandler(value as Visningsmodus)}
         >
-            <ToggleGroup.Item value="kalender">
-                <CalendarIcon aria-hidden />
-                <FormattedMessage id="Kalender" />
-            </ToggleGroup.Item>
             <ToggleGroup.Item value="liste">
                 <BulletListIcon aria-hidden />
                 <FormattedMessage id="Liste" />
+            </ToggleGroup.Item>
+            <ToggleGroup.Item value="kalender">
+                <CalendarIcon aria-hidden />
+                <FormattedMessage id="Kalender" />
             </ToggleGroup.Item>
         </ToggleGroup>
     );
