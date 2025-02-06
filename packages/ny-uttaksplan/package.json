@@ -31,6 +31,7 @@
         "dayjs": "^1.11.10",
         "lodash": "^4.17.21",
         "react": "^19.0.0",
+        "react-hook-form": "7.54.2",
         "react-intl": "^7.1.4",
         "typescript": "5.7.3"
     },
