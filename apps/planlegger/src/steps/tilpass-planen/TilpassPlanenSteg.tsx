@@ -7,7 +7,7 @@ import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
-import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
@@ -25,6 +25,7 @@ import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-t
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { Situasjon } from '../../types/HvemPlanlegger';
 import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { TilpassPlanenModal } from './TilpassPlanenModal';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
@@ -35,6 +36,7 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const [open, setOpen] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
@@ -100,40 +102,17 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
         );
     };
 
+    const handleFjernAltClick = () => {
+        if (uttaksplan.length === 0) {
+            setShowAlert(true);
+        } else {
+            setOpen(true);
+        }
+    };
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
-            <Modal
-                open={open}
-                onClose={() => setOpen(false)}
-                header={{
-                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
-                    size: 'small',
-                    closeButton: false,
-                }}
-                width="small"
-            >
-                <Modal.Body>
-                    <BodyLong>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Body" />
-                    </BodyLong>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        type="button"
-                        variant="danger"
-                        onClick={() => {
-                            lagreUttaksplan([]);
-                            setOpen(false);
-                        }}
-                    >
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft" />
-                    </Button>
-                    <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt" />
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <TilpassPlanenModal open={open} onClose={() => setOpen(false)} onConfirm={() => lagreUttaksplan([])} />
 
             <VStack gap="6">
                 <Heading size="medium" spacing level="2">
@@ -209,6 +188,12 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                         >
                             <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                         </Button>
+                        {showAlert && (
+                            <Alert variant="warning">
+                                Warning - Bruk denne når du vil at brukeren skal foreta en bestemt handling eller for å
+                                advare dem om noe viktig.
+                            </Alert>
+                        )}
                     </HStack>
                 </VStack>
                 <StepButtons
