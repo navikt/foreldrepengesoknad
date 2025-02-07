@@ -8,7 +8,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { Loader } from '@navikt/ds-react';
+import { Alert, Loader } from '@navikt/ds-react';
 
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
@@ -114,6 +114,7 @@ export const PlanleggerDataInit = ({ locale, changeLocale }: Props) => {
 
     return (
         <PlanleggerDataContext initialState={data}>
+            <Alert variant="info">Waaaaaaaaaaaaaaaat</Alert>
             <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
         </PlanleggerDataContext>
     );
