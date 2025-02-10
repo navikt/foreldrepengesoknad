@@ -1,1 +1,0 @@
-import{n as e}from"./validation-C6jaRJB5.js";import"./dateFormValidation-D0AFPq5M.js";const u=(r,t)=>{const n=Number(r).toLocaleString(t);return t!=="en"?`${n} kr`:`NOK ${n}`},a=r=>e(r.grunnbeløp[0]).verdi;export{u as a,a as f};

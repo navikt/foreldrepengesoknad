@@ -1,1 +1,0 @@
-const c=e=>e.charAt(0).toUpperCase()+e.slice(1),t=e=>{const r=e.charAt(e.length-1).toLowerCase();return r==="s"||r==="x"||r==="z"},a=(e,r)=>r!=="nb"?e:t(e)?`${e}'`:`${e}s`,s=/[\p{Cf}\p{Zs}]/gu,i=e=>e===""?null:e.replace(s," ");export{c,a as g,i as r};
