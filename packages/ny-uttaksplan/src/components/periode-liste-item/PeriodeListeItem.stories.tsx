@@ -20,6 +20,7 @@ const customRenderer = ({
     erFamiliehendelse,
     permisjonsperiode,
     familiehendelsedato,
+    handleUpdatePeriode,
     barn,
 }: StoryArgs) => {
     return (
@@ -36,7 +37,11 @@ const customRenderer = ({
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
-                    <PeriodeListeItem erFamiliehendelse={erFamiliehendelse} permisjonsperiode={permisjonsperiode} />
+                    <PeriodeListeItem
+                        handleUpdatePeriode={handleUpdatePeriode}
+                        erFamiliehendelse={erFamiliehendelse}
+                        permisjonsperiode={permisjonsperiode}
+                    />
                 </Accordion>
             </div>
         </UttaksplanDataContext>
@@ -54,6 +59,7 @@ type Story = StoryObj<typeof meta>;
 
 export const UttaksperiodeMor: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -75,7 +81,7 @@ export const UttaksperiodeMor: Story = {
                     tom: '2024-06-30',
                     forelder: Forelder.mor,
                     kontoType: StønadskontoType.Mødrekvote,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
             ],
         },
@@ -84,6 +90,7 @@ export const UttaksperiodeMor: Story = {
 
 export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -105,7 +112,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     tom: '2024-06-28',
                     forelder: Forelder.mor,
                     kontoType: StønadskontoType.Mødrekvote,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
@@ -113,7 +120,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     tom: '2024-07-26',
                     forelder: Forelder.mor,
                     kontoType: StønadskontoType.Fellesperiode,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
             ],
         },
@@ -122,6 +129,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
 
 export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -142,7 +150,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     kontoType: StønadskontoType.Mødrekvote,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
@@ -150,7 +158,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     tom: '2024-07-26',
                     forelder: Forelder.mor,
                     kontoType: StønadskontoType.Fellesperiode,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
@@ -169,7 +177,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                         },
                         arbeidstidprosent: 50,
                     },
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
             ],
         },
@@ -178,6 +186,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
 
 export const UttaksperiodeFar: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -199,7 +208,7 @@ export const UttaksperiodeFar: Story = {
                     tom: '2024-06-28',
                     forelder: Forelder.farMedmor,
                     kontoType: StønadskontoType.Fedrekvote,
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                 },
             ],
         },
@@ -208,6 +217,7 @@ export const UttaksperiodeFar: Story = {
 
 export const PeriodeUtenUttak: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-08-01'],
@@ -227,7 +237,7 @@ export const PeriodeUtenUttak: Story = {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-08-01',
                     tom: '2024-08-31',
-                    gjelderAnnenPart: false,
+                    readOnly: false,
                     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
                 },
             ],

@@ -51,7 +51,7 @@ export const isUttaksperiode = (periode: Planperiode | SaksperiodeNy) => {
 };
 
 export const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
-    if (!periode.gjelderAnnenPart) {
+    if (!periode.readOnly) {
         return false;
     }
 
@@ -67,7 +67,7 @@ export const isUtsettelsesperiode = (periode: Planperiode) => {
 };
 
 export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
-    if (!periode.gjelderAnnenPart) {
+    if (!periode.readOnly) {
         return false;
     }
 
@@ -646,6 +646,7 @@ export const mapSaksperiodeTilPlanperiode = (
     erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     familiehendelsedato: string,
+    planleggerModus: boolean,
 ) => {
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.innvilget : true));
@@ -661,7 +662,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 tom: UttaksdagenString(familiehendelsedato).forrige(),
                 id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                gjelderAnnenPart,
+                readOnly: planleggerModus ? false : gjelderAnnenPart,
             };
 
             const planperiodeEtter: Planperiode = {
@@ -670,7 +671,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 tom: p.tom,
                 id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                gjelderAnnenPart,
+                readOnly: planleggerModus ? false : gjelderAnnenPart,
             };
 
             result.push(planperiodeFør);
@@ -680,7 +681,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 ...p,
                 id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                gjelderAnnenPart,
+                readOnly: planleggerModus ? false : gjelderAnnenPart,
             };
 
             result.push(planperiode);

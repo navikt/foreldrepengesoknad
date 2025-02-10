@@ -21,6 +21,8 @@
     "StepButtons.ForrigeSimple": "Previous",
     "StepButtons.Neste": "Next step",
     "StepButtons.NesteSimple": "Next",
+    "StepButtons.GåTilOppsummering": "Go to summary",
+    "StepButtons.GåTilOppsummeringSimple": "Summary",
     "StepButtons.Send": "Send application",
     "ErrorPage.Engangsstønad": "Lump-sum grant",
     "ErrorPage.Foreldrepenger": "Parental benefit",

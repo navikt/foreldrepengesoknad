@@ -12,6 +12,7 @@ interface Props {
     isNextButtonVisible?: boolean;
     isSendButton?: boolean;
     useSimplifiedTexts?: boolean;
+    isJumpToEndButton?: boolean;
 }
 
 export const StepButtons = ({
@@ -23,6 +24,7 @@ export const StepButtons = ({
     isNextButtonVisible = true,
     isSendButton = false,
     useSimplifiedTexts = false,
+    isJumpToEndButton = false,
 }: Props) => {
     return (
         <HStack gap="2">
@@ -49,8 +51,18 @@ export const StepButtons = ({
                     style={{ flex: 1 }}
                 >
                     {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
-                    {!isSendButton && !useSimplifiedTexts && <FormattedMessage id={'StepButtons.Neste'} />}
-                    {!isSendButton && useSimplifiedTexts && <FormattedMessage id={'StepButtons.NesteSimple'} />}
+                    {!isSendButton && !useSimplifiedTexts && !isJumpToEndButton && (
+                        <FormattedMessage id={'StepButtons.Neste'} />
+                    )}
+                    {!isSendButton && useSimplifiedTexts && !isJumpToEndButton && (
+                        <FormattedMessage id={'StepButtons.NesteSimple'} />
+                    )}
+                    {isJumpToEndButton && !useSimplifiedTexts && (
+                        <FormattedMessage id={'StepButtons.GåTilOppsummering'} />
+                    )}
+                    {isJumpToEndButton && useSimplifiedTexts && (
+                        <FormattedMessage id={'StepButtons.GåTilOppsummeringSimple'} />
+                    )}
                 </Button>
             )}
         </HStack>

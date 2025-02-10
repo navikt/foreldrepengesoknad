@@ -76,5 +76,18 @@
     "kvote.varighet.fellesperiode.deg": "{varighet} er lagt til for deg",
     "kvote.varighet.fellesperiode.annenForeldre": "{varighet} er lagt til for annan forelder",
     "kvote.varighet.gjenstår": "{varighet} gjenstår",
-    "kvote.varighet.erLagtTil": "{varighet} er lagt til"
+    "kvote.varighet.erLagtTil": "{varighet} er lagt til",
+    "leggTilPeriodeModal.hvaVilDuGjøre.påkrevd": "Du må velge hva du vil gjøre",
+    "leggTilPeriodeModal.kontoType.påkrevd": "Du må velge hvilken konto du vil bruke",
+    "leggTilPeriodeModal.forelder.påkrevd": "Du må velge hvilken forelder perioden skal gjelde",
+    "leggTilPeriodeModal.endreTidsperiode.fom.påkrevd": "Fra og med dato må være utfylt",
+    "leggTilPeriodeModal.endreTidsperiode.fom.gyldigDato": "Fra og med dato må være på formatet dd.mm.åååå",
+    "leggTilPeriodeModal.endreTidsperiode.fom.førTilDato": "Startdatoen må være lik eller før sluttdatoen.",
+    "leggTilPeriodeModal.endreTidsperiode.tom.påkrevd": "Til og med dato må være utfylt",
+    "leggTilPeriodeModal.endreTidsperiode.tom.gyldigDato": "Til og med dato må være på formatet dd.mm.åååå",
+    "endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd": "Du må oppgi en startdato",
+    "endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato": "Startdatoen må være en gyldig dato på formatet dd.mm.åååå",
+    "endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato": "Startdatoen må være lik eller før sluttdatoen.",
+    "endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd": "Du må oppgi en sluttdato",
+    "endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato": "Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå"
 }

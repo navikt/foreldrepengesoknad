@@ -6,6 +6,8 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
+import { SaksperiodeNy } from '@navikt/fp-types';
+
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
     OM_BARNET = 'OM_BARNET',
@@ -13,6 +15,8 @@ export enum ContextDataType {
     HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
+    UTTAKSPLAN = 'UTTAKSPLAN',
+    TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
 export type ContextDataMap = {
@@ -22,6 +26,8 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
+    [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[][];
+    [ContextDataType.TILPASS_PLAN]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;

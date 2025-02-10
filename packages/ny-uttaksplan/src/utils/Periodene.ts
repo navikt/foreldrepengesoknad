@@ -299,7 +299,7 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[
 };
 
 export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
-    const perioderUtenInfoPerioder = perioder.filter((p) => !p.gjelderAnnenPart);
+    const perioderUtenInfoPerioder = perioder.filter((p) => !p.readOnly);
 
     if (perioderUtenInfoPerioder.length === 0) {
         return false;
@@ -311,7 +311,7 @@ export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
 export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean => {
     return (
         perioder
-            .filter((p) => !p.gjelderAnnenPart)
+            .filter((p) => !p.readOnly)
             .slice()
             .reverse()
             .findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0
@@ -319,5 +319,5 @@ export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean =>
 };
 
 export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return perioder.filter((p) => !p.gjelderAnnenPart).findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0;
+    return perioder.filter((p) => !p.readOnly).findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0;
 };
