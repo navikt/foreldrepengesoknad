@@ -88,5 +88,3 @@ export const harFødselsdato = (barn: Barn): barn is IkkeUtfyltTypeBarn | FødtB
         barn.type === BarnType.ADOPTERT_ANNET_BARN
     );
 };
-
-export default Barn;

@@ -41,4 +41,5 @@ export const getIntlFormErrorHandler_underscoreKeys = (
     isHandledErrorTypeFunc: isIntlErrorObject,
 });
 
+// eslint-disable-next-line import/no-default-export
 export default getIntlFormErrorHandler;

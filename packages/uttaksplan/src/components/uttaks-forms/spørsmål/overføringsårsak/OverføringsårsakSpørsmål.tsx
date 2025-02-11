@@ -14,6 +14,7 @@ interface Props {
     erEndringssøknad: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForelder, erEndringssøknad }) => {
     const intl = useIntl();
     const navn = capitalizeFirstLetter(navnAnnenForelder);
@@ -76,5 +77,5 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForel
         </Block>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default OverføringsårsakSpørsmål;

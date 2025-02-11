@@ -1,5 +1,6 @@
 import pluginJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
 import vitest from 'eslint-plugin-vitest';
@@ -27,6 +28,7 @@ export default [
     ...tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
     jsxA11y.flatConfigs.recommended,
+    importPlugin.flatConfigs.recommended,
     eslintConfigPrettier,
     {
         rules: {
@@ -38,10 +40,36 @@ export default [
             'jsx-a11y/no-autofocus': OFF,
             'react/react-in-jsx-scope': OFF,
             'react/display-name': OFF,
+            'import/no-duplicates': ERROR,
+            'import/no-unresolved': OFF,
+            'import/named': OFF,
+            '@typescript-eslint/no-restricted-types': [
+                'error',
+                {
+                    types: {
+                        'React.FC': {
+                            message:
+                                'Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177',
+                        },
+                        FC: {
+                            message:
+                                'Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177',
+                        },
+                        'React.FunctionComponent': {
+                            message:
+                                'Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177',
+                        },
+                        FunctionComponent: {
+                            message:
+                                'Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177',
+                        },
+                    },
+                },
+            ],
 
             // Note: you must disable the base rule as it can report incorrect errors
             'no-use-before-define': OFF,
-            '@typescript-eslint/no-use-before-define': [ERROR],
+            '@typescript-eslint/no-use-before-define': [OFF],
             'no-shadow': OFF,
             '@typescript-eslint/no-shadow': [ERROR],
             'no-unused-vars': OFF,
@@ -57,12 +85,16 @@ export default [
                     unnamedComponents: 'arrow-function',
                 },
             ],
-            'no-use-before-define': OFF,
-            '@typescript-eslint/no-use-before-define': [OFF],
 
             // TODO (TOR) Ignorert inntil videre grunnet kost/nytte
             '@typescript-eslint/no-explicit-any': OFF,
             '@typescript-eslint/ban-ts-comment': OFF,
+        },
+    },
+    {
+        ignores: ['**/*.stories.tsx', 'eslint.config.mjs'],
+        rules: {
+            'import/no-default-export': ERROR,
         },
     },
 ];

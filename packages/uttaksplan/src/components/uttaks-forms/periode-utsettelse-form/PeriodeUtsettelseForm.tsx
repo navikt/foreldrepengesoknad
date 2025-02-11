@@ -56,6 +56,7 @@ interface Props {
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     periode,
     familiehendelsesdato,
@@ -280,5 +281,5 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeUtsettelseForm;

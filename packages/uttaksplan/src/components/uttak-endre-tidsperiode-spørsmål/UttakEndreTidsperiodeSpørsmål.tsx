@@ -35,7 +35,7 @@ interface Props {
     erFarMedmorOgHarAleneomsorg: boolean;
     termindato?: Date;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onBekreft,
     onAvbryt,
@@ -151,5 +151,5 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UttakEndreTidsperiodeSpørsmål;

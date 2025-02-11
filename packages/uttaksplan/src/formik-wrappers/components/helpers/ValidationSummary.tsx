@@ -13,7 +13,7 @@ export interface ValidationSummaryError {
     errorMessage: string;
     fieldName: string;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const ValidationSummary: React.FunctionComponent<Props> = ({ errors, heading, headingTag, summaryRef }) => {
     return (
         <ErrorSummary ref={summaryRef} heading={heading || 'Feil i skjema'} headingTag={headingTag}>
@@ -37,4 +37,5 @@ const ValidationSummary: React.FunctionComponent<Props> = ({ errors, heading, he
         </ErrorSummary>
     );
 };
+// eslint-disable-next-line import/no-default-export
 export default ValidationSummary;

@@ -247,5 +247,5 @@ const uttaksplanRegler = (familiehendelsesDato: Date) => [
     ...uttaksplanValideringRegler(familiehendelsesDato),
     ...periodevalideringsregler,
 ];
-
+// eslint-disable-next-line import/no-default-export
 export default uttaksplanRegler;

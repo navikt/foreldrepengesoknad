@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
@@ -43,7 +42,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 
 dayjs.locale('nb');
 
-const AppContainer: FunctionComponent = () => {
+export const AppContainer = () => {
     return (
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
@@ -56,5 +55,3 @@ const AppContainer: FunctionComponent = () => {
         </ErrorBoundary>
     );
 };
-
-export default AppContainer;

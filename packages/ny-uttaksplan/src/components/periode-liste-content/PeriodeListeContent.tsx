@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent, useRef } from 'react';
+import { useRef } from 'react';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
@@ -8,7 +8,7 @@ import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
     isHull,
@@ -19,13 +19,13 @@ import {
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
-import FamiliehendelseContent from './components/FamiliehendelseContent';
-import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
-import OverføringsperiodeContent from './components/OverføringsperiodeContent';
-import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
+import { FamiliehendelseContent } from './components/FamiliehendelseContent';
+import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
+import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
+import { PeriodeUtenUttakContent } from './components/PeriodeUtenUttakContext';
 import { SkalJobbeContent } from './components/SkalJobbeContent';
-import UtsettelsesPeriodeContent from './components/UtsettelsesPeriodeContent';
-import UttaksperiodeContent from './components/UttaksperiodeContent';
+import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeContent';
+import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
@@ -108,11 +108,7 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    erFamiliehendelse,
-    handleUpdatePeriode,
-}) => {
+export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }: Props) => {
     const ref = useRef<HTMLDialogElement>(null);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
@@ -156,5 +152,3 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default PeriodeListeContent;

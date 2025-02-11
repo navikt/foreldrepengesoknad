@@ -32,4 +32,5 @@ const uttaksConstants = {
     ANTALL_UKER_MINSTERETT_FAR_TO_TETTE,
 };
 
+// eslint-disable-next-line import/no-default-export
 export default uttaksConstants;

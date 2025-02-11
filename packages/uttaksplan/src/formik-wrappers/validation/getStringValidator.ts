@@ -67,4 +67,5 @@ const getStringValidator =
         return undefined;
     };
 
+// eslint-disable-next-line import/no-default-export
 export default getStringValidator;

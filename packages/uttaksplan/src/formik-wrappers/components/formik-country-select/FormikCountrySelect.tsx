@@ -51,5 +51,5 @@ function FormikCountrySelect<FieldName, ErrorType>({
         </Field>
     );
 }
-
+// eslint-disable-next-line import/no-default-export
 export default FormikCountrySelect;

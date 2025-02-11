@@ -8,6 +8,7 @@ interface Props {
     fieldName: PeriodeUttakFormField;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const FlerbarnsdagerSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
     const intl = useIntl();
 
@@ -25,5 +26,5 @@ const FlerbarnsdagerSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default FlerbarnsdagerSpørsmål;

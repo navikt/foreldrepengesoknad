@@ -6,6 +6,7 @@ interface Props {
     className?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Fieldset: React.FunctionComponent<Props> = ({ legend, className, children }) => {
     return (
         <fieldset
@@ -20,4 +21,5 @@ const Fieldset: React.FunctionComponent<Props> = ({ legend, className, children 
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Fieldset;

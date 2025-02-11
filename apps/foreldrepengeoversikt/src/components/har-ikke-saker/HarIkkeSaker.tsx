@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
@@ -10,7 +9,7 @@ interface Props {
     harOppdatertSak: boolean;
 }
 
-export const HarIkkeSaker: FunctionComponent<Props> = ({ harOppdatertSak }) => {
+export const HarIkkeSaker = ({ harOppdatertSak }: Props) => {
     useSetBackgroundColor('blue');
 
     return (

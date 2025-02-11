@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -76,12 +75,7 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
     }
 };
 
-const UttaksperiodeContent: FunctionComponent<Props> = ({
-    periode,
-    inneholderKunEnPeriode,
-    navnPåForeldre,
-    erFarEllerMedmor,
-}) => {
+export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
 
@@ -123,5 +117,3 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default UttaksperiodeContent;

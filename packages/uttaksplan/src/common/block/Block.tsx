@@ -16,6 +16,7 @@ export interface BlockProps {
 
 const bem = planBemUtils('block');
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Block: React.FunctionComponent<BlockProps> = ({
     margin,
     padBottom,
@@ -41,4 +42,5 @@ const Block: React.FunctionComponent<BlockProps> = ({
     return <div className={classNames}>{children}</div>;
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Block;

@@ -12,6 +12,7 @@ const stopClickEvent = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const ActionLink: React.FunctionComponent<Props> = ({ onClick, children, className, ariaLabel }) => {
     return (
         <Link
@@ -28,4 +29,5 @@ const ActionLink: React.FunctionComponent<Props> = ({ onClick, children, classNa
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default ActionLink;

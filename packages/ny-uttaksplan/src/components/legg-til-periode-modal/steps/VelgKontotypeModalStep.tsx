@@ -37,16 +37,16 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
     const forelderValue = formMethods.watch('forelder');
 
     const getForelderFromKontoType = (
-        kontoTypeValue: StønadskontoType,
-        forelderValue: Forelder | undefined,
+        ktValue: StønadskontoType,
+        fValue: Forelder | undefined,
     ): Forelder | undefined => {
-        switch (kontoTypeValue) {
+        switch (ktValue) {
             case StønadskontoType.Fedrekvote:
                 return Forelder.farMedmor;
             case StønadskontoType.Mødrekvote:
                 return Forelder.mor;
             default:
-                return forelderValue;
+                return fValue;
         }
     };
 

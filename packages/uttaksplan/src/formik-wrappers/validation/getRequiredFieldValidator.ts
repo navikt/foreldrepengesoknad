@@ -14,4 +14,5 @@ const getRequiredFieldValidator = (): ValidationFunction<RequiredFieldValidation
     return undefined;
 };
 
+// eslint-disable-next-line import/no-default-export
 export default getRequiredFieldValidator;

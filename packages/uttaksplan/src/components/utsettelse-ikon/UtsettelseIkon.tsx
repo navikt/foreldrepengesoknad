@@ -26,7 +26,7 @@ const getIkonForÅrsak = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
             return UttaksplanIkonKeys.sykdom;
     }
 };
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) => {
     const intl = useIntl();
 
@@ -40,5 +40,5 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
         </IconBox>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UtsettelseIkon;

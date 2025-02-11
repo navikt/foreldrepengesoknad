@@ -1,5 +1,5 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
@@ -19,7 +19,7 @@ interface Props {
     annenPartsPerioder: SaksperiodeNy[];
 }
 
-export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
+export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
     const isDesktop = useMedia('screen and (min-width: 768px)');
 

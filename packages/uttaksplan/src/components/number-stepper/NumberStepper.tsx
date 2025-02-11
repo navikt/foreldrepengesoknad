@@ -15,6 +15,7 @@ export interface Props {
 
 const bem = planBemUtils('numberStepper');
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const NumberStepper: React.FunctionComponent<Props> = ({
     value,
     min,
@@ -56,5 +57,5 @@ const NumberStepper: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default NumberStepper;

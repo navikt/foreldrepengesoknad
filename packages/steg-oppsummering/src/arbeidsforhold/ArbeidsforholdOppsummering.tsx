@@ -150,10 +150,10 @@ interface SelvstendigNæringsdrivendeOppsummeringProps {
     readonly egenNæring?: EgenNæring;
 }
 
-export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNæringsdrivendeOppsummeringProps> = ({
+export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
     egenNæring,
-}) => {
+}: SelvstendigNæringsdrivendeOppsummeringProps) => {
     if (!egenNæring) {
         return null;
     }

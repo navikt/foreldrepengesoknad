@@ -15,6 +15,7 @@ interface Props {
     handleResetUttaksplanModalBekreft: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handleResetUttaksplanModalBekreft }) => {
     const bem = planBemUtils('resetUttaksplanModal');
 
@@ -52,5 +53,5 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
         </Modal>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default ResetUttaksplanModal;

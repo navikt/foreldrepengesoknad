@@ -1,4 +1,4 @@
-import Bankkonto from './Bankkonto';
+import { Bankkonto } from './Bankkonto';
 import { Kjønn } from './Kjønn';
 import { Sivilstand } from './Sivilstand';
 
@@ -13,7 +13,7 @@ export interface PersonBase {
     sivilstand?: Sivilstand;
 }
 
-interface Person extends PersonBase {
+export interface Person extends PersonBase {
     erMyndig: boolean;
     bankkonto?: Bankkonto;
 }
@@ -23,5 +23,3 @@ export interface RegistrertBarn extends PersonBase {
 }
 
 export type RegistrertAnnenForelder = Omit<PersonBase, 'kjønn' | 'fødselsdato'>;
-
-export default Person;

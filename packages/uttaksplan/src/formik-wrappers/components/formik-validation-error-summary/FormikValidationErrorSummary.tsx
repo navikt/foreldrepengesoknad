@@ -10,7 +10,7 @@ interface Props {
     summaryRef?: RefObject<HTMLDivElement | null>;
     wrapper?: (errorSummary: JSX.Element) => JSX.Element;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading, summaryRef, wrapper }) => {
     const context = React.useContext(TypedFormikFormContext);
     const formik = useFormikContext();
@@ -39,5 +39,5 @@ const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading,
     }
     return null;
 };
-
+// eslint-disable-next-line import/no-default-export
 export default FormikValidationErrorSummary;

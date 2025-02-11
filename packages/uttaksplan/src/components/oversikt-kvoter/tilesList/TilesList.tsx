@@ -4,7 +4,7 @@ import planBemUtils from '../../../utils/planBemUtils';
 import './tilesList.less';
 
 const bem = planBemUtils('tilesList');
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const TilesList: React.FunctionComponent<{ columns?: 1 | 2 | 3 | 'flex'; children?: React.ReactNode }> = ({
     columns = 3,
     children,
@@ -15,5 +15,5 @@ const TilesList: React.FunctionComponent<{ columns?: 1 | 2 | 3 | 'flex'; childre
         ))}
     </ol>
 );
-
+// eslint-disable-next-line import/no-default-export
 export default TilesList;

@@ -43,7 +43,7 @@ const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, in
 
     return 'Ingen valgt tidsperiode';
 };
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggleVisTidsperiode }) => {
     const intl = useIntl();
 
@@ -71,5 +71,5 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
         </Block>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default TidsperiodeDisplay;

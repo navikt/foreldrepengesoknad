@@ -67,4 +67,5 @@ const getDateRangeValidator = (options: Options) => ({
     validateToDate: getToDateValidator(options),
 });
 
+// eslint-disable-next-line import/no-default-export
 export default getDateRangeValidator;

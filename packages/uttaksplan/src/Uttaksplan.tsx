@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import {
@@ -102,7 +102,7 @@ export interface PeriodeValidState {
     isValid: boolean;
 }
 
-const Uttaksplan: FunctionComponent<Props> = ({
+const Uttaksplan = ({
     foreldreSituasjon,
     erDeltUttak,
     uttaksplan,
@@ -136,7 +136,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
-}) => {
+}: Props) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
     const [visningsmodus, setVisningsmodus] = useState<string>('liste');
@@ -382,4 +382,5 @@ const Uttaksplan: FunctionComponent<Props> = ({
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Uttaksplan;

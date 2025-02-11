@@ -1,6 +1,8 @@
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import dayjs from 'dayjs';
-import { erInnenFørsteSeksUkerFødselFarMedmor, Uttaksdatoer } from '../uttaksdatoerUtils';
+
+import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+
+import { Uttaksdatoer, erInnenFørsteSeksUkerFødselFarMedmor } from '../uttaksdatoerUtils';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
@@ -65,5 +67,5 @@ const erMorForForSykSkalBesvares = (
 
     return false;
 };
-
+// eslint-disable-next-line import/no-default-export
 export default erMorForForSykSkalBesvares;

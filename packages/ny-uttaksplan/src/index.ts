@@ -24,7 +24,7 @@ export {
     isUtsettelsesperiodeAnnenPart,
     sorterPerioder,
 } from './utils/periodeUtils';
-export { default as UttaksplanNy } from './Uttaksplan';
+export { UttaksplanNy } from './Uttaksplan';
 export { KvoteOppsummering } from './KvoteOppsummering';
 
 export const nyUttaksplanMessages = {

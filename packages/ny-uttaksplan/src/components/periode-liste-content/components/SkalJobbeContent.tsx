@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import Permisjonsperiode from '../../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../../types/Permisjonsperiode';
 import { isHull, isOppholdsperiode, isUttaksperiode } from '../../../utils/periodeUtils';
 
 interface Props {

@@ -1,14 +1,14 @@
-import { harUttaksperiodeGyldigGradering } from './harUttaksperiodeGyldigGradering';
-import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
-import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
+import { Regel, RegelAlvorlighet } from '../../utils/types/regelTypes';
 import { erSamtidigUttakGyldig } from './erSamtidigUttakGyldig';
 import { erUtsettelseEtterFamiliehendelsesdato } from './erUtsettelseEtterFamiliehendelsesdato';
-import { Regel, RegelAlvorlighet } from '../../utils/types/regelTypes';
-import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
-import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
-import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørsteSeksUkeneHarUlovligUttakBFHR';
-import { harBekreftet100ProsentArbeidIUtsettelsePgaArbeid } from './harBekreftet100ProsentArbeidIUtsettelsePgaArbeid';
 import { forSenUttakVedPåfølgendeBarn } from './forSenUttakVedPåfølgendeBarn';
+import { harBekreftet100ProsentArbeidIUtsettelsePgaArbeid } from './harBekreftet100ProsentArbeidIUtsettelsePgaArbeid';
+import { harPeriodeGyldigTidsperiode } from './harPeriodeGyldigTidsperiode';
+import { harUttaksperiodeGyldigGradering } from './harUttaksperiodeGyldigGradering';
+import { harUttaksperiodeStønadskonto } from './harUttaksperiodeStønadskonto';
+import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørsteSeksUkeneHarUlovligUttakBFHR';
+import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
+import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
 
 export enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
@@ -90,5 +90,5 @@ const periodevalideringsregler: Regel[] = [
         skjulesIOppsummering: skjulIOppsummering,
     },
 ];
-
+// eslint-disable-next-line import/no-default-export
 export default periodevalideringsregler;

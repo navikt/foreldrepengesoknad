@@ -7,7 +7,7 @@ import { ArbeidsgiverInfoType, Barn, UtsettelseÅrsakType, UttakArbeidType } fro
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
-import PeriodeListe from './PeriodeListe';
+import { PeriodeListe } from './PeriodeListe';
 
 type StoryArgs = { familiehendelsedato: string; barn: Barn; erFarEllerMedmor: boolean } & ComponentProps<
     typeof PeriodeListe

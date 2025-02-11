@@ -11,5 +11,5 @@ const SkjemagruppeQuestion = forwardRef(function SkjemagruppeQuestion(
     const { id, legend, ...rest } = props;
     return <Fieldset {...rest} id={id} legend={legend} ref={ref} tabIndex={id ? -1 : props.tabIndex} />;
 });
-
+// eslint-disable-next-line import/no-default-export
 export default SkjemagruppeQuestion;

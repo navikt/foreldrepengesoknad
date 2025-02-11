@@ -66,5 +66,5 @@ function FormikModalFormAndInfo<FieldName, ItemType, ErrorType>({
         </FieldComponent>
     );
 }
-
+// eslint-disable-next-line import/no-default-export
 export default FormikModalFormAndInfo;

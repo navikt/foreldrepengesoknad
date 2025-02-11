@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +11,7 @@ interface Props {
     saksnummer: string;
 }
 
-export const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allowedToFetch, saksnummer }) => {
+export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnummer }: Props) => {
     if (fetchCounter < 30 && allowedToFetch) {
         return (
             <>

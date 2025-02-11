@@ -12,6 +12,7 @@ interface Props {
     fieldName: PeriodeUttakFormField;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
     const intl = useIntl();
     const radios = [
@@ -42,5 +43,5 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({ fieldName
         </Block>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UttakRundtFødselÅrsakSpørsmål;
