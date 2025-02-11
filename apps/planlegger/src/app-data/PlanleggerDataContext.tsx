@@ -16,6 +16,7 @@ export enum ContextDataType {
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
     UTTAKSPLAN = 'UTTAKSPLAN',
+    ORIGINAL_UTTAKSPLAN = 'ORIGINAL_UTTAKSPLAN',
     TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
@@ -27,6 +28,7 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[][];
+    [ContextDataType.ORIGINAL_UTTAKSPLAN]?: SaksperiodeNy[];
     [ContextDataType.TILPASS_PLAN]?: boolean;
 };
 

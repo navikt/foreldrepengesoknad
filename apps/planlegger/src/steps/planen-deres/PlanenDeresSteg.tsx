@@ -72,6 +72,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+    const lagreOriginalUttaksplan = useContextSaveData(ContextDataType.ORIGINAL_UTTAKSPLAN);
     const lagreTilpassPlan = useContextSaveData(ContextDataType.TILPASS_PLAN);
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
@@ -157,7 +158,12 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                                 variant="secondary"
                                 type="button"
                                 icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
-                                onClick={() => navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN)}
+                                onClick={() => {
+                                    lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                                    lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
+                                    lagreTilpassPlan(true);
+                                    navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
+                                }}
                             >
                                 <FormattedMessage id="OversiktSteg.Infoboks.Tilpass" />
                             </Button>
@@ -280,6 +286,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                                     type="button"
                                     onClick={() => {
                                         lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                                        lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
                                         lagreTilpassPlan(true);
                                         navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
                                     }}
@@ -307,6 +314,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => {
                             lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                            lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
                             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
                         }}
                         isJumpToEndButton
