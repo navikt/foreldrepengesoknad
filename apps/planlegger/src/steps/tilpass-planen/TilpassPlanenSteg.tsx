@@ -49,6 +49,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
+    const originalUttaksplan = notEmpty(
+        useContextGetData(ContextDataType.ORIGINAL_UTTAKSPLAN),
+        'Uttaksplan ikke oppgitt',
+    );
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -196,7 +200,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                             variant="secondary"
                             icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
                             onClick={() => {
-                                lagreUttaksplan([uttaksplan[0]]);
+                                lagreUttaksplan([originalUttaksplan]);
                             }}
                         >
                             <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />

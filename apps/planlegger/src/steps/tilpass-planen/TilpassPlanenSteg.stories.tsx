@@ -28,7 +28,8 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-    uttaksplan: SaksperiodeNy[];
+    uttaksplan: SaksperiodeNy[][];
+    originalUttaksplan: SaksperiodeNy[];
 } & ComponentProps<typeof TilpassPlanenSteg>;
 
 const meta = {
@@ -44,6 +45,7 @@ const meta = {
         stønadskontoer,
         locale,
         uttaksplan,
+        originalUttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -55,7 +57,8 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                        [ContextDataType.UTTAKSPLAN]: [uttaksplan],
+                        [ContextDataType.UTTAKSPLAN]: [uttaksplan as any],
+                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />
@@ -113,6 +116,7 @@ export const MorOgFarBeggeHarRett: Story = {
             },
         },
         uttaksplan: [],
+        originalUttaksplan: [],
     },
 };
 
