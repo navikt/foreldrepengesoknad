@@ -47,6 +47,7 @@ export const EndreTidsperiodeModalStep = ({
             fom: values.fom ?? valgtPeriode!.fom,
             tom: values.tom ?? valgtPeriode!.tom,
         });
+        formMethods.reset();
         closeModal();
     };
     const tomValue = formMethods.watch('tom');

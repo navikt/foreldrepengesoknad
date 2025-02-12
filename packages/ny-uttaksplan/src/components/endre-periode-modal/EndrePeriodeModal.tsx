@@ -1,5 +1,5 @@
 import { PencilIcon } from '@navikt/aksel-icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
@@ -17,7 +17,7 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
     inneholderKunEnPeriode: boolean;
-    ref?: React.Ref<HTMLDialogElement>;
+    isModalOpen: boolean;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -36,7 +36,7 @@ export const EndrePeriodeModal = ({
     handleUpdatePeriode,
     familiehendelsedato,
     inneholderKunEnPeriode,
-    ref,
+    isModalOpen,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
     const initialModalState: ModalData = {
@@ -103,7 +103,7 @@ export const EndrePeriodeModal = ({
     };
 
     return (
-        <Modal className={styles.modal} ref={ref} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
+        <Modal className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
             <Modal.Header className={styles.header} closeButton={false}>
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />

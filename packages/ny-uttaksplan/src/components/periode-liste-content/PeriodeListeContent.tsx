@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
@@ -109,7 +109,7 @@ const getFamiliehendelseType = (barn: Barn) => {
 };
 
 export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }: Props) => {
-    const ref = useRef<HTMLDialogElement>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
@@ -123,8 +123,12 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
-    const closeModal = () => ref.current?.close();
-    const openModal = () => ref.current?.showModal();
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
     return (
         <div style={{ marginTop: '1rem' }}>
@@ -142,14 +146,16 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
                     Slett
                 </Button>
             </div>
-            <EndrePeriodeModal
-                familiehendelsedato={familiehendelsedato}
-                ref={ref}
-                closeModal={closeModal}
-                handleUpdatePeriode={handleUpdatePeriode}
-                permisjonsperiode={permisjonsperiode}
-                inneholderKunEnPeriode={inneholderKunEnPeriode}
-            />
+            {isModalOpen ? (
+                <EndrePeriodeModal
+                    familiehendelsedato={familiehendelsedato}
+                    closeModal={closeModal}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    permisjonsperiode={permisjonsperiode}
+                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                    isModalOpen={isModalOpen}
+                />
+            ) : null}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 
 import '@navikt/ds-css';
 import { Button } from '@navikt/ds-react';
@@ -45,7 +45,7 @@ export const UttaksplanNy = ({
     handleOnPlanChange,
     planleggerModus,
 }: Props) => {
-    const ref = useRef<HTMLDialogElement>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const søkersPlanperioder = finnOgSettInnHull(
         mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, planleggerModus),
         harAktivitetskravIPeriodeUtenUttak,
@@ -118,8 +118,8 @@ export const UttaksplanNy = ({
         handleOnPlanChange(saksPerioder);
     };
 
-    const closeModal = () => ref.current?.close();
-    const openModal = () => ref.current?.showModal();
+    const closeModal = () => setIsModalOpen(false);
+    const openModal = () => setIsModalOpen(true);
 
     return (
         <UttaksplanDataContext
@@ -134,12 +134,13 @@ export const UttaksplanNy = ({
         >
             <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
             <Button onClick={openModal}>Legg til periode</Button>
-            <LeggTilPeriodeModal
-                ref={ref}
-                closeModal={closeModal}
-                handleAddPeriode={handleAddPeriode}
-                familiehendelsedato={familiehendelsedato}
-            />
+            {isModalOpen ? (
+                <LeggTilPeriodeModal
+                    closeModal={closeModal}
+                    handleAddPeriode={handleAddPeriode}
+                    familiehendelsedato={familiehendelsedato}
+                />
+            ) : null}
         </UttaksplanDataContext>
     );
 };
