@@ -315,6 +315,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                         nextButtonOnClick={() => {
                             lagreUttaksplan(oppdaterOgLagreUttaksplan());
                             lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
+                            lagreTilpassPlan(false);
                             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
                         }}
                         isJumpToEndButton
