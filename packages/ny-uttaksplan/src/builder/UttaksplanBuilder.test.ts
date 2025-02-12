@@ -3,7 +3,7 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import Uttaksplanbuilder from './Uttaksplanbuilder';
+import { Uttaksplanbuilder } from './Uttaksplanbuilder';
 
 const perioder: Planperiode[] = [
     {
