@@ -16,6 +16,7 @@ interface Props {
     closeModal: () => void;
     familiehendelsedato: string;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    inneholderKunEnPeriode: boolean;
 }
 
 interface FormValues {
@@ -29,6 +30,7 @@ export const EndreTidsperiodeModalStep = ({
     closeModal,
     familiehendelsedato,
     handleUpdatePeriode,
+    inneholderKunEnPeriode,
 }: Props) => {
     const { valgtPeriode } = modalData;
     const intl = useIntl();
@@ -40,15 +42,13 @@ export const EndreTidsperiodeModalStep = ({
     });
 
     const onSubmit = (values: FormValues) => {
-        setModalData({
-            ...modalData,
-            fom: values.fom,
-            tom: values.tom,
-            currentStep: 'step3',
+        handleUpdatePeriode({
+            ...valgtPeriode!,
+            fom: values.fom ?? valgtPeriode!.fom,
+            tom: values.tom ?? valgtPeriode!.tom,
         });
+        closeModal();
     };
-
-    const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
     return (
@@ -102,27 +102,18 @@ export const EndreTidsperiodeModalStep = ({
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step1' });
-                            }}
-                        >
-                            Gå tilbake
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                handleUpdatePeriode({
-                                    ...valgtPeriode!,
-                                    fom: fomValue ?? valgtPeriode!.fom,
-                                    tom: tomValue ?? valgtPeriode!.tom,
-                                });
-                                closeModal();
-                            }}
-                        >
-                            Ferdig, legg til i planen
-                        </Button>
+                        {inneholderKunEnPeriode ? null : (
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                    setModalData({ ...modalData, currentStep: 'step1' });
+                                }}
+                            >
+                                Gå tilbake
+                            </Button>
+                        )}
+                        <Button>Ferdig, legg til i planen</Button>
                     </div>
                 </div>
             </RhfForm>

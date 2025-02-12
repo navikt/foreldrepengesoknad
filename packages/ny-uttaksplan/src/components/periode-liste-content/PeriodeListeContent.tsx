@@ -148,6 +148,7 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
                 closeModal={closeModal}
                 handleUpdatePeriode={handleUpdatePeriode}
                 permisjonsperiode={permisjonsperiode}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
             />
         </div>
     );
