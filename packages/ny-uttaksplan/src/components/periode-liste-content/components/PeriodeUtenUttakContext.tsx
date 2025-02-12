@@ -46,5 +46,3 @@ export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
         </div>
     );
 };
-
-export default PeriodeUtenUttakContent;

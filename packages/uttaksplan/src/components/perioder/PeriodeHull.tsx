@@ -23,6 +23,7 @@ interface Props {
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeHull: FunctionComponent<Props> = ({
     periode,
     navnAnnenForelder,
@@ -97,5 +98,5 @@ const PeriodeHull: FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeHull;

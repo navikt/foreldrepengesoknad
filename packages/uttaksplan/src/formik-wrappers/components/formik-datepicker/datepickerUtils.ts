@@ -84,5 +84,5 @@ const datepickerUtils = {
     getDisabledDates,
     isValidFormattedDateString,
 };
-
+// eslint-disable-next-line import/no-default-export
 export default datepickerUtils;

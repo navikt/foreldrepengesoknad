@@ -4,7 +4,7 @@ export const formatError = (error?: string) => {
             role="alert"
             style={{
                 background: 'white',
-                marginLeft: -18,
+                marginLeft: 1000,
                 paddingLeft: 5,
                 paddingRight: 5,
                 paddingBottom: 5,

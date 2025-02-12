@@ -1,4 +1,4 @@
-export default interface Bankkonto {
+export interface Bankkonto {
     kontonummer: string;
     banknavn: string;
 }

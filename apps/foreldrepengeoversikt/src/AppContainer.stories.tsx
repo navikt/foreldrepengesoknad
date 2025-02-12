@@ -9,7 +9,7 @@ import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 
 const meta = {
     title: 'AppContainer',

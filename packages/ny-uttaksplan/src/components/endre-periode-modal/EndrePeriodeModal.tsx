@@ -3,7 +3,7 @@ import { forwardRef, useState } from 'react';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';

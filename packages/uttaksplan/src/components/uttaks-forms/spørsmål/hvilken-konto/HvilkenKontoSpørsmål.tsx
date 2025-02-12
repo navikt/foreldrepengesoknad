@@ -37,6 +37,7 @@ const getSpørsmålsTekst = (
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
     velgbareStønadskontoer,
     erOppholdsperiode,
@@ -70,5 +71,5 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default HvilkenKontoSpørsmål;

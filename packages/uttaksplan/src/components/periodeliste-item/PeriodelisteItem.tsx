@@ -188,6 +188,7 @@ const renderPeriodeListeInnhold = (
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodelisteItem: FunctionComponent<Props> = ({
     egenPeriode,
     periode,
@@ -300,5 +301,5 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
         </article>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodelisteItem;

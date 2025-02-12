@@ -29,7 +29,7 @@ export interface Props {
     ikon: UttaksplanIkonKeys;
     title: string;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UttaksplanIkon: React.FunctionComponent<Props> = ({ ikon, title }) => {
     switch (ikon) {
         case 'arbeid':
@@ -48,5 +48,5 @@ const UttaksplanIkon: React.FunctionComponent<Props> = ({ ikon, title }) => {
             return <UttakIkon title={title} />;
     }
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UttaksplanIkon;

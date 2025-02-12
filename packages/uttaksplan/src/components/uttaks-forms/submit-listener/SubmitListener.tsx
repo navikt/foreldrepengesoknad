@@ -31,6 +31,7 @@ export const jsonSort = (json: any): string => {
     return sort(json);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
     const formik = useFormikContext<PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData>();
     const { isSubmitting, isValidating, submitForm, setValues } = formik;

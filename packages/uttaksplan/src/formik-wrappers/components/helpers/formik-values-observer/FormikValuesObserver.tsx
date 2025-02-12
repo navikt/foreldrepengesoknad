@@ -47,5 +47,5 @@ function FormikValuesObserver<FormValues>({ onChange, delay = 100 }: Props<FormV
 
     return null;
 }
-
+// eslint-disable-next-line import/no-default-export
 export default FormikValuesObserver;

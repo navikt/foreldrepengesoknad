@@ -25,7 +25,7 @@ interface Props {
 }
 
 const bem = planBemUtils('fileDropInput');
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const FileDropInput: React.FunctionComponent<Props> = (props) => {
     const { id, name, buttonLabel, error, description, multiple, legend, rejectLabel, acceptLabel, accept } = props;
     const inputId = `${id}-input`;
@@ -75,5 +75,5 @@ const FileDropInput: React.FunctionComponent<Props> = (props) => {
         </SkjemagruppeQuestion>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default FileDropInput;

@@ -172,6 +172,7 @@ const renderDagMnd = (dato: Date, visÅr = true): JSX.Element => {
     );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     periode,
     navnPåForeldre,
@@ -280,5 +281,5 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodelisteItemHeader;

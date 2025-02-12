@@ -9,7 +9,7 @@ import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
-import PeriodeListeItem from './PeriodeListeItem';
+import { PeriodeListeItem } from './PeriodeListeItem';
 
 type StoryArgs = { erFarEllerMedmor: boolean; familiehendelsedato: string; barn: Barn } & ComponentProps<
     typeof PeriodeListeItem

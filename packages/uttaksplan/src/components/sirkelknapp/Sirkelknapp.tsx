@@ -26,7 +26,7 @@ export interface SirkelknappProps {
     size?: 'normal' | 'stor';
     posisjoneringFraHøyre?: number;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Sirkelknapp: React.FunctionComponent<SirkelknappProps> = ({
     onClick,
     ariaLabel,
@@ -59,5 +59,5 @@ const Sirkelknapp: React.FunctionComponent<SirkelknappProps> = ({
         </button>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default Sirkelknapp;

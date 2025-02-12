@@ -8,7 +8,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 import { urlPrefiks } from './api/api';
 // Viktig at ds-css importeres før AppContainer. Det gjør at Aksel+tailwind sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';

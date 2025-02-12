@@ -1,12 +1,10 @@
-import { FunctionComponent } from 'react';
-
 import { Accordion } from '@navikt/ds-react';
 
-import planBemUtils from '../../planBemUtils';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { planBemUtils } from '../../planBemUtils';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
-import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';
-import PeriodeListeHeader from '../periode-liste-header/PeriodeListeHeader';
+import { PeriodeListeContent } from '../periode-liste-content/PeriodeListeContent';
+import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
 import './periode-liste-item.css';
 
 interface Props {
@@ -15,7 +13,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }) => {
+export const PeriodeListeItem = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }: Props) => {
     const bem = planBemUtils('periode-liste-item');
 
     return (
@@ -33,5 +31,3 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamil
         </Accordion.Item>
     );
 };
-
-export default PeriodeListeItem;

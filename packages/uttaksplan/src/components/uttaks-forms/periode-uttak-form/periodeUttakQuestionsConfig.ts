@@ -28,5 +28,5 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakQuestionPayload, Period
 const uttakPeriodeQuestionsConfig = Questions<PeriodeUttakQuestionPayload, PeriodeUttakFormField>(
     PeriodeUttakFormConfig,
 );
-
+// eslint-disable-next-line import/no-default-export
 export default uttakPeriodeQuestionsConfig;

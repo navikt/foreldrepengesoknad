@@ -123,7 +123,7 @@ const getDatoAvgrensninger = (
         },
     };
 };
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const TidsperiodeForm: React.FunctionComponent<Props> = ({
     periode,
     tidsperiode,
@@ -220,5 +220,5 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default TidsperiodeForm;

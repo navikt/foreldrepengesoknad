@@ -28,6 +28,7 @@ const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, forel
           intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {
     const intl = useIntl();
 
@@ -54,5 +55,5 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
         </BodyShort>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeInfo;

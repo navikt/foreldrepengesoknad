@@ -11,6 +11,7 @@ export interface Props {
     children?: React.ReactNode;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) => {
     const bem = planBemUtils('iconBox');
 
@@ -18,5 +19,5 @@ const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) =
         <div className={classnames(bem.block, bem.modifier(`${color}${stripes ? '--striped' : ''}`))}>{children}</div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default IconBox;

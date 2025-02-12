@@ -134,6 +134,7 @@ const getPeriodeType = (
     return Periodetype.Uttak;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeUttakForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     periode,
@@ -536,5 +537,5 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeUttakForm;

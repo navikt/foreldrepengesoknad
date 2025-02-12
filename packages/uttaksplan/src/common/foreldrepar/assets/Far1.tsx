@@ -49,4 +49,5 @@ const Far1 = (props: any) => (
     </svg>
 );
 
+// eslint-disable-next-line import/no-default-export
 export default Far1;

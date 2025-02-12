@@ -44,6 +44,7 @@ interface Props {
     intl: IntlShape;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const NyPeriode: FunctionComponent<Props> = ({
     setNyPeriodeFormIsVisible,
     isUtsettelse,
@@ -126,5 +127,5 @@ const NyPeriode: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default NyPeriode;

@@ -28,6 +28,7 @@ interface Props {
     utsettelserIPlan: Utsettelsesperiode[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeFørFødselForm: FunctionComponent<Props> = ({
     periode,
     familiehendelsesdato,
@@ -138,5 +139,5 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeFørFødselForm;

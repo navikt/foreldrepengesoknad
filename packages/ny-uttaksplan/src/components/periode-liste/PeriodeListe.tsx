@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Fragment, FunctionComponent } from 'react';
+import { Fragment } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
@@ -7,10 +7,10 @@ import { isValidTidsperiodeString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
-import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
+import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
     perioder: Planperiode[];
@@ -25,7 +25,7 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
-const PeriodeListe: FunctionComponent<Props> = ({ perioder, handleUpdatePeriode }) => {
+export const PeriodeListe = ({ perioder, handleUpdatePeriode }: Props) => {
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
@@ -52,5 +52,3 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, handleUpdatePeriode 
         </div>
     );
 };
-
-export default PeriodeListe;

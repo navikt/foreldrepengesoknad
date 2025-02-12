@@ -173,7 +173,7 @@ const getAnnenPartsUttak = (perioder: Planperiode[]): Planperiode[] => {
     return perioder.filter((p) => isAnnenPartsPeriode(p));
 };
 
-const Uttaksplanbuilder = (
+export const Uttaksplanbuilder = (
     perioder: Planperiode[],
     familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
@@ -302,5 +302,3 @@ const Uttaksplanbuilder = (
             ),
     };
 };
-
-export default Uttaksplanbuilder;

@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef } from 'react';
+import { useRef } from 'react';
 
 import '@navikt/ds-css';
 import { Button } from '@navikt/ds-react';
@@ -6,10 +6,10 @@ import { Button } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
 
-import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
+import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
-import PeriodeListe from './components/periode-liste/PeriodeListe';
+import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
 import { mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
@@ -30,7 +30,7 @@ interface Props {
     planleggerModus: boolean;
 }
 
-const UttaksplanNy: FunctionComponent<Props> = ({
+export const UttaksplanNy = ({
     familiehendelsedato,
     erFarEllerMedmor,
     navnPåForeldre,
@@ -44,7 +44,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     familiesituasjon,
     handleOnPlanChange,
     planleggerModus,
-}) => {
+}: Props) => {
     const ref = useRef<HTMLDialogElement>(null);
     const søkersPlanperioder = finnOgSettInnHull(
         mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, planleggerModus),
@@ -143,5 +143,3 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         </UttaksplanDataContext>
     );
 };
-
-export default UttaksplanNy;

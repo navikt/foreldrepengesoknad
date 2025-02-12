@@ -13,6 +13,7 @@ interface Props {
     textValign?: 'top' | 'center' | 'bottom';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, invertert, textValign = 'top' }) => {
     const bem = planBemUtils('personkort');
 
@@ -32,4 +33,5 @@ const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, in
         </div>
     );
 };
+// eslint-disable-next-line import/no-default-export
 export default Personkort;

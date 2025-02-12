@@ -67,6 +67,7 @@ const vanligFormat = ':method :url :status :res[content-length] - :response-time
 
 const morganMiddleware = morgan(vanligFormat, { stream });
 
+// eslint-disable-next-line import/no-default-export
 export default {
     debug,
     info,
