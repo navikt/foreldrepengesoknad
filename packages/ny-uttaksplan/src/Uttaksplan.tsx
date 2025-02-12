@@ -139,6 +139,7 @@ export const UttaksplanNy = ({
                     closeModal={closeModal}
                     handleAddPeriode={handleAddPeriode}
                     familiehendelsedato={familiehendelsedato}
+                    isModalOpen={isModalOpen}
                 />
             ) : null}
         </UttaksplanDataContext>
