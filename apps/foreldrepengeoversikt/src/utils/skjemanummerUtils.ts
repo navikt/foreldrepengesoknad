@@ -84,6 +84,10 @@ export const isSkjemanummerForEngangsstønad = (skjemanummer: Skjemanummer): boo
         case Skjemanummer.TERMINBEKREFTELSE:
         case Skjemanummer.FØDSELSATTEST:
         case Skjemanummer.TILBAKEBETALING:
+        case Skjemanummer.DOK_INNTEKT:
+        case Skjemanummer.DOK_OPPHOLD:
+        case Skjemanummer.DOK_OPPFØLGING:
+        case Skjemanummer.DOK_REISE:
             return true;
         default:
             return false;
