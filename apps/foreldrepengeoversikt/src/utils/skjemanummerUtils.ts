@@ -26,6 +26,10 @@ export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: S
         case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
         case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
         case Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM:
+        case Skjemanummer.DOK_INNTEKT:
+        case Skjemanummer.DOK_OPPHOLD:
+        case Skjemanummer.DOK_OPPFØLGING:
+        case Skjemanummer.DOK_REISE:
             // case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO Putt disse inn igjen om en måneds tid
             return false;
         default:
