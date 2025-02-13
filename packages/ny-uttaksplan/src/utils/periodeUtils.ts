@@ -12,6 +12,7 @@ import {
     SaksperiodeNy,
     Tidsperiode,
     UtsettelseÅrsakType,
+    UttaksplanModus,
 } from '@navikt/fp-types';
 import {
     TidsperiodenString,
@@ -641,12 +642,24 @@ export const getPeriodeId = (planperiode: Planperiode) => {
     return `${planperiode.fom} - ${planperiode.tom} - ${planperiode.kontoType}`;
 };
 
+const getReadOnlyStatus = (modus: UttaksplanModus, gjelderAnnenPart: boolean) => {
+    if (modus === 'planlegger') {
+        return false;
+    }
+
+    if (modus === 'innsyn') {
+        return true;
+    }
+
+    return gjelderAnnenPart;
+};
+
 export const mapSaksperiodeTilPlanperiode = (
     saksperioder: SaksperiodeNy[],
     erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     familiehendelsedato: string,
-    planleggerModus: boolean,
+    modus: UttaksplanModus,
 ) => {
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.innvilget : true));
@@ -662,7 +675,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 tom: UttaksdagenString(familiehendelsedato).forrige(),
                 id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                readOnly: planleggerModus ? false : gjelderAnnenPart,
+                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             const planperiodeEtter: Planperiode = {
@@ -671,7 +684,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 tom: p.tom,
                 id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                readOnly: planleggerModus ? false : gjelderAnnenPart,
+                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             result.push(planperiodeFør);
@@ -681,7 +694,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 ...p,
                 id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-                readOnly: planleggerModus ? false : gjelderAnnenPart,
+                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             result.push(planperiode);

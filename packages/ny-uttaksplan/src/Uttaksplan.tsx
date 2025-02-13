@@ -4,7 +4,7 @@ import '@navikt/ds-css';
 import { Button } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
+import { Barn, Familiesituasjon, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
@@ -27,7 +27,7 @@ interface Props {
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
-    planleggerModus: boolean;
+    modus: UttaksplanModus;
 }
 
 export const UttaksplanNy = ({
@@ -43,11 +43,11 @@ export const UttaksplanNy = ({
     førsteUttaksdagNesteBarnsSak,
     familiesituasjon,
     handleOnPlanChange,
-    planleggerModus,
+    modus,
 }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, planleggerModus),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -56,7 +56,7 @@ export const UttaksplanNy = ({
         førsteUttaksdagNesteBarnsSak,
     );
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, planleggerModus)
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
         : undefined;
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
@@ -130,12 +130,15 @@ export const UttaksplanNy = ({
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
                 UTTAKSPLAN: komplettPlan,
                 FAMILIESITUASJON: familiesituasjon,
+                MODUS: modus,
             }}
         >
             <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
-            <Button variant="secondary" onClick={openModal}>
-                Legg til periode
-            </Button>
+            {modus !== 'innsyn' && (
+                <Button variant="secondary" onClick={openModal}>
+                    Legg til periode
+                </Button>
+            )}
             {isModalOpen ? (
                 <LeggTilPeriodeModal
                     closeModal={closeModal}
