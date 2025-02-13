@@ -86,4 +86,22 @@ describe('<EttersendingPage>', () => {
         expect(optionsTextContent).toContain('Dokumentasjon på oppfølging i svangerskapet');
         expect(optionsTextContent).toContain('Dokumentasjon på inntekt');
     });
+
+    it('skal sortere annet dokument nederst', async () => {
+        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+        const utils = render(<SkalIkkeFeileOpplasting />);
+
+        expect(
+            await screen.findByText(
+                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+            ),
+        ).toBeInTheDocument();
+
+        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const optionsTextContent = within(select)
+            .getAllByRole('option')
+            .map((o) => o.textContent);
+        expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
+    });
 });
