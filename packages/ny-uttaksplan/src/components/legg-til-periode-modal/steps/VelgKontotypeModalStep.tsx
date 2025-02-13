@@ -34,7 +34,6 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
     });
 
     const kontoTypeValue = formMethods.watch('kontoType');
-    const forelderValue = formMethods.watch('forelder');
 
     const getForelderFromKontoType = (
         ktValue: StønadskontoType,
@@ -60,10 +59,10 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
         handleAddPeriode({
             fom: fom!,
             tom: tom!,
-            id: `${fom} - ${tom} - ${'kontoType'}`,
+            id: `${fom} - ${tom} - ${kontoType}`,
             readOnly: false,
             kontoType: kontoTypeValue,
-            forelder: forelderValue,
+            forelder: getForelderFromKontoType(values.kontoType, values.forelder),
         });
         closeModal();
     };

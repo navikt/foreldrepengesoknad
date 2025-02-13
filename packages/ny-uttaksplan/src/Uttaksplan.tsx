@@ -133,7 +133,9 @@ export const UttaksplanNy = ({
             }}
         >
             <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
-            <Button onClick={openModal}>Legg til periode</Button>
+            <Button variant="secondary" onClick={openModal}>
+                Legg til periode
+            </Button>
             {isModalOpen ? (
                 <LeggTilPeriodeModal
                     closeModal={closeModal}
