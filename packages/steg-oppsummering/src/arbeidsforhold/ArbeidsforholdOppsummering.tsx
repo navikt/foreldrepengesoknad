@@ -61,12 +61,14 @@ export const ArbeidsforholdOppsummering = ({
                             </FormSummary.Answers>
                         )}
                     </FormSummary.Value>
-                    <Alert variant="info" style={{ marginTop: 'var(--a-spacing-2)' }}>
-                        <FormattedMessage
-                            id="ArbeidsforholdOppsummering.inntektsmelding"
-                            values={{ antall: arbeidsforhold.length }}
-                        />
-                    </Alert>
+                    {arbeidsforhold.length > 0 && (
+                        <Alert variant="info" style={{ marginTop: 'var(--a-spacing-2)' }}>
+                            <FormattedMessage
+                                id="ArbeidsforholdOppsummering.inntektsmelding"
+                                values={{ antall: arbeidsforhold.length }}
+                            />
+                        </Alert>
+                    )}
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
