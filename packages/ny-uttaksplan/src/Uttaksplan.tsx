@@ -132,7 +132,12 @@ export const UttaksplanNy = ({
                 FAMILIESITUASJON: familiesituasjon,
             }}
         >
-            <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
+            {komplettPlan.length > 0 && (
+                <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
+            )}
+
+            {komplettPlan.length === 0 && <p>Alle perioder er fjernet fra </p>}
+
             <Button variant="secondary" onClick={openModal}>
                 Legg til periode
             </Button>
