@@ -1,7 +1,9 @@
+import { NotePencilDashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css';
-import { Button } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
@@ -136,7 +138,17 @@ export const UttaksplanNy = ({
                 <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
             )}
 
-            {komplettPlan.length === 0 && <p>Alle perioder er fjernet fra </p>}
+            {komplettPlan.length === 0 && (
+                <VStack bottom="space-16">
+                    <BodyShort weight="semibold" size="large" spacing style={{ display: 'flex', gap: '16px' }}>
+                        <NotePencilDashIcon fontSize={24} />
+                        <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
+                    </BodyShort>
+                    <BodyShort style={{ paddingLeft: '40px' }}>
+                        <FormattedMessage id="uttaksplan.ingenPerioder.body" />
+                    </BodyShort>
+                </VStack>
+            )}
 
             <Button variant="secondary" onClick={openModal}>
                 Legg til periode
