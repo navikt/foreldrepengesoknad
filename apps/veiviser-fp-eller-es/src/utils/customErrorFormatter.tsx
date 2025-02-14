@@ -3,8 +3,6 @@ export const formatError = (error?: string) => {
         <span
             role="alert"
             style={{
-                background: 'white',
-                marginLeft: -18,
                 paddingLeft: 5,
                 paddingRight: 5,
                 paddingBottom: 5,
