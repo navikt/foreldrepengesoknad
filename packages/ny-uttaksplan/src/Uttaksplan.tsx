@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css';
-import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
@@ -139,15 +139,17 @@ export const UttaksplanNy = ({
             )}
 
             {komplettPlan.length === 0 && (
-                <VStack bottom="space-16">
-                    <BodyShort weight="semibold" size="large" spacing style={{ display: 'flex', gap: '16px' }}>
-                        <NotePencilDashIcon fontSize={24} />
-                        <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
-                    </BodyShort>
-                    <BodyShort style={{ paddingLeft: '40px' }}>
-                        <FormattedMessage id="uttaksplan.ingenPerioder.body" />
-                    </BodyShort>
-                </VStack>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <NotePencilDashIcon fontSize={24} />
+                    <VStack gap="2">
+                        <BodyShort weight="semibold" size="large">
+                            <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.ingenPerioder.body" />
+                        </BodyShort>
+                    </VStack>
+                </div>
             )}
 
             <Button variant="secondary" onClick={openModal}>
