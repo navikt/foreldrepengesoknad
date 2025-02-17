@@ -90,7 +90,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             familiesituasjon={familiesituasjon}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                            planleggerModus={false}
+                            modus="innsyn"
                             handleOnPlanChange={() => null}
                         />
                         <KvoteOversikt />

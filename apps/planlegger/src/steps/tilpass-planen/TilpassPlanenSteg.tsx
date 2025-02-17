@@ -167,7 +167,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                             annenPartsPerioder={getAnnenpartsPerioder()}
                             barn={mapOmBarnetTilBarn(omBarnet)}
                             handleOnPlanChange={handleOnPlanChange}
-                            planleggerModus={true}
+                            modus="planlegger"
                         />
                     )}
                 </VStack>

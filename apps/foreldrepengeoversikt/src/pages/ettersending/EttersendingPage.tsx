@@ -63,7 +63,10 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
                     skjemanummer,
                     text: intl.formatMessage({ id: `ettersendelse.${skjemanummer}` }),
                 }))
-                .sort((selectOption, nextSelectOption) => selectOption.text.localeCompare(nextSelectOption.text))
+                .sort((selectOption, nextSelectOption) => {
+                    if (selectOption.skjemanummer === Skjemanummer.ANNET) return 1;
+                    return selectOption.text.localeCompare(nextSelectOption.text);
+                })
                 .map(({ skjemanummer, text }) => (
                     <option value={skjemanummer} key={skjemanummer}>
                         {text}

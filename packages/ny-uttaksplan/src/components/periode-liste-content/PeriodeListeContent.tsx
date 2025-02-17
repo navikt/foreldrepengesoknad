@@ -118,6 +118,7 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -138,14 +139,16 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <Button type="button" variant="secondary" onClick={openModal}>
-                    Endre
-                </Button>
-                <Button type="button" variant="secondary">
-                    Slett
-                </Button>
-            </div>
+            {modus !== 'innsyn' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <Button type="button" variant="secondary" onClick={openModal}>
+                        Endre
+                    </Button>
+                    <Button type="button" variant="secondary">
+                        Slett
+                    </Button>
+                </div>
+            )}
             {isModalOpen ? (
                 <EndrePeriodeModal
                     familiehendelsedato={familiehendelsedato}

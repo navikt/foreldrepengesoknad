@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { applyRequestHandlers } from 'msw-storybook-addon';
 
@@ -62,5 +62,46 @@ describe('<EttersendingPage>', () => {
         expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
         expect(screen.getByText('hello.png')).toBeInTheDocument();
         expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
+    });
+
+    it('skal få ES-relevante dokumentvalg', async () => {
+        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+        const utils = render(<SkalIkkeFeileOpplasting />);
+
+        expect(
+            await screen.findByText(
+                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+            ),
+        ).toBeInTheDocument();
+
+        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const optionsTextContent = within(select)
+            .getAllByRole('option')
+            .map((o) => o.textContent);
+
+        // ikke uttømmende
+        expect(optionsTextContent).toContain('Dokumentasjon på oppholdstillatelse');
+        expect(optionsTextContent).toContain('Dokumentasjon på reiser til og fra Norge');
+        expect(optionsTextContent).toContain('Dokumentasjon på oppfølging i svangerskapet');
+        expect(optionsTextContent).toContain('Dokumentasjon på inntekt');
+    });
+
+    it('skal sortere annet dokument nederst', async () => {
+        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+        const utils = render(<SkalIkkeFeileOpplasting />);
+
+        expect(
+            await screen.findByText(
+                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+            ),
+        ).toBeInTheDocument();
+
+        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const optionsTextContent = within(select)
+            .getAllByRole('option')
+            .map((o) => o.textContent);
+        expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
     });
 });
