@@ -111,7 +111,6 @@ export const UttaksplanNy = ({
 
     const handleAddPeriode = (nyPeriode: Planperiode) => {
         const result = builder.leggTilPeriode(nyPeriode);
-
         const saksPerioder = result.map((r) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
