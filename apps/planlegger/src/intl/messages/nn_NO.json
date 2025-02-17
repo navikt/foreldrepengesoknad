@@ -38,7 +38,7 @@
     "HvorMyeSteg.Lønn": "Kva tener {hvem} ca. i månaden? (valfritt)",
     "HvorMyeSteg.LønnBeskrivelse": "Oppgi lønn før skatt",
     "HvorMyeSteg.ViteMer": "Vil {erAleneforsørger, select, tru {du} other {de}} vita meir om kor mykje ein kan få?",
-    "HvorMyeSteg.MerDetaljert": "Meir detaljert utrekning av kor mykje ein kan få i foreldrepengar kan ein få gjennom vegvisaren <a>Kor mykje? (blir opna i ny fane).</a>",
+    "HvorMyeSteg.MerDetaljert": "Meir detaljert utrekning av kor mykje ein kan få i foreldrepengar kan ein få gjennom vegvisaren <a>Kor mykje? (blir opna i ny fane)</a>.",
     "HvorMyeSteg.VilFå": "{hvem} vil få rundt {utregning100} per dag viss de vel 100 % foreldrepengar eller {utregning80} per dag med 80 %",
     "HvorMyeSteg.KanFå": "{hvem} kan få maksimalt {utregning100} per dag viss de vel 100 % foreldrepengar eller {utregning80} per dag med 80 %",
     "HvorMyeSteg.Utregning": "Dette blir rundt {utregning100} i månaden med 100 % og {utregning80} i månaden med 80 %.",
