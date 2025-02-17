@@ -35,6 +35,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
     const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
     const rettighetType = gjeldendeSak.rettighetType;
+    const sakAvsluttet = gjeldendeSak.sakAvsluttet;
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
@@ -49,16 +50,18 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     return (
         <VStack gap="10">
-            <HStack>
-                <Button
-                    className="mt-4"
-                    size={isDesktop ? 'small' : 'medium'}
-                    variant="secondary"
-                    onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
-                >
-                    <FormattedMessage id="DinPlan.EndrePlan" />
-                </Button>
-            </HStack>
+            {sakAvsluttet && (
+                <HStack>
+                    <Button
+                        className="mt-4"
+                        size={isDesktop ? 'small' : 'medium'}
+                        variant="secondary"
+                        onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
+                    >
+                        <FormattedMessage id="DinPlan.EndrePlan" />
+                    </Button>
+                </HStack>
+            )}
             <VStack gap="10">
                 <ToggleGroup
                     defaultValue={visKalender ? 'kalender' : 'plan'}
