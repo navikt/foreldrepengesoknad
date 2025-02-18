@@ -68,57 +68,55 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
     };
 
     return (
-        <>
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                <VStack gap="4">
-                    <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
-                    <RhfRadioGroup
-                        validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
-                        label="Velg kontotype"
-                        name="kontoType"
-                    >
-                        <Radio value={StønadskontoType.Fedrekvote}>Fedrekvote</Radio>
-                        <Radio value={StønadskontoType.Mødrekvote}>Mødrekvote</Radio>
-                        <Radio value={StønadskontoType.Fellesperiode}>Fellesperiode</Radio>
-                    </RhfRadioGroup>
-                    {kontoTypeValue === StønadskontoType.Fellesperiode && (
-                        <RhfRadioGroup
-                            validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
-                            label="Hvem gjelder fellesperioden?"
-                            name="forelder"
-                        >
-                            <Radio value={Forelder.mor}>Mor</Radio>
-                            <Radio value={Forelder.farMedmor}>Far eller medmor</Radio>
-                        </RhfRadioGroup>
-                    )}
-                </VStack>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        padding: '1rem 0',
-                    }}
+        <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
+            <VStack gap="4">
+                <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
+                <RhfRadioGroup
+                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
+                    label="Velg kontotype"
+                    name="kontoType"
                 >
-                    <div>
-                        <Button type="button" variant="secondary" onClick={closeModal}>
-                            Avbryt
-                        </Button>
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step1' });
-                            }}
-                        >
-                            Gå tilbake
-                        </Button>
-                        <Button>Ferdig, legg til i planen</Button>
-                    </div>
+                    <Radio value={StønadskontoType.Fedrekvote}>Fedrekvote</Radio>
+                    <Radio value={StønadskontoType.Mødrekvote}>Mødrekvote</Radio>
+                    <Radio value={StønadskontoType.Fellesperiode}>Fellesperiode</Radio>
+                </RhfRadioGroup>
+                {kontoTypeValue === StønadskontoType.Fellesperiode && (
+                    <RhfRadioGroup
+                        validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
+                        label="Hvem gjelder fellesperioden?"
+                        name="forelder"
+                    >
+                        <Radio value={Forelder.mor}>Mor</Radio>
+                        <Radio value={Forelder.farMedmor}>Far eller medmor</Radio>
+                    </RhfRadioGroup>
+                )}
+            </VStack>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '1rem 0',
+                }}
+            >
+                <div>
+                    <Button type="button" variant="secondary" onClick={closeModal}>
+                        Avbryt
+                    </Button>
                 </div>
-            </RhfForm>
-        </>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                            setModalData({ ...modalData, currentStep: 'step1' });
+                        }}
+                    >
+                        Gå tilbake
+                    </Button>
+                    <Button>Ferdig, legg til i planen</Button>
+                </div>
+            </div>
+        </RhfForm>
     );
 };
