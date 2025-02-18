@@ -121,7 +121,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
         (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
-        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+        startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
     }
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
