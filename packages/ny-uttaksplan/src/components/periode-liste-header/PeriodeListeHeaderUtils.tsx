@@ -121,7 +121,7 @@ export const getTekst = ({
     forelder,
     familiesituasjon,
 }: GetTekstProps) => {
-    const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
 
     if (erFamiliehendelse) {
@@ -167,10 +167,10 @@ export const getTekst = ({
     }
 
     if (erSamtidigUttak) {
-        return `Du og ${navnPåForelder} i permisjon`;
+        return `Du og ${navnPåAnnenForelder} er i permisjon`;
     }
 
-    return erEgenPeriode ? 'Du i permisjon' : `${navnPåForelder} i permisjon`;
+    return erEgenPeriode ? 'Du er i permisjon' : `${navnPåAnnenForelder} er i permisjon`;
 };
 
 type GetIkonProps = {

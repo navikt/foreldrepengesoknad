@@ -31,6 +31,7 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
 }
 
 const renderPeriode = (
@@ -108,7 +109,12 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }: Props) => {
+export const PeriodeListeContent = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+}: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
@@ -123,6 +129,12 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
+
+    const slettPeriode = () => {
+        if (inneholderKunEnPeriode) {
+            handleDeletePeriode(permisjonsperiode.perioder[0]);
+        }
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -144,7 +156,7 @@ export const PeriodeListeContent = ({ permisjonsperiode, erFamiliehendelse, hand
                     <Button type="button" variant="secondary" onClick={openModal}>
                         Endre
                     </Button>
-                    <Button type="button" variant="secondary">
+                    <Button type="button" variant="secondary" onClick={slettPeriode}>
                         Slett
                     </Button>
                 </div>

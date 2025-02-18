@@ -11,9 +11,15 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
 }
 
-export const PeriodeListeItem = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }: Props) => {
+export const PeriodeListeItem = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+}: Props) => {
     const bem = planBemUtils('periode-liste-item');
 
     return (
@@ -24,6 +30,7 @@ export const PeriodeListeItem = ({ permisjonsperiode, erFamiliehendelse, handleU
             <Accordion.Content>
                 <PeriodeListeContent
                     handleUpdatePeriode={handleUpdatePeriode}
+                    handleDeletePeriode={handleDeletePeriode}
                     erFamiliehendelse={!!erFamiliehendelse}
                     permisjonsperiode={permisjonsperiode}
                 />
