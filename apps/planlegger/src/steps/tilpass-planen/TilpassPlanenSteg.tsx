@@ -2,15 +2,14 @@ import { ArrowRedoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import { getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -22,18 +21,15 @@ import { useStepData } from '../../app-data/useStepData';
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
-import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { Situasjon } from '../../types/HvemPlanlegger';
-import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
-export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
+export const TilpassPlanenSteg = ({ locale }: Props) => {
     const [open, setOpen] = useState(false);
 
     const intl = useIntl();
@@ -45,7 +41,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
@@ -56,12 +51,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
-
-    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
-    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
-
-    const valgtStønadskonto =
-        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
     const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -74,18 +63,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
-
-    const planforslag = lagForslagTilPlan({
-        erDeltUttak,
-        famDato: familiehendelsedato,
-        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
-        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
-        bareFarMedmorHarRett,
-        erAdopsjon: erBarnetAdoptert(omBarnet),
-        erFarEllerMedmor,
-        erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
-    });
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
         const nyUttaksplan = [...uttaksplan];
@@ -184,8 +161,8 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
                                 bareFarHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={planforslag.søker1}
-                                annenPartsPerioder={planforslag.søker2}
+                                søkersPerioder={getSøkersPerioder()}
+                                annenPartsPerioder={getAnnenpartsPerioder()}
                                 navnAnnenPart="Test"
                                 barn={mapOmBarnetTilBarn(omBarnet)}
                                 planleggerLegend={

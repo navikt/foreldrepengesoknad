@@ -60,9 +60,7 @@ export const PlanleggerRouter = ({ locale, changeLocale, stønadskontoer, satser
             />
             <Route
                 path={PlanleggerRoutes.TILPASS_PLANEN}
-                element={
-                    stønadskontoer ? <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
-                }
+                element={stønadskontoer ? <TilpassPlanenSteg locale={locale} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
