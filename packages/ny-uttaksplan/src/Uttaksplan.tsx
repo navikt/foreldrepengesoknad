@@ -1,7 +1,9 @@
+import { NotePencilDashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css';
-import { Button } from '@navikt/ds-react';
+import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, Familiesituasjon, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
@@ -109,7 +111,6 @@ export const UttaksplanNy = ({
 
     const handleAddPeriode = (nyPeriode: Planperiode) => {
         const result = builder.leggTilPeriode(nyPeriode);
-
         const saksPerioder = result.map((r) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
@@ -133,7 +134,24 @@ export const UttaksplanNy = ({
                 MODUS: modus,
             }}
         >
-            <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
+            {komplettPlan.length > 0 && (
+                <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
+            )}
+
+            {komplettPlan.length === 0 && (
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <NotePencilDashIcon fontSize={24} />
+                    <VStack gap="2">
+                        <BodyShort weight="semibold" size="large">
+                            <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.ingenPerioder.body" />
+                        </BodyShort>
+                    </VStack>
+                </div>
+            )}
+
             {modus !== 'innsyn' && (
                 <Button variant="secondary" onClick={openModal}>
                     Legg til periode

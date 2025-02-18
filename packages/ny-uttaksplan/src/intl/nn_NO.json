@@ -52,6 +52,8 @@
     "uttaksplan.periodeListeContent.morsAktivitet.Utdanning": "Mor er i utdanning",
     "uttaksplan.periodeListeContent.morsAktivitet.UtenAktivitetsKrav": "Mor har ikkje aktivitetskrav i denne perioden",
     "uttaksplan.periodeListeContent.morsAktivitet.Uføre": "Mor er ufør",
+    "uttaksplan.tomplan.tittel": "Alle periodar er fjerna frå planen.",
+    "uttaksplan.tomplan.body": "Du har ingen periodar i planen. Legg til ein ny periode for å starte planlegginga.",
     "gradering.prosent": "{stillingsprosent}%",
     "varighet.uker": "{uker, plural, one {# veke} other {# veker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dagar}}",
