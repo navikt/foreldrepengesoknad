@@ -14,7 +14,7 @@ import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTil
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
-import { mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
+import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
 
 interface Props {
     familiehendelsedato: string;
@@ -99,21 +99,35 @@ export const UttaksplanNy = ({
 
     const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
         const result = builder.oppdaterPeriode(oppdatertPeriode);
+        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
-        const saksPerioder = result.map((r) => {
+        const saksPerioder = resultUtenHull.map((p) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
+            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
-
         handleOnPlanChange(saksPerioder);
     };
 
     const handleAddPeriode = (nyPeriode: Planperiode) => {
         const result = builder.leggTilPeriode(nyPeriode);
-        const saksPerioder = result.map((r) => {
+        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+        const saksPerioder = resultUtenHull.map((p) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
+            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
+            return saksPeriodeNy;
+        });
+        handleOnPlanChange(saksPerioder);
+    };
+
+    const handleDeletePeriode = (slettetPeriode: Planperiode) => {
+        const result = builder.slettPeriode(slettetPeriode);
+        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+        const saksPerioder = resultUtenHull.map((p) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
+            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
         handleOnPlanChange(saksPerioder);
@@ -135,7 +149,11 @@ export const UttaksplanNy = ({
             }}
         >
             {komplettPlan.length > 0 && (
-                <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
+                <PeriodeListe
+                    perioder={komplettPlan}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    handleDeletePeriode={handleDeletePeriode}
+                />
             )}
 
             {komplettPlan.length === 0 && (
