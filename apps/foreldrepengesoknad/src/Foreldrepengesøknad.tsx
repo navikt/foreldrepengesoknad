@@ -50,7 +50,7 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
 
     const søkerinfoQuery = useQuery({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`).json<Søkerinfo>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, { timeout: 30000 }).json<Søkerinfo>(),
     });
 
     const sakerQuery = useQuery({
