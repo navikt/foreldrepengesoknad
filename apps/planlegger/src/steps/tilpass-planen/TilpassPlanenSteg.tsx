@@ -73,9 +73,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
+    const erDeltUttak = fordeling !== undefined;
 
     const planforslag = lagForslagTilPlan({
-        erDeltUttak: fordeling !== undefined,
+        erDeltUttak,
         famDato: familiehendelsedato,
         tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
@@ -93,15 +94,19 @@ export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     };
 
     const getSøkersPerioder = () => {
-        return gjeldendeUttaksplan.filter((p) =>
-            erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
-        );
+        return erDeltUttak
+            ? gjeldendeUttaksplan.filter((p) =>
+                  erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
+              )
+            : gjeldendeUttaksplan;
     };
 
     const getAnnenpartsPerioder = () => {
-        return gjeldendeUttaksplan.filter((p) =>
-            erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
-        );
+        return erDeltUttak
+            ? gjeldendeUttaksplan.filter((p) =>
+                  erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
+              )
+            : [];
     };
 
     return (
