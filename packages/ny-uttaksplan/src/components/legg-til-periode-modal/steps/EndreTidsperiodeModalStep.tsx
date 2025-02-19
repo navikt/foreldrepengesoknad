@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isEmpty, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isEmpty, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -61,6 +61,9 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                                 intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.førTilDato' }),
                                 tomValue,
                             ),
+                            isWeekday(
+                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
+                            ),
                         ]}
                         disableWeekends={true}
                         label="Fra og med dato"
@@ -75,6 +78,9 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                             isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.påkrevd' })),
                             isValidDate(
                                 intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
+                            ),
+                            isWeekday(
+                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
                             ),
                         ]}
                         disableWeekends={true}
