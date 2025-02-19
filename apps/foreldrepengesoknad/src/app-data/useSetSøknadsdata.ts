@@ -6,7 +6,7 @@ import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 export const useSetSøknadsdata = () => {
     const oppdaterData = useContextSaveAnyData();
 
-    const oppdaterSøknadIState = (søknad: Søknad, eksisterendeSak?: EksisterendeSak) => {
+    const oppdaterSøknadIState = (søknad: Partial<Søknad>, eksisterendeSak?: EksisterendeSak) => {
         oppdaterData(ContextDataType.SØKERSITUASJON, søknad.søkersituasjon);
         oppdaterData(ContextDataType.OM_BARNET, søknad.barn);
         oppdaterData(ContextDataType.ANNEN_FORELDER, søknad.annenForelder);
