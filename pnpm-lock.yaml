@@ -803,6 +803,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.9.2
         version: 7.9.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.9.2
+        version: 7.9.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -2033,9 +2036,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      postcss:
-        specifier: ^8.5.2
-        version: 8.5.2
       react:
         specifier: ^19.0.0
         version: 19.0.0

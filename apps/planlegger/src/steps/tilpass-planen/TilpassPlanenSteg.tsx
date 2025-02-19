@@ -141,7 +141,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
                 </Heading>
 
-                <VStack gap="5">
+                <VStack gap="5" className="mt-16">
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
                     <VStack gap="10">

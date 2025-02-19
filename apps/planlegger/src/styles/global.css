@@ -1,3 +1,7 @@
+@import 'tailwindcss';
+@import '@navikt/ds-css';
+@config "@navikt/ds-tailwind";
+
 body {
     font-family: 'Source Sans Pro', Arial !important;
     font-size: 16px;

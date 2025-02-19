@@ -25,6 +25,7 @@
         "@navikt/aksel-icons": "^7.9.2",
         "@navikt/ds-css": "^7.9.2",
         "@navikt/ds-react": "^7.9.2",
+        "@navikt/ds-tailwind": "7.9.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
