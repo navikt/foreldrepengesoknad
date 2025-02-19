@@ -971,7 +971,7 @@ importers:
         version: 2.0.4(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.97.1(esbuild@0.24.2))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.97.1)
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.4.2)
@@ -2067,6 +2067,9 @@ importers:
       '@storybook/react':
         specifier: 8.5.0
         version: 8.5.0(@storybook/test@8.5.0(storybook@8.5.0(prettier@3.4.2)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.0(prettier@3.4.2))(typescript@5.7.3)
+      '@tailwindcss/postcss':
+        specifier: ^4.0.7
+        version: 4.0.7
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -2098,8 +2101,8 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
       tailwindcss:
-        specifier: 3.4.17
-        version: 3.4.17
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -5123,6 +5126,9 @@ packages:
     resolution: {integrity: sha512-yr6w5YMgjy+B+zkJiJtIYGXW+HNYOPfRPtSs+aqLnKwdEzNrGv4ZuJh9hYJ3mcA+HMq/K1rtFV+KsEr65S558g==}
     engines: {node: '>= 10'}
 
+  '@tailwindcss/postcss@4.0.7':
+    resolution: {integrity: sha512-zXcKs1uGssVDlnsQ+iwrkul5GPKvsXPynGCuk/eXLx3DVhHlQKMpA6tXN2oO28x2ki1xRBTfadKiHy2taVvp7g==}
+
   '@tailwindcss/vite@4.0.7':
     resolution: {integrity: sha512-GYx5sxArfIMtdZCsxfya3S/efMmf4RvfqdiLUozkhmSFBNUFnYVodatpoO/en4/BsOIGvq/RB6HwcTLn9prFnQ==}
     peerDependencies:
@@ -6435,10 +6441,6 @@ packages:
   encodeurl@2.0.0:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
-
-  enhanced-resolve@5.18.0:
-    resolution: {integrity: sha512-0/r0MySGYG8YqlayBZ6MuCfECmHFdJ5qyPh8s8wa5Hnm6SaFLSK1VYCbj+NKp090Nm1caZhD+QTnmxO7esYGyQ==}
-    engines: {node: '>=10.13.0'}
 
   enhanced-resolve@5.18.1:
     resolution: {integrity: sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==}
@@ -11781,6 +11783,15 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.0.7
       '@tailwindcss/oxide-win32-x64-msvc': 4.0.7
 
+  '@tailwindcss/postcss@4.0.7':
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      '@tailwindcss/node': 4.0.7
+      '@tailwindcss/oxide': 4.0.7
+      lightningcss: 1.29.1
+      postcss: 8.5.1
+      tailwindcss: 4.0.7
+
   '@tailwindcss/vite@4.0.7(vite@6.0.11(@types/node@22.10.7)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass@1.83.4)(terser@5.37.0)(yaml@2.7.0))':
     dependencies:
       '@tailwindcss/node': 4.0.7
@@ -13242,11 +13253,6 @@ snapshots:
   encodeurl@1.0.2: {}
 
   encodeurl@2.0.0: {}
-
-  enhanced-resolve@5.18.0:
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.2.1
 
   enhanced-resolve@5.18.1:
     dependencies:
@@ -15065,13 +15071,6 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
-  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.97.1(esbuild@0.24.2)):
-    dependencies:
-      hogan.js: 3.0.2
-      html-minifier: 3.5.21
-      loader-utils: 1.4.2
-      webpack: 5.97.1(esbuild@0.24.2)
-
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.97.1):
     dependencies:
       hogan.js: 3.0.2
@@ -16493,17 +16492,6 @@ snapshots:
     dependencies:
       rimraf: 2.6.3
 
-  terser-webpack-plugin@5.3.11(esbuild@0.24.2)(webpack@5.97.1(esbuild@0.24.2)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 4.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.37.0
-      webpack: 5.97.1(esbuild@0.24.2)
-    optionalDependencies:
-      esbuild: 0.24.2
-
   terser-webpack-plugin@5.3.11(webpack@5.97.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -16980,7 +16968,7 @@ snapshots:
       acorn: 8.14.0
       browserslist: 4.24.4
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.0
+      enhanced-resolve: 5.18.1
       es-module-lexer: 1.6.0
       eslint-scope: 5.1.1
       events: 3.3.0
@@ -16993,36 +16981,6 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.11(webpack@5.97.1)
-      watchpack: 2.4.2
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
-  webpack@5.97.1(esbuild@0.24.2):
-    dependencies:
-      '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.6
-      '@webassemblyjs/ast': 1.14.1
-      '@webassemblyjs/wasm-edit': 1.14.1
-      '@webassemblyjs/wasm-parser': 1.14.1
-      acorn: 8.14.0
-      browserslist: 4.24.4
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.0
-      es-module-lexer: 1.6.0
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.11(esbuild@0.24.2)(webpack@5.97.1(esbuild@0.24.2))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
