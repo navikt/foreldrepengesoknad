@@ -3,8 +3,8 @@ import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } 
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
-const storForbokstav = (val: string) => {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+const storForbokstav = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
