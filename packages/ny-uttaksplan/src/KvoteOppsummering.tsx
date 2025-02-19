@@ -29,6 +29,7 @@ export const useKvote = () => {
 };
 
 export const KvoteOppsummering = (props: Props) => {
+    console.log(props.perioder);
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
@@ -280,6 +281,7 @@ const MødreKvoter = () => {
 const FellesKvoter = () => {
     const intl = useIntl();
     const { konto, perioder, forelder } = useKvote();
+    console.log(konto);
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
