@@ -96,6 +96,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                             modus="innsyn"
                             handleOnPlanChange={() => null}
+                            valgtStønadskonto={{} as any}
                         />
                         <KvoteOversikt />
                     </>

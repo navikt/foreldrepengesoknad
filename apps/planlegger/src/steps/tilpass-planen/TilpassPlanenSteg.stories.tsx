@@ -11,9 +11,15 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './TilpassPlanenSteg';
+
+const MINSTERETTER = {
+    farRundtFødsel: 10,
+    toTette: 0,
+};
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
@@ -36,6 +42,7 @@ const meta = {
         hvorLangPeriode,
         omBarnet,
         arbeidssituasjon,
+        stønadskontoer,
         locale,
         uttaksplan,
         originalUttaksplan,
@@ -54,7 +61,7 @@ const meta = {
                         [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
                     }}
                 >
-                    <TilpassPlanenSteg locale={locale} />
+                    <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -88,6 +95,26 @@ export const MorOgFarBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+        },
         uttaksplan: [],
         originalUttaksplan: [],
     },
@@ -101,6 +128,22 @@ export const MorOgFarKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 291 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 230 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
@@ -112,6 +155,28 @@ export const MorOgFarKunFarHarRettMorUfør: Story = {
             status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 166 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };
 
@@ -122,6 +187,28 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 211 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 150 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
         },
     },
 };
@@ -196,6 +283,16 @@ export const BareFarSøkerOgHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
