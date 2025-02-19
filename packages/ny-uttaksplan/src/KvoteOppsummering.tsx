@@ -296,7 +296,8 @@ const FellesKvoter = () => {
 
     const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
     const prosentBruktAvAnnenPart = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
-
+    console.log(prosentBruktAvDeg, prosentBruktAvAnnenPart);
+    console.log(prosentBruktAvDeg + prosentBruktAvAnnenPart);
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
@@ -435,7 +436,7 @@ type FordelingSegmentProps = {
 };
 const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegmentProps) => {
     const { forelder } = useKvote();
-    if (prosent === 0) {
+    if (prosent <= 0) {
         return null;
     }
     const style = { width: `${prosent - 1.5}%` };
