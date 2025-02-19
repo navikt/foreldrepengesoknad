@@ -29,7 +29,6 @@ export const useKvote = () => {
 };
 
 export const KvoteOppsummering = (props: Props) => {
-    console.log(props.perioder);
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
@@ -281,7 +280,6 @@ const MødreKvoter = () => {
 const FellesKvoter = () => {
     const intl = useIntl();
     const { konto, perioder, forelder } = useKvote();
-    console.log(konto);
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -296,8 +294,6 @@ const FellesKvoter = () => {
 
     const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
     const prosentBruktAvAnnenPart = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
-    console.log(prosentBruktAvDeg, prosentBruktAvAnnenPart);
-    console.log(prosentBruktAvDeg + prosentBruktAvAnnenPart);
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">

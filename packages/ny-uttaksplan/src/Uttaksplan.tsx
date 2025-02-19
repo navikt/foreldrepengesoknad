@@ -68,7 +68,6 @@ export const UttaksplanNy = ({
     const annenPartsPlanperioder = annenPartsPerioder
         ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
         : undefined;
-    console.log('asd', annenPartsPlanperioder);
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
         søkersPlanperioder,
