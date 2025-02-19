@@ -5,9 +5,11 @@ import { Button, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -24,6 +26,10 @@ interface FormValues {
 
 export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, handleAddPeriode }: Props) => {
     const intl = useIntl();
+    const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+
     const { fom, tom, forelder, kontoType } = modalData;
 
     const formMethods = useForm<FormValues>({
@@ -76,9 +82,13 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
                     label="Velg kontotype"
                     name="kontoType"
                 >
-                    <Radio value={StønadskontoType.Fedrekvote}>Fedrekvote</Radio>
-                    <Radio value={StønadskontoType.Mødrekvote}>Mødrekvote</Radio>
-                    <Radio value={StønadskontoType.Fellesperiode}>Fellesperiode</Radio>
+                    {valgtStønadskonto.kontoer.map((konto) => {
+                        return (
+                            <Radio value={konto.konto}>
+                                {getStønadskontoNavn(intl, konto.konto, navnPåForeldre, erFarEllerMedmor)}
+                            </Radio>
+                        );
+                    })}
                 </RhfRadioGroup>
                 {kontoTypeValue === StønadskontoType.Fellesperiode && (
                     <RhfRadioGroup

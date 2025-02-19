@@ -6,7 +6,13 @@ import '@navikt/ds-css';
 import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, Familiesituasjon, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
+import {
+    Barn,
+    Familiesituasjon,
+    SaksperiodeNy,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+    UttaksplanModus,
+} from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
@@ -30,6 +36,7 @@ interface Props {
     familiesituasjon: Familiesituasjon;
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
     modus: UttaksplanModus;
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 }
 
 export const UttaksplanNy = ({
@@ -46,6 +53,7 @@ export const UttaksplanNy = ({
     familiesituasjon,
     handleOnPlanChange,
     modus,
+    valgtStønadskonto,
 }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const søkersPlanperioder = finnOgSettInnHull(
@@ -146,6 +154,7 @@ export const UttaksplanNy = ({
                 UTTAKSPLAN: komplettPlan,
                 FAMILIESITUASJON: familiesituasjon,
                 MODUS: modus,
+                VALGT_STØNADSKONTO: valgtStønadskonto,
             }}
         >
             {komplettPlan.length > 0 && (

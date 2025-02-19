@@ -9,7 +9,7 @@ import { getFamiliehendelsedato } from 'utils/uttakUtils';
 import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { LocaleAll, SaksperiodeNy } from '@navikt/fp-types';
+import { Dekningsgrad, LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -27,9 +27,10 @@ import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
     locale: LocaleAll;
+    stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-export const TilpassPlanenSteg = ({ locale }: Props) => {
+export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
 
     const intl = useIntl();
@@ -41,6 +42,7 @@ export const TilpassPlanenSteg = ({ locale }: Props) => {
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
@@ -48,6 +50,12 @@ export const TilpassPlanenSteg = ({ locale }: Props) => {
         useContextGetData(ContextDataType.ORIGINAL_UTTAKSPLAN),
         'Uttaksplan ikke oppgitt',
     );
+
+    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
+    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
+    const valgtStønadskonto =
+        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -150,6 +158,7 @@ export const TilpassPlanenSteg = ({ locale }: Props) => {
                             barn={mapOmBarnetTilBarn(omBarnet)}
                             handleOnPlanChange={handleOnPlanChange}
                             modus="planlegger"
+                            valgtStønadskonto={valgtStønadskonto}
                         />
                     )}
                 </VStack>

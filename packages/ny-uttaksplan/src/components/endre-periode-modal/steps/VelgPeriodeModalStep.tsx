@@ -1,11 +1,15 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { Button, Heading, Radio } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { formatDate } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { ModalData } from '../EndrePeriodeModal';
 
 interface Props {
@@ -20,6 +24,10 @@ interface FormValues {
 }
 
 export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeModal }: Props) => {
+    const intl = useIntl();
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+
     const formMethods = useForm<FormValues>({
         defaultValues: {
             periodeId: modalData.valgtPeriode?.id,
@@ -55,7 +63,7 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                             <Radio
                                 key={p.id}
                                 value={p.id}
-                            >{`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${p.kontoType}`}</Radio>
+                            >{`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}</Radio>
                         );
                     })}
                 </RhfRadioGroup>
