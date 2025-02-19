@@ -13,7 +13,14 @@ type StoryArgs = { familiehendelsedato: string; barn: Barn; erFarEllerMedmor: bo
     typeof PeriodeListe
 >;
 
-const customRenderer = ({ perioder, familiehendelsedato, barn, erFarEllerMedmor, handleUpdatePeriode }: StoryArgs) => {
+const customRenderer = ({
+    perioder,
+    familiehendelsedato,
+    barn,
+    erFarEllerMedmor,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+}: StoryArgs) => {
     return (
         <UttaksplanDataContext
             initialState={{
@@ -27,7 +34,11 @@ const customRenderer = ({ perioder, familiehendelsedato, barn, erFarEllerMedmor,
             }}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
-                <PeriodeListe perioder={perioder} handleUpdatePeriode={handleUpdatePeriode} />
+                <PeriodeListe
+                    perioder={perioder}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    handleDeletePeriode={handleDeletePeriode}
+                />
             </div>
         </UttaksplanDataContext>
     );
@@ -46,6 +57,7 @@ export const UttaksperioderMor: Story = {
     name: 'Mor søker',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
         barn: {
@@ -123,6 +135,7 @@ export const UttaksperioderMorOgFar: Story = {
     name: 'Mor og far med samtidig uttak',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
         barn: {
@@ -191,6 +204,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
     name: 'Far søker og mor har ikke rett',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-05-01',
         barn: {
@@ -251,6 +265,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
     name: 'Mor og far med flerbarnsdager og samtidig uttak',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
         barn: {
@@ -297,6 +312,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
     name: 'Mor har ikke lagt inn uttak første seks uker',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
         barn: {
@@ -338,6 +354,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
     name: 'Mor er innlagt første seks uker',
     args: {
         handleUpdatePeriode: () => null,
+        handleDeletePeriode: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
         barn: {
