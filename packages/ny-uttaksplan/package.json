@@ -33,6 +33,7 @@
         "react": "^19.0.0",
         "react-hook-form": "7.54.2",
         "react-intl": "^7.1.4",
+        "@tailwindcss/vite": "^4.0.7",
         "typescript": "5.7.3"
     },
     "devDependencies": {
@@ -45,7 +46,6 @@
         "@storybook/addon-links": "8.5.0",
         "@storybook/builder-vite": "8.5.0",
         "@storybook/react": "8.5.0",
-        "@tailwindcss/postcss": "^4.0.7",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.2.0",
         "@testing-library/user-event": "^14.6.0",
