@@ -9,7 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AppContainer } from './AppContainer';
-import './styles/global.css';
+import './index.css';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
