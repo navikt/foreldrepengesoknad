@@ -79,6 +79,17 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
+    const utledRettighetType = () => {
+        if (erDeltUttak) {
+            return RettighetType.BEGGE_RETT;
+        }
+        if (erAleneforsørger) {
+            return RettighetType.ALENEOMSORG;
+        }
+
+        return RettighetType.BARE_SØKER_RETT;
+    };
+
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
         const nyUttaksplan = [...uttaksplan];
         nyUttaksplan.push(perioder);
@@ -173,6 +184,8 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 perioder={[
                                     ...getSøkersPerioder(),
                                     ...getAnnenpartsPerioder().map((p) => {
+                                        // I innsyn så er fellesperioder for annen part gitt uten kontotype og med oppholdÅrsak istedetfor.
+                                        // Derfor trikser vi til periodene i planleggeren til å følge samme format.
                                         if (p.kontoType === StønadskontoType.Fellesperiode) {
                                             return {
                                                 ...p,
@@ -183,8 +196,8 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                         return p;
                                     }),
                                 ]}
-                                rettighetType={RettighetType.BEGGE_RETT}
-                                forelder={Forelder.mor}
+                                rettighetType={utledRettighetType()}
+                                forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
                             />
                         </>
                     )}
