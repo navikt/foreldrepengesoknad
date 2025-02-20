@@ -8,12 +8,19 @@ import { getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
-import { Dekningsgrad, LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import {
+    Dekningsgrad,
+    LocaleAll,
+    OppholdÅrsakType,
+    RettighetType,
+    SaksperiodeNy,
+    TilgjengeligeStønadskontoer,
+} from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
@@ -71,6 +78,17 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
+
+    const utledRettighetType = () => {
+        if (erDeltUttak) {
+            return RettighetType.BEGGE_RETT;
+        }
+        if (erAleneforsørger) {
+            return RettighetType.ALENEOMSORG;
+        }
+
+        return RettighetType.BARE_SØKER_RETT;
+    };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
         const nyUttaksplan = [...uttaksplan];
@@ -141,25 +159,47 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                         <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
                     </VStack>
                     {visningsmodus === 'liste' && (
-                        <UttaksplanNy
-                            familiehendelsedato={familiehendelsedato}
-                            bareFarHarRett={bareFarMedmorHarRett}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            familiesituasjon={familiesituasjon}
-                            gjelderAdopsjon={familiesituasjon === 'adopsjon'}
-                            navnPåForeldre={{
-                                farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
-                                mor: getNavnPåSøker1(hvemPlanlegger, intl),
-                            }}
-                            førsteUttaksdagNesteBarnsSak={undefined}
-                            harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={getSøkersPerioder()}
-                            annenPartsPerioder={getAnnenpartsPerioder()}
-                            barn={mapOmBarnetTilBarn(omBarnet)}
-                            handleOnPlanChange={handleOnPlanChange}
-                            modus="planlegger"
-                            valgtStønadskonto={valgtStønadskonto}
-                        />
+                        <>
+                            <UttaksplanNy
+                                familiehendelsedato={familiehendelsedato}
+                                bareFarHarRett={bareFarMedmorHarRett}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                familiesituasjon={familiesituasjon}
+                                gjelderAdopsjon={familiesituasjon === 'adopsjon'}
+                                navnPåForeldre={{
+                                    farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
+                                    mor: getNavnPåSøker1(hvemPlanlegger, intl),
+                                }}
+                                førsteUttaksdagNesteBarnsSak={undefined}
+                                harAktivitetskravIPeriodeUtenUttak={false}
+                                søkersPerioder={getSøkersPerioder()}
+                                annenPartsPerioder={getAnnenpartsPerioder()}
+                                barn={mapOmBarnetTilBarn(omBarnet)}
+                                handleOnPlanChange={handleOnPlanChange}
+                                modus="planlegger"
+                                valgtStønadskonto={valgtStønadskonto}
+                            />
+                            <KvoteOppsummering
+                                konto={valgtStønadskonto}
+                                perioder={[
+                                    ...getSøkersPerioder(),
+                                    ...getAnnenpartsPerioder().map((p) => {
+                                        // I innsyn så er fellesperioder for annen part gitt uten kontotype og med oppholdÅrsak istedetfor.
+                                        // Derfor trikser vi til periodene i planleggeren til å følge samme format.
+                                        if (p.kontoType === StønadskontoType.Fellesperiode) {
+                                            return {
+                                                ...p,
+                                                kontoType: undefined,
+                                                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                                            };
+                                        }
+                                        return p;
+                                    }),
+                                ]}
+                                rettighetType={utledRettighetType()}
+                                forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                            />
+                        </>
                     )}
                 </VStack>
 
@@ -172,7 +212,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={getSøkersPerioder()}
                                 annenPartsPerioder={getAnnenpartsPerioder()}
-                                navnAnnenPart="Test"
+                                navnAnnenPart="Test" //TODO: fiks denne før prod?
                                 barn={mapOmBarnetTilBarn(omBarnet)}
                                 planleggerLegend={
                                     <CalendarLabels
