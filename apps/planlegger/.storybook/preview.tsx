@@ -4,8 +4,6 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import '@navikt/ds-css';
-
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
