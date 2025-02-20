@@ -14,14 +14,14 @@
                 "fnr": "16500479977"
             },
             "familiehendelse": {
-                "termindato": "2024-03-13",
+                "termindato": "2024-02-06",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2024-02-21",
-                        "tom": "2024-03-12",
+                        "fom": "2024-01-19",
+                        "tom": "2024-02-05",
                         "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
@@ -32,8 +32,8 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-03-13",
-                        "tom": "2024-04-24",
+                        "fom": "2024-02-06",
+                        "tom": "2024-02-08",
                         "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
@@ -44,8 +44,21 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-04-25",
-                        "tom": "2024-05-26",
+                        "fom": "2024-02-09",
+                        "tom": "2024-03-18",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false,
+                        "utsettelseÅrsak": "SØKER_INNLAGT"
+                    },
+                    {
+                        "fom": "2024-09-25",
+                        "tom": "2024-11-26",
                         "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
@@ -56,8 +69,20 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-05-27",
-                        "tom": "2024-06-26",
+                        "fom": "2024-11-27",
+                        "tom": "2025-01-02",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2025-01-03",
+                        "tom": "2025-02-11",
                         "kontoType": "FELLESPERIODE",
                         "resultat": {
                             "innvilget": true,

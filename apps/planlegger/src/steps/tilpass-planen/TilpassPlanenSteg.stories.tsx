@@ -12,6 +12,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './TilpassPlanenSteg';
 
@@ -27,6 +28,8 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
+    uttaksplan: SaksperiodeNy[][];
+    originalUttaksplan: SaksperiodeNy[];
 } & ComponentProps<typeof TilpassPlanenSteg>;
 
 const meta = {
@@ -41,6 +44,8 @@ const meta = {
         arbeidssituasjon,
         stønadskontoer,
         locale,
+        uttaksplan,
+        originalUttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -52,6 +57,8 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                        [ContextDataType.UTTAKSPLAN]: [uttaksplan as any],
+                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />
@@ -108,6 +115,8 @@ export const MorOgFarBeggeHarRett: Story = {
                 minsteretter: MINSTERETTER,
             },
         },
+        uttaksplan: [],
+        originalUttaksplan: [],
     },
 };
 

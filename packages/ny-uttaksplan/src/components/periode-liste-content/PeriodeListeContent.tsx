@@ -1,14 +1,14 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
+import { useState } from 'react';
 
-import { BodyShort, Stack } from '@navikt/ds-react';
+import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
     isHull,
@@ -18,17 +18,20 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import FamiliehendelseContent from './components/FamiliehendelseContent';
-import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
-import OverføringsperiodeContent from './components/OverføringsperiodeContent';
-import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
+import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
+import { FamiliehendelseContent } from './components/FamiliehendelseContent';
+import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
+import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
+import { PeriodeUtenUttakContent } from './components/PeriodeUtenUttakContext';
 import { SkalJobbeContent } from './components/SkalJobbeContent';
-import UtsettelsesPeriodeContent from './components/UtsettelsesPeriodeContent';
-import UttaksperiodeContent from './components/UttaksperiodeContent';
+import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeContent';
+import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
 }
 
 const renderPeriode = (
@@ -106,17 +109,39 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+export const PeriodeListeContent = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+}: Props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
+
+    const slettPeriode = () => {
+        if (inneholderKunEnPeriode) {
+            handleDeletePeriode(permisjonsperiode.perioder[0]);
+        }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
     return (
         <div style={{ marginTop: '1rem' }}>
@@ -126,8 +151,26 @@ const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFa
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+            {modus !== 'innsyn' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <Button type="button" variant="secondary" onClick={openModal}>
+                        Endre
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={slettPeriode}>
+                        Slett
+                    </Button>
+                </div>
+            )}
+            {isModalOpen ? (
+                <EndrePeriodeModal
+                    familiehendelsedato={familiehendelsedato}
+                    closeModal={closeModal}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    permisjonsperiode={permisjonsperiode}
+                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                    isModalOpen={isModalOpen}
+                />
+            ) : null}
         </div>
     );
 };
-
-export default PeriodeListeContent;

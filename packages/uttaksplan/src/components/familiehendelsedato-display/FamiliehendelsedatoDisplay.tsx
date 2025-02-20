@@ -43,6 +43,7 @@ export const getFamiliehendelseTekst = (barn: Barn): ReactNode => {
     );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ barn }) => {
     const bem = planBemUtils('familiehendelsesdatoDisplay');
 
@@ -55,5 +56,5 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ barn }) => {
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default FamiliehendelsedatoDisplay;

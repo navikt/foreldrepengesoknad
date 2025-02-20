@@ -12,7 +12,7 @@ export interface Props extends Omit<ModalProps, 'onClose'> {
     okLabel?: string;
     cancelLabel?: string;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const ConfirmationDialog: React.FunctionComponent<Props> = (props: Props) => {
     const { title, onCancel, onConfirm: onOk, cancelLabel, okLabel, children, ...modalProps } = props;
     return props.open ? (
@@ -46,4 +46,5 @@ const ConfirmationDialog: React.FunctionComponent<Props> = (props: Props) => {
         </Modal>
     ) : null;
 };
+// eslint-disable-next-line import/no-default-export
 export default ConfirmationDialog;

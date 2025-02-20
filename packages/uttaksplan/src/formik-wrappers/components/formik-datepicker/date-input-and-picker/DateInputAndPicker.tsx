@@ -25,7 +25,7 @@ type Props = Omit<DatePickerProps, 'onChange' | 'fromDate' | 'toDate'> &
         value?: string;
         onChange: (date: ISODateString | string) => void;
     };
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const DateInputAndPicker: React.FunctionComponent<Props> = ({
     label,
     name,
@@ -140,5 +140,5 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
         </DatePicker>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default DateInputAndPicker;

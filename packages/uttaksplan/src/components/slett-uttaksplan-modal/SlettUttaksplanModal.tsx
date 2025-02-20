@@ -10,6 +10,7 @@ interface Props {
     handleSlettUttaksplanModalBekreft: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SlettUttaksplanModal: FunctionComponent<Props> = ({
     isOpen,
     erEndringssøknad,
@@ -53,5 +54,5 @@ const SlettUttaksplanModal: FunctionComponent<Props> = ({
         </Modal>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default SlettUttaksplanModal;

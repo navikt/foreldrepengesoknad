@@ -3,6 +3,10 @@ import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } 
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
+const storForbokstav = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
     hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
@@ -31,23 +35,28 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
-        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
+        return hvemPlanlegger.navnPåMor || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }));
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
-        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+        return hvemPlanlegger.navnPåFar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }));
     }
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
-        return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
+        return (
+            hvemPlanlegger.navnPåMedmor ||
+            storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
+        );
     }
     if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
-        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+        return hvemPlanlegger.navnPåFar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }));
     }
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
-        return hvemPlanlegger.navnPåMedfar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+        return (
+            hvemPlanlegger.navnPåMedfar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
+        );
     }
     return undefined;
 };

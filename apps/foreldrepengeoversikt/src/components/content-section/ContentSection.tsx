@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { FunctionComponent } from 'react';
 
 import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
 
@@ -11,13 +10,7 @@ interface Props {
     className?: string;
 }
 
-export const ContentSection: FunctionComponent<Props> = ({
-    heading,
-    children,
-    showSkeleton = false,
-    skeletonProps,
-    className,
-}) => {
+export const ContentSection = ({ heading, children, showSkeleton = false, skeletonProps, className }: Props) => {
     if (showSkeleton && skeletonProps) {
         return (
             <div className="mb-8">

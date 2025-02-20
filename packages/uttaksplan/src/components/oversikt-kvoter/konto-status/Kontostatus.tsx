@@ -24,6 +24,7 @@ export interface Props {
 
 const bem = planBemUtils('kontostatus');
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Kontostatus: FunctionComponent<Props> = ({
     uttak,
     navnPåForeldre,
@@ -65,5 +66,5 @@ const Kontostatus: FunctionComponent<Props> = ({
         </BodyShort>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default injectIntl(Kontostatus);

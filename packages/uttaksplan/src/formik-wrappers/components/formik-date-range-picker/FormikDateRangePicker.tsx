@@ -84,5 +84,5 @@ function FormikDateRangePicker<FieldName, ErrorType>({
         </FormikInputGroup>
     );
 }
-
+// eslint-disable-next-line import/no-default-export
 export default FormikDateRangePicker;

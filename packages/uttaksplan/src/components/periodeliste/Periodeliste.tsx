@@ -71,6 +71,7 @@ export const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: stri
     return undefined;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Periodeliste: FunctionComponent<Props> = ({
     uttaksplan,
     familiehendelsesdato,
@@ -199,5 +200,5 @@ const Periodeliste: FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default Periodeliste;

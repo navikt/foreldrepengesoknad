@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, erFarOgFar } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erFarDelAvSøknaden, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -27,6 +27,7 @@ interface Props {
 export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const erAlene = erAlenesøker(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
+    const erFarAlene = erAlene && erFarDelAvSøknaden(hvemPlanlegger);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
@@ -59,7 +60,12 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                     </BodyLong>
                     {!erBarnetAdoptert(barnet) && (
                         <>
-                            <DetteKanIkkeEndres hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
+                            {!erFarAlene && (
+                                <DetteKanIkkeEndres
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                />
+                            )}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 

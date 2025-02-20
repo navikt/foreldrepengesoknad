@@ -15,6 +15,7 @@ interface Props {
     erDeltUttak: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PlanleggerInfo: FunctionComponent<Props> = ({ foreldreSituasjon, forelderVedAleneomsorg, erDeltUttak }) => {
     const intl = useIntl();
 
@@ -40,5 +41,5 @@ const PlanleggerInfo: FunctionComponent<Props> = ({ foreldreSituasjon, forelderV
         </InfoBlock>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PlanleggerInfo;

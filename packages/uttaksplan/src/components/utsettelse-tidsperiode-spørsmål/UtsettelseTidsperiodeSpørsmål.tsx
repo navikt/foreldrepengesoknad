@@ -32,7 +32,7 @@ interface Props {
     onBekreft: (tidsperiode: TidsperiodeFormValues) => void;
     changeTidsperiode: (tidsperiode: Partial<TidsperiodeDate>) => void;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     onBekreft,
     onAvbryt,
@@ -135,5 +135,5 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UtsettelseEndreTidsperiodeSpørsmål;

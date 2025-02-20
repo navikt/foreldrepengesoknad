@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
@@ -10,8 +9,8 @@ import { Tidsperioden, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import planBemUtils from '../../planBemUtils';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { planBemUtils } from '../../planBemUtils';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
 import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 import './periode-liste-header.css';
@@ -54,7 +53,7 @@ const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: num
     return <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>;
 };
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse }: Props) => {
     const intl = useIntl();
     const bem = planBemUtils('periode-liste-header');
 
@@ -145,5 +144,3 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
         </div>
     );
 };
-
-export default PeriodeListeHeader;

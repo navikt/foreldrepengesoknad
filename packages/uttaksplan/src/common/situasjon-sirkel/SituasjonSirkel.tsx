@@ -11,6 +11,7 @@ interface Props {
     valgtForelder?: Forelder;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SituasjonSirkel: React.FunctionComponent<Props> = ({ situasjon, valgtForelder }) => {
     const info = getSituasjonForelderSvg(situasjon);
     const bem = planBemUtils('situasjonSirkel');
@@ -35,4 +36,5 @@ const SituasjonSirkel: React.FunctionComponent<Props> = ({ situasjon, valgtForel
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default SituasjonSirkel;

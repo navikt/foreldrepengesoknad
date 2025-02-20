@@ -1,5 +1,5 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
@@ -19,7 +19,7 @@ interface Props {
     annenPartsPerioder: SaksperiodeNy[];
 }
 
-export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
+export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
@@ -35,6 +35,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
     const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
     const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
     const rettighetType = gjeldendeSak.rettighetType;
+    const sakAvsluttet = gjeldendeSak.sakAvsluttet;
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
@@ -49,16 +50,19 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
 
     return (
         <VStack gap="10">
-            <HStack>
-                <Button
-                    className="mt-4"
-                    size={isDesktop ? 'small' : 'medium'}
-                    variant="secondary"
-                    onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
-                >
-                    <FormattedMessage id="DinPlan.EndrePlan" />
-                </Button>
-            </HStack>
+            {!sakAvsluttet && (
+                <HStack>
+                    <Button
+                        className="mt-4"
+                        size={isDesktop ? 'small' : 'medium'}
+                        variant="secondary"
+                        onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
+                    >
+                        <FormattedMessage id="DinPlan.EndrePlan" />
+                    </Button>
+                </HStack>
+            )}
+
             <VStack gap="10">
                 <ToggleGroup
                     defaultValue={visKalender ? 'kalender' : 'plan'}
@@ -90,6 +94,9 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             familiesituasjon={familiesituasjon}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                            modus="innsyn"
+                            handleOnPlanChange={() => null}
+                            valgtStønadskonto={{} as any}
                         />
                         <KvoteOversikt />
                     </>

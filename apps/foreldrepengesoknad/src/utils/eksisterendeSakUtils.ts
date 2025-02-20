@@ -28,7 +28,7 @@ import {
     isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
+import { PersonFnrDTO } from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';

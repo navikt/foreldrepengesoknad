@@ -13,6 +13,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => {
     const bem = planBemUtils('innholdMedIllustrasjon');
 
@@ -47,4 +48,5 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default InnholdMedIllustrasjon;

@@ -1,9 +1,9 @@
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import { GjeldendeVedtak } from './GjeldendeVedtak';
-import { ÅpenBehandling } from './ÅpenBehandling';
+import { PersonFnrDTO } from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
-import PersonFnrDTO from './PersonFnrDTO';
+import { ÅpenBehandling } from './ÅpenBehandling';
 
 export interface Sak {
     dekningsgrad: DekningsgradDTO;

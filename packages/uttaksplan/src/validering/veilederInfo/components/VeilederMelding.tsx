@@ -62,6 +62,7 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean, stil: 
     );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps> = ({
     message,
     stil = 'default',
@@ -81,5 +82,5 @@ const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps>
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default VeilederMelding;

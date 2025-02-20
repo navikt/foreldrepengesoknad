@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Forelder } from '@navikt/fp-constants';
 import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
 
-import Permisjonsperiode from '../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../types/Permisjonsperiode';
 import { Planperiode } from '../types/Planperiode';
 import {
     isHull,

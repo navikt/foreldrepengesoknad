@@ -8,4 +8,5 @@ const isFarEllerMedmor = (rolle: Søkerrolle) => {
     return false;
 };
 
+// eslint-disable-next-line import/no-default-export
 export default isFarEllerMedmor;

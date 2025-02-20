@@ -57,4 +57,5 @@ const Mor2 = (props: any) => (
     </svg>
 );
 
+// eslint-disable-next-line import/no-default-export
 export default Mor2;

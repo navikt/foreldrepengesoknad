@@ -15,6 +15,7 @@ interface Props {
     setVisningsmodus: Dispatch<SetStateAction<string>>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
     const bem = planBemUtils('planvisning-toggle');
 
@@ -44,4 +45,5 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
         </ToggleGroup>
     );
 };
+// eslint-disable-next-line import/no-default-export
 export default PlanvisningToggle;

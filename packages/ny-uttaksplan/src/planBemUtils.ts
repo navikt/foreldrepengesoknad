@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-const planBemUtils = (cls: string) => ({
+export const planBemUtils = (cls: string) => ({
     block: cls,
     element: (e?: string, m?: string) => `${cls}__${e}${m ? ` ${cls}__${e}--${m}` : ''}`,
     modifier: (m?: string) => `${cls}--${m}`,
@@ -9,5 +9,3 @@ const planBemUtils = (cls: string) => ({
     child: (c: string) => planBemUtils(planBemUtils(cls).element(c)),
     classNames,
 });
-
-export default planBemUtils;

@@ -9,6 +9,7 @@ export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
     color?: 'default' | 'white';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const LinkButton: FunctionComponent<LinkButtonProps> = ({ color, className, ...rest }) => {
     const bem = planBemUtils('linkButton');
 
@@ -20,4 +21,5 @@ const LinkButton: FunctionComponent<LinkButtonProps> = ({ color, className, ...r
         />
     );
 };
+// eslint-disable-next-line import/no-default-export
 export default LinkButton;

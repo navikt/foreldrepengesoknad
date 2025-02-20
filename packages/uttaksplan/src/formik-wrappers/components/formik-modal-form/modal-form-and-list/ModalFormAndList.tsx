@@ -193,5 +193,5 @@ function ModalFormAndList<ItemType extends ModalFormAndListListItemBase>({
         </>
     );
 }
-
+// eslint-disable-next-line import/no-default-export
 export default ModalFormAndList;

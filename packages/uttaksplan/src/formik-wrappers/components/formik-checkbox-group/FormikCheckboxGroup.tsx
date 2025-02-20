@@ -77,5 +77,5 @@ function FormikCheckboxGroup<FieldName, ErrorType>({
         </FieldComponent>
     );
 }
-
+// eslint-disable-next-line import/no-default-export
 export default FormikCheckboxGroup;

@@ -16,6 +16,7 @@ interface Props {
     handleDeletePeriode: (periodeId: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
     const bem = planBemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
@@ -53,5 +54,5 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default SlettbarAvslåttPeriode;

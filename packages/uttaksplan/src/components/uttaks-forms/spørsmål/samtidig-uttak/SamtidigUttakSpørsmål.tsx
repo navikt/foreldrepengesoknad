@@ -21,6 +21,7 @@ interface Props {
     situasjon: Situasjon;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
     erFlerbarnssøknad,
     navnPåForeldre,
@@ -85,5 +86,5 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default SamtidigUttakSpørsmål;
