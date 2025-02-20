@@ -21,9 +21,9 @@
         "extract": "formatjs extract"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.9.2",
-        "@navikt/ds-css": "^7.9.2",
-        "@navikt/ds-react": "^7.9.2",
+        "@navikt/aksel-icons": "^7.14.0",
+        "@navikt/ds-css": "^7.14.0",
+        "@navikt/ds-react": "^7.14.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
