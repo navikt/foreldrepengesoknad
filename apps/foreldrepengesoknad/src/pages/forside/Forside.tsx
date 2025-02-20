@@ -2,15 +2,14 @@ import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Søknad } from 'types/Søknad';
 import {
+    lagEndringsSøknad,
+    lagNySøknadForRegistrerteBarn,
+    lagSøknadFraValgteBarnMedSak,
     mapSøkerensEksisterendeSakFromDTO,
-    opprettSøknadFraEksisterendeSak,
-    opprettSøknadFraValgteBarn,
-    opprettSøknadFraValgteBarnMedSak,
 } from 'utils/eksisterendeSakUtils';
 
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -21,7 +20,7 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
-import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
+import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
@@ -57,91 +56,81 @@ export const Forside = ({
     const intl = useIntl();
 
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
-    const [isDinePersonopplysningerModalOpen, setIsDinePersonopplysningerModalOpen] = useState(false);
-
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => getSelectableBarnOptions(saker, søkerInfo.søker.barn),
+        () => getSelectableBarnOptions(saker, søkerInfo.søker.barn).toSorted(sorterSelectableBarnEtterYngst),
         [saker, søkerInfo.søker.barn],
     );
-    const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
-        if (values.harForståttRettigheterOgPlikter !== true) {
+        // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
+        if (!values.harForståttRettigheterOgPlikter) {
             return;
         }
-        setIsSubmitting(true);
+        setHarGodkjentVilkår(true);
 
-        const valgteBarn =
-            values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
-                ? undefined
-                : selectableBarn.find((sb) => sb.id === values.valgteBarn);
-        const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
+        const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
 
-        let barnFraNesteSak = undefined;
-        if (valgteBarn !== undefined) {
-            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
-            oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+        // Har valgt å opprette en helt ny sak
+        if (valgteBarn === undefined) {
+            setErEndringssøknad(false);
+            setSøknadGjelderNyttBarn(true);
+            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
         }
 
-        const valgtEksisterendeSak =
-            vilSøkeOmEndring && valgteBarn.sak !== undefined
-                ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
-                : undefined;
+        const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
+        oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+        const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
 
-        const førsteUttaksdagNesteBarnsSak =
-            barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        // Uklarhet: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
+        const valgtEksisterendeSak = vilSøkeOmEndring
+            ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
+            : undefined;
 
-        const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
-        const nySøknadPåAlleredeSøktBarn =
-            valgteBarn !== undefined && valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
-        const nySøknadPåValgteRegistrerteBarn =
-            !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
-
-        let nextRoute = SøknadRoutes.SØKERSITUASJON;
-        let søknadGjelderNyttBarn = false;
-
-        if (endringssøknad) {
+        if (valgtEksisterendeSak) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
-                førsteUttaksdagNesteBarnsSak,
+                barnFraNesteSak?.startdatoFørsteStønadsperiode,
                 valgteBarn.fødselsdatoer,
             );
 
-            nextRoute = SøknadRoutes.UTTAKSPLAN;
-
-            const søknad = opprettSøknadFraEksisterendeSak(
+            const søknad = lagEndringsSøknad(
                 søkerInfo.søker,
-                eksisterendeSak!,
+                eksisterendeSak,
                 intl,
                 valgtEksisterendeSak.annenPart,
                 valgteBarn,
-            ) as Søknad;
+            );
             oppdaterSøknadIState(søknad, eksisterendeSak);
-        } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(
-                valgteBarn,
+
+            setErEndringssøknad(true);
+            setSøknadGjelderNyttBarn(false);
+            return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
+        }
+
+        // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
+        if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
+            const søknad = lagSøknadFraValgteBarnMedSak(
+                { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
                 søkerInfo.søker.barn,
                 søkerInfo.søker.fnr,
-            ) as Søknad;
+            );
             oppdaterSøknadIState(søknad);
-        } else if (nySøknadPåValgteRegistrerteBarn) {
-            const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
-            oppdaterSøknadIState(søknad);
-        } else {
-            søknadGjelderNyttBarn = true;
         }
 
-        setHarGodkjentVilkår(values.harForståttRettigheterOgPlikter!);
-        setErEndringssøknad(vilSøkeOmEndring);
-        setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
+        // Barn er registrert, men det finnes ingen sak
+        if (!valgtEksisterendeSak) {
+            const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
+            oppdaterSøknadIState(søknad);
+        }
 
-        return navigator.goToNextStep(nextRoute);
+        setErEndringssøknad(false);
+        setSøknadGjelderNyttBarn(false);
+        return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
     };
 
     const formMethods = useForm<VelkommenFormData>({
@@ -151,14 +140,9 @@ export const Forside = ({
     });
 
     const valgtBarnId = formMethods.watch('valgteBarn');
-
-    const valgtBarn =
-        valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
-            ? undefined
-            : selectableBarn.find((barn) => barn.id === valgtBarnId);
-
+    const valgtBarn = selectableBarn.find((barn) => barn.id === valgtBarnId);
     const knapptekst =
-        valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
+        valgtBarn?.kanSøkeOmEndring === true
             ? intl.formatMessage({ id: 'velkommen.endreSøknad' })
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
@@ -188,7 +172,7 @@ export const Forside = ({
                                 />
                             </VStack>
                         </GuidePanel>
-                        <BarnVelger selectableBarn={sortedSelectableBarn} />
+                        <BarnVelger selectableBarn={selectableBarn} />
                         <Alert variant="info">
                             <FormattedMessage id="velkommen.lagring.info" />
                         </Alert>
@@ -214,29 +198,11 @@ export const Forside = ({
                             </VStack>
                         </RhfConfirmationPanel>
                         <HStack justify="center">
-                            <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
+                            <Button type="submit" variant="primary">
                                 {knapptekst}
                             </Button>
                         </HStack>
-                        <HStack justify="center">
-                            <BodyShort>
-                                {/* eslint-disable-next-line  jsx-a11y/anchor-is-valid */}
-                                <a
-                                    className="lenke"
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsDinePersonopplysningerModalOpen(true);
-                                    }}
-                                >
-                                    <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                                </a>
-                            </BodyShort>
-                        </HStack>
-                        <DinePersonopplysningerModal
-                            isOpen={isDinePersonopplysningerModalOpen}
-                            onRequestClose={() => setIsDinePersonopplysningerModalOpen(false)}
-                        />
+                        <DinePersonopplysningerModal />
                     </VStack>
                 </ContentWrapper>
             </VStack>
