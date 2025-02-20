@@ -141,6 +141,18 @@ export const UttaksplanNy = ({
         handleOnPlanChange(saksPerioder);
     };
 
+    const handleDeletePerioder = (slettedePerioder: Planperiode[]) => {
+        const result = builder.slettPerioder(slettedePerioder);
+        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+        const saksPerioder = resultUtenHull.map((p) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
+            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
+            return saksPeriodeNy;
+        });
+        handleOnPlanChange(saksPerioder);
+    };
+
     const closeModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
@@ -162,6 +174,7 @@ export const UttaksplanNy = ({
                     perioder={komplettPlan}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
                 />
             )}
 

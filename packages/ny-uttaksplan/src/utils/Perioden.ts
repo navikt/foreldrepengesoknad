@@ -4,7 +4,7 @@ import { TidsperiodenString, UttaksdagenString, getTidsperiodeString } from '@na
 
 import { Planperiode } from '../types/Planperiode';
 import { formaterDatoKompakt } from './dateUtils';
-import { isForeldrepengerFørFødselPeriode, isUtsettelsesperiode } from './periodeUtils';
+import { isForeldrepengerFørFødselPeriode, isHull, isUtsettelsesperiode } from './periodeUtils';
 
 export const Perioden = (periode: Planperiode) => ({
     setStartdato: (fom: string) => flyttPeriode(periode, fom),
@@ -33,7 +33,7 @@ function erPerioderLike(p1: Planperiode, p2: Planperiode, inkluderTidsperiode = 
         return false;
     }
 
-    if (p1.periodeHullÅrsak !== undefined && p2.periodeHullÅrsak !== undefined) {
+    if (isHull(p1) && isHull(p2)) {
         return true;
     }
 
