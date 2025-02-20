@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { ModalData } from '../EndrePeriodeModal';
@@ -62,6 +62,7 @@ export const EndreTidsperiodeModalStep = ({
                         maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
                         label="Fra og med dato"
                         name="fom"
+                        disableWeekends={true}
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd' }),
@@ -73,6 +74,9 @@ export const EndreTidsperiodeModalStep = ({
                                 intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
                                 tomValue,
                             ),
+                            isWeekday(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
+                            ),
                         ]}
                     />
                     <RhfDatepicker
@@ -83,9 +87,13 @@ export const EndreTidsperiodeModalStep = ({
                             isValidDate(
                                 intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
                             ),
+                            isWeekday(
+                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.måVæreUkedag' }),
+                            ),
                         ]}
                         label="Til og med dato"
                         name="tom"
+                        disableWeekends={true}
                     />
                 </div>
                 <div

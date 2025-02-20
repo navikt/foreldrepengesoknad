@@ -35,4 +35,5 @@ export {
     isLessThanOneAndHalfYearsAgo,
     isBeforeToday,
     terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke as terminbekreftelsedatoIsValid,
+    isWeekday,
 } from './src/form/dateFormValidation';
