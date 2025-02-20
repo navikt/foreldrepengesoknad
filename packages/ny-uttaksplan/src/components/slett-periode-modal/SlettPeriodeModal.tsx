@@ -7,6 +7,7 @@ import { Button, Checkbox, Heading, Modal } from '@navikt/ds-react';
 import { RhfCheckboxGroup, RhfForm } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
+import { isRequired } from '@navikt/fp-validation';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
@@ -28,7 +29,7 @@ export interface ModalData {
 }
 
 interface FormValues {
-    perioder: string[] | undefined;
+    perioder: string[];
 }
 
 export const SlettPeriodeModal = ({
@@ -47,13 +48,13 @@ export const SlettPeriodeModal = ({
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            perioder: undefined,
+            perioder: [],
         },
     });
 
     const onSubmit = (values: FormValues) => {
-        if (values.perioder?.length === 1) {
-            const periode = perioder.find((p) => p.id === values.perioder![0]);
+        if (values.perioder.length === 1) {
+            const periode = perioder.find((p) => p.id === values.perioder[0]);
 
             if (periode) {
                 handleDeletePeriode(periode);
@@ -87,7 +88,11 @@ export const SlettPeriodeModal = ({
                 <Heading size="medium">Hvilke perioder vil du slette?</Heading>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                     <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                        <RhfCheckboxGroup name="perioder" label="Perioder">
+                        <RhfCheckboxGroup
+                            validate={[isRequired('Du må velge en periode du vil slette')]}
+                            name="perioder"
+                            label="Perioder"
+                        >
                             {perioder.map((p) => {
                                 return (
                                     <Checkbox key={p.id} name={p.id} value={p.id}>
