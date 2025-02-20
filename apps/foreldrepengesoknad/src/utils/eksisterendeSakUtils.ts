@@ -330,14 +330,14 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
             };
         case 'adopsjon':
             return {
-                type: BarnType.ADOPTERT_STEBARN, //TODO: hvordan vet vi om det er adoptert stebarn eller annet barn?
+                type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: sak.omsorgsovertakelsesdato!,
                 antallBarn: sak.antallBarn,
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
                 fnr: valgteBarn?.fnr,
             };
         case 'omsorgsovertakelse':
-            throw new Error('Støttes ikke'); //TODO: sjekk
+            throw new Error('Kan ikke sende endringssøknad for omsorgsovertakelse');
     }
 };
 
@@ -353,7 +353,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     annenPart: SøkerAnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-): AnnenForelder | undefined => {
+): AnnenForelder => {
     switch (situasjon) {
         case 'fødsel':
         case 'adopsjon':
@@ -381,7 +381,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
             };
         case 'omsorgsovertakelse':
-            throw new Error('Støtter ikke omsorgsovertakelse');
+            throw new Error('Kan ikke sende endringssøknad for omsorgsovertakelse');
     }
 };
 
@@ -569,10 +569,6 @@ export const lagEndringsSøknad = (
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
     const rolle = getSøkerrolleFromSaksgrunnlag(søker, grunnlag);
-
-    if (!barn) {
-        throw new Error('Kan ikke lage endresøknad uten barn'); // TODO:
-    }
 
     const annenForelder = opprettAnnenForelderFraEksisterendeSak(
         intl,

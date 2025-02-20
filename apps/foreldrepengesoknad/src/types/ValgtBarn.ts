@@ -17,7 +17,7 @@ export type ValgtBarn = {
     fødselsdatoer?: Date[];
     omsorgsovertagelse?: Date;
     fornavn?: string[];
-    kanSøkeOmEndring?: boolean; // TODO: hvorfor undefined?
+    kanSøkeOmEndring?: boolean;
     sak?: Sak;
     annenForelder?: RegistrertAnnenForelder;
     familiehendelsesdato?: Date;

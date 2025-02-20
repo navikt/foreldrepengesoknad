@@ -85,7 +85,7 @@ export const Forside = ({
         oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
 
-        // TODO: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
+        // Uklarhet: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
         const valgtEksisterendeSak = vilSøkeOmEndring
             ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
             : undefined;
@@ -114,7 +114,7 @@ export const Forside = ({
         // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
         if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
             const søknad = lagSøknadFraValgteBarnMedSak(
-                { ...valgteBarn, sak: valgteBarn.sak }, //TODO: usikker om dette blir peneere TS eller hacky
+                { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
                 søkerInfo.søker.barn,
                 søkerInfo.søker.fnr,
@@ -128,7 +128,6 @@ export const Forside = ({
             oppdaterSøknadIState(søknad);
         }
 
-        // TODO: vurder om disse skal ligge som default, eller om vi vil ha de inn i "if" og kaste en error hvis ingen av casene slår inn.
         setErEndringssøknad(false);
         setSøknadGjelderNyttBarn(false);
         return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
