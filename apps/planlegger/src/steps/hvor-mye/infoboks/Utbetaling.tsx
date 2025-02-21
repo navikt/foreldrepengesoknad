@@ -24,13 +24,14 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
 
     const decimal80 = 80 / 100;
 
-    const getMonthlyPayment = (lønn: number, decimal: number) => Math.round(Math.min(lønn, monthlyMax) * decimal);
+    const getMonthlyPayment = (lønn: number, decimal: number) => {
+        if (isNaN(lønn)) return 0;
+        return Math.round(Math.min(lønn, monthlyMax) * decimal);
+    };
+
     const getDailyPayment = (lønn: number, decimal: number) => {
-        if (isNaN(lønn)) {
-            return 0;
-        } else {
-            return Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
-        }
+        if (isNaN(lønn)) return 0;
+        return Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
     };
 
     return (

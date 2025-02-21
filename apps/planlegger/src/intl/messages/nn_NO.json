@@ -264,7 +264,7 @@
     "TilpassPlanenSteg.FjernAlt.Modal.Body": "Er du sikker på at du vil fjerna alt i planen?",
     "TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft": "Ja, fjerna alt",
     "TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt": "Avbryt",
-    "Validering.ValidNumber": "Du har skrive noko som ikkje er eit tal. Bokstaver, mellomrom, punktum og komma er ikkje tillate.",
+    "Validering.ValidNumber": "Du har skrive noko som ikkje er eit tal. Bokstavar, mellomrom, punktum og komma er ikkje tillate.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepengar!",
     "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
     "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar"
