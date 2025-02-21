@@ -290,10 +290,20 @@ const FellesKvoter = () => {
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
-    const ubrukteDager = fellesKonto.dager - (dagerBruktAvDeg + dagerBruktAvAnnenPart);
+    const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
+    const ubrukteDager = fellesKonto.dager - samletBrukteDager;
+    const overtrukketDager = ubrukteDager * -1;
 
-    const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
-    const prosentBruktAvAnnenPart = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
+    const prosentOvertrukketKvote = Math.floor((fellesKonto.dager / samletBrukteDager) * 100);
+    const prosentBruktAvDeg =
+        overtrukketDager <= 0
+            ? Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100)
+            : (Math.round((dagerBruktAvDeg / samletBrukteDager) * 100) * prosentOvertrukketKvote) / 100;
+    const prosentBruktAvAnnenPart =
+        overtrukketDager <= 0
+            ? Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100)
+            : (Math.round((dagerBruktAvAnnenPart / samletBrukteDager) * 100) * prosentOvertrukketKvote) / 100;
+
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
@@ -314,7 +324,12 @@ const FellesKvoter = () => {
                         {
                             kontoType: undefined,
                             erFyllt: false,
-                            prosent: 100 - (prosentBruktAvAnnenPart + prosentBruktAvDeg),
+                            prosent: overtrukketDager > 0 ? 0 : 100 - (prosentBruktAvAnnenPart + prosentBruktAvDeg),
+                        },
+                        {
+                            kontoType: undefined,
+                            prosent: 100 - prosentOvertrukketKvote,
+                            erOvertrukket: true,
                         },
                     ]}
                 />
