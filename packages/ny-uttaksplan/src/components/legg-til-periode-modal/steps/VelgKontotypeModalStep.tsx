@@ -84,7 +84,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
                 >
                     {valgtStønadskonto.kontoer.map((konto) => {
                         return (
-                            <Radio value={konto.konto}>
+                            <Radio key={konto.konto} value={konto.konto}>
                                 {getStønadskontoNavn(intl, konto.konto, navnPåForeldre, erFarEllerMedmor)}
                             </Radio>
                         );

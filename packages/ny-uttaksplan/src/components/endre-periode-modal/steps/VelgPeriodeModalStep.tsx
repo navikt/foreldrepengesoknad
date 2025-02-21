@@ -60,10 +60,9 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                 >
                     {perioder.map((p) => {
                         return (
-                            <Radio
-                                key={p.id}
-                                value={p.id}
-                            >{`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}</Radio>
+                            <Radio key={p.id} value={p.id}>
+                                {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
+                            </Radio>
                         );
                     })}
                 </RhfRadioGroup>
