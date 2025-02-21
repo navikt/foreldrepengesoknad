@@ -22,6 +22,7 @@ const customRenderer = ({
     familiehendelsedato,
     handleUpdatePeriode,
     handleDeletePeriode,
+    handleDeletePerioder,
     barn,
 }: StoryArgs) => {
     return (
@@ -41,6 +42,7 @@ const customRenderer = ({
                     <PeriodeListeItem
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
+                        handleDeletePerioder={handleDeletePerioder}
                         erFamiliehendelse={erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
                     />
@@ -63,6 +65,7 @@ export const UttaksperiodeMor: Story = {
     args: {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
+        handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -95,6 +98,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
+        handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -135,6 +139,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
+        handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -193,6 +198,7 @@ export const UttaksperiodeFar: Story = {
     args: {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
+        handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -225,6 +231,7 @@ export const PeriodeUtenUttak: Story = {
     args: {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
+        handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-08-01'],
