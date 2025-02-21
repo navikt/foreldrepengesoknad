@@ -352,9 +352,9 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     }
 
     const dagerBrukt = summerDagerIPerioder(perioder);
-
     const ubrukteDager = konto.dager - dagerBrukt;
-    const prosentBruktAvFedrekvote = Math.floor((dagerBrukt / konto.dager) * 100);
+    const overtrukketDager = ubrukteDager * -1;
+    const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
 
     return (
         <VStack gap="4">
@@ -368,11 +368,11 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                     fordelinger={[
                         {
                             kontoType: konto.konto,
-                            prosent: prosentBruktAvFedrekvote,
+                            prosent: prosentBruktAvkvote,
                         },
                         {
                             kontoType: konto.konto,
-                            prosent: 100 - prosentBruktAvFedrekvote,
+                            prosent: 100 - prosentBruktAvkvote,
                             erFyllt: false,
                         },
                     ]}
@@ -387,6 +387,12 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
                                   { varighet: getVarighetString(ubrukteDager, intl) },
+                              )
+                            : '',
+                        overtrukketDager > 0
+                            ? intl.formatMessage(
+                                  { id: 'kvote.varighet.overtrukket' },
+                                  { varighet: getVarighetString(overtrukketDager, intl) },
                               )
                             : '',
                     ]

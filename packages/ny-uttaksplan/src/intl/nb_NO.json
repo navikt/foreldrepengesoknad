@@ -78,6 +78,7 @@
     "kvote.varighet.fellesperiode.deg": "{varighet} er lagt til for deg",
     "kvote.varighet.fellesperiode.annenForeldre": "{varighet} er lagt til for annen forelder",
     "kvote.varighet.gjenstår": "{varighet} gjenstår",
+    "kvote.varighet.overtrukket": "{varighet} for mye",
     "kvote.varighet.erLagtTil": "{varighet} er lagt til",
     "leggTilPeriodeModal.hvaVilDuGjøre.påkrevd": "Du må velge hva du vil gjøre",
     "leggTilPeriodeModal.kontoType.påkrevd": "Du må velge hvilken konto du vil bruke",
