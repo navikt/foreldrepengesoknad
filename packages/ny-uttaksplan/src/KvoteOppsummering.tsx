@@ -1,5 +1,6 @@
+import { CircleBrokenIcon } from '@navikt/aksel-icons';
 import { sum, sumBy } from 'lodash';
-import { createContext, useContext } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
@@ -80,32 +81,28 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
     if (antallUbrukteDager === 0) {
         return (
-            <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">
-                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
-                </ExpansionCard.Title>
-                <ExpansionCard.Description>
+            <TittelKomponent
+                tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                beskrivelse={
                     <FormattedMessage
                         id="kvote.enRett.beskrivelse.allTidIPlan"
                         values={{ varighet: getVarighetString(dagerBrukt, intl) }}
                     />
-                </ExpansionCard.Description>
-            </ExpansionCard.Header>
+                }
+            />
         );
     }
 
     return (
-        <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">
+        <TittelKomponent
+            tittel={
                 <FormattedMessage
                     id="kvote.beskrivelse.gjenståendeTid"
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
-            </ExpansionCard.Title>
-            <ExpansionCard.Description>
-                <FormattedMessage id="kvote.beskrivelse.endre.du" />
-            </ExpansionCard.Description>
-        </ExpansionCard.Header>
+            }
+            beskrivelse={<FormattedMessage id="kvote.beskrivelse.endre.du" />}
+        />
     );
 };
 
@@ -164,11 +161,9 @@ const KvoteTittel = () => {
                 : '';
 
         return (
-            <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">
-                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
-                </ExpansionCard.Title>
-                <ExpansionCard.Description>
+            <TittelKomponent
+                tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                beskrivelse={
                     <FormattedMessage
                         id="kvote.beskrivelse.allTidIPlan"
                         values={{
@@ -178,8 +173,12 @@ const KvoteTittel = () => {
                             ),
                         }}
                     />
-                </ExpansionCard.Description>
-            </ExpansionCard.Header>
+                }
+            />
+            // <div className="rounded-full bg-surface-success-subtle">
+            //     <CheckmarkIcon fontSize="2rem" className="text-icon-success p-1" aria-hidden />
+            //
+            // </div>
         );
     }
 
@@ -206,26 +205,47 @@ const KvoteTittel = () => {
             : '';
 
     return (
-        <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">
+        <TittelKomponent
+            tittel={
                 <FormattedMessage
                     id="kvote.tittel.gjenståendeTid"
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
-            </ExpansionCard.Title>
-            <ExpansionCard.Description>
-                <FormattedMessage
-                    id="kvote.beskrivelse.gjenståendeTid"
-                    values={{
-                        varighet: formatOppramsing(
-                            [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
-                            intl,
-                        ),
-                    }}
-                />{' '}
-                <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
-                <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
-            </ExpansionCard.Description>
+            }
+            beskrivelse={
+                <>
+                    <FormattedMessage
+                        id="kvote.beskrivelse.gjenståendeTid"
+                        values={{
+                            varighet: formatOppramsing(
+                                [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                                intl,
+                            ),
+                        }}
+                    />{' '}
+                    <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
+                    <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
+                </>
+            }
+        />
+    );
+};
+
+const TittelKomponent = ({ tittel, beskrivelse }: { tittel: ReactNode; beskrivelse: ReactNode }) => {
+    const { visStatusIkoner } = useKvote();
+    return (
+        <ExpansionCard.Header>
+            <HStack wrap={false} gap="4" align="start">
+                {visStatusIkoner && (
+                    <div className="rounded-full bg-surface-selected">
+                        <CircleBrokenIcon fontSize="2rem" className="text-text-action p-1" aria-hidden />
+                    </div>
+                )}
+                <div>
+                    <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+                    <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+                </div>
+            </HStack>
         </ExpansionCard.Header>
     );
 };
