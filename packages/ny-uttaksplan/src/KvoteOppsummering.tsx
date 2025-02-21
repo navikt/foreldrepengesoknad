@@ -355,6 +355,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     const ubrukteDager = konto.dager - dagerBrukt;
     const overtrukketDager = ubrukteDager * -1;
     const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
+    const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
 
     return (
         <VStack gap="4">
@@ -364,19 +365,35 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                 {getVarighetString(konto.dager, intl)}
             </BodyShort>
             <VStack gap="1" className="ml-4">
-                <FordelingsBar
-                    fordelinger={[
-                        {
-                            kontoType: konto.konto,
-                            prosent: prosentBruktAvkvote,
-                        },
-                        {
-                            kontoType: konto.konto,
-                            prosent: 100 - prosentBruktAvkvote,
-                            erFyllt: false,
-                        },
-                    ]}
-                />
+                {overtrukketDager <= 0 ? (
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                kontoType: konto.konto,
+                                prosent: prosentBruktAvkvote,
+                            },
+                            {
+                                kontoType: konto.konto,
+                                prosent: 100 - prosentBruktAvkvote,
+                                erFyllt: false,
+                            },
+                        ]}
+                    />
+                ) : (
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                kontoType: konto.konto,
+                                prosent: prosentOvertrukketKvote,
+                            },
+                            {
+                                kontoType: konto.konto,
+                                prosent: 100 - prosentOvertrukketKvote,
+                                erOvertrukket: true,
+                            },
+                        ]}
+                    />
+                )}
                 <BodyShort>
                     {[
                         intl.formatMessage(
@@ -435,13 +452,19 @@ type FordelingSegmentProps = {
     kontoType?: StønadskontoType;
     prosent: number;
     erFyllt?: boolean;
+    erOvertrukket?: boolean;
 };
-const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegmentProps) => {
+const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = false }: FordelingSegmentProps) => {
     const { forelder } = useKvote();
     if (prosent <= 0) {
         return null;
     }
     const style = { width: `${prosent - 1.5}%` };
+
+    if (erOvertrukket) {
+        return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+    }
+
     if (forelder === 'MOR') {
         if (
             kontoType === 'MØDREKVOTE' ||
