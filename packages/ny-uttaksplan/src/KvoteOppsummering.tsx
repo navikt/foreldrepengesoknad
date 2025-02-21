@@ -12,10 +12,11 @@ import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
-    readonly konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    readonly perioder: SaksperiodeNy[];
-    readonly rettighetType: RettighetType;
-    readonly forelder: Forelder;
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+    rettighetType: RettighetType;
+    forelder: Forelder;
+    visStatusIkoner: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -32,7 +33,7 @@ export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
-                <OppsummeringsTittel {...props} />
+                <OppsummeringsTittel />
                 <ExpansionCard.Content>
                     <VStack gap="4">
                         <ForeldrepengerFørFødselKvoter />
@@ -48,8 +49,10 @@ export const KvoteOppsummering = (props: Props) => {
     );
 };
 
-const OppsummeringsTittel = (props: Props) => {
-    if (props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') {
+const OppsummeringsTittel = () => {
+    const { rettighetType } = useKvote();
+
+    if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
     return <KvoteTittel />;
