@@ -1,4 +1,4 @@
-import { CircleBrokenIcon } from '@navikt/aksel-icons';
+import { CheckmarkIcon, CircleBrokenIcon, ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { sum, sumBy } from 'lodash';
 import { ReactNode, createContext, useContext } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -82,6 +82,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     if (antallUbrukteDager === 0) {
         return (
             <TittelKomponent
+                ikon={<AllTidIPlanIkon size="stor" />}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
                 beskrivelse={
                     <FormattedMessage
@@ -95,6 +96,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 
     return (
         <TittelKomponent
+            ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
             tittel={
                 <FormattedMessage
                     id="kvote.beskrivelse.gjenståendeTid"
@@ -162,6 +164,7 @@ const KvoteTittel = () => {
 
         return (
             <TittelKomponent
+                ikon={<AllTidIPlanIkon size="stor" />}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
                 beskrivelse={
                     <FormattedMessage
@@ -175,10 +178,6 @@ const KvoteTittel = () => {
                     />
                 }
             />
-            // <div className="rounded-full bg-surface-success-subtle">
-            //     <CheckmarkIcon fontSize="2rem" className="text-icon-success p-1" aria-hidden />
-            //
-            // </div>
         );
     }
 
@@ -206,6 +205,7 @@ const KvoteTittel = () => {
 
     return (
         <TittelKomponent
+            ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
             tittel={
                 <FormattedMessage
                     id="kvote.tittel.gjenståendeTid"
@@ -231,16 +231,20 @@ const KvoteTittel = () => {
     );
 };
 
-const TittelKomponent = ({ tittel, beskrivelse }: { tittel: ReactNode; beskrivelse: ReactNode }) => {
+const TittelKomponent = ({
+    tittel,
+    beskrivelse,
+    ikon,
+}: {
+    tittel: ReactNode;
+    beskrivelse: ReactNode;
+    ikon: ReactNode;
+}) => {
     const { visStatusIkoner } = useKvote();
     return (
         <ExpansionCard.Header>
             <HStack wrap={false} gap="4" align="start">
-                {visStatusIkoner && (
-                    <div className="rounded-full bg-surface-selected">
-                        <CircleBrokenIcon fontSize="2rem" className="text-text-action p-1" aria-hidden />
-                    </div>
-                )}
+                {visStatusIkoner ? ikon : null}
                 <div>
                     <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
                     <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
@@ -302,7 +306,7 @@ const MødreKvoter = () => {
 
 const FellesKvoter = () => {
     const intl = useIntl();
-    const { konto, perioder, forelder } = useKvote();
+    const { konto, perioder, forelder, visStatusIkoner } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -327,11 +331,24 @@ const FellesKvoter = () => {
             ? Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100)
             : (Math.round((dagerBruktAvAnnenPart / samletBrukteDager) * 100) * prosentOvertrukketKvote) / 100;
 
+    const finnIkon = () => {
+        if (overtrukketDager > 0) {
+            return <ForMyeTidBruktIPlanIkon size="liten" />;
+        }
+        if (samletBrukteDager === fellesKonto.dager) {
+            return <AllTidIPlanIkon size="liten" />;
+        }
+        return <MerTidÅBrukeIPlanIkon size="liten" />;
+    };
+
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">
-                {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
-            </BodyShort>
+            <HStack gap="2" align="center">
+                {visStatusIkoner ? finnIkon() : null}
+                <BodyShort weight="semibold">
+                    {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
+                </BodyShort>
+            </HStack>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
@@ -384,6 +401,7 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
+    const { visStatusIkoner } = useKvote();
 
     if (!konto) {
         return null;
@@ -395,13 +413,26 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
     const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
 
+    const finnIkon = () => {
+        if (overtrukketDager > 0) {
+            return <ForMyeTidBruktIPlanIkon size="liten" />;
+        }
+        if (dagerBrukt === konto.dager) {
+            return <AllTidIPlanIkon size="liten" />;
+        }
+        return <MerTidÅBrukeIPlanIkon size="liten" />;
+    };
+
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">
-                <VisningsnavnForKvote kontoType={konto.konto} />
-                {' - '}
-                {getVarighetString(konto.dager, intl)}
-            </BodyShort>
+            <HStack gap="2" align="center">
+                {visStatusIkoner ? finnIkon() : null}
+                <BodyShort weight="semibold">
+                    <VisningsnavnForKvote kontoType={konto.konto} />
+                    {' - '}
+                    {getVarighetString(konto.dager, intl)}
+                </BodyShort>
+            </HStack>
             <VStack gap="1" className="ml-4">
                 {overtrukketDager <= 0 ? (
                     <FordelingsBar
@@ -552,6 +583,33 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = 
 
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
 };
+
+type IkonProps = { size: 'stor' | 'liten' };
+const AllTidIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-success-subtle">
+        <CheckmarkIcon fontSize={size === 'stor' ? '2.5rem' : '1.5rem'} className="text-icon-success p-1" aria-hidden />
+    </div>
+);
+
+const MerTidÅBrukeIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-selected">
+        <CircleBrokenIcon
+            fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
+            className="text-text-action p-1"
+            aria-hidden
+        />
+    </div>
+);
+
+const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-danger-subtle">
+        <ExclamationmarkIcon
+            fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
+            className="text-text-danger p-05"
+            aria-hidden
+        />
+    </div>
+);
 
 export const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
