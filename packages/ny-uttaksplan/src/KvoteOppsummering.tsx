@@ -63,22 +63,56 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     const { konto, perioder } = useKvote();
     const intl = useIntl();
 
-    const dagerBrukt = summerDagerIPerioder(
-        perioder.filter(
-            (p) =>
-                p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
-                p.kontoType === 'FORELDREPENGER' ||
-                p.kontoType === 'AKTIVITETSFRI_KVOTE',
-        ),
+    const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
+        const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
+        if (!aktuellKonto) {
+            return null;
+        }
+        const brukteDager = summerDagerIPerioder(perioder.filter((p) => p.kontoType === kontoType));
+        const ubrukteDager = aktuellKonto.dager - brukteDager;
+        const overtrukketDager = ubrukteDager * -1;
+
+        return {
+            kontoType,
+            brukteDager,
+            ubrukteDager,
+            overtrukketDager,
+        };
+    });
+
+    const antallOvertrukketDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.overtrukketDager ?? 0) > 0),
+        (kvote) => kvote?.overtrukketDager ?? 0,
+    );
+    const antallUbrukteDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.ubrukteDager ?? 0) > 0),
+        (kvote) => kvote?.ubrukteDager ?? 0,
+    );
+    const antallBrukteDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.brukteDager ?? 0) > 0),
+        (kvote) => kvote?.brukteDager ?? 0,
     );
 
-    const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const aktivitetsfriKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    if (antallOvertrukketDager > 0) {
+        return (
+            <TittelKomponent
+                ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                tittel={
+                    <FormattedMessage
+                        id="kvote.tittel.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+                beskrivelse={
+                    <FormattedMessage
+                        id="kvote.enRett.beskrivelse.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+            />
+        );
+    }
 
-    const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (k) => k?.dager ?? 0);
-
-    const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
     if (antallUbrukteDager === 0) {
         return (
             <TittelKomponent
@@ -87,7 +121,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                 beskrivelse={
                     <FormattedMessage
                         id="kvote.enRett.beskrivelse.allTidIPlan"
-                        values={{ varighet: getVarighetString(dagerBrukt, intl) }}
+                        values={{ varighet: getVarighetString(antallBrukteDager, intl) }}
                     />
                 }
             />
@@ -136,8 +170,57 @@ const KvoteTittel = () => {
         mødreKonto && førFødselKonto ? mødreKonto.dager + førFødselKonto.dager - dagerBruktAvMor : 0;
     const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : 0;
     const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : 0;
-
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
+
+    const antallOvertrukketDager =
+        sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles].filter((d) => d < 0)) * -1;
+
+    if (antallOvertrukketDager > 0) {
+        const beskrivelseMor =
+            ubrukteDagerMor < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilMor' },
+                      { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
+                  )
+                : '';
+        const beskrivelseFelles =
+            ubrukteDagerFelles < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.fellesperiode' },
+                      { varighet: getVarighetString(ubrukteDagerFelles * -1, intl) },
+                  )
+                : '';
+        const beskrivelseFar =
+            ubrukteDagerFar < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilFar' },
+                      { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
+                  )
+                : '';
+
+        return (
+            <TittelKomponent
+                ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                tittel={
+                    <FormattedMessage
+                        id="kvote.tittel.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+                beskrivelse={
+                    <FormattedMessage
+                        id="kvote.beskrivelse.forMyeTidIPlan"
+                        values={{
+                            varighet: formatOppramsing(
+                                [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                                intl,
+                            ),
+                        }}
+                    />
+                }
+            />
+        );
+    }
 
     if (antallUbrukteDager === 0) {
         const beskrivelseMor =
