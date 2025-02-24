@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
-import { BehandlingTilstand } from './../../types/BehandlingTilstand';
-import StatusTag from './StatusTag';
+import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { StatusTag } from './StatusTag';
 
 const meta = {
     title: 'StatusTag',
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const AktivSak: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: saker.foreldrepenger[0],
         harMinstEttArbeidsforhold: true,
     },
@@ -22,9 +22,8 @@ export const AktivSak: Story = {
 
 export const AvsluttetSak: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             sakAvsluttet: true,
         },
@@ -34,9 +33,8 @@ export const AvsluttetSak: Story = {
 
 export const UnderBehandling: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.UNDER_BEHANDLING,
@@ -48,9 +46,8 @@ export const UnderBehandling: Story = {
 
 export const VenterPåInntektsmelding: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -62,9 +59,8 @@ export const VenterPåInntektsmelding: Story = {
 
 export const VenterPåBehandling: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -76,9 +72,8 @@ export const VenterPåBehandling: Story = {
 
 export const TidligSøknad: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.TIDLIG_SØKNAD,
@@ -90,9 +85,8 @@ export const TidligSøknad: Story = {
 
 export const VenterPåMeldekort: Story = {
     args: {
-        //@ts-ignore fiks
+        //@ts-expect-error fiks
         sak: {
-            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_MELDEKORT,

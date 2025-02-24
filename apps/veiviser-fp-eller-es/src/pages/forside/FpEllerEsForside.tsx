@@ -1,13 +1,10 @@
 import { InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { useEffect } from 'react';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { FrontPage, Infobox } from '@navikt/fp-ui';
 
@@ -16,18 +13,10 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const FpEllerEsForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
 
     const { goToRoute } = useVeiviserNavigator();
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: FpEllerEsRoutes.OM,
-        });
-    }, []);
 
     return (
         <FrontPage
@@ -42,6 +31,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
         >
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Foreldrepenger" />}
+                headingLevel="2"
                 color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
@@ -51,6 +41,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
             </Infobox>
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Engangsstønad" />}
+                headingLevel="2"
                 color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
@@ -61,5 +52,3 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
         </FrontPage>
     );
 };
-
-export default FpEllerEsForside;

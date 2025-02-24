@@ -3,7 +3,7 @@ import { Forelder } from '@navikt/fp-constants';
 
 import { Planperiode } from './Planperiode';
 
-interface Permisjonsperiode {
+export interface Permisjonsperiode {
     forelder?: Forelder;
     perioder: Planperiode[];
     tidsperiode: Tidsperiode;
@@ -12,5 +12,3 @@ interface Permisjonsperiode {
     erHull?: boolean;
     erPeriodeUtenUttak?: boolean;
 }
-
-export default Permisjonsperiode;

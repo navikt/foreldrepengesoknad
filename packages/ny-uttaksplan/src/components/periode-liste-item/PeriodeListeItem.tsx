@@ -1,19 +1,27 @@
-import { FunctionComponent } from 'react';
-
 import { Accordion } from '@navikt/ds-react';
 
-import planBemUtils from '../../planBemUtils';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
-import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';
-import PeriodeListeHeader from '../periode-liste-header/PeriodeListeHeader';
+import { planBemUtils } from '../../planBemUtils';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
+import { Planperiode } from '../../types/Planperiode';
+import { PeriodeListeContent } from '../periode-liste-content/PeriodeListeContent';
+import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
 import './periode-liste-item.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+export const PeriodeListeItem = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+}: Props) => {
     const bem = planBemUtils('periode-liste-item');
 
     return (
@@ -22,10 +30,14 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamil
                 <PeriodeListeHeader permisjonsperiode={permisjonsperiode} erFamiliehendelse={erFamiliehendelse} />
             </Accordion.Header>
             <Accordion.Content>
-                <PeriodeListeContent erFamiliehendelse={!!erFamiliehendelse} permisjonsperiode={permisjonsperiode} />
+                <PeriodeListeContent
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    erFamiliehendelse={!!erFamiliehendelse}
+                    permisjonsperiode={permisjonsperiode}
+                />
             </Accordion.Content>
         </Accordion.Item>
     );
 };
-
-export default PeriodeListeItem;

@@ -12,6 +12,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Sirkelmaske: React.FunctionComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {
     const bem = planBemUtils('sirkelmaske');
     const style: Partial<CSSProperties> = {
@@ -30,4 +31,5 @@ const Sirkelmaske: React.FunctionComponent<Props> = ({ farge, diameter, aktiv = 
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Sirkelmaske;

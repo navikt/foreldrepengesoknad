@@ -6,7 +6,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
@@ -88,7 +87,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.OM_BARNET]}>
                 <FpDataContext

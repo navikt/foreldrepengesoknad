@@ -6,7 +6,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { DokumentType } from '../../types/DokumentType';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
-import BekreftelseSendtSøknad from './BekreftelseSendtSøknad';
+import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
 const meta = {
     title: 'BekreftelseSendtSøknad',
@@ -24,14 +24,14 @@ type Story = StoryObj<typeof meta>;
 export const ForForeldrepenger: Story = {
     args: {
         relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
-            tidligstBehandlingsDato: new Date(),
+            opprettet: new Date().toISOString(),
+            tidligstBehandlingsDato: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
                     type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date(),
+                    mottatt: new Date().toISOString(),
                     saksnummer: '1212',
                     tittel: 'Søknad',
                     url: 'test',
@@ -62,13 +62,13 @@ export const ForForeldrepengerManglerDokumentasjon: Story = {
 export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
     args: {
         relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
+            opprettet: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
                     type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date(),
+                    mottatt: new Date().toISOString(),
                     saksnummer: '1212',
                     tittel: 'Søknad',
                     url: 'test',
@@ -84,14 +84,14 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
 export const ForEngangsstønad: Story = {
     args: {
         relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
-            tidligstBehandlingsDato: new Date(),
+            opprettet: new Date().toISOString(),
+            tidligstBehandlingsDato: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
                     type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date(),
+                    mottatt: new Date().toISOString(),
                     saksnummer: '1212',
                     tittel: 'Søknad',
                     url: 'test',
@@ -115,14 +115,14 @@ export const ForEngangsstønadManglerDokumentasjon: Story = {
 export const ForSvangerskapspenger: Story = {
     args: {
         relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
-            tidligstBehandlingsDato: new Date(),
+            opprettet: new Date().toISOString(),
+            tidligstBehandlingsDato: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
                     type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date(),
+                    mottatt: new Date().toISOString(),
                     saksnummer: '1212',
                     tittel: 'Søknad',
                     url: 'test',
@@ -145,13 +145,13 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
 export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
     args: {
         relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
+            opprettet: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
                     type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date(),
+                    mottatt: new Date().toISOString(),
                     saksnummer: '1212',
                     tittel: 'Søknad',
                     url: 'test',

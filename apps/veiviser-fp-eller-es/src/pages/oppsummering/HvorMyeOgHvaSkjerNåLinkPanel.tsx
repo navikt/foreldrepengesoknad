@@ -6,7 +6,7 @@ import { HStack, Heading } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { AndreVeivisereLinkPanel } from '@navikt/fp-ui';
 
-const HvorMyeOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
+export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
     return (
         <AndreVeivisereLinkPanel
             links={[
@@ -36,5 +36,3 @@ const HvorMyeOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
         />
     );
 };
-
-export default HvorMyeOgHvaSkjerNåLinkPanel;

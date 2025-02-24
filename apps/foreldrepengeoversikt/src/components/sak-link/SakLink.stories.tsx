@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
 import { SakLink } from './SakLink';
 
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         harMinstEttArbeidsforhold: true,
-        // @ts-ignore Sjekk Ytelse
+        // @ts-expect-error Sjekk Ytelse
         sak: saker.foreldrepenger[0],
     },
 };

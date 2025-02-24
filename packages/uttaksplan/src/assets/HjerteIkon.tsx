@@ -29,4 +29,5 @@ const HjerteIkon = (props: UttaksplanIkonProps & OwnProps) => {
         </svg>
     );
 };
+// eslint-disable-next-line import/no-default-export
 export default HjerteIkon;

@@ -214,7 +214,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             <Label>
                                                 <FormattedMessage id="ArbeidssituasjonSide.Gjennomsnitt" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
                                                     ? formatCurrencyWithKr(gjennomsnittslønnPerMåned, locale)
                                                     : '-'}
@@ -224,7 +224,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             <Label>
                                                 <FormattedMessage id="ArbeidssituasjonSide.GjennomsnittÅrslønn" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
                                                     ? formatCurrencyWithKr(
                                                           parseInt(gjennomsnittslønnPerMåned, 10) * 12,

@@ -15,5 +15,5 @@ const overføringsårsakSkalBesvares = (
         (annenForelderHarRettIEØS && !erFarEllerMedmor && kontoValue === StønadskontoType.Fedrekvote)
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default overføringsårsakSkalBesvares;

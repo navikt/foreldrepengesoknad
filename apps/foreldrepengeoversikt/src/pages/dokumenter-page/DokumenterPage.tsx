@@ -8,16 +8,16 @@ import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from '../../api/api';
+import { Dokument } from '../../components/dokument/Dokument';
+import { GrupperteDokumenter } from '../../components/grupperte-dokumenter/GrupperteDokumenter';
 import { DokumenterHeader } from '../../components/header/Header';
+import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { grupperDokumenterPåTidspunkt } from '../../utils/dokumenterUtils';
 import { guid } from '../../utils/guid';
-import Dokument from './../../components/dokument/Dokument';
-import GrupperteDokumenter from './../../components/grupperte-dokumenter/GrupperteDokumenter';
-import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
 
 export const DokumenterPage = () => {
     useSetBackgroundColor('white');

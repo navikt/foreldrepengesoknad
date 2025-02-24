@@ -95,6 +95,7 @@ export const getArbeidsOptions = (
     return [...eksisterendeArbeidsforhold, ...defaultOptions];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
     graderingsprosentVisible,
     arbeidsforhold,
@@ -154,5 +155,5 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default SkalHaGraderingSpørsmål;

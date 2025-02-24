@@ -25,7 +25,12 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
     return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };
 
-const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMedmor, navnPåForeldre }: Props) => {
+export const OppholdsPeriodeContent = ({
+    periode,
+    inneholderKunEnPeriode,
+    erFarEllerMedmor,
+    navnPåForeldre,
+}: Props) => {
     const intl = useIntl();
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -54,5 +59,3 @@ const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMed
         </div>
     );
 };
-
-export default OppholdsPeriodeContent;

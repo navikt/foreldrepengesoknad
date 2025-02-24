@@ -12,4 +12,5 @@ const getYesOrNoValidator = (): ValidationFunction<YesOrNoValidationResult> => (
     return isAnswered ? undefined : ValidateYesOrNoError.yesOrNoIsUnanswered;
 };
 
+// eslint-disable-next-line import/no-default-export
 export default getYesOrNoValidator;

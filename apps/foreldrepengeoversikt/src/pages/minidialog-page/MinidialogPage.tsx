@@ -6,22 +6,22 @@ import { Heading, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { minidialogOptions, sendEttersending } from './../../api/api';
-import ContentSection from './../../components/content-section/ContentSection';
-import { DinSakHeader } from './../../components/header/Header';
-import MinidialogSkjema from './../../components/minidialog-skjema/MinidialogSkjema';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import EttersendingDto from './../../types/EttersendingDTO';
+import { minidialogOptions, sendEttersending } from '../../api/api';
+import { ContentSection } from '../../components/content-section/ContentSection';
+import { DinSakHeader } from '../../components/header/Header';
+import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { EttersendingDto } from '../../types/EttersendingDTO';
 
 interface Props {
     fnr: string;
 }
 
-const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
+export const MinidialogPage = ({ fnr }: Props) => {
     const params = useParams();
     const minidialog = useQuery({
         ...minidialogOptions(),
@@ -39,15 +39,8 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        //TODO FIX eslint-feil
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        mutationFn: ({ ettersendelse, fnr }: { ettersendelse: EttersendingDto; fnr: string }) =>
-            sendEttersending(ettersendelse, fnr),
+        mutationFn: (ettersendelse: EttersendingDto) => sendEttersending(ettersendelse, fnr),
     });
-
-    const sendEttersendelse = (ettersendelse: EttersendingDto) => {
-        mutate({ ettersendelse, fnr });
-    };
 
     if (!minidialog || !sak) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
@@ -64,7 +57,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
                     <MinidialogSkjema
                         sakstype={sak.ytelse}
                         minidialog={minidialog}
-                        onSubmit={sendEttersendelse}
+                        onSubmit={mutate}
                         isSendingEttersendelse={isPending}
                         ettersendelseErSendt={isSuccess}
                         ettersendelseError={
@@ -78,5 +71,3 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
         </PageRouteLayout>
     );
 };
-
-export default MinidialogPage;

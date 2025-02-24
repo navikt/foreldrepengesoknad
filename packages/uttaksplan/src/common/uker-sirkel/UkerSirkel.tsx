@@ -7,6 +7,7 @@ interface Props {
     uker: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UkerSirkel: React.FunctionComponent<Props> = ({ uker }) => {
     const bem = planBemUtils('ukerSirkel');
 
@@ -21,4 +22,5 @@ const UkerSirkel: React.FunctionComponent<Props> = ({ uker }) => {
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default UkerSirkel;

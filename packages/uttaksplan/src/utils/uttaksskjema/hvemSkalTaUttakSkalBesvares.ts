@@ -1,4 +1,5 @@
 import { Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+
 import { erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormQuestionsConfig';
 
 const hvemSkalTaUttakSkalBesvares = (
@@ -23,5 +24,5 @@ const hvemSkalTaUttakSkalBesvares = (
     }
     return erDeltUttakINorge;
 };
-
+// eslint-disable-next-line import/no-default-export
 export default hvemSkalTaUttakSkalBesvares;

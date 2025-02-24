@@ -14,6 +14,7 @@ interface Props {
     familiehendelsesdato: Date;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeUtenUttak: FunctionComponent<Props> = ({ periode, handleUpdatePeriode, familiehendelsesdato }) => {
     const intl = useIntl();
 
@@ -41,5 +42,5 @@ const PeriodeUtenUttak: FunctionComponent<Props> = ({ periode, handleUpdatePerio
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeUtenUttak;

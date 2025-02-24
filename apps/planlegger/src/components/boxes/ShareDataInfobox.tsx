@@ -3,14 +3,14 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Infobox } from '@navikt/fp-ui';
 
 const copyUrlToClipboard = async () => {
-    logAmplitudeEvent('applikasjon-hendelse', {
-        app: 'planlegger',
-        team: 'foreldrepenger',
-        pageKey: 'copy-url',
+    loggAmplitudeEvent({
+        origin: 'planlegger',
+        eventName: 'kopier',
+        eventData: { tittel: 'OppsummeringSteg.KopierUrl' },
     });
     try {
         await navigator.clipboard.writeText(window.location.href);

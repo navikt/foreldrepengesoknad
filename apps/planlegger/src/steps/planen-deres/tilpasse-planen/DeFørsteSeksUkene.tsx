@@ -28,7 +28,7 @@ export const DeFørsteSeksUkene = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
                 </Heading>
                 <BodyLong>

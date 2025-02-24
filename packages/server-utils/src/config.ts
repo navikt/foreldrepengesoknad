@@ -13,4 +13,5 @@ const app = {
     publicPath: process.env.PUBLIC_PATH || '',
 };
 
+// eslint-disable-next-line import/no-default-export
 export default { proxy, app };

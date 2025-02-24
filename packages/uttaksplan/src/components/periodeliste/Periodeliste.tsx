@@ -16,7 +16,7 @@ import {
     Utsettelsesperiode,
     isInfoPeriode,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -71,6 +71,7 @@ export const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: stri
     return undefined;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Periodeliste: FunctionComponent<Props> = ({
     uttaksplan,
     familiehendelsesdato,
@@ -105,10 +106,10 @@ const Periodeliste: FunctionComponent<Props> = ({
         if (openPeriodeId === id) {
             setOpenPeriodeId(null!);
         } else {
-            logAmplitudeEvent('applikasjon-hendelse', {
-                app: 'foreldrepengesoknad',
-                team: 'foreldrepenger',
-                hendelse: 'expandPeriode',
+            loggAmplitudeEvent({
+                origin: 'foreldrepengesoknad',
+                eventName: 'accordion åpnet',
+                eventData: { tittel: 'expandPeriode' },
             });
             setOpenPeriodeId(id);
         }
@@ -199,5 +200,5 @@ const Periodeliste: FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default Periodeliste;

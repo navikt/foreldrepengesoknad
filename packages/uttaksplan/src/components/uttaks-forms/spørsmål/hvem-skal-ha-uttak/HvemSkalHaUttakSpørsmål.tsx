@@ -14,6 +14,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPåForeldre, erFarEllerMedmor }) => {
     const intl = useIntl();
 
@@ -45,5 +46,5 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default HvemSkalHaUttakSpørsmål;

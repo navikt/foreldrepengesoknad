@@ -3,7 +3,7 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import Uttaksplanbuilder from './Uttaksplanbuilder';
+import { Uttaksplanbuilder } from './Uttaksplanbuilder';
 
 const perioder: Planperiode[] = [
     {
@@ -12,7 +12,7 @@ const perioder: Planperiode[] = [
         tom: '2022-04-29',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -20,7 +20,7 @@ const perioder: Planperiode[] = [
         tom: '2022-08-12',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -28,7 +28,7 @@ const perioder: Planperiode[] = [
         tom: '2022-10-07',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -39,7 +39,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2021-12-15',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -47,7 +47,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-01-05',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -55,7 +55,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-05-18',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '4',
@@ -63,14 +63,14 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-07-01',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '5',
         fom: '2022-07-04',
         tom: '2022-07-15',
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '6',
@@ -78,7 +78,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-09-23',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
 ];
 
@@ -89,7 +89,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-09-03',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '2',
@@ -97,7 +97,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-09-10',
         forelder: Forelder.mor,
         utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '3',
@@ -105,7 +105,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-12-10',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '4',
@@ -113,7 +113,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-12-31',
         forelder: Forelder.mor,
         utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '5',
@@ -121,7 +121,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-01-07',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Mødrekvote,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '6',
@@ -129,7 +129,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-04-29',
         forelder: Forelder.mor,
         kontoType: StønadskontoType.Fellesperiode,
-        gjelderAnnenPart: false,
+        readOnly: false,
     },
     {
         id: '7',
@@ -137,7 +137,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-05-10',
         forelder: Forelder.farMedmor,
         utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-        gjelderAnnenPart: true,
+        readOnly: true,
     },
     {
         id: '8',
@@ -145,7 +145,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-07-08',
         forelder: Forelder.farMedmor,
         kontoType: StønadskontoType.Fedrekvote,
-        gjelderAnnenPart: true,
+        readOnly: true,
     },
     {
         id: '9',
@@ -153,14 +153,14 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-07-29',
         utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
         forelder: Forelder.farMedmor,
-        gjelderAnnenPart: true,
+        readOnly: true,
     },
     {
         id: '10',
         fom: '2022-08-01',
         tom: '2022-09-13',
         forelder: Forelder.farMedmor,
-        gjelderAnnenPart: true,
+        readOnly: true,
         kontoType: StønadskontoType.Fedrekvote,
     },
 ];
@@ -173,7 +173,7 @@ describe('Uttaksplanbuilder tester', () => {
             tom: '2022-08-26',
             forelder: Forelder.mor,
             utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
 
         const result = Uttaksplanbuilder(perioder, '2022-05-02', false, false, false, false, undefined).leggTilPeriode(
@@ -187,7 +187,7 @@ describe('Uttaksplanbuilder tester', () => {
             fom: '2022-05-23',
             tom: '2022-05-27',
             forelder: Forelder.mor,
-            gjelderAnnenPart: false,
+            readOnly: false,
             utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
         };
 
@@ -208,7 +208,7 @@ describe('Uttaksplanbuilder tester', () => {
             tom: '2022-11-11',
             forelder: Forelder.mor,
             kontoType: StønadskontoType.Mødrekvote,
-            gjelderAnnenPart: false,
+            readOnly: false,
         };
         const result = Uttaksplanbuilder(
             perioderMedToPerioderFørFødsel,
@@ -244,7 +244,7 @@ describe('Uttaksplanbuilder tester', () => {
                 tom: '2022-09-16',
                 forelder: Forelder.mor,
                 utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
-                gjelderAnnenPart: false,
+                readOnly: false,
             };
             const result = Uttaksplanbuilder(
                 perioderMedAnnenPartsUttakOgUtsettelserISlutten,

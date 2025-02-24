@@ -1,13 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, Link, Radio, VStack } from '@navikt/ds-react';
+import { Radio, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
+
+import { HjelpeTekstES } from './HjelpeTekstES';
+import { HjelpeTekstFelles } from './HjelpeTekstFelles';
 
 interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
@@ -76,64 +78,11 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                             <FormattedMessage id="UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
                     </RhfRadioGroup>
-                    <ExpansionCard
-                        size="small"
-                        aria-label={intl.formatMessage({ id: 'UtenlandsoppholdSteg.StotteFraNav' })}
-                    >
-                        <ExpansionCard.Header>
-                            <ExpansionCard.Title size="small">
-                                <FormattedMessage id="UtenlandsoppholdSteg.StotteFraNav" />
-                            </ExpansionCard.Title>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <VStack gap="10">
-                                <VStack gap="5">
-                                    <BodyLong>
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del1" />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del2" />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del3" />
-                                    </BodyLong>
-                                    <BodyLong>
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del4" />
-                                    </BodyLong>
-                                </VStack>
-                                <VStack gap="5">
-                                    <Heading size="small" level="4">
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Undertittel" />
-                                    </Heading>
-                                    <BodyLong>
-                                        <FormattedMessage id="UtenlandsoppholdSteg.Info.Del5" />
-                                    </BodyLong>
-                                    <HStack gap="1">
-                                        <BodyShort>
-                                            <FormattedMessage id="UtenlandsoppholdSteg.Info.Del6" />
-                                        </BodyShort>
-                                        <BodyShort>
-                                            {stønadstype === 'Engangsstønad' && (
-                                                <Link href={links.engangsstonadHvem} target="_blank">
-                                                    <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.es" />
-                                                </Link>
-                                            )}
-                                            {stønadstype === 'Foreldrepenger' && (
-                                                <Link href={links.foreldrepengerUtland} target="_blank">
-                                                    <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.fp" />
-                                                </Link>
-                                            )}
-                                            {stønadstype === 'Svangerskapspenger' && (
-                                                <Link href={links.svangerskapspengerUtland} target="_blank">
-                                                    <FormattedMessage id="UtenlandsoppholdSteg.Info.Del7.svp" />
-                                                </Link>
-                                            )}
-                                        </BodyShort>
-                                    </HStack>
-                                </VStack>
-                            </VStack>
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
+                    {stønadstype === 'Engangsstønad' ? (
+                        <HjelpeTekstES />
+                    ) : (
+                        <HjelpeTekstFelles stonadstype={stønadstype} />
+                    )}
                     <StepButtonsHookForm<Utenlandsopphold>
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}

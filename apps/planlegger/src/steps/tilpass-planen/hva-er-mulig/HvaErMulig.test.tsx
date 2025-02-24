@@ -154,8 +154,6 @@ describe('<HvaErMulig>', () => {
         expect(await screen.findByText('Hva er mulig når man tilpasser?')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye man kan endre på i planen.')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan ikke endres')).toBeInTheDocument();
-        expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 

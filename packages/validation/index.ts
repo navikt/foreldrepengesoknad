@@ -8,6 +8,7 @@ export {
     hasMinLength,
     hasMaxLength,
     hasLegalChars,
+    isEmpty,
 } from './src/form/generalFormValidation';
 export {
     isValidNumberForm,
@@ -34,4 +35,5 @@ export {
     isLessThanOneAndHalfYearsAgo,
     isBeforeToday,
     terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke as terminbekreftelsedatoIsValid,
+    isWeekday,
 } from './src/form/dateFormValidation';

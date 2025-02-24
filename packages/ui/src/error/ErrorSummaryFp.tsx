@@ -8,7 +8,7 @@ export type ErrorSummaryError = {
 };
 
 interface Props {
-    errorRef: React.RefObject<HTMLDivElement>;
+    errorRef: React.RefObject<HTMLDivElement | null>;
     errors: ErrorSummaryError[];
 }
 

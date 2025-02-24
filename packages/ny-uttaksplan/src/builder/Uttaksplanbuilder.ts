@@ -173,7 +173,7 @@ const getAnnenPartsUttak = (perioder: Planperiode[]): Planperiode[] => {
     return perioder.filter((p) => isAnnenPartsPeriode(p));
 };
 
-const Uttaksplanbuilder = (
+export const Uttaksplanbuilder = (
     perioder: Planperiode[],
     familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
@@ -300,7 +300,38 @@ const Uttaksplanbuilder = (
                 annenPartsUttak,
                 førsteUttaksdagNesteBarnsSak,
             ),
+        slettPerioder: (slettedePerioder: Planperiode[]) => {
+            let resultat: Planperiode[] = [];
+            slettedePerioder.forEach((slettetPeriode, index) => {
+                if (index === 0) {
+                    resultat = slettPeriodeOgBuild(
+                        perioderUtenAnnenPart,
+                        slettetPeriode,
+                        familiehendelsesdato,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        annenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak,
+                    );
+                } else {
+                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    resultat = slettPeriodeOgBuild(
+                        resultat,
+                        slettetPeriode,
+                        familiehendelsesdato,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        nyAnnenPartsUttak,
+                        førsteUttaksdagNesteBarnsSak,
+                    );
+                }
+            });
+
+            return resultat;
+        },
     };
 };
-
-export default Uttaksplanbuilder;

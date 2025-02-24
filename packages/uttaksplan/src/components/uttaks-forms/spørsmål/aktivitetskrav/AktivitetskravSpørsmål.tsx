@@ -30,6 +30,7 @@ const renderOptions = (intl: IntlShape) => {
         ));
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPåForeldre, FormComponents }) => {
     const intl = useIntl();
 
@@ -53,5 +54,5 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
         </Block>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default AktivitetskravSpørsmål;

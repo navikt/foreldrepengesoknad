@@ -10,4 +10,5 @@ const planBemUtils = (cls: string) => ({
     classNames,
 });
 
+// eslint-disable-next-line import/no-default-export
 export default planBemUtils;

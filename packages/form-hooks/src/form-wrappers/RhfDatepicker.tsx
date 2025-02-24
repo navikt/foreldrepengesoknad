@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { JSX, ReactNode, useCallback, useMemo, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';

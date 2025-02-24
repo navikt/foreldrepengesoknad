@@ -113,6 +113,7 @@ const getUtsettelseÅrsakOptions = (
     return defaultRadios;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     periodenErKunHelligdager,
     skalViseGamleUtsettelseÅrsaker,
@@ -172,5 +173,5 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
         </Block>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UtsettelseÅrsakSpørsmål;

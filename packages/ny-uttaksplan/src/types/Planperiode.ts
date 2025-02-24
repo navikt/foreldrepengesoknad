@@ -9,5 +9,5 @@ export interface Planperiode extends SaksperiodeNy {
     periodeHullÅrsak?: PeriodeHullType;
     skalIkkeHaUttakFørTermin?: boolean;
     id: string;
-    gjelderAnnenPart: boolean;
+    readOnly: boolean;
 }

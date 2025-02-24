@@ -43,7 +43,7 @@ const initLocale = (): LocaleAll => {
     return defaultLocale;
 };
 
-const AppContainer = () => {
+export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(initLocale());
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
@@ -55,7 +55,7 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary
-                appName="Foreldrepengeveivisere"
+                appName="veiviser-fp-eller-es"
                 customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
             >
                 <QueryClientProvider client={queryClient}>
@@ -66,5 +66,3 @@ const AppContainer = () => {
         </IntlProvider>
     );
 };
-
-export default AppContainer;

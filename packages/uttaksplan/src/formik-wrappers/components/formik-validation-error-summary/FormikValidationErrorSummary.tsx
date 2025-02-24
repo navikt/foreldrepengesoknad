@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import React, { RefObject } from 'react';
+import React, { JSX, RefObject } from 'react';
 
 import { getAllFieldsWithErrors, getErrorForField } from './../../utils/typedFormErrorUtils';
 import ValidationSummary, { ValidationSummaryError } from './../helpers/ValidationSummary';
@@ -7,10 +7,10 @@ import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
 interface Props {
     heading?: string;
-    summaryRef?: RefObject<HTMLDivElement>;
+    summaryRef?: RefObject<HTMLDivElement | null>;
     wrapper?: (errorSummary: JSX.Element) => JSX.Element;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading, summaryRef, wrapper }) => {
     const context = React.useContext(TypedFormikFormContext);
     const formik = useFormikContext();
@@ -39,5 +39,5 @@ const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading,
     }
     return null;
 };
-
+// eslint-disable-next-line import/no-default-export
 export default FormikValidationErrorSummary;

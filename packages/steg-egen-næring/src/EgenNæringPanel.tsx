@@ -14,7 +14,7 @@ import {
     RhfTextField,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName, EgenNæring, Næringstype } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
@@ -72,7 +72,7 @@ interface Props<TYPE> {
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    stønadstype: AppName;
+    appOrigin: AppName;
 }
 
 export const EgenNæringPanel = <TYPE extends string>({
@@ -84,7 +84,7 @@ export const EgenNæringPanel = <TYPE extends string>({
     onStepChange,
     goToPreviousStep,
     stepConfig,
-    stønadstype,
+    appOrigin,
 }: Props<TYPE>) => {
     const intl = useIntl();
 
@@ -245,7 +245,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                                 },
                             )}
                             description={
-                                stønadstype === 'Svangerskapspenger'
+                                appOrigin === 'svangerskapspengesoknad'
                                     ? intl.formatMessage({ id: 'egenNæring.næring.tom.description' })
                                     : undefined
                             }
@@ -277,7 +277,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             varigEndring={varigEndring}
                             egenNæringFom={næringFom}
                             egenNæringTom={næringTom}
-                            stønadstype={stønadstype}
+                            appOrigin={appOrigin}
                         />
                     )}
                     {erNyoppstartet && (
@@ -302,7 +302,13 @@ export const EgenNæringPanel = <TYPE extends string>({
                                 ]}
                             />
                             <ReadMore
-                                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Mer_om_næringsresultat')}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: appOrigin,
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: { tittel: 'egenNæring.næringsinntekt.info.apneLabel' },
+                                    })
+                                }
                                 header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
                             >
                                 <BodyShort>

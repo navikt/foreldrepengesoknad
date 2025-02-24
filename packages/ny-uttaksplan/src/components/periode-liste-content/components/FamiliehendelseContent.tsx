@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack } from '@navikt/ds-react';
@@ -12,7 +11,7 @@ interface Props {
     familiehendelseType: FamiliehendelseType;
 }
 
-const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType }) => {
+export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
 
@@ -59,5 +58,3 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
         </HStack>
     );
 };
-
-export default FamiliehendelseContent;

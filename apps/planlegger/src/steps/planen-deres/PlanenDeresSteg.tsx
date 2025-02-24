@@ -1,4 +1,4 @@
-import { PersonGroupIcon } from '@navikt/aksel-icons';
+import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -16,7 +16,7 @@ import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarR
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
-import { BodyShort, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
@@ -26,6 +26,7 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { PlanleggerRoutes } from '../../app-data/routes';
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
@@ -65,10 +66,14 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || [];
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
+    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+    const lagreOriginalUttaksplan = useContextSaveData(ContextDataType.ORIGINAL_UTTAKSPLAN);
+    const lagreTilpassPlan = useContextSaveData(ContextDataType.TILPASS_PLAN);
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
@@ -88,6 +93,12 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                 antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),
             });
         }
+    };
+
+    const oppdaterOgLagreUttaksplan = () => {
+        const nyUttaksplan = [...uttaksplan];
+        nyUttaksplan.push([...planforslag.søker1, ...planforslag.søker2]);
+        return nyUttaksplan;
     };
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -110,7 +121,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
         (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
-        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+        startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
     }
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
@@ -141,15 +152,22 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                         </Heading>
-                        {/* <VStack gap="1">
+                        <VStack gap="1">
                             <Button
                                 size="xsmall"
                                 variant="secondary"
+                                type="button"
                                 icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
+                                onClick={() => {
+                                    lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                                    lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
+                                    lagreTilpassPlan(true);
+                                    navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
+                                }}
                             >
                                 <FormattedMessage id="OversiktSteg.Infoboks.Tilpass" />
                             </Button>
-                        </VStack> */}
+                        </VStack>
                     </HStack>
 
                     {farOgFarKunEnPartHarRett && omBarnet.erFødsel && (
@@ -201,7 +219,8 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                             (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
-                                    label={''}
+                                    label="Velg fordeling fellesperiode"
+                                    hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
                                         lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
@@ -249,7 +268,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                             />
                         </div>
                     </VStack>
-                    {/* <Infobox
+                    <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
                         color="gray"
                         icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
@@ -262,14 +281,23 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                                 />
                             </BodyLong>
                             <HStack>
-                                <Button variant="primary">
+                                <Button
+                                    variant="primary"
+                                    type="button"
+                                    onClick={() => {
+                                        lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                                        lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
+                                        lagreTilpassPlan(true);
+                                        navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
+                                    }}
+                                >
                                     <BodyShort size="small">
                                         <FormattedMessage id="OversiktSteg.Infoboks.TilpassPlanen" />
                                     </BodyShort>
                                 </Button>
                             </HStack>
                         </VStack>
-                    </Infobox> */}
+                    </Infobox>
                     <VStack gap="1">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}
@@ -284,7 +312,13 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                     </VStack>
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={navigator.goToNextDefaultStep}
+                        nextButtonOnClick={() => {
+                            lagreUttaksplan(oppdaterOgLagreUttaksplan());
+                            lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
+                            lagreTilpassPlan(false);
+                            navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+                        }}
+                        isJumpToEndButton
                         useSimplifiedTexts
                     />
                 </VStack>

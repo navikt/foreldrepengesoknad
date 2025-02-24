@@ -5,8 +5,6 @@ import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { EgenNæringSteg } from './EgenNæringSteg';
 
 const promiseAction =
@@ -24,7 +22,6 @@ const meta = {
     title: 'steps/EgenNæringSteg',
     component: EgenNæringSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.NÆRING]}>
                 <SvpDataContext

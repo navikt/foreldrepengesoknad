@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong } from '@navikt/ds-react';
 
 import { InfoPeriode, OpprinneligSøkt, isAvslåttPeriode } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import { getSlettPeriodeTekst } from '../../utils/periodeUtils';
@@ -16,13 +16,14 @@ interface Props {
     handleDeletePeriode: (periodeId: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
     const bem = planBemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'slettPeriodeKlikk',
+        loggAmplitudeEvent({
+            origin: 'foreldrepengesoknad',
+            eventName: 'button klikk',
+            eventData: { tittel: 'slettPeriodeKlikk' },
         });
         handleDeletePeriode(periode.id);
     };
@@ -53,5 +54,5 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default SlettbarAvslåttPeriode;

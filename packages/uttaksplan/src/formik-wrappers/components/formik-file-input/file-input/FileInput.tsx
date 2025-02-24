@@ -17,7 +17,7 @@ interface FileInputProps {
     error?: FormError;
     onClick?: () => void;
 }
-
+// eslint-disable-next-line import/no-default-export
 export default class FileInput extends React.Component<FileInputProps> {
     constructor(props: FileInputProps) {
         super(props);

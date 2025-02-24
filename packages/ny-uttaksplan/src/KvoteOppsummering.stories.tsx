@@ -2,7 +2,12 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { MorsAktivitet, OppholdÅrsakType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    MorsAktivitet,
+    OppholdÅrsakType,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+    UttakArbeidType,
+} from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -44,6 +49,7 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
         rettighetType: RettighetType.BEGGE_RETT,
@@ -53,6 +59,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -103,8 +110,55 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
     },
 };
 
+export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
+    args: {
+        visStatusIkoner: true,
+        konto: kontoNårBeggeHarRett,
+        perioder: [
+            {
+                fom: '2024-11-18',
+                tom: '2024-12-06',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-09',
+                tom: '2025-03-14',
+                kontoType: StønadskontoType.Mødrekvote,
+                samtidigUttak: 60.0,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-03-24',
+                tom: '2025-05-16',
+                kontoType: StønadskontoType.Fellesperiode,
+                gradering: {
+                    arbeidstidprosent: 50.0,
+                    aktivitet: {
+                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                    },
+                },
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-05-19',
+                tom: '2025-08-31',
+                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
+    },
+};
+
 export const BeggeRettMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -178,6 +232,7 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -204,6 +259,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -251,6 +307,7 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -275,6 +332,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
 
 export const EnRettMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -299,6 +357,7 @@ export const EnRettMorLedigeDager: Story = {
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -323,6 +382,7 @@ export const AleneomsorgMorLedigeDager: Story = {
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: {
             kontoer: [
                 {

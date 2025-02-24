@@ -7,14 +7,14 @@ import { links } from '@navikt/fp-constants';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
-import KravinfoBoks from '../KravinfoBoks';
-import KravFarEllerMedmor from './KravFarEllerMedmor';
+import { KravinfoBoks } from '../KravinfoBoks';
+import { KravFarEllerMedmor } from './KravFarEllerMedmor';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
 }
 
-const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
+export const HvorforHarJegIkkeRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
     const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
 
     return (
@@ -24,7 +24,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">
+                    <ExpansionCard.Title size="small" as="h2">
                         <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegIkkeRettPåEs" />
                     </ExpansionCard.Title>
                 </HStack>
@@ -38,6 +38,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <>
                                     {borDuINorge === false && jobberDuINorge === false ? (
@@ -69,5 +70,3 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
         </ExpansionCard>
     );
 };
-
-export default HvorforHarJegIkkeRettEsPanel;

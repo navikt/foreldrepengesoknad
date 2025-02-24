@@ -134,6 +134,7 @@ const getPeriodeType = (
     return Periodetype.Uttak;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const PeriodeUttakForm: FunctionComponent<Props> = ({
     familiehendelsesdato,
     periode,
@@ -199,6 +200,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
             : intl.formatMessage({ id: 'annen.forelder' });
+    const harAktivitetsfriKvote =
+        stønadskontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
@@ -249,6 +252,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             erFarEllerMedmor,
                             erDeltUttak,
                             situasjon,
+                            harAktivitetsfriKvote,
                         ),
                         familiehendelsesdato,
                     );
@@ -269,6 +273,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             erFarEllerMedmor,
                             erDeltUttak,
                             situasjon,
+                            harAktivitetsfriKvote,
                         ),
                         familiehendelsesdato,
                     );
@@ -532,5 +537,5 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         />
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default PeriodeUttakForm;

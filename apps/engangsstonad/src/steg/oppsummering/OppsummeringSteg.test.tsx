@@ -19,7 +19,7 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
         expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Steg 5 av 5')).toBeInTheDocument();
+        expect(screen.getByText('Steg 4 av 4')).toBeInTheDocument();
 
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();

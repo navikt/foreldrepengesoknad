@@ -1,10 +1,9 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Alert, HStack, Loader, VStack } from '@navikt/ds-react';
 
-import ScrollToTop from './../../scroll-to-top/ScrollToTop';
+import { ScrollToTop } from './../../scroll-to-top/ScrollToTop';
 
 interface Props {
     fetchCounter: number;
@@ -12,7 +11,7 @@ interface Props {
     saksnummer: string;
 }
 
-const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allowedToFetch, saksnummer }) => {
+export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnummer }: Props) => {
     if (fetchCounter < 30 && allowedToFetch) {
         return (
             <>
@@ -56,5 +55,3 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
         </>
     );
 };
-
-export default MinidialogVenterPåSvar;

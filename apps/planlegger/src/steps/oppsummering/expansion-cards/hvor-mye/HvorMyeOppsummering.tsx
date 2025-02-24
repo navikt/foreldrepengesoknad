@@ -2,25 +2,15 @@ import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Satser } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { HvorMyePanel } from './HvorMyePanel';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-oppgitt-informasjon',
-        });
-    }
-};
 
 interface Props {
     satser: Satser;
@@ -37,7 +27,11 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
     return (
         <VStack gap="10">
             {hvorMye.lønnSøker1 && (
-                <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+                <ExpansionCard
+                    aria-label=""
+                    onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')}
+                    size="small"
+                >
                     <ExpansionCard.Header>
                         <HStack gap="6" align="center" wrap={false}>
                             <IconCircleWrapper size="medium" color="lightBlue">

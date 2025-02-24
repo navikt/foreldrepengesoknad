@@ -21,6 +21,12 @@ export const isValidDate =
     (date: string): FormValidationResult =>
         isEmpty(date) || ISO_DATE_REGEX.test(date) ? null : i18nText;
 
+export const isWeekday =
+    (i18nText: string) =>
+    (date: string): FormValidationResult => {
+        return dayjs(date).day() !== 0 && dayjs(date).day() !== 6 ? null : i18nText;
+    };
+
 export const isBeforeTodayOrToday =
     (i18nText: string) =>
     (date: string): FormValidationResult =>

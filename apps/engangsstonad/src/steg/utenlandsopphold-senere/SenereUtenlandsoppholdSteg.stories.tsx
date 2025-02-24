@@ -5,8 +5,6 @@ import { Path } from 'appData/paths';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
 const promiseAction =
@@ -29,7 +27,6 @@ const meta = {
     title: 'steg/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
     render: ({ gåTilNesteSide = action('button-click'), mellomlagreOgNaviger }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[Path.SENERE_UTENLANDSOPPHOLD]}>
                 <EsDataContext

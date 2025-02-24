@@ -4,6 +4,7 @@ interface RangeIconProps {
     type: 'plus' | 'minus';
 }
 
+// eslint-disable-next-line import/no-default-export
 export default class RangeIcon extends Component<RangeIconProps> {
     renderPlusIcon() {
         return (

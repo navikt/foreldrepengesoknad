@@ -1,14 +1,14 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
+import { useState } from 'react';
 
-import { BodyShort, Stack } from '@navikt/ds-react';
+import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
     isHull,
@@ -18,17 +18,22 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import FamiliehendelseContent from './components/FamiliehendelseContent';
-import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
-import OverføringsperiodeContent from './components/OverføringsperiodeContent';
-import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
+import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
+import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
+import { FamiliehendelseContent } from './components/FamiliehendelseContent';
+import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
+import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
+import { PeriodeUtenUttakContent } from './components/PeriodeUtenUttakContext';
 import { SkalJobbeContent } from './components/SkalJobbeContent';
-import UtsettelsesPeriodeContent from './components/UtsettelsesPeriodeContent';
-import UttaksperiodeContent from './components/UttaksperiodeContent';
+import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeContent';
+import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
 const renderPeriode = (
@@ -106,17 +111,42 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+export const PeriodeListeContent = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+}: Props) => {
+    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
+
+    const closeEndringsModal = () => {
+        setIsEndringsModalOpen(false);
+    };
+    const openEndringsModal = () => {
+        setIsEndringsModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    };
+    const openDeleteModal = () => {
+        setIsDeleteModalOpen(true);
+    };
 
     return (
         <div style={{ marginTop: '1rem' }}>
@@ -126,8 +156,47 @@ const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFa
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+            {modus !== 'innsyn' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <Button type="button" variant="secondary" onClick={openEndringsModal}>
+                        Endre
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                            if (inneholderKunEnPeriode) {
+                                return handleDeletePeriode(permisjonsperiode.perioder[0]);
+                            }
+
+                            openDeleteModal();
+                        }}
+                    >
+                        Slett
+                    </Button>
+                </div>
+            )}
+            {isEndringsModalOpen ? (
+                <EndrePeriodeModal
+                    familiehendelsedato={familiehendelsedato}
+                    closeModal={closeEndringsModal}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    permisjonsperiode={permisjonsperiode}
+                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                    isModalOpen={isEndringsModalOpen}
+                />
+            ) : null}
+            {isDeleteModalOpen ? (
+                <SlettPeriodeModal
+                    closeModal={closeDeleteModal}
+                    handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    permisjonsperiode={permisjonsperiode}
+                    isModalOpen={isDeleteModalOpen}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
+            ) : null}
         </div>
     );
 };
-
-export default PeriodeListeContent;

@@ -22,7 +22,7 @@ export const HvisManBlirSyk = ({ arbeidssituasjon }: Props) => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     {kunEnPartSkalHa ? (
                         <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene" />
                     ) : (

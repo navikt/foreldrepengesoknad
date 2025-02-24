@@ -26,4 +26,5 @@ function TypedFormikWrapper<FormValues>(props: Props<FormValues>) {
         </Formik>
     );
 }
+// eslint-disable-next-line import/no-default-export
 export default TypedFormikWrapper;

@@ -52,5 +52,3 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
         </div>
     );
 };
-
-export default UtsettelsesPeriodeContent;

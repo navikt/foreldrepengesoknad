@@ -26,4 +26,5 @@ const PengerIkon = ({ size = 48 }: OwnProps) => (
     </svg>
 );
 
+// eslint-disable-next-line import/no-default-export
 export default PengerIkon;

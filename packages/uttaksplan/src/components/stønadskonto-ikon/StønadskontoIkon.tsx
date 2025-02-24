@@ -20,6 +20,7 @@ export interface Props {
     harMidlertidigOmsorg?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const StønadskontoIkon: FunctionComponent<Props> = ({
     konto,
     forelder,
@@ -47,5 +48,5 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
         </IconBox>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default StønadskontoIkon;

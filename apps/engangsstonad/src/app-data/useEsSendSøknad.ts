@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
+import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
@@ -33,7 +33,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
         };
     }
 
-    if (erBarnetIkkeFødt(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
+    if (harBarnetTermindato(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
         return {
             type: 'termin',
             antallBarn: omBarnet.antallBarn,

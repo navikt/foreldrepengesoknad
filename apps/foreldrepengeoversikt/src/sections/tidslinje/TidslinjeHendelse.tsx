@@ -11,19 +11,19 @@ import styles from './tidslinjeHendelse.module.css';
 
 interface Props {
     children: React.ReactNode;
-    date: Date;
+    date: string;
     title: string;
     isActiveStep: boolean;
     visKlokkeslett: boolean;
     type: TidslinjehendelseType;
-    førsteUttaksdagISaken: Date | undefined;
-    tidligstBehandlingsDato: Date | undefined;
+    førsteUttaksdagISaken: string | undefined;
+    tidligstBehandlingsDato: string | undefined;
     finnesHendelserFørAktivtSteg: boolean;
     visHeleTidslinjen: boolean;
     erSistePåForsidenMenIkkeSisteIHeleTidslinjen: boolean;
 }
 
-const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
+const getIkonClassElement = (isActiveStep: boolean, opprettet: string) => {
     if (isActiveStep) {
         return styles.ikonActive;
     } else if (dayjs(opprettet).isBefore(dayjs())) {
@@ -32,7 +32,7 @@ const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
     return styles.ikonIncomplete;
 };
 
-const getTimelineClassModifier = (opprettet: Date, isActiveStep: boolean) => {
+const getTimelineClassModifier = (opprettet: string, isActiveStep: boolean) => {
     if (isActiveStep) {
         return styles.active;
     }
@@ -44,9 +44,9 @@ const getTimelineClassModifier = (opprettet: Date, isActiveStep: boolean) => {
 
 const getDateTekst = (
     type: TidslinjehendelseType,
-    date: Date,
-    førsteUttaksdagISaken: Date | undefined,
-    tidligstBehandlingsDato: Date | undefined,
+    date: string,
+    førsteUttaksdagISaken: string | undefined,
+    tidligstBehandlingsDato: string | undefined,
 ) => {
     if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
         const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);

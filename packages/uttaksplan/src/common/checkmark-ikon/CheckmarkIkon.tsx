@@ -13,4 +13,5 @@ const CheckmarkIkon = (props: any) => (
     </svg>
 );
 
+// eslint-disable-next-line import/no-default-export
 export default CheckmarkIkon;

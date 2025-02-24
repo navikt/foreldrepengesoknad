@@ -9,14 +9,14 @@ import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
 import { FpEllerEsSituasjon } from '../../../pages/situasjon/SituasjonSide';
-import KravinfoBoks from '../KravinfoBoks';
+import { KravinfoBoks } from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     grunnbeløpet: number;
 }
 
-const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Props) => {
     const locale = useIntl().locale;
     const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
 
@@ -30,7 +30,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">
+                    <ExpansionCard.Title size="small" as="h2">
                         <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegIkkeRett" />
                     </ExpansionCard.Title>
                 </HStack>
@@ -44,6 +44,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                         <KravinfoBoks
                             testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
@@ -60,6 +61,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                     values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                 />
                             }
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
@@ -75,6 +77,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                         <KravinfoBoks
                             testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <>
                                     {borDuINorge === false && jobberDuINorge === false ? (
@@ -105,5 +108,3 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
         </ExpansionCard>
     );
 };
-
-export default HvorforHarJegIkkeRettPanel;

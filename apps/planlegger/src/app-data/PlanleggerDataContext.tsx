@@ -1,10 +1,12 @@
-import { ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
+
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -13,6 +15,9 @@ export enum ContextDataType {
     HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
+    UTTAKSPLAN = 'UTTAKSPLAN',
+    ORIGINAL_UTTAKSPLAN = 'ORIGINAL_UTTAKSPLAN',
+    TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
 export type ContextDataMap = {
@@ -22,6 +27,9 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
+    [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[][];
+    [ContextDataType.ORIGINAL_UTTAKSPLAN]?: SaksperiodeNy[];
+    [ContextDataType.TILPASS_PLAN]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;

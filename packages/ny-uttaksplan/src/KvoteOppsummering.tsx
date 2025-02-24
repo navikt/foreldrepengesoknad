@@ -1,5 +1,6 @@
+import { CheckmarkIcon, CircleBrokenIcon, ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { sum, sumBy } from 'lodash';
-import { createContext, useContext } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
@@ -12,10 +13,11 @@ import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
-    readonly konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    readonly perioder: SaksperiodeNy[];
-    readonly rettighetType: RettighetType;
-    readonly forelder: Forelder;
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+    rettighetType: RettighetType;
+    forelder: Forelder;
+    visStatusIkoner: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -32,7 +34,7 @@ export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
-                <OppsummeringsTittel {...props} />
+                <OppsummeringsTittel />
                 <ExpansionCard.Content>
                     <VStack gap="4">
                         <ForeldrepengerFørFødselKvoter />
@@ -48,8 +50,10 @@ export const KvoteOppsummering = (props: Props) => {
     );
 };
 
-const OppsummeringsTittel = (props: Props) => {
-    if (props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') {
+const OppsummeringsTittel = () => {
+    const { rettighetType } = useKvote();
+
+    if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
     return <KvoteTittel />;
@@ -59,50 +63,82 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     const { konto, perioder } = useKvote();
     const intl = useIntl();
 
-    const dagerBrukt = summerDagerIPerioder(
-        perioder.filter(
-            (p) =>
-                p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
-                p.kontoType === 'FORELDREPENGER' ||
-                p.kontoType === 'AKTIVITETSFRI_KVOTE',
-        ),
+    const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
+        const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
+        if (!aktuellKonto) {
+            return null;
+        }
+        const brukteDager = summerDagerIPerioder(perioder.filter((p) => p.kontoType === kontoType));
+        const ubrukteDager = aktuellKonto.dager - brukteDager;
+        const overtrukketDager = ubrukteDager * -1;
+
+        return {
+            kontoType,
+            brukteDager,
+            ubrukteDager,
+            overtrukketDager,
+        };
+    });
+
+    const antallOvertrukketDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.overtrukketDager ?? 0) > 0),
+        (kvote) => kvote?.overtrukketDager ?? 0,
+    );
+    const antallUbrukteDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.ubrukteDager ?? 0) > 0),
+        (kvote) => kvote?.ubrukteDager ?? 0,
+    );
+    const antallBrukteDager = sumBy(
+        kvoter.filter((kvote) => (kvote?.brukteDager ?? 0) > 0),
+        (kvote) => kvote?.brukteDager ?? 0,
     );
 
-    const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const aktivitetsfriKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    if (antallOvertrukketDager > 0) {
+        return (
+            <TittelKomponent
+                ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                tittel={
+                    <FormattedMessage
+                        id="kvote.tittel.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+                beskrivelse={
+                    <FormattedMessage
+                        id="kvote.enRett.beskrivelse.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+            />
+        );
+    }
 
-    const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (k) => k?.dager ?? 0);
-
-    const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
     if (antallUbrukteDager === 0) {
         return (
-            <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">
-                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
-                </ExpansionCard.Title>
-                <ExpansionCard.Description>
+            <TittelKomponent
+                ikon={<AllTidIPlanIkon size="stor" />}
+                tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                beskrivelse={
                     <FormattedMessage
                         id="kvote.enRett.beskrivelse.allTidIPlan"
-                        values={{ varighet: getVarighetString(dagerBrukt, intl) }}
+                        values={{ varighet: getVarighetString(antallBrukteDager, intl) }}
                     />
-                </ExpansionCard.Description>
-            </ExpansionCard.Header>
+                }
+            />
         );
     }
 
     return (
-        <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">
+        <TittelKomponent
+            ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
+            tittel={
                 <FormattedMessage
                     id="kvote.beskrivelse.gjenståendeTid"
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
-            </ExpansionCard.Title>
-            <ExpansionCard.Description>
-                <FormattedMessage id="kvote.beskrivelse.endre.du" />
-            </ExpansionCard.Description>
-        </ExpansionCard.Header>
+            }
+            beskrivelse={<FormattedMessage id="kvote.beskrivelse.endre.du" />}
+        />
     );
 };
 
@@ -134,8 +170,57 @@ const KvoteTittel = () => {
         mødreKonto && førFødselKonto ? mødreKonto.dager + førFødselKonto.dager - dagerBruktAvMor : 0;
     const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : 0;
     const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : 0;
-
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
+
+    const antallOvertrukketDager =
+        sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles].filter((d) => d < 0)) * -1;
+
+    if (antallOvertrukketDager > 0) {
+        const beskrivelseMor =
+            ubrukteDagerMor < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilMor' },
+                      { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
+                  )
+                : '';
+        const beskrivelseFelles =
+            ubrukteDagerFelles < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.fellesperiode' },
+                      { varighet: getVarighetString(ubrukteDagerFelles * -1, intl) },
+                  )
+                : '';
+        const beskrivelseFar =
+            ubrukteDagerFar < 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilFar' },
+                      { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
+                  )
+                : '';
+
+        return (
+            <TittelKomponent
+                ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                tittel={
+                    <FormattedMessage
+                        id="kvote.tittel.forMyeTidIPlan"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                }
+                beskrivelse={
+                    <FormattedMessage
+                        id="kvote.beskrivelse.forMyeTidIPlan"
+                        values={{
+                            varighet: formatOppramsing(
+                                [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                                intl,
+                            ),
+                        }}
+                    />
+                }
+            />
+        );
+    }
 
     if (antallUbrukteDager === 0) {
         const beskrivelseMor =
@@ -161,11 +246,10 @@ const KvoteTittel = () => {
                 : '';
 
         return (
-            <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">
-                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
-                </ExpansionCard.Title>
-                <ExpansionCard.Description>
+            <TittelKomponent
+                ikon={<AllTidIPlanIkon size="stor" />}
+                tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                beskrivelse={
                     <FormattedMessage
                         id="kvote.beskrivelse.allTidIPlan"
                         values={{
@@ -175,8 +259,8 @@ const KvoteTittel = () => {
                             ),
                         }}
                     />
-                </ExpansionCard.Description>
-            </ExpansionCard.Header>
+                }
+            />
         );
     }
 
@@ -203,26 +287,52 @@ const KvoteTittel = () => {
             : '';
 
     return (
-        <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">
+        <TittelKomponent
+            ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
+            tittel={
                 <FormattedMessage
                     id="kvote.tittel.gjenståendeTid"
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
-            </ExpansionCard.Title>
-            <ExpansionCard.Description>
-                <FormattedMessage
-                    id="kvote.beskrivelse.gjenståendeTid"
-                    values={{
-                        varighet: formatOppramsing(
-                            [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
-                            intl,
-                        ),
-                    }}
-                />{' '}
-                <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
-                <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
-            </ExpansionCard.Description>
+            }
+            beskrivelse={
+                <>
+                    <FormattedMessage
+                        id="kvote.beskrivelse.gjenståendeTid"
+                        values={{
+                            varighet: formatOppramsing(
+                                [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                                intl,
+                            ),
+                        }}
+                    />{' '}
+                    <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
+                    <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
+                </>
+            }
+        />
+    );
+};
+
+const TittelKomponent = ({
+    tittel,
+    beskrivelse,
+    ikon,
+}: {
+    tittel: ReactNode;
+    beskrivelse: ReactNode;
+    ikon: ReactNode;
+}) => {
+    const { visStatusIkoner } = useKvote();
+    return (
+        <ExpansionCard.Header>
+            <HStack wrap={false} gap="4" align="start">
+                {visStatusIkoner ? ikon : null}
+                <div>
+                    <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+                    <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+                </div>
+            </HStack>
         </ExpansionCard.Header>
     );
 };
@@ -279,7 +389,7 @@ const MødreKvoter = () => {
 
 const FellesKvoter = () => {
     const intl = useIntl();
-    const { konto, perioder, forelder } = useKvote();
+    const { konto, perioder, forelder, visStatusIkoner } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -290,16 +400,38 @@ const FellesKvoter = () => {
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
-    const ubrukteDager = fellesKonto.dager - (dagerBruktAvDeg + dagerBruktAvAnnenPart);
+    const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
+    const ubrukteDager = fellesKonto.dager - samletBrukteDager;
+    const overtrukketDager = ubrukteDager * -1;
 
-    const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
-    const prosentBruktAvAnnenPart = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
+    const prosentOvertrukketKvote = Math.floor((fellesKonto.dager / samletBrukteDager) * 100);
+    const prosentBruktAvDeg =
+        overtrukketDager <= 0
+            ? Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100)
+            : (Math.round((dagerBruktAvDeg / samletBrukteDager) * 100) * prosentOvertrukketKvote) / 100;
+    const prosentBruktAvAnnenPart =
+        overtrukketDager <= 0
+            ? Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100)
+            : (Math.round((dagerBruktAvAnnenPart / samletBrukteDager) * 100) * prosentOvertrukketKvote) / 100;
+
+    const finnIkon = () => {
+        if (overtrukketDager > 0) {
+            return <ForMyeTidBruktIPlanIkon size="liten" />;
+        }
+        if (samletBrukteDager === fellesKonto.dager) {
+            return <AllTidIPlanIkon size="liten" />;
+        }
+        return <MerTidÅBrukeIPlanIkon size="liten" />;
+    };
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">
-                {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
-            </BodyShort>
+            <HStack gap="2" align="center">
+                {visStatusIkoner ? finnIkon() : null}
+                <BodyShort weight="semibold">
+                    {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
+                </BodyShort>
+            </HStack>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
@@ -315,7 +447,12 @@ const FellesKvoter = () => {
                         {
                             kontoType: undefined,
                             erFyllt: false,
-                            prosent: 100 - (prosentBruktAvAnnenPart + prosentBruktAvDeg),
+                            prosent: overtrukketDager > 0 ? 0 : 100 - (prosentBruktAvAnnenPart + prosentBruktAvDeg),
+                        },
+                        {
+                            kontoType: undefined,
+                            prosent: 100 - prosentOvertrukketKvote,
+                            erOvertrukket: true,
                         },
                     ]}
                 />
@@ -347,37 +484,68 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
+    const { visStatusIkoner } = useKvote();
 
     if (!konto) {
         return null;
     }
 
     const dagerBrukt = summerDagerIPerioder(perioder);
-
     const ubrukteDager = konto.dager - dagerBrukt;
-    const prosentBruktAvFedrekvote = Math.floor((dagerBrukt / konto.dager) * 100);
+    const overtrukketDager = ubrukteDager * -1;
+    const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
+    const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
+
+    const finnIkon = () => {
+        if (overtrukketDager > 0) {
+            return <ForMyeTidBruktIPlanIkon size="liten" />;
+        }
+        if (dagerBrukt === konto.dager) {
+            return <AllTidIPlanIkon size="liten" />;
+        }
+        return <MerTidÅBrukeIPlanIkon size="liten" />;
+    };
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">
-                <VisningsnavnForKvote kontoType={konto.konto} />
-                {' - '}
-                {getVarighetString(konto.dager, intl)}
-            </BodyShort>
+            <HStack gap="2" align="center">
+                {visStatusIkoner ? finnIkon() : null}
+                <BodyShort weight="semibold">
+                    <VisningsnavnForKvote kontoType={konto.konto} />
+                    {' - '}
+                    {getVarighetString(konto.dager, intl)}
+                </BodyShort>
+            </HStack>
             <VStack gap="1" className="ml-4">
-                <FordelingsBar
-                    fordelinger={[
-                        {
-                            kontoType: konto.konto,
-                            prosent: prosentBruktAvFedrekvote,
-                        },
-                        {
-                            kontoType: konto.konto,
-                            prosent: 100 - prosentBruktAvFedrekvote,
-                            erFyllt: false,
-                        },
-                    ]}
-                />
+                {overtrukketDager <= 0 ? (
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                kontoType: konto.konto,
+                                prosent: prosentBruktAvkvote,
+                            },
+                            {
+                                kontoType: konto.konto,
+                                prosent: 100 - prosentBruktAvkvote,
+                                erFyllt: false,
+                            },
+                        ]}
+                    />
+                ) : (
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                kontoType: konto.konto,
+                                prosent: prosentOvertrukketKvote,
+                            },
+                            {
+                                kontoType: konto.konto,
+                                prosent: 100 - prosentOvertrukketKvote,
+                                erOvertrukket: true,
+                            },
+                        ]}
+                    />
+                )}
                 <BodyShort>
                     {[
                         intl.formatMessage(
@@ -388,6 +556,12 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
                                   { varighet: getVarighetString(ubrukteDager, intl) },
+                              )
+                            : '',
+                        overtrukketDager > 0
+                            ? intl.formatMessage(
+                                  { id: 'kvote.varighet.overtrukket' },
+                                  { varighet: getVarighetString(overtrukketDager, intl) },
                               )
                             : '',
                     ]
@@ -430,13 +604,19 @@ type FordelingSegmentProps = {
     kontoType?: StønadskontoType;
     prosent: number;
     erFyllt?: boolean;
+    erOvertrukket?: boolean;
 };
-const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegmentProps) => {
+const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = false }: FordelingSegmentProps) => {
     const { forelder } = useKvote();
-    if (prosent === 0) {
+    if (prosent <= 0) {
         return null;
     }
     const style = { width: `${prosent - 1.5}%` };
+
+    if (erOvertrukket) {
+        return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+    }
+
     if (forelder === 'MOR') {
         if (
             kontoType === 'MØDREKVOTE' ||
@@ -487,6 +667,48 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
 };
 
+type IkonProps = { size: 'stor' | 'liten' };
+const AllTidIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-success-subtle">
+        <CheckmarkIcon fontSize={size === 'stor' ? '2.5rem' : '1.5rem'} className="text-icon-success p-1" aria-hidden />
+    </div>
+);
+
+const MerTidÅBrukeIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-selected">
+        <CircleBrokenIcon
+            fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
+            className="text-text-action p-1"
+            aria-hidden
+        />
+    </div>
+);
+
+const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
+    <div className="rounded-full bg-surface-danger-subtle">
+        <ExclamationmarkIcon
+            fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
+            className="text-text-danger p-05"
+            aria-hidden
+        />
+    </div>
+);
+
+export const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
+    const samtidigUttak = periode.samtidigUttak;
+    const dager = TidsperiodenString(periode).getAntallUttaksdager();
+
+    if (arbeidstidprosent) {
+        const graderingsProsent = (100 - arbeidstidprosent) / 100;
+        return dager * graderingsProsent;
+    }
+    if (samtidigUttak) {
+        return dager * (samtidigUttak / 100);
+    }
+    return dager;
+};
+
 const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
-    return sum(perioder.map((p) => TidsperiodenString(p).getAntallUttaksdager()));
+    return Math.floor(sum(perioder.map(finnAntallDagerÅTrekke)));
 };

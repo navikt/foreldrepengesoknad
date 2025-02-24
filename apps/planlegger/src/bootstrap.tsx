@@ -8,10 +8,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import '@navikt/ds-css';
-
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 import './styles/global.css';
 
@@ -22,11 +18,9 @@ if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
         environment: window.location.hostname,
-        integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+        integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
 }
-
-initAmplitude();
 
 const container = document.getElementById('app');
 

@@ -42,6 +42,7 @@ interface PropsPerForelder {
     søkerErFarEllerMedmor: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
     brukteDagerPerForelder,
     erDeltUttakINorge,
@@ -92,6 +93,7 @@ interface PropsPerKvote {
     erAleneOmOmsorg: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     erDeltUttakINorge,
     navnPåForeldre,
@@ -149,6 +151,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const OversiktKvoter: FunctionComponent<Props> = ({
     tilgjengeligeStønadskontoer,
     uttaksplan,
@@ -194,5 +197,5 @@ const OversiktKvoter: FunctionComponent<Props> = ({
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default OversiktKvoter;

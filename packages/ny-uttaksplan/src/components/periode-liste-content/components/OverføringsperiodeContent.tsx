@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -72,7 +71,7 @@ const getOverføringsTekst = (
     }
 };
 
-const OverføringsperiodeContent: FunctionComponent<Props> = ({ periode, inneholderKunEnPeriode, navnPåForeldre }) => {
+export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
     const { forelder } = periode;
     const stønadskontoNavn = getStønadskontoNavn(
@@ -110,5 +109,3 @@ const OverføringsperiodeContent: FunctionComponent<Props> = ({ periode, innehol
         </div>
     );
 };
-
-export default OverføringsperiodeContent;

@@ -8,7 +8,7 @@ import './unansweredQuestionsInfo.scss';
 interface Props {
     children?: React.ReactNode;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UnansweredQuestionsInfo: React.FunctionComponent<Props> = ({ children }) => {
     const intl = useIntl();
 
@@ -28,5 +28,5 @@ const UnansweredQuestionsInfo: React.FunctionComponent<Props> = ({ children }) =
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UnansweredQuestionsInfo;

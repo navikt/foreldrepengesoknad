@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import ky from 'ky';
 import { useNavigate } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import { useContextReset } from './SvpDataContext';
 
@@ -15,11 +15,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
     });
 
     const avbrytSøknadHandler = async () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'svangerskapspengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'avbrutt',
-        });
+        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
 
         reset();
 

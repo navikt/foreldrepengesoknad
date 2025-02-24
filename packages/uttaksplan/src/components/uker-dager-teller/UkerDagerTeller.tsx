@@ -13,7 +13,7 @@ export interface Props {
     ukeStepper: NumberStepperProps;
     dagStepper: NumberStepperProps;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeStepper, dagStepper, ukeLegend, dagLegend }) => {
     const bem = planBemUtils('ukerDagerTeller');
     const ukeLegendId = guid();
@@ -38,5 +38,5 @@ const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeStepper, dagSteppe
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default UkerDagerTeller;

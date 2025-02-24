@@ -1,7 +1,12 @@
-import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { Barn, NavnPåForeldre } from '@navikt/fp-common';
-import { Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
+import {
+    Familiesituasjon,
+    SaksperiodeNy,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+    UttaksplanModus,
+} from '@navikt/fp-types';
 
 export enum UttaksplanContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
@@ -10,6 +15,8 @@ export enum UttaksplanContextDataType {
     NAVN_PÅ_FORELDRE = 'NAVN_PÅ_FORELDRE',
     BARN = 'BARN',
     FAMILIESITUASJON = 'FAMILIESITUASJON',
+    MODUS = 'MODUS',
+    VALGT_STØNADSKONTO = 'VALGT_STØNADSKONTO',
 }
 
 export type UttaksplanContextDataMap = {
@@ -19,6 +26,8 @@ export type UttaksplanContextDataMap = {
     [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]?: NavnPåForeldre;
     [UttaksplanContextDataType.BARN]?: Barn;
     [UttaksplanContextDataType.FAMILIESITUASJON]?: Familiesituasjon;
+    [UttaksplanContextDataType.MODUS]?: UttaksplanModus;
+    [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
 const defaultInitialState = {} as UttaksplanContextDataMap;
@@ -29,17 +38,13 @@ type Dispatch = (action: Action) => void;
 const UttaksplanStateContext = createContext<UttaksplanContextDataMap>(defaultInitialState);
 const UttaksplanDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-interface OwnProps {
+interface Props {
     children: ReactNode;
     initialState?: UttaksplanContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const UttaksplanDataContext: FunctionComponent<OwnProps> = ({
-    children,
-    initialState,
-    onDispatch,
-}): JSX.Element => {
+export const UttaksplanDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: UttaksplanContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':

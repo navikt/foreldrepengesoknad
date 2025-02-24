@@ -9,7 +9,7 @@ interface Props {
     stil?: VeilederMeldingStil;
     skjulMeldingIkon?: boolean;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const VeilederMeldinger: React.FunctionComponent<Props> = ({ meldinger, stil, skjulMeldingIkon }) => {
     return (
         <div>
@@ -21,5 +21,5 @@ const VeilederMeldinger: React.FunctionComponent<Props> = ({ meldinger, stil, sk
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default VeilederMeldinger;

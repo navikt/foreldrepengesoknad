@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -10,7 +9,7 @@ import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils
 import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
@@ -69,10 +68,12 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
     const forrigeMåned = dayjs().subtract(1, 'month');
 
     useEffect(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
+        loggAmplitudeEvent({
+            origin: 'veiviser-hvor-mye',
+            eventName: 'besøk',
+            eventData: {
+                tittel: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
+            },
         });
     }, []);
 
@@ -93,6 +94,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                             <HarIkkeRettTilFpInfobox antattÅrslønn={årslønn} minÅrslønn={minÅrslønn} />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.HvaErEs" />}
+                                headingLevel="2"
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -130,6 +132,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                             {erMellomMinÅrslønnOg1Komma5G && (
                                 <Infobox
                                     header={<FormattedMessage id="OppsummeringSide.SammenlignFpOgEs" />}
+                                    headingLevel="2"
                                     icon={
                                         <WalletIcon
                                             height={24}
@@ -165,6 +168,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                             )}
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}
+                                headingLevel="2"
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -188,7 +192,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                 <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
-                                <ExpansionCard.Title size="small">
+                                <ExpansionCard.Title size="small" as="h2">
                                     <FormattedMessage id="OppsummeringSide.DetteSvarteDu" />
                                 </ExpansionCard.Title>
                             </HStack>
@@ -217,10 +221,10 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                     <BluePanel>
                                         <VStack gap="4">
                                             <VStack gap="1">
-                                                <Heading size="small">
+                                                <Heading size="small" level="4">
                                                     <FormattedMessage id="OppsummeringSide.Lønn" />
                                                 </Heading>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                     )}
@@ -235,7 +239,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 </BodyShort>
                                             </VStack>
                                             <div>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                     )}
@@ -250,7 +254,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 </BodyShort>
                                             </div>
                                             <div>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 </Heading>
                                                 <BodyShort>

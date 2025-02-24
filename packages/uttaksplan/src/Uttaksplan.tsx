@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import {
@@ -21,7 +21,8 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
@@ -101,7 +102,7 @@ export interface PeriodeValidState {
     isValid: boolean;
 }
 
-const Uttaksplan: FunctionComponent<Props> = ({
+const Uttaksplan = ({
     foreldreSituasjon,
     erDeltUttak,
     uttaksplan,
@@ -135,7 +136,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     familiehendelsesdatoNesteSak,
     førsteUttaksdagNesteBarnsSak,
     minsterettUkerToTette,
-}) => {
+}: Props) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
     const [visningsmodus, setVisningsmodus] = useState<string>('liste');
@@ -154,6 +155,8 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
+    const harAktivitetsfriKvote =
+        stønadskontoer.kontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -186,6 +189,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 oppdatertPeriode as Uttaksperiode,
                 famHendelsesdato,
+                harAktivitetsfriKvote,
             );
 
             resultat = builder.oppdaterPerioder(perioder);
@@ -272,10 +276,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'slettUttaksplan',
+        loggAmplitudeEvent({
+            origin: 'foreldrepengesoknad',
+            eventName: 'button klikk',
+            eventData: { tittel: 'slettUttaksplan' },
         });
         handleSlettUttaksplan();
     };
@@ -378,4 +382,5 @@ const Uttaksplan: FunctionComponent<Props> = ({
     );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Uttaksplan;

@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 

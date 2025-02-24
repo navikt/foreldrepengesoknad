@@ -58,7 +58,7 @@ export const isValidTime = (time: Partial<InputTime>): time is InputTime => {
 const handleTimeChange = (time: Partial<InputTime>, onChange: TimeInputChangeFunc) => {
     onChange(time, isValidTime(time));
 };
-
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const TimeInput: React.FunctionComponent<TimeInputProps> = ({
     time = { hours: undefined, minutes: undefined },
     maxHours = MAX_HOURS,
@@ -171,5 +171,5 @@ const DisabledInput = ({ className }: { className: string }) => {
         </div>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default TimeInput;

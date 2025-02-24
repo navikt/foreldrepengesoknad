@@ -15,7 +15,7 @@ import {
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';
@@ -56,6 +56,7 @@ interface Props {
     perioderErGyldige: PeriodeValidState[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Planlegger: FunctionComponent<Props> = ({
     uttaksplan,
     familiehendelsesdato,
@@ -189,10 +190,10 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                logAmplitudeEvent('applikasjon-hendelse', {
-                                    app: 'foreldrepengesoknad',
-                                    team: 'foreldrepenger',
-                                    hendelse: 'leggTilPeriodeKlikk',
+                                loggAmplitudeEvent({
+                                    origin: 'foreldrepengesoknad',
+                                    eventName: 'button klikk',
+                                    eventData: { tittel: 'leggTilPeriodeKlikk' },
                                 });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(false);
@@ -204,10 +205,10 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                logAmplitudeEvent('applikasjon-hendelse', {
-                                    app: 'foreldrepengesoknad',
-                                    team: 'foreldrepenger',
-                                    hendelse: 'leggTilUtsettelseKlikk',
+                                loggAmplitudeEvent({
+                                    origin: 'foreldrepengesoknad',
+                                    eventName: 'button klikk',
+                                    eventData: { tittel: 'leggTilUtsettelseKlikk' },
                                 });
                                 setNyPeriodeFormIsVisible(true);
                                 setIsUtsettelse(true);
@@ -221,5 +222,5 @@ const Planlegger: FunctionComponent<Props> = ({
         </>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default Planlegger;

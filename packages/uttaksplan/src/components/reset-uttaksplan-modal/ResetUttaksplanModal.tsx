@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import Block from '../../common/block/Block';
 import planBemUtils from '../../utils/planBemUtils';
@@ -15,14 +15,15 @@ interface Props {
     handleResetUttaksplanModalBekreft: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-restricted-types
 const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handleResetUttaksplanModalBekreft }) => {
     const bem = planBemUtils('resetUttaksplanModal');
 
     const onBekreft = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'tilbakestillPlan',
+        loggAmplitudeEvent({
+            origin: 'foreldrepengesoknad',
+            eventName: 'button klikk',
+            eventData: { tittel: 'tilbakestillPlan' },
         });
         handleResetUttaksplanModalBekreft();
     };
@@ -52,5 +53,5 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
         </Modal>
     );
 };
-
+// eslint-disable-next-line import/no-default-export
 export default ResetUttaksplanModal;

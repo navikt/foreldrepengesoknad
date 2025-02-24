@@ -14,7 +14,7 @@ export const JobbeSamtidig = () => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.JobbeSamtidig" />
                 </Heading>
                 <BodyLong>

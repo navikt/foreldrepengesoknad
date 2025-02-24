@@ -51,7 +51,7 @@ export const RhfRadioGroup = ({
             }}
             className={className}
         >
-            {children.map((child, index) => {
+            {children.map((child: any, index) => {
                 //TODO Vurder å heller lage ein wrapper til children
                 //Denne map'en legg til ref for å kunna setta fokus ved feil
                 if (index === 0) {
