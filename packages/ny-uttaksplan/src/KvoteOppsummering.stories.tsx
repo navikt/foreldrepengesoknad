@@ -49,6 +49,7 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
         rettighetType: RettighetType.BEGGE_RETT,
@@ -58,6 +59,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -110,6 +112,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -155,6 +158,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -228,6 +232,7 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -254,6 +259,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -301,6 +307,7 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -325,6 +332,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
 
 export const EnRettMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -349,6 +357,7 @@ export const EnRettMorLedigeDager: Story = {
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
             {
@@ -373,6 +382,7 @@ export const AleneomsorgMorLedigeDager: Story = {
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
+        visStatusIkoner: true,
         konto: {
             kontoer: [
                 {
