@@ -1,5 +1,0 @@
-import{j as r}from"./jsx-runtime-CLpGMVip.js";import{u as i,R as d,a as t}from"./StepButtonsHookForm-CVo24Iug.js";import"./index-CR__hKHy.js";import"./VeiviserPage-k_7-Y0Mo.js";import{B as m}from"./BlueRadioGroup-BsywGBgt.js";import"./VStack-CmtOnz83.js";import"./index-D2e_E8nu.js";import"./index-CtmzRm2p.js";import"./Responsive-IFi8LHQ2.js";import"./customErrorFormatter-RUbEXImz.js";const B={title:"components/BlueRadioGroup",component:m,render:o=>r.jsx(l,{...o})},l=o=>{const p=i();return r.jsx(d,{formMethods:p,children:r.jsxs(m,{name:"test",...o,children:[r.jsx(t,{value:"1",children:"test 1"}),r.jsx(t,{value:"2",children:"test 2"})]})})},e={args:{label:"Dette er en radioknapp som blir lysere når du trykker på den"}};var s,a,n;e.parameters={...e.parameters,docs:{...(s=e.parameters)==null?void 0:s.docs,source:{originalSource:`{
-  args: {
-    label: 'Dette er en radioknapp som blir lysere når du trykker på den'
-  }
-}`,...(n=(a=e.parameters)==null?void 0:a.docs)==null?void 0:n.source}}};const D=["Default"];export{e as Default,D as __namedExportsOrder,B as default};
