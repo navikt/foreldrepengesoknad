@@ -96,7 +96,8 @@ export const SlettPeriodeModal = ({
                             {perioder.map((p) => {
                                 return (
                                     <Checkbox key={p.id} name={p.id} value={p.id}>
-                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
+                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} - 
+                                        ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                                     </Checkbox>
                                 );
                             })}
