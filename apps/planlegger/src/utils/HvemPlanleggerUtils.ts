@@ -1,11 +1,9 @@
 import { IntlShape } from 'react-intl';
 import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } from 'types/HvemPlanlegger';
 
-import { HvemHarRett } from './hvemHarRettUtils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-const storForbokstav = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-};
+import { HvemHarRett } from './hvemHarRettUtils';
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
@@ -35,10 +33,16 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
-        return hvemPlanlegger.navnPåMor || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }));
+        return (
+            hvemPlanlegger.navnPåMor ||
+            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }))
+        );
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
-        return hvemPlanlegger.navnPåFar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }));
+        return (
+            hvemPlanlegger.navnPåFar ||
+            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
+        );
     }
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
@@ -47,15 +51,19 @@ export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return (
             hvemPlanlegger.navnPåMedmor ||
-            storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
+            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
         );
     }
     if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
-        return hvemPlanlegger.navnPåFar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }));
+        return (
+            hvemPlanlegger.navnPåFar ||
+            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
+        );
     }
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         return (
-            hvemPlanlegger.navnPåMedfar || storForbokstav(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
+            hvemPlanlegger.navnPåMedfar ||
+            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }
     return undefined;
