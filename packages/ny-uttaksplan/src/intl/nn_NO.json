@@ -97,7 +97,9 @@
     "endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato": "Startdatoen må være en gyldig dato på formatet dd.mm.åååå",
     "endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato": "Startdatoen må være lik eller før sluttdatoen.",
     "endreTidsPeriodeModal.endreTidsperiode.fom.måVæreUkedag": "Startdatoen kan ikke være en helgedag.",
+    "endreTidsPeriodeModal.endreTidsperiode.fom.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd": "Du må oppgi en sluttdato",
     "endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato": "Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå",
+    "endreTidsPeriodeModal.endreTidsperiode.tom.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.endreTidsperiode.tom.måVæreUkedag": "Sluttdatoen kan ikke være en helgedag."
 }
