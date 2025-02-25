@@ -12,6 +12,7 @@ interface Props {
     erFamiliehendelse?: boolean;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
 export const PeriodeListeItem = ({
@@ -19,6 +20,7 @@ export const PeriodeListeItem = ({
     erFamiliehendelse,
     handleUpdatePeriode,
     handleDeletePeriode,
+    handleDeletePerioder,
 }: Props) => {
     const bem = planBemUtils('periode-liste-item');
 
@@ -31,6 +33,7 @@ export const PeriodeListeItem = ({
                 <PeriodeListeContent
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
                     erFamiliehendelse={!!erFamiliehendelse}
                     permisjonsperiode={permisjonsperiode}
                 />

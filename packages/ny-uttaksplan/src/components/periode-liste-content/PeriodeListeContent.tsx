@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
@@ -19,6 +19,7 @@ import {
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
+import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
@@ -32,6 +33,7 @@ interface Props {
     erFamiliehendelse: boolean;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
 const renderPeriode = (
@@ -114,8 +116,10 @@ export const PeriodeListeContent = ({
     erFamiliehendelse,
     handleUpdatePeriode,
     handleDeletePeriode,
+    handleDeletePerioder,
 }: Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
@@ -130,17 +134,18 @@ export const PeriodeListeContent = ({
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
-    const slettPeriode = () => {
-        if (inneholderKunEnPeriode) {
-            handleDeletePeriode(permisjonsperiode.perioder[0]);
-        }
+    const closeEndringsModal = () => {
+        setIsEndringsModalOpen(false);
+    };
+    const openEndringsModal = () => {
+        setIsEndringsModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
     };
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openDeleteModal = () => {
+        setIsDeleteModalOpen(true);
     };
 
     return (
@@ -152,23 +157,52 @@ export const PeriodeListeContent = ({
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
             {modus !== 'innsyn' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <Button type="button" variant="secondary" onClick={openModal}>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                    <Button
+                        type="button"
+                        size="xsmall"
+                        variant="secondary"
+                        onClick={openEndringsModal}
+                        icon={<PencilIcon />}
+                    >
                         Endre
                     </Button>
-                    <Button type="button" variant="secondary" onClick={slettPeriode}>
+                    <Button
+                        type="button"
+                        size="xsmall"
+                        variant="secondary"
+                        icon={<TrashIcon />}
+                        onClick={() => {
+                            if (inneholderKunEnPeriode) {
+                                return handleDeletePeriode(permisjonsperiode.perioder[0]);
+                            }
+
+                            openDeleteModal();
+                        }}
+                    >
                         Slett
                     </Button>
                 </div>
             )}
-            {isModalOpen ? (
+            {isEndringsModalOpen ? (
                 <EndrePeriodeModal
                     familiehendelsedato={familiehendelsedato}
-                    closeModal={closeModal}
+                    closeModal={closeEndringsModal}
                     handleUpdatePeriode={handleUpdatePeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    isModalOpen={isModalOpen}
+                    isModalOpen={isEndringsModalOpen}
+                />
+            ) : null}
+            {isDeleteModalOpen ? (
+                <SlettPeriodeModal
+                    closeModal={closeDeleteModal}
+                    handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    permisjonsperiode={permisjonsperiode}
+                    isModalOpen={isDeleteModalOpen}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             ) : null}
         </div>

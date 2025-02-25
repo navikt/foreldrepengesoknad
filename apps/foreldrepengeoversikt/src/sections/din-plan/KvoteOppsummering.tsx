@@ -61,6 +61,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
             perioder={aktuellePerioder}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
+            visStatusIkoner={false}
         />
     );
 };

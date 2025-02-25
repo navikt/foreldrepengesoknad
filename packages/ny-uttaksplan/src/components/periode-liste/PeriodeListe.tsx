@@ -16,6 +16,7 @@ interface Props {
     perioder: Planperiode[];
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
@@ -26,7 +27,7 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
-export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriode }: Props) => {
+export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriode, handleDeletePerioder }: Props) => {
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
@@ -42,6 +43,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                                 <PeriodeListeItem
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
+                                    handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={p}
                                     erFamiliehendelse={true}
                                 />
@@ -49,6 +51,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                             <PeriodeListeItem
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePeriode={handleDeletePeriode}
+                                handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={p}
                             />
                         </Fragment>
