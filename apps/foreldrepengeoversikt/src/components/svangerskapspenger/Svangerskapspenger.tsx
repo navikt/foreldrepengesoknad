@@ -1,4 +1,4 @@
-import { ExclamationmarkIcon, PersonPregnantFillIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
+import { HeartFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
@@ -40,7 +40,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
             <Heading level="2" size="medium">
                 Dette har du fått vedtatt
             </Heading>
-            <Table>
+            <Table className="bg-white">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
@@ -73,11 +73,22 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                             {formatDateShortMonth(svpSak.familiehendelse?.termindato)}
                         </Table.HeaderCell>
                         <Table.DataCell> </Table.DataCell>
-                        <Table.DataCell>Termin</Table.DataCell>
+                        <Table.DataCell>
+                            <Termin />
+                        </Table.DataCell>
                     </Table.Row>
                 </Table.Body>
             </Table>
         </VStack>
+    );
+};
+
+const Termin = () => {
+    return (
+        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-full">
+            <BodyShort>Termin</BodyShort>
+            <HeartFillIcon fontSize={'2.5rem'} className="text-icon-danger p-05" aria-hidden />
+        </HStack>
     );
 };
 
