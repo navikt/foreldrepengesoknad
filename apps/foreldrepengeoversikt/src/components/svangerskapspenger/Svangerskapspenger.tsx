@@ -145,38 +145,3 @@ const GravidIkon = () => (
         <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
     </div>
 );
-
-const SvpSøknad = ({ svpSak }: SvangerskapspengerProps) => {
-    const søknad = svpSak.åpenBehandling;
-    if (!søknad) {
-        return null;
-    }
-
-    return (
-        <VStack>
-            <Heading level="2" size="medium">
-                Dette har du søkt om
-            </Heading>
-            <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Bedrift</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Start</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {/*{søknad. .map(({ name, fnr, start }, i) => {*/}
-                    {/*    return (*/}
-                    {/*        <Table.Row key={i + fnr}>*/}
-                    {/*            <Table.HeaderCell scope="row">{name}</Table.HeaderCell>*/}
-                    {/*            <Table.DataCell>{fnr}</Table.DataCell>*/}
-                    {/*            <Table.DataCell>{format(new Date(start))}</Table.DataCell>*/}
-                    {/*        </Table.Row>*/}
-                    {/*    );*/}
-                    {/*})}*/}
-                </Table.Body>
-            </Table>
-        </VStack>
-    );
-};
