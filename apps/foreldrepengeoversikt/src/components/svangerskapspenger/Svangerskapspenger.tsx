@@ -2,7 +2,7 @@ import { HeartFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { formatDateShortMonth } from '@navikt/fp-utils';
+import { formatDateShortMonth, treUkerSiden } from '@navikt/fp-utils';
 
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
 
@@ -60,7 +60,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                                     gap="4"
                                     align="center"
                                     justify="space-between"
-                                    className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-full"
+                                    className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
                                 >
                                     <BodyShort>{p.resultat.utbetalingsgrad}% svangerskapspenger</BodyShort>
                                     <GravidIkon />
@@ -68,6 +68,16 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                             </Table.DataCell>
                         </Table.Row>
                     ))}
+                    <Table.Row>
+                        <Table.HeaderCell scope="row">
+                            {formatDateShortMonth(treUkerSiden(svpSak.familiehendelse?.termindato))} -{' '}
+                            {formatDateShortMonth(svpSak.familiehendelse?.termindato)}
+                        </Table.HeaderCell>
+                        <Table.DataCell> </Table.DataCell>
+                        <Table.DataCell>
+                            <TreUkerFørTermin />
+                        </Table.DataCell>
+                    </Table.Row>
                     <Table.Row>
                         <Table.HeaderCell scope="row">
                             {formatDateShortMonth(svpSak.familiehendelse?.termindato)}
@@ -83,9 +93,24 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
     );
 };
 
+const TreUkerFørTermin = () => {
+    return (
+        <HStack
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+            wrap={false}
+        >
+            <BodyShort>Du kan søke om foreldrepenger (Du har rett til foreldrepenger tre uker før termin</BodyShort>
+            <GravidIkon />
+        </HStack>
+    );
+};
+
 const Termin = () => {
     return (
-        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-full">
+        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-3xl">
             <BodyShort>Termin</BodyShort>
             <HeartFillIcon fontSize={'2.5rem'} className="text-icon-danger p-05" aria-hidden />
         </HStack>
@@ -93,7 +118,7 @@ const Termin = () => {
 };
 
 const GravidIkon = () => (
-    <div className="rounded-full bg-green-200">
+    <div className="rounded-3xl bg-green-200">
         <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
     </div>
 );
