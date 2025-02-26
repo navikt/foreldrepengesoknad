@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
@@ -157,13 +157,21 @@ export const PeriodeListeContent = ({
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
             {modus !== 'innsyn' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <Button type="button" variant="secondary" onClick={openEndringsModal}>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                    <Button
+                        type="button"
+                        size="xsmall"
+                        variant="secondary"
+                        onClick={openEndringsModal}
+                        icon={<PencilIcon />}
+                    >
                         Endre
                     </Button>
                     <Button
                         type="button"
+                        size="xsmall"
                         variant="secondary"
+                        icon={<TrashIcon />}
                         onClick={() => {
                             if (inneholderKunEnPeriode) {
                                 return handleDeletePeriode(permisjonsperiode.perioder[0]);

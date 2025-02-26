@@ -4,8 +4,10 @@ import { useIntl } from 'react-intl';
 
 import { Button, Heading } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-common';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
+import { UttaksdagenString } from '@navikt/fp-utils';
+import { isBeforeOrSame, isDateWithinRange, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { ModalData } from '../EndrePeriodeModal';
@@ -49,7 +51,61 @@ export const EndreTidsperiodeModalStep = ({
         });
         closeModal();
     };
+
+    const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
+
+    const getFomValidators = () => {
+        const validators = [
+            isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd' })),
+            isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato' })),
+            isBeforeOrSame(
+                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
+                tomValue,
+            ),
+            isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.foreldrepengerFørFødsel' })),
+        ];
+
+        if (valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+            validators.push(
+                isDateWithinRange(
+                    intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
+                    dayjs(
+                        UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15),
+                    ).toDate(),
+                    dayjs(
+                        UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige(),
+                    ).toDate(),
+                ),
+            );
+        }
+
+        return validators;
+    };
+
+    const getTomValidators = () => {
+        const validators = [
+            isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd' })),
+            isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato' })),
+            isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.måVæreUkedag' })),
+        ];
+
+        if (valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+            validators.push(
+                isDateWithinRange(
+                    intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.foreldrepengerFørFødsel' }),
+                    dayjs(
+                        UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15),
+                    ).toDate(),
+                    dayjs(
+                        UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige(),
+                    ).toDate(),
+                ),
+            );
+        }
+
+        return validators;
+    };
 
     return (
         <>
@@ -63,37 +119,19 @@ export const EndreTidsperiodeModalStep = ({
                         label="Fra og med dato"
                         name="fom"
                         disableWeekends={true}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd' }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato' }),
-                            ),
-                            isBeforeOrSame(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
-                                tomValue,
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getFomValidators()}
                     />
                     <RhfDatepicker
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd' }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getTomValidators()}
                         label="Til og med dato"
                         name="tom"
                         disableWeekends={true}
+                        minDate={fomValue}
+                        maxDate={
+                            valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+                                ? UttaksdagenString(familiehendelsedato).forrige()
+                                : undefined
+                        }
                     />
                 </div>
                 <div
