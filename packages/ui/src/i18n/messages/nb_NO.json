@@ -46,6 +46,7 @@
     "LanguageToggle.en": "English",
     "Page.DefaultMainRoleLabel": "Hovedinnhold",
     "StepFooter.Avslutt": "Avslutt",
+    "StepFooter.ContinueLater": "Fortsett senere",
     "AvsluttModal.ContinueLater": "Fortsett senere",
     "AvsluttModal.CompleteLater": "Søknaden er lagret, og du kan fullføre den senere, eller velge å slette den. Søknaden blir lagret i 24 timer.",
     "AvsluttModal.Ok": "OK",

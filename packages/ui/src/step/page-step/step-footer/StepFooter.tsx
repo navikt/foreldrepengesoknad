@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Button } from '@navikt/ds-react';
+import { Button, HStack } from '@navikt/ds-react';
 
 import { AvsluttModal } from './AvsluttModal';
 import styles from './stepFooter.module.css';
@@ -17,16 +17,25 @@ export const StepFooter = ({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props)
 
     return (
         <div className={styles.stepFooter}>
-            <div className={styles.divider} />
+            {/* <div className={styles.divider} /> */}
             <AvsluttModal
                 isOpen={avsluttIsOpen}
                 setIsOpen={setAvsluttIsOpen}
                 onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
                 onAvbrytOgSlett={onAvbrytOgSlett}
             />
-            <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
-                {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
-            </Button>
+            <HStack justify="space-between" style={{ width: '100%' }}>
+                <HStack style={{ width: '50%', justifyContent: 'flex-end' }}>
+                    <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                        {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
+                    </Button>
+                </HStack>
+                <HStack style={{ width: '50%' }}>
+                    <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                        {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
+                    </Button>
+                </HStack>
+            </HStack>
         </div>
     );
 };

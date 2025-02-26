@@ -46,6 +46,7 @@
     "LanguageToggle.en": "English",
     "Page.DefaultMainRoleLabel": "Main content",
     "StepFooter.Avslutt": "Quit",
+    "StepFooter.ContinueLater": "Continue later",
     "AvsluttModal.ContinueLater": "Continue later",
     "AvsluttModal.CompleteLater": "The application is saved and you can complete it later, or choose to delete it. The application is saved for 24 hours.",
     "AvsluttModal.Ok": "OK",
