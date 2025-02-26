@@ -53,7 +53,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                 </Table.Header>
                 <Table.Body>
                     {perioder.map((p) => (
-                        <Table.Row>
+                        <Table.Row className="whitespace-nowrap">
                             <Table.HeaderCell scope="row">
                                 {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
                             </Table.HeaderCell>
