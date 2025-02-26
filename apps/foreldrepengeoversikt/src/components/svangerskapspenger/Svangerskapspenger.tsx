@@ -1,4 +1,4 @@
-import { HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
+import { BandageFillIcon, HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
@@ -16,7 +16,8 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 
 const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
-    if (!arbeidsforhold) {
+    const terminDato = svpSak.familiehendelse?.termindato; // TODO: kan denne faktisk være null?
+    if (!arbeidsforhold || !terminDato) {
         return null;
     }
 
@@ -60,13 +61,13 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                             <Table.DataCell>
                                 {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
+                                {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
                             </Table.DataCell>
                         </Table.Row>
                     ))}
                     <Table.Row>
                         <Table.HeaderCell scope="row">
-                            {formatDateShortMonth(treUkerSiden(svpSak.familiehendelse?.termindato))} -{' '}
-                            {formatDateShortMonth(svpSak.familiehendelse?.termindato)}
+                            {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
                         </Table.HeaderCell>
                         <Table.DataCell> </Table.DataCell>
                         <Table.DataCell>
@@ -74,9 +75,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                         </Table.DataCell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.HeaderCell scope="row">
-                            {formatDateShortMonth(svpSak.familiehendelse?.termindato)}
-                        </Table.HeaderCell>
+                        <Table.HeaderCell scope="row">{formatDateShortMonth(terminDato)}</Table.HeaderCell>
                         <Table.DataCell> </Table.DataCell>
                         <Table.DataCell>
                             <Termin />
@@ -89,9 +88,11 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
 };
 
 const DuHarSvp = ({ arbeidstidprosent, type }: { arbeidstidprosent?: number; type: Tilretteleggingstype }) => {
+    const prosentSvangerskapspenger = type === 'HEL' ? 0 : type === 'INGEN' ? 100 : 100 - (arbeidstidprosent ?? 0);
+
     return (
         <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl">
-            <BodyShort>{arbeidstidprosent}% svangerskapspenger</BodyShort>
+            <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
             <GravidIkon />
         </HStack>
     );
@@ -108,6 +109,21 @@ const DuHarFerie = () => {
         >
             <BodyShort>Du har ferie</BodyShort>
             <ParasollIkon />
+        </HStack>
+    );
+};
+
+const DuErSykemeldt = () => {
+    return (
+        <HStack
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            wrap={false}
+        >
+            <BodyShort>Du er sykemeldt</BodyShort>
+            <BandasjeIkon />
         </HStack>
     );
 };
@@ -135,6 +151,12 @@ const Termin = () => {
         </HStack>
     );
 };
+
+const BandasjeIkon = () => (
+    <div className="rounded-3xl bg-orange-200">
+        <BandageFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    </div>
+);
 
 const ParasollIkon = () => (
     <div className="rounded-3xl bg-orange-200">

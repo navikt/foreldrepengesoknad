@@ -16,7 +16,7 @@ export interface ArbeidsforholdSVP {
 type Oppholdsperiode = {
     fom: string;
     tom: string;
-    årsak: 'FERIE'; //TODO
+    årsak: 'FERIE' | 'SYKEPENGER'; //TODO
     oppholdKilde: 'SØKNAD'; //TODO
 };
 
