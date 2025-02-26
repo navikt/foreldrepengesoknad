@@ -1,7 +1,7 @@
 import { TilretteleggingPeriodeSVP } from './TilretteleggingsperiodeSVP';
 
 export interface ArbeidsforholdSVP {
-    aktivitet: any;
+    aktivitet: Aktivitet;
     behovFrom: string;
     tilrettelegginger: TilretteleggingPeriodeSVP[];
     oppholdsperioder: any[];
@@ -14,3 +14,13 @@ export interface ArbeidsforholdSVP {
         | 'AVSLAG_ANNET'
         | 'AVSLAG_INNGANGSVILKÅR';
 }
+
+type Aktivitet = {
+    type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
+    arbeidsgiver: Arbeidsgiver;
+};
+
+type Arbeidsgiver = {
+    id: string;
+    type: 'PRIVAT' | 'ORGANISASJON';
+};
