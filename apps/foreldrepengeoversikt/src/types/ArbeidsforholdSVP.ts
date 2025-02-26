@@ -36,7 +36,7 @@ export interface TilretteleggingPeriodeSVP {
     type: Tilretteleggingstype;
     fom: string;
     tom: string;
-    arbeidstidprosent: number;
+    arbeidstidprosent?: number;
     resultat?: Resultat;
 }
 

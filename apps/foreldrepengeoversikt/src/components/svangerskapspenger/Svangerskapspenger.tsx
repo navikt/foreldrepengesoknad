@@ -4,6 +4,7 @@ import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
 import { formatDateShortMonth, treUkerSiden } from '@navikt/fp-utils';
 
+import { Tilretteleggingstype } from '../../types/ArbeidsforholdSVP';
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
 
 type SvangerskapspengerProps = {
@@ -24,6 +25,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
                 arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
+                type: 'type' in p ? p.type : undefined,
                 årsak: 'årsak' in p ? p.årsak : undefined,
                 fom: p.fom,
                 tom: p.tom,
@@ -56,7 +58,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                             </Table.HeaderCell>
                             <Table.DataCell>{p.aktivitet.arbeidsgiver.id}</Table.DataCell>
                             <Table.DataCell>
-                                {p.arbeidstidprosent && <DuHarSvp arbeidstidprosent={p.arbeidstidprosent} />}
+                                {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
                             </Table.DataCell>
                         </Table.Row>
@@ -86,7 +88,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
     );
 };
 
-const DuHarSvp = ({ arbeidstidprosent }: { arbeidstidprosent: number }) => {
+const DuHarSvp = ({ arbeidstidprosent, type }: { arbeidstidprosent?: number; type: Tilretteleggingstype }) => {
     return (
         <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl">
             <BodyShort>{arbeidstidprosent}% svangerskapspenger</BodyShort>
