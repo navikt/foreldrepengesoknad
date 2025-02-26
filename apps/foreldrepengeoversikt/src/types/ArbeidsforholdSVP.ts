@@ -1,10 +1,8 @@
-import { TilretteleggingPeriodeSVP } from './TilretteleggingsperiodeSVP';
-
 export interface ArbeidsforholdSVP {
     aktivitet: Aktivitet;
     behovFrom: string;
     tilrettelegginger: TilretteleggingPeriodeSVP[];
-    oppholdsperioder: any[];
+    oppholdsperioder: Oppholdsperiode[];
     avslutningÅrsak:
         | 'NORMAL'
         | 'TILBAKE_I_HEL_STILLING'
@@ -15,6 +13,13 @@ export interface ArbeidsforholdSVP {
         | 'AVSLAG_INNGANGSVILKÅR';
 }
 
+type Oppholdsperiode = {
+    fom: string;
+    tom: string;
+    årsak: 'FERIE'; //TODO
+    oppholdKilde: 'SØKNAD'; //TODO
+};
+
 type Aktivitet = {
     type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
     arbeidsgiver: Arbeidsgiver;
@@ -23,4 +28,19 @@ type Aktivitet = {
 type Arbeidsgiver = {
     id: string;
     type: 'PRIVAT' | 'ORGANISASJON';
+};
+
+export type Tilretteleggingstype = 'INGEN' | 'DELVIS' | 'HEL';
+
+export interface TilretteleggingPeriodeSVP {
+    type: Tilretteleggingstype;
+    fom: string;
+    tom: string;
+    arbeidstidprosent: number;
+    resultat?: Resultat;
+}
+
+type Resultat = {
+    resultatType: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
+    utbetalingsgrad: number;
 };

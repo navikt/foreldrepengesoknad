@@ -1,4 +1,4 @@
-import { HeartFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
+import { HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
@@ -10,25 +10,25 @@ type SvangerskapspengerProps = {
     svpSak: SvangerskapspengeSak;
 };
 export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
-    if (svpSak.gjeldendeVedtak) {
-        return <SvpVedtak svpSak={svpSak} />;
-    }
-    return <SvpSøknad svpSak={svpSak} />;
+    return <SvpVedtak svpSak={svpSak} />;
 };
 
 const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
-    const vedtak = svpSak.gjeldendeVedtak;
-    if (!vedtak) {
+    const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
+    if (!arbeidsforhold) {
         return null;
     }
 
-    const perioder = vedtak.arbeidsforhold
+    const perioder = arbeidsforhold
         .map((af) =>
-            af.tilrettelegginger.map((tilrettelegging) => ({
-                ...tilrettelegging,
+            [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
+                ...p,
+                arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
+                årsak: 'årsak' in p ? p.årsak : undefined,
+                fom: p.fom,
+                tom: p.tom,
                 aktivitet: af.aktivitet,
                 behovFrom: af.behovFrom,
-                oppholdsperioder: af.oppholdsperioder,
                 avslutningÅrsak: af.avslutningÅrsak,
             })),
         )
@@ -56,15 +56,8 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                             </Table.HeaderCell>
                             <Table.DataCell>{p.aktivitet.arbeidsgiver.id}</Table.DataCell>
                             <Table.DataCell>
-                                <HStack
-                                    gap="4"
-                                    align="center"
-                                    justify="space-between"
-                                    className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
-                                >
-                                    <BodyShort>{p.resultat.utbetalingsgrad}% svangerskapspenger</BodyShort>
-                                    <GravidIkon />
-                                </HStack>
+                                {p.arbeidstidprosent && <DuHarSvp arbeidstidprosent={p.arbeidstidprosent} />}
+                                {p.årsak === 'FERIE' && <DuHarFerie />}
                             </Table.DataCell>
                         </Table.Row>
                     ))}
@@ -93,6 +86,30 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
     );
 };
 
+const DuHarSvp = ({ arbeidstidprosent }: { arbeidstidprosent: number }) => {
+    return (
+        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl">
+            <BodyShort>{arbeidstidprosent}% svangerskapspenger</BodyShort>
+            <GravidIkon />
+        </HStack>
+    );
+};
+
+const DuHarFerie = () => {
+    return (
+        <HStack
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            wrap={false}
+        >
+            <BodyShort>Du har ferie</BodyShort>
+            <ParasollIkon />
+        </HStack>
+    );
+};
+
 const TreUkerFørTermin = () => {
     return (
         <HStack
@@ -116,6 +133,12 @@ const Termin = () => {
         </HStack>
     );
 };
+
+const ParasollIkon = () => (
+    <div className="rounded-3xl bg-orange-200">
+        <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    </div>
+);
 
 const GravidIkon = () => (
     <div className="rounded-3xl bg-green-200">
