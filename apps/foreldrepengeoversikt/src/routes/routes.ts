@@ -1,6 +1,7 @@
 export enum OversiktRoutes {
     HOVEDSIDE = '/',
     SAKSOVERSIKT = '/sak',
+    MIN_SIDE = '/min-side',
     DIN_PLAN = 'din-plan',
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',

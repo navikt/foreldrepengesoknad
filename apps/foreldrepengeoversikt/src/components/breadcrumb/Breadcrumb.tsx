@@ -9,8 +9,8 @@ import { OversiktRoutes } from './../../routes/routes';
 
 const minSide = {
     title: 'Min side',
-    url: 'https://www.nav.no/minside',
-    handleInApp: false,
+    url: OversiktRoutes.MIN_SIDE,
+    handleInApp: true,
 };
 
 const hovedside = {
