@@ -5,10 +5,10 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isEmpty, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
+import { isEmpty } from '@navikt/fp-validation';
 
 import { Planperiode } from '../../../types/Planperiode';
-import { getFomValidators } from '../../../utils/dateValidators';
+import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -82,15 +82,7 @@ export const EndreTidsperiodeModalStep = ({
                         showMonthAndYearDropdowns
                         minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
                         maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.påkrevd' })),
-                            isValidDate(
-                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getTomValidators(intl, familiehendelsedato, kontoType)}
                         disableWeekends={true}
                         label="Til og med dato"
                         name="tom"
