@@ -43,7 +43,8 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
             })),
         )
         .flat()
-        .sort((a, b) => new Date(a.fom) - new Date(b.fom));
+        .sort((a, b) => a.fom.localeCompare(b.fom))
+        .sort((a, b) => (a.aktivitet.arbeidsgiverNavn ?? '').localeCompare(b.aktivitet.arbeidsgiverNavn ?? ''));
 
     return (
         <VStack>
@@ -60,7 +61,7 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                 </Table.Header>
                 <Table.Body>
                     {perioder.map((p) => (
-                        <Table.Row>
+                        <Table.Row key={[p.fom, p.tom, p.aktivitet.arbeidsgiverNavn].join('-')}>
                             <Table.HeaderCell scope="row" className="whitespace-nowrap">
                                 {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
                             </Table.HeaderCell>
