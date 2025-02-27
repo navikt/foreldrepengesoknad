@@ -5,8 +5,10 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isEmpty, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
+import { isEmpty, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
+import { Planperiode } from '../../../types/Planperiode';
+import { getFomValidators } from '../../../utils/dateValidators';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
     setModalData: (data: ModalData) => void;
     closeModal: () => void;
     familiehendelsedato: string;
+    handleAddPeriode: (periode: Planperiode) => void;
 }
 
 interface FormValues {
@@ -21,9 +24,15 @@ interface FormValues {
     tom: string | undefined;
 }
 
-export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal, familiehendelsedato }: Props) => {
+export const EndreTidsperiodeModalStep = ({
+    modalData,
+    setModalData,
+    closeModal,
+    familiehendelsedato,
+    handleAddPeriode,
+}: Props) => {
     const intl = useIntl();
-    const { fom, tom } = modalData;
+    const { fom, tom, kontoType, forelder } = modalData;
     const formMethods = useForm<FormValues>({
         defaultValues: {
             fom: fom ?? '',
@@ -31,17 +40,28 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
         },
     });
 
-    const onSubmit = (values: FormValues) => {
-        setModalData({
-            ...modalData,
-            fom: values.fom,
-            tom: values.tom,
-            currentStep: 'step2',
-        });
-    };
-
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
+
+    const onSubmit = () => {
+        setModalData({
+            ...modalData,
+            fom: fomValue,
+            tom: tomValue,
+            currentStep: 'step2',
+        });
+
+        handleAddPeriode({
+            fom: fomValue!,
+            tom: tomValue!,
+            id: `${fomValue} - ${tomValue} - ${kontoType}`,
+            readOnly: false,
+            kontoType: kontoType,
+            forelder: forelder,
+        });
+
+        closeModal();
+    };
 
     return (
         <>
@@ -52,19 +72,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         showMonthAndYearDropdowns
                         minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
                         maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.påkrevd' })),
-                            isValidDate(
-                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.gyldigDato' }),
-                            ),
-                            isBeforeOrSame(
-                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.førTilDato' }),
-                                tomValue,
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'leggTilPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getFomValidators(intl, familiehendelsedato, kontoType, tomValue)}
                         disableWeekends={true}
                         label="Fra og med dato"
                         name="fom"
@@ -112,7 +120,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal,
                         >
                             Gå tilbake
                         </Button> */}
-                        <Button>Gå videre</Button>
+                        <Button>Ferdig, legg til periode i planen</Button>
                     </div>
                 </div>
             </RhfForm>

@@ -62,22 +62,23 @@ export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, familiehende
             //     );
             case 'step1':
                 return (
+                    <VelgKontotypeModalStep
+                        modalData={modalData}
+                        setModalData={setModalData}
+                        closeModal={closeModalWrapper}
+                    />
+                );
+            case 'step2':
+                return (
                     <EndreTidsperiodeModalStep
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
                         familiehendelsedato={familiehendelsedato}
-                    />
-                );
-            case 'step2':
-                return (
-                    <VelgKontotypeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
                         handleAddPeriode={handleAddPeriode}
                     />
                 );
+
             // case 'step3':
             //     return (
             //         <OppsummeringModalStep
