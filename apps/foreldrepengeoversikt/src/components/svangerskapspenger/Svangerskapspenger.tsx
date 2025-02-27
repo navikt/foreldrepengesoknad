@@ -17,10 +17,6 @@ type SvangerskapspengerProps = {
     svpSak: SvangerskapspengeSak;
 };
 export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
-    return <SvpVedtak svpSak={svpSak} />;
-};
-
-const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
     const erVedtatt = !svpSak.gjeldendeVedtak?.avslagÅrsak;
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const terminDato = svpSak.familiehendelse.termindato;
