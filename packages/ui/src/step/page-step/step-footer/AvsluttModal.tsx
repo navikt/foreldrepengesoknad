@@ -5,11 +5,11 @@ import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
 interface Props {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    onAvbrytOgFortsettSenere?: () => void;
-    onAvbrytOgSlett?: () => void;
+    onAvsluttOgAvbryt?: () => void;
+    onAvsluttOgSlett?: () => void;
 }
 
-export const AvsluttModal = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }: Props) => {
+export const AvsluttModal = ({ isOpen, setIsOpen, onAvsluttOgSlett, onAvsluttOgAvbryt }: Props) => {
     const intl = useIntl();
     return (
         <Modal
@@ -24,10 +24,10 @@ export const AvsluttModal = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFor
                 <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.Info' })}</BodyLong>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={onAvbrytOgSlett}>
+                <Button variant="primary" onClick={onAvsluttOgSlett}>
                     {intl.formatMessage({ id: 'AvsluttModal.Delete' })}
                 </Button>
-                <Button variant="tertiary" onClick={onAvbrytOgFortsettSenere}>
+                <Button variant="tertiary" onClick={onAvsluttOgAvbryt}>
                     {intl.formatMessage({ id: 'AvsluttModal.Cancel' })}
                 </Button>
             </Modal.Footer>

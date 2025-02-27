@@ -8,11 +8,12 @@ import { FortsettSenereModal } from './FortsettSenereModal';
 import styles from './stepFooter.module.css';
 
 interface Props {
-    onAvbrytOgFortsettSenere?: () => void;
-    onAvbrytOgSlett?: () => void;
+    onAvsluttOgSlett?: () => void;
+    onAvsluttOgAvbryt?: () => void;
+    onFortsettSenere?: () => void;
 }
 
-export const StepFooter = ({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) => {
+export const StepFooter = ({ onAvsluttOgAvbryt, onAvsluttOgSlett, onFortsettSenere }: Props) => {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
     const [fortsettSenereIsOpen, setFortsettSenereIsOpen] = useState(false);
     const intl = useIntl();
@@ -22,13 +23,13 @@ export const StepFooter = ({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props)
             <AvsluttModal
                 isOpen={avsluttIsOpen}
                 setIsOpen={setAvsluttIsOpen}
-                onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
-                onAvbrytOgSlett={onAvbrytOgSlett}
+                onAvsluttOgAvbryt={onAvsluttOgAvbryt}
+                onAvsluttOgSlett={onAvsluttOgSlett}
             />
             <FortsettSenereModal
                 isOpen={fortsettSenereIsOpen}
                 setIsOpen={setFortsettSenereIsOpen}
-                onFortsettSenere={onAvbrytOgFortsettSenere}
+                onFortsettSenere={onFortsettSenere}
             />
             <HStack justify="space-between" style={{ width: '100%' }}>
                 <HStack style={{ width: '50%', justifyContent: 'flex-end' }}>
