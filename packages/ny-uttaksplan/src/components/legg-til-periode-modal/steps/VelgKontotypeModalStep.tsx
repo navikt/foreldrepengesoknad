@@ -8,7 +8,6 @@ import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
-import { Planperiode } from '../../../types/Planperiode';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -16,7 +15,6 @@ interface Props {
     modalData: ModalData;
     closeModal: () => void;
     setModalData: (data: ModalData) => void;
-    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
 interface FormValues {
@@ -24,13 +22,13 @@ interface FormValues {
     forelder: Forelder;
 }
 
-export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, handleAddPeriode }: Props) => {
+export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: Props) => {
     const intl = useIntl();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
 
-    const { fom, tom, forelder, kontoType } = modalData;
+    const { forelder, kontoType } = modalData;
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -59,18 +57,17 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
         setModalData({
             ...modalData,
             kontoType: values.kontoType,
-            currentStep: 'step3',
+            currentStep: 'step2',
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
         });
-        handleAddPeriode({
-            fom: fom!,
-            tom: tom!,
-            id: `${fom} - ${tom} - ${kontoType}`,
-            readOnly: false,
-            kontoType: kontoTypeValue,
-            forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-        });
-        closeModal();
+        // handleAddPeriode({
+        //     fom: fom!,
+        //     tom: tom!,
+        //     id: `${fom} - ${tom} - ${kontoType}`,
+        //     readOnly: false,
+        //     kontoType: kontoTypeValue,
+        //     forelder: getForelderFromKontoType(values.kontoType, values.forelder),
+        // });
     };
 
     return (
@@ -124,7 +121,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
                     >
                         Gå tilbake
                     </Button>
-                    <Button>Ferdig, legg til i planen</Button>
+                    <Button>Gå videre</Button>
                 </div>
             </div>
         </RhfForm>
