@@ -2,7 +2,13 @@ import { BandageFillIcon, HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFil
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { formatDateShortMonth, treUkerSiden } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetter,
+    capitalizeFirstLetterInEveryWordOnly,
+    formatDateMedUkedag,
+    formatDateShortMonth,
+    treUkerSiden,
+} from '@navikt/fp-utils';
 
 import { Tilretteleggingstype } from '../../types/ArbeidsforholdSVP';
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
@@ -15,8 +21,9 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 };
 
 const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
+    const erVedtatt = !svpSak.gjeldendeVedtak?.avslagÅrsak;
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
-    const terminDato = svpSak.familiehendelse?.termindato; // TODO: kan denne faktisk være null?
+    const terminDato = svpSak.familiehendelse.termindato;
     if (!arbeidsforhold || !terminDato) {
         return null;
     }
@@ -40,10 +47,10 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
 
     return (
         <VStack>
-            <Heading level="2" size="medium">
-                Dette har du fått vedtatt
+            <Heading level="2" size="medium" spacing>
+                {erVedtatt ? 'Dette har du fått vedtatt' : 'Dette har du søkt om'}
             </Heading>
-            <Table className="bg-white">
+            <Table className="bg-white p-4">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
@@ -53,11 +60,14 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                 </Table.Header>
                 <Table.Body>
                     {perioder.map((p) => (
-                        <Table.Row className="whitespace-nowrap">
-                            <Table.HeaderCell scope="row">
+                        <Table.Row>
+                            <Table.HeaderCell scope="row" className="whitespace-nowrap">
                                 {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
                             </Table.HeaderCell>
-                            <Table.DataCell>{p.aktivitet.arbeidsgiver.id}</Table.DataCell>
+                            <Table.DataCell>
+                                {capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
+                                    p.aktivitet.arbeidsgiver.id}
+                            </Table.DataCell>
                             <Table.DataCell>
                                 {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
@@ -75,7 +85,9 @@ const SvpVedtak = ({ svpSak }: SvangerskapspengerProps) => {
                         </Table.DataCell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.HeaderCell scope="row">{formatDateShortMonth(terminDato)}</Table.HeaderCell>
+                        <Table.HeaderCell scope="row">
+                            {capitalizeFirstLetter(formatDateMedUkedag(terminDato))}
+                        </Table.HeaderCell>
                         <Table.DataCell> </Table.DataCell>
                         <Table.DataCell>
                             <Termin />
@@ -91,7 +103,13 @@ const DuHarSvp = ({ arbeidstidprosent, type }: { arbeidstidprosent?: number; typ
     const prosentSvangerskapspenger = type === 'HEL' ? 0 : type === 'INGEN' ? 100 : 100 - (arbeidstidprosent ?? 0);
 
     return (
-        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl">
+        <HStack
+            wrap={false}
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+        >
             <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
             <GravidIkon />
         </HStack>
@@ -137,7 +155,7 @@ const TreUkerFørTermin = () => {
             className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
             wrap={false}
         >
-            <BodyShort>Du kan søke om foreldrepenger (Du har rett til foreldrepenger tre uker før termin</BodyShort>
+            <BodyShort>Du kan søke om foreldrepenger</BodyShort>
             <GravidIkon />
         </HStack>
     );

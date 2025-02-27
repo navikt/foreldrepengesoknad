@@ -23,6 +23,7 @@ type Oppholdsperiode = {
 type Aktivitet = {
     type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
     arbeidsgiver: Arbeidsgiver;
+    arbeidsgiverNavn?: string;
 };
 
 type Arbeidsgiver = {
