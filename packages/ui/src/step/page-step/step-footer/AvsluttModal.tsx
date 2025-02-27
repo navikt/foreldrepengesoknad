@@ -15,20 +15,20 @@ export const AvsluttModal = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFor
         <Modal
             open={isOpen}
             onClose={() => setIsOpen(false)}
-            aria-label={intl.formatMessage({ id: 'AvsluttModal.ContinueLater' })}
+            aria-label={intl.formatMessage({ id: 'AvsluttModal.Tittel' })}
         >
             <Modal.Header>
-                <Heading size="medium">{intl.formatMessage({ id: 'AvsluttModal.ContinueLater' })}</Heading>
+                <Heading size="medium">{intl.formatMessage({ id: 'AvsluttModal.Tittel' })}</Heading>
             </Modal.Header>
             <Modal.Body>
-                <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.CompleteLater' })}</BodyLong>
+                <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.Info' })}</BodyLong>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={onAvbrytOgFortsettSenere}>
-                    {intl.formatMessage({ id: 'AvsluttModal.Ok' })}
-                </Button>
-                <Button variant="tertiary" onClick={onAvbrytOgSlett}>
+                <Button variant="primary" onClick={onAvbrytOgSlett}>
                     {intl.formatMessage({ id: 'AvsluttModal.Delete' })}
+                </Button>
+                <Button variant="tertiary" onClick={onAvbrytOgFortsettSenere}>
+                    {intl.formatMessage({ id: 'AvsluttModal.Cancel' })}
                 </Button>
             </Modal.Footer>
         </Modal>
