@@ -1,7 +1,6 @@
 .stepFooter {
     align-items: center;
     display: flex;
-    /* flex-direction: column; */
     padding-bottom: 2rem;
     gap: 1rem;
     justify-items: center;
