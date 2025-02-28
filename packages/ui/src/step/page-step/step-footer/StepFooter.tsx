@@ -25,13 +25,13 @@ export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
                 setIsOpen={setFortsettSenereIsOpen}
                 onFortsettSenere={onFortsettSenere}
             />
-            <HStack justify="space-between" style={{ width: '100%' }}>
-                <HStack style={{ width: '50%', justifyContent: 'flex-end' }}>
+            <HStack gap="2" style={{ width: '100%', display: 'flex' }}>
+                <HStack style={{ width: '40%', justifyContent: 'flex-end' }}>
                     <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
                         {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
                     </Button>
                 </HStack>
-                <HStack style={{ width: '50%' }}>
+                <HStack style={{ width: '40%', justifyContent: 'flex-start' }}>
                     <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
                         {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
                     </Button>
