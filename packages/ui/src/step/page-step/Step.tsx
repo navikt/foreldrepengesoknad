@@ -16,7 +16,6 @@ interface StepProps<TYPE> {
     onCancel?: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
-    onQuitAndDelete?: () => void;
     cancelOrContinueLaterAriaLabel?: string;
     pageAriaLabel?: string;
     infoMessage?: React.ReactNode;
@@ -30,7 +29,6 @@ export const Step = <TYPE extends string>({
     steps,
     onCancel,
     onContinueLater,
-    onQuitAndDelete,
     onStepChange,
     cancelOrContinueLaterAriaLabel,
     children,
@@ -75,11 +73,7 @@ export const Step = <TYPE extends string>({
                                 role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
                                 aria-label={cancelOrContinueLaterAriaLabel}
                             >
-                                <StepFooter
-                                    onAvsluttOgAvbryt={onCancel}
-                                    onFortsettSenere={onContinueLater}
-                                    onAvsluttOgSlett={onQuitAndDelete}
-                                />
+                                <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
                             </div>
                         )}
                     </VStack>

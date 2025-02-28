@@ -9,23 +9,17 @@ import styles from './stepFooter.module.css';
 
 interface Props {
     onAvsluttOgSlett?: () => void;
-    onAvsluttOgAvbryt?: () => void;
     onFortsettSenere?: () => void;
 }
 
-export const StepFooter = ({ onAvsluttOgAvbryt, onAvsluttOgSlett, onFortsettSenere }: Props) => {
+export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
     const [fortsettSenereIsOpen, setFortsettSenereIsOpen] = useState(false);
     const intl = useIntl();
 
     return (
         <div className={styles.stepFooter}>
-            <AvsluttModal
-                isOpen={avsluttIsOpen}
-                setIsOpen={setAvsluttIsOpen}
-                onAvsluttOgAvbryt={onAvsluttOgAvbryt}
-                onAvsluttOgSlett={onAvsluttOgSlett}
-            />
+            <AvsluttModal isOpen={avsluttIsOpen} setIsOpen={setAvsluttIsOpen} onAvsluttOgSlett={onAvsluttOgSlett} />
             <FortsettSenereModal
                 isOpen={fortsettSenereIsOpen}
                 setIsOpen={setFortsettSenereIsOpen}
