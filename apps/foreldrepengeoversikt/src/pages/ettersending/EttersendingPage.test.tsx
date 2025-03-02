@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { applyRequestHandlers } from 'msw-storybook-addon';
+import { describe } from 'vitest';
 
 import * as stories from './EttersendingPage.stories';
 
@@ -103,5 +104,26 @@ describe('<EttersendingPage>', () => {
             .getAllByRole('option')
             .map((o) => o.textContent);
         expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
+    });
+
+    it('skal filtrere vekk irrelevante docs', async () => {
+        const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141" />);
+
+        expect(
+            await screen.findByText(
+                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+            ),
+        ).toBeInTheDocument();
+
+        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+
+        const optionsTextContent = within(select)
+            .getAllByRole('option')
+            .map((o) => o.textContent);
+
+        expect(optionsTextContent).toContain('Velg type dokument');
+        expect(optionsTextContent).toContain('Terminbekreftelse');
+        expect(optionsTextContent.length).toBe(2);
     });
 });
