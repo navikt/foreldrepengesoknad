@@ -104,7 +104,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:NONE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:2;dayColor:LIGHTYELLOW;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
@@ -139,7 +139,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:NONE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:2;dayColor:LIGHTYELLOW;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
@@ -238,11 +238,11 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:NONE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:2;dayColor:LIGHTYELLOW;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:9;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:9;dayColor:LIGHTYELLOW;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(august).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(august).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
 
@@ -274,7 +274,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:NONE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:2;dayColor:LIGHTYELLOW;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
