@@ -73,7 +73,7 @@ export const Step = <TYPE extends string>({
                                 role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
                                 aria-label={cancelOrContinueLaterAriaLabel}
                             >
-                                <StepFooter onAvbrytOgSlett={onCancel} onAvbrytOgFortsettSenere={onContinueLater} />
+                                <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
                             </div>
                         )}
                     </VStack>
