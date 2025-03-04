@@ -17,6 +17,7 @@ interface Props {
     handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
     familiehendelsedato: string;
     isModalOpen: boolean;
+    erBarnetFødt: boolean;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -30,7 +31,13 @@ export interface ModalData {
     forelder?: Forelder;
 }
 
-export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, familiehendelsedato, isModalOpen }: Props) => {
+export const LeggTilPeriodeModal = ({
+    closeModal,
+    handleAddPeriode,
+    familiehendelsedato,
+    isModalOpen,
+    erBarnetFødt,
+}: Props) => {
     const initialModalState: ModalData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
@@ -76,6 +83,7 @@ export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, familiehende
                         closeModal={closeModalWrapper}
                         familiehendelsedato={familiehendelsedato}
                         handleAddPeriode={handleAddPeriode}
+                        erBarnetFødt={erBarnetFødt}
                     />
                 );
 

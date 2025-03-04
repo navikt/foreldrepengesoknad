@@ -17,6 +17,7 @@ interface Props {
     closeModal: () => void;
     familiehendelsedato: string;
     handleAddPeriode: (periode: Planperiode) => void;
+    erBarnetFødt: boolean;
 }
 
 interface FormValues {
@@ -30,6 +31,7 @@ export const EndreTidsperiodeModalStep = ({
     closeModal,
     familiehendelsedato,
     handleAddPeriode,
+    erBarnetFødt,
 }: Props) => {
     const intl = useIntl();
     const { fom, tom, kontoType, forelder } = modalData;
@@ -72,7 +74,7 @@ export const EndreTidsperiodeModalStep = ({
                         showMonthAndYearDropdowns
                         minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
                         maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
-                        validate={getFomValidators(intl, familiehendelsedato, kontoType, tomValue)}
+                        validate={getFomValidators(intl, familiehendelsedato, kontoType, tomValue, erBarnetFødt)}
                         disableWeekends={true}
                         label="Fra og med dato"
                         name="fom"
@@ -82,7 +84,7 @@ export const EndreTidsperiodeModalStep = ({
                         showMonthAndYearDropdowns
                         minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
                         maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
-                        validate={getTomValidators(intl, familiehendelsedato, kontoType)}
+                        validate={getTomValidators(intl, familiehendelsedato, kontoType, erBarnetFødt)}
                         disableWeekends={true}
                         label="Til og med dato"
                         name="tom"

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -132,6 +132,8 @@ export const PeriodeListeContent = ({
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
 
+    const erBarnetFødt = isFødtBarn(barn);
+
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
@@ -194,6 +196,7 @@ export const PeriodeListeContent = ({
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     isModalOpen={isEndringsModalOpen}
+                    erBarnetFødt={erBarnetFødt}
                 />
             ) : null}
             {isDeleteModalOpen ? (

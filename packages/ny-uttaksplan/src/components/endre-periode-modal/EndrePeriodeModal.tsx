@@ -18,6 +18,7 @@ interface Props {
     familiehendelsedato: string;
     inneholderKunEnPeriode: boolean;
     isModalOpen: boolean;
+    erBarnetFødt: boolean;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -37,6 +38,7 @@ export const EndrePeriodeModal = ({
     familiehendelsedato,
     inneholderKunEnPeriode,
     isModalOpen,
+    erBarnetFødt,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
     const initialModalState: ModalData = {
@@ -86,6 +88,7 @@ export const EndrePeriodeModal = ({
                         closeModal={closeModalWrapper}
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
+                        erBarnetFødt={erBarnetFødt}
                     />
                 );
             // case 'step3':
