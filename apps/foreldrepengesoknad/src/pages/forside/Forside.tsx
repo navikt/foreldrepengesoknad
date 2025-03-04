@@ -61,7 +61,7 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => getSelectableBarnOptions(saker, søkerInfo.søker.barn).toSorted(sorterSelectableBarnEtterYngst),
+        () => [...getSelectableBarnOptions(saker, søkerInfo.søker.barn)].sort(sorterSelectableBarnEtterYngst),
         [saker, søkerInfo.søker.barn],
     );
 
