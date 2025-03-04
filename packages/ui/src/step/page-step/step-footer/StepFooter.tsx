@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Button, HGrid } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 
 import { AvsluttModal } from './AvsluttModal';
 import { FortsettSenereModal } from './FortsettSenereModal';
@@ -25,14 +25,12 @@ export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
                 setIsOpen={setFortsettSenereIsOpen}
                 onFortsettSenere={onFortsettSenere}
             />
-            <HGrid columns={2} gap="2">
-                <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
-                    {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
-                </Button>
-                <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
-                    {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
-                </Button>
-            </HGrid>
+            <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
+            </Button>
+            <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
+                {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
+            </Button>
         </div>
     );
 };
