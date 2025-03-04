@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Button, HStack } from '@navikt/ds-react';
+import { Button, HGrid } from '@navikt/ds-react';
 
 import { AvsluttModal } from './AvsluttModal';
 import { FortsettSenereModal } from './FortsettSenereModal';
@@ -25,18 +25,14 @@ export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
                 setIsOpen={setFortsettSenereIsOpen}
                 onFortsettSenere={onFortsettSenere}
             />
-            <HStack gap="2" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <HStack style={{ width: '40%', justifyContent: 'flex-end' }}>
-                    <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
-                        {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
-                    </Button>
-                </HStack>
-                <HStack style={{ width: '40%', justifyContent: 'flex-start' }}>
-                    <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
-                        {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
-                    </Button>
-                </HStack>
-            </HStack>
+            <HGrid columns={2} gap="2">
+                <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                    {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
+                </Button>
+                <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
+                    {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
+                </Button>
+            </HGrid>
         </div>
     );
 };
