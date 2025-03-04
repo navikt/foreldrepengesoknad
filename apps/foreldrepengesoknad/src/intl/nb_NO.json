@@ -228,7 +228,7 @@
     "manglendeVedlegg.terminbekreftelse.description": "Terminbekreftelsen får du hos jordmor eller legen din. Den må være datert i 22. svangerskapsuke eller senere.",
     "manglendeVedlegg.terminbekreftelse.description.farMedmor": "Terminbekreftelsen får du hos jordmor eller legen. Den må være datert i 22. svangerskapsuke eller senere.",
     "manglendeVedlegg.omsorgsovertakelse.tittel": "Dokumentasjon om omsorgsovertakelse",
-    "manglendeVedlegg.omsorgsovertakelse.description": "Du må legge ved dokumentasjon på dato du har omsorgsovertakelse",
+    "manglendeVedlegg.omsorgsovertakelse.description": "Du må legge ved dokumentasjon på dato du har omsorgsovertakelse.",
     "manglendeVedlegg.militær.tittel": "Dokumentasjon på at du er/var i førstegangstjenesten i {antallPerioder, select, 1 {perioden} other {periodene}} {perioder}",
     "manglendeVedlegg.militær.description": "Du har oppgitt at du er i førstegangstjenesten. Dokumentasjon må være fra tjenestestedet ditt og vise perioden.",
     "manglendeVedlegg.etterlønn.tittel": "Dokumentasjon på etterlønn eller sluttvederlag {antallPerioder, select, 1 {i perioden} other {for periodene}} {perioder}",
