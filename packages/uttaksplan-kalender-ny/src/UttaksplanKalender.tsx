@@ -204,6 +204,14 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     erFarEllerMedmor: boolean,
     foreldrepengerHarAktivitetskrav: boolean,
 ): PeriodeColor => {
+    if (periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+        return PeriodeColor.BLACK;
+    }
+
+    if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        return PeriodeColor.LIGHTYELLOW;
+    }
+
     if (periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
         return PeriodeColor.BLUE;
     }

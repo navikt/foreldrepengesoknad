@@ -122,6 +122,8 @@ export const PeriodeListeContent = ({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const erRedigerbar =
+        permisjonsperiode.perioder.find((p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p)) === undefined;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
@@ -156,7 +158,7 @@ export const PeriodeListeContent = ({
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            {modus !== 'innsyn' && (
+            {modus !== 'innsyn' && erRedigerbar && (
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                     <Button
                         type="button"

@@ -25,6 +25,7 @@ const DAY_STYLE = {
     [PeriodeColor.LIGHTGREENBLUE]: styles.lightgreenBlueDay,
     [PeriodeColor.GREENSTRIPED]: styles.greenStripedDay,
     [PeriodeColor.BLUESTRIPED]: styles.blueStripedDay,
+    [PeriodeColor.LIGHTYELLOW]: styles.yellowDay,
 };
 
 type Props = {
