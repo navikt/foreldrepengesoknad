@@ -25,7 +25,7 @@ export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
                 setIsOpen={setFortsettSenereIsOpen}
                 onFortsettSenere={onFortsettSenere}
             />
-            <HStack gap="2" style={{ width: '100%', display: 'flex' }}>
+            <HStack gap="2" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <HStack style={{ width: '40%', justifyContent: 'flex-end' }}>
                     <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
                         {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
