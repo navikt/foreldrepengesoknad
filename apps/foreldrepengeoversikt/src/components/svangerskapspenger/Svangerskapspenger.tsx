@@ -1,4 +1,5 @@
 import { BandageFillIcon, HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 
 import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
 
@@ -20,11 +21,12 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const erVedtatt = !svpSak.gjeldendeVedtak?.avslagÅrsak;
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const terminDato = svpSak.familiehendelse.termindato;
+
     if (!arbeidsforhold || !terminDato) {
         return null;
     }
 
-    const perioder = arbeidsforhold
+    let perioder = arbeidsforhold
         .map((af) =>
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
@@ -39,8 +41,55 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             })),
         )
         .flat()
-        .sort((a, b) => a.fom.localeCompare(b.fom))
-        .sort((a, b) => (a.aktivitet.arbeidsgiverNavn ?? '').localeCompare(b.aktivitet.arbeidsgiverNavn ?? ''));
+        .sort((a, b) => a.fom.localeCompare(b.fom));
+    // .sort((a, b) => (a.aktivitet.arbeidsgiverNavn ?? '').localeCompare(b.aktivitet.arbeidsgiverNavn ?? ''));
+
+    let dag = dayjs(
+        perioder.reduce((earliest, periode) => {
+            return dayjs(periode.fom).isBefore(dayjs(earliest)) ? periode.fom : earliest;
+        }, perioder[0]?.fom),
+    );
+
+    const sisteDag = perioder.reduce((latest, periode) => {
+        return dayjs(periode.tom).isAfter(dayjs(latest)) ? periode.tom : latest;
+    }, perioder[0]?.tom);
+
+    test1(svpSak);
+
+    // let res = [];
+    // let gruppe = [];
+    // let gruppeForrigeDag = [];
+    // let perioderCopy = perioder;
+    // while (dag.isBefore(sisteDag)) {
+    //     console.log('DAG', dayjs(dag).format('YYYY-MM-DD'));
+    //     gruppeForrigeDag = [...gruppe];
+    //     gruppe = perioderCopy.filter(
+    //         (periode) => dag.isSameOrAfter(periode.fom) && dayjs(dag).isSameOrBefore(periode.tom),
+    //     );
+    //
+    //     const varMedIgår = gruppeForrigeDag.filter(
+    //         (forrigePeriode) =>
+    //             !gruppe.some((periode) => periode.fom === forrigePeriode.fom && periode.tom === forrigePeriode.tom),
+    //     );
+    //     if (varMedIgår.length > 0) {
+    //         const a = gruppeForrigeDag.map((g) => ({ ...g, tom: dag.add(-1, 'day').format('YYYY-MM-DD') }));
+    //         res = [...res, [...a]];
+    //
+    //         // Fjern oppbrukte perioder
+    //         perioderCopy = perioderCopy
+    //             .filter((p) => !varMedIgår.some((v) => v.fom === p.fom && v.tom === p.tom))
+    //             .map((p) => {
+    //                 const skalModifisereFom = gruppeForrigeDag.find((g) => g.tom === p.tom && g.fom === p.fom);
+    //                 return {
+    //                     ...p,
+    //                     fom: skalModifisereFom ? dag.format('YYYY-MM-DD') : p.fom,
+    //                 };
+    //             });
+    //         console.log(perioderCopy);
+    //     }
+    //     dag = dayjs(dag).add(1, 'day');
+    // }
+    // console.log(res);
 
     return (
         <VStack>
@@ -184,3 +233,39 @@ const GravidIkon = () => (
         <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
     </div>
 );
+
+const test1 = (svpSak: SvangerskapspengeSak) => {
+    const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
+    let perioder = (arbeidsforhold ?? [])
+        .map((af) =>
+            [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
+                ...p,
+                arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
+                type: 'type' in p ? p.type : undefined,
+                årsak: 'årsak' in p ? p.årsak : undefined,
+                fom: p.fom,
+                tom: p.tom,
+                aktivitet: af.aktivitet,
+                behovFrom: af.behovFrom,
+                avslutningÅrsak: af.avslutningÅrsak,
+            })),
+        )
+        .flat()
+        .sort((a, b) => a.fom.localeCompare(b.fom));
+
+    console.log('PERIODER', perioder);
+
+    let res = [];
+
+    perioder.forEach((p1) => {
+        perioder.forEach((p2) => {
+            if (dayjs(p2.fom).isBefore(p1.fom)) {
+                return;
+            }
+
+            // p2 krysser p1
+            if (dayjs(p2.tom).isBefore(p1.tom)) {
+            }
+        });
+    });
+};
