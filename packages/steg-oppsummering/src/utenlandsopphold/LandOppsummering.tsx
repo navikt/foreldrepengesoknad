@@ -26,7 +26,7 @@ export const LandOppsummering = ({ utenlandsoppholdListe }: Props) => {
     const intl = useIntl();
     return (
         <FormSummary.Answers>
-            {[...utenlandsoppholdListe.sort(sortOpphold)].map((opphold) => (
+            {[...utenlandsoppholdListe].sort(sortOpphold).map((opphold) => (
                 <FormSummary.Answer key={opphold.landkode}>
                     <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
                     <FormSummary.Value>

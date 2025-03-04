@@ -109,7 +109,7 @@ export const deltUttak = ({
     }
 
     return {
-        søker1: [...morsPerioder.sort(sorterPerioder)],
-        søker2: [...farsPerioder.sort(sorterPerioder)],
+        søker1: [...morsPerioder].sort(sorterPerioder),
+        søker2: [...farsPerioder].sort(sorterPerioder),
     };
 };
