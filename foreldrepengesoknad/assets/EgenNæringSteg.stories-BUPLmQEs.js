@@ -1,0 +1,7 @@
+import{j as e}from"./jsx-runtime-CLpGMVip.js";import{a as m}from"./chunk-D5ZWXAHU-DlerbUHg.js";import{F as l,C as d}from"./FpDataContext-DWIUkGg8.js";import{M as c,S as g}from"./useFpNavigator-D2n31eFo.js";import{E as o}from"./EgenNæringSteg-BKLomg0y.js";import"./v4-CtRu48qb.js";import"./index-DI2V0i71.js";import"./Uttaksplan-AK7eM0ry.js";import"./dates-Bq8T6S-m.js";import"./Link-gP2v3_my.js";import"./iframe-DtK6yRBE.js";import"./VStack-BuWRMdWF.js";import"./index-Go8-pri6.js";import"./index-DNwIpxWs.js";import"./EgenNæringPanel-CiWUf9uB.js";import"./ErrorSummaryHookForm-trRy7xgR.js";import"./EgenNæring-bnb8Ikwh.js";import"./numberFormValidation-o8alKjQj.js";const a=()=>(...t)=>(m("button-click")(...t),Promise.resolve()),I={title:"steps/EgenNæringSteg",component:o,render:({gåTilNesteSide:t=m("button-click"),...p})=>e.jsx(c,{initialEntries:[g.EGEN_NÆRING],children:e.jsx(l,{onDispatch:t,initialState:{[d.ARBEIDSFORHOLD_OG_INNTEKT]:{harJobbetSomSelvstendigNæringsdrivende:!0,harHattAndreInntektskilder:!1,harJobbetSomFrilans:!1}},children:e.jsx(o,{...p})})})},r={args:{mellomlagreSøknadOgNaviger:a(),avbrytSøknad:a(),arbeidsforhold:[]}};var i,n,s;r.parameters={...r.parameters,docs:{...(i=r.parameters)==null?void 0:i.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction(),
+    arbeidsforhold: []
+  }
+}`,...(s=(n=r.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const C=["Default"];export{r as Default,C as __namedExportsOrder,I as default};
