@@ -22,9 +22,9 @@
     },
     "dependencies": {
         "@fontsource/source-sans-3": "^5.1.1",
-        "@navikt/aksel-icons": "^7.14.0",
-        "@navikt/ds-css": "^7.14.0",
-        "@navikt/ds-react": "^7.14.0",
+        "@navikt/aksel-icons": "^7.16.0",
+        "@navikt/ds-css": "^7.16.0",
+        "@navikt/ds-react": "^7.16.0",
         "@navikt/ds-tailwind": "7.14.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
