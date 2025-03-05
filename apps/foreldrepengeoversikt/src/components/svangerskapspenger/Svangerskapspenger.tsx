@@ -45,7 +45,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             <VStack gap="4" className="bg-white p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
                     <React.Fragment key={gruppertePerioder[0].fom}>
-                        <PeriodeAccordion perioder={gruppertePerioder} />
+                        <GruppertePerioder perioder={gruppertePerioder} />
                         <div className="    h-[1] bg-border-divider" />
                     </React.Fragment>
                 ))}
@@ -67,7 +67,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     );
 };
 
-const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
+const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
         <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
             {perioder.map((p, index) => (
