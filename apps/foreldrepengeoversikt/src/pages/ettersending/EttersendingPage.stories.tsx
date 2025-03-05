@@ -4,6 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { OversiktRoutes } from '../../routes/routes';
+import { SakOppslag } from '../../types/SakOppslag';
 import { Ytelse } from '../../types/Ytelse';
 import { EttersendingPage } from './EttersendingPage';
 
@@ -15,16 +16,23 @@ const queryClient = new QueryClient({
     },
 });
 
-const meta = {
+interface QueryParamAwareEttersendingPage {
+    saker: SakOppslag;
+    skjematypeQueryParamValue?: string;
+}
+
+const meta: Meta<QueryParamAwareEttersendingPage> = {
     title: 'EttersendingPage',
     component: EttersendingPage,
     render: (props) => {
+        const { skjematypeQueryParamValue, ...rest } = props as QueryParamAwareEttersendingPage;
+        const queryString = skjematypeQueryParamValue ? `?skjematype=${skjematypeQueryParamValue}` : '';
         return (
             <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.ETTERSEND}/1`]}>
+                <MemoryRouter initialEntries={[`/${OversiktRoutes.ETTERSEND}/1${queryString}`]}>
                     <Routes>
                         <Route
-                            element={<EttersendingPage {...props} />}
+                            element={<EttersendingPage {...rest} />}
                             path={`/${OversiktRoutes.ETTERSEND}/:saksnummer`}
                         />
                     </Routes>
@@ -33,6 +41,7 @@ const meta = {
         );
     },
 } satisfies Meta<typeof EttersendingPage>;
+
 export default meta;
 
 type Story = StoryObj<typeof meta>;
