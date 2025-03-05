@@ -34,7 +34,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
         return null;
     }
 
-    const perioder1 = test2(svpSak).sort((a, b) => a.fom.localeCompare(b.fom));
+    const perioder = lagKronologiskeSvpPerioder(svpSak).sort((a, b) => a.fom.localeCompare(b.fom));
 
     return (
         <VStack>
@@ -42,9 +42,9 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
                 {erVedtatt ? 'Dette har du fått vedtatt' : 'Dette har du søkt om'}
             </Heading>
             <VStack gap="4" className="bg-white p-4">
-                {Object.values(groupBy(perioder1, 'fom')).map((perioder) => (
+                {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
                     <>
-                        <PeriodeAccordion perioder={perioder} />
+                        <PeriodeAccordion perioder={gruppertePerioder} />
                         <div className="h-[1] bg-border-divider" />
                     </>
                 ))}
@@ -70,7 +70,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     );
 };
 
-const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof test2> }) => {
+const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
         <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
             {perioder.map((p, index) => (
@@ -192,7 +192,7 @@ const BarnevognIkon = () => (
     </div>
 );
 
-const test2 = (svpSak: SvangerskapspengeSak) => {
+const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const perioder = (arbeidsforhold ?? [])
         .map((af) =>
