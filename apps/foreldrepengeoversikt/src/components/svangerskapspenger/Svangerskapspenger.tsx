@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
 import React from 'react';
 
-import { BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import {
     TidsperiodenString,
@@ -20,7 +20,7 @@ import {
     treUkerSiden,
 } from '@navikt/fp-utils';
 
-import { Tilretteleggingstype } from '../../types/ArbeidsforholdSVP';
+import { Oppholdsperiode, Tilretteleggingstype } from '../../types/ArbeidsforholdSVP';
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
 
 type SvangerskapspengerProps = {
@@ -69,43 +69,50 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
-        <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
-            {perioder.map((p, index) => (
-                <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
-                    {index === 0 ? (
-                        <BodyShort className="whitespace-nowrap">
-                            {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
-                        </BodyShort>
-                    ) : (
-                        <BodyShort> </BodyShort>
-                    )}
-                    <BodyShort>
-                        {capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
-                            p.aktivitet.arbeidsgiver.id}
-                    </BodyShort>
-                    {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
-                    {p.årsak === 'FERIE' && <DuHarFerie />}
-                    {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
-                </React.Fragment>
-            ))}
+        <HGrid gap="2" columns={{ xs: '1fr 1fr', md: '1fr 1fr 300px' }} align="center">
+            {perioder.map((p, index) => {
+                const arbeidsgiverNavn =
+                    capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ?? p.aktivitet.arbeidsgiver.id;
+                const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
+                const prosentSvangerskapspenger =
+                    p.type === 'HEL' ? 0 : p.type === 'INGEN' ? 100 : 100 - (p.arbeidstidprosent ?? 0);
+
+                return (
+                    <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
+                        <Show above="md">
+                            <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
+                            <BodyShort>{arbeidsgiverNavn}</BodyShort>
+                            {p.type && (
+                                <HStack
+                                    wrap={false}
+                                    gap="4"
+                                    align="center"
+                                    justify="space-between"
+                                    className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+                                >
+                                    <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
+                                    <GravidIkon />
+                                </HStack>
+                            )}
+                            {p.årsak === 'FERIE' && <DuHarFerie />}
+                            {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
+                        </Show>
+                        <Show below="md" asChild>
+                            <div className="contents">
+                                <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
+                                {p.type && <GravidIkon />}
+                                {p.årsak === 'FERIE' && <ParasollIkon />}
+                                {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
+                                <VStack className="col-span-2">
+                                    <strong>{arbeidsgiverNavn}</strong>
+                                    <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
+                                </VStack>
+                            </div>
+                        </Show>
+                    </React.Fragment>
+                );
+            })}
         </HGrid>
-    );
-};
-
-const DuHarSvp = ({ arbeidstidprosent, type }: { arbeidstidprosent?: number; type: Tilretteleggingstype }) => {
-    const prosentSvangerskapspenger = type === 'HEL' ? 0 : type === 'INGEN' ? 100 : 100 - (arbeidstidprosent ?? 0);
-
-    return (
-        <HStack
-            wrap={false}
-            gap="4"
-            align="center"
-            justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
-        >
-            <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
-            <GravidIkon />
-        </HStack>
     );
 };
 
@@ -176,7 +183,7 @@ const ParasollIkon = () => (
 );
 
 const GravidIkon = () => (
-    <div className="rounded-3xl bg-green-200">
+    <div className="rounded-3xl bg-green-200 justify-self-end">
         <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
     </div>
 );
@@ -241,8 +248,8 @@ const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         }
 
         // failsafe under utvikling
-        if (i > 50) {
-            console.log(endeligePerioder);
+        if (i > 500) {
+            console.log(endeligePerioder, i);
             console.log('limit break');
             break;
         }

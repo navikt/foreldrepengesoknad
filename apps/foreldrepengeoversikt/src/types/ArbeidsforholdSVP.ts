@@ -13,7 +13,7 @@ export interface ArbeidsforholdSVP {
         | 'AVSLAG_INNGANGSVILKÅR';
 }
 
-type Oppholdsperiode = {
+export type Oppholdsperiode = {
     fom: string;
     tom: string;
     årsak: 'FERIE' | 'SYKEPENGER'; //TODO
