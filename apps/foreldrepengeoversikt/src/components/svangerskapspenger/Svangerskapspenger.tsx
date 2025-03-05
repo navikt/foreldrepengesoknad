@@ -1,9 +1,17 @@
-import { BandageFillIcon, HeartFillIcon, ParasolBeachFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
+import {
+    BandageFillIcon,
+    HeartFillIcon,
+    ParasolBeachFillIcon,
+    PersonPregnantFillIcon,
+    StrollerFillIcon,
+} from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { groupBy } from 'lodash';
 
-import { BodyShort, HStack, Heading, Table, VStack } from '@navikt/ds-react';
+import { BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import {
+    TidsperiodenString,
     capitalizeFirstLetter,
     capitalizeFirstLetterInEveryWordOnly,
     formatDateMedUkedag,
@@ -26,122 +34,66 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
         return null;
     }
 
-    let perioder = arbeidsforhold
-        .map((af) =>
-            [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
-                ...p,
-                arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
-                type: 'type' in p ? p.type : undefined,
-                årsak: 'årsak' in p ? p.årsak : undefined,
-                fom: p.fom,
-                tom: p.tom,
-                aktivitet: af.aktivitet,
-                behovFrom: af.behovFrom,
-                avslutningÅrsak: af.avslutningÅrsak,
-            })),
-        )
-        .flat()
-        .sort((a, b) => a.fom.localeCompare(b.fom));
-    // .sort((a, b) => (a.aktivitet.arbeidsgiverNavn ?? '').localeCompare(b.aktivitet.arbeidsgiverNavn ?? ''));
-
-    let dag = dayjs(
-        perioder.reduce((earliest, periode) => {
-            return dayjs(periode.fom).isBefore(dayjs(earliest)) ? periode.fom : earliest;
-        }, perioder[0]?.fom),
-    );
-
-    const sisteDag = perioder.reduce((latest, periode) => {
-        return dayjs(periode.tom).isAfter(dayjs(latest)) ? periode.tom : latest;
-    }, perioder[0]?.tom);
-
-    test1(svpSak);
-
-    // let res = [];
-    // let gruppe = [];
-    // let gruppeForrigeDag = [];
-    // let perioderCopy = perioder;
-    // while (dag.isBefore(sisteDag)) {
-    //     console.log('DAG', dayjs(dag).format('YYYY-MM-DD'));
-    //     gruppeForrigeDag = [...gruppe];
-    //     gruppe = perioderCopy.filter(
-    //         (periode) => dag.isSameOrAfter(periode.fom) && dayjs(dag).isSameOrBefore(periode.tom),
-    //     );
-    //
-    //     const varMedIgår = gruppeForrigeDag.filter(
-    //         (forrigePeriode) =>
-    //             !gruppe.some((periode) => periode.fom === forrigePeriode.fom && periode.tom === forrigePeriode.tom),
-    //     );
-    //     if (varMedIgår.length > 0) {
-    //         const a = gruppeForrigeDag.map((g) => ({ ...g, tom: dag.add(-1, 'day').format('YYYY-MM-DD') }));
-    //         res = [...res, [...a]];
-    //
-    //         // Fjern oppbrukte perioder
-    //         perioderCopy = perioderCopy
-    //             .filter((p) => !varMedIgår.some((v) => v.fom === p.fom && v.tom === p.tom))
-    //             .map((p) => {
-    //                 const skalModifisereFom = gruppeForrigeDag.find((g) => g.tom === p.tom && g.fom === p.fom);
-    //                 return {
-    //                     ...p,
-    //                     fom: skalModifisereFom ? dag.format('YYYY-MM-DD') : p.fom,
-    //                 };
-    //             });
-    //         console.log(perioderCopy);
-    //     }
-    //     dag = dayjs(dag).add(1, 'day');
-    // }
-    // console.log(res);
+    const perioder1 = test2(svpSak).sort((a, b) => a.fom.localeCompare(b.fom));
 
     return (
         <VStack>
             <Heading level="2" size="medium" spacing>
                 {erVedtatt ? 'Dette har du fått vedtatt' : 'Dette har du søkt om'}
             </Heading>
-            <Table className="bg-white p-4">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Bedrift</Table.HeaderCell>
-                        <Table.HeaderCell scope="col"></Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {perioder.map((p) => (
-                        <Table.Row key={[p.fom, p.tom, p.aktivitet.arbeidsgiverNavn].join('-')}>
-                            <Table.HeaderCell scope="row" className="whitespace-nowrap">
-                                {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
-                            </Table.HeaderCell>
-                            <Table.DataCell>
-                                {capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
-                                    p.aktivitet.arbeidsgiver.id}
-                            </Table.DataCell>
-                            <Table.DataCell>
-                                {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
-                                {p.årsak === 'FERIE' && <DuHarFerie />}
-                                {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
-                            </Table.DataCell>
-                        </Table.Row>
-                    ))}
-                    <Table.Row>
-                        <Table.HeaderCell scope="row">
-                            {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
-                        </Table.HeaderCell>
-                        <Table.DataCell> </Table.DataCell>
-                        <Table.DataCell>
-                            <TreUkerFørTermin />
-                        </Table.DataCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.HeaderCell scope="row">
-                            {capitalizeFirstLetter(formatDateMedUkedag(terminDato))}
-                        </Table.HeaderCell>
-                        <Table.DataCell> </Table.DataCell>
-                        <Table.DataCell>
-                            <Termin />
-                        </Table.DataCell>
-                    </Table.Row>
-                </Table.Body>
-            </Table>
+            <VStack gap="4" className="bg-white p-4">
+                {Object.values(groupBy(perioder1, 'fom')).map((perioder) => (
+                    <>
+                        <PeriodeAccordion perioder={perioder} />
+                        <div className="h-[1] bg-border-divider" />
+                    </>
+                ))}
+                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                    <BodyShort>
+                        {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
+                    </BodyShort>
+                    <BodyShort> </BodyShort>
+                    <BodyShort>
+                        <TreUkerFørTermin />
+                    </BodyShort>
+                </HGrid>
+                <div className="h-[1] bg-border-divider" />
+                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                    <BodyShort>{capitalizeFirstLetter(formatDateMedUkedag(terminDato))}</BodyShort>
+                    <BodyShort> </BodyShort>
+                    <BodyShort>
+                        <Termin />
+                    </BodyShort>
+                </HGrid>
+            </VStack>
         </VStack>
+    );
+};
+
+const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof test2> }) => {
+    return (
+        <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+            {perioder.map((p, index) => (
+                <>
+                    {index === 0 ? (
+                        <BodyShort className="whitespace-nowrap">
+                            {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
+                        </BodyShort>
+                    ) : (
+                        <BodyShort> </BodyShort>
+                    )}
+                    <BodyShort>
+                        {capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
+                            p.aktivitet.arbeidsgiver.id}
+                    </BodyShort>
+                    <BodyShort>
+                        {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
+                        {p.årsak === 'FERIE' && <DuHarFerie />}
+                        {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
+                    </BodyShort>
+                </>
+            ))}
+        </HGrid>
     );
 };
 
@@ -198,11 +150,11 @@ const TreUkerFørTermin = () => {
             gap="4"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-purple-50 rounded-3xl"
             wrap={false}
         >
             <BodyShort>Du kan søke om foreldrepenger</BodyShort>
-            <GravidIkon />
+            <BarnevognIkon />
         </HStack>
     );
 };
@@ -234,9 +186,15 @@ const GravidIkon = () => (
     </div>
 );
 
-const test1 = (svpSak: SvangerskapspengeSak) => {
+const BarnevognIkon = () => (
+    <div className="rounded-3xl bg-purple-100">
+        <StrollerFillIcon fontSize={'2.5rem'} className=" text-purple-500 p-05" aria-hidden />
+    </div>
+);
+
+const test2 = (svpSak: SvangerskapspengeSak) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
-    let perioder = (arbeidsforhold ?? [])
+    const perioder = (arbeidsforhold ?? [])
         .map((af) =>
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
@@ -253,19 +211,48 @@ const test1 = (svpSak: SvangerskapspengeSak) => {
         .flat()
         .sort((a, b) => a.fom.localeCompare(b.fom));
 
-    console.log('PERIODER', perioder);
+    const endeligePerioder = [];
+    const perioderÅBruke = [...perioder];
+    let i = 0;
 
-    let res = [];
+    while (perioderÅBruke.length > 0) {
+        const nestePeriode = perioderÅBruke.shift();
+        if (!nestePeriode) {
+            break;
+        }
 
-    perioder.forEach((p1) => {
-        perioder.forEach((p2) => {
-            if (dayjs(p2.fom).isBefore(p1.fom)) {
-                return;
-            }
-
-            // p2 krysser p1
-            if (dayjs(p2.tom).isBefore(p1.tom)) {
-            }
+        const index = perioderÅBruke.findIndex((p) => {
+            if (p.fom === nestePeriode.fom && p.tom === nestePeriode.tom) return false;
+            return TidsperiodenString(p).inneholderDato(nestePeriode.tom);
         });
-    });
+        const intersekterMedAnnenPeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
+
+        if (intersekterMedAnnenPeriode) {
+            const a = {
+                ...intersekterMedAnnenPeriode,
+                tom: nestePeriode.tom,
+            };
+            const b = {
+                ...intersekterMedAnnenPeriode,
+                fom: dayjs(nestePeriode.tom).add(1, 'day').format('YYYY-MM-DD'),
+            };
+            perioderÅBruke.push(a, b);
+        }
+
+        if (!intersekterMedAnnenPeriode) {
+            endeligePerioder.push(nestePeriode);
+        } else {
+            perioderÅBruke.unshift(nestePeriode);
+        }
+
+        // failsafe under utvikling
+        if (i > 50) {
+            console.log(endeligePerioder);
+            console.log('limit break');
+            break;
+        }
+        i = i + 1;
+    }
+
+    return endeligePerioder;
 };
