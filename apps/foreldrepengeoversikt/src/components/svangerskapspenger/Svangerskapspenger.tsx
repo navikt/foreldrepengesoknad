@@ -7,6 +7,7 @@ import {
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
+import React from 'react';
 
 import { BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -43,27 +44,23 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             </Heading>
             <VStack gap="4" className="bg-white p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
-                    <>
+                    <React.Fragment key={gruppertePerioder[0].fom}>
                         <PeriodeAccordion perioder={gruppertePerioder} />
-                        <div className="h-[1] bg-border-divider" />
-                    </>
+                        <div className="    h-[1] bg-border-divider" />
+                    </React.Fragment>
                 ))}
                 <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>
                         {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
                     </BodyShort>
                     <BodyShort> </BodyShort>
-                    <BodyShort>
-                        <TreUkerFørTermin />
-                    </BodyShort>
+                    <TreUkerFørTermin />
                 </HGrid>
                 <div className="h-[1] bg-border-divider" />
                 <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>{capitalizeFirstLetter(formatDateMedUkedag(terminDato))}</BodyShort>
                     <BodyShort> </BodyShort>
-                    <BodyShort>
-                        <Termin />
-                    </BodyShort>
+                    <Termin />
                 </HGrid>
             </VStack>
         </VStack>
@@ -74,7 +71,7 @@ const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof lagKronolo
     return (
         <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
             {perioder.map((p, index) => (
-                <>
+                <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
                     {index === 0 ? (
                         <BodyShort className="whitespace-nowrap">
                             {formatDateShortMonth(p.fom)} - {formatDateShortMonth(p.tom)}
@@ -86,12 +83,10 @@ const PeriodeAccordion = ({ perioder }: { perioder: ReturnType<typeof lagKronolo
                         {capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
                             p.aktivitet.arbeidsgiver.id}
                     </BodyShort>
-                    <BodyShort>
-                        {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
-                        {p.årsak === 'FERIE' && <DuHarFerie />}
-                        {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
-                    </BodyShort>
-                </>
+                    {p.type && <DuHarSvp type={p.type} arbeidstidprosent={p.arbeidstidprosent} />}
+                    {p.årsak === 'FERIE' && <DuHarFerie />}
+                    {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
+                </React.Fragment>
             ))}
         </HGrid>
     );
