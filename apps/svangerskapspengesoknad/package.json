@@ -15,7 +15,8 @@
         "prettier": "prettier --write src",
         "test": "vitest run",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 9001"
+        "storybook": "storybook dev --quiet -p 9001",
+        "compiler": "tsc --noEmit --watch"
     },
     "author": "",
     "license": "ISC",
@@ -119,7 +120,6 @@
         "tsconfig": "workspace:*",
         "typescript": "^5.7.3",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     },
     "packageManager": "pnpm@9.1.4"
