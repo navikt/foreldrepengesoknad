@@ -48,6 +48,10 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: Stønadskonto[
         )
         .map((kontoType) => kontoType.konto);
 
+export const getStønadskontoNavnSimple = (intl: IntlShape, konto: StønadskontoType) => {
+    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+};
+
 export const getStønadskontoNavn = (
     intl: IntlShape,
     konto: StønadskontoType,
