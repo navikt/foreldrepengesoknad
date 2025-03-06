@@ -33,9 +33,9 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     if (!arbeidsforhold || !terminDato) {
         return null;
     }
-
-    const perioder = lagKronologiskeSvpPerioder(svpSak).sort((a, b) => a.fom.localeCompare(b.fom));
-
+    console.log(svpSak);
+    const perioder = lagKronologiskeSvpPerioder(svpSak);
+    console.log(perioder);
     return (
         <VStack>
             <Heading level="2" size="medium" spacing>
@@ -199,7 +199,7 @@ const BarnevognIkon = () => (
     </div>
 );
 
-const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
+export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const perioder = (arbeidsforhold ?? [])
         .map((af) =>
@@ -229,16 +229,21 @@ const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         }
 
         const index = perioderÅBruke.findIndex((p) => {
-            if (p.tom === nestePeriode.tom) return false;
+            if (p.fom === nestePeriode.fom && p.tom === nestePeriode.tom) return false;
+            // if (p.tom === nestePeriode.tom) return false;
             return TidsperiodenString(p).inneholderDato(nestePeriode.tom);
         });
         const intersekterMedAnnenPeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
 
         if (intersekterMedAnnenPeriode) {
+            let c;
+            let d;
+
             // Hvis nestePeriode ikke overlapper med annen periode
             const overlapperIkke =
                 dayjs(nestePeriode.fom).isSameOrAfter(intersekterMedAnnenPeriode.fom) &&
                 dayjs(nestePeriode.tom).isSameOrBefore(intersekterMedAnnenPeriode.tom);
+
             const a = {
                 ...nestePeriode,
                 tom: dayjs(intersekterMedAnnenPeriode.fom).subtract(1, 'day').format('YYYY-MM-DD'),
@@ -248,19 +253,26 @@ const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 fom: intersekterMedAnnenPeriode.fom,
             };
 
-            const c = {
-                ...intersekterMedAnnenPeriode,
-                tom: nestePeriode.tom,
-            };
-            const d = {
-                ...intersekterMedAnnenPeriode,
-                fom: dayjs(nestePeriode.tom).add(1, 'day').format('YYYY-MM-DD'),
-            };
+            // Hvis tom er lik trenger vi ikke splitte annen periode
+            if (nestePeriode.tom !== intersekterMedAnnenPeriode.tom) {
+                c = {
+                    ...intersekterMedAnnenPeriode,
+                    tom: nestePeriode.tom,
+                };
+                d = {
+                    ...intersekterMedAnnenPeriode,
+                    fom: dayjs(nestePeriode.tom).add(1, 'day').format('YYYY-MM-DD'),
+                };
+            } else {
+                c = intersekterMedAnnenPeriode;
+            }
 
             if (overlapperIkke) {
-                perioderÅBruke.unshift(nestePeriode, c, d);
+                const nyePerioder = [nestePeriode, c, d].filter((x) => x !== undefined);
+                perioderÅBruke.unshift(...nyePerioder);
             } else {
-                perioderÅBruke.unshift(a, b, c, d);
+                const nyePerioder = [a, b, c, d].filter((x) => x !== undefined);
+                perioderÅBruke.unshift(...nyePerioder);
             }
             // perioderÅBruke.unshift(nestePeriode);
         }
@@ -277,6 +289,5 @@ const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         }
         i = i + 1;
     }
-
-    return endeligePerioder;
+    return endeligePerioder.sort((a, b) => a.fom.localeCompare(b.fom));
 };

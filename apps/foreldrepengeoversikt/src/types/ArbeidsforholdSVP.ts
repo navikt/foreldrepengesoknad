@@ -17,7 +17,7 @@ export type Oppholdsperiode = {
     fom: string;
     tom: string;
     årsak: 'FERIE' | 'SYKEPENGER'; //TODO
-    oppholdKilde: 'SØKNAD'; //TODO
+    oppholdKilde: 'SØKNAD' | 'SAKSBEHANDLER'; //TODO
 };
 
 type Aktivitet = {
