@@ -26,7 +26,7 @@ export enum NavRoutes {
     LES_MER_OM_FORELDREPENGER = 'https://www.nav.no/foreldrepenger',
     LES_MER_OM_SVANGERSKAPSPENGER = 'https://familie.nav.no/om-svangerskapspenger',
     LES_MER_OM_ENGANGSTØNAD = 'https://familie.nav.no/om-engangsstonad',
-    MELD_FRA_OM_ENDRINGER = 'https://www.nav.no/no/nav-og-samfunn/om-nav/relatert-informasjon/du-har-plikt-til-a-gi-nav-riktige-opplysninger',
+    MELD_FRA_OM_ENDRINGER = 'https://www.nav.no/foreldrepenger#melde',
     VENT_INNTEKTSMELDING = 'https://www.nav.no/arbeidsgiver/inntektsmelding',
     VENT_MELDEKORT = 'https://www.nav.no/no/person/arbeid/dagpenger-ved-arbeidsloshet-og-permittering/meldekort-hvordan-gjor-du-det',
     SØKNADSFRISTER = 'https://www.nav.no/foreldrepenger#for-soknad',
