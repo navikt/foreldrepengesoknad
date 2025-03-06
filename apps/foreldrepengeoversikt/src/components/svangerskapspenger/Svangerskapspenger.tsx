@@ -69,7 +69,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
-        <HGrid gap="2" columns={{ xs: '1fr 1fr', md: '1fr 1fr 300px' }} align="center">
+        <HGrid gap="2" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
             {perioder.map((p, index) => {
                 const arbeidsgiverNavn =
                     capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ?? p.aktivitet.arbeidsgiver.id;
@@ -79,34 +79,36 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
 
                 return (
                     <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
-                        <Show above="md">
-                            <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
-                            <BodyShort>{arbeidsgiverNavn}</BodyShort>
-                            {p.type && (
-                                <HStack
-                                    wrap={false}
-                                    gap="4"
-                                    align="center"
-                                    justify="space-between"
-                                    className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
-                                >
-                                    <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
-                                    <GravidIkon />
-                                </HStack>
-                            )}
-                            {p.årsak === 'FERIE' && <DuHarFerie />}
-                            {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
+                        <Show above="md" asChild>
+                            <div className="contents">
+                                <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
+                                <BodyShort>{arbeidsgiverNavn}</BodyShort>
+                                {p.type && (
+                                    <HStack
+                                        wrap={false}
+                                        gap="4"
+                                        align="center"
+                                        justify="space-between"
+                                        className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+                                    >
+                                        <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
+                                        <GravidIkon />
+                                    </HStack>
+                                )}
+                                {p.årsak === 'FERIE' && <DuHarFerie />}
+                                {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
+                            </div>
                         </Show>
                         <Show below="md" asChild>
                             <div className="contents">
-                                <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
-                                {p.type && <GravidIkon />}
-                                {p.årsak === 'FERIE' && <ParasollIkon />}
-                                {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
-                                <VStack className="col-span-2">
+                                <BodyShort className="col-span-2">{dato}</BodyShort>
+                                <VStack>
                                     <strong>{arbeidsgiverNavn}</strong>
                                     <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
                                 </VStack>
+                                {p.type && <GravidIkon />}
+                                {p.årsak === 'FERIE' && <ParasollIkon />}
+                                {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
                             </div>
                         </Show>
                     </React.Fragment>
@@ -171,13 +173,13 @@ const Termin = () => {
 };
 
 const BandasjeIkon = () => (
-    <div className="rounded-3xl bg-orange-200">
+    <div className="rounded-3xl bg-orange-200 justify-self-end">
         <BandageFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
     </div>
 );
 
 const ParasollIkon = () => (
-    <div className="rounded-3xl bg-orange-200">
+    <div className="rounded-3xl bg-orange-200 justify-self-end">
         <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
     </div>
 );
@@ -189,7 +191,7 @@ const GravidIkon = () => (
 );
 
 const BarnevognIkon = () => (
-    <div className="rounded-3xl bg-purple-100">
+    <div className="rounded-3xl bg-purple-100 justify-self-end">
         <StrollerFillIcon fontSize={'2.5rem'} className=" text-purple-500 p-05" aria-hidden />
     </div>
 );
@@ -224,27 +226,44 @@ const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         }
 
         const index = perioderÅBruke.findIndex((p) => {
-            if (p.fom === nestePeriode.fom && p.tom === nestePeriode.tom) return false;
+            if (p.tom === nestePeriode.tom) return false;
             return TidsperiodenString(p).inneholderDato(nestePeriode.tom);
         });
         const intersekterMedAnnenPeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
 
         if (intersekterMedAnnenPeriode) {
+            // Hvis nestePeriode ikke overlapper med annen periode
+            const overlapperIkke =
+                dayjs(nestePeriode.fom).isSameOrAfter(intersekterMedAnnenPeriode.fom) &&
+                dayjs(nestePeriode.tom).isSameOrBefore(intersekterMedAnnenPeriode.tom);
             const a = {
+                ...nestePeriode,
+                tom: dayjs(intersekterMedAnnenPeriode.fom).subtract(1, 'day').format('YYYY-MM-DD'),
+            };
+            const b = {
+                ...nestePeriode,
+                fom: intersekterMedAnnenPeriode.fom,
+            };
+
+            const c = {
                 ...intersekterMedAnnenPeriode,
                 tom: nestePeriode.tom,
             };
-            const b = {
+            const d = {
                 ...intersekterMedAnnenPeriode,
                 fom: dayjs(nestePeriode.tom).add(1, 'day').format('YYYY-MM-DD'),
             };
-            perioderÅBruke.push(a, b);
+
+            if (overlapperIkke) {
+                perioderÅBruke.unshift(nestePeriode, c, d);
+            } else {
+                perioderÅBruke.unshift(a, b, c, d);
+            }
+            // perioderÅBruke.unshift(nestePeriode);
         }
 
         if (!intersekterMedAnnenPeriode) {
             endeligePerioder.push(nestePeriode);
-        } else {
-            perioderÅBruke.unshift(nestePeriode);
         }
 
         // failsafe under utvikling
