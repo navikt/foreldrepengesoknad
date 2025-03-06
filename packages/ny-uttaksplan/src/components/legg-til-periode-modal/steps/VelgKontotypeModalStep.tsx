@@ -47,6 +47,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
             case StønadskontoType.Fedrekvote:
                 return Forelder.farMedmor;
             case StønadskontoType.Mødrekvote:
+            case StønadskontoType.ForeldrepengerFørFødsel:
                 return Forelder.mor;
             default:
                 return fValue;
