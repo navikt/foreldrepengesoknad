@@ -18,7 +18,8 @@
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001",
-        "extract": "formatjs extract"
+        "extract": "formatjs extract",
+        "compiler": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^7.16.0",
@@ -80,7 +81,6 @@
         "tsconfig": "workspace:*",
         "typescript": "^5.7.3",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     }
 }
