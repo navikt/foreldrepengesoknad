@@ -20,7 +20,6 @@ import {
     treUkerSiden,
 } from '@navikt/fp-utils';
 
-import { Oppholdsperiode, Tilretteleggingstype } from '../../types/ArbeidsforholdSVP';
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
 
 type SvangerskapspengerProps = {
@@ -104,7 +103,11 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                 <BodyShort className="col-span-2">{dato}</BodyShort>
                                 <VStack>
                                     <strong>{arbeidsgiverNavn}</strong>
-                                    <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
+                                    <BodyShort>
+                                        {p.type && `${prosentSvangerskapspenger}% svangerskapspenger`}
+                                        {p.årsak === 'FERIE' && 'Ferie'}
+                                        {p.årsak === 'SYKEPENGER' && 'Sykepenger'}
+                                    </BodyShort>
                                 </VStack>
                                 {p.type && <GravidIkon />}
                                 {p.årsak === 'FERIE' && <ParasollIkon />}
