@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
+import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
@@ -18,6 +19,7 @@ type Props = {
     rettighetType: RettighetType;
     forelder: Forelder;
     visStatusIkoner: boolean;
+    familiehendelse?: Familiehendelse;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -60,22 +62,43 @@ const OppsummeringsTittel = () => {
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder } = useKvote();
+    const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
-
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
         if (!aktuellKonto) {
             return null;
         }
-        const brukteDager = summerDagerIPerioder(perioder.filter((p) => p.kontoType === kontoType));
+
+        const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
+        const brukteDager = summerDagerIPerioder(
+            perioder.filter((p) => {
+                if (
+                    kontoType === 'AKTIVITETSFRI_KVOTE' &&
+                    p.kontoType === 'FORELDREPENGER' &&
+                    p.morsAktivitet === 'IKKE_OPPGITT'
+                ) {
+                    return true;
+                }
+
+                if (
+                    kontoType !== 'AKTIVITETSFRI_KVOTE' &&
+                    p.kontoType === kontoType &&
+                    p.morsAktivitet !== 'IKKE_OPPGITT'
+                ) {
+                    return true;
+                }
+
+                return false;
+            }),
+        );
         const ubrukteDager = aktuellKonto.dager - brukteDager;
         const overtrukketDager = ubrukteDager * -1;
 
         return {
             kontoType,
             brukteDager,
-            ubrukteDager,
+            ubrukteDager: ubrukteDagerSkalTrekkes ? 0 : ubrukteDager,
             overtrukketDager,
         };
     });
@@ -143,9 +166,12 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder } = useKvote();
+    const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
 
+    const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL'),
+    );
     const dagerBruktAvMor = summerDagerIPerioder(
         perioder.filter(
             (p) =>
@@ -161,13 +187,18 @@ const KvoteTittel = () => {
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
 
+    const barnetErFødt = !!familiehendelse?.fødselsdato;
+
     const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
+    // Dersom barnet er født skal vi se bortifra ubrukte dager på mor sin "3 uker før fødsel" konto.
     const ubrukteDagerMor =
-        mødreKonto && førFødselKonto ? mødreKonto.dager + førFødselKonto.dager - dagerBruktAvMor : 0;
+        mødreKonto && førFødselKonto
+            ? mødreKonto.dager + (barnetErFødt ? dagerBruktAvMorFørFødsel : førFødselKonto.dager) - dagerBruktAvMor
+            : 0;
     const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : 0;
     const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : 0;
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
@@ -484,11 +515,14 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner } = useKvote();
+    const { visStatusIkoner, familiehendelse } = useKvote();
 
     if (!konto) {
         return null;
     }
+
+    // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
+    const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
 
     const dagerBrukt = summerDagerIPerioder(perioder);
     const ubrukteDager = konto.dager - dagerBrukt;
@@ -500,7 +534,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
         if (overtrukketDager > 0) {
             return <ForMyeTidBruktIPlanIkon size="liten" />;
         }
-        if (dagerBrukt === konto.dager) {
+        if (dagerBrukt === konto.dager || ubrukteDagerErUtløpt) {
             return <AllTidIPlanIkon size="liten" />;
         }
         return <MerTidÅBrukeIPlanIkon size="liten" />;
@@ -528,6 +562,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                                 kontoType: konto.konto,
                                 prosent: 100 - prosentBruktAvkvote,
                                 erFyllt: false,
+                                erUtløpt: ubrukteDagerErUtløpt,
                             },
                         ]}
                     />
@@ -552,7 +587,10 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                             { id: 'kvote.varighet.erLagtTil' },
                             { varighet: getVarighetString(dagerBrukt, intl) },
                         ),
-                        ubrukteDager > 0
+                        ubrukteDager > 0 && ubrukteDagerErUtløpt
+                            ? `${getVarighetString(ubrukteDager, intl)} har falt bort`
+                            : '',
+                        ubrukteDager > 0 && !ubrukteDagerErUtløpt
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
                                   { varighet: getVarighetString(ubrukteDager, intl) },
@@ -605,8 +643,15 @@ type FordelingSegmentProps = {
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
+    erUtløpt?: boolean;
 };
-const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = false }: FordelingSegmentProps) => {
+const FordelingSegment = ({
+    kontoType,
+    prosent,
+    erFyllt = true,
+    erOvertrukket = false,
+    erUtløpt,
+}: FordelingSegmentProps) => {
     const { forelder } = useKvote();
     if (prosent <= 0) {
         return null;
@@ -615,6 +660,10 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = 
 
     if (erOvertrukket) {
         return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+    }
+
+    if (erUtløpt) {
+        return <div className={`rounded-full h-4 border-2 bg-gray-300 border-gray-300`} style={style} />;
     }
 
     if (forelder === 'MOR') {
@@ -694,7 +743,7 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
     </div>
 );
 
-export const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
     const samtidigUttak = periode.samtidigUttak;
     const dager = TidsperiodenString(periode).getAntallUttaksdager();
