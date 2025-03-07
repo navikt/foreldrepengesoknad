@@ -33,9 +33,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     if (!arbeidsforhold || !terminDato) {
         return null;
     }
-    console.log(svpSak);
     const perioder = lagKronologiskeSvpPerioder(svpSak);
-    console.log(perioder);
     return (
         <VStack>
             <Heading level="2" size="medium" spacing>
@@ -223,67 +221,73 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
     let i = 0;
 
     while (perioderÅBruke.length > 0) {
-        const nestePeriode = perioderÅBruke.shift();
-        if (!nestePeriode) {
+        const periode = perioderÅBruke.shift();
+        if (!periode) {
             break;
         }
 
         const index = perioderÅBruke.findIndex((p) => {
-            if (p.fom === nestePeriode.fom && p.tom === nestePeriode.tom) return false;
-            return TidsperiodenString(p).inneholderDato(nestePeriode.tom);
+            if (p.fom === periode.fom && p.tom === periode.tom) return false;
+            return TidsperiodenString(p).inneholderDato(periode.tom);
         });
-        const intersekterMedAnnenPeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
+        const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
 
-        if (intersekterMedAnnenPeriode) {
-            let c;
-            let d;
+        if (overlappendePeriode) {
+            let overlappendePeriode1;
+            let overlappendePeriode2;
 
-            // Hvis nestePeriode ikke overlapper med annen periode
+            // Hvis periode ikke overlapper med annen periode
             const overlapperIkke =
-                dayjs(nestePeriode.fom).isSameOrAfter(intersekterMedAnnenPeriode.fom) &&
-                dayjs(nestePeriode.tom).isSameOrBefore(intersekterMedAnnenPeriode.tom);
+                dayjs(periode.fom).isSameOrAfter(overlappendePeriode.fom) &&
+                dayjs(periode.tom).isSameOrBefore(overlappendePeriode.tom);
 
-            const a = {
-                ...nestePeriode,
-                tom: dayjs(intersekterMedAnnenPeriode.fom).subtract(1, 'day').format('YYYY-MM-DD'),
+            // Del "periode" på "overlappendePeriode" sin fom
+            const periode1 = {
+                ...periode,
+                tom: dayjs(overlappendePeriode.fom).subtract(1, 'day').format('YYYY-MM-DD'),
             };
-            const b = {
-                ...nestePeriode,
-                fom: intersekterMedAnnenPeriode.fom,
+            const periode2 = {
+                ...periode,
+                fom: overlappendePeriode.fom,
             };
 
             // Hvis tom er lik trenger vi ikke splitte annen periode
-            if (nestePeriode.tom !== intersekterMedAnnenPeriode.tom) {
-                c = {
-                    ...intersekterMedAnnenPeriode,
-                    tom: nestePeriode.tom,
+            if (periode.tom !== overlappendePeriode.tom) {
+                overlappendePeriode1 = {
+                    ...overlappendePeriode,
+                    tom: periode.tom,
                 };
-                d = {
-                    ...intersekterMedAnnenPeriode,
-                    fom: dayjs(nestePeriode.tom).add(1, 'day').format('YYYY-MM-DD'),
+                overlappendePeriode2 = {
+                    ...overlappendePeriode,
+                    fom: dayjs(periode.tom).add(1, 'day').format('YYYY-MM-DD'),
                 };
             } else {
-                c = intersekterMedAnnenPeriode;
+                overlappendePeriode1 = overlappendePeriode;
             }
 
             if (overlapperIkke) {
-                const nyePerioder = [nestePeriode, c, d].filter((x) => x !== undefined);
+                const nyePerioder = [periode, overlappendePeriode1, overlappendePeriode2].filter(
+                    (x) => x !== undefined,
+                );
                 perioderÅBruke.unshift(...nyePerioder);
             } else {
-                const nyePerioder = [a, b, c, d].filter((x) => x !== undefined);
+                const nyePerioder = [periode1, periode2, overlappendePeriode1, overlappendePeriode2].filter(
+                    (x) => x !== undefined,
+                );
                 perioderÅBruke.unshift(...nyePerioder);
             }
         }
 
-        if (!intersekterMedAnnenPeriode) {
-            endeligePerioder.push(nestePeriode);
+        // Hvis det ikke finnes overlappende perioder så er perioden "ferdig"
+        if (!overlappendePeriode) {
+            endeligePerioder.push(periode);
         }
 
         // failsafe under utvikling
-        if (i > 500) {
+        if (++i > 500) {
+            console.error('lagKronologiskeSvpPerioder er tilsynelatende stuck i en evig loop');
             break;
         }
-        i = i + 1;
     }
     return endeligePerioder.sort((a, b) => a.fom.localeCompare(b.fom));
 };
