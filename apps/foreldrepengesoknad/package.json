@@ -14,7 +14,8 @@
         "dev-vite": "vite",
         "test": "vitest run --test-timeout=30000",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 9001"
+        "storybook": "storybook dev --quiet -p 9001",
+        "compiler": "tsc --noEmit --watch"
     },
     "keywords": [],
     "author": "NAV",
@@ -25,9 +26,9 @@
         "@formatjs/intl-numberformat": "^8.15.2",
         "@formatjs/intl-pluralrules": "^5.4.2",
         "@formatjs/intl-relativetimeformat": "^11.4.9",
-        "@navikt/aksel-icons": "^7.14.0",
-        "@navikt/ds-css": "^7.14.0",
-        "@navikt/ds-react": "^7.14.0",
+        "@navikt/aksel-icons": "^7.16.0",
+        "@navikt/ds-css": "^7.16.0",
+        "@navikt/ds-react": "^7.16.0",
         "@navikt/fnrvalidator": "^2.1.5",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-common": "workspace:*",
@@ -133,7 +134,6 @@
         "tsconfig": "workspace:*",
         "typescript": "^5.7.3",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     },
     "packageManager": "pnpm@9.1.4"

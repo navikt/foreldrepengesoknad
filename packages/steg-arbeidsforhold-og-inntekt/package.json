@@ -14,8 +14,8 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/ds-css": "^7.14.0",
-        "@navikt/ds-react": "7.14.0",
+        "@navikt/ds-css": "^7.16.0",
+        "@navikt/ds-react": "7.16.0",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
@@ -51,7 +51,6 @@
         "tsconfig": "workspace:*",
         "typescript": "^5.7.3",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     },
     "packageManager": "pnpm@9.1.4"

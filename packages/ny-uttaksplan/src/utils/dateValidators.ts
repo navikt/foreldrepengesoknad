@@ -18,16 +18,17 @@ export const getFomValidators = (
     familiehendelsedato: string,
     kontoType: StønadskontoType | undefined,
     tomValue: string | undefined,
+    erBarnetFødt: boolean,
 ) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
         isBeforeOrSame(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.førTilDato' }), tomValue),
-        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.foreldrepengerFørFødsel' })),
+        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
     ];
 
     leggTilForeldrepengerFørFødselValidering(intl, validators, kontoType, familiehendelsedato);
-    leggTilFørFamdatoValideringOmNødvendig(validators, kontoType, familiehendelsedato);
+    leggTilFørFamdatoValideringOmNødvendig(intl, validators, kontoType, familiehendelsedato, erBarnetFødt);
 
     return validators;
 };
@@ -36,6 +37,7 @@ export const getTomValidators = (
     intl: IntlShape,
     familiehendelsedato: string,
     kontoType: StønadskontoType | undefined,
+    erBarnetFødt: boolean,
 ) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
@@ -44,7 +46,7 @@ export const getTomValidators = (
     ];
 
     leggTilForeldrepengerFørFødselValidering(intl, validators, kontoType, familiehendelsedato);
-    leggTilFørFamdatoValideringOmNødvendig(validators, kontoType, familiehendelsedato);
+    leggTilFørFamdatoValideringOmNødvendig(intl, validators, kontoType, familiehendelsedato, erBarnetFødt);
 
     return validators;
 };
@@ -58,7 +60,7 @@ const leggTilForeldrepengerFørFødselValidering = (
     if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
         validators.push(
             isDateWithinRange(
-                intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.foreldrepengerFørFødsel' }),
+                intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
                 dayjs(
                     UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15),
                 ).toDate(),
@@ -69,9 +71,11 @@ const leggTilForeldrepengerFørFødselValidering = (
 };
 
 const leggTilFørFamdatoValideringOmNødvendig = (
+    intl: IntlShape,
     validators: ((date: string) => FormValidationResult)[],
     kontoType: StønadskontoType | undefined,
     familiehendelsedato: string,
+    erBarnetFødt: boolean,
 ) => {
     if (
         kontoType === StønadskontoType.Mødrekvote ||
@@ -81,7 +85,9 @@ const leggTilFørFamdatoValideringOmNødvendig = (
     ) {
         validators.push(
             isAfterDate(
-                'Kun fellesperiode og foreldrepenger før fødsel kan benyttes før familiehendelsedatoen',
+                erBarnetFødt
+                    ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                    : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
                 UttaksdagenString(familiehendelsedato).denneEllerForrige(),
             ),
         );

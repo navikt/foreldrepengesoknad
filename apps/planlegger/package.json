@@ -18,13 +18,14 @@
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001",
-        "extract": "formatjs extract"
+        "extract": "formatjs extract",
+        "compiler": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@fontsource/source-sans-3": "^5.1.1",
-        "@navikt/aksel-icons": "^7.14.0",
-        "@navikt/ds-css": "^7.14.0",
-        "@navikt/ds-react": "^7.14.0",
+        "@navikt/aksel-icons": "^7.16.0",
+        "@navikt/ds-css": "^7.16.0",
+        "@navikt/ds-react": "^7.16.0",
         "@navikt/ds-tailwind": "7.14.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
@@ -90,7 +91,6 @@
         "tsconfig": "workspace:*",
         "typescript": "^5.7.3",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     },
     "packageManager": "pnpm@9.1.4"

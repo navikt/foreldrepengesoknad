@@ -15,7 +15,7 @@ export const links = {
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
     plikter: 'https://www.nav.no/endringer',
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
-    veiviser: 'https://familie.nav.no/veiviser',
+    veiviser: 'https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad',
     innsyn: 'https://foreldrepenger.nav.no',
     engangsstonad: 'https://www.nav.no/engangsstonad',
     farMedmor: 'https://www.nav.no/engangsstonad#far_medmor',

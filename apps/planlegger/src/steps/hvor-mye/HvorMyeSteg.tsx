@@ -87,7 +87,15 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                 />
                             </BluePanel>
                             {lønnSøker1 && (
-                                <Utbetaling lønnSøker={lønnSøker1} satser={satser} fornavn={fornavnSøker1} />
+                                <Utbetaling
+                                    lønnSøker={lønnSøker1}
+                                    satser={satser}
+                                    fornavn={
+                                        hvemHarRett === 'kunSøker2HarRett'
+                                            ? (fornavnSøker2 ?? '')
+                                            : (fornavnSøker1 ?? '')
+                                    }
+                                />
                             )}
                         </VStack>
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (

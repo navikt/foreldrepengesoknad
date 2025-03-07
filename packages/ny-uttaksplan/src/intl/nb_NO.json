@@ -40,9 +40,9 @@
     "uttaksplan.periodeListeContent.overføring.aleneomsorg": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} ikke lenger har omsorg for barnet",
     "uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} har mistet rett på foreldrepenger",
     "uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} er innlagt på helseinstitusjon",
-    "uttaksplan.periodeListeContent.skalIkkeJobbe": "Du skal ikke jobbe i denne perioden",
-    "uttaksplan.periodeListeContent.periodeUtenUttak": "Du skal ikke ha foreldrepenger",
-    "uttaksplan.periodeListeContent.tapteDager": "Dager du kan tape",
+    "uttaksplan.periodeListeContent.skalIkkeJobbe": "Skal ikke jobbe i denne perioden",
+    "uttaksplan.periodeListeContent.periodeUtenUttak": "Skal ikke ha foreldrepenger",
+    "uttaksplan.periodeListeContent.tapteDager": "Dager man kan tape",
     "uttaksplan.periodeListeContent.morsAktivitet.Arbeid": "Mor er i arbeid",
     "uttaksplan.periodeListeContent.morsAktivitet.ArbeidOgUtdanning": "Mor er i arbeid og utdanning",
     "uttaksplan.periodeListeContent.morsAktivitet.Innlagt": "Mor er innlagt på helseinstitusjon",
@@ -90,9 +90,10 @@
     "endreTidsPeriodeModal.fom.gyldigDato": "Startdatoen må være en gyldig dato på formatet dd.mm.åååå",
     "endreTidsPeriodeModal.fom.førTilDato": "Startdatoen må være lik eller før sluttdatoen.",
     "endreTidsPeriodeModal.fom.måVæreUkedag": "Startdatoen kan ikke være en helgedag.",
-    "endreTidsPeriodeModal.fom.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.tom.påkrevd": "Du må oppgi en sluttdato",
     "endreTidsPeriodeModal.tom.gyldigDato": "Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå",
-    "endreTidsPeriodeModal.tom.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
-    "endreTidsPeriodeModal.tom.måVæreUkedag": "Sluttdatoen kan ikke være en helgedag."
+    "endreTidsPeriodeModal.tom.måVæreUkedag": "Sluttdatoen kan ikke være en helgedag.",
+    "endreTidsPeriodeModal.riktigKvoteFørFødsel.termin": "Kun fellesperiode og foreldrepenger før fødsel kan benyttes før termin",
+    "endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel": "Kun fellesperiode og foreldrepenger før fødsel kan benyttes før fødsel",
+    "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel."
 }

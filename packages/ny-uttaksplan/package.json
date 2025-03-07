@@ -16,9 +16,9 @@
         "test:coverage": "vitest --coverage"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.14.0",
-        "@navikt/ds-css": "^7.14.0",
-        "@navikt/ds-react": "^7.14.0",
+        "@navikt/aksel-icons": "^7.16.0",
+        "@navikt/ds-css": "^7.16.0",
+        "@navikt/ds-react": "^7.16.0",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
@@ -59,7 +59,6 @@
         "tailwindcss": "4.0.7",
         "tsconfig": "workspace:*",
         "vite": "^6.0.10",
-        "vite-plugin-checker": "^0.8.0",
         "vitest": "^3.0.2"
     }
 }

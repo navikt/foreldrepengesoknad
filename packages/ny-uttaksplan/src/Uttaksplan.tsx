@@ -12,6 +12,7 @@ import {
     SaksperiodeNy,
     TilgjengeligeStønadskontoerForDekningsgrad,
     UttaksplanModus,
+    isFødtBarn,
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
@@ -156,6 +157,8 @@ export const UttaksplanNy = ({
     const closeModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
+    const erBarnetFødt = isFødtBarn(barn);
+
     return (
         <UttaksplanDataContext
             initialState={{
@@ -203,6 +206,7 @@ export const UttaksplanNy = ({
                     handleAddPeriode={handleAddPeriode}
                     familiehendelsedato={familiehendelsedato}
                     isModalOpen={isModalOpen}
+                    erBarnetFødt={erBarnetFødt}
                 />
             ) : null}
         </UttaksplanDataContext>

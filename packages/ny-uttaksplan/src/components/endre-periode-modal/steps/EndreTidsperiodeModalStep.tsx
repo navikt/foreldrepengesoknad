@@ -19,6 +19,7 @@ interface Props {
     familiehendelsedato: string;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
+    erBarnetFødt: boolean;
 }
 
 interface FormValues {
@@ -33,6 +34,7 @@ export const EndreTidsperiodeModalStep = ({
     familiehendelsedato,
     handleUpdatePeriode,
     inneholderKunEnPeriode,
+    erBarnetFødt,
 }: Props) => {
     const { valgtPeriode } = modalData;
     const intl = useIntl();
@@ -67,10 +69,16 @@ export const EndreTidsperiodeModalStep = ({
                         label="Fra og med dato"
                         name="fom"
                         disableWeekends={true}
-                        validate={getFomValidators(intl, familiehendelsedato, valgtPeriode?.kontoType, tomValue)}
+                        validate={getFomValidators(
+                            intl,
+                            familiehendelsedato,
+                            valgtPeriode?.kontoType,
+                            tomValue,
+                            erBarnetFødt,
+                        )}
                     />
                     <RhfDatepicker
-                        validate={getTomValidators(intl, familiehendelsedato, valgtPeriode?.kontoType)}
+                        validate={getTomValidators(intl, familiehendelsedato, valgtPeriode?.kontoType, erBarnetFødt)}
                         label="Til og med dato"
                         name="tom"
                         disableWeekends={true}
