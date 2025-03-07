@@ -175,6 +175,7 @@ const KvoteTittel = () => {
     const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
+    // Dersom barnet er født skal vi se bortifra ubrukte dager på mor sin "3 uker før fødsel" konto.
     const ubrukteDagerMor =
         mødreKonto && førFødselKonto
             ? mødreKonto.dager + (barnetErFødt ? dagerBruktAvMorFørFødsel : førFødselKonto.dager) - dagerBruktAvMor
