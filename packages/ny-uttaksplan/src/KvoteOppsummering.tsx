@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
+import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
@@ -18,6 +19,7 @@ type Props = {
     rettighetType: RettighetType;
     forelder: Forelder;
     visStatusIkoner: boolean;
+    familiehendelse?: Familiehendelse;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -484,11 +486,14 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner } = useKvote();
+    const { visStatusIkoner, familiehendelse } = useKvote();
 
     if (!konto) {
         return null;
     }
+
+    // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
+    const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
 
     const dagerBrukt = summerDagerIPerioder(perioder);
     const ubrukteDager = konto.dager - dagerBrukt;
@@ -528,6 +533,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                                 kontoType: konto.konto,
                                 prosent: 100 - prosentBruktAvkvote,
                                 erFyllt: false,
+                                erUtløpt: ubrukteDagerErUtløpt,
                             },
                         ]}
                     />
@@ -552,7 +558,10 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                             { id: 'kvote.varighet.erLagtTil' },
                             { varighet: getVarighetString(dagerBrukt, intl) },
                         ),
-                        ubrukteDager > 0
+                        ubrukteDager > 0 && ubrukteDagerErUtløpt
+                            ? `${getVarighetString(ubrukteDager, intl)} er utløpt`
+                            : '',
+                        ubrukteDager > 0 && !ubrukteDagerErUtløpt
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
                                   { varighet: getVarighetString(ubrukteDager, intl) },
@@ -605,8 +614,15 @@ type FordelingSegmentProps = {
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
+    erUtløpt?: boolean;
 };
-const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = false }: FordelingSegmentProps) => {
+const FordelingSegment = ({
+    kontoType,
+    prosent,
+    erFyllt = true,
+    erOvertrukket = false,
+    erUtløpt,
+}: FordelingSegmentProps) => {
     const { forelder } = useKvote();
     if (prosent <= 0) {
         return null;
@@ -615,6 +631,10 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true, erOvertrukket = 
 
     if (erOvertrukket) {
         return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+    }
+
+    if (erUtløpt) {
+        return <div className={`rounded-full h-4 border-2 bg-gray-300 border-gray-300`} style={style} />;
     }
 
     if (forelder === 'MOR') {
