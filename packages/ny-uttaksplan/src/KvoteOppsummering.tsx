@@ -515,7 +515,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
         if (overtrukketDager > 0) {
             return <ForMyeTidBruktIPlanIkon size="liten" />;
         }
-        if (dagerBrukt === konto.dager) {
+        if (dagerBrukt === konto.dager || ubrukteDagerErUtløpt) {
             return <AllTidIPlanIkon size="liten" />;
         }
         return <MerTidÅBrukeIPlanIkon size="liten" />;
