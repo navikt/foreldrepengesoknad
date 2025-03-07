@@ -64,17 +64,39 @@ const OppsummeringsTittel = () => {
 const KvoteTittelKunEnHarForeldrepenger = () => {
     const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
-
+    console.log(perioder);
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
         if (!aktuellKonto) {
             return null;
         }
+        console.log(aktuellKonto);
 
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
-        const brukteDager = summerDagerIPerioder(perioder.filter((p) => p.kontoType === kontoType));
+        const brukteDager = summerDagerIPerioder(
+            perioder.filter((p) => {
+                if (
+                    kontoType === 'AKTIVITETSFRI_KVOTE' &&
+                    p.kontoType === 'FORELDREPENGER' &&
+                    p.morsAktivitet === 'IKKE_OPPGITT'
+                ) {
+                    return true;
+                }
+
+                if (
+                    kontoType !== 'AKTIVITETSFRI_KVOTE' &&
+                    p.kontoType === kontoType &&
+                    p.morsAktivitet !== 'IKKE_OPPGITT'
+                ) {
+                    return true;
+                }
+
+                return false;
+            }),
+        );
         const ubrukteDager = aktuellKonto.dager - brukteDager;
         const overtrukketDager = ubrukteDager * -1;
+        console.log(kontoType, brukteDager, ubrukteDager, overtrukketDager);
 
         return {
             kontoType,
