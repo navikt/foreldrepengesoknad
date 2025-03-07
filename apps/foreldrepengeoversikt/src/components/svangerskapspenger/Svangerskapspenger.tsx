@@ -45,7 +45,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
                     <React.Fragment key={gruppertePerioder[0].fom}>
                         <GruppertePerioder perioder={gruppertePerioder} />
-                        <div className="    h-[1] bg-border-divider" />
+                        <div className="h-px bg-border-divider" />
                     </React.Fragment>
                 ))}
                 <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
