@@ -457,17 +457,17 @@ export const AleneomsorgFarLedigeDager: Story = {
         perioder: [
             {
                 fom: '2024-11-01',
-                tom: '2025-09-04',
+                tom: '2025-07-04',
                 kontoType: StønadskontoType.Foreldrepenger,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
             },
             {
                 fom: '2025-09-12',
                 tom: '2025-09-25',
                 kontoType: StønadskontoType.Foreldrepenger,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
             },
         ],
         rettighetType: RettighetType.ALENEOMSORG,
