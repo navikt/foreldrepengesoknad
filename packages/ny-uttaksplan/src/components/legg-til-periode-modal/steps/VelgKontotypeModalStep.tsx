@@ -105,25 +105,14 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
                     justifyContent: 'space-between',
                     width: '100%',
                     padding: '1rem 0',
+                    gap: '1rem',
                 }}
             >
-                <div>
-                    <Button type="button" variant="secondary" onClick={closeModal}>
-                        Avbryt
-                    </Button>
-                </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => {
-                            setModalData({ ...modalData, currentStep: 'step1' });
-                        }}
-                    >
-                        Gå tilbake
-                    </Button>
-                    <Button>Gå videre</Button>
-                </div>
+                <Button type="button" variant="secondary" onClick={closeModal}>
+                    Avbryt
+                </Button>
+
+                <Button>Gå videre</Button>
             </div>
         </RhfForm>
     );
