@@ -105,7 +105,7 @@ export const EndreTidsperiodeModalStep = ({
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {/* <Button
+                        <Button
                             type="button"
                             variant="secondary"
                             onClick={() => {
@@ -113,7 +113,7 @@ export const EndreTidsperiodeModalStep = ({
                             }}
                         >
                             Gå tilbake
-                        </Button> */}
+                        </Button>
                         <Button>Ferdig, legg til periode i planen</Button>
                     </div>
                 </div>
