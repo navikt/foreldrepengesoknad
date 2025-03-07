@@ -569,6 +569,60 @@ const SAK_4 = {
                 aktivitet: {
                     type: 'ORDINÆRT_ARBEID',
                     arbeidsgiver: {
+                        id: '991078045',
+                        type: 'ORGANISASJON',
+                    },
+                    arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
+                },
+                behovFrom: '2025-04-06',
+                tilrettelegginger: [
+                    {
+                        fom: '2025-04-23',
+                        tom: '2025-05-12',
+                        type: 'DELVIS',
+                        arbeidstidprosent: 40,
+                        resultat: {
+                            resultatType: 'INNVILGET',
+                            utbetalingsgrad: 60,
+                        },
+                    },
+                    {
+                        fom: '2025-04-06',
+                        tom: '2025-04-07',
+                        type: 'DELVIS',
+                        arbeidstidprosent: 40,
+                        resultat: {
+                            resultatType: 'INNVILGET',
+                            utbetalingsgrad: 60,
+                        },
+                    },
+                ],
+                oppholdsperioder: [
+                    {
+                        fom: '2025-04-14',
+                        tom: '2025-04-22',
+                        årsak: 'FERIE',
+                        oppholdKilde: 'SAKSBEHANDLER',
+                    },
+                    {
+                        fom: '2025-05-13',
+                        tom: '2025-05-15',
+                        årsak: 'FERIE',
+                        oppholdKilde: 'SAKSBEHANDLER',
+                    },
+                    {
+                        fom: '2025-04-08',
+                        tom: '2025-04-12',
+                        årsak: 'SYKEPENGER',
+                        oppholdKilde: 'SAKSBEHANDLER',
+                    },
+                ],
+                avslutningÅrsak: 'NORMAL',
+            },
+            {
+                aktivitet: {
+                    type: 'ORDINÆRT_ARBEID',
+                    arbeidsgiver: {
                         id: '992257822',
                         type: 'ORGANISASJON',
                     },
@@ -577,7 +631,7 @@ const SAK_4 = {
                 behovFrom: '2025-04-06',
                 tilrettelegginger: [
                     {
-                        fom: '2025-04-06',
+                        fom: '2025-04-11',
                         tom: '2025-04-15',
                         type: 'INGEN',
                         resultat: {
@@ -588,6 +642,15 @@ const SAK_4 = {
                     {
                         fom: '2025-04-23',
                         tom: '2025-05-15',
+                        type: 'INGEN',
+                        resultat: {
+                            resultatType: 'INNVILGET',
+                            utbetalingsgrad: 100,
+                        },
+                    },
+                    {
+                        fom: '2025-04-06',
+                        tom: '2025-04-07',
                         type: 'INGEN',
                         resultat: {
                             resultatType: 'INNVILGET',
@@ -608,52 +671,10 @@ const SAK_4 = {
                         årsak: 'FERIE',
                         oppholdKilde: 'SAKSBEHANDLER',
                     },
-                ],
-                avslutningÅrsak: 'NORMAL',
-            },
-            {
-                aktivitet: {
-                    type: 'ORDINÆRT_ARBEID',
-                    arbeidsgiver: {
-                        id: '991078045',
-                        type: 'ORGANISASJON',
-                    },
-                    arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
-                },
-                behovFrom: '2025-04-06',
-                tilrettelegginger: [
                     {
-                        fom: '2025-04-06',
-                        tom: '2025-04-13',
-                        type: 'DELVIS',
-                        arbeidstidprosent: 40,
-                        resultat: {
-                            resultatType: 'INNVILGET',
-                            utbetalingsgrad: 60,
-                        },
-                    },
-                    {
-                        fom: '2025-04-21',
-                        tom: '2025-05-12',
-                        type: 'DELVIS',
-                        arbeidstidprosent: 40,
-                        resultat: {
-                            resultatType: 'INNVILGET',
-                            utbetalingsgrad: 60,
-                        },
-                    },
-                ],
-                oppholdsperioder: [
-                    {
-                        fom: '2025-05-13',
-                        tom: '2025-05-15',
-                        årsak: 'FERIE',
-                        oppholdKilde: 'SAKSBEHANDLER',
-                    },
-                    {
-                        fom: '2025-04-14',
-                        tom: '2025-04-20',
-                        årsak: 'FERIE',
+                        fom: '2025-04-08',
+                        tom: '2025-04-10',
+                        årsak: 'SYKEPENGER',
                         oppholdKilde: 'SAKSBEHANDLER',
                     },
                 ],
@@ -675,13 +696,33 @@ const SAK_4 = {
             },
         ],
     },
-    oppdatertTidspunkt: '2025-03-06T10:15:43.751',
+    oppdatertTidspunkt: '2025-03-06T10:27:19.01',
     ytelse: Ytelse.SVANGERSKAPSPENGER,
 } satisfies SvangerskapspengeSak;
 const PERIODER_4 = [
     {
         fom: '2025-04-06',
-        tom: '2025-04-13',
+        tom: '2025-04-07',
+        type: 'DELVIS',
+        arbeidstidprosent: 40,
+        resultat: {
+            resultatType: 'INNVILGET',
+            utbetalingsgrad: 60,
+        },
+        aktivitet: {
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: {
+                id: '991078045',
+                type: 'ORGANISASJON',
+            },
+            arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
+        },
+        behovFrom: '2025-04-06',
+        avslutningÅrsak: 'NORMAL',
+    },
+    {
+        fom: '2025-04-06',
+        tom: '2025-04-07',
         type: 'INGEN',
         resultat: {
             resultatType: 'INNVILGET',
@@ -699,14 +740,10 @@ const PERIODER_4 = [
         avslutningÅrsak: 'NORMAL',
     },
     {
-        fom: '2025-04-06',
-        tom: '2025-04-13',
-        type: 'DELVIS',
-        arbeidstidprosent: 40,
-        resultat: {
-            resultatType: 'INNVILGET',
-            utbetalingsgrad: 60,
-        },
+        fom: '2025-04-08',
+        tom: '2025-04-10',
+        årsak: 'SYKEPENGER',
+        oppholdKilde: 'SAKSBEHANDLER',
         aktivitet: {
             type: 'ORDINÆRT_ARBEID',
             arbeidsgiver: {
@@ -714,6 +751,76 @@ const PERIODER_4 = [
                 type: 'ORGANISASJON',
             },
             arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
+        },
+        behovFrom: '2025-04-06',
+        avslutningÅrsak: 'NORMAL',
+    },
+    {
+        fom: '2025-04-08',
+        tom: '2025-04-10',
+        årsak: 'SYKEPENGER',
+        oppholdKilde: 'SAKSBEHANDLER',
+        aktivitet: {
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: {
+                id: '992257822',
+                type: 'ORGANISASJON',
+            },
+            arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+        },
+        behovFrom: '2025-04-06',
+        avslutningÅrsak: 'NORMAL',
+    },
+    {
+        fom: '2025-04-11',
+        tom: '2025-04-12',
+        årsak: 'SYKEPENGER',
+        oppholdKilde: 'SAKSBEHANDLER',
+        aktivitet: {
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: {
+                id: '991078045',
+                type: 'ORGANISASJON',
+            },
+            arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
+        },
+        behovFrom: '2025-04-06',
+        avslutningÅrsak: 'NORMAL',
+    },
+    {
+        fom: '2025-04-11',
+        tom: '2025-04-12',
+        type: 'INGEN',
+        resultat: {
+            resultatType: 'INNVILGET',
+            utbetalingsgrad: 100,
+        },
+        aktivitet: {
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: {
+                id: '992257822',
+                type: 'ORGANISASJON',
+            },
+            arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+        },
+        behovFrom: '2025-04-06',
+        avslutningÅrsak: 'NORMAL',
+    },
+    {
+        fom: '2025-04-13',
+        tom: '2025-04-13',
+        type: 'INGEN',
+        resultat: {
+            resultatType: 'INNVILGET',
+            utbetalingsgrad: 100,
+        },
+        aktivitet: {
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: {
+                id: '992257822',
+                type: 'ORGANISASJON',
+            },
+            arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
         },
         behovFrom: '2025-04-06',
         avslutningÅrsak: 'NORMAL',
@@ -787,7 +894,7 @@ const PERIODER_4 = [
     },
     {
         fom: '2025-04-18',
-        tom: '2025-04-20',
+        tom: '2025-04-22',
         årsak: 'FERIE',
         oppholdKilde: 'SAKSBEHANDLER',
         aktivitet: {
@@ -803,22 +910,6 @@ const PERIODER_4 = [
     },
     {
         fom: '2025-04-18',
-        tom: '2025-04-20',
-        årsak: 'FERIE',
-        oppholdKilde: 'SAKSBEHANDLER',
-        aktivitet: {
-            type: 'ORDINÆRT_ARBEID',
-            arbeidsgiver: {
-                id: '992257822',
-                type: 'ORGANISASJON',
-            },
-            arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
-        },
-        behovFrom: '2025-04-06',
-        avslutningÅrsak: 'NORMAL',
-    },
-    {
-        fom: '2025-04-21',
         tom: '2025-04-22',
         årsak: 'FERIE',
         oppholdKilde: 'SAKSBEHANDLER',
@@ -829,26 +920,6 @@ const PERIODER_4 = [
                 type: 'ORGANISASJON',
             },
             arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
-        },
-        behovFrom: '2025-04-06',
-        avslutningÅrsak: 'NORMAL',
-    },
-    {
-        fom: '2025-04-21',
-        tom: '2025-04-22',
-        type: 'DELVIS',
-        arbeidstidprosent: 40,
-        resultat: {
-            resultatType: 'INNVILGET',
-            utbetalingsgrad: 60,
-        },
-        aktivitet: {
-            type: 'ORDINÆRT_ARBEID',
-            arbeidsgiver: {
-                id: '991078045',
-                type: 'ORGANISASJON',
-            },
-            arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
         },
         behovFrom: '2025-04-06',
         avslutningÅrsak: 'NORMAL',

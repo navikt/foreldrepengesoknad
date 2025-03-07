@@ -230,7 +230,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
         const index = perioderÅBruke.findIndex((p) => {
             if (p.fom === nestePeriode.fom && p.tom === nestePeriode.tom) return false;
-            // if (p.tom === nestePeriode.tom) return false;
             return TidsperiodenString(p).inneholderDato(nestePeriode.tom);
         });
         const intersekterMedAnnenPeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
@@ -274,7 +273,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 const nyePerioder = [a, b, c, d].filter((x) => x !== undefined);
                 perioderÅBruke.unshift(...nyePerioder);
             }
-            // perioderÅBruke.unshift(nestePeriode);
         }
 
         if (!intersekterMedAnnenPeriode) {
@@ -283,8 +281,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
         // failsafe under utvikling
         if (i > 500) {
-            console.log(endeligePerioder, i);
-            console.log('limit break');
             break;
         }
         i = i + 1;
