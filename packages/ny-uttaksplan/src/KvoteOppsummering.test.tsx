@@ -10,6 +10,7 @@ const {
     BeggeRettMorLedigeDager,
     AleneomsorgMorLedigeDager,
     EnRettFarLedigeDager,
+    AleneomsorgFarForMangeDager,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
@@ -66,5 +67,11 @@ describe('<KvoteOppsummering >', () => {
         render(<EnRettFarLedigeDager />);
 
         expect(screen.getByText('2 uker ligger ikke i planen.')).toBeInTheDocument();
+    });
+    it('<AleneomsorgFarForMangeDager >', async () => {
+        render(<AleneomsorgFarForMangeDager />);
+
+        expect(screen.getByText('Det er lagt til 4 uker og 4 dager for mye')).toBeInTheDocument();
+        expect(screen.getByText('Du har lagt til 4 uker og 4 dager for mye i planen.')).toBeInTheDocument();
     });
 });

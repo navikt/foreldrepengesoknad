@@ -474,3 +474,43 @@ export const AleneomsorgFarLedigeDager: Story = {
         forelder: Forelder.farMedmor,
     },
 };
+
+export const AleneomsorgFarForMangeDager: Story = {
+    args: {
+        visStatusIkoner: true,
+        konto: {
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                flerbarn: 0,
+                prematur: 0,
+            },
+        },
+        perioder: [
+            {
+                fom: '2024-11-01',
+                tom: '2025-07-04',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-09-12',
+                tom: '2025-12-30',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+        ],
+        rettighetType: RettighetType.ALENEOMSORG,
+        forelder: Forelder.farMedmor,
+    },
+};
