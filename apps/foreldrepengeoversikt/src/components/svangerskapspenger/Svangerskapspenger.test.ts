@@ -3,19 +3,19 @@ import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 import { lagKronologiskeSvpPerioder } from './Svangerskapspenger';
 
 describe('lagKronologiskeSvpPerioder', () => {
-    it('Case 1', async () => {
+    it('Case 1', () => {
         const perioder = lagKronologiskeSvpPerioder(SAK_1);
         expect(perioder).toEqual(PERIODER_1);
     });
-    it('Case 2', async () => {
+    it('Case 2', () => {
         const perioder = lagKronologiskeSvpPerioder(SAK_2);
         expect(perioder).toEqual(PERIODER_2);
     });
-    it('Case 3', async () => {
+    it('Case 3', () => {
         const perioder = lagKronologiskeSvpPerioder(SAK_3);
         expect(perioder).toEqual(PERIODER_3);
     });
-    it('Case 4', async () => {
+    it('Case 4', () => {
         const perioder = lagKronologiskeSvpPerioder(SAK_4);
         expect(perioder).toEqual(PERIODER_4);
     });

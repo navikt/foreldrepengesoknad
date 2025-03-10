@@ -168,7 +168,7 @@ const Termin = () => {
     return (
         <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-3xl">
             <BodyShort>Termin</BodyShort>
-            <HeartFillIcon fontSize={'2.5rem'} className="text-icon-danger p-05" aria-hidden />
+            <HeartFillIcon fontSize="2.5rem" className="text-icon-danger p-05" aria-hidden />
         </HStack>
     );
 };
