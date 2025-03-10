@@ -2,7 +2,7 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import {
     Alert,
@@ -48,7 +48,11 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
 
 const DEFAULT_OPTION = 'default';
 
-export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undefined) => {
+export const getAttachmentTypeSelectOptions = (
+    intl: IntlShape,
+    manglendeSkjemanummer: string[],
+    sak: Sak | undefined,
+) => {
     if (!sak) {
         return null;
     }
@@ -59,6 +63,9 @@ export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undef
                 <FormattedMessage id="ettersendelse.select.defaultValue" />
             </option>
             {getRelevanteSkjemanummer(sak)
+                .filter((skjemanummer) =>
+                    manglendeSkjemanummer.length === 0 ? true : manglendeSkjemanummer.includes(skjemanummer),
+                )
                 .map((skjemanummer) => ({
                     skjemanummer,
                     text: intl.formatMessage({ id: `ettersendelse.${skjemanummer}` }),
@@ -102,6 +109,9 @@ const EttersendingPageInner = ({ saker }: Props) => {
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
 
+    const { search } = useLocation();
+    const skjematypeParam = new URLSearchParams(search).get('skjematype');
+    const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
@@ -163,7 +173,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                     label="Hva inneholder dokumentene dine?"
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
                 >
-                    {getAttachmentTypeSelectOptions(intl, sak)}
+                    {getAttachmentTypeSelectOptions(intl, manglendeSkjemanummer, sak)}
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
