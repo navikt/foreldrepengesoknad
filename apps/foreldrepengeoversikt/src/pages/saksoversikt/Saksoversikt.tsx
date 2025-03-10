@@ -23,6 +23,7 @@ import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søk
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
+import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import {
@@ -219,6 +220,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         </ContentSection>
                     </div>
                 )}
+                {gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER && <Svangerskapspenger svpSak={gjeldendeSak} />}
                 {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection

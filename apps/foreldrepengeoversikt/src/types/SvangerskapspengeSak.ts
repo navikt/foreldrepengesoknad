@@ -12,7 +12,7 @@ export interface SvangerskapspengeSakDTO {
     saksnummer: string;
     sakAvsluttet: boolean;
     gjelderAdopsjon?: boolean;
-    familiehendelse?: Familiehendelse;
+    familiehendelse: Familiehendelse;
     åpenBehandling?: ÅpenBehandlingSVP;
     gjeldendeVedtak?: VedtakDto;
     oppdatertTidspunkt: string;
