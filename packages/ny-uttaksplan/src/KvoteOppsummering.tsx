@@ -73,23 +73,22 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
         const brukteDager = summerDagerIPerioder(
             perioder.filter((p) => {
-                if (
-                    kontoType === 'AKTIVITETSFRI_KVOTE' &&
-                    p.kontoType === 'FORELDREPENGER' &&
-                    p.morsAktivitet === 'IKKE_OPPGITT'
-                ) {
-                    return true;
+                // Aktivitetsfri kvote har spesialhåndtering
+                if (kontoType === 'AKTIVITETSFRI_KVOTE') {
+                    // I planlegger og søknad brukes denne kontoen på periodene.
+                    const harMatchendeKonto = p.kontoType === 'AKTIVITETSFRI_KVOTE';
+
+                    // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
+                    const harMatchendePeriode = p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT';
+                    return harMatchendePeriode || harMatchendeKonto;
                 }
 
-                if (
-                    kontoType !== 'AKTIVITETSFRI_KVOTE' &&
-                    p.kontoType === kontoType &&
-                    p.morsAktivitet !== 'IKKE_OPPGITT'
-                ) {
-                    return true;
+                // Disse periodene skal kun telles for aktivitetsfri kvoter
+                if (p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
+                    return false;
                 }
 
-                return false;
+                return kontoType === p.kontoType;
             }),
         );
         const ubrukteDager = aktuellKonto.dager - brukteDager;
@@ -399,11 +398,16 @@ const FedreKvoter = () => {
 
 const AktivitetsfriKvoter = () => {
     const { konto, perioder } = useKvote();
-
     const relevantKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const relevantePerioder = perioder.filter(
-        (p) => p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT',
-    );
+
+    const relevantePerioder = perioder.filter((p) => {
+        // I planlegger og søknad brukes denne kontoen på periodene.
+        const harMatchendeKonto = p.kontoType === 'AKTIVITETSFRI_KVOTE';
+
+        // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
+        const harMatchendePeriode = p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT';
+        return harMatchendePeriode || harMatchendeKonto;
+    });
 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
 };
