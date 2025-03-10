@@ -13,6 +13,6 @@ describe('<BarnehageplassSteg>', () => {
 
         expect(await screen.findAllByText('Barnehageplass')).toHaveLength(2);
 
-        expect(screen.getByText('Dere har rett på barnehageplass fra august 2026')).toBeInTheDocument();
+        expect(screen.getByText('Dere kan ha rett på barnehageplass fra august 2026')).toBeInTheDocument();
     });
 });
