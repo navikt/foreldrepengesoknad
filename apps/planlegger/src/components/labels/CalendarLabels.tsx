@@ -10,7 +10,10 @@ import {
     harKunMorRett,
 } from 'utils/hvemHarRettUtils';
 
-import { HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+
+import { PeriodeColor } from '@navikt/fp-constants';
+import { CalendarLabel } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
 import { AntallUkerFpLabel } from './calendar-labels/AntallUkerFpLabel';
@@ -55,6 +58,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     {søker2Tekst && hvemHarRett === 'beggeHarRett' && <AntallUkerFpLabel søkerTekst={søker2Tekst} />}
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
+                    <CalendarLabel iconType={PeriodeColor.BLACK}>
+                        <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
+                    </CalendarLabel>
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
@@ -63,6 +69,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     <AktivitetskravLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
+                    <CalendarLabel iconType={PeriodeColor.BLACK}>
+                        <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
+                    </CalendarLabel>
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
@@ -70,6 +79,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     <ForeldrepengerLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
+                    <CalendarLabel iconType={PeriodeColor.BLACK}>
+                        <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
+                    </CalendarLabel>
                 </HStack>
             )}
         </VStack>
