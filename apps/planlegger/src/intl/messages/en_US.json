@@ -32,7 +32,7 @@
     "Arbeidssituasjon.Ingen.Infoboks.Engangsstønad": "{erAlenesøker, select, true {You} other {{navn}}} might be entitled to a lump-sum grant instead. You can use <a>Nav's guide for lump-sum grant or parental benefit</a> to learn more.",
     "Arbeidssituasjon.AndreForelder": "Has {navn} worked 6 of the last 10 months and earned more than {minsteInntekt} last year?",
     "Arbeidssituasjon.AndreForelder.Required": "You must answer if {navn} has worked 6 of the last 10 months and earned more than {minsteInntekt} last year before proceeding.",
-    "Arbeidssituasjon.Forelder": "Has {fornavnSøker1} worked 6 of the last 10 months and earned more than {minsteInntekt} kr last year?",
+    "Arbeidssituasjon.Forelder": "Has {fornavnSøker1} worked 6 of the last 10 months and earned more than {minsteInntekt} last year?",
     "Arbeidssituasjon.Forelder.Required": "You must answer if you have worked 6 of the last 10 months and earned more than {minsteInntekt} last year before proceeding.",
     "HvorMyeSteg.Tittel": "How much",
     "HvorMyeSteg.Lønn": "How much do {hvem} earn per month, approximately? (optional)",
