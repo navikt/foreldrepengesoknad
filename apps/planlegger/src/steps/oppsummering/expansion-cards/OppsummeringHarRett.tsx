@@ -71,7 +71,7 @@ export const OppsummeringHarRett = ({
         (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
-        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+        startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
     }
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
@@ -245,49 +245,7 @@ export const OppsummeringHarRett = ({
                                             }}
                                         />
                                     </BodyShort>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OppsummeringSteg.UtenAktivitetskrav"
-                                            values={{
-                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                                tom: intl.formatDate(
-                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
-                                                    {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    },
-                                                ),
-                                                b: (msg: any) => <b>{msg}</b>,
-                                            }}
-                                        />
-                                    </BodyShort>
                                 </VStack>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.MedAktivitetskrav"
-                                        values={{
-                                            fom: intl.formatDate(planforslag.søker2[0].fom, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
-                                            tom: intl.formatDate(
-                                                planforslag.søker2[planforslag.søker2.length - 1].tom,
-                                                {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                },
-                                            ),
-                                            b: (msg: any) => <b>{msg}</b>,
-                                        }}
-                                    />
-                                </BodyShort>
                             </BluePanel>
                         )}
                         <UttaksplanKalender
