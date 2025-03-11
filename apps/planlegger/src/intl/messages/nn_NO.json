@@ -162,7 +162,6 @@
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmåla",
     "OppsummeringSteg.AnnenVeiviser": "Annan vegvisar:",
     "OppsummeringSteg.VeiviserHvorMye": "Kor mykje?",
-    "OppsummeringSteg.VeiviserHvaSkjerNår": "Kva skjer når?",
     "OppsummeringSteg.KopierUrl": "Kopier lenka",
     "OppsummeringHeader.Tittel": "Oppsummering",
     "PlanenDeresOppsummering.Tittel": "Planen {erAlenesøker, select, true {din} other {dykkar}}",
