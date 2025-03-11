@@ -219,6 +219,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         </ContentSection>
                     </div>
                 )}
+                {/*{gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER && <Svangerskapspenger svpSak={gjeldendeSak} />}*/}
                 {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection
