@@ -157,8 +157,6 @@
     "OppsummeringSteg.DereValgteAktivitetskrav": "Dere valgte {prosent} % i {antallUker} uker {dager, select, 0 {} 1 {og {dager} dag } other {og {dager} dager }}, hvor {uker1} uker {dager1, select, 0 {} 1 {og {dager1} dag } other {og {dager1} dager }} er uten aktivitetskrav til {hvem} og {uker2} uker {dager2, select, 0 {} 1 {og {dager2} dag } other {og {dagerS2} dager }} er med aktivitetskrav.",
     "OppsummeringSteg.Periodene": "<b>{hvem} periode:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
-    "OppsummeringSteg.UtenAktivitetskrav": "<b>Uten aktivitetskrav:</b> {fom} – {tom}",
-    "OppsummeringSteg.MedAktivitetskrav": "<b>Med aktivitetskrav:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmålene",
     "OppsummeringSteg.AnnenVeiviser": "Annen veiviser:",
     "OppsummeringSteg.VeiviserHvorMye": "Hvor mye?",

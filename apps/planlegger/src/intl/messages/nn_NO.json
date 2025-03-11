@@ -157,8 +157,6 @@
     "OppsummeringSteg.DereValgteAktivitetskrav": "De valde {prosent} % i {antallUker} veker, der {uker1} veker er utan aktivitetskrav til {hvem} og {uker2} veker er med aktivitetskrav.",
     "OppsummeringSteg.Periodene": "<b>{hvem} periode:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
-    "OppsummeringSteg.UtenAktivitetskrav": "<b>Utan aktivitetskrav:</b> {fom} – {tom}",
-    "OppsummeringSteg.MedAktivitetskrav": "<b>Med aktivitetskrav:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmåla",
     "OppsummeringSteg.AnnenVeiviser": "Annan vegvisar:",
     "OppsummeringSteg.VeiviserHvorMye": "Kor mykje?",

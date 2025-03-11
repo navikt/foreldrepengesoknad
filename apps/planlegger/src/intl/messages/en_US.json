@@ -157,8 +157,6 @@
     "OppsummeringSteg.DereValgteAktivitetskrav": "You chose {prosent} % for {antallUker} weeks, where {uker1} weeks are without activity requirements for {hvem} and {uker2} weeks is with activity requirements.",
     "OppsummeringSteg.Periodene": "<b>{hvem} period:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
-    "OppsummeringSteg.UtenAktivitetskrav": "<b>without activity requirements:</b> {fom} – {tom}",
-    "OppsummeringSteg.MedAktivitetskrav": "<b>With activity requirements:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Back to the questions",
     "OppsummeringSteg.AnnenVeiviser": "Other guide:",
     "OppsummeringSteg.VeiviserHvorMye": "How much?",
