@@ -4,7 +4,7 @@ import { IntlShape } from 'react-intl';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import {
-    isAfterDate,
+    isAfterOrSame,
     isBeforeOrSame,
     isDateWithinRange,
     isRequired,
@@ -84,7 +84,7 @@ const leggTilFørFamdatoValideringOmNødvendig = (
         kontoType === StønadskontoType.Foreldrepenger
     ) {
         validators.push(
-            isAfterDate(
+            isAfterOrSame(
                 erBarnetFødt
                     ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
                     : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
