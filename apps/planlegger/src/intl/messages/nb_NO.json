@@ -160,6 +160,7 @@
     "OppsummeringSteg.UtenAktivitetskrav": "<b>Uten aktivitetskrav:</b> {fom} – {tom}",
     "OppsummeringSteg.MedAktivitetskrav": "<b>Med aktivitetskrav:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmålene",
+    "OppsummeringSteg.AnnenVeiviser": "Annen veiviser:",
     "OppsummeringSteg.AndreVeivisere": "Andre veivisere:",
     "OppsummeringSteg.VeiviserHvorMye": "Hvor mye?",
     "OppsummeringSteg.VeiviserHvaSkjerNår": "Hva skjer når?",
