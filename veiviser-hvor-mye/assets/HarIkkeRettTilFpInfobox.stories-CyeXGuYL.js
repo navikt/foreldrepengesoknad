@@ -1,4 +1,4 @@
-import{H as c}from"./HarIkkeRettTilFpInfobox-Cyh8e5pA.js";import"./jsx-runtime-CLpGMVip.js";import"./FrontPage-DnPoLfrQ.js";import"./index-B-SYruCi.js";import"./currencyUtils-D9Hx-d-8.js";const I={title:"components/HarIkkeRettTilFpInfobox",component:c},r={args:{minÅrslønn:1e5,antattÅrslønn:5e5}},n={args:{minÅrslønn:1e5,antattÅrslønn:5e5,showKrIcon:!0}};var t,e,s;r.parameters={...r.parameters,docs:{...(t=r.parameters)==null?void 0:t.docs,source:{originalSource:`{
+import{H as c}from"./HarIkkeRettTilFpInfobox-BonhXa9i.js";import"./jsx-runtime-CLpGMVip.js";import"./FrontPage-DnPoLfrQ.js";import"./index-B-SYruCi.js";import"./currencyUtils-D9Hx-d-8.js";const I={title:"components/HarIkkeRettTilFpInfobox",component:c},r={args:{minÅrslønn:1e5,antattÅrslønn:5e5}},n={args:{minÅrslønn:1e5,antattÅrslønn:5e5,showKrIcon:!0}};var t,e,s;r.parameters={...r.parameters,docs:{...(t=r.parameters)==null?void 0:t.docs,source:{originalSource:`{
   args: {
     minÅrslønn: 100000,
     antattÅrslønn: 500000
