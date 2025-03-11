@@ -23,7 +23,6 @@ import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import { HvaSkjerNårIkon } from './ikoner/HvaSkjerNårIkon';
 import { HvorMyeIkon } from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
