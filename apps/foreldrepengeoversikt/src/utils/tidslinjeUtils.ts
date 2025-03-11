@@ -307,6 +307,12 @@ export const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): Akt
     return AktørType.BRUKER;
 };
 
+const createEttersendUrl = (skjematypeIds: Skjemanummer[]): string => {
+    const ids = skjematypeIds.join(',');
+    const queryPart = ids ? `?skjematype=${encodeURIComponent(ids)}` : '';
+    return `${OversiktRoutes.ETTERSEND}${queryPart}`;
+};
+
 export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): NavRoutes | undefined => {
     if (venteårsak === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
         return NavRoutes.VENT_INNTEKTSMELDING;
@@ -516,7 +522,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             merInformasjon: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' }),
             linkTittel: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' }),
             eksternalUrl: getTidlinjeHendelseEksternUrl(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
-            internalUrl: OversiktRoutes.ETTERSEND,
+            internalUrl: createEttersendUrl(manglendeVedleggData),
             tidligstBehandlingsDato: undefined,
         };
     }
@@ -536,7 +542,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         eksternalUrl: getTidlinjeHendelseEksternUrl(åpenBehandling.tilstand),
         internalUrl:
             åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON
-                ? OversiktRoutes.ETTERSEND
+                ? createEttersendUrl(manglendeVedleggData)
                 : undefined,
         tidligstBehandlingsDato:
             åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD

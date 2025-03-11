@@ -74,19 +74,6 @@
     print-color-adjust: exact;
 }
 
-.yellowPanel {
-    border-radius: 1.25rem;
-    border: 2px solid var(--a-orange-100) !important;
-    background-color: var(--a-orange-100) !important;
-    display: flex;
-    padding-left: 10px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    width: fit-content;
-    print-color-adjust: exact;
-}
-
 .margin {
     margin-bottom: -3px;
 }

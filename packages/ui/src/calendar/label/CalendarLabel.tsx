@@ -32,8 +32,6 @@ export const getSirkel = (color: PeriodeColor) => {
             return <div className={styles.grayCircle} />;
         case PeriodeColor.PURPLE:
             return <div className={styles.purpleCircle} />;
-        case PeriodeColor.LIGHTYELLOW:
-            return <div className={styles.lightYellow} />;
         default:
             return null;
     }
@@ -55,7 +53,6 @@ const PANEL_STYLE = {
     [PeriodeColor.BLACK]: styles.grayPanel,
     [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
     [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,
-    [PeriodeColor.LIGHTYELLOW]: styles.yellowOutlinePanel,
 };
 
 interface Props {

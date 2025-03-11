@@ -17,11 +17,6 @@
     print-color-adjust: exact;
 }
 
-.yellowDay {
-    background-color: var(--a-orange-100) !important;
-    print-color-adjust: exact;
-}
-
 .lightblueDay {
     background-color: var(--a-data-surface-1-subtle) !important;
     border-top: 2px solid var(--a-blue-300);

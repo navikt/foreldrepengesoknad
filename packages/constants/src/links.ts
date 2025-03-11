@@ -53,8 +53,7 @@ export const links = {
     graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
     aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     farskapsportal: 'https://farskapsportal.nav.no/',
-    barnehageloven:
-        'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/',
+    barnehageloven: 'https://lovdata.no/pro/#document/NL/lov/2005-06-17-64/§16',
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',

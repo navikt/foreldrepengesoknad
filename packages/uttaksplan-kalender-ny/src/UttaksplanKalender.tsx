@@ -209,7 +209,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     }
 
     if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-        return PeriodeColor.LIGHTYELLOW;
+        return PeriodeColor.NONE;
     }
 
     if (periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {

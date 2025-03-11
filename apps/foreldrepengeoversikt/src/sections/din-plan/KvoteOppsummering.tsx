@@ -57,6 +57,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
 
     return (
         <KvoteOppsummering
+            familiehendelse={sak.familiehendelse}
             konto={konto}
             perioder={aktuellePerioder}
             rettighetType={sak.rettighetType}
