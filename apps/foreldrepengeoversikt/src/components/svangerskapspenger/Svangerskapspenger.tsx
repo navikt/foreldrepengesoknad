@@ -29,8 +29,9 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const erVedtatt = !svpSak.gjeldendeVedtak?.avslagÅrsak;
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const terminDato = svpSak.familiehendelse.termindato;
+    const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
 
-    if (!arbeidsforhold || !terminDato) {
+    if (!arbeidsforhold || !terminDato || harAvslag) {
         return null;
     }
     const perioder = lagKronologiskeSvpPerioder(svpSak);
