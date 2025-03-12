@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
@@ -57,6 +58,15 @@ export const EndreTidsperiodeModalStep = ({
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
+    const minDate =
+        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+            ? dayjs(familiehendelsedato).subtract(3, 'weeks').format(ISO_DATE_FORMAT)
+            : dayjs(familiehendelsedato).subtract(12, 'weeks').format(ISO_DATE_FORMAT);
+    const maxDate =
+        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+            ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
+            : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
+
     return (
         <>
             <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
@@ -64,8 +74,8 @@ export const EndreTidsperiodeModalStep = ({
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                     <RhfDatepicker
                         showMonthAndYearDropdowns
-                        minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
-                        maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
+                        minDate={minDate}
+                        maxDate={maxDate}
                         label="Fra og med dato"
                         name="fom"
                         disableWeekends={true}
@@ -75,19 +85,25 @@ export const EndreTidsperiodeModalStep = ({
                             valgtPeriode?.kontoType,
                             tomValue,
                             erBarnetFødt,
+                            minDate,
+                            maxDate,
                         )}
                     />
                     <RhfDatepicker
-                        validate={getTomValidators(intl, familiehendelsedato, valgtPeriode?.kontoType, erBarnetFødt)}
+                        validate={getTomValidators(
+                            intl,
+                            familiehendelsedato,
+                            valgtPeriode?.kontoType,
+                            fomValue,
+                            erBarnetFødt,
+                            minDate,
+                            maxDate,
+                        )}
                         label="Til og med dato"
                         name="tom"
                         disableWeekends={true}
                         minDate={fomValue}
-                        maxDate={
-                            valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
-                                ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
-                                : undefined
-                        }
+                        maxDate={maxDate}
                     />
                 </div>
                 <div
