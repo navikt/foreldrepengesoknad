@@ -100,10 +100,14 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
             dekningsgrader.forEach((dekningsgrad) => {
                 const stønadskonto = modifiserteData[dekningsgrad];
                 if (stønadskonto?.kontoer) {
-                    stønadskonto.kontoer = stønadskonto.kontoer.filter((konto) => konto.konto === 'FORELDREPENGER');
+                    // Summer antall dager i alle kontoer
+                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
+                    // Filtrer og behold kun 'FORELDREPENGER' -kontoen
+                    stønadskonto.kontoer = stønadskonto.kontoer
+                        .filter((konto) => konto.konto === 'FORELDREPENGER')
+                        .map((konto) => ({ ...konto, dager: totalDager }));
                 }
             });
-
             return modifiserteData;
         },
     });
