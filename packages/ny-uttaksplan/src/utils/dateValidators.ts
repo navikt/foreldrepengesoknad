@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -11,7 +11,6 @@ import {
     isValidDate,
     isWeekday,
 } from '@navikt/fp-validation';
-import { FormValidationResult } from '@navikt/fp-validation/src/form/generalFormValidation';
 
 export const getFomValidators = (
     intl: IntlShape,
@@ -19,6 +18,8 @@ export const getFomValidators = (
     kontoType: StønadskontoType | undefined,
     tomValue: string | undefined,
     erBarnetFødt: boolean,
+    minDate: string,
+    maxDate: string,
 ) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
@@ -27,8 +28,62 @@ export const getFomValidators = (
         isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
     ];
 
-    leggTilForeldrepengerFørFødselValidering(intl, validators, kontoType, familiehendelsedato);
-    leggTilFørFamdatoValideringOmNødvendig(intl, validators, kontoType, familiehendelsedato, erBarnetFødt);
+    const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
+    const maxDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
+
+    switch (kontoType) {
+        case StønadskontoType.AktivitetsfriKvote:
+        case StønadskontoType.Mødrekvote:
+        case StønadskontoType.Fedrekvote:
+        case StønadskontoType.Foreldrepenger:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+            break;
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            validators.push(
+                isDateWithinRange(
+                    intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
+                    dayjs(minDateFPFF).toDate(),
+                    dayjs(maxDateFPFF).toDate(),
+                ),
+            );
+            break;
+        case StønadskontoType.Fellesperiode:
+            validators.push((fomValue: string) => {
+                if (dayjs(fomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
+                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode' });
+                }
+
+                return null;
+            });
+            validators.push((fomValue: string) => {
+                if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
+                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
+                }
+
+                return null;
+            });
+            break;
+    }
+
+    validators.push(
+        isAfterOrSame(
+            intl.formatMessage({ id: 'endreTidsPeriodeModal.minDato' }, { minDate: formatDateMedUkedag(minDate) }),
+            minDate,
+        ),
+    );
+    validators.push(
+        isBeforeOrSame(
+            intl.formatMessage({ id: 'endreTidsPeriodeModal.maksDato' }, { maxDate: formatDateMedUkedag(maxDate) }),
+            maxDate,
+        ),
+    );
 
     return validators;
 };
@@ -37,61 +92,73 @@ export const getTomValidators = (
     intl: IntlShape,
     familiehendelsedato: string,
     kontoType: StønadskontoType | undefined,
+    fomValue: string | undefined,
     erBarnetFødt: boolean,
+    minDate: string,
+    maxDate: string,
 ) => {
     const validators = [
-        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
-        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
-        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.måVæreUkedag' })),
+        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
+        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
+        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
     ];
 
-    leggTilForeldrepengerFørFødselValidering(intl, validators, kontoType, familiehendelsedato);
-    leggTilFørFamdatoValideringOmNødvendig(intl, validators, kontoType, familiehendelsedato, erBarnetFødt);
+    const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
+    const maxDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
 
-    return validators;
-};
+    switch (kontoType) {
+        case StønadskontoType.AktivitetsfriKvote:
+        case StønadskontoType.Mødrekvote:
+        case StønadskontoType.Fedrekvote:
+        case StønadskontoType.Foreldrepenger:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+            break;
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            validators.push(
+                isDateWithinRange(
+                    intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
+                    dayjs(minDateFPFF).toDate(),
+                    dayjs(maxDateFPFF).toDate(),
+                ),
+            );
+            break;
+        case StønadskontoType.Fellesperiode:
+            validators.push((tomValue: string) => {
+                if (dayjs(tomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
+                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode' });
+                }
 
-const leggTilForeldrepengerFørFødselValidering = (
-    intl: IntlShape,
-    validators: ((date: string) => FormValidationResult)[],
-    kontoType: StønadskontoType | undefined,
-    familiehendelsedato: string,
-) => {
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
-        validators.push(
-            isDateWithinRange(
-                intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
-                dayjs(
-                    UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15),
-                ).toDate(),
-                dayjs(UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()).toDate(),
-            ),
-        );
+                return null;
+            });
+            validators.push((tomValue: string) => {
+                if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
+                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
+                }
+
+                return null;
+            });
+            break;
     }
-};
 
-const leggTilFørFamdatoValideringOmNødvendig = (
-    intl: IntlShape,
-    validators: ((date: string) => FormValidationResult)[],
-    kontoType: StønadskontoType | undefined,
-    familiehendelsedato: string,
-    erBarnetFødt: boolean,
-) => {
-    if (
-        kontoType === StønadskontoType.Mødrekvote ||
-        kontoType === StønadskontoType.Fedrekvote ||
-        kontoType === StønadskontoType.AktivitetsfriKvote ||
-        kontoType === StønadskontoType.Foreldrepenger
-    ) {
-        validators.push(
-            isAfterOrSame(
-                erBarnetFødt
-                    ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
-                    : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
-                UttaksdagenString(familiehendelsedato).denneEllerForrige(),
-            ),
-        );
-    }
+    validators.push(
+        isAfterOrSame(
+            intl.formatMessage({ id: 'endreTidsPeriodeModal.minDato' }, { minDate: formatDateMedUkedag(minDate) }),
+            minDate,
+        ),
+    );
+    validators.push(
+        isBeforeOrSame(
+            intl.formatMessage({ id: 'endreTidsPeriodeModal.maksDato' }, { maxDate: formatDateMedUkedag(maxDate) }),
+            maxDate,
+        ),
+    );
 
     return validators;
 };
