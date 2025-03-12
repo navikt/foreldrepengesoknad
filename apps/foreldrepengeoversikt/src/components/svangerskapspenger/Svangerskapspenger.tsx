@@ -27,11 +27,11 @@ type SvangerskapspengerProps = {
 };
 export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const erSøknad = !!svpSak.åpenBehandling;
-    const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
+    const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold ?? [];
     const terminDato = svpSak.familiehendelse.termindato;
     const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
 
-    if (!arbeidsforhold || !terminDato || harAvslag) {
+    if (arbeidsforhold.length === 0 || !terminDato || harAvslag) {
         return null;
     }
     const perioder = lagKronologiskeSvpPerioder(svpSak);
@@ -70,7 +70,9 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
         <HGrid gap="2" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
             {perioder.map((p, index) => {
                 const arbeidsgiverNavn =
-                    capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ?? p.aktivitet.arbeidsgiver.id;
+                    capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
+                    p.aktivitet.arbeidsgiver?.id ??
+                    capitalizeFirstLetter(p.aktivitet.type.toLowerCase()).replace('_', ' ');
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
                 const prosentSvangerskapspenger =
                     p.type === 'HEL' ? 0 : p.type === 'INGEN' ? 100 : 100 - (p.arbeidstidprosent ?? 0);

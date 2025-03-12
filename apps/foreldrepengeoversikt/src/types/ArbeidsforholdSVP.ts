@@ -22,7 +22,7 @@ export type Oppholdsperiode = {
 
 type Aktivitet = {
     type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
-    arbeidsgiver: Arbeidsgiver;
+    arbeidsgiver?: Arbeidsgiver;
     arbeidsgiverNavn?: string;
 };
 
