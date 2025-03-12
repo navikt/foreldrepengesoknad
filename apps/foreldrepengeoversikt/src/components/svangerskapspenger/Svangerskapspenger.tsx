@@ -26,7 +26,7 @@ type SvangerskapspengerProps = {
     svpSak: SvangerskapspengeSak;
 };
 export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
-    const erVedtatt = !svpSak.gjeldendeVedtak?.avslagÅrsak;
+    const erSøknad = !!svpSak.åpenBehandling;
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const terminDato = svpSak.familiehendelse.termindato;
     const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
@@ -38,7 +38,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     return (
         <VStack>
             <Heading level="2" size="medium" spacing>
-                {erVedtatt ? 'Dette har du fått vedtatt' : 'Dette har du søkt om'}
+                {erSøknad ? 'Dette har du søkt om' : 'Dette har du fått vedtatt'}
             </Heading>
             <VStack gap="4" className="bg-white p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
