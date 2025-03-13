@@ -8,6 +8,7 @@ import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 import { satser } from 'storybookData/inntektsmeldinger/satser';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
+import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
@@ -22,16 +23,17 @@ const queryClient = new QueryClient();
 
 type StoryArgs = {
     søkerinfo: SøkerinfoDTO;
+    saksnummer: string;
 };
 
 const meta = {
     title: 'Saksoversikt',
-    render: (props) => {
+    render: ({ saksnummer, ...props }) => {
         const isFirstRender = useRef(false);
         return (
             <div className="bg-deepblue-50">
                 <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
+                    <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
                         <Routes>
                             <Route
                                 element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
@@ -48,7 +50,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Foreldrepenger: Story = {
     parameters: {
         msw: {
             handlers: [
@@ -69,6 +71,7 @@ export const Default: Story = {
     },
     args: {
         søkerinfo: søkerinfo as SøkerinfoDTO,
+        saksnummer: '352011079',
     },
 };
 
@@ -132,6 +135,38 @@ export const Engangsstønad: Story = {
         },
     },
     args: {
+        søkerinfo: søkerinfo as SøkerinfoDTO,
+        saksnummer: '352011079',
+    },
+};
+
+export const Svangerskapspenger: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                    HttpResponse.json({
+                        foreldrepenger: [],
+                        engangsstønad: [],
+                        svangerskapspenger: [SAK_1],
+                    }),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                    HttpResponse.json(tidslinjeHendelser),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
+                    HttpResponse.json(manglendeVedlegg),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '202',
         søkerinfo: søkerinfo as SøkerinfoDTO,
     },
 };
