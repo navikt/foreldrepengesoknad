@@ -10,8 +10,8 @@
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color"
     },
     "dependencies": {
-        "@navikt/ds-css": "^7.16.2",
-        "@navikt/ds-react": "^7.16.2",
+        "@navikt/ds-css": "^7.17.2",
+        "@navikt/ds-react": "^7.17.2",
         "@navikt/fnrvalidator": "^2.1.5",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",

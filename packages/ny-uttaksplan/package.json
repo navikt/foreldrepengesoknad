@@ -16,9 +16,9 @@
         "test:coverage": "vitest --coverage"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.16.2",
-        "@navikt/ds-css": "^7.16.2",
-        "@navikt/ds-react": "^7.16.2",
+        "@navikt/aksel-icons": "^7.17.2",
+        "@navikt/ds-css": "^7.17.2",
+        "@navikt/ds-react": "^7.17.2",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
@@ -26,7 +26,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@tailwindcss/vite": "^4.0.8",
+        "@tailwindcss/vite": "^4.0.13",
         "@types/react": "^19.0.7",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",
@@ -37,7 +37,7 @@
         "typescript": "5.7.3"
     },
     "devDependencies": {
-        "@navikt/ds-tailwind": "7.14.2",
+        "@navikt/ds-tailwind": "7.17.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-actions": "8.5.0",
