@@ -8,7 +8,7 @@ import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
-import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavnSimple } from '../../../utils/stønadskontoerUtils';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -25,8 +25,6 @@ interface FormValues {
 export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: Props) => {
     const intl = useIntl();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
 
     const { forelder, kontoType } = modalData;
 
@@ -83,7 +81,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
                     {valgtStønadskonto.kontoer.map((konto) => {
                         return (
                             <Radio key={konto.konto} value={konto.konto}>
-                                {getStønadskontoNavn(intl, konto.konto, navnPåForeldre, erFarEllerMedmor)}
+                                {getStønadskontoNavnSimple(intl, konto.konto)}
                             </Radio>
                         );
                     })}
