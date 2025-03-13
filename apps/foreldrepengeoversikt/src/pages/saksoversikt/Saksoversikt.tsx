@@ -191,7 +191,13 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
-                    <LenkePanel tittel="Endre planen din" to="https://nav.no/foreldrepenger/soknad" Ikon={PencilIcon} />
+                    {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                        <LenkePanel
+                            tittel="Endre planen din"
+                            to="https://nav.no/foreldrepenger/soknad"
+                            Ikon={PencilIcon}
+                        />
+                    )}
                     <InntektsmeldingLenkePanel />
                 </HGrid>
 
@@ -219,6 +225,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         </ContentSection>
                     </div>
                 )}
+                {/*{gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER && <Svangerskapspenger svpSak={gjeldendeSak} />}*/}
                 {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection

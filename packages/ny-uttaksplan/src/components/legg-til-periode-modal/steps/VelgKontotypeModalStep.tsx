@@ -8,15 +8,13 @@ import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
-import { Planperiode } from '../../../types/Planperiode';
-import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavnSimple } from '../../../utils/stønadskontoerUtils';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
     modalData: ModalData;
     closeModal: () => void;
     setModalData: (data: ModalData) => void;
-    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
 }
 
 interface FormValues {
@@ -24,13 +22,11 @@ interface FormValues {
     forelder: Forelder;
 }
 
-export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, handleAddPeriode }: Props) => {
+export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: Props) => {
     const intl = useIntl();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
 
-    const { fom, tom, forelder, kontoType } = modalData;
+    const { forelder, kontoType } = modalData;
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -49,6 +45,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
             case StønadskontoType.Fedrekvote:
                 return Forelder.farMedmor;
             case StønadskontoType.Mødrekvote:
+            case StønadskontoType.ForeldrepengerFørFødsel:
                 return Forelder.mor;
             default:
                 return fValue;
@@ -59,18 +56,17 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
         setModalData({
             ...modalData,
             kontoType: values.kontoType,
-            currentStep: 'step3',
+            currentStep: 'step2',
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
         });
-        handleAddPeriode({
-            fom: fom!,
-            tom: tom!,
-            id: `${fom} - ${tom} - ${kontoType}`,
-            readOnly: false,
-            kontoType: kontoTypeValue,
-            forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-        });
-        closeModal();
+        // handleAddPeriode({
+        //     fom: fom!,
+        //     tom: tom!,
+        //     id: `${fom} - ${tom} - ${kontoType}`,
+        //     readOnly: false,
+        //     kontoType: kontoTypeValue,
+        //     forelder: getForelderFromKontoType(values.kontoType, values.forelder),
+        // });
     };
 
     return (
@@ -85,7 +81,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
                     {valgtStønadskonto.kontoer.map((konto) => {
                         return (
                             <Radio key={konto.konto} value={konto.konto}>
-                                {getStønadskontoNavn(intl, konto.konto, navnPåForeldre, erFarEllerMedmor)}
+                                {getStønadskontoNavnSimple(intl, konto.konto)}
                             </Radio>
                         );
                     })}
@@ -107,25 +103,14 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData, ha
                     justifyContent: 'space-between',
                     width: '100%',
                     padding: '1rem 0',
+                    gap: '1rem',
                 }}
             >
-                <div>
-                    <Button type="button" variant="secondary" onClick={closeModal}>
-                        Avbryt
-                    </Button>
-                </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => {
-                            setModalData({ ...modalData, currentStep: 'step1' });
-                        }}
-                    >
-                        Gå tilbake
-                    </Button>
-                    <Button>Ferdig, legg til i planen</Button>
-                </div>
+                <Button type="button" variant="secondary" onClick={closeModal}>
+                    Avbryt
+                </Button>
+
+                <Button>Gå videre</Button>
             </div>
         </RhfForm>
     );

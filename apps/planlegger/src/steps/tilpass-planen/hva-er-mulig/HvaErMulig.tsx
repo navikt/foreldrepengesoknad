@@ -78,7 +78,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                     )}
                     {erBarnetAdoptert(barnet) && (
                         <>
-                            <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />
+                            {!erFarAlene && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 

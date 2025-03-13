@@ -23,7 +23,6 @@ import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import { HvaSkjerNårIkon } from './ikoner/HvaSkjerNårIkon';
 import { HvorMyeIkon } from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
@@ -144,11 +143,11 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
             <div className={styles.background}>
                 <VStack gap="4" className={styles.content}>
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
+                        <FormattedMessage id="OppsummeringSteg.AnnenVeiviser" />
                     </Heading>
                     <Link
                         inlineText
-                        href={links.hvorMye}
+                        href={links.veiviser}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.lenkepanel}
@@ -164,28 +163,6 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                                 <HvorMyeIkon />
                                 <Heading level="3" size="small">
                                     <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
-                                </Heading>
-                            </HStack>
-                        </Box>
-                    </Link>
-                    <Link
-                        inlineText
-                        href={links.hvaSkjerNår}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.lenkepanel}
-                    >
-                        <Box
-                            padding="4"
-                            background="surface-default"
-                            borderRadius="xlarge"
-                            shadow="medium"
-                            className={styles.panel}
-                        >
-                            <HStack gap="5" align="center">
-                                <HvaSkjerNårIkon />
-                                <Heading level="3" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvaSkjerNår" />
                                 </Heading>
                             </HStack>
                         </Box>

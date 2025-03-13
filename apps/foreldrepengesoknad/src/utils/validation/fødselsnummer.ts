@@ -1,9 +1,9 @@
-import validator from '@navikt/fnrvalidator';
+import { idnr } from '@navikt/fnrvalidator';
 import dayjs from 'dayjs';
 
 type FødselsnummerValidationResult = false | 'dnr' | 'fnr' | 'hnr' | 'tnr' | 'dnr-and-hnr' | 'dnr-and-tnr';
 export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
-    const result = validator.idnr(fnr);
+    const result = idnr(fnr);
 
     if (result.status !== 'valid') {
         return false;

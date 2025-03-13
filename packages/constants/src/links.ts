@@ -15,7 +15,7 @@ export const links = {
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
     plikter: 'https://www.nav.no/endringer',
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
-    veiviser: 'https://familie.nav.no/veiviser',
+    veiviser: 'https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad',
     innsyn: 'https://foreldrepenger.nav.no',
     engangsstonad: 'https://www.nav.no/engangsstonad',
     farMedmor: 'https://www.nav.no/engangsstonad#far_medmor',
@@ -53,8 +53,7 @@ export const links = {
     graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
     aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     farskapsportal: 'https://farskapsportal.nav.no/',
-    barnehageloven:
-        'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/',
+    barnehageloven: 'https://lovdata.no/pro/#document/NL/lov/2005-06-17-64/§16',
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',

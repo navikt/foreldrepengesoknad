@@ -11,7 +11,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
-import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavnSimple } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
     periode: Planperiode;
@@ -77,7 +77,7 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
 
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
+    const stønadskontoNavn = getStønadskontoNavnSimple(intl, periode.kontoType!);
 
     return (
         <div style={{ marginBottom: '2rem', display: 'flex' }}>

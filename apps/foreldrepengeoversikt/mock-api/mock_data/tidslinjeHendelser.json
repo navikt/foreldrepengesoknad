@@ -17,6 +17,12 @@
         ]
     },
     {
+        "opprettet": "",
+        "aktørType": "BRUKER",
+        "tidslinjeHendelseType": "VENT_DOKUMENTASJON",
+        "dokumenter": []
+    },
+    {
         "opprettet": "2024-09-18T12:37:52",
         "aktørType": "NAV",
         "tidslinjeHendelseType": "UTGÅENDE_ETTERLYS_INNTEKTSMELDING",

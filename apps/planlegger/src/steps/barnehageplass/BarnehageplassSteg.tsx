@@ -27,14 +27,11 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
     const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
 
     if (dayjs(dato).month() < 8) {
-        return getUttaksdagTilOgMedDato(
-            dayjs(dato).month(7).add(1, 'year').endOf('week').endOf('month').format(ISO_DATE_FORMAT),
-        );
+        const newLocal = dayjs(dato).month(7).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT);
+        return getUttaksdagTilOgMedDato(newLocal);
     }
     if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return getUttaksdagTilOgMedDato(
-            dayjs(dato).add(1, 'year').endOf('week').endOf('month').format(ISO_DATE_FORMAT),
-        );
+        return getUttaksdagTilOgMedDato(dayjs(dato).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT));
     }
     return getUttaksdagTilOgMedDato(
         dayjs(dato)

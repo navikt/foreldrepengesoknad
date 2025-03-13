@@ -192,6 +192,7 @@ export const saker = {
                         behovFrom: '2024-10-24',
                         tilrettelegginger: [
                             {
+                                arbeidstidprosent: 0,
                                 fom: '2024-10-24',
                                 tom: '2024-10-30',
                                 type: 'INGEN',
@@ -215,6 +216,7 @@ export const saker = {
                         behovFrom: '2024-10-17',
                         tilrettelegginger: [
                             {
+                                arbeidstidprosent: 0,
                                 fom: '2024-10-17',
                                 tom: '2024-10-30',
                                 type: 'INGEN',

@@ -29,6 +29,7 @@ import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
@@ -62,6 +63,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
@@ -222,6 +224,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                         hvemHarRett={hvemHarRett}
                                     />
                                 }
+                                barnehagestartdato={barnehagestartdato}
                             />
                         </div>
                     )}

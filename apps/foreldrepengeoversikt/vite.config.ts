@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
-import checker from 'vite-plugin-checker';
 
 export default defineConfig({
     plugins: [
@@ -12,7 +11,6 @@ export default defineConfig({
         react({
             include: '**/*.{jsx,tsx}',
         }),
-        checker({ typescript: true }),
         {
             name: 'crossorigin',
             transformIndexHtml(html) {

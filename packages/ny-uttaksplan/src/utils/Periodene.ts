@@ -29,8 +29,8 @@ export const Periodene = (perioder: Planperiode[]) => ({
     getHull: () => getHull(perioder),
     getHullOgInfoOgPerioderUtenUttak: () => getHullOgInfoOgPerioderUtenUttak(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
-    getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
-    getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
+    getPerioderEtterFamiliehendelsesdato: (dato: Date | string) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
+    getPerioderFørFamiliehendelsesdato: (dato: Date | string) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
     getFørstePerioderEtterFamiliehendelsesdato: (dato: Date) =>
         getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
@@ -209,7 +209,7 @@ function forskyvPeriode(periode: Planperiode, uttaksdager: number): Planperiode 
     return Perioden(periode).setStartdato(forskyvetStartdato);
 }
 
-function getPerioderFørFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date) {
+function getPerioderFørFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date | string) {
     return perioder.filter(
         (periode) =>
             isForeldrepengerFørFødselPeriode(periode) ||
@@ -218,7 +218,7 @@ function getPerioderFørFamiliehendelsesdato(perioder: Planperiode[], familiehen
     );
 }
 
-function getPerioderEtterFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date) {
+function getPerioderEtterFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date | string) {
     return perioder.filter(
         (periode) =>
             isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom }) &&

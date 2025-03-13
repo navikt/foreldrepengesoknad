@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -122,6 +122,8 @@ export const PeriodeListeContent = ({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const erRedigerbar =
+        permisjonsperiode.perioder.find((p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p)) === undefined;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
@@ -129,6 +131,8 @@ export const PeriodeListeContent = ({
     const familiehendelseType = getFamiliehendelseType(barn);
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
+
+    const erBarnetFødt = isFødtBarn(barn);
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -156,7 +160,7 @@ export const PeriodeListeContent = ({
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            {modus !== 'innsyn' && (
+            {modus !== 'innsyn' && erRedigerbar && (
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                     <Button
                         type="button"
@@ -192,6 +196,7 @@ export const PeriodeListeContent = ({
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     isModalOpen={isEndringsModalOpen}
+                    erBarnetFødt={erBarnetFødt}
                 />
             ) : null}
             {isDeleteModalOpen ? (

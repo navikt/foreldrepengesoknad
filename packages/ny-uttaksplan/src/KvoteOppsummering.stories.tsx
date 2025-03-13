@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import dayjs from 'dayjs';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
@@ -110,6 +111,59 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
     },
 };
 
+export const BeggeRettMorForMangeDagerBrukt: Story = {
+    args: {
+        visStatusIkoner: true,
+        konto: kontoNårBeggeHarRett,
+        perioder: [
+            {
+                fom: '2024-11-10',
+                tom: '2024-12-08',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-09',
+                tom: '2025-03-18',
+                kontoType: StønadskontoType.Mødrekvote,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-03-24',
+                tom: '2025-05-16',
+                kontoType: StønadskontoType.Fellesperiode,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-05-19',
+                tom: '2025-08-31',
+                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-07-28',
+                tom: '2025-09-29',
+                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-09-22',
+                tom: '2025-09-26',
+                kontoType: StønadskontoType.Mødrekvote,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
+    },
+};
+
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
         visStatusIkoner: true,
@@ -159,6 +213,60 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 export const BeggeRettMorLedigeDager: Story = {
     args: {
         visStatusIkoner: true,
+        konto: kontoNårBeggeHarRett,
+        perioder: [
+            {
+                fom: '2024-11-18',
+                tom: '2024-12-02',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-09',
+                tom: '2025-02-14',
+                kontoType: StønadskontoType.Mødrekvote,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-03-24',
+                tom: '2025-04-16',
+                kontoType: StønadskontoType.Fellesperiode,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-05-19',
+                tom: '2025-08-17',
+                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-07-28',
+                tom: '2025-09-12',
+                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-09-22',
+                tom: '2025-09-24',
+                kontoType: StønadskontoType.Mødrekvote,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
+    },
+};
+
+export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
+    args: {
+        visStatusIkoner: true,
+        familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -402,17 +510,57 @@ export const AleneomsorgFarLedigeDager: Story = {
         perioder: [
             {
                 fom: '2024-11-01',
-                tom: '2025-09-04',
+                tom: '2025-07-04',
                 kontoType: StønadskontoType.Foreldrepenger,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
             },
             {
                 fom: '2025-09-12',
                 tom: '2025-09-25',
                 kontoType: StønadskontoType.Foreldrepenger,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
+            },
+        ],
+        rettighetType: RettighetType.ALENEOMSORG,
+        forelder: Forelder.farMedmor,
+    },
+};
+
+export const AleneomsorgFarForMangeDager: Story = {
+    args: {
+        visStatusIkoner: true,
+        konto: {
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                flerbarn: 0,
+                prematur: 0,
+            },
+        },
+        perioder: [
+            {
+                fom: '2024-11-01',
+                tom: '2025-07-04',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-09-12',
+                tom: '2025-12-30',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
             },
         ],
         rettighetType: RettighetType.ALENEOMSORG,

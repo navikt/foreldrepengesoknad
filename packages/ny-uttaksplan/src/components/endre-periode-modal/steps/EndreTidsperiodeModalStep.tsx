@@ -4,10 +4,13 @@ import { useIntl } from 'react-intl';
 
 import { Button, Heading } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
+import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalData } from '../EndrePeriodeModal';
 
 interface Props {
@@ -17,6 +20,7 @@ interface Props {
     familiehendelsedato: string;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
+    erBarnetFødt: boolean;
 }
 
 interface FormValues {
@@ -31,6 +35,7 @@ export const EndreTidsperiodeModalStep = ({
     familiehendelsedato,
     handleUpdatePeriode,
     inneholderKunEnPeriode,
+    erBarnetFødt,
 }: Props) => {
     const { valgtPeriode } = modalData;
     const intl = useIntl();
@@ -49,7 +54,18 @@ export const EndreTidsperiodeModalStep = ({
         });
         closeModal();
     };
+
+    const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
+
+    const minDate =
+        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+            ? dayjs(familiehendelsedato).subtract(3, 'weeks').format(ISO_DATE_FORMAT)
+            : dayjs(familiehendelsedato).subtract(12, 'weeks').format(ISO_DATE_FORMAT);
+    const maxDate =
+        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+            ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
+            : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
 
     return (
         <>
@@ -58,42 +74,36 @@ export const EndreTidsperiodeModalStep = ({
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                     <RhfDatepicker
                         showMonthAndYearDropdowns
-                        minDate={dayjs(familiehendelsedato).subtract(3, 'weeks').toDate()}
-                        maxDate={dayjs(familiehendelsedato).add(3, 'years').toDate()}
+                        minDate={minDate}
+                        maxDate={maxDate}
                         label="Fra og med dato"
                         name="fom"
                         disableWeekends={true}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.påkrevd' }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.gyldigDato' }),
-                            ),
-                            isBeforeOrSame(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.førTilDato' }),
-                                tomValue,
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.fom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getFomValidators(
+                            intl,
+                            familiehendelsedato,
+                            valgtPeriode?.kontoType,
+                            tomValue,
+                            erBarnetFødt,
+                            minDate,
+                            maxDate,
+                        )}
                     />
                     <RhfDatepicker
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.påkrevd' }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.gyldigDato' }),
-                            ),
-                            isWeekday(
-                                intl.formatMessage({ id: 'endreTidsPeriodeModal.endreTidsperiode.tom.måVæreUkedag' }),
-                            ),
-                        ]}
+                        validate={getTomValidators(
+                            intl,
+                            familiehendelsedato,
+                            valgtPeriode?.kontoType,
+                            fomValue,
+                            erBarnetFødt,
+                            minDate,
+                            maxDate,
+                        )}
                         label="Til og med dato"
                         name="tom"
                         disableWeekends={true}
+                        minDate={fomValue}
+                        maxDate={maxDate}
                     />
                 </div>
                 <div

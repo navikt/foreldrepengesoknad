@@ -61,13 +61,17 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => getSelectableBarnOptions(saker, søkerInfo.søker.barn).toSorted(sorterSelectableBarnEtterYngst),
+        () => [...getSelectableBarnOptions(saker, søkerInfo.søker.barn)].sort(sorterSelectableBarnEtterYngst),
         [saker, søkerInfo.søker.barn],
     );
 
     const onSubmit = (values: VelkommenFormData) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
+            console.error(
+                'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
+                values.harForståttRettigheterOgPlikter,
+            );
             return;
         }
         setHarGodkjentVilkår(true);
