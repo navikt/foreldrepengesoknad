@@ -3,8 +3,8 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { PlanForslag, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Forelder, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { PlanForslag, SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -389,4 +389,28 @@ export const lagForslagTilPlan = ({
         erAleneOmOmsorg,
         startdato,
     });
+};
+
+export const getSøkersPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: SaksperiodeNy[],
+    erFarEllerMedmor: boolean,
+) => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter((p) =>
+              erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
+          )
+        : gjeldendeUttaksplan;
+};
+
+export const getAnnenpartsPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: SaksperiodeNy[],
+    erFarEllerMedmor: boolean,
+) => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter((p) =>
+              erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
+          )
+        : [];
 };

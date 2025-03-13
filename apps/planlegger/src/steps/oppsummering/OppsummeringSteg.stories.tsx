@@ -50,6 +50,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
+    tilpassPlan?: boolean;
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -65,6 +66,7 @@ const meta = {
         satser,
         locale,
         hvorMye,
+        tilpassPlan = false,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -76,6 +78,7 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.HVOR_MYE]: hvorMye,
+                        [ContextDataType.TILPASS_PLAN]: tilpassPlan,
                     }}
                 >
                     <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
