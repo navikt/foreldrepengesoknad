@@ -33,7 +33,7 @@ describe('<Saksoversikt>', () => {
         expect((await screen.findAllByText('svangerskapspenger')).length).toBeGreaterThan(0);
 
         // ... når vi senere skal sjekke for at noe ikke eksisterer.
-        expect(screen.queryByText('Endre planen din')).toBeNull();
+        expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
     });
 
     it('skal IKKE vise Endre plan lenke for engangsstønad', async () => {
@@ -45,6 +45,6 @@ describe('<Saksoversikt>', () => {
         expect((await screen.findAllByText('engangsstønad')).length).toBeGreaterThan(0);
 
         // ... når vi senere skal sjekke for at noe ikke eksisterer.
-        expect(screen.queryByText('Endre planen din')).toBeNull();
+        expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
     });
 });
