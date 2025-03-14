@@ -48,6 +48,15 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
     const lønnSøker1 = formMethods.watch('lønnSøker1');
     const lønnSøker2 = formMethods.watch('lønnSøker2');
 
+    const erValidLønn = (verdi: any): boolean => {
+        if (!verdi) return false;
+        const strVerdi = String(verdi);
+        return strVerdi.length >= 3 && /^\d+$/.test(strVerdi);
+    };
+
+    const lønnSøker1Valid = erValidLønn(lønnSøker1);
+    const lønnSøker2Valid = erValidLønn(lønnSøker2);
+
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
@@ -86,9 +95,9 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
-                            {lønnSøker1 && (
+                            {lønnSøker1Valid && (
                                 <Utbetaling
-                                    lønnSøker={lønnSøker1}
+                                    lønnSøker={Number(lønnSøker1)}
                                     satser={satser}
                                     fornavn={
                                         hvemHarRett === 'kunSøker2HarRett'
@@ -115,8 +124,12 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                         description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                     />
                                 </BluePanel>
-                                {lønnSøker2 && (
-                                    <Utbetaling satser={satser} lønnSøker={lønnSøker2} fornavn={fornavnSøker2} />
+                                {lønnSøker2Valid && (
+                                    <Utbetaling
+                                        satser={satser}
+                                        lønnSøker={Number(lønnSøker2)}
+                                        fornavn={fornavnSøker2}
+                                    />
                                 )}
                             </VStack>
                         )}
