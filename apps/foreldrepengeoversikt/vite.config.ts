@@ -1,10 +1,13 @@
 /// <reference types="vitest" />
+// @ts-expect-error -- bug med v4. Alternativt må vi sette "moduleResolution: bundler" i tsconfig. Men det fungerte ikke for alle apps.
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [
+        tailwindcss(),
         react({
             include: '**/*.{jsx,tsx}',
         }),
