@@ -360,6 +360,7 @@ interface LagForslagProps {
     erMorUfør: boolean;
     bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;
+    farOgFar: boolean;
     startdato?: string;
 }
 
@@ -374,6 +375,7 @@ export const lagForslagTilPlan = ({
     bareFarMedmorHarRett,
     erAleneOmOmsorg,
     startdato,
+    farOgFar,
 }: LagForslagProps): PlanForslag => {
     if (erDeltUttak) {
         return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor, startdato });
@@ -388,6 +390,7 @@ export const lagForslagTilPlan = ({
         bareFarMedmorHarRett,
         erAleneOmOmsorg,
         startdato,
+        farOgFar,
     });
 };
 

@@ -10,6 +10,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 
 import { Loader } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
@@ -86,6 +87,30 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
         queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
         queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
+        select: (data: TilgjengeligeStønadskontoer): TilgjengeligeStønadskontoer => {
+            // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
+            // Hvis ikke far-og-far, returner uendret
+            if (hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR) {
+                return data;
+            }
+            // Lag en dyp kopi for å unngå å modifisere original data
+            const modifiserteData: TilgjengeligeStønadskontoer = JSON.parse(JSON.stringify(data));
+            // Liste over dekningsgrader vi skal prosessere
+            const dekningsgrader: Array<keyof TilgjengeligeStønadskontoer> = ['80', '100'];
+            // Bearbeide hver dekningsgrad
+            dekningsgrader.forEach((dekningsgrad) => {
+                const stønadskonto = modifiserteData[dekningsgrad];
+                if (stønadskonto?.kontoer) {
+                    // Summer antall dager i alle kontoer
+                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
+                    // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen
+                    stønadskonto.kontoer = stønadskonto.kontoer
+                        .filter((konto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
+                        .map((konto) => ({ ...konto, dager: totalDager }));
+                }
+            });
+            return modifiserteData;
+        },
     });
 
     if (stønadskontoerData.error || satserData.error) {

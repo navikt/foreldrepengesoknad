@@ -300,14 +300,14 @@ export const FarOgFarBeggeHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
@@ -327,14 +327,14 @@ export const FarOgFarKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
@@ -354,14 +354,14 @@ export const FarOgFarKunMedfarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,

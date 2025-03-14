@@ -338,7 +338,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
+
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -348,8 +348,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
+        expect(within(april2025).getByTestId('day:11;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(9);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {

@@ -95,6 +95,7 @@ export const OppsummeringHarRett = ({
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+        farOgFar: hvemPlanlegger.type === Situasjon.FAR_OG_FAR,
     });
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
