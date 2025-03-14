@@ -10,6 +10,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 
 import { Loader } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
@@ -102,9 +103,9 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
                 if (stønadskonto?.kontoer) {
                     // Summer antall dager i alle kontoer
                     const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
-                    // Filtrer og behold kun 'FORELDREPENGER' -kontoen
+                    // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen
                     stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === 'FORELDREPENGER')
+                        .filter((konto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
                         .map((konto) => ({ ...konto, dager: totalDager }));
                 }
             });

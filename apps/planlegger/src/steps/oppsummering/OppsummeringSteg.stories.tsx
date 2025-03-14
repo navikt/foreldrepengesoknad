@@ -268,7 +268,16 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 261 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 200 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+        },
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
@@ -567,14 +576,14 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
