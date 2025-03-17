@@ -50,6 +50,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
+    tilpassPlan?: boolean;
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -65,6 +66,7 @@ const meta = {
         satser,
         locale,
         hvorMye,
+        tilpassPlan = false,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -76,6 +78,7 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.HVOR_MYE]: hvorMye,
+                        [ContextDataType.TILPASS_PLAN]: tilpassPlan,
                     }}
                 >
                     <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
@@ -268,7 +271,16 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 261 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 200 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+        },
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
@@ -567,14 +579,14 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,

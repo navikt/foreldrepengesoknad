@@ -91,7 +91,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                         justify="space-between"
                                         className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
                                     >
-                                        <BodyShort>{prosentSvangerskapspenger}% svangerskapspenger</BodyShort>
+                                        <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
                                         <GravidIkon />
                                     </HStack>
                                 )}
@@ -105,7 +105,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                 <VStack>
                                     <strong>{arbeidsgiverNavn}</strong>
                                     <BodyShort>
-                                        {p.type && `${prosentSvangerskapspenger}% svangerskapspenger`}
+                                        {p.type && `${prosentSvangerskapspenger} % svangerskapspenger`}
                                         {p.årsak === 'FERIE' && 'Ferie'}
                                         {p.årsak === 'SYKEPENGER' && 'Sykepenger'}
                                     </BodyShort>

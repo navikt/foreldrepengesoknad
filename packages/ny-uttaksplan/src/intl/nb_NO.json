@@ -95,5 +95,9 @@
     "endreTidsPeriodeModal.tom.måVæreUkedag": "Sluttdatoen kan ikke være en helgedag.",
     "endreTidsPeriodeModal.riktigKvoteFørFødsel.termin": "Kun fellesperiode og foreldrepenger før fødsel kan benyttes før termin",
     "endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel": "Kun fellesperiode og foreldrepenger før fødsel kan benyttes før fødsel",
-    "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel."
+    "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
+    "endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode": "Kun foreldrepenger før fødsel kan taes ut i de tre ukene før fødsel.",
+    "endreTidsPeriodeModal.fellesperiodeOverFPFF": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
+    "endreTidsPeriodeModal.minDato": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
+    "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}"
 }

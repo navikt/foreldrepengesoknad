@@ -293,20 +293,14 @@ export const FarOgFarKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 211 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
-                ],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 261 }],
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 150 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
-                ],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 200 }],
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,

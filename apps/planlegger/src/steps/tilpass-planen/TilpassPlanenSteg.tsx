@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getFamiliehendelsedato } from 'utils/uttakUtils';
+import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
@@ -29,6 +29,7 @@ import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
@@ -62,6 +63,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
 
@@ -94,22 +96,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         const nyUttaksplan = [...uttaksplan];
         nyUttaksplan.push(perioder);
         lagreUttaksplan(nyUttaksplan);
-    };
-
-    const getSøkersPerioder = () => {
-        return erDeltUttak
-            ? gjeldendeUttaksplan.filter((p) =>
-                  erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
-              )
-            : gjeldendeUttaksplan;
-    };
-
-    const getAnnenpartsPerioder = () => {
-        return erDeltUttak
-            ? gjeldendeUttaksplan.filter((p) =>
-                  erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
-              )
-            : [];
     };
 
     return (
@@ -172,8 +158,12 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 }}
                                 førsteUttaksdagNesteBarnsSak={undefined}
                                 harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={getSøkersPerioder()}
-                                annenPartsPerioder={getAnnenpartsPerioder()}
+                                søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
+                                annenPartsPerioder={getAnnenpartsPerioder(
+                                    erDeltUttak,
+                                    gjeldendeUttaksplan,
+                                    erFarEllerMedmor,
+                                )}
                                 barn={mapOmBarnetTilBarn(omBarnet)}
                                 handleOnPlanChange={handleOnPlanChange}
                                 modus="planlegger"
@@ -183,19 +173,21 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
                                 perioder={[
-                                    ...getSøkersPerioder(),
-                                    ...getAnnenpartsPerioder().map((p) => {
-                                        // I innsyn så er fellesperioder for annen part gitt uten kontotype og med oppholdÅrsak istedetfor.
-                                        // Derfor trikser vi til periodene i planleggeren til å følge samme format.
-                                        if (p.kontoType === StønadskontoType.Fellesperiode) {
-                                            return {
-                                                ...p,
-                                                kontoType: undefined,
-                                                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-                                            };
-                                        }
-                                        return p;
-                                    }),
+                                    ...getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor),
+                                    ...getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor).map(
+                                        (p) => {
+                                            // I innsyn så er fellesperioder for annen part gitt uten kontotype og med oppholdÅrsak istedetfor.
+                                            // Derfor trikser vi til periodene i planleggeren til å følge samme format.
+                                            if (p.kontoType === StønadskontoType.Fellesperiode) {
+                                                return {
+                                                    ...p,
+                                                    kontoType: undefined,
+                                                    oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                                                };
+                                            }
+                                            return p;
+                                        },
+                                    ),
                                 ]}
                                 rettighetType={utledRettighetType()}
                                 forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
@@ -211,8 +203,12 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 bareFarHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={getSøkersPerioder()}
-                                annenPartsPerioder={getAnnenpartsPerioder()}
+                                søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
+                                annenPartsPerioder={getAnnenpartsPerioder(
+                                    erDeltUttak,
+                                    gjeldendeUttaksplan,
+                                    erFarEllerMedmor,
+                                )}
                                 navnAnnenPart="Test" //TODO: fiks denne før prod?
                                 barn={mapOmBarnetTilBarn(omBarnet)}
                                 planleggerLegend={
@@ -222,6 +218,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                         hvemHarRett={hvemHarRett}
                                     />
                                 }
+                                barnehagestartdato={barnehagestartdato}
                             />
                         </div>
                     )}

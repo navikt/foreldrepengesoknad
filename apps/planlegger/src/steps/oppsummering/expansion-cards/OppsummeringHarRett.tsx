@@ -22,7 +22,13 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import {
+    finnAntallUkerOgDagerMedForeldrepenger,
+    getAnnenpartsPerioder,
+    getFamiliehendelsedato,
+    getSøkersPerioder,
+    lagForslagTilPlan,
+} from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -30,7 +36,9 @@ import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
@@ -71,7 +79,7 @@ export const OppsummeringHarRett = ({
         (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
-        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+        startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
     }
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
@@ -87,6 +95,7 @@ export const OppsummeringHarRett = ({
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+        farOgFar: hvemPlanlegger.type === Situasjon.FAR_OG_FAR,
     });
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
@@ -98,6 +107,14 @@ export const OppsummeringHarRett = ({
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
     const barnehagestartdato = barnehagestartDato(barnet);
+
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const tilpassPlan = notEmpty(useContextGetData(ContextDataType.TILPASS_PLAN));
+    const gjeldendeUttaksplan = uttaksplan && uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const erDeltUttak = fordeling !== undefined;
+
+    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
 
     return (
         <VStack gap="10">
@@ -245,57 +262,15 @@ export const OppsummeringHarRett = ({
                                             }}
                                         />
                                     </BodyShort>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OppsummeringSteg.UtenAktivitetskrav"
-                                            values={{
-                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                                tom: intl.formatDate(
-                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
-                                                    {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    },
-                                                ),
-                                                b: (msg: any) => <b>{msg}</b>,
-                                            }}
-                                        />
-                                    </BodyShort>
                                 </VStack>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.MedAktivitetskrav"
-                                        values={{
-                                            fom: intl.formatDate(planforslag.søker2[0].fom, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
-                                            tom: intl.formatDate(
-                                                planforslag.søker2[planforslag.søker2.length - 1].tom,
-                                                {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                },
-                                            ),
-                                            b: (msg: any) => <b>{msg}</b>,
-                                        }}
-                                    />
-                                </BodyShort>
                             </BluePanel>
                         )}
                         <UttaksplanKalender
                             bareFarHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={planforslag.søker1}
-                            annenPartsPerioder={planforslag.søker2}
+                            søkersPerioder={tilpassPlan ? søkersPerioder : planforslag.søker1}
+                            annenPartsPerioder={tilpassPlan ? annenPartsPerioder : planforslag.søker2}
                             navnAnnenPart="Test"
                             barn={mapOmBarnetTilBarn(barnet)}
                             planleggerLegend={
