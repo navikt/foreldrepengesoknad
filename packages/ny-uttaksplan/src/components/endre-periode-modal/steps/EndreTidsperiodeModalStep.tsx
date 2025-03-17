@@ -69,7 +69,7 @@ export const EndreTidsperiodeModalStep = ({
 
     return (
         <>
-            <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
+            <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                     <RhfDatepicker

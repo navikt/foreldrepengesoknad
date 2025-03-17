@@ -155,8 +155,6 @@ export const getTekst = ({
             case UtsettelseÅrsakType.Fri:
                 return 'Uten foreldrepenger';
         }
-
-        return 'Utsettelse';
     }
 
     if (erHull) {
@@ -168,10 +166,10 @@ export const getTekst = ({
     }
 
     if (erSamtidigUttak) {
-        return `Dere er i permisjon`;
+        return 'Dere har foreldrepenger';
     }
 
-    return erEgenPeriode ? `${navnPåForelder} er i permisjon` : `${navnPåAnnenForelder} er i permisjon`;
+    return erEgenPeriode ? `${navnPåForelder} har foreldrepenger` : `${navnPåAnnenForelder} har foreldrepenger`;
 };
 
 type GetIkonProps = {

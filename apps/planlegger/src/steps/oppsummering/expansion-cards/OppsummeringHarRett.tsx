@@ -22,7 +22,13 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import {
+    finnAntallUkerOgDagerMedForeldrepenger,
+    getAnnenpartsPerioder,
+    getFamiliehendelsedato,
+    getSøkersPerioder,
+    lagForslagTilPlan,
+} from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -30,7 +36,9 @@ import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
@@ -87,6 +95,7 @@ export const OppsummeringHarRett = ({
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+        farOgFar: hvemPlanlegger.type === Situasjon.FAR_OG_FAR,
     });
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
@@ -98,6 +107,14 @@ export const OppsummeringHarRett = ({
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
     const barnehagestartdato = barnehagestartDato(barnet);
+
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const tilpassPlan = notEmpty(useContextGetData(ContextDataType.TILPASS_PLAN));
+    const gjeldendeUttaksplan = uttaksplan && uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const erDeltUttak = fordeling !== undefined;
+
+    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
 
     return (
         <VStack gap="10">
@@ -252,8 +269,8 @@ export const OppsummeringHarRett = ({
                             bareFarHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={planforslag.søker1}
-                            annenPartsPerioder={planforslag.søker2}
+                            søkersPerioder={tilpassPlan ? søkersPerioder : planforslag.søker1}
+                            annenPartsPerioder={tilpassPlan ? annenPartsPerioder : planforslag.søker2}
                             navnAnnenPart="Test"
                             barn={mapOmBarnetTilBarn(barnet)}
                             planleggerLegend={

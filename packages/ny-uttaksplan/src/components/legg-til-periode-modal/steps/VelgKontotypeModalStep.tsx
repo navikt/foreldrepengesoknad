@@ -72,7 +72,7 @@ export const VelgKontotypeModalStep = ({ modalData, closeModal, setModalData }: 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="4">
-                <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
+                <Heading size="medium">Hvilken konto vil du bruke?</Heading>
                 <RhfRadioGroup
                     validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
                     label="Velg kontotype"

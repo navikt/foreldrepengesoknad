@@ -34,6 +34,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             erMorUfør,
             bareFarMedmorHarRett,
             erAleneOmOmsorg: false,
+            farOgFar: false,
         });
 
         expect(forslag.søker1.length).toEqual(2);
@@ -56,6 +57,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             erMorUfør,
             bareFarMedmorHarRett,
             erAleneOmOmsorg: false,
+            farOgFar: false,
         });
         expect(forslag.søker1.length).toEqual(2);
         expect(forslag.søker1[0].fom).toEqual(famDato);
