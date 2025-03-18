@@ -3,7 +3,7 @@ import { sum, sumBy } from 'lodash';
 import { ReactNode, createContext, useContext } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
@@ -634,11 +634,16 @@ const VisningsnavnForKvote = ({ kontoType }: { kontoType: StønadskontoType }) =
 
 const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }) => {
     return (
-        <HStack gap="2">
+        <HGrid
+            columns={fordelinger
+                .filter((f) => f.prosent > 0)
+                .map((f) => `${f.prosent}% `)
+                .join('')}
+        >
             {fordelinger.map((fordeling) => (
                 <FordelingSegment key={Object.values(fordeling).join('-')} {...fordeling} />
             ))}
-        </HStack>
+        </HGrid>
     );
 };
 
@@ -660,14 +665,13 @@ const FordelingSegment = ({
     if (prosent <= 0) {
         return null;
     }
-    const style = { width: `${prosent - 1.5}%` };
 
-    if (erOvertrukket) {
-        return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+    if (erOvertrukket && prosent > 0) {
+        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-red-300 border-red-300`} />;
     }
 
     if (erUtløpt) {
-        return <div className={`rounded-full h-4 border-2 bg-gray-300 border-gray-300`} style={style} />;
+        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-gray-300 border-gray-300`} />;
     }
 
     if (forelder === 'MOR') {
@@ -679,16 +683,14 @@ const FordelingSegment = ({
         ) {
             return (
                 <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
-                    style={style}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
                 />
             );
         }
         if (kontoType === 'FEDREKVOTE') {
             return (
                 <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
-                    style={style}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
                 />
             );
         }
@@ -703,21 +705,21 @@ const FordelingSegment = ({
     ) {
         return (
             <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
-                style={style}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
             />
         );
     }
     if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
             <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
-                style={style}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
             />
         );
     }
 
-    return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
+    return (
+        <div className="first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-bg-default border-surface-neutral-hover" />
+    );
 };
 
 type IkonProps = { size: 'stor' | 'liten' };
