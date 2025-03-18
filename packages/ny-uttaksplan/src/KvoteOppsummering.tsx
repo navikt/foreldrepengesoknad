@@ -666,7 +666,7 @@ const FordelingSegment = ({
         return null;
     }
 
-    if (erOvertrukket && prosent > 0) {
+    if (erOvertrukket) {
         return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-red-300 border-red-300`} />;
     }
 
