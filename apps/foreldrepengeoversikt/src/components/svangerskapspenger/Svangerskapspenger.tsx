@@ -27,7 +27,7 @@ type SvangerskapspengerProps = {
 };
 export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const erSøknad = !!svpSak.åpenBehandling;
-    const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold ?? [];
+    const arbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold ?? svpSak.åpenBehandling?.søknad.arbeidsforhold ?? [];
     const terminDato = svpSak.familiehendelse.termindato;
     const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
 
@@ -74,8 +74,13 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                     p.aktivitet.arbeidsgiver?.id ??
                     capitalizeFirstLetter(p.aktivitet.type.toLowerCase()).replace('_', ' ');
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
-                const prosentSvangerskapspenger =
+
+                // TODO: feil?
+                const prosentSvangerskapspengerHvisSøknad =
                     p.type === 'HEL' ? 0 : p.type === 'INGEN' ? 100 : 100 - (p.arbeidstidprosent ?? 0);
+                const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
+                const prosentSvangerskapspenger =
+                    prosentSvangerskapspengerHvisInnvilget ?? prosentSvangerskapspengerHvisSøknad;
 
                 return (
                     <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
@@ -207,6 +212,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
                 arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
+                resultat: 'resultat' in p ? p.resultat : undefined,
                 type: 'type' in p ? p.type : undefined,
                 årsak: 'årsak' in p ? p.årsak : undefined,
                 fom: p.fom,
