@@ -6,7 +6,7 @@ import {
     StrollerFillIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { groupBy } from 'lodash';
+import { groupBy, sortBy } from 'lodash';
 import React from 'react';
 
 import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -68,14 +68,13 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
         <HGrid gap="2" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
-            {perioder.map((p, index) => {
+            {sortBy(perioder, (p) => p.aktivitet.arbeidsgiverNavn).map((p, index) => {
                 const arbeidsgiverNavn =
                     capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
                     p.aktivitet.arbeidsgiver?.id ??
                     capitalizeFirstLetter(p.aktivitet.type.toLowerCase()).replace('_', ' ');
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
 
-                // TODO: feil?
                 const prosentSvangerskapspengerHvisSøknad =
                     p.type === 'HEL' ? 0 : p.type === 'INGEN' ? 100 : 100 - (p.arbeidstidprosent ?? 0);
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
