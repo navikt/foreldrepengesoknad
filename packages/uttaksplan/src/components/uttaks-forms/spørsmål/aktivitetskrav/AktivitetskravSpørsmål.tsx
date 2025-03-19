@@ -38,7 +38,7 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
         <Block padBottom="l">
             <FormComponents.Select
                 name={fieldName}
-                description="For at du skal kunne bruke fellesperioden må mor være i aktivitet"
+                description="For at du skal kunne bruke foreldrepenger må mor være i aktivitet"
                 label={intl.formatMessage({ id: 'uttaksplan.aktivitetskrav' }, { navnMor: navnPåForeldre.mor })}
                 validate={(value: MorsAktivitet | '') => {
                     if (!hasValue(value)) {
