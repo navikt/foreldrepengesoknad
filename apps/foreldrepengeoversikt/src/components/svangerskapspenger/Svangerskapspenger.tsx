@@ -1,5 +1,6 @@
 import {
     BandageFillIcon,
+    BriefcaseClockFillIcon,
     HeartFillIcon,
     ParasolBeachFillIcon,
     PersonPregnantFillIcon,
@@ -75,11 +76,12 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                     capitalizeFirstLetter(p.aktivitet.type.toLowerCase()).replace('_', ' ');
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
 
-                const prosentSvangerskapspengerHvisSøknad =
-                    p.type === 'HEL' ? 0 : p.type === 'INGEN' ? 100 : 100 - (p.arbeidstidprosent ?? 0);
+                const prosentJobb = p.type === 'HEL' ? 100 : p.type === 'INGEN' ? 0 : (p.arbeidstidprosent ?? 0);
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
-                const prosentSvangerskapspenger =
-                    prosentSvangerskapspengerHvisInnvilget ?? prosentSvangerskapspengerHvisSøknad;
+                // const prosentSvangerskapspengerHvisInnvilget = 0;
+
+                const skalViseSomSvp = prosentSvangerskapspengerHvisInnvilget > 0;
+                const skalViseSomJobb = prosentSvangerskapspengerHvisInnvilget <= 0 && prosentJobb > 0;
 
                 return (
                     <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
@@ -87,18 +89,13 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                             <div className="contents">
                                 <BodyShort className="whitespace-nowrap">{dato}</BodyShort>
                                 <BodyShort>{arbeidsgiverNavn}</BodyShort>
-                                {p.type && (
-                                    <HStack
-                                        wrap={false}
-                                        gap="4"
-                                        align="center"
-                                        justify="space-between"
-                                        className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
-                                    >
-                                        <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
-                                        <GravidIkon />
-                                    </HStack>
+                                {skalViseSomSvp && (
+                                    <DuHarSvangerskapspenger
+                                        prosentJobb={prosentJobb}
+                                        prosentSvangerskapspenger={prosentSvangerskapspengerHvisInnvilget}
+                                    />
                                 )}
+                                {skalViseSomJobb && <DuHarArbeid prosentArbeid={prosentJobb} />}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
                                 {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
                             </div>
@@ -109,12 +106,15 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                 <VStack>
                                     <strong>{arbeidsgiverNavn}</strong>
                                     <BodyShort>
-                                        {p.type && `${prosentSvangerskapspenger} % svangerskapspenger`}
+                                        {skalViseSomSvp &&
+                                            `${prosentSvangerskapspengerHvisInnvilget} % svangerskapspenger`}
                                         {p.årsak === 'FERIE' && 'Ferie'}
                                         {p.årsak === 'SYKEPENGER' && 'Sykepenger'}
                                     </BodyShort>
+                                    <BodyShort>{`${prosentJobb} % jobb`}</BodyShort>
                                 </VStack>
-                                {p.type && <GravidIkon />}
+                                {skalViseSomSvp && <GravidIkon />}
+                                {skalViseSomJobb && <JobbIkon />}
                                 {p.årsak === 'FERIE' && <ParasollIkon />}
                                 {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
                             </div>
@@ -123,6 +123,45 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                 );
             })}
         </HGrid>
+    );
+};
+
+const DuHarArbeid = ({ prosentArbeid }: { prosentArbeid: number }) => {
+    return (
+        <HStack
+            wrap={false}
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-deepblue-50 rounded-3xl"
+        >
+            <BodyShort>{prosentArbeid} % i jobb</BodyShort>
+            <JobbIkon />
+        </HStack>
+    );
+};
+
+const DuHarSvangerskapspenger = ({
+    prosentSvangerskapspenger,
+    prosentJobb,
+}: {
+    prosentJobb: number;
+    prosentSvangerskapspenger: number;
+}) => {
+    return (
+        <HStack
+            wrap={false}
+            gap="4"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+        >
+            <VStack>
+                <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
+                <BodyShort>{prosentJobb} % i jobb</BodyShort>
+            </VStack>
+            <GravidIkon />
+        </HStack>
     );
 };
 
@@ -195,6 +234,12 @@ const ParasollIkon = () => (
 const GravidIkon = () => (
     <div className="rounded-3xl bg-green-200 justify-self-end">
         <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
+    </div>
+);
+
+const JobbIkon = () => (
+    <div className="rounded-3xl bg-deepblue-100 justify-self-end">
+        <BriefcaseClockFillIcon fontSize={'2.5rem'} className=" text-deepblue-500 p-05" aria-hidden />
     </div>
 );
 
