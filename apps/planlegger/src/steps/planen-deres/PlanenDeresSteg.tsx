@@ -263,6 +263,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                                         hvemPlanlegger={hvemPlanlegger}
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
+                                        uttaksplan={[...planforslag.søker1, ...planforslag.søker2]}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}

@@ -2,15 +2,17 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { Button, Heading } from '@navikt/ds-react';
+import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { isEmpty } from '@navikt/fp-validation';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
+import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -36,7 +38,7 @@ export const EndreTidsperiodeModalStep = ({
     erBarnetFødt,
 }: Props) => {
     const intl = useIntl();
-    const { fom, tom, kontoType, forelder } = modalData;
+    const { fom, tom, kontoType, forelder, årsak } = modalData;
     const formMethods = useForm<FormValues>({
         defaultValues: {
             fom: fom ?? '',
@@ -48,20 +50,15 @@ export const EndreTidsperiodeModalStep = ({
     const tomValue = formMethods.watch('tom');
 
     const onSubmit = () => {
-        setModalData({
-            ...modalData,
-            fom: fomValue,
-            tom: tomValue,
-            currentStep: 'step2',
-        });
-
         handleAddPeriode({
             fom: fomValue!,
             tom: tomValue!,
             id: `${fomValue} - ${tomValue} - ${kontoType}`,
             readOnly: false,
             kontoType: kontoType,
-            forelder: forelder,
+            forelder: forelder ? forelder : Forelder.mor,
+            utsettelseÅrsak: årsak === UtsettelseÅrsakType.Ferie ? årsak : undefined,
+            periodeHullÅrsak: årsak === PeriodeHullType.PERIODE_UTEN_UTTAK ? årsak : undefined,
         });
 
         closeModal();
@@ -80,70 +77,53 @@ export const EndreTidsperiodeModalStep = ({
         <>
             <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                    <RhfDatepicker
-                        showMonthAndYearDropdowns
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        validate={getFomValidators(
-                            intl,
-                            familiehendelsedato,
-                            kontoType,
-                            tomValue,
-                            erBarnetFødt,
-                            minDate,
-                            maxDate,
-                        )}
-                        disableWeekends={true}
-                        label="Fra og med dato"
-                        name="fom"
-                        defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
+                <VStack gap="4">
+                    <HStack gap="4">
+                        <RhfDatepicker
+                            showMonthAndYearDropdowns
+                            minDate={minDate}
+                            maxDate={maxDate}
+                            validate={getFomValidators(
+                                intl,
+                                familiehendelsedato,
+                                kontoType,
+                                tomValue,
+                                erBarnetFødt,
+                                minDate,
+                                maxDate,
+                            )}
+                            disableWeekends={true}
+                            label="Fra og med dato"
+                            name="fom"
+                            defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
+                        />
+                        <RhfDatepicker
+                            showMonthAndYearDropdowns
+                            minDate={minDate}
+                            maxDate={maxDate}
+                            validate={getTomValidators(
+                                intl,
+                                familiehendelsedato,
+                                kontoType,
+                                fomValue,
+                                erBarnetFødt,
+                                minDate,
+                                maxDate,
+                            )}
+                            disableWeekends={true}
+                            label="Til og med dato"
+                            name="tom"
+                            defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
+                        />
+                    </HStack>
+                    <ModalButtons
+                        onCancel={closeModal}
+                        onGoPreviousStep={() => {
+                            setModalData({ ...modalData, currentStep: 'step2' });
+                        }}
+                        isFinalStep={false}
                     />
-                    <RhfDatepicker
-                        showMonthAndYearDropdowns
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        validate={getTomValidators(
-                            intl,
-                            familiehendelsedato,
-                            kontoType,
-                            fomValue,
-                            erBarnetFødt,
-                            minDate,
-                            maxDate,
-                        )}
-                        disableWeekends={true}
-                        label="Til og med dato"
-                        name="tom"
-                        defaultMonth={isEmpty(fomValue) ? familiehendelsedato : fomValue}
-                    />
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        padding: '1rem 0',
-                    }}
-                >
-                    <div>
-                        <Button type="button" variant="secondary" onClick={closeModal}>
-                            Avbryt
-                        </Button>
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step1' });
-                            }}
-                        >
-                            Gå tilbake
-                        </Button>
-                        <Button>Ferdig, legg til periode i planen</Button>
-                    </div>
-                </div>
+                </VStack>
             </RhfForm>
         </>
     );

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { Button, Heading } from '@navikt/ds-react';
+import { HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -11,6 +11,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
+import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../EndrePeriodeModal';
 
 interface Props {
@@ -71,69 +72,54 @@ export const EndreTidsperiodeModalStep = ({
         <>
             <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                    <RhfDatepicker
-                        showMonthAndYearDropdowns
-                        minDate={minDate}
-                        maxDate={maxDate}
-                        label="Fra og med dato"
-                        name="fom"
-                        disableWeekends={true}
-                        validate={getFomValidators(
-                            intl,
-                            familiehendelsedato,
-                            valgtPeriode?.kontoType,
-                            tomValue,
-                            erBarnetFødt,
-                            minDate,
-                            maxDate,
-                        )}
+                <VStack gap="4">
+                    <HStack gap="4">
+                        <RhfDatepicker
+                            showMonthAndYearDropdowns
+                            minDate={minDate}
+                            maxDate={maxDate}
+                            label="Fra og med dato"
+                            name="fom"
+                            disableWeekends={true}
+                            validate={getFomValidators(
+                                intl,
+                                familiehendelsedato,
+                                valgtPeriode?.kontoType,
+                                tomValue,
+                                erBarnetFødt,
+                                minDate,
+                                maxDate,
+                            )}
+                        />
+                        <RhfDatepicker
+                            validate={getTomValidators(
+                                intl,
+                                familiehendelsedato,
+                                valgtPeriode?.kontoType,
+                                fomValue,
+                                erBarnetFødt,
+                                minDate,
+                                maxDate,
+                            )}
+                            label="Til og med dato"
+                            name="tom"
+                            disableWeekends={true}
+                            minDate={fomValue}
+                            maxDate={maxDate}
+                        />
+                    </HStack>
+                    <ModalButtons
+                        onCancel={closeModal}
+                        onGoPreviousStep={
+                            inneholderKunEnPeriode
+                                ? undefined
+                                : () => {
+                                      setModalData({ ...modalData, currentStep: 'step1' });
+                                  }
+                        }
+                        isFinalStep={true}
                     />
-                    <RhfDatepicker
-                        validate={getTomValidators(
-                            intl,
-                            familiehendelsedato,
-                            valgtPeriode?.kontoType,
-                            fomValue,
-                            erBarnetFødt,
-                            minDate,
-                            maxDate,
-                        )}
-                        label="Til og med dato"
-                        name="tom"
-                        disableWeekends={true}
-                        minDate={fomValue}
-                        maxDate={maxDate}
-                    />
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        paddingTop: '1rem',
-                    }}
-                >
-                    <div>
-                        <Button type="button" variant="secondary" onClick={closeModal}>
-                            Avbryt
-                        </Button>
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        {inneholderKunEnPeriode ? null : (
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={() => {
-                                    setModalData({ ...modalData, currentStep: 'step1' });
-                                }}
-                            >
-                                Gå tilbake
-                            </Button>
-                        )}
-                        <Button>Ferdig, legg til i planen</Button>
-                    </div>
-                </div>
+                </VStack>
             </RhfForm>
         </>
     );
