@@ -189,7 +189,7 @@ const DuErSykemeldt = () => {
             className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
             wrap={false}
         >
-            <BodyShort>Du er sykemeldt</BodyShort>
+            <BodyShort>Du er sykmeldt</BodyShort>
             <BandasjeIkon />
         </HStack>
     );
