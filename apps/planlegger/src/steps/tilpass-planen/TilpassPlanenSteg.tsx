@@ -97,6 +97,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         nyUttaksplan.push(perioder);
         lagreUttaksplan(nyUttaksplan);
     };
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
