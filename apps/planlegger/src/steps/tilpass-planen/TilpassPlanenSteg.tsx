@@ -97,7 +97,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         nyUttaksplan.push(perioder);
         lagreUttaksplan(nyUttaksplan);
     };
-
+    console.log(hvemPlanlegger.type);
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
@@ -170,6 +170,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                             />
                             <KvoteOppsummering
+                                hvemPlanlegger={hvemPlanlegger.type}
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
                                 perioder={[

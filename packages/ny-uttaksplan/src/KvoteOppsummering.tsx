@@ -20,8 +20,7 @@ type Props = {
     forelder: Forelder;
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
-    erFarOgFar?: boolean;
-    erMorOgMor?: boolean;
+    hvemPlanlegger?: any;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -38,7 +37,7 @@ export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
-                <OppsummeringsTittel />
+                <OppsummeringsTittel hvemPlanlegger={props.hvemPlanlegger} />
                 <ExpansionCard.Content>
                     <VStack gap="4">
                         <ForeldrepengerFørFødselKvoter />
@@ -54,17 +53,17 @@ export const KvoteOppsummering = (props: Props) => {
     );
 };
 
-const OppsummeringsTittel = () => {
+const OppsummeringsTittel = (hvemplanlegger: any) => {
     const { rettighetType } = useKvote();
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
-    return <KvoteTittel />;
+    return <KvoteTittel hvemPlanlegger={hvemplanlegger} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiehendelse, erFarOgFar, erMorOgMor } = useKvote();
+    const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
@@ -166,7 +165,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     );
 };
 
-const KvoteTittel = () => {
+const KvoteTittel = (hvemPlanlegger?: any) => {
     const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
 
@@ -211,7 +210,7 @@ const KvoteTittel = () => {
         const beskrivelseMor =
             ubrukteDagerMor < 0
                 ? intl.formatMessage(
-                      { id: erFarOgFar ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor' },
+                      { id: hvemPlanlegger === 'farOgFar' ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor' },
                       { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
                   )
                 : '';
@@ -225,7 +224,7 @@ const KvoteTittel = () => {
         const beskrivelseFar =
             ubrukteDagerFar < 0
                 ? intl.formatMessage(
-                      { id: erMorOgMor ? 'kvote.varighet.tilMor' : 'kvote.varighet.tilFar' },
+                      { id: hvemPlanlegger === 'morOgMedmor' ? 'kvote.varighet.tilMor' : 'kvote.varighet.tilFar' },
                       { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
                   )
                 : '';
@@ -299,7 +298,12 @@ const KvoteTittel = () => {
     const beskrivelseMor =
         ubrukteDagerMor > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilMor' },
+                  {
+                      id:
+                          hvemPlanlegger.hvemPlanlegger.hvemPlanlegger === 'farOgFar'
+                              ? 'kvote.varighet.tilFar'
+                              : 'kvote.varighet.tilMor',
+                  },
                   { varighet: getVarighetString(ubrukteDagerMor, intl) },
               )
             : '';
@@ -313,11 +317,23 @@ const KvoteTittel = () => {
     const beskrivelseFar =
         ubrukteDagerFar > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilFar' },
+                  {
+                      id:
+                          hvemPlanlegger.hvemPlanlegger.hvemPlanlegger === 'morOgMedmor'
+                              ? 'kvote.varighet.tilMedmor'
+                              : 'kvote.varighet.tilMedfar',
+                  },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
             : '';
-
+    console.log(
+        ubrukteDagerFar,
+        ubrukteDagerMor,
+        ubrukteDagerFelles,
+        hvemPlanlegger.hvemPlanlegger.hvemPlanlegger,
+        beskrivelseFar,
+        beskrivelseMor,
+    );
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
