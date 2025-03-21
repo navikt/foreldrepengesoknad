@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
+import { Forelder, ForeldreparSituasjon, RettighetType } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
@@ -53,13 +53,13 @@ export const KvoteOppsummering = (props: Props) => {
     );
 };
 
-const OppsummeringsTittel = (hvemplanlegger: any) => {
+const OppsummeringsTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: any }) => {
     const { rettighetType } = useKvote();
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
-    return <KvoteTittel hvemPlanlegger={hvemplanlegger} />;
+    return <KvoteTittel hvemPlanlegger={hvemPlanlegger.type} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
@@ -165,7 +165,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     );
 };
 
-const KvoteTittel = (hvemPlanlegger?: any) => {
+const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon }) => {
     const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
 
@@ -299,10 +299,7 @@ const KvoteTittel = (hvemPlanlegger?: any) => {
         ubrukteDagerMor > 0
             ? intl.formatMessage(
                   {
-                      id:
-                          hvemPlanlegger.hvemPlanlegger.hvemPlanlegger === 'farOgFar'
-                              ? 'kvote.varighet.tilFar'
-                              : 'kvote.varighet.tilMor',
+                      id: hvemPlanlegger === 'farOgFar' ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor',
                   },
                   { varighet: getVarighetString(ubrukteDagerMor, intl) },
               )
@@ -319,21 +316,16 @@ const KvoteTittel = (hvemPlanlegger?: any) => {
             ? intl.formatMessage(
                   {
                       id:
-                          hvemPlanlegger.hvemPlanlegger.hvemPlanlegger === 'morOgMedmor'
+                          hvemPlanlegger === 'morOgMedmor'
                               ? 'kvote.varighet.tilMedmor'
-                              : 'kvote.varighet.tilMedfar',
+                              : hvemPlanlegger === 'farOgFar'
+                                ? 'kvote.varighet.tilMedfar'
+                                : 'kvote.varighet.tilFar',
                   },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
             : '';
-    console.log(
-        ubrukteDagerFar,
-        ubrukteDagerMor,
-        ubrukteDagerFelles,
-        hvemPlanlegger.hvemPlanlegger.hvemPlanlegger,
-        beskrivelseFar,
-        beskrivelseMor,
-    );
+
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
