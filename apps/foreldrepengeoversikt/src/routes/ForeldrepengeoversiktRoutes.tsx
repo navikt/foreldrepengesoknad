@@ -1,6 +1,8 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
+import { SøkerinfoDTO } from '@navikt/fp-types';
+
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
 import { Sak } from '../pages/Sak';
@@ -15,7 +17,6 @@ import { TidslinjePage } from '../pages/tidslinje-page/TidslinjePage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { KontaktOss } from '../sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from '../types/SakOppslag';
-import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
 import { getAlleYtelser } from '../utils/sakerUtils';
 import { OversiktRoutes } from './routes';
 

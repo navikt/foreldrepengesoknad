@@ -3,21 +3,27 @@ import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Familiesituasjon } from '@navikt/fp-types';
+import {
+    Barn,
+    Familiesituasjon,
+    ForeldrepengesakDTO,
+    SakOppslagDTO,
+    SvangerskapspengeSakDTO,
+    SøkerinfoDTO,
+} from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
-import { BarnGruppering } from './../types/BarnGruppering';
-import { EngangsstønadSak, EngangsstønadSakDTO } from './../types/EngangsstønadSak';
-import { Familiehendelse } from './../types/Familiehendelse';
-import { Foreldrepengesak, ForeldrepengesakDTO } from './../types/Foreldrepengesak';
-import { GruppertSak } from './../types/GruppertSak';
-import { Person } from './../types/Person';
-import { Sak } from './../types/Sak';
-import { SakOppslag, SakOppslagDTO } from './../types/SakOppslag';
-import { Situasjon } from './../types/Situasjon';
-import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from './../types/SvangerskapspengeSak';
-import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
-import { Ytelse } from './../types/Ytelse';
+import { BarnGruppering } from '../types/BarnGruppering';
+import { EngangsstønadSak, EngangsstønadSakDTO } from '../types/EngangsstønadSak';
+import { Familiehendelse } from '../types/Familiehendelse';
+import { Foreldrepengesak } from '../types/Foreldrepengesak';
+import { GruppertSak } from '../types/GruppertSak';
+import { Person } from '../types/Person';
+import { Sak } from '../types/Sak';
+import { SakOppslag } from '../types/SakOppslag';
+import { Situasjon } from '../types/Situasjon';
+import { SvangerskapspengeSak } from '../types/SvangerskapspengeSak';
+import { Ytelse } from '../types/Ytelse';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';
 

@@ -6,9 +6,9 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { SøkerinfoDTOBarn } from '@navikt/fp-types';
 
 import { Sak } from '../../types/Sak';
-import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
 import { Ytelse } from '../../types/Ytelse';

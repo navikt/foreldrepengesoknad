@@ -1,4 +1,4 @@
-import { SøkerinfoDTO } from '../../../src/types/SøkerinfoDTO';
+import { SøkerinfoDTO } from '@navikt/fp-types';
 
 export const søkerinfo = {
     søker: {

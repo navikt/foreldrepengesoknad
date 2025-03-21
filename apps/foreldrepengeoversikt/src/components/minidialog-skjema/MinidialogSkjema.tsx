@@ -18,13 +18,12 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, MinidialogInnslag } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
 import { urlPrefiks } from '../../api/api';
 import { EttersendingDto } from '../../types/EttersendingDTO';
-import { MinidialogInnslag } from '../../types/MinidialogInnslag';
 import { Ytelse } from '../../types/Ytelse';
 import { validateFritekstFelt } from '../../utils/validationUtils';
 import { ScrollToTop } from '../scroll-to-top/ScrollToTop';

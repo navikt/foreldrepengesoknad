@@ -8,9 +8,10 @@ import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
+import { SøkerinfoDTO } from '@navikt/fp-types';
+
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import { Forside } from './Forside';
 
 const queryClient = new QueryClient();

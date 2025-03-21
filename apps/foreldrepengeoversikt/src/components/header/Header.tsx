@@ -6,13 +6,13 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { SøkerinfoDTO } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
 import { InntektsmeldingDto } from '../../api/zodSchemas';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { Sak } from '../../types/Sak';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import { Ytelse } from '../../types/Ytelse';
 import {
     getFamiliehendelseDato,

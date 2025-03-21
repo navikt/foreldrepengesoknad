@@ -1,8 +1,7 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, RettighetType } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak, RettighetType, SakOppslagDTO } from '@navikt/fp-types';
 
 import { DekningsgradDTO } from '../../../src/types/DekningsgradDTO';
-import { SakOppslagDTO } from '../../../src/types/SakOppslag';
 
 export const saker = {
     foreldrepenger: [

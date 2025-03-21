@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { Heading, Loader } from '@navikt/ds-react';
 
+import { SøkerinfoDTOBarn } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
@@ -16,7 +17,6 @@ import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { Sak } from '../../types/Sak';
-import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
 import styles from './tidslinje-page.module.css';
 
 type OuterProps = {
