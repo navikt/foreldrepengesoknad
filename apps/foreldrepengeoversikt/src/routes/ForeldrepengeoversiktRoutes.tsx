@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
-import { SøkerinfoDTO } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
@@ -22,7 +22,7 @@ import { OversiktRoutes } from './routes';
 
 interface Props {
     saker: SakOppslag;
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
 }
 
 export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
@@ -45,7 +45,7 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                             <Route
                                 path={OversiktRoutes.TIDSLINJEN}
-                                element={<TidslinjePage søkersBarn={søkerinfo.søker.barn ?? []} />}
+                                element={<TidslinjePage søkersBarn={søkerinfo.søker.barn} />}
                             />
                             <Route
                                 path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}

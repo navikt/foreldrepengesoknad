@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { SøkerinfoDTO, Ytelse } from '@navikt/fp-types';
+import { Søkerinfo, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
@@ -151,7 +151,7 @@ export const InntektsmeldingOversiktHeader = () => {
     );
 };
 
-function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: SøkerinfoDTO }) {
+function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: Søkerinfo }) {
     const intl = useIntl();
 
     const saker = useQuery({

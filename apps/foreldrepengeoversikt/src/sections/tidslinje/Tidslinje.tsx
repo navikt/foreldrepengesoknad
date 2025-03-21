@@ -6,7 +6,7 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { SøkerinfoDTOBarn, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
+import { Søkerinfo, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
 
 import { Sak } from '../../types/Sak';
 import { guid } from '../../utils/guid';
@@ -25,7 +25,7 @@ import styles from './tidslinje.module.css';
 interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
-    søkersBarn: SøkerinfoDTOBarn[];
+    søkersBarn: Søkerinfo['søker']['barn'];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: Tidslinjehendelse[];
 }

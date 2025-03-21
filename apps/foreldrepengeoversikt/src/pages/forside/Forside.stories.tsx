@@ -8,7 +8,7 @@ import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { SøkerinfoDTO } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 
 type StoryArgs = {
     saker: SakOppslag;
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
 };
 
 const meta = {
@@ -60,6 +60,6 @@ export const Default: Story = {
     args: {
         // @ts-expect-error Er backend og frontend-typar like her? Fiks!
         saker,
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo as Søkerinfo,
     },
 };

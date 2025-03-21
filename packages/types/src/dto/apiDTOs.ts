@@ -1,5 +1,4 @@
 import { Attachment } from '../Attachment';
-import Bankkonto from '../Bankkonto';
 import { Kjønn } from '../Kjønn';
 import { RettighetType } from '../RettighetType';
 import { SaksperiodeNy } from '../SaksperiodeNy';
@@ -16,25 +15,6 @@ export interface SøkerinfoDTOPerson {
 
 export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
     annenForelder?: Omit<SøkerinfoDTOPerson, 'kjønn'>;
-}
-
-interface SøkerinfoDTOSøker extends SøkerinfoDTOPerson {
-    bankkonto?: Bankkonto;
-    barn?: SøkerinfoDTOBarn[];
-}
-
-interface SøkerinfoDTOArbeidsforhold {
-    arbeidsgiverId: string;
-    arbeidsgiverIdType: string;
-    arbeidsgiverNavn: string;
-    stillingsprosent: number;
-    fom: string;
-    tom?: string;
-}
-
-export interface SøkerinfoDTO {
-    søker: SøkerinfoDTOSøker;
-    arbeidsforhold?: SøkerinfoDTOArbeidsforhold[];
 }
 
 export interface SøknadSVP {

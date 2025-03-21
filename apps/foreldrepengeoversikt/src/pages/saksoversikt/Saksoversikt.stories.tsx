@@ -12,7 +12,7 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { BehandlingTilstand, SaksperiodeNy, SøkerinfoDTO } from '@navikt/fp-types';
+import { BehandlingTilstand, SaksperiodeNy, Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
@@ -20,7 +20,7 @@ import { Saksoversikt } from './Saksoversikt';
 const queryClient = new QueryClient();
 
 type StoryArgs = {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     saksnummer: string;
 };
 
@@ -68,7 +68,7 @@ export const Foreldrepenger: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo as Søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -133,7 +133,7 @@ export const Engangsstønad: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo as Søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -165,6 +165,6 @@ export const Svangerskapspenger: Story = {
     },
     args: {
         saksnummer: '202',
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo as Søkerinfo,
     },
 };

@@ -12,7 +12,7 @@ import {
     MinidialogInnslag,
     SakOppslagDTO,
     Satser,
-    SøkerinfoDTO,
+    Søkerinfo,
     Tidslinjehendelse,
     TilgjengeligeStønadskontoer,
 } from '@navikt/fp-types';
@@ -25,7 +25,7 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const søkerInfoOptions = () =>
     queryOptions({
         queryKey: ['SØKER_INFO'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/sokerinfo`).json<SøkerinfoDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/sokerinfo`).json<Søkerinfo>(),
     });
 
 export const minidialogOptions = () =>

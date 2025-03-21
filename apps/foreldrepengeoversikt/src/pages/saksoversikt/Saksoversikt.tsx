@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser, SøkerinfoDTO, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
+import { Satser, Søkerinfo, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -46,7 +46,7 @@ import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/Inntektsmeldi
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 

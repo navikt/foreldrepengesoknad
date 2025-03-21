@@ -11,8 +11,7 @@ import {
     ForeldrepengesakDTO,
     SakOppslagDTO,
     SvangerskapspengeSakDTO,
-    SøkerinfoDTO,
-    SøkerinfoDTOBarn,
+    Søkerinfo,
     Ytelse,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
@@ -28,7 +27,7 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-export function sorterPersonEtterEldstOgNavn(p1: SøkerinfoDTOBarn, p2: SøkerinfoDTOBarn) {
+export function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
@@ -73,7 +72,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: SøkerinfoDTOBarn[]): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
@@ -109,7 +108,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: SøkerinfoDTO
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: SøkerinfoDTOBarn[], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -245,7 +244,7 @@ export const getFamiliehendelseDato = (familiehendelse: Familiehendelse): string
 };
 
 export const getNavnAnnenForelder = (
-    søkerinfo: SøkerinfoDTO,
+    søkerinfo: Søkerinfo,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined,
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;

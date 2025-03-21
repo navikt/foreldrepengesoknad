@@ -1,4 +1,4 @@
-import { SøkerinfoDTOBarn } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { Foreldrepengesak } from '../types/Sak';
 
@@ -19,6 +19,6 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getLeverPerson = (person: SøkerinfoDTOBarn) => {
+export const getLeverPerson = (person: Søkerinfo['søker']['barn'][0]) => {
     return !person.dødsdato;
 };
