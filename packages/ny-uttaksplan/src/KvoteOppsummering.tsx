@@ -20,6 +20,8 @@ type Props = {
     forelder: Forelder;
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
+    erFarOgFar?: boolean;
+    erMorOgMor?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -62,7 +64,7 @@ const OppsummeringsTittel = () => {
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiehendelse } = useKvote();
+    const { konto, perioder, familiehendelse, erFarOgFar, erMorOgMor } = useKvote();
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
@@ -209,7 +211,7 @@ const KvoteTittel = () => {
         const beskrivelseMor =
             ubrukteDagerMor < 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilMor' },
+                      { id: erFarOgFar ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor' },
                       { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
                   )
                 : '';
@@ -223,7 +225,7 @@ const KvoteTittel = () => {
         const beskrivelseFar =
             ubrukteDagerFar < 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilFar' },
+                      { id: erMorOgMor ? 'kvote.varighet.tilMor' : 'kvote.varighet.tilFar' },
                       { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
                   )
                 : '';
