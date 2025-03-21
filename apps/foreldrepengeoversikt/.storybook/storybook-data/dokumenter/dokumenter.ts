@@ -1,5 +1,4 @@
-import { Dokument } from '../../../src/types/Dokument';
-import { DokumentType } from '../../../src/types/DokumentType';
+import { Dokument, DokumentType } from '@navikt/fp-types';
 
 export const dokumenter = [
     {

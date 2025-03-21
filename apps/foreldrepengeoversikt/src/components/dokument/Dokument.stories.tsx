@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
-import { DokumentType } from '../../types/DokumentType';
+import { DokumentType } from '@navikt/fp-types';
+
 import { Dokument } from './Dokument';
 
 const meta = {

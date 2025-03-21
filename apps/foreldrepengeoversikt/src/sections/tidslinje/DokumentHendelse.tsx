@@ -4,9 +4,10 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { Link } from '@navikt/ds-react';
 
+import { Dokument } from '@navikt/fp-types';
+
 import { hentInntektsmelding } from '../../api/api';
 import { OversiktRoutes } from '../../routes/routes';
-import { Dokument } from '../../types/Dokument';
 import { lagUrl } from '../../utils/dokumenterUtils';
 import styles from './dokumentHendelse.module.css';
 

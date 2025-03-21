@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser, SøkerinfoDTO } from '@navikt/fp-types';
+import { Satser, SøkerinfoDTO, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -38,9 +38,6 @@ import { DinPlan } from '../../sections/din-plan/DinPlan';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { RedirectSource } from '../../types/RedirectSource';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
-import { Ytelse } from '../../types/Ytelse';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';

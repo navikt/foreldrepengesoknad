@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { DekningsgradDTO } from '@navikt/fp-common';
+import { Ytelse } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Foreldrepengesak } from '../../types/Foreldrepengesak';
-import { Ytelse } from '../../types/Ytelse';
 
 export const KvoteOversikt = () => {
     const gjeldendeSak = useGetSelectedSak();

@@ -1,5 +1,6 @@
+import { Ytelse } from '@navikt/fp-types';
+
 import { SvangerskapspengeSak } from '../../../src/types/SvangerskapspengeSak';
-import { Ytelse } from '../../../src/types/Ytelse';
 
 export const SAK_1 = {
     saksnummer: '202',

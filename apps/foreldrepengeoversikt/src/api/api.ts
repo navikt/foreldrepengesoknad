@@ -3,15 +3,21 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { MinidialogInnslag, SakOppslagDTO, Satser, SøkerinfoDTO, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import {
+    AnnenPartVedtakDTO,
+    Dokument,
+    EttersendingDto,
+    KontoBeregningGrunnlagDto,
+    MellomlagredeYtelser,
+    MinidialogInnslag,
+    SakOppslagDTO,
+    Satser,
+    SøkerinfoDTO,
+    Tidslinjehendelse,
+    TilgjengeligeStønadskontoer,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
-import { Dokument } from '../types/Dokument';
-import { EttersendingDto } from '../types/EttersendingDTO';
-import { KontoBeregningGrunnlagDto } from '../types/KontoBeregningGrunnlagDto';
-import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
-import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
 import { InntektsmeldingDtoSchema } from './zodSchemas';
 
 export const urlPrefiks = import.meta.env.BASE_URL;

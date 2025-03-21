@@ -12,6 +12,7 @@ import {
     SakOppslagDTO,
     SvangerskapspengeSakDTO,
     SøkerinfoDTO,
+    Ytelse,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -24,7 +25,6 @@ import { Sak } from '../types/Sak';
 import { SakOppslag } from '../types/SakOppslag';
 import { Situasjon } from '../types/Situasjon';
 import { SvangerskapspengeSak } from '../types/SvangerskapspengeSak';
-import { Ytelse } from '../types/Ytelse';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';
 

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
-import { Ytelse } from './../../types/Ytelse';
+import { Ytelse } from '@navikt/fp-types';
+
 import { KontonummerInfo } from './../kontonummer-info/KontonummerInfo';
 
 const meta = {

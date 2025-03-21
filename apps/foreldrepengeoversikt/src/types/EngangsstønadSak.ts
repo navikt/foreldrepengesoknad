@@ -1,6 +1,4 @@
-import { EngangsstønadSakDTO } from '@navikt/fp-types';
-
-import { Ytelse } from './Ytelse';
+import { EngangsstønadSakDTO, Ytelse } from '@navikt/fp-types';
 
 export interface EngangsstønadSak extends EngangsstønadSakDTO {
     ytelse: Ytelse.ENGANGSSTØNAD;

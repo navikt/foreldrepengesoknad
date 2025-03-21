@@ -4,7 +4,8 @@ import dayjs from 'dayjs';
 
 import { BodyShort, Detail } from '@navikt/ds-react';
 
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
+import { TidslinjehendelseType } from '@navikt/fp-types';
+
 import { formaterDato, formaterTid } from '../../utils/dateUtils';
 import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils';
 import styles from './tidslinjeHendelse.module.css';

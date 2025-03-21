@@ -2,10 +2,8 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { DokumentType, Tidslinjehendelse, Ytelse } from '@navikt/fp-types';
 
-import { DokumentType } from '../../types/DokumentType';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { Ytelse } from '../../types/Ytelse';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
 const meta = {

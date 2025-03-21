@@ -1,3 +1,4 @@
+import { Attachment } from '../Attachment';
 import Bankkonto from '../Bankkonto';
 import { Kjønn } from '../Kjønn';
 import { RettighetType } from '../RettighetType';
@@ -187,4 +188,101 @@ export interface ForeldrepengesakDTO {
     åpenBehandling?: ÅpenBehandlingFP;
     oppdatertTidspunkt: string;
     forelder: Forelder;
+}
+
+export type KontoBeregningGrunnlagDto = {
+    rettighetstype: RettighetType;
+    brukerrolle: 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
+    antallBarn: number;
+    fødselsdato?: string;
+    termindato?: string;
+    omsorgsovertakelseDato?: string;
+    morHarUføretrygd: boolean;
+    familieHendelseDatoNesteSak?: string;
+};
+
+export interface EttersendingDto {
+    brukerTekst?: {
+        dokumentType: string;
+        overskrift: string;
+        tekst: string;
+    };
+    dialogId?: string;
+    saksnummer: string;
+    type: Ytelse;
+    vedlegg: Attachment[];
+}
+
+export enum Ytelse {
+    FORELDREPENGER = 'foreldrepenger',
+    SVANGERSKAPSPENGER = 'svangerskapspenger',
+    ENGANGSSTØNAD = 'engangsstønad',
+}
+
+export interface Dokument {
+    type: DokumentType;
+    mottatt: string;
+    saksnummer: string;
+    tittel: string;
+    url: string;
+    journalpostId: string;
+    dokumentId: string;
+}
+
+export enum DokumentType {
+    'INNGÅENDE_DOKUMENT' = 'INNGÅENDE_DOKUMENT',
+    'UTGÅENDE_DOKUMENT' = 'UTGÅENDE_DOKUMENT',
+    'ARBEIDSGIVER' = 'ARBEIDSGIVER',
+}
+export interface AnnenPartVedtakDTO {
+    antallBarn?: number;
+    dekningsgrad: DekningsgradDTO;
+    perioder: SaksperiodeNy[];
+    termindato?: string;
+}
+
+export type MellomlagredeYtelser = {
+    engangsstonad: boolean;
+    foreldrepenger: boolean;
+    svangerskapspenger: boolean;
+};
+
+export interface Tidslinjehendelse {
+    type: string;
+    opprettet: string;
+    aktørType: AktørType;
+    tidslinjeHendelseType: TidslinjehendelseType;
+    dokumenter: Dokument[];
+    manglendeVedlegg: Dokument[];
+    merInformasjon?: string;
+    linkTittel?: string;
+    eksternalUrl?: string;
+    internalUrl?: string;
+    tidligstBehandlingsDato?: string;
+}
+
+export enum TidslinjehendelseType {
+    FØRSTEGANGSSØKNAD = 'FØRSTEGANGSSØKNAD',
+    FØRSTEGANGSSØKNAD_NY = 'FØRSTEGANGSSØKNAD_NY',
+    ETTERSENDING = 'ETTERSENDING',
+    ENDRINGSSØKNAD = 'ENDRINGSSØKNAD',
+    INNTEKTSMELDING = 'INNTEKTSMELDING',
+    VEDTAK = 'VEDTAK',
+    VENTER_INNTEKTSMELDING = 'VENTER_INNTEKTSMELDING',
+    VENTER_PGA_TIDLIG_SØKNAD = 'VENTER_PGA_TIDLIG_SØKNAD',
+    VENTER_MELDEKORT = 'VENTER_MELDEKORT',
+    VENT_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
+    UTGÅENDE_INNHENT_OPPLYSNINGER = 'UTGÅENDE_INNHENT_OPPLYSNINGER',
+    UTGÅENDE_ETTERLYS_INNTEKTSMELDING = 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING',
+    UTGÅENDE_VARSEL_TILBAKEBETALING = 'UTGÅENDE_VARSEL_TILBAKEBETALING',
+    FAMILIEHENDELSE = 'FAMILIEHENDELSE',
+    BARNET_TRE_ÅR = 'BARNET_TRE_ÅR',
+    FREMTIDIG_VEDTAK = 'FREMTIDIG_VEDTAK',
+    FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV = 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV',
+}
+
+export enum AktørType {
+    BRUKER = 'BRUKER',
+    NAV = 'NAV',
+    ARBEIDSGIVER = 'ARBEIDSGIVER',
 }

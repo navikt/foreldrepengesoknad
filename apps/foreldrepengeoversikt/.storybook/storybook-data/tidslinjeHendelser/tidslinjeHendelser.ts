@@ -1,7 +1,4 @@
-import { AktørType } from '../../../src/types/AktørType';
-import { DokumentType } from '../../../src/types/DokumentType';
-import { Tidslinjehendelse } from '../../../src/types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../../../src/types/TidslinjehendelseType';
+import { AktørType, DokumentType, Tidslinjehendelse, TidslinjehendelseType } from '@navikt/fp-types';
 
 export const tidslinjeHendelser = [
     {

@@ -6,13 +6,11 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
-import { Bankkonto } from '@navikt/fp-types';
+import { Bankkonto, Tidslinjehendelse, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { Ytelse } from '../../types/Ytelse';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {

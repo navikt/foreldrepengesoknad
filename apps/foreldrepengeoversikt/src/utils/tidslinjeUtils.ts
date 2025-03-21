@@ -3,16 +3,21 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { BehandlingTilstand, Familiehendelse, ÅpenBehandlingFP, ÅpenBehandlingSVP } from '@navikt/fp-types';
+import {
+    AktørType,
+    BehandlingTilstand,
+    Familiehendelse,
+    Tidslinjehendelse,
+    TidslinjehendelseType,
+    Ytelse,
+    ÅpenBehandlingFP,
+    ÅpenBehandlingSVP,
+} from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { NavRoutes, OversiktRoutes } from '../routes/routes';
-import { AktørType } from '../types/AktørType';
 import { BarnGruppering } from '../types/BarnGruppering';
 import { Sak } from '../types/Sak';
-import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../types/TidslinjehendelseType';
-import { Ytelse } from '../types/Ytelse';
 import { ÅpenBehandling } from '../types/ÅpenBehandling';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen';
 import { formaterDato } from './dateUtils';

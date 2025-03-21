@@ -3,12 +3,12 @@ import { useIntl } from 'react-intl';
 import { HGrid, Heading } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Ytelse } from '@navikt/fp-types';
 
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { NavRoutes } from './../../routes/routes';
-import { Sak } from './../../types/Sak';
-import { Ytelse } from './../../types/Ytelse';
-import { LenkePanel } from './../lenke-panel/LenkePanel';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { NavRoutes } from '../../routes/routes';
+import { Sak } from '../../types/Sak';
+import { LenkePanel } from '../lenke-panel/LenkePanel';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     if (stønadstype === Ytelse.FORELDREPENGER) {

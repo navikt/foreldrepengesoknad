@@ -18,7 +18,7 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, EttersendingDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -29,10 +29,8 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { EttersendingDto } from '../../types/EttersendingDTO';
 import { Sak } from '../../types/Sak';
 import { SakOppslag } from '../../types/SakOppslag';
-import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 

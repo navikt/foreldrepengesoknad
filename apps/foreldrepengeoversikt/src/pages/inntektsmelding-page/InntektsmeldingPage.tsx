@@ -7,6 +7,7 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
+import { Ytelse } from '@navikt/fp-types';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions, hentSatserOptions } from '../../api/api';
@@ -16,7 +17,6 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
 
 const useGetYtelse = () => {

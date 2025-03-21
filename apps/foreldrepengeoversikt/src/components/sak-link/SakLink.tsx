@@ -1,7 +1,7 @@
+import { Ytelse } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { Sak } from '../../types/Sak';
-import { Ytelse } from '../../types/Ytelse';
 import { LenkePanel } from '../lenke-panel/LenkePanel';
 import { StatusTag } from '../status-tag/StatusTag';
 

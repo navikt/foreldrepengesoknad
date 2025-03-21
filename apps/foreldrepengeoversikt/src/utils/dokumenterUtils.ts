@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
+import { Dokument } from '@navikt/fp-types';
+
 import { urlPrefiks } from '../api/api';
-import { Dokument } from '../types/Dokument';
 
 export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<string, Dokument[]> => {
     const gruppert: Record<string, Dokument[]> = {};

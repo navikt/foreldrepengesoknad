@@ -2,10 +2,9 @@ import { FileIcon } from '@navikt/aksel-icons';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
+import { Dokument as DokumentType, DokumentType as DokumentTypeEnum } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
-import { Dokument as DokumentType } from '../../types/Dokument';
-import { DokumentType as DokumentTypeEnum } from '../../types/DokumentType';
 import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
