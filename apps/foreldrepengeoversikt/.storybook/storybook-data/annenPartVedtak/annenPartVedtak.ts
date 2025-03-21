@@ -1,8 +1,7 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak } from '@navikt/fp-types';
+import { DekningsgradDTO, PeriodeResultatÅrsak } from '@navikt/fp-types';
 
 import { AnnenPartVedtakDTO } from '../../../src/types/AnnenPartVedtakDTO';
-import { DekningsgradDTO } from '../../../src/types/DekningsgradDTO';
 
 export const annenPartVedtak = {
     perioder: [

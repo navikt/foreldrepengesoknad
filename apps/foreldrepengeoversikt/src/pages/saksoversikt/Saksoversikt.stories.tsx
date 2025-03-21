@@ -12,10 +12,9 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { SaksperiodeNy, SøkerinfoDTO } from '@navikt/fp-types';
+import { BehandlingTilstand, SaksperiodeNy, SøkerinfoDTO } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { Saksoversikt } from './Saksoversikt';
 
 const queryClient = new QueryClient();

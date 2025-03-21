@@ -1,6 +1,7 @@
 import { Tag } from '@navikt/ds-react';
 
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { BehandlingTilstand } from '@navikt/fp-types';
+
 import { Sak } from '../../types/Sak';
 
 interface Props {

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { DekningsgradDTO } from '@navikt/fp-common';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { DekningsgradDTO } from '../../types/DekningsgradDTO';
 import { Foreldrepengesak } from '../../types/Foreldrepengesak';
 import { Ytelse } from '../../types/Ytelse';
 

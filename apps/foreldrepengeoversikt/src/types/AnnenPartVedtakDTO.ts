@@ -1,6 +1,4 @@
-import { SaksperiodeNy } from '@navikt/fp-types';
-
-import { DekningsgradDTO } from './DekningsgradDTO';
+import { DekningsgradDTO, SaksperiodeNy } from '@navikt/fp-types';
 
 export interface AnnenPartVedtakDTO {
     antallBarn?: number;

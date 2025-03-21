@@ -2,8 +2,9 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 
+import { BehandlingTilstand } from '@navikt/fp-types';
+
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
 import { Ytelse } from '../../types/Ytelse';
 import { Svangerskapspenger } from './Svangerskapspenger';

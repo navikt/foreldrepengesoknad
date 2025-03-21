@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { saker } from 'storybookData/saker/saker';
 
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { BehandlingTilstand } from '@navikt/fp-types';
+
 import { StatusTag } from './StatusTag';
 
 const meta = {

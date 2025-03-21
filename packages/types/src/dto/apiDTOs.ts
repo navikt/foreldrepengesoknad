@@ -1,5 +1,6 @@
 import Bankkonto from '../Bankkonto';
 import { Kjønn } from '../Kjønn';
+import { RettighetType } from '../RettighetType';
 import { SaksperiodeNy } from '../SaksperiodeNy';
 
 export interface SøkerinfoDTOPerson {
@@ -111,6 +112,59 @@ export interface SvangerskapspengeSakDTO {
     åpenBehandling?: ÅpenBehandlingSVP;
     gjeldendeVedtak?: VedtakDto;
     oppdatertTidspunkt: string;
+}
+export interface EngangsstønadSakDTO {
+    saksnummer: string;
+    sakAvsluttet: boolean;
+    gjelderAdopsjon: boolean;
+    familiehendelse: Familiehendelse;
+    åpenBehandling?: ÅpenBehandlingES;
+    oppdatertTidspunkt: string;
+}
+
+export interface Familiehendelse {
+    fødselsdato?: string;
+    termindato?: string;
+    omsorgsovertakelse?: string;
+    antallBarn: number;
+}
+
+// TODO
+export enum BehandlingTilstand {
+    TIDLIG_SØKNAD = 'VENT_TIDLIG_SØKNAD',
+    VENTER_PÅ_INNTEKTSMELDING = 'VENT_INNTEKTSMELDING',
+    VENTER_PÅ_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
+    VENTER_PÅ_MELDEKORT = 'VENT_MELDEKORT',
+    UNDER_BEHANDLING = 'UNDER_BEHANDLING',
+}
+
+export interface ÅpenBehandlingFP {
+    tilstand: BehandlingTilstand;
+    søknadsperioder?: SaksperiodeNy[];
+}
+
+export interface ÅpenBehandlingES {
+    tilstand: BehandlingTilstand;
+}
+
+export interface ÅpenBehandlingSVP {
+    tilstand: BehandlingTilstand;
+    søknad: SøknadSVP;
+}
+
+// TODO
+export enum Forelder {
+    mor = 'MOR',
+    farMedmor = 'FAR_MEDMOR',
+}
+
+export interface PersonFnrDTO {
+    fnr: string;
+}
+
+export enum DekningsgradDTO {
+    ÅTTI_PROSENT = 'ÅTTI',
+    HUNDRE_PROSENT = 'HUNDRE',
 }
 
 export interface ForeldrepengesakDTO {

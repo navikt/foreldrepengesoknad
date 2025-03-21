@@ -1,7 +1,7 @@
 import { Skjemanummer } from '@navikt/fp-constants';
 
-import { Sak } from './../types/Sak';
-import { Ytelse } from './../types/Ytelse';
+import { Sak } from '../types/Sak';
+import { Ytelse } from '../types/Ytelse';
 
 export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
     const alleSkjemanummere = Object.values(Skjemanummer);

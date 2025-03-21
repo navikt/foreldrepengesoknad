@@ -5,6 +5,8 @@ import { IntlShape } from 'react-intl';
 import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
+    EngangsstønadSakDTO,
+    Familiehendelse,
     Familiesituasjon,
     ForeldrepengesakDTO,
     SakOppslagDTO,
@@ -14,8 +16,7 @@ import {
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
-import { EngangsstønadSak, EngangsstønadSakDTO } from '../types/EngangsstønadSak';
-import { Familiehendelse } from '../types/Familiehendelse';
+import { EngangsstønadSak } from '../types/EngangsstønadSak';
 import { Foreldrepengesak } from '../types/Foreldrepengesak';
 import { GruppertSak } from '../types/GruppertSak';
 import { Person } from '../types/Person';

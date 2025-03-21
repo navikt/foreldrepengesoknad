@@ -1,15 +1,6 @@
-import { Familiehendelse } from './Familiehendelse';
-import { Ytelse } from './Ytelse';
-import { ÅpenBehandlingES } from './ÅpenBehandling';
+import { EngangsstønadSakDTO } from '@navikt/fp-types';
 
-export interface EngangsstønadSakDTO {
-    saksnummer: string;
-    sakAvsluttet: boolean;
-    gjelderAdopsjon: boolean;
-    familiehendelse: Familiehendelse;
-    åpenBehandling?: ÅpenBehandlingES;
-    oppdatertTidspunkt: string;
-}
+import { Ytelse } from './Ytelse';
 
 export interface EngangsstønadSak extends EngangsstønadSakDTO {
     ytelse: Ytelse.ENGANGSSTØNAD;
