@@ -3,7 +3,7 @@ export interface ArbeidsforholdSVP {
     behovFrom: string;
     tilrettelegginger: TilretteleggingPeriodeSVP[];
     oppholdsperioder: Oppholdsperiode[];
-    avslutningÅrsak:
+    avslutningÅrsak?:
         | 'NORMAL'
         | 'TILBAKE_I_HEL_STILLING'
         | 'AVSLAG_OVERGANG_FORELDREPENGER'
@@ -22,7 +22,7 @@ export type Oppholdsperiode = {
 
 type Aktivitet = {
     type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
-    arbeidsgiver: Arbeidsgiver;
+    arbeidsgiver?: Arbeidsgiver;
     arbeidsgiverNavn?: string;
 };
 
