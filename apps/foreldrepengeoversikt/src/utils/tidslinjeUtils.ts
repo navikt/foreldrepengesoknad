@@ -18,7 +18,6 @@ import { formatDate } from '@navikt/fp-utils';
 import { NavRoutes, OversiktRoutes } from '../routes/routes';
 import { BarnGruppering } from '../types/BarnGruppering';
 import { Sak } from '../types/Sak';
-import { ÅpenBehandling } from '../types/ÅpenBehandling';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen';
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
@@ -349,7 +348,10 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: �
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (ytelse: Ytelse, åpenBehandling: ÅpenBehandling) => {
+export const getTidligstBehandlingsDatoForTidligSøknad = (
+    ytelse: Ytelse,
+    åpenBehandling: ÅpenBehandlingFP | ÅpenBehandlingSVP,
+) => {
     if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
         return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandlingSVP);
     }
@@ -501,7 +503,7 @@ const finnInfoTekstForYtelse = (intl: IntlShape, ytelse: Ytelse) =>
         : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
 
 export const getTidslinjehendelserFraBehandlingPåVent = (
-    åpenBehandling: ÅpenBehandling,
+    åpenBehandling: ÅpenBehandlingFP | ÅpenBehandlingSVP,
     manglendeVedleggData: Skjemanummer[],
     intl: IntlShape,
     ytelse: Ytelse,
@@ -643,7 +645,7 @@ export const getHendelserForVisning = (
 
 export const getAlleTidslinjehendelser = (
     tidslinjeHendelserData: Tidslinjehendelse[],
-    åpenBehandlingPåVent: ÅpenBehandling | undefined,
+    åpenBehandlingPåVent: ÅpenBehandlingFP | ÅpenBehandlingSVP | undefined,
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
     barnFraSak: BarnGruppering,

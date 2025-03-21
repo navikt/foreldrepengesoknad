@@ -10,6 +10,7 @@ export interface SøkerinfoDTOPerson {
     etternavn: string;
     mellomnavn?: string;
     fødselsdato: string;
+    dødsdato?: string;
     kjønn: Kjønn;
 }
 

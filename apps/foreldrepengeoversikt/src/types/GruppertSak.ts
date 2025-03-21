@@ -1,16 +1,13 @@
-import { Ytelse } from '@navikt/fp-types';
+import { Familiesituasjon, Ytelse } from '@navikt/fp-types';
 
 import { BarnGruppering } from './BarnGruppering';
-import { EngangsstønadSak } from './EngangsstønadSak';
-import { Foreldrepengesak } from './Foreldrepengesak';
-import { Situasjon } from './Situasjon';
-import { SvangerskapspengeSak } from './SvangerskapspengeSak';
+import { Sak } from './Sak';
 
 export interface GruppertSak {
     antallBarn: number;
     familiehendelsedato: string;
-    type: Situasjon;
-    saker: Array<Foreldrepengesak | SvangerskapspengeSak | EngangsstønadSak>;
+    type: Familiesituasjon;
+    saker: Sak[];
     ytelse: Ytelse;
     barn: BarnGruppering | undefined;
 }

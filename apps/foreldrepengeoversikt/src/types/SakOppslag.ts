@@ -1,6 +1,4 @@
-import { EngangsstønadSak } from './EngangsstønadSak';
-import { Foreldrepengesak } from './Foreldrepengesak';
-import { SvangerskapspengeSak } from './SvangerskapspengeSak';
+import { EngangsstønadSak, Foreldrepengesak, SvangerskapspengeSak } from './Sak';
 
 export interface SakOppslag {
     engangsstønad: EngangsstønadSak[];

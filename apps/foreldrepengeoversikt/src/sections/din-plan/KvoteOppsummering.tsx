@@ -7,7 +7,7 @@ import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { Foreldrepengesak } from '../../types/Foreldrepengesak';
+import { Foreldrepengesak } from '../../types/Sak';
 
 export const KvoteOversikt = () => {
     const gjeldendeSak = useGetSelectedSak();

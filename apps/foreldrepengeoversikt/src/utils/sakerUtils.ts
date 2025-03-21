@@ -12,19 +12,15 @@ import {
     SakOppslagDTO,
     SvangerskapspengeSakDTO,
     SøkerinfoDTO,
+    SøkerinfoDTOBarn,
     Ytelse,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
-import { EngangsstønadSak } from '../types/EngangsstønadSak';
-import { Foreldrepengesak } from '../types/Foreldrepengesak';
 import { GruppertSak } from '../types/GruppertSak';
-import { Person } from '../types/Person';
-import { Sak } from '../types/Sak';
+import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../types/Sak';
 import { SakOppslag } from '../types/SakOppslag';
-import { Situasjon } from '../types/Situasjon';
-import { SvangerskapspengeSak } from '../types/SvangerskapspengeSak';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';
 
@@ -32,7 +28,7 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
+export function sorterPersonEtterEldstOgNavn(p1: SøkerinfoDTOBarn, p2: SøkerinfoDTOBarn) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
@@ -77,7 +73,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: SøkerinfoDTOBarn[]): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
@@ -113,7 +109,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): Ba
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: SøkerinfoDTOBarn[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -157,7 +153,7 @@ export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag
 const addYtelseToSak = (
     saker: ForeldrepengesakDTO[] | SvangerskapspengeSakDTO[] | EngangsstønadSakDTO[],
     ytelse: Ytelse,
-): Foreldrepengesak[] | SvangerskapspengeSak[] | EngangsstønadSak[] => {
+): Sak[] => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
         return saker.map(
             (sak) =>
@@ -298,7 +294,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     fødselsdatoer: Date[] | undefined,
     antallBarn: number,
     intl: IntlShape,
-    type: Situasjon,
+    type: Familiesituasjon,
 ): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
     if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
@@ -360,7 +356,7 @@ type SakTittelArguments = {
     familiehendelsedato: string;
     antallBarn: number;
     intl: IntlShape;
-    situasjon: Situasjon;
+    situasjon: Familiesituasjon;
 };
 export const getSakTittel = (sakTittelArguments: SakTittelArguments): { tittel: string; undertittel: string } => {
     const { barngruppering, familiehendelsedato, antallBarn, intl, situasjon } = sakTittelArguments;
