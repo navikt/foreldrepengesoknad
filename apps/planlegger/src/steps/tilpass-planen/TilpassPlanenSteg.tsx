@@ -170,6 +170,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                             />
                             <KvoteOppsummering
+                                hvemPlanlegger={hvemPlanlegger}
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
                                 perioder={[
