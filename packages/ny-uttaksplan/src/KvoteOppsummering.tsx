@@ -20,7 +20,7 @@ type Props = {
     forelder: Forelder;
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
-    hvemPlanlegger?: any;
+    hvemPlanlegger?: ForeldreparSituasjon;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -53,13 +53,13 @@ export const KvoteOppsummering = (props: Props) => {
     );
 };
 
-const OppsummeringsTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: any }) => {
+const OppsummeringsTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon }) => {
     const { rettighetType } = useKvote();
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
-    return <KvoteTittel hvemPlanlegger={hvemPlanlegger.type} />;
+    return <KvoteTittel hvemPlanlegger={hvemPlanlegger} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
@@ -165,7 +165,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     );
 };
 
-const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon }) => {
+const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: { type: ForeldreparSituasjon } }) => {
     const { konto, perioder, familiehendelse } = useKvote();
     const intl = useIntl();
 
@@ -202,15 +202,14 @@ const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon
     const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : 0;
     const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : 0;
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
-
+    console.log(hvemPlanlegger?.type);
     const antallOvertrukketDager =
         sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles].filter((d) => d < 0)) * -1;
-
     if (antallOvertrukketDager > 0) {
         const beskrivelseMor =
             ubrukteDagerMor < 0
                 ? intl.formatMessage(
-                      { id: hvemPlanlegger === 'farOgFar' ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor' },
+                      { id: 'kvote.varighet.tilMor' },
                       { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
                   )
                 : '';
@@ -224,7 +223,7 @@ const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon
         const beskrivelseFar =
             ubrukteDagerFar < 0
                 ? intl.formatMessage(
-                      { id: hvemPlanlegger === 'morOgMedmor' ? 'kvote.varighet.tilMor' : 'kvote.varighet.tilFar' },
+                      { id: 'kvote.varighet.tilFar' },
                       { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
                   )
                 : '';
@@ -299,7 +298,7 @@ const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon
         ubrukteDagerMor > 0
             ? intl.formatMessage(
                   {
-                      id: hvemPlanlegger === 'farOgFar' ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor',
+                      id: hvemPlanlegger?.type === 'farOgFar' ? 'kvote.varighet.tilFar' : 'kvote.varighet.tilMor',
                   },
                   { varighet: getVarighetString(ubrukteDagerMor, intl) },
               )
@@ -316,9 +315,9 @@ const KvoteTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparSituasjon
             ? intl.formatMessage(
                   {
                       id:
-                          hvemPlanlegger === 'morOgMedmor'
+                          hvemPlanlegger?.type === 'morOgMedmor'
                               ? 'kvote.varighet.tilMedmor'
-                              : hvemPlanlegger === 'farOgFar'
+                              : hvemPlanlegger?.type === 'farOgFar'
                                 ? 'kvote.varighet.tilMedfar'
                                 : 'kvote.varighet.tilFar',
                   },
