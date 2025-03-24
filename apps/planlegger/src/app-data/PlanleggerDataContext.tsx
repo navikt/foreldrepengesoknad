@@ -6,10 +6,9 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
-import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 export enum ContextDataType {
-    HVEM_PLANLEGGER_TYPE = 'HVEM_PLANLEGGER_TYPE',
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
     OM_BARNET = 'OM_BARNET',
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
@@ -22,7 +21,6 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
-    [ContextDataType.HVEM_PLANLEGGER_TYPE]?: HvemPlanleggerType;
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
     [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;

@@ -48,7 +48,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
 
     useScrollBehaviour();
 
-    const hvemPlanleggerType = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER_TYPE));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
@@ -171,7 +170,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                             />
                             <KvoteOppsummering
-                                hvemPlanleggerType={hvemPlanleggerType}
+                                hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
                                 perioder={[
