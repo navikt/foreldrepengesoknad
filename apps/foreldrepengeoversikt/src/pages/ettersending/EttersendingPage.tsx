@@ -119,7 +119,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
               manglendeSkjemanummer.length === 0 ? true : manglendeSkjemanummer.includes(skjemanummer),
           )
         : [];
-    const initialType = relevantSkjemanummer.length === 1 ? (relevantSkjemanummer[0] as Skjemanummer) : DEFAULT_OPTION;
+    const initialType = relevantSkjemanummer.length === 1 ? relevantSkjemanummer[0] : DEFAULT_OPTION;
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(initialType);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
