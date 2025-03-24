@@ -5,8 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
+import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';

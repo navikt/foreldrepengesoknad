@@ -13,8 +13,7 @@ import { guid } from 'utils/guid';
 import { erEldreEnn3ÅrOg3Måneder } from 'utils/personUtils';
 
 import { BarnFraNesteSak } from '@navikt/fp-common';
-import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { AnnenForelderFrontend, BarnFrontend, FpSak } from '@navikt/fp-types';
+import { AnnenForelderFrontend, BarnFrontend, Familiehendelse, FpSak } from '@navikt/fp-types';
 import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(utc);

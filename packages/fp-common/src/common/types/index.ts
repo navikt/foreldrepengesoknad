@@ -10,7 +10,6 @@ export * from './EksisterendeSak';
 export * from './FamiliehendelseType';
 export * from './Forelder';
 export * from './ForeldreparSituasjonTypes';
-export * from './GjeldendeVedtak';
 export * from './Kjønn';
 export * from './MinsterettType';
 export * from './MissingAttachment';
