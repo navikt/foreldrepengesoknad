@@ -1,5 +1,4 @@
-import { Sak } from '@navikt/fp-common';
-import { AnnenForelderFrontend } from '@navikt/fp-types';
+import { AnnenForelderFrontend, FpSak } from '@navikt/fp-types';
 
 export enum ValgtBarnType {
     FØDT = 'født',
@@ -19,7 +18,7 @@ export type ValgtBarn = {
     omsorgsovertagelse?: Date;
     fornavn?: string[];
     kanSøkeOmEndring?: boolean;
-    sak?: Sak;
+    sak?: FpSak;
     annenForelder?: AnnenForelderFrontend;
     familiehendelsesdato?: Date;
     startdatoFørsteStønadsperiode?: Date;

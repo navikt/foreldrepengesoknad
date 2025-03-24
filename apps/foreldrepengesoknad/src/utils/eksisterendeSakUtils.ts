@@ -15,7 +15,6 @@ import {
     FamiliehendelseType,
     OppholdÅrsakType,
     OppholdÅrsakTypeDTO,
-    Sak,
     Saksgrunnlag,
     Saksperiode,
     SaksperiodeDTO,
@@ -28,10 +27,9 @@ import {
     isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { PersonFnrDTO } from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { AnnenForelderFrontend, BarnFrontend, PersonFrontend } from '@navikt/fp-types';
+import { AnnenForelderFrontend, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -223,7 +221,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: Sak,
+    eksisterendeSak: FpSak,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
     valgtBarnFødselsdatoer: Date[] | undefined,
 ): EksisterendeSak => {
@@ -269,6 +267,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
 
     const saksperioder = perioder
         .map((p) => {
+            // @ts-expect-error -- feil frem til alt er over på nye autogenererte typer
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -493,7 +492,7 @@ export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
 
 export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
-    annenPartFraSak: PersonFnrDTO | undefined,
+    annenPartFraSak: Person | undefined,
     grunnlag: Saksgrunnlag,
     barn: BarnFrontend[],
     situasjon: Situasjon,
@@ -526,7 +525,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 };
 
 export const lagSøknadFraValgteBarnMedSak = (
-    valgteBarn: ValgtBarn & { sak: Sak },
+    valgteBarn: ValgtBarn & { sak: FpSak },
     intl: IntlShape,
     registrerteBarn: BarnFrontend[],
     søkerFnr: string,
@@ -561,7 +560,7 @@ export const lagEndringsSøknad = (
     søker: PersonFrontend,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
-    annenPartFraSak: PersonFnrDTO | undefined,
+    annenPartFraSak: Person | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
     const { grunnlag, uttaksplan } = eksisterendeSak;

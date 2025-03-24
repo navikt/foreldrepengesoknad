@@ -23,8 +23,7 @@ import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSte
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
-import { Sak } from '@navikt/fp-common';
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
@@ -254,7 +253,7 @@ interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
-    saker: Sak[];
+    saker: FpSak[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;

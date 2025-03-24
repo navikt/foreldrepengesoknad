@@ -4,7 +4,7 @@ import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
 import { PeriodeResultatDTO } from './PeriodeResultatDTO';
-import { GraderingDTO } from './GraderingDTO';
+import { Gradering } from '@navikt/fp-types';
 
 export interface SaksperiodeDTO {
     fom: string;
@@ -12,7 +12,7 @@ export interface SaksperiodeDTO {
     resultat: PeriodeResultatDTO;
     flerbarnsdager?: boolean;
     kontoType?: StønadskontoType;
-    gradering?: GraderingDTO;
+    gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakTypeDTO;
     utsettelseÅrsak?: UtsettelseÅrsakTypeDTO;
     overføringÅrsak?: OverføringÅrsakType;
