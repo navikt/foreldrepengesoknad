@@ -188,7 +188,7 @@ export enum Ytelse {
     ENGANGSSTØNAD = 'engangsstønad',
 }
 
-export interface Dokument {
+interface Dokument {
     type: DokumentType;
     mottatt: string;
     saksnummer: string;

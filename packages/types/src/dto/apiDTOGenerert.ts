@@ -1371,11 +1371,11 @@ export type Refusjon = {
 
 export type DokumentDto = {
     tittel?: string;
-    type?: 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
+    type: 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
     saksnummer?: string;
     journalpostId?: string;
     dokumentId?: string;
-    mottatt?: string;
+    mottatt: string;
 };
 
 export type SlettMellomlagringData = {

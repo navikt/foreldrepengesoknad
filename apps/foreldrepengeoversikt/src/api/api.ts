@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
     AnnenPartVedtakDTO,
-    Dokument,
+    DokumentDto,
     EttersendingDto,
     KontoBeregningGrunnlagDto,
     MellomlagredeYtelser,
@@ -49,7 +49,8 @@ export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
 export const hentDokumenterOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['DOKUMENTER', saksnummer],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+        queryFn: () =>
+            ky.get(`${urlPrefiks}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<DokumentDto[]>(),
     });
 
 export const hentInntektsmelding = (saksnummer: string) =>

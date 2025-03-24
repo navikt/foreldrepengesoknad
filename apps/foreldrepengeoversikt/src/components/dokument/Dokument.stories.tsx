@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
-import { DokumentType } from '@navikt/fp-types';
-
 import { Dokument } from './Dokument';
 
 const meta = {
@@ -15,12 +13,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         dokument: {
-            type: DokumentType.ARBEIDSGIVER,
+            type: 'UTGÅENDE_DOKUMENT',
             dokumentId: '1',
             journalpostId: '2',
             saksnummer: '12234',
             mottatt: new Date().toISOString(),
-            url: 'www.test.nu',
             tittel: 'Dette er en tittel',
         },
     },
