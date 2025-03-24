@@ -1,6 +1,11 @@
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 
 import { lagKronologiskeSvpPerioder } from './Svangerskapspenger';
+import * as stories from './Svangerskapspenger.stories';
+
+const { SøknadUtenVedtak, Case1 } = composeStories(stories);
 
 describe('lagKronologiskeSvpPerioder', () => {
     it('Case 1', () => {
@@ -18,6 +23,17 @@ describe('lagKronologiskeSvpPerioder', () => {
     it('Case 4', () => {
         const perioder = lagKronologiskeSvpPerioder(SAK_4);
         expect(perioder).toEqual(PERIODER_4);
+    });
+});
+
+describe('<Svangerskapspenger>', () => {
+    it('Skal vise i tittel at det er fra søknaden', async () => {
+        render(<SøknadUtenVedtak />);
+        expect(screen.getByText('Dette har du søkt om')).toBeInTheDocument();
+    });
+    it('Skal vise i tittel at det er fra vedtak', async () => {
+        render(<Case1 />);
+        expect(screen.getByText('Dette har du fått vedtatt')).toBeInTheDocument();
     });
 });
 
