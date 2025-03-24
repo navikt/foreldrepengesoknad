@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
+import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -211,7 +211,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
-                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
+                                annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.søker.fornavn,

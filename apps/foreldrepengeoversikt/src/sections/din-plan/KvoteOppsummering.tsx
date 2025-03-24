@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { DekningsgradDTO } from '@navikt/fp-common';
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
@@ -58,7 +59,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
         <KvoteOppsummering
             familiehendelse={sak.familiehendelse}
             konto={konto}
-            perioder={aktuellePerioder}
+            perioder={aktuellePerioder as SaksperiodeNy[]}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
             visStatusIkoner={false}

@@ -1,5 +1,3 @@
-import { Attachment } from '../Attachment';
-
 // export interface SøkerinfoDTOPerson {
 //     fnr: string;
 //     fornavn: string;
@@ -166,18 +164,18 @@ export enum DekningsgradDTO {
 //     morHarUføretrygd: boolean;
 //     familieHendelseDatoNesteSak?: string;
 // };
-
-interface EttersendingDto {
-    brukerTekst?: {
-        dokumentType: string;
-        overskrift: string;
-        tekst: string;
-    };
-    dialogId?: string;
-    saksnummer: string;
-    type: Ytelse;
-    vedlegg: Attachment[];
-}
+//
+// interface EttersendingDto {
+//     brukerTekst?: {
+//         dokumentType: string;
+//         overskrift: string;
+//         tekst: string;
+//     };
+//     dialogId?: string;
+//     saksnummer: string;
+//     type: Ytelse;
+//     vedlegg: Attachment[];
+// }
 
 export type Ytelse = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
