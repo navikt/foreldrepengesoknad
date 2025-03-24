@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { applyRequestHandlers } from 'msw-storybook-addon';
-import { describe } from 'vitest';
+import { describe, expect } from 'vitest';
 
 import * as stories from './EttersendingPage.stories';
 
@@ -106,24 +106,27 @@ describe('<EttersendingPage>', () => {
         expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
     });
 
-    it('skal filtrere vekk irrelevante docs', async () => {
-        const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141" />);
-
-        expect(
-            await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
-            ),
-        ).toBeInTheDocument();
+    it('skal filtrere bort irrelevante dokumenttyper basert på verdier i queryparam', async () => {
+        const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141,I000063" />);
 
         const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const preselectedOption = within(select).getByRole('option', { selected: true });
+        expect(preselectedOption.textContent).toBe('Velg type dokument');
 
         const optionsTextContent = within(select)
-            .getAllByRole('option')
+            .getAllByRole('option', { selected: false })
             .map((o) => o.textContent);
 
-        expect(optionsTextContent).toContain('Velg type dokument');
         expect(optionsTextContent).toContain('Terminbekreftelse');
+        expect(optionsTextContent).toContain('Fødselsattest');
         expect(optionsTextContent.length).toBe(2);
+    });
+
+    it('skal preselektere dokumenttype dersom kun én manglende dokumenttype i queryparam', async () => {
+        const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141" />);
+        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const preselectedOption = () => within(select).getByRole('option', { selected: true });
+
+        expect(preselectedOption().textContent).toBe('Terminbekreftelse');
     });
 });
