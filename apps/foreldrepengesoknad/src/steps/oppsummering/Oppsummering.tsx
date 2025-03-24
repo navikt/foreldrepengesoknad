@@ -21,7 +21,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
+import { PersonFrontend, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -34,7 +34,7 @@ import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepeng
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
-    søker: Søker,
+    søker: PersonFrontend,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,

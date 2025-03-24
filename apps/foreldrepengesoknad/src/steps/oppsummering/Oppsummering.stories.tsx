@@ -24,8 +24,8 @@ import {
     ArbeidsforholdOgInntektFp,
     EgenNæring,
     Frilans,
+    PersonFrontend,
     Sivilstand,
-    Søker,
     Søkerinfo,
     SøkersituasjonFp,
     Utenlandsopphold,
@@ -66,7 +66,7 @@ const defaultSøkerinfoMor = {
         sivilstand: {
             type: SivilstandType.GIFT,
         },
-    } as Søker,
+    } as PersonFrontend,
     arbeidsforhold: [],
 };
 const defaultSøkerinfoFar = {
@@ -94,7 +94,7 @@ const defaultSøkerinfoFar = {
         sivilstand: {
             type: SivilstandType.UGIFT,
         },
-    } as Søker,
+    } as PersonFrontend,
     arbeidsforhold: [],
 };
 

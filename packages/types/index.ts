@@ -1,4 +1,3 @@
-export type { Kjønn } from './src/Kjønn';
 export type { Kvittering } from './src/Kvittering';
 export type { LocaleNo, LocaleAll } from './src/Locale';
 export type { Attachment } from './src/Attachment';
@@ -8,7 +7,6 @@ export type { Situasjon } from './src/Situasjon';
 export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
 export type { Sivilstand } from './src/Sivilstand';
-export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
 export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';

@@ -29,7 +29,6 @@ export * from './PeriodeInfoType';
 export * from './PeriodeResultatÅrsak';
 export * from './PeriodeResultatDTO';
 export * from './PeriodeValidState';
-export * from './Person';
 export * from './PersonFnrDTO';
 export * from './RettighetType';
 export * from './Sak';

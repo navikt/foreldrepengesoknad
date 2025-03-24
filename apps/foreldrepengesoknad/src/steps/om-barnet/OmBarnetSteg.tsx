@@ -17,7 +17,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
+import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -32,7 +32,7 @@ const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
 
-const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn, barnet: Barn) => {
+const findBarnetIRegistrerteBarn = (regBarn: BarnFrontend, barnet: Barn) => {
     if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
         return barnet.fnr.includes(regBarn.fnr);
     }
@@ -42,7 +42,7 @@ const findBarnetIRegistrerteBarn = (regBarn: SøkerBarn, barnet: Barn) => {
 const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: SøkerBarn[] | undefined,
+    valgteRegistrerteBarn: BarnFrontend[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {

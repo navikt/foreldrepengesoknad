@@ -31,7 +31,7 @@ import {
 import { PersonFnrDTO } from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+import { AnnenForelderFrontend, BarnFrontend, PersonFrontend } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -292,7 +292,7 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (søker: Søker, grunnlag: Saksgrunnlag): Søkerrolle => {
+const getSøkerrolleFromSaksgrunnlag = (søker: PersonFrontend, grunnlag: Saksgrunnlag): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = søker.kjønn === 'K';
     if (søkerErKvinne) {
@@ -341,7 +341,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
     }
 };
 
-const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
+const finnFornavn = (annenPart: AnnenForelderFrontend, intl: IntlShape) => {
     return annenPart.fornavn !== undefined && annenPart.fornavn !== ''
         ? annenPart.fornavn
         : intl.formatMessage({ id: 'annen.forelder' });
@@ -350,7 +350,7 @@ const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
-    annenPart: SøkerAnnenForelder,
+    annenPart: AnnenForelderFrontend,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): AnnenForelder => {
@@ -386,7 +386,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 };
 
 const finnAnnenForelderForSaken = (
-    barn: SøkerBarn[],
+    barn: BarnFrontend[],
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
@@ -415,7 +415,7 @@ const finnAnnenForelderForSaken = (
         const { fornavn } = annenForelder;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
-        const annenPart: SøkerAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
+        const annenPart: AnnenForelderFrontend = { ...annenForelder, fornavn: fornavnAnnenForelder };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 
@@ -495,7 +495,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
     grunnlag: Saksgrunnlag,
-    barn: SøkerBarn[],
+    barn: BarnFrontend[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -528,7 +528,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 export const lagSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn & { sak: Sak },
     intl: IntlShape,
-    registrerteBarn: SøkerBarn[],
+    registrerteBarn: BarnFrontend[],
     søkerFnr: string,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
@@ -558,7 +558,7 @@ export const lagSøknadFraValgteBarnMedSak = (
 };
 
 export const lagEndringsSøknad = (
-    søker: Søker,
+    søker: PersonFrontend,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,

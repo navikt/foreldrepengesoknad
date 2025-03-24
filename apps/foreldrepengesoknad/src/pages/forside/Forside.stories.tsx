@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import { Søker, SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend, PersonFrontend, Søkerinfo } from '@navikt/fp-types';
 
 import { Forside } from './Forside';
 
@@ -25,7 +25,7 @@ const defaultPerson = {
     kjønn: 'K',
     fødselsdato: '1978-04-19',
     barn: [],
-} as Søker;
+} satisfies PersonFrontend;
 
 interface SakInfo {
     kanSøkeOmEndring: boolean;
@@ -78,7 +78,7 @@ const getSak = (sakinfo: SakInfo): Sak => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: SøkerBarn[]): Søker => {
+const getSøkerinfoMedBarn = (barna: BarnFrontend[]): Søkerinfo['søker'] => {
     return { ...defaultPerson, barn: barna };
 };
 
@@ -91,35 +91,42 @@ const levendeBarn = {
     etternavn: 'Bokhylle',
     fødselsdato: dato,
     kjønn: 'K',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const dødtBarn = {
     ...levendeBarn,
     dødsdato: '2022-12-07',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const levendeTvilling = {
     fnr: '2',
     fornavn: 'Vakker',
     etternavn: 'Bokhylle',
     fødselsdato: dato,
-} as SøkerBarn;
+    kjønn: 'K',
+} satisfies BarnFrontend;
 
 const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
-const dødfødtBarn = { fødselsdato: dato, dødsdato: dato } as SøkerBarn;
+const dødfødtBarn = {
+    fødselsdato: dato,
+    dødsdato: dato,
+    kjønn: 'K',
+    fnr: '2',
+    fornavn: 'Vakker',
+    etternavn: 'Bokhylle',
+} satisfies BarnFrontend;
 
 const sakErIkkeAvsluttet = false;
 
 const ettBarn = {
-    type: 'person',
     fnr: '3',
     fornavn: 'Evig',
     mellomnavn: 'Lykkelig',
     etternavn: 'Vår',
     fødselsdato: dato,
     kjønn: 'M',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
 const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };

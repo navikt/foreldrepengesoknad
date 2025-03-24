@@ -7,13 +7,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
+import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
-    kjønn: Kjønn;
+    kjønn: 'M' | 'K';
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };

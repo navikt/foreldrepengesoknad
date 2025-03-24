@@ -1129,19 +1129,19 @@ export type AktivMellomlagringDto = {
 };
 
 export type AnnenForelderFrontend = {
-    fnr?: string;
-    fornavn?: string;
+    fnr: string;
+    fornavn: string;
     mellomnavn?: string;
-    etternavn?: string;
+    etternavn: string;
     fødselsdato?: string;
 };
 
 export type Arbeidsforhold = {
-    arbeidsgiverId?: string;
+    arbeidsgiverId: string;
     arbeidsgiverIdType: string;
     arbeidsgiverNavn?: string;
     stillingsprosent: number;
-    fom?: string;
+    fom: string;
     tom?: string;
 };
 
@@ -1166,8 +1166,8 @@ export type PersonFrontend = {
     fornavn: string;
     mellomnavn?: string;
     etternavn: string;
-    kjønn: string;
-    fødselsdato?: string;
+    kjønn: 'M' | 'K';
+    fødselsdato: string;
     bankkonto?: Bankkonto;
     barn: BarnFrontend[];
     sivilstand?: Sivilstand;

@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
-import { Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
+import { BarnFrontend, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
 
@@ -39,7 +39,7 @@ const defaultSøker = {
             kjønn: 'M',
         },
     ],
-} as Søker;
+} satisfies PersonFrontend;
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
@@ -146,6 +146,10 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
                 barn: [
                     {
                         fornavn: 'Ben',
+                        fnr: '1',
+                        etternavn: 'Big',
+                        kjønn: 'M',
+                        fødselsdato: '2021-03-15',
                         annenForelder: {
                             fnr: '999999999',
                             fødselsdato: '1985-03-12',
@@ -153,7 +157,7 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
                             etternavn: 'BÆREPOSE',
                         },
                     },
-                ] as SøkerBarn[],
+                ] satisfies BarnFrontend[],
             },
             arbeidsforhold: [],
         },

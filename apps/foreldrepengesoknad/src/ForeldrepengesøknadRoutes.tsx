@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
@@ -26,8 +27,6 @@ import { Sak } from '@navikt/fp-common';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
-
-import { SøknadRoutes, isRouteAvailable } from './app-data/routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,

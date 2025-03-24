@@ -8,19 +8,14 @@ import {
     getLeverBarnet,
     sorterRegistrerteBarnEtterEldstOgNavn,
 } from 'utils/barnUtils';
+import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { erEldreEnn3ÅrOg3Måneder } from 'utils/personUtils';
 
-import { BarnFraNesteSak, RegistrertAnnenForelder, Sak } from '@navikt/fp-common';
+import { BarnFraNesteSak, Sak } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { SøkerBarn } from '@navikt/fp-types';
+import { AnnenForelderFrontend, BarnFrontend } from '@navikt/fp-types';
 import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
-
-import {
-    ISOStringToDate,
-    getErDatoInnenEnDagFraAnnenDato,
-    getRelevantFamiliehendelseDato,
-} from '../../utils/dateUtils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -44,7 +39,7 @@ export const getSortableBarnDato = (
 const getSelectableBarnType = (
     gjelderAdopsjon: boolean,
     familiehendelse: Familiehendelse,
-    pdlBarn: SøkerBarn[] | undefined,
+    pdlBarn: BarnFrontend[] | undefined,
 ): ValgtBarnType => {
     if (gjelderAdopsjon) {
         return ValgtBarnType.ADOPTERT;
@@ -55,7 +50,7 @@ const getSelectableBarnType = (
     return ValgtBarnType.UFØDT;
 };
 
-const getPDLBarnForSakMedUfødtBarn = (sak: Sak, registrerteBarn: SøkerBarn[]): SøkerBarn[] => {
+const getPDLBarnForSakMedUfødtBarn = (sak: Sak, registrerteBarn: BarnFrontend[]): BarnFrontend[] => {
     const termindato = sak.familiehendelse.termindato;
     if (isISODateString(termindato)) {
         const terminMinus17Uker = dayjs(termindato).subtract(17, 'week');
@@ -67,7 +62,7 @@ const getPDLBarnForSakMedUfødtBarn = (sak: Sak, registrerteBarn: SøkerBarn[]):
     return [];
 };
 
-const getPDLBarnForSakMedFødteBarn = (sak: Sak, registrerteBarn: SøkerBarn[]): SøkerBarn[] => {
+const getPDLBarnForSakMedFødteBarn = (sak: Sak, registrerteBarn: BarnFrontend[]): BarnFrontend[] => {
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
     const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr = registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr));
@@ -85,7 +80,7 @@ const getPDLBarnForSakMedFødteBarn = (sak: Sak, registrerteBarn: SøkerBarn[]):
     return pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
 };
 
-const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): ValgtBarn => {
+const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: BarnFrontend[]): ValgtBarn => {
     let pdlBarn;
     if (sak.barn || sak.familiehendelse.fødselsdato) {
         pdlBarn = getPDLBarnForSakMedFødteBarn(sak, registrerteBarn);
@@ -143,8 +138,8 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): Valgt
 };
 
 const getSelectableBarnFraPDL = (
-    registrertBarn: SøkerBarn,
-    annenForelder: RegistrertAnnenForelder | undefined,
+    registrertBarn: BarnFrontend,
+    annenForelder: AnnenForelderFrontend | undefined,
 ): ValgtBarn => {
     const navn =
         registrertBarn.mellomnavn !== undefined
@@ -164,9 +159,9 @@ const getSelectableBarnFraPDL = (
 };
 
 const getSelectableFlerlingerFraPDL = (
-    registrertBarn: SøkerBarn,
-    barnFødtISammePeriode: SøkerBarn[],
-    annenForelder: RegistrertAnnenForelder | undefined,
+    registrertBarn: BarnFrontend,
+    barnFødtISammePeriode: BarnFrontend[],
+    annenForelder: AnnenForelderFrontend | undefined,
 ): ValgtBarn | undefined => {
     const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldstOgNavn);
     const minstEttBarnDødeForMerEnn3MndSiden = !!alleBarna.find(
@@ -189,7 +184,7 @@ const getSelectableFlerlingerFraPDL = (
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: SøkerBarn[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: BarnFrontend[]) => {
     return saker
         .filter(
             (sak) =>
@@ -202,7 +197,7 @@ const getSelectableBarnOptionsFromSaker = (saker: Sak[], registrerteBarn: Søker
 };
 
 const getSelectableBarnOptionsFraPDL = (
-    registrerteBarn: SøkerBarn[],
+    registrerteBarn: BarnFrontend[],
     barnFraSaker: ValgtBarn[],
     avsluttedeSaker: Sak[],
 ): ValgtBarn[] => {
@@ -280,7 +275,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: SøkerBarn[]) => {
+export const getSelectableBarnOptions = (saker: Sak[], registrerteBarn: BarnFrontend[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
