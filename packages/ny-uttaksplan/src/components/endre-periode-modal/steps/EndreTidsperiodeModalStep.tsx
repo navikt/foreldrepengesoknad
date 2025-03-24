@@ -81,26 +81,26 @@ export const EndreTidsperiodeModalStep = ({
                             label="Fra og med dato"
                             name="fom"
                             disableWeekends={true}
-                            validate={getFomValidators(
+                            validate={getFomValidators({
                                 intl,
                                 familiehendelsedato,
-                                valgtPeriode?.kontoType,
+                                kontoType: valgtPeriode?.kontoType,
                                 tomValue,
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                            )}
+                            })}
                         />
                         <RhfDatepicker
-                            validate={getTomValidators(
+                            validate={getTomValidators({
                                 intl,
                                 familiehendelsedato,
-                                valgtPeriode?.kontoType,
+                                kontoType: valgtPeriode?.kontoType,
                                 fomValue,
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                            )}
+                            })}
                             label="Til og med dato"
                             name="tom"
                             disableWeekends={true}

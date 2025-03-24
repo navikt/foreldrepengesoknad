@@ -83,7 +83,7 @@ export const EndreTidsperiodeModalStep = ({
                             showMonthAndYearDropdowns
                             minDate={minDate}
                             maxDate={maxDate}
-                            validate={getFomValidators(
+                            validate={getFomValidators({
                                 intl,
                                 familiehendelsedato,
                                 kontoType,
@@ -91,7 +91,8 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                            )}
+                                årsak,
+                            })}
                             disableWeekends={true}
                             label="Fra og med dato"
                             name="fom"
@@ -101,7 +102,7 @@ export const EndreTidsperiodeModalStep = ({
                             showMonthAndYearDropdowns
                             minDate={minDate}
                             maxDate={maxDate}
-                            validate={getTomValidators(
+                            validate={getTomValidators({
                                 intl,
                                 familiehendelsedato,
                                 kontoType,
@@ -109,7 +110,8 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                            )}
+                                årsak,
+                            })}
                             disableWeekends={true}
                             label="Til og med dato"
                             name="tom"
