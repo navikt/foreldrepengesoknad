@@ -4,12 +4,13 @@ import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
-    AnnenPartVedtakDTO,
+    AktivMellomlagringDto,
+    AnnenPartSak,
+    AnnenPartSakIdentifikator,
     DokumentDto,
     EttersendingDto,
     KontoBeregningDto,
     KontoBeregningGrunnlagDto,
-    MellomlagredeYtelser,
     MinidialogInnslag,
     Saker,
     Satser,
@@ -90,20 +91,13 @@ export const hentSatserOptions = () =>
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<MellomlagredeYtelser>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<AktivMellomlagringDto>(),
     });
 
-type AnnenPartsVedtakRequestBody = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse?: string;
-};
-
-export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
+export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () =>
-            ky.post<AnnenPartVedtakDTO>(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, { json: body }).json(),
+        queryFn: () => ky.post<AnnenPartSak>(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, { json: body }).json(),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

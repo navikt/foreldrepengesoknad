@@ -1053,10 +1053,10 @@ export type Aktivitet = {
 };
 
 export type AnnenPartSak = {
-    perioder?: UttakPeriode[];
+    perioder: UttakPeriode[];
     termindato?: string;
-    dekningsgrad?: 'ÅTTI' | 'HUNDRE';
-    antallBarn?: number;
+    dekningsgrad: 'ÅTTI' | 'HUNDRE';
+    antallBarn: number;
 };
 
 export type Arbeidsgiver = {
@@ -1070,8 +1070,8 @@ export type Gradering = {
 };
 
 export type UttakPeriode = {
-    fom?: string;
-    tom?: string;
+    fom: string;
+    tom: string;
     kontoType?: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
     resultat?: UttakPeriodeResultat;
     utsettelseÅrsak?:
@@ -1122,9 +1122,9 @@ export type UttakPeriodeResultat = {
 };
 
 export type AktivMellomlagringDto = {
-    engangsstonad?: boolean;
-    foreldrepenger?: boolean;
-    svangerskapspenger?: boolean;
+    engangsstonad: boolean;
+    foreldrepenger: boolean;
+    svangerskapspenger: boolean;
 };
 
 export type AnnenForelderFrontend = {
