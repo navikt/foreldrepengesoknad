@@ -7,8 +7,7 @@ import {
     AktørType,
     BehandlingTilstand,
     Familiehendelse,
-    Tidslinjehendelse,
-    TidslinjehendelseType,
+    TidslinjeHendelseDto,
     Ytelse,
     ÅpenBehandlingFP,
     ÅpenBehandlingSVP,
@@ -18,6 +17,7 @@ import { formatDate } from '@navikt/fp-utils';
 import { NavRoutes, OversiktRoutes } from '../routes/routes';
 import { BarnGruppering } from '../types/BarnGruppering';
 import { Sak } from '../types/Sak';
+import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen';
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
@@ -35,20 +35,13 @@ export const VENTEÅRSAKER = [
     BehandlingTilstand.VENTER_PÅ_MELDEKORT,
 ];
 
-export const TIDSLINJEHENDELSER_PÅ_VENT = [
-    TidslinjehendelseType.VENTER_INNTEKTSMELDING,
-    TidslinjehendelseType.VENTER_MELDEKORT,
-    TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD,
-    TidslinjehendelseType.VENT_DOKUMENTASJON,
-];
-
 export const getAktivTidslinjeStegIndex = (
     hendelserForVisning: Tidslinjehendelse[],
     erInnvilgetForeldrepengesøknad: boolean,
 ): number => {
     if (erInnvilgetForeldrepengesøknad) {
         const indexForSisteVedtak = hendelserForVisning.findLastIndex(
-            (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.VEDTAK,
+            (hendelse) => hendelse.utvidetTidslinjeHendelseType === 'VEDTAK',
         );
 
         if (indexForSisteVedtak >= 0) {
@@ -190,43 +183,43 @@ const getTittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) =
 };
 
 const finnTekstForTidslinjehendelse = (intl: IntlShape, hendelse: Tidslinjehendelse, erOmsorgsovertakelse: boolean) => {
-    const hendelsetype = hendelse.tidslinjeHendelseType;
+    const hendelsetype = hendelse.utvidetTidslinjeHendelseType;
     switch (hendelsetype) {
-        case TidslinjehendelseType.BARNET_TRE_ÅR:
+        case 'BARNET_TRE_ÅR':
             return erOmsorgsovertakelse
                 ? intl.formatMessage({ id: 'tidslinje.tittel.BARNET_TRE_ÅR.adopsjon' })
                 : intl.formatMessage({ id: 'tidslinje.tittel.BARNET_TRE_ÅR.fødsel' });
-        case TidslinjehendelseType.ENDRINGSSØKNAD:
+        case 'ENDRINGSSØKNAD':
             return intl.formatMessage({ id: 'tidslinje.tittel.ENDRINGSSØKNAD' });
-        case TidslinjehendelseType.ETTERSENDING:
+        case 'ETTERSENDING':
             return intl.formatMessage({ id: 'tidslinje.tittel.ETTERSENDING' });
-        case TidslinjehendelseType.FAMILIEHENDELSE:
+        case 'FAMILIEHENDELSE':
             return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE' });
-        case TidslinjehendelseType.FREMTIDIG_VEDTAK:
+        case 'FREMTIDIG_VEDTAK':
             return intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' });
-        case TidslinjehendelseType.FØRSTEGANGSSØKNAD:
+        case 'FØRSTEGANGSSØKNAD':
             return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' });
-        case TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY:
+        case 'FØRSTEGANGSSØKNAD_NY':
             return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD_NY' });
-        case TidslinjehendelseType.INNTEKTSMELDING:
+        case 'INNTEKTSMELDING':
             return intl.formatMessage({ id: 'tidslinje.tittel.INNTEKTSMELDING' });
-        case TidslinjehendelseType.UTGÅENDE_ETTERLYS_INNTEKTSMELDING:
+        case 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING':
             return intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_ETTERLYS_INNTEKTSMELDING' });
-        case TidslinjehendelseType.UTGÅENDE_INNHENT_OPPLYSNINGER:
+        case 'UTGÅENDE_INNHENT_OPPLYSNINGER':
             return intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' });
-        case TidslinjehendelseType.UTGÅENDE_VARSEL_TILBAKEBETALING:
+        case 'UTGÅENDE_VARSEL_TILBAKEBETALING':
             return intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' });
-        case TidslinjehendelseType.VEDTAK:
+        case 'VEDTAK':
             return getTittelSvarPåSøknad(hendelse, intl);
-        case TidslinjehendelseType.VENTER_INNTEKTSMELDING:
+        case 'VENTER_INNTEKTSMELDING':
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_INNTEKTSMELDING' });
-        case TidslinjehendelseType.VENTER_MELDEKORT:
+        case 'VENTER_MELDEKORT':
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_MELDEKORT' });
-        case TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD:
+        case 'VENTER_PGA_TIDLIG_SØKNAD':
             return intl.formatMessage({ id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' });
-        case TidslinjehendelseType.VENT_DOKUMENTASJON:
+        case 'VENT_DOKUMENTASJON':
             return intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' });
-        case TidslinjehendelseType.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV:
+        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV':
             return intl.formatMessage({ id: 'tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV' });
     }
 };
@@ -239,10 +232,10 @@ export const getTidslinjehendelseTittel = (
     barnFraSak: BarnGruppering,
     sak: Sak,
 ): string => {
-    const hendelsetype = hendelse.tidslinjeHendelseType;
+    const hendelsetype = hendelse.utvidetTidslinjeHendelseType;
     const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
     const antallBarn = familiehendelse?.antallBarn;
-    if (hendelsetype === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD && tidlistBehandlingsdato !== undefined) {
+    if (hendelsetype === 'VENTER_PGA_TIDLIG_SØKNAD' && tidlistBehandlingsdato !== undefined) {
         return intl.formatMessage(
             { id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' },
             {
@@ -250,19 +243,15 @@ export const getTidslinjehendelseTittel = (
             },
         );
     }
-    if (
-        hendelsetype === TidslinjehendelseType.VENT_DOKUMENTASJON &&
-        manglendeVedleggData &&
-        manglendeVedleggData.length === 1
-    ) {
+    if (hendelsetype === 'VENT_DOKUMENTASJON' && manglendeVedleggData && manglendeVedleggData.length === 1) {
         const navnPåDokumentasjon = intl.formatMessage({ id: `ettersendelse.${manglendeVedleggData[0]}` });
         const dokumentasjonLowerCase = navnPåDokumentasjon.charAt(0).toLowerCase() + navnPåDokumentasjon.slice(1);
         return intl.formatMessage({ id: 'tidslinje.navVenterPå' }, { dokumentasjon: dokumentasjonLowerCase });
     }
-    if (hendelsetype === TidslinjehendelseType.FØRSTEGANGSSØKNAD) {
+    if (hendelsetype === 'FØRSTEGANGSSØKNAD') {
         return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' }, { ytelse });
     }
-    if (hendelsetype === TidslinjehendelseType.FAMILIEHENDELSE && familiehendelse && antallBarn !== undefined) {
+    if (hendelsetype === 'FAMILIEHENDELSE' && familiehendelse && antallBarn !== undefined) {
         return getTidslinjeTittelForFamiliehendelse(
             familiehendelse,
             gjelderAdopsjon,
@@ -276,7 +265,7 @@ export const getTidslinjehendelseTittel = (
         ytelse === Ytelse.FORELDREPENGER &&
         (familiehendelse?.fødselsdato || familiehendelse?.omsorgsovertakelse) &&
         antallBarn &&
-        hendelsetype === TidslinjehendelseType.BARNET_TRE_ÅR
+        hendelsetype === 'BARNET_TRE_ÅR'
     ) {
         return getTidslinjeTittelForBarnTreÅr(barnFraSak, antallBarn, familiehendelse?.omsorgsovertakelse, intl);
     }
@@ -285,16 +274,16 @@ export const getTidslinjehendelseTittel = (
 
 export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
     if (venteårsak === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
-        return TidslinjehendelseType.VENTER_INNTEKTSMELDING;
+        return 'VENTER_INNTEKTSMELDING';
     }
     if (venteårsak === BehandlingTilstand.TIDLIG_SØKNAD) {
-        return TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD;
+        return 'VENTER_PGA_TIDLIG_SØKNAD';
     }
     if (venteårsak === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON) {
-        return TidslinjehendelseType.VENT_DOKUMENTASJON;
+        return 'VENT_DOKUMENTASJON';
     }
     if (venteårsak === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
-        return TidslinjehendelseType.VENTER_MELDEKORT;
+        return 'VENTER_MELDEKORT';
     } else {
         throw new Error('Ukjent venteårsak');
     }
@@ -359,29 +348,33 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (
     return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling);
 };
 
-const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: Tidslinjehendelse[]) => {
+const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: TidslinjeHendelseDto[]) => {
     const hendelseFørsteSøknad = tidslinjeHendelser.find(
-        (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD,
+        (hendelse) => hendelse.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD',
     );
     return hendelseFørsteSøknad ? hendelseFørsteSøknad.opprettet : undefined;
 };
 
 export const getTidslinjehendelserDetaljer = (
-    tidslinjeHendelserData: Tidslinjehendelse[],
+    tidslinjeHendelserData: TidslinjeHendelseDto[],
     intl: IntlShape,
 ): Tidslinjehendelse[] => {
     return tidslinjeHendelserData.map((hendelse) => {
         switch (hendelse.tidslinjeHendelseType) {
-            case TidslinjehendelseType.UTGÅENDE_INNHENT_OPPLYSNINGER:
+            case 'UTGÅENDE_INNHENT_OPPLYSNINGER':
                 return {
                     ...hendelse,
+                    utvidetTidslinjeHendelseType: hendelse.tidslinjeHendelseType,
                     internalUrl: OversiktRoutes.ETTERSEND,
                     linkTittel: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' }),
+                    manglendeVedlegg: [],
                 };
-            case TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY: {
+            case 'FØRSTEGANGSSØKNAD_NY': {
                 const datoFørsteSøknad = getDatoForInnsendingAvFørsteSøknad(tidslinjeHendelserData);
                 return {
                     ...hendelse,
+                    utvidetTidslinjeHendelseType: hendelse.tidslinjeHendelseType,
+                    manglendeVedlegg: [],
                     merInformasjon: datoFørsteSøknad
                         ? intl.formatMessage(
                               { id: 'tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY' },
@@ -395,7 +388,11 @@ export const getTidslinjehendelserDetaljer = (
                 };
             }
             default:
-                return hendelse;
+                return {
+                    ...hendelse,
+                    utvidetTidslinjeHendelseType: hendelse.tidslinjeHendelseType,
+                    manglendeVedlegg: [],
+                };
         }
     });
 };
@@ -405,7 +402,7 @@ export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): T
     return {
         type: 'søknad',
         opprettet: familiehendelsedato,
-        tidslinjeHendelseType: TidslinjehendelseType.FAMILIEHENDELSE,
+        utvidetTidslinjeHendelseType: 'FAMILIEHENDELSE',
         aktørType: AktørType.BRUKER,
         dokumenter: [],
         manglendeVedlegg: [],
@@ -431,7 +428,7 @@ export const getTidslinjeBarnTreÅrHendelse = (
     return {
         type: 'søknad',
         opprettet: dato,
-        tidslinjeHendelseType: TidslinjehendelseType.BARNET_TRE_ÅR,
+        utvidetTidslinjeHendelseType: 'BARNET_TRE_ÅR',
         aktørType: AktørType.BRUKER,
         dokumenter: [],
         manglendeVedlegg: [],
@@ -452,7 +449,7 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
     return {
         type: 'søknad',
         opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
-        tidslinjeHendelseType: TidslinjehendelseType.FREMTIDIG_VEDTAK,
+        utvidetTidslinjeHendelseType: 'FREMTIDIG_VEDTAK',
         aktørType: AktørType.NAV,
         dokumenter: [],
         manglendeVedlegg: [],
@@ -522,7 +519,9 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             type: 'søknad',
             opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
             aktørType: getAktørtypeAvVenteårsak(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
-            tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
+            utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(
+                BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON,
+            ),
             dokumenter: [],
             manglendeVedlegg: [],
             merInformasjon: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' }),
@@ -530,7 +529,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             eksternalUrl: getTidlinjeHendelseEksternUrl(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
             internalUrl: createEttersendUrl(manglendeVedleggData),
             tidligstBehandlingsDato: undefined,
-        };
+        } satisfies Tidslinjehendelse;
     }
     const merInfo =
         åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
@@ -540,7 +539,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         type: 'søknad',
         opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
         aktørType: getAktørtypeAvVenteårsak(åpenBehandling.tilstand),
-        tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandling.tilstand),
+        utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandling.tilstand),
         dokumenter: [],
         manglendeVedlegg: [],
         merInformasjon: merInfo,
@@ -554,7 +553,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
                 ? getTidligstBehandlingsDatoForTidligSøknad(ytelse, åpenBehandling).toISOString()
                 : undefined,
-    };
+    } satisfies Tidslinjehendelse;
 
     if (hendelseVenterPåDokumentasjon) {
         return [hendelseVenterPåDokumentasjon, tidslinjeHendelse];
@@ -563,10 +562,10 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     return [tidslinjeHendelse];
 };
 
-export const sorterTidslinjehendelser = (h1: Tidslinjehendelse, h2: Tidslinjehendelse) => {
-    if (dayjs(h1.opprettet).isBefore(h2.opprettet)) {
+export const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
+    if (dayjs(opprettet1).isBefore(opprettet2)) {
         return -1;
-    } else if (dayjs(h1.opprettet).isAfter(h2.opprettet)) {
+    } else if (dayjs(opprettet1).isAfter(opprettet2)) {
         return 1;
     } else {
         return 0;
@@ -597,11 +596,7 @@ const getGjeldendeInnvilgelseshendelse = (sorterteHendelser: Tidslinjehendelse[]
     const hendelserEtterInvilgelse =
         sisteInnvilgelseIndex >= 0 ? sorterteHendelser.slice(sisteInnvilgelseIndex) : undefined;
     const finnesNyeSøknaderEtterInnvilgelse = hendelserEtterInvilgelse?.find((hendelse) =>
-        [
-            TidslinjehendelseType.ENDRINGSSØKNAD,
-            TidslinjehendelseType.FØRSTEGANGSSØKNAD,
-            TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
-        ].includes(hendelse.tidslinjeHendelseType),
+        ['ENDRINGSSØKNAD', 'FØRSTEGANGSSØKNAD', 'FØRSTEGANGSSØKNAD_NY'].includes(hendelse.utvidetTidslinjeHendelseType),
     );
     return finnesNyeSøknaderEtterInnvilgelse ? undefined : sorterteHendelser[sisteInnvilgelseIndex];
 };
@@ -644,7 +639,7 @@ export const getHendelserForVisning = (
 };
 
 export const getAlleTidslinjehendelser = (
-    tidslinjeHendelserData: Tidslinjehendelse[],
+    tidslinjeHendelserData: TidslinjeHendelseDto[],
     åpenBehandlingPåVent: ÅpenBehandlingFP | ÅpenBehandlingSVP | undefined,
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
@@ -688,23 +683,23 @@ export const getAlleTidslinjehendelser = (
         tidslinjeHendelser.push(vedtakHendelse);
     }
 
-    return [...tidslinjeHendelser].sort(sorterTidslinjehendelser);
+    return [...tidslinjeHendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet));
 };
 
 export const getRelevantNyTidslinjehendelse = (
-    tidslinjehendelser: Tidslinjehendelse[] | undefined,
-): Tidslinjehendelse | undefined => {
-    const søknadHendelser = [
-        TidslinjehendelseType.FØRSTEGANGSSØKNAD,
-        TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
-        TidslinjehendelseType.ENDRINGSSØKNAD,
+    tidslinjehendelser: TidslinjeHendelseDto[],
+): TidslinjeHendelseDto | undefined => {
+    const søknadHendelser: Array<TidslinjeHendelseDto['tidslinjeHendelseType']> = [
+        'FØRSTEGANGSSØKNAD',
+        'FØRSTEGANGSSØKNAD_NY',
+        'ENDRINGSSØKNAD',
     ];
     const sorterteHendelser = tidslinjehendelser
-        ? [...tidslinjehendelser].sort(sorterTidslinjehendelser).reverse()
+        ? [...tidslinjehendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).reverse()
         : undefined;
     const relevantNyHendelse = sorterteHendelser
         ? sorterteHendelser.find(
-              (hendelse: Tidslinjehendelse) =>
+              (hendelse) =>
                   søknadHendelser.includes(hendelse.tidslinjeHendelseType) &&
                   hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
                   dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),

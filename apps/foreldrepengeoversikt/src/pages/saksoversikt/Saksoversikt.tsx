@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser, Søkerinfo, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
+import { Satser, Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -50,17 +50,16 @@ interface Props {
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined) => {
+const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
     if (!tidslinjehendelser) {
         return undefined;
     }
     const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
-        .find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY);
+        .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
     return nySøknadHendelse
         ? nySøknadHendelse.opprettet
-        : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD)
-              ?.opprettet;
+        : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD')?.opprettet;
 };
 
 const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
@@ -106,7 +105,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
-    const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data);
+    const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
     const ENGANGSTØNAD = useQuery({
         ...hentSatserOptions(),
         select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
@@ -118,7 +117,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
 
-    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data);
+    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;

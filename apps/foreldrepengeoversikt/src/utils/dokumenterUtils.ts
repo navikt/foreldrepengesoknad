@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto, TidslinjeHendelseDto } from '@navikt/fp-types';
 
 import { urlPrefiks } from '../api/api';
 
@@ -20,6 +20,6 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: DokumentDto[]): Record
     return gruppert;
 };
 
-export const lagUrl = (dokument: DokumentDto): string => {
+export const lagUrl = (dokument: DokumentDto | TidslinjeHendelseDto['dokumenter'][0]): string => {
     return `${urlPrefiks}/rest/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 };

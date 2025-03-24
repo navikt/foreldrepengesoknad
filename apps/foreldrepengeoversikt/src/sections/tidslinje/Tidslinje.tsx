@@ -6,7 +6,7 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Søkerinfo, Tidslinjehendelse, TidslinjehendelseType, Ytelse } from '@navikt/fp-types';
+import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
 
 import { Sak } from '../../types/Sak';
 import { guid } from '../../utils/guid';
@@ -27,7 +27,7 @@ interface Props {
     visHeleTidslinjen: boolean;
     søkersBarn: Søkerinfo['søker']['barn'];
     manglendeVedlegg: Skjemanummer[];
-    tidslinjeHendelser: Tidslinjehendelse[];
+    tidslinjeHendelser: TidslinjeHendelseDto[];
 }
 
 export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
@@ -78,7 +78,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
             {hendelserForVisning.map((hendelse, index) => {
                 const isActiveStep = index === aktivtStegIndex;
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
-                    if (hendelse.tidslinjeHendelseType === TidslinjehendelseType.INNTEKTSMELDING) {
+                    if (hendelse.utvidetTidslinjeHendelseType === 'INNTEKTSMELDING') {
                         return (
                             <InntektsmeldingDokumentHendelse
                                 key={`${dokument.journalpostId}-${dokument.dokumentId}`}
@@ -96,7 +96,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                     );
                 });
                 const visKlokkeslett =
-                    hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&
+                    hendelse.utvidetTidslinjeHendelseType !== 'FAMILIEHENDELSE' &&
                     dayjs(hendelse.opprettet).isSameOrBefore(dayjs());
                 const erSisteHendelsenIHeleTidslinjen =
                     alleSorterteHendelser.findIndex((h) => h === hendelse) === alleSorterteHendelser.length - 1;
@@ -116,7 +116,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         key={guid()}
                         isActiveStep={isActiveStep}
                         visKlokkeslett={visKlokkeslett}
-                        type={hendelse.tidslinjeHendelseType}
+                        utvidetTidslinjeHendelseType={hendelse.utvidetTidslinjeHendelseType}
                         førsteUttaksdagISaken={førsteUttaksdagISaken?.toISOString()}
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                         finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
@@ -124,7 +124,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
                         <ul className="list-none p-0">
-                            {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
+                            {hendelse.utvidetTidslinjeHendelseType === 'VENT_DOKUMENTASJON' &&
                                 manglendeVedlegg &&
                                 manglendeVedlegg.length > 1 && (
                                     <div className={styles.manglendeVedlegg}>

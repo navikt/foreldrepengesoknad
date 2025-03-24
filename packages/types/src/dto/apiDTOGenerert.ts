@@ -1301,15 +1301,15 @@ export type ÅpenBehandling = {
 };
 
 export type Dokument = {
-    journalpostId?: string;
-    dokumentId?: string;
-    tittel?: string;
+    journalpostId: string;
+    dokumentId: string;
+    tittel: string;
 };
 
 export type TidslinjeHendelseDto = {
-    opprettet?: string;
-    aktørType?: 'BRUKER' | 'NAV' | 'ARBEIDSGIVER';
-    tidslinjeHendelseType?:
+    opprettet: string;
+    aktørType: 'BRUKER' | 'NAV' | 'ARBEIDSGIVER';
+    tidslinjeHendelseType:
         | 'FØRSTEGANGSSØKNAD'
         | 'FØRSTEGANGSSØKNAD_NY'
         | 'ETTERSENDING'
@@ -1320,7 +1320,7 @@ export type TidslinjeHendelseDto = {
         | 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING'
         | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
         | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
-    dokumenter?: Dokument[];
+    dokumenter: Dokument[];
 };
 
 export type BortfaltNaturalytelse = {

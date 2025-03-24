@@ -216,7 +216,8 @@ export type MellomlagredeYtelser = {
     svangerskapspenger: boolean;
 };
 
-export interface Tidslinjehendelse {
+// TODO: ikke api dto
+interface Tidslinjehendelse {
     type: string;
     opprettet: string;
     aktørType: AktørType;
@@ -230,7 +231,7 @@ export interface Tidslinjehendelse {
     tidligstBehandlingsDato?: string;
 }
 
-export enum TidslinjehendelseType {
+enum TidslinjehendelseType {
     FØRSTEGANGSSØKNAD = 'FØRSTEGANGSSØKNAD',
     FØRSTEGANGSSØKNAD_NY = 'FØRSTEGANGSSØKNAD_NY',
     ETTERSENDING = 'ETTERSENDING',

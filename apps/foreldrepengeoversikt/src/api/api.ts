@@ -13,7 +13,7 @@ import {
     Saker,
     Satser,
     Søkerinfo,
-    Tidslinjehendelse,
+    TidslinjeHendelseDto,
     TilgjengeligeStønadskontoer,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
@@ -107,7 +107,9 @@ export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['TIDSLINJEHENDELSER', saksnummer],
         queryFn: () =>
-            ky.get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
+            ky
+                .get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } })
+                .json<TidslinjeHendelseDto[]>(),
     });
 
 export const hentManglendeVedleggOptions = (saksnummer: string) =>
