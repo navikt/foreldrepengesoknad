@@ -1309,6 +1309,14 @@ export type ArbeidsforholdSVP = {
         | 'AVSLAG_ANNET'
         | 'AVSLAG_INNGANGSVILKÅR';
 };
+
+type Oppholdsperiode = {
+    fom: string;
+    tom: string;
+    årsak: 'FERIE' | 'SYKEPENGER';
+    oppholdKilde: 'SØKNAD' | 'SAKSBEHANDLER' | 'INNTEKTSMELDING';
+};
+
 export interface TilretteleggingPeriodeSVP {
     type: 'INGEN' | 'DELVIS' | 'HEL';
     fom: string;

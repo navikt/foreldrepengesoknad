@@ -1,8 +1,8 @@
-import { DokumentDto, DokumentType } from '@navikt/fp-types';
+import { DokumentDto } from '@navikt/fp-types';
 
 export const dokumenter = [
     {
-        type: DokumentType.UTGÅENDE_DOKUMENT,
+        type: 'UTGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:17:24',
         saksnummer: '352011079',
         tittel: 'Opphør Foreldrepenger',
@@ -10,7 +10,7 @@ export const dokumenter = [
         dokumentId: '624862996',
     },
     {
-        type: DokumentType.UTGÅENDE_DOKUMENT,
+        type: 'UTGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:17:13',
         saksnummer: '352011080',
         tittel: 'Innvilgelsesbrev Foreldrepenger',
@@ -18,7 +18,7 @@ export const dokumenter = [
         dokumentId: '624862995',
     },
     {
-        type: DokumentType.INNGÅENDE_DOKUMENT,
+        type: 'INNGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:11:56',
         saksnummer: '352011080',
         tittel: 'Søknad om foreldrepenger ved fødsel',
@@ -26,7 +26,7 @@ export const dokumenter = [
         dokumentId: '624862992',
     },
     {
-        type: DokumentType.INNGÅENDE_DOKUMENT,
+        type: 'INNGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:11:56',
         saksnummer: '352011080',
         tittel: 'Bekreftelse på ventet fødselsdato',
@@ -34,7 +34,7 @@ export const dokumenter = [
         dokumentId: '624862993',
     },
     {
-        type: DokumentType.UTGÅENDE_DOKUMENT,
+        type: 'UTGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:09:48',
         saksnummer: '352011079',
         tittel: 'Innvilgelsesbrev Foreldrepenger',
@@ -42,7 +42,7 @@ export const dokumenter = [
         dokumentId: '624862990',
     },
     {
-        type: DokumentType.INNGÅENDE_DOKUMENT,
+        type: 'INNGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:06:48',
         saksnummer: '352011079',
         tittel: 'Søknad om foreldrepenger ved fødsel',
@@ -50,7 +50,7 @@ export const dokumenter = [
         dokumentId: '624862989',
     },
     {
-        type: DokumentType.INNGÅENDE_DOKUMENT,
+        type: 'INNGÅENDE_DOKUMENT',
         mottatt: '2023-01-31T09:06:48',
         saksnummer: '352011079',
         tittel: 'Bekreftelse på ventet fødselsdato',

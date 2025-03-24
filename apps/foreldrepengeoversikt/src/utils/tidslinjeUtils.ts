@@ -4,7 +4,6 @@ import { IntlShape } from 'react-intl';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
-    AktørType,
     EsÅpenBehandling,
     Familiehendelse,
     FpÅpenBehandling,
@@ -288,14 +287,14 @@ export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTils
     }
 };
 
-export const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): AktørType => {
+export const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): TidslinjeHendelseDto['aktørType'] => {
     if (venteårsak === 'VENT_INNTEKTSMELDING') {
-        return AktørType.ARBEIDSGIVER;
+        return 'ARBEIDSGIVER';
     }
     if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
-        return AktørType.NAV;
+        return 'NAV';
     }
-    return AktørType.BRUKER;
+    return 'BRUKER';
 };
 
 const createEttersendUrl = (skjematypeIds: Skjemanummer[]): string => {
@@ -402,7 +401,7 @@ export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): T
         type: 'søknad',
         opprettet: familiehendelsedato,
         utvidetTidslinjeHendelseType: 'FAMILIEHENDELSE',
-        aktørType: AktørType.BRUKER,
+        aktørType: 'BRUKER',
         dokumenter: [],
         manglendeVedlegg: [],
     };
@@ -428,7 +427,7 @@ export const getTidslinjeBarnTreÅrHendelse = (
         type: 'søknad',
         opprettet: dato,
         utvidetTidslinjeHendelseType: 'BARNET_TRE_ÅR',
-        aktørType: AktørType.BRUKER,
+        aktørType: 'BRUKER',
         dokumenter: [],
         manglendeVedlegg: [],
         merInformasjon,
@@ -449,7 +448,7 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
         type: 'søknad',
         opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
         utvidetTidslinjeHendelseType: 'FREMTIDIG_VEDTAK',
-        aktørType: AktørType.NAV,
+        aktørType: 'NAV',
         dokumenter: [],
         manglendeVedlegg: [],
         merInformasjon:
