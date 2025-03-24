@@ -217,6 +217,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                         hvemPlanlegger={hvemPlanlegger}
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
+                                        uttaksplan={gjeldendeUttaksplan}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}

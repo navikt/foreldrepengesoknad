@@ -4,40 +4,37 @@ import { useIntl } from 'react-intl';
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
+import { PeriodeHullType } from '../../../types/Planperiode';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
     modalData: ModalData;
-    setModalData: (data: ModalData) => void;
     closeModal: () => void;
-}
-
-export enum HvaVilDuGjøre {
-    LEGG_TIL_PERIODE = 'leggTilPeriode',
-    LEGG_TIL_OPPHOLD = 'leggTilOpphold',
+    setModalData: (data: ModalData) => void;
 }
 
 interface FormValues {
-    hvaVilDuGjøre: HvaVilDuGjøre | undefined;
+    årsak: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK | undefined;
 }
 
-export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const VelgOppholdsårsakModalStep = ({ modalData, setModalData, closeModal }: Props) => {
     const intl = useIntl();
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            hvaVilDuGjøre: modalData.hvaVilDuGjøre,
+            årsak: modalData.årsak,
         },
     });
 
     const onSubmit = (values: FormValues) => {
         setModalData({
             ...modalData,
-            hvaVilDuGjøre: values.hvaVilDuGjøre,
-            currentStep: 'step2',
+            årsak: values.årsak,
+            currentStep: 'step3',
         });
     };
 
@@ -47,15 +44,22 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <VStack gap="4">
                     <RhfRadioGroup
-                        name="hvaVilDuGjøre"
+                        name="årsak"
                         validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
                     >
-                        <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>Legge til periode med foreldrepenger</Radio>
-                        <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                            Legge til ferie eller periode uten foreldrepenger
-                        </Radio>
+                        <Radio value={UtsettelseÅrsakType.Ferie}>Ferie</Radio>
+                        <Radio value={PeriodeHullType.PERIODE_UTEN_UTTAK}>Periode uten foreldrepenger</Radio>
                     </RhfRadioGroup>
-                    <ModalButtons onCancel={closeModal} isFinalStep={false} />
+                    <ModalButtons
+                        onCancel={closeModal}
+                        isFinalStep={false}
+                        onGoPreviousStep={() => {
+                            setModalData({
+                                ...modalData,
+                                currentStep: 'step1',
+                            });
+                        }}
+                    />
                 </VStack>
             </RhfForm>
         </>

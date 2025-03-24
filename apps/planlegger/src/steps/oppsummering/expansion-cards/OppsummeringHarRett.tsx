@@ -278,6 +278,11 @@ export const OppsummeringHarRett = ({
                                     hvemPlanlegger={hvemPlanlegger}
                                     barnet={barnet}
                                     hvemHarRett={hvemHarRett}
+                                    uttaksplan={
+                                        tilpassPlan
+                                            ? gjeldendeUttaksplan
+                                            : [...planforslag.søker1, ...planforslag.søker2]
+                                    }
                                 />
                             }
                             barnehagestartdato={barnehagestartdato}
