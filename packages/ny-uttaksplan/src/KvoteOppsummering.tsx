@@ -59,7 +59,9 @@ const OppsummeringsTittel = ({ hvemPlanlegger }: { hvemPlanlegger?: ForeldreparS
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return <KvoteTittelKunEnHarForeldrepenger />;
     }
-    return <KvoteTittel hvemPlanlegger={hvemPlanlegger} />;
+    const hvemPlanleggerObjekt = hvemPlanlegger ? { type: hvemPlanlegger } : undefined;
+
+    return <KvoteTittel hvemPlanlegger={hvemPlanleggerObjekt} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
