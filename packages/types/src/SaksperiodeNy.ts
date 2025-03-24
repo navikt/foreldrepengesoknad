@@ -1,11 +1,11 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
+import { Gradering } from './Gradering';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
-import { Gradering } from './dto/apiDTOGenerert';
 
 export interface SaksperiodeNy {
     fom: string;

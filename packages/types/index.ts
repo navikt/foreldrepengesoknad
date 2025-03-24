@@ -58,6 +58,8 @@ export type {
 export type { PeriodeResultat } from './src/PeriodeResultat';
 export { PeriodeResultatÅrsak } from './src/PeriodeResultatÅrsak';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
+export type { Gradering } from './src/Gradering';
+export type { Aktivitet } from './src/Aktivitet';
 export type { ArbeidsgiverInfo } from './src/ArbeidsgiverInfo';
 export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UtsettelseÅrsakType } from './src/UtsettelseÅrsakType';
