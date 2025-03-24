@@ -8,7 +8,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
+import { Kvittering, LocaleAll, PersonFrontend } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
@@ -34,7 +34,7 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
-    søker: Søker;
+    søker: PersonFrontend;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 

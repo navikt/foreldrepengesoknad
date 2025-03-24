@@ -1,4 +1,3 @@
-export type { Kvittering } from './src/Kvittering';
 export type { LocaleNo, LocaleAll } from './src/Locale';
 export type { Attachment } from './src/Attachment';
 export type { AttachmentMetadata, AttachmentMetadataTidsperiode } from './src/AttachmentMetadata';

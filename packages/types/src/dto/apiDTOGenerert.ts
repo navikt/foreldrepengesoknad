@@ -1173,6 +1173,9 @@ export type PersonFrontend = {
     sivilstand?: Sivilstand;
 };
 
+// TODO: manuelt lagt til
+export type Kjønn = 'M' | 'K';
+
 export type Sivilstand = {
     type?:
         | 'UOPPGITT'
