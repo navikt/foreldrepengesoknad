@@ -69,18 +69,6 @@ type Resultat = {
     utbetalingsgrad: number;
 };
 
-export interface MinidialogInnslag {
-    dialogId: string;
-    opprettet: string;
-    saksnr: string;
-}
-
-export interface SakOppslagDTO {
-    engangsstønad: EngangsstønadSakDTO[];
-    foreldrepenger: ForeldrepengesakDTO[];
-    svangerskapspenger: SvangerskapspengeSakDTO[];
-}
-
 type VedtakDto = {
     arbeidsforhold: ArbeidsforholdSVP[];
     avslagÅrsak?: unknown;

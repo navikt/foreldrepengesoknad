@@ -3,17 +3,7 @@ import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import {
-    Barn,
-    EngangsstønadSakDTO,
-    Familiehendelse,
-    Familiesituasjon,
-    ForeldrepengesakDTO,
-    SakOppslagDTO,
-    SvangerskapspengeSakDTO,
-    Søkerinfo,
-    Ytelse,
-} from '@navikt/fp-types';
+import { Barn, Familiehendelse, Familiesituasjon, Saker, Søkerinfo, Ytelse } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
@@ -150,7 +140,7 @@ export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'
 };
 
 const addYtelseToSak = (
-    saker: ForeldrepengesakDTO[] | SvangerskapspengeSakDTO[] | EngangsstønadSakDTO[],
+    saker: Saker['foreldrepenger'] | Saker['engangsstønad'] | Saker['svangerskapspenger'],
     ytelse: Ytelse,
 ): Sak[] => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -182,7 +172,7 @@ const addYtelseToSak = (
     );
 };
 
-export const mapSakerDTOToSaker = (saker: SakOppslagDTO): SakOppslag => {
+export const mapSakerDTOToSaker = (saker: Saker): SakOppslag => {
     return {
         foreldrepenger: addYtelseToSak(saker.foreldrepenger, Ytelse.FORELDREPENGER) as Foreldrepengesak[],
         engangsstønad: addYtelseToSak(saker.engangsstønad, Ytelse.ENGANGSSTØNAD) as EngangsstønadSak[],

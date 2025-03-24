@@ -1,5 +1,5 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { DekningsgradDTO, PeriodeResultatÅrsak, RettighetType, SakOppslagDTO } from '@navikt/fp-types';
+import { DekningsgradDTO, PeriodeResultatÅrsak, RettighetType, Saker } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -231,4 +231,4 @@ export const saker = {
             oppdatertTidspunkt: '2024-10-24T09:33:39.69',
         },
     ],
-} satisfies SakOppslagDTO;
+} satisfies Saker;

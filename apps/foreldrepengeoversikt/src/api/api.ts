@@ -10,7 +10,7 @@ import {
     KontoBeregningGrunnlagDto,
     MellomlagredeYtelser,
     MinidialogInnslag,
-    SakOppslagDTO,
+    Saker,
     Satser,
     Søkerinfo,
     Tidslinjehendelse,
@@ -37,7 +37,7 @@ export const minidialogOptions = () =>
 export const hentSakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<Saker>(),
     });
 
 export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>

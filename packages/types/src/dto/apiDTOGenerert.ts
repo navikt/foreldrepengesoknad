@@ -1192,9 +1192,9 @@ export type Søkerinfo = {
 };
 
 export type MinidialogInnslag = {
-    saksnr?: string;
-    opprettet?: string;
-    dialogId?: string;
+    saksnr: string;
+    opprettet: string;
+    dialogId: string;
     frist?: string;
 };
 
@@ -1263,18 +1263,18 @@ export type Person = {
 };
 
 export type Saker = {
-    foreldrepenger?: FpSak[];
-    engangsstønad?: EsSak[];
-    svangerskapspenger?: SvpSak[];
+    foreldrepenger: FpSak[];
+    engangsstønad: EsSak[];
+    svangerskapspenger: SvpSak[];
 };
 
 export type SvpSak = {
-    saksnummer?: string;
-    familiehendelse?: Familiehendelse;
-    sakAvsluttet?: boolean;
+    saksnummer: string;
+    familiehendelse: Familiehendelse;
+    sakAvsluttet: boolean;
     åpenBehandling?: ÅpenBehandling;
     gjeldendeVedtak?: Vedtak;
-    oppdatertTidspunkt?: string;
+    oppdatertTidspunkt: string;
 };
 
 export type Søknad = {
