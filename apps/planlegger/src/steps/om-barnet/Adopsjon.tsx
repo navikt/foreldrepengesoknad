@@ -3,12 +3,13 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
@@ -36,7 +37,8 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
     const overtakelsesdato = formMethods.watch('overtakelsesdato');
 
     const erFarEllerMedmor =
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
+        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
+        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
     return (
         <>

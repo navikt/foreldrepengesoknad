@@ -7,14 +7,13 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll, Satser } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -68,7 +67,7 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
         }
     };
 
-    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 

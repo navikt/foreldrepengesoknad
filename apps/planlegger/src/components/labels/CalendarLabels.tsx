@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { getDefaultNavnSøker1, getDefaultNavnSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import {
@@ -13,7 +13,7 @@ import {
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { HvemPlanleggerType, SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
@@ -34,7 +34,7 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
 
     const erAdoptert = erBarnetAdoptert(barnet);
 
-    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const søker1Tekst = getDefaultNavnSøker1(hvemPlanlegger, intl);
     const søker2Tekst = getDefaultNavnSøker2(hvemPlanlegger, intl);
 

@@ -6,9 +6,10 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
@@ -61,7 +62,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -106,7 +107,7 @@ export const FlereForsørgereToBarn: Story = {
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -140,7 +141,7 @@ export const AleneforsørgerMorEttBarn: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -176,7 +177,7 @@ export const FlereForsørgereKunFarHarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -218,7 +219,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: true,
@@ -262,7 +263,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: true,
@@ -298,7 +299,7 @@ export const AleneforsørgerFarToBarn: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.FAR,
+            type: HvemPlanleggerType.FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -328,7 +329,7 @@ export const FarOgFarBeggeHarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,

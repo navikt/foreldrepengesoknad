@@ -1,7 +1,7 @@
 import { PersonPregnantIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
     erFarDelAvSøknaden,
@@ -13,6 +13,7 @@ import { harKunFarSøker1Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtil
 
 import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
@@ -40,25 +41,27 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                     <FormattedMessage id="HvaErMulig.KanIkkeEndres" />
                 </Heading>
                 <VStack gap="2">
-                    {!erFedre && hvemHarRett !== 'kunSøker2HarRett' && hvemPlanlegger.type !== Situasjon.FAR && (
-                        <>
-                            {erAlenesøker(hvemPlanlegger) && erMorDelAvSøknaden(hvemPlanlegger) ? (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="HvaErMulig.TreUkerFørTermin.Alenemor"
-                                        values={{ b: (msg) => <b>{msg}</b> }}
-                                    />
-                                </BodyLong>
-                            ) : (
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="HvaErMulig.TreUkerFørTermin"
-                                        values={{ b: (msg) => <b>{msg}</b> }}
-                                    />
-                                </BodyLong>
-                            )}
-                        </>
-                    )}
+                    {!erFedre &&
+                        hvemHarRett !== 'kunSøker2HarRett' &&
+                        hvemPlanlegger.type !== HvemPlanleggerType.FAR && (
+                            <>
+                                {erAlenesøker(hvemPlanlegger) && erMorDelAvSøknaden(hvemPlanlegger) ? (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="HvaErMulig.TreUkerFørTermin.Alenemor"
+                                            values={{ b: (msg) => <b>{msg}</b> }}
+                                        />
+                                    </BodyLong>
+                                ) : (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="HvaErMulig.TreUkerFørTermin"
+                                            values={{ b: (msg) => <b>{msg}</b> }}
+                                        />
+                                    </BodyLong>
+                                )}
+                            </>
+                        )}
                     {(hvemHarRett === 'beggeHarRett' ||
                         harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger) ||
                         hvemHarRett === 'kunSøker2HarRett') && (

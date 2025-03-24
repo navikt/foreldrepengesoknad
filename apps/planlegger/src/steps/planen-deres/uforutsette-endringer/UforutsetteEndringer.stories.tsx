@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { UforutsetteEndringer } from './UforutsetteEndringer';
 
@@ -23,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },
@@ -43,7 +44,7 @@ export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
 export const FødselMorOgFarKunFarHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },
@@ -63,7 +64,7 @@ export const FødselMorOgFarKunFarHarRett: Story = {
 export const FødselMorOgFarKunMorHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },

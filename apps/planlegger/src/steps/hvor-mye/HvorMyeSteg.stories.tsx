@@ -5,8 +5,10 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { HvorMyeSteg } from './HvorMyeSteg';
 
@@ -76,7 +78,7 @@ export const FlereForsørgere: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -95,7 +97,7 @@ export const AleneforsørgerMor: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,

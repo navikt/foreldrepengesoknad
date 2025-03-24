@@ -1,35 +1,36 @@
 import { IntlShape } from 'react-intl';
-import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } from 'types/HvemPlanlegger';
+import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor } from 'types/HvemPlanlegger';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
-    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
+    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
 export const erAlenesøker = (hvemPlanlegger: HvemPlanlegger) => erFlereSøkere(hvemPlanlegger) === false;
 
 export const erMorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | MorOgMedmor | Mor =>
-    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
-    hvemPlanlegger.type === Situasjon.MOR;
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+    hvemPlanlegger.type === HvemPlanleggerType.MOR;
 
 export const erFarDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | FarOgFar | Far =>
-    hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-    hvemPlanlegger.type === Situasjon.FAR;
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
+    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
+    hvemPlanlegger.type === HvemPlanleggerType.FAR;
 
 export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor =>
-    hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR;
+    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
 export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar =>
-    hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
 
 export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgFar =>
-    hvemPlanlegger.type === Situasjon.FAR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
+    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
@@ -48,19 +49,19 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
 };
 
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return (
             hvemPlanlegger.navnPåMedmor ||
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
         );
     }
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
         return (
             hvemPlanlegger.navnPåFar ||
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return (
             hvemPlanlegger.navnPåMedfar ||
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
@@ -80,13 +81,13 @@ export const getDefaultNavnSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: Intl
 };
 
 export const getDefaultNavnSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
         return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     return undefined;
@@ -107,7 +108,7 @@ export const finnSøker1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger
         : intl.formatMessage({ id: 'OversiktSteg.Far' });
 
 export const finnSøker2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
@@ -159,10 +160,10 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
 
 export const getErFarEllerMedmor = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     if (
-        hvemPlanlegger.type === Situasjon.FAR ||
-        (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+        hvemPlanlegger.type === HvemPlanleggerType.FAR ||
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
     ) {
         return true;
     }

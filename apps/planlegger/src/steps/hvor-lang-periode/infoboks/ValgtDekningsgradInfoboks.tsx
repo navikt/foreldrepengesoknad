@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -13,7 +13,7 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { HvemPlanleggerType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
@@ -64,7 +64,7 @@ export const ValgtDekningsgradInfoboks = ({
             ? uttaksdata100.sluttdatoPeriode2
             : uttaksdata80.sluttdatoPeriode2;
 
-    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdopsjon;
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdopsjon;
 
     return (
         <Infobox
@@ -119,7 +119,9 @@ export const ValgtDekningsgradInfoboks = ({
                 )}
             </BodyShort>
             {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
-                (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon)) && (
+                (hvemHarRett === 'kunSøker1HarRett' &&
+                    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
+                    erAdopsjon)) && (
                 <VStack gap="2">
                     <BodyShort>
                         <FormattedMessage
