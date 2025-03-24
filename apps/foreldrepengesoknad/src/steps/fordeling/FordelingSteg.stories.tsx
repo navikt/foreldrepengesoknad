@@ -8,7 +8,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
 import {
     Arbeidsforhold,
@@ -23,7 +23,7 @@ const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPa
 const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const vedtakFar = {
-    dekningsgrad: 'HUNDRE' as DekningsgradDTO,
+    dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-02-07',
@@ -52,7 +52,7 @@ const vedtakFar = {
 };
 
 const vedtakMor = {
-    dekningsgrad: 'HUNDRE' as DekningsgradDTO,
+    dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-07-07',

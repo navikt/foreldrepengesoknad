@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 import { Søknad } from 'types/Søknad';
 import { ValgtBarn } from 'types/ValgtBarn';
 
@@ -10,7 +9,6 @@ import {
     Barn,
     BarnType,
     Dekningsgrad,
-    DekningsgradDTO,
     EksisterendeSak,
     FamiliehendelseType,
     OppholdÅrsakType,
@@ -29,7 +27,7 @@ import {
 } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { AnnenForelderFrontend, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
+import { AnnenForelderFrontend, AnnenPartSak, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -144,7 +142,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartVedtakDTO | undefined): Date | undefined => {
+export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartSak | undefined): Date | undefined => {
     if (annenPartsSak === undefined || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
@@ -152,7 +150,7 @@ export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartVedt
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined,
+    eksisterendeSakAnnenPart: AnnenPartSak | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -161,7 +159,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     if (
         eksisterendeSakAnnenPart === undefined ||
         eksisterendeSakAnnenPart === null ||
-        //@ts-ignore Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
+        //@ts-expect-error Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
         eksisterendeSakAnnenPart === ''
     ) {
         return undefined;
@@ -169,6 +167,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
+            //@ts-expect-error -- ignorer frem til typer er ported til autogenererte
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -183,7 +182,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 
     const grunnlagForAnnenPart = {
         dekningsgrad:
-            eksisterendeSakAnnenPart.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+            eksisterendeSakAnnenPart.dekningsgrad === 'HUNDRE'
                 ? Dekningsgrad.HUNDRE_PROSENT
                 : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: eksisterendeSakAnnenPart.antallBarn ? eksisterendeSakAnnenPart.antallBarn : barn.antallBarn,
@@ -245,8 +244,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
             : undefined;
     const fødselsdatoForSaken = fødselsdatoFraFPSak || fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
-        dekningsgrad:
-            dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: dekningsgrad === 'HUNDRE' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: antallBarn,
         morErAleneOmOmsorg: sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
         morErUfør: morUføretrygd,

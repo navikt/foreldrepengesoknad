@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { DekningsgradDTO } from '@navikt/fp-common';
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
@@ -35,8 +34,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
             fødselsdato: sak.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
         }),
     );
-    const konto =
-        sak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
+    const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
     if (!konto) {
         return null;

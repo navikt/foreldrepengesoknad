@@ -1,7 +1,5 @@
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 
-import { DekningsgradDTO } from '@navikt/fp-common';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { BarnFrontend, FpSak } from '@navikt/fp-types';
 
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
@@ -9,7 +7,7 @@ import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
 const fødselsdato = '2022-01-01';
 const fødselsdatoDate = fødselsdato;
 const sak = {
-    dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+    dekningsgrad: 'HUNDRE',
     familiehendelse: {
         fødselsdato: fødselsdato,
         antallBarn: 1,
@@ -19,7 +17,7 @@ const sak = {
     gjelderAdopsjon: false,
     kanSøkeOmEndring: true,
     morUføretrygd: false,
-    rettighetType: RettighetType.BEGGE_RETT,
+    rettighetType: 'BEGGE_RETT',
     sakAvsluttet: false,
     sakTilhørerMor: true,
     saksnummer: '123456',

@@ -1,4 +1,4 @@
-import { Arbeidsform, DekningsgradDTO, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
+import { Arbeidsform, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
 import { FpSak } from '@navikt/fp-types';
 
 import {
@@ -195,7 +195,7 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-        dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
+        dekningsgrad: 'ÅTTI',
     } as FpSak;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {

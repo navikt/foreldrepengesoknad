@@ -5,8 +5,6 @@ import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { DekningsgradDTO } from '@navikt/fp-common';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { BarnFrontend, FpSak, FpÅpenBehandling, PersonFrontend, Søkerinfo } from '@navikt/fp-types';
 
 import { Forside } from './Forside';
@@ -47,7 +45,7 @@ const getSakMedBarn = (sak: FpSak, barnFnr: string[]): FpSak => {
 
 const getSak = (sakinfo: SakInfo): FpSak => {
     return {
-        dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+        dekningsgrad: 'HUNDRE',
         familiehendelse: {
             fødselsdato: sakinfo.fødselsdato,
             omsorgsovertakelse: sakinfo.omsorgsovertakelse,
@@ -59,7 +57,7 @@ const getSak = (sakinfo: SakInfo): FpSak => {
         gjelderAdopsjon: sakinfo.gjelderAdopsjon,
         kanSøkeOmEndring: sakinfo.kanSøkeOmEndring,
         morUføretrygd: false,
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         sakAvsluttet: sakinfo.sakErAvsluttet,
         sakTilhørerMor: true,
         saksnummer: '123456',

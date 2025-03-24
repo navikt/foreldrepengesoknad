@@ -5,7 +5,6 @@ export * from './ArbeidsgiverInfo';
 export * from './Bankkonto';
 export * from './Barn';
 export * from './Dekningsgrad';
-export * from './DekningsgradDTO';
 export * from './EksisterendeSak';
 export * from './FamiliehendelseType';
 export * from './Forelder';
