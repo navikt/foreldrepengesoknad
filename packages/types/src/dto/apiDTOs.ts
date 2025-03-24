@@ -188,15 +188,15 @@ export enum Ytelse {
     ENGANGSSTØNAD = 'engangsstønad',
 }
 
-interface Dokument {
-    type: DokumentType;
-    mottatt: string;
-    saksnummer: string;
-    tittel: string;
-    url: string;
-    journalpostId: string;
-    dokumentId: string;
-}
+// interface Dokument {
+//     type: DokumentType;
+//     mottatt: string;
+//     saksnummer: string;
+//     tittel: string;
+//     url: string;
+//     journalpostId: string;
+//     dokumentId: string;
+// }
 
 export enum DokumentType {
     'INNGÅENDE_DOKUMENT' = 'INNGÅENDE_DOKUMENT',
@@ -216,40 +216,40 @@ export type MellomlagredeYtelser = {
     svangerskapspenger: boolean;
 };
 
-// TODO: ikke api dto
-interface Tidslinjehendelse {
-    type: string;
-    opprettet: string;
-    aktørType: AktørType;
-    tidslinjeHendelseType: TidslinjehendelseType;
-    dokumenter: Dokument[];
-    manglendeVedlegg: Dokument[];
-    merInformasjon?: string;
-    linkTittel?: string;
-    eksternalUrl?: string;
-    internalUrl?: string;
-    tidligstBehandlingsDato?: string;
-}
+// // TODO: ikke api dto
+// interface Tidslinjehendelse {
+//     type: string;
+//     opprettet: string;
+//     aktørType: AktørType;
+//     tidslinjeHendelseType: TidslinjehendelseType;
+//     dokumenter: Dokument[];
+//     manglendeVedlegg: Dokument[];
+//     merInformasjon?: string;
+//     linkTittel?: string;
+//     eksternalUrl?: string;
+//     internalUrl?: string;
+//     tidligstBehandlingsDato?: string;
+// }
 
-enum TidslinjehendelseType {
-    FØRSTEGANGSSØKNAD = 'FØRSTEGANGSSØKNAD',
-    FØRSTEGANGSSØKNAD_NY = 'FØRSTEGANGSSØKNAD_NY',
-    ETTERSENDING = 'ETTERSENDING',
-    ENDRINGSSØKNAD = 'ENDRINGSSØKNAD',
-    INNTEKTSMELDING = 'INNTEKTSMELDING',
-    VEDTAK = 'VEDTAK',
-    VENTER_INNTEKTSMELDING = 'VENTER_INNTEKTSMELDING',
-    VENTER_PGA_TIDLIG_SØKNAD = 'VENTER_PGA_TIDLIG_SØKNAD',
-    VENTER_MELDEKORT = 'VENTER_MELDEKORT',
-    VENT_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
-    UTGÅENDE_INNHENT_OPPLYSNINGER = 'UTGÅENDE_INNHENT_OPPLYSNINGER',
-    UTGÅENDE_ETTERLYS_INNTEKTSMELDING = 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING',
-    UTGÅENDE_VARSEL_TILBAKEBETALING = 'UTGÅENDE_VARSEL_TILBAKEBETALING',
-    FAMILIEHENDELSE = 'FAMILIEHENDELSE',
-    BARNET_TRE_ÅR = 'BARNET_TRE_ÅR',
-    FREMTIDIG_VEDTAK = 'FREMTIDIG_VEDTAK',
-    FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV = 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV',
-}
+// enum TidslinjehendelseType {
+//     FØRSTEGANGSSØKNAD = 'FØRSTEGANGSSØKNAD',
+//     FØRSTEGANGSSØKNAD_NY = 'FØRSTEGANGSSØKNAD_NY',
+//     ETTERSENDING = 'ETTERSENDING',
+//     ENDRINGSSØKNAD = 'ENDRINGSSØKNAD',
+//     INNTEKTSMELDING = 'INNTEKTSMELDING',
+//     VEDTAK = 'VEDTAK',
+//     VENTER_INNTEKTSMELDING = 'VENTER_INNTEKTSMELDING',
+//     VENTER_PGA_TIDLIG_SØKNAD = 'VENTER_PGA_TIDLIG_SØKNAD',
+//     VENTER_MELDEKORT = 'VENTER_MELDEKORT',
+//     VENT_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
+//     UTGÅENDE_INNHENT_OPPLYSNINGER = 'UTGÅENDE_INNHENT_OPPLYSNINGER',
+//     UTGÅENDE_ETTERLYS_INNTEKTSMELDING = 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING',
+//     UTGÅENDE_VARSEL_TILBAKEBETALING = 'UTGÅENDE_VARSEL_TILBAKEBETALING',
+//     FAMILIEHENDELSE = 'FAMILIEHENDELSE',
+//     BARNET_TRE_ÅR = 'BARNET_TRE_ÅR',
+//     FREMTIDIG_VEDTAK = 'FREMTIDIG_VEDTAK',
+//     FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV = 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV',
+// }
 
 export enum AktørType {
     BRUKER = 'BRUKER',

@@ -1014,30 +1014,30 @@ export type KontoBeregningGrunnlagDto = {
 };
 
 export type KontoBeregningDto = {
-    kontoer?: KontoDto[];
-    minsteretter?: Minsteretter;
+    kontoer: KontoDto[];
+    minsteretter: Minsteretter;
     tillegg?: Tillegg;
 };
 
 export type KontoDto = {
-    konto?:
+    konto:
         | 'MØDREKVOTE'
         | 'FEDREKVOTE'
         | 'FELLESPERIODE'
         | 'FORELDREPENGER'
         | 'FORELDREPENGER_FØR_FØDSEL'
         | 'AKTIVITETSFRI_KVOTE';
-    dager?: number;
+    dager: number;
 };
 
 export type Minsteretter = {
-    farRundtFødsel?: number;
-    toTette?: number;
+    farRundtFødsel: number;
+    toTette: number;
 };
 
 export type Tillegg = {
-    flerbarn?: number;
-    prematur?: number;
+    flerbarn: number;
+    prematur: number;
 };
 
 export type AnnenPartSakIdentifikator = {

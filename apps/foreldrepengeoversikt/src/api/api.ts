@@ -7,6 +7,7 @@ import {
     AnnenPartVedtakDTO,
     DokumentDto,
     EttersendingDto,
+    KontoBeregningDto,
     KontoBeregningGrunnlagDto,
     MellomlagredeYtelser,
     MinidialogInnslag,
@@ -14,7 +15,6 @@ import {
     Satser,
     Søkerinfo,
     TidslinjeHendelseDto,
-    TilgjengeligeStønadskontoer,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
@@ -43,7 +43,10 @@ export const hentSakerOptions = () =>
 export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
-        queryFn: () => ky.post(`${urlPrefiks}/rest/konto`, { json: body }).json<TilgjengeligeStønadskontoer>(),
+        queryFn: () =>
+            ky
+                .post(`${urlPrefiks}/rest/konto`, { json: body })
+                .json<{ '80': KontoBeregningDto; '100': KontoBeregningDto }>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>
