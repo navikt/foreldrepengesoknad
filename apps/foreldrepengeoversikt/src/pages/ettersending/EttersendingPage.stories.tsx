@@ -3,8 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { Ytelse } from '@navikt/fp-types';
-
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { EttersendingPage } from './EttersendingPage';
@@ -61,7 +59,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         saker: {
             engangsstønad: [
                 {
-                    ytelse: Ytelse.ENGANGSSTØNAD,
+                    ytelse: 'ENGANGSSTØNAD',
                     saksnummer: '1',
                     sakAvsluttet: false,
                     gjelderAdopsjon: false,

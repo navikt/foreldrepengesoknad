@@ -1,40 +1,37 @@
 import { Attachment } from '../Attachment';
-import { Kjønn } from '../Kjønn';
-import { RettighetType } from '../RettighetType';
-import { SaksperiodeNy } from '../SaksperiodeNy';
 
-export interface SøkerinfoDTOPerson {
-    fnr: string;
-    fornavn: string;
-    etternavn: string;
-    mellomnavn?: string;
-    fødselsdato: string;
-    dødsdato?: string;
-    kjønn: Kjønn;
-}
+// export interface SøkerinfoDTOPerson {
+//     fnr: string;
+//     fornavn: string;
+//     etternavn: string;
+//     mellomnavn?: string;
+//     fødselsdato: string;
+//     dødsdato?: string;
+//     kjønn: Kjønn;
+// }
 
-export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
-    annenForelder?: Omit<SøkerinfoDTOPerson, 'kjønn'>;
-}
-
-export interface SøknadSVP {
-    arbeidsforhold: ArbeidsforholdSVP[];
-}
-
-export interface ArbeidsforholdSVP {
-    aktivitet: Aktivitet;
-    behovFrom: string;
-    tilrettelegginger: TilretteleggingPeriodeSVP[];
-    oppholdsperioder: Oppholdsperiode[];
-    avslutningÅrsak?:
-        | 'NORMAL'
-        | 'TILBAKE_I_HEL_STILLING'
-        | 'AVSLAG_OVERGANG_FORELDREPENGER'
-        | 'AVSLAG_FØDSEL'
-        | 'AVSLAG_TIDSPERIODE_FØR_TERMIN'
-        | 'AVSLAG_ANNET'
-        | 'AVSLAG_INNGANGSVILKÅR';
-}
+// export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
+//     annenForelder?: Omit<SøkerinfoDTOPerson, 'kjønn'>;
+// }
+//
+// export interface SøknadSVP {
+//     arbeidsforhold: ArbeidsforholdSVP[];
+// }
+//
+// export interface ArbeidsforholdSVP {
+//     aktivitet: Aktivitet;
+//     behovFrom: string;
+//     tilrettelegginger: TilretteleggingPeriodeSVP[];
+//     oppholdsperioder: Oppholdsperiode[];
+//     avslutningÅrsak?:
+//         | 'NORMAL'
+//         | 'TILBAKE_I_HEL_STILLING'
+//         | 'AVSLAG_OVERGANG_FORELDREPENGER'
+//         | 'AVSLAG_FØDSEL'
+//         | 'AVSLAG_TIDSPERIODE_FØR_TERMIN'
+//         | 'AVSLAG_ANNET'
+//         | 'AVSLAG_INNGANGSVILKÅR';
+// }
 
 export type Oppholdsperiode = {
     fom: string;
@@ -43,84 +40,84 @@ export type Oppholdsperiode = {
     oppholdKilde: 'SØKNAD' | 'SAKSBEHANDLER' | 'INNTEKTSMELDING';
 };
 
-type Aktivitet = {
-    type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
-    arbeidsgiver?: Arbeidsgiver;
-    arbeidsgiverNavn?: string;
-};
+// type Aktivitet = {
+//     type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
+//     arbeidsgiver?: Arbeidsgiver;
+//     arbeidsgiverNavn?: string;
+// };
 
-type Arbeidsgiver = {
-    id: string;
-    type: 'PRIVAT' | 'ORGANISASJON';
-};
+// type Arbeidsgiver = {
+//     id: string;
+//     type: 'PRIVAT' | 'ORGANISASJON';
+// };
 
 export type Tilretteleggingstype = 'INGEN' | 'DELVIS' | 'HEL';
+//
+// export interface TilretteleggingPeriodeSVP {
+//     type: Tilretteleggingstype;
+//     fom: string;
+//     tom: string;
+//     arbeidstidprosent?: number;
+//     resultat?: Resultat;
+// }
 
-export interface TilretteleggingPeriodeSVP {
-    type: Tilretteleggingstype;
-    fom: string;
-    tom: string;
-    arbeidstidprosent?: number;
-    resultat?: Resultat;
-}
+// type Resultat = {
+//     resultatType: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
+//     utbetalingsgrad: number;
+// };
+//
+// type VedtakDto = {
+//     arbeidsforhold: ArbeidsforholdSVP[];
+//     avslagÅrsak?: unknown;
+// };
 
-type Resultat = {
-    resultatType: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
-    utbetalingsgrad: number;
-};
-
-type VedtakDto = {
-    arbeidsforhold: ArbeidsforholdSVP[];
-    avslagÅrsak?: unknown;
-};
-
-export interface SvangerskapspengeSakDTO {
-    saksnummer: string;
-    sakAvsluttet: boolean;
-    gjelderAdopsjon?: boolean;
-    familiehendelse: Familiehendelse;
-    åpenBehandling?: ÅpenBehandlingSVP;
-    gjeldendeVedtak?: VedtakDto;
-    oppdatertTidspunkt: string;
-}
-export interface EngangsstønadSakDTO {
-    saksnummer: string;
-    sakAvsluttet: boolean;
-    gjelderAdopsjon: boolean;
-    familiehendelse: Familiehendelse;
-    åpenBehandling?: ÅpenBehandlingES;
-    oppdatertTidspunkt: string;
-}
-
-export interface Familiehendelse {
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelse?: string;
-    antallBarn: number;
-}
+// export interface SvangerskapspengeSakDTO {
+//     saksnummer: string;
+//     sakAvsluttet: boolean;
+//     gjelderAdopsjon?: boolean;
+//     familiehendelse: Familiehendelse;
+//     åpenBehandling?: ÅpenBehandlingSVP;
+//     gjeldendeVedtak?: VedtakDto;
+//     oppdatertTidspunkt: string;
+// }
+// export interface EngangsstønadSakDTO {
+//     saksnummer: string;
+//     sakAvsluttet: boolean;
+//     gjelderAdopsjon: boolean;
+//     familiehendelse: Familiehendelse;
+//     åpenBehandling?: ÅpenBehandlingES;
+//     oppdatertTidspunkt: string;
+// }
+//
+// export interface Familiehendelse {
+//     fødselsdato?: string;
+//     termindato?: string;
+//     omsorgsovertakelse?: string;
+//     antallBarn: number;
+// }
 
 // TODO
-export enum BehandlingTilstand {
-    TIDLIG_SØKNAD = 'VENT_TIDLIG_SØKNAD',
-    VENTER_PÅ_INNTEKTSMELDING = 'VENT_INNTEKTSMELDING',
-    VENTER_PÅ_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
-    VENTER_PÅ_MELDEKORT = 'VENT_MELDEKORT',
-    UNDER_BEHANDLING = 'UNDER_BEHANDLING',
-}
+// export enum BehandlingTilstand {
+//     TIDLIG_SØKNAD = 'VENT_TIDLIG_SØKNAD',
+//     VENTER_PÅ_INNTEKTSMELDING = 'VENT_INNTEKTSMELDING',
+//     VENTER_PÅ_DOKUMENTASJON = 'VENT_DOKUMENTASJON',
+//     VENTER_PÅ_MELDEKORT = 'VENT_MELDEKORT',
+//     UNDER_BEHANDLING = 'UNDER_BEHANDLING',
+// }
 
-export interface ÅpenBehandlingFP {
-    tilstand: BehandlingTilstand;
-    søknadsperioder?: SaksperiodeNy[];
-}
-
-export interface ÅpenBehandlingES {
-    tilstand: BehandlingTilstand;
-}
-
-export interface ÅpenBehandlingSVP {
-    tilstand: BehandlingTilstand;
-    søknad: SøknadSVP;
-}
+// export interface ÅpenBehandlingFP {
+//     tilstand: BehandlingTilstand;
+//     søknadsperioder?: SaksperiodeNy[];
+// }
+//
+// export interface ÅpenBehandlingES {
+//     tilstand: BehandlingTilstand;
+// }
+//
+// export interface ÅpenBehandlingSVP {
+//     tilstand: BehandlingTilstand;
+//     søknad: SøknadSVP;
+// }
 
 // TODO
 export enum Forelder {
@@ -137,40 +134,40 @@ export enum DekningsgradDTO {
     HUNDRE_PROSENT = 'HUNDRE',
 }
 
-export interface ForeldrepengesakDTO {
-    saksnummer: string;
-    sakAvsluttet: boolean;
-    kanSøkeOmEndring: boolean;
-    sakTilhørerMor: boolean;
-    gjelderAdopsjon: boolean;
-    morUføretrygd: boolean;
-    harAnnenForelderTilsvarendeRettEØS: boolean;
-    ønskerJustertUttakVedFødsel: boolean;
-    rettighetType: RettighetType;
-    annenPart: PersonFnrDTO;
-    familiehendelse: Familiehendelse;
-    gjeldendeVedtak?: {
-        perioder: SaksperiodeNy[];
-    };
-    barn: PersonFnrDTO[];
-    dekningsgrad: DekningsgradDTO;
-    åpenBehandling?: ÅpenBehandlingFP;
-    oppdatertTidspunkt: string;
-    forelder: Forelder;
-}
+// export interface ForeldrepengesakDTO {
+//     saksnummer: string;
+//     sakAvsluttet: boolean;
+//     kanSøkeOmEndring: boolean;
+//     sakTilhørerMor: boolean;
+//     gjelderAdopsjon: boolean;
+//     morUføretrygd: boolean;
+//     harAnnenForelderTilsvarendeRettEØS: boolean;
+//     ønskerJustertUttakVedFødsel: boolean;
+//     rettighetType: RettighetType;
+//     annenPart: PersonFnrDTO;
+//     familiehendelse: Familiehendelse;
+//     gjeldendeVedtak?: {
+//         perioder: SaksperiodeNy[];
+//     };
+//     barn: PersonFnrDTO[];
+//     dekningsgrad: DekningsgradDTO;
+//     åpenBehandling?: ÅpenBehandlingFP;
+//     oppdatertTidspunkt: string;
+//     forelder: Forelder;
+// }
 
-export type KontoBeregningGrunnlagDto = {
-    rettighetstype: RettighetType;
-    brukerrolle: 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
-    antallBarn: number;
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelseDato?: string;
-    morHarUføretrygd: boolean;
-    familieHendelseDatoNesteSak?: string;
-};
+// export type KontoBeregningGrunnlagDto = {
+//     rettighetstype: RettighetType;
+//     brukerrolle: 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
+//     antallBarn: number;
+//     fødselsdato?: string;
+//     termindato?: string;
+//     omsorgsovertakelseDato?: string;
+//     morHarUføretrygd: boolean;
+//     familieHendelseDatoNesteSak?: string;
+// };
 
-export interface EttersendingDto {
+interface EttersendingDto {
     brukerTekst?: {
         dokumentType: string;
         overskrift: string;
@@ -182,11 +179,7 @@ export interface EttersendingDto {
     vedlegg: Attachment[];
 }
 
-export enum Ytelse {
-    FORELDREPENGER = 'foreldrepenger',
-    SVANGERSKAPSPENGER = 'svangerskapspenger',
-    ENGANGSSTØNAD = 'engangsstønad',
-}
+export type Ytelse = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
 // interface Dokument {
 //     type: DokumentType;
@@ -203,18 +196,18 @@ export enum DokumentType {
     'UTGÅENDE_DOKUMENT' = 'UTGÅENDE_DOKUMENT',
     'ARBEIDSGIVER' = 'ARBEIDSGIVER',
 }
-export interface AnnenPartVedtakDTO {
-    antallBarn?: number;
-    dekningsgrad: DekningsgradDTO;
-    perioder: SaksperiodeNy[];
-    termindato?: string;
-}
-
-export type MellomlagredeYtelser = {
-    engangsstonad: boolean;
-    foreldrepenger: boolean;
-    svangerskapspenger: boolean;
-};
+// export interface AnnenPartVedtakDTO {
+//     antallBarn?: number;
+//     dekningsgrad: DekningsgradDTO;
+//     perioder: SaksperiodeNy[];
+//     termindato?: string;
+// }
+//
+// export type MellomlagredeYtelser = {
+//     engangsstonad: boolean;
+//     foreldrepenger: boolean;
+//     svangerskapspenger: boolean;
+// };
 
 // // TODO: ikke api dto
 // interface Tidslinjehendelse {

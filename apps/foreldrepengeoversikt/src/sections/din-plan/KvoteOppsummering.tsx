@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { DekningsgradDTO } from '@navikt/fp-common';
-import { Ytelse } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
@@ -12,7 +11,7 @@ import { Foreldrepengesak } from '../../types/Sak';
 export const KvoteOversikt = () => {
     const gjeldendeSak = useGetSelectedSak();
 
-    const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === Ytelse.FORELDREPENGER;
+    const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';
 
     if (!harFpSak) {
         return null;

@@ -7,7 +7,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
-import { Ytelse } from '@navikt/fp-types';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions, hentSatserOptions } from '../../api/api';
@@ -38,7 +37,7 @@ export const InntektsmeldingPage = () => {
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
     const GRUNNBELØP =
         useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
-    const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
+    const ytelseTekst = useGetYtelse() === 'SVANGERSKAPSPENGER' ? 'svangerskapspengene' : 'foreldrepengene';
     const locale = useIntl().locale;
 
     const params = useParams();

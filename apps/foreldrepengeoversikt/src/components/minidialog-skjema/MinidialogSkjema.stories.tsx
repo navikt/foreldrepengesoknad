@@ -3,8 +3,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 
-import { Ytelse } from '@navikt/fp-types';
-
 import { MinidialogSkjema } from './MinidialogSkjema';
 
 const queryClient = new QueryClient({
@@ -52,7 +50,7 @@ export const SkalIkkeFeileOpplasting: Story = {
             opprettet: '2020-01-01',
             saksnr: '1',
         },
-        sakstype: Ytelse.FORELDREPENGER,
+        sakstype: 'FORELDREPENGER',
         ettersendelseError: undefined,
     },
 };

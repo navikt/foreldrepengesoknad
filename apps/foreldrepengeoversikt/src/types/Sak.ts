@@ -1,15 +1,15 @@
-import { EngangsstønadSakDTO, ForeldrepengesakDTO, SvangerskapspengeSakDTO, Ytelse } from '@navikt/fp-types';
+import { EsSak, FpSak, SvpSak } from '@navikt/fp-types';
 
-export interface SvangerskapspengeSak extends SvangerskapspengeSakDTO {
-    ytelse: Ytelse.SVANGERSKAPSPENGER;
+export interface SvangerskapspengeSak extends SvpSak {
+    ytelse: 'SVANGERSKAPSPENGER';
 }
 
-export interface Foreldrepengesak extends ForeldrepengesakDTO {
-    ytelse: Ytelse.FORELDREPENGER;
+export interface Foreldrepengesak extends FpSak {
+    ytelse: 'FORELDREPENGER';
 }
 
-export interface EngangsstønadSak extends EngangsstønadSakDTO {
-    ytelse: Ytelse.ENGANGSSTØNAD;
+export interface EngangsstønadSak extends EsSak {
+    ytelse: 'ENGANGSSTØNAD';
 }
 
 export type Sak = Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak;

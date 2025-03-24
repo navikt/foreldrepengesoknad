@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { saker } from 'storybookData/saker/saker';
 
-import { BehandlingTilstand } from '@navikt/fp-types';
-
 import { StatusTag } from './StatusTag';
 
 const meta = {
@@ -38,7 +36,7 @@ export const UnderBehandling: Story = {
         sak: {
             ...saker.foreldrepenger[0],
             åpenBehandling: {
-                tilstand: BehandlingTilstand.UNDER_BEHANDLING,
+                tilstand: 'UNDER_BEHANDLING',
             },
         },
         harMinstEttArbeidsforhold: true,
@@ -51,7 +49,7 @@ export const VenterPåInntektsmelding: Story = {
         sak: {
             ...saker.foreldrepenger[0],
             åpenBehandling: {
-                tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
+                tilstand: 'VENT_INNTEKTSMELDING',
             },
         },
         harMinstEttArbeidsforhold: true,
@@ -64,7 +62,7 @@ export const VenterPåBehandling: Story = {
         sak: {
             ...saker.foreldrepenger[0],
             åpenBehandling: {
-                tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
+                tilstand: 'VENT_INNTEKTSMELDING',
             },
         },
         harMinstEttArbeidsforhold: false,
@@ -77,7 +75,7 @@ export const TidligSøknad: Story = {
         sak: {
             ...saker.foreldrepenger[0],
             åpenBehandling: {
-                tilstand: BehandlingTilstand.TIDLIG_SØKNAD,
+                tilstand: 'VENT_TIDLIG_SØKNAD',
             },
         },
         harMinstEttArbeidsforhold: true,
@@ -90,7 +88,7 @@ export const VenterPåMeldekort: Story = {
         sak: {
             ...saker.foreldrepenger[0],
             åpenBehandling: {
-                tilstand: BehandlingTilstand.VENTER_PÅ_MELDEKORT,
+                tilstand: 'VENT_MELDEKORT',
             },
         },
         harMinstEttArbeidsforhold: true,

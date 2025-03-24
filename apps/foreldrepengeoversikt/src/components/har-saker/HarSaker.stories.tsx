@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Ytelse } from '@navikt/fp-types';
-
 import { HarSaker } from './HarSaker';
 
 const meta = {
@@ -30,7 +28,7 @@ export const Default: Story = {
                 type: 'fødsel',
                 // @ts-expect-error Avklar om ytelse ligg i backend-data
                 saker: saker.foreldrepenger,
-                ytelse: Ytelse.FORELDREPENGER,
+                ytelse: 'FORELDREPENGER',
                 barn: undefined,
             },
         ],

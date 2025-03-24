@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 
-import { BehandlingTilstand, Ytelse } from '@navikt/fp-types';
-
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { SvangerskapspengeSak } from '../../types/Sak';
 import { Svangerskapspenger } from './Svangerskapspenger';
@@ -51,7 +49,7 @@ export const Case4: Story = {
 export const SøknadUtenVedtak: Story = {
     args: {
         svpSak: {
-            ytelse: Ytelse.SVANGERSKAPSPENGER,
+            ytelse: 'SVANGERSKAPSPENGER',
             saksnummer: '352022460',
             familiehendelse: {
                 termindato: '2025-07-29',
@@ -59,7 +57,7 @@ export const SøknadUtenVedtak: Story = {
             },
             sakAvsluttet: false,
             åpenBehandling: {
-                tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
+                tilstand: 'VENT_INNTEKTSMELDING',
                 søknad: {
                     arbeidsforhold: [
                         {
@@ -117,7 +115,7 @@ export const SøknadUtenVedtak: Story = {
 export const SøknadMedFlereDeltidsArbeidsforhold: Story = {
     args: {
         svpSak: {
-            ytelse: Ytelse.SVANGERSKAPSPENGER,
+            ytelse: 'SVANGERSKAPSPENGER',
             saksnummer: '352022467',
             familiehendelse: {
                 termindato: '2025-08-01',

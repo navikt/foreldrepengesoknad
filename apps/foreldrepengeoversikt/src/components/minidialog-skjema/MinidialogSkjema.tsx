@@ -18,7 +18,7 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EttersendingDto, MinidialogInnslag, Ytelse } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, MinidialogInnslag, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -30,10 +30,10 @@ import { MinidialogVenterPåSvar } from './minidialog-venter-på-svar/Minidialog
 import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
-    if (sakstype === Ytelse.ENGANGSSTØNAD) {
+    if (sakstype === 'ENGANGSSTØNAD') {
         return 'engangsstonad';
     }
-    if (sakstype === Ytelse.FORELDREPENGER) {
+    if (sakstype === 'FORELDREPENGER') {
         return 'foreldrepenger';
     }
     return 'svangerskapspenger';
@@ -43,7 +43,7 @@ export interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
     minidialog: MinidialogInnslag;
-    onSubmit: (ettersendelse: EttersendingDto) => void;
+    onSubmit: (ettersendelse: EttersendelseDto) => void;
     sakstype: Ytelse;
     ettersendelseError: string | undefined;
 }

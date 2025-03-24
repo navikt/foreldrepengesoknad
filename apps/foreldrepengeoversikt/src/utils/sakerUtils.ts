@@ -63,7 +63,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
 };
 
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
-    const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
+    const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
@@ -119,7 +119,10 @@ export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'
             if (relevantSak && result.includes(relevantSak)) {
                 return result;
             } else {
-                const type = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon!);
+                const type = utledFamiliesituasjon(
+                    sak.familiehendelse,
+                    'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
+                );
                 const gruppertSak: GruppertSak = {
                     antallBarn: sak.familiehendelse.antallBarn,
                     familiehendelsedato,
@@ -143,7 +146,7 @@ const addYtelseToSak = (
     saker: Saker['foreldrepenger'] | Saker['engangsstønad'] | Saker['svangerskapspenger'],
     ytelse: Ytelse,
 ): Sak[] => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return saker.map(
             (sak) =>
                 ({
@@ -153,7 +156,7 @@ const addYtelseToSak = (
         );
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return saker.map(
             (sak) =>
                 ({
@@ -174,12 +177,9 @@ const addYtelseToSak = (
 
 export const mapSakerDTOToSaker = (saker: Saker): SakOppslag => {
     return {
-        foreldrepenger: addYtelseToSak(saker.foreldrepenger, Ytelse.FORELDREPENGER) as Foreldrepengesak[],
-        engangsstønad: addYtelseToSak(saker.engangsstønad, Ytelse.ENGANGSSTØNAD) as EngangsstønadSak[],
-        svangerskapspenger: addYtelseToSak(
-            saker.svangerskapspenger,
-            Ytelse.SVANGERSKAPSPENGER,
-        ) as SvangerskapspengeSak[],
+        foreldrepenger: addYtelseToSak(saker.foreldrepenger, 'FORELDREPENGER') as Foreldrepengesak[],
+        engangsstønad: addYtelseToSak(saker.engangsstønad, 'ENGANGSSTØNAD') as EngangsstønadSak[],
+        svangerskapspenger: addYtelseToSak(saker.svangerskapspenger, 'SVANGERSKAPSPENGER') as SvangerskapspengeSak[],
     };
 };
 

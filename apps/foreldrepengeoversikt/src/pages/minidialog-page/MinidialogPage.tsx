@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { EttersendingDto } from '@navikt/fp-types';
+import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { minidialogOptions, sendEttersending } from '../../api/api';
@@ -39,7 +39,7 @@ export const MinidialogPage = ({ fnr }: Props) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: (ettersendelse: EttersendingDto) => sendEttersending(ettersendelse, fnr),
+        mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse, fnr),
     });
 
     if (!minidialog || !sak) {

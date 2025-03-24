@@ -12,11 +12,11 @@ interface Props {
 
 const getHeading = (ytelse: Ytelse) => {
     switch (ytelse) {
-        case Ytelse.ENGANGSSTØNAD:
+        case 'ENGANGSSTØNAD':
             return 'Engangsstønad';
-        case Ytelse.FORELDREPENGER:
+        case 'FORELDREPENGER':
             return 'Foreldrepenger';
-        case Ytelse.SVANGERSKAPSPENGER:
+        case 'SVANGERSKAPSPENGER':
             return 'Svangerskapspenger';
     }
 };

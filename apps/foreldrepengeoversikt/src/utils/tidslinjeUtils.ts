@@ -5,12 +5,12 @@ import { IntlShape } from 'react-intl';
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
     AktørType,
-    BehandlingTilstand,
+    EsÅpenBehandling,
     Familiehendelse,
+    FpÅpenBehandling,
     TidslinjeHendelseDto,
     Ytelse,
-    ÅpenBehandlingFP,
-    ÅpenBehandlingSVP,
+    ÅpenBehandling,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -24,16 +24,14 @@ import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
 dayjs.extend(minMax);
 
+// TODO: lag egen type?
+type BehandlingTilstand = FpÅpenBehandling['tilstand'];
+
 enum Vedtaksbrev {
     AVSLAGSBREV = 'Avslagsbrev',
     INNVILGELSESBREV = 'Innvilgelsesbrev',
 }
-export const VENTEÅRSAKER = [
-    BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
-    BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON,
-    BehandlingTilstand.TIDLIG_SØKNAD,
-    BehandlingTilstand.VENTER_PÅ_MELDEKORT,
-];
+export const VENTEÅRSAKER = ['VENT_INNTEKTSMELDING', 'VENT_DOKUMENTASJON', 'VENT_TIDLIG_SØKNAD', 'VENT_MELDEKORT'];
 
 export const getAktivTidslinjeStegIndex = (
     hendelserForVisning: Tidslinjehendelse[],
@@ -152,7 +150,7 @@ const getTidslinjeTittelForFamiliehendelse = (
     ytelse: Ytelse,
     intl: IntlShape,
 ): string => {
-    if (ytelse === Ytelse.FORELDREPENGER) {
+    if (ytelse === 'FORELDREPENGER') {
         return getTidslinjeTittelForFamiliehendelseForeldrepenger(
             barnFraSak,
             antallBarn,
@@ -233,7 +231,7 @@ export const getTidslinjehendelseTittel = (
     sak: Sak,
 ): string => {
     const hendelsetype = hendelse.utvidetTidslinjeHendelseType;
-    const { familiehendelse, ytelse, gjelderAdopsjon } = sak;
+    const { familiehendelse, ytelse } = sak;
     const antallBarn = familiehendelse?.antallBarn;
     if (hendelsetype === 'VENTER_PGA_TIDLIG_SØKNAD' && tidlistBehandlingsdato !== undefined) {
         return intl.formatMessage(
@@ -252,6 +250,7 @@ export const getTidslinjehendelseTittel = (
         return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' }, { ytelse });
     }
     if (hendelsetype === 'FAMILIEHENDELSE' && familiehendelse && antallBarn !== undefined) {
+        const gjelderAdopsjon = 'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined;
         return getTidslinjeTittelForFamiliehendelse(
             familiehendelse,
             gjelderAdopsjon,
@@ -262,7 +261,7 @@ export const getTidslinjehendelseTittel = (
         );
     }
     if (
-        ytelse === Ytelse.FORELDREPENGER &&
+        ytelse === 'FORELDREPENGER' &&
         (familiehendelse?.fødselsdato || familiehendelse?.omsorgsovertakelse) &&
         antallBarn &&
         hendelsetype === 'BARNET_TRE_ÅR'
@@ -273,16 +272,16 @@ export const getTidslinjehendelseTittel = (
 };
 
 export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
+    if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return 'VENTER_INNTEKTSMELDING';
     }
-    if (venteårsak === BehandlingTilstand.TIDLIG_SØKNAD) {
+    if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
         return 'VENTER_PGA_TIDLIG_SØKNAD';
     }
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON) {
+    if (venteårsak === 'VENT_DOKUMENTASJON') {
         return 'VENT_DOKUMENTASJON';
     }
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
+    if (venteårsak === 'VENT_MELDEKORT') {
         return 'VENTER_MELDEKORT';
     } else {
         throw new Error('Ukjent venteårsak');
@@ -290,10 +289,10 @@ export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTils
 };
 
 export const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): AktørType => {
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
+    if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return AktørType.ARBEIDSGIVER;
     }
-    if (venteårsak === BehandlingTilstand.TIDLIG_SØKNAD) {
+    if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
         return AktørType.NAV;
     }
     return AktørType.BRUKER;
@@ -306,26 +305,26 @@ const createEttersendUrl = (skjematypeIds: Skjemanummer[]): string => {
 };
 
 export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): NavRoutes | undefined => {
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
+    if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return NavRoutes.VENT_INNTEKTSMELDING;
     }
-    if (venteårsak === BehandlingTilstand.TIDLIG_SØKNAD) {
+    if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
         return NavRoutes.SØKNADSFRISTER;
     }
 
-    if (venteårsak === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
+    if (venteårsak === 'VENT_MELDEKORT') {
         return NavRoutes.VENT_MELDEKORT;
     }
     return undefined;
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: ÅpenBehandlingFP) => {
+export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBehandling) => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
     const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandlingSVP) => {
+export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandling) => {
     const tilretteleggingerFomDatoer =
         åpenBehandling.søknad.arbeidsforhold
             .map((a) => {
@@ -339,13 +338,13 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: �
 
 export const getTidligstBehandlingsDatoForTidligSøknad = (
     ytelse: Ytelse,
-    åpenBehandling: ÅpenBehandlingFP | ÅpenBehandlingSVP,
+    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling,
 ) => {
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
-        return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandlingSVP);
+    if (ytelse === 'SVANGERSKAPSPENGER') {
+        return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandling);
     }
 
-    return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling);
+    return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling as FpÅpenBehandling);
 };
 
 const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: TidslinjeHendelseDto[]) => {
@@ -440,10 +439,10 @@ export const getTidslinjeBarnTreÅrHendelse = (
 
 export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tidslinjehendelse => {
     let url = NavRoutes.SAKSBEHANDLINGSTIDER_FP;
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         url = NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
     }
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         url = NavRoutes.SAKSBEHANDLINGSTIDER_ES;
     }
     return {
@@ -454,7 +453,7 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
         dokumenter: [],
         manglendeVedlegg: [],
         merInformasjon:
-            ytelse === Ytelse.ENGANGSSTØNAD
+            ytelse === 'ENGANGSSTØNAD'
                 ? intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon.engangsstønad' })
                 : intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' }),
         linkTittel: intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.linkTittel' }),
@@ -464,75 +463,69 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
 
 const finnBehandlingstilstandInfoTekst = (intl: IntlShape, behandlingTilstand: BehandlingTilstand, ytelse: Ytelse) => {
     switch (behandlingTilstand) {
-        case BehandlingTilstand.TIDLIG_SØKNAD:
-            return ytelse === Ytelse.FORELDREPENGER
+        case 'VENT_TIDLIG_SØKNAD':
+            return ytelse === 'FORELDREPENGER'
                 ? intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.foreldrepenger' })
                 : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
-        case BehandlingTilstand.UNDER_BEHANDLING:
+        case 'UNDER_BEHANDLING':
             return intl.formatMessage({ id: 'tidslinje.UNDER_BEHANDLING.informasjon' });
-        case BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON:
+        case 'VENT_DOKUMENTASJON':
             return intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' });
-        case BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING:
+        case 'VENT_INNTEKTSMELDING':
             return intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.informasjon' });
-        case BehandlingTilstand.VENTER_PÅ_MELDEKORT:
+        case 'VENT_MELDEKORT':
             return intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.informasjon' });
     }
 };
 
-const finnBehandlingstilstandLikTittelTekst = (intl: IntlShape, behandlingTilstand: BehandlingTilstand) => {
+const finnBehandlingstilstandLikTittelTekst = (intl: IntlShape, behandlingTilstand: FpÅpenBehandling['tilstand']) => {
     switch (behandlingTilstand) {
-        case BehandlingTilstand.TIDLIG_SØKNAD:
+        case 'VENT_TIDLIG_SØKNAD':
             return intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.linkTittel' });
-        case BehandlingTilstand.UNDER_BEHANDLING:
+        case 'UNDER_BEHANDLING':
             return intl.formatMessage({ id: 'tidslinje.UNDER_BEHANDLING.linkTittel' });
-        case BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON:
+        case 'VENT_DOKUMENTASJON':
             return intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' });
-        case BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING:
+        case 'VENT_INNTEKTSMELDING':
             return intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.linkTittel' });
-        case BehandlingTilstand.VENTER_PÅ_MELDEKORT:
+        case 'VENT_MELDEKORT':
             return intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.linkTittel' });
     }
 };
 
 const finnInfoTekstForYtelse = (intl: IntlShape, ytelse: Ytelse) =>
-    ytelse === Ytelse.FORELDREPENGER
+    ytelse === 'FORELDREPENGER'
         ? intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.foreldrepenger' })
         : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
 
 export const getTidslinjehendelserFraBehandlingPåVent = (
-    åpenBehandling: ÅpenBehandlingFP | ÅpenBehandlingSVP,
+    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
     intl: IntlShape,
     ytelse: Ytelse,
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
     if (
-        [
-            BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
-            BehandlingTilstand.VENTER_PÅ_MELDEKORT,
-            BehandlingTilstand.TIDLIG_SØKNAD,
-        ].includes(åpenBehandling.tilstand) &&
+        ['VENT_INNTEKTSMELDING', 'VENT_MELDEKORT', 'VENT_TIDLIG_SØKNAD'].includes(åpenBehandling.tilstand) &&
         manglendeVedleggData &&
         manglendeVedleggData.length > 0
     ) {
         hendelseVenterPåDokumentasjon = {
             type: 'søknad',
             opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
-            aktørType: getAktørtypeAvVenteårsak(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
-            utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(
-                BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON,
-            ),
+            aktørType: getAktørtypeAvVenteårsak('VENT_DOKUMENTASJON'),
+            utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak('VENT_DOKUMENTASJON'),
             dokumenter: [],
             manglendeVedlegg: [],
             merInformasjon: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' }),
             linkTittel: intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' }),
-            eksternalUrl: getTidlinjeHendelseEksternUrl(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
+            eksternalUrl: getTidlinjeHendelseEksternUrl('VENT_DOKUMENTASJON'),
             internalUrl: createEttersendUrl(manglendeVedleggData),
             tidligstBehandlingsDato: undefined,
         } satisfies Tidslinjehendelse;
     }
     const merInfo =
-        åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
+        åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD'
             ? finnInfoTekstForYtelse(intl, ytelse)
             : finnBehandlingstilstandInfoTekst(intl, åpenBehandling.tilstand, ytelse);
     const tidslinjeHendelse = {
@@ -546,11 +539,9 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
         linkTittel: finnBehandlingstilstandLikTittelTekst(intl, åpenBehandling.tilstand),
         eksternalUrl: getTidlinjeHendelseEksternUrl(åpenBehandling.tilstand),
         internalUrl:
-            åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON
-                ? createEttersendUrl(manglendeVedleggData)
-                : undefined,
+            åpenBehandling.tilstand === 'VENT_DOKUMENTASJON' ? createEttersendUrl(manglendeVedleggData) : undefined,
         tidligstBehandlingsDato:
-            åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
+            åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD'
                 ? getTidligstBehandlingsDatoForTidligSøknad(ytelse, åpenBehandling).toISOString()
                 : undefined,
     } satisfies Tidslinjehendelse;
@@ -640,7 +631,7 @@ export const getHendelserForVisning = (
 
 export const getAlleTidslinjehendelser = (
     tidslinjeHendelserData: TidslinjeHendelseDto[],
-    åpenBehandlingPåVent: ÅpenBehandlingFP | ÅpenBehandlingSVP | undefined,
+    åpenBehandlingPåVent: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling | undefined,
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
     barnFraSak: BarnGruppering,
@@ -663,7 +654,7 @@ export const getAlleTidslinjehendelser = (
     if (
         barnFraSak.alleBarnaLever &&
         !erAvslåttForeldrepengesøknad &&
-        sak.ytelse === Ytelse.FORELDREPENGER &&
+        sak.ytelse === 'FORELDREPENGER' &&
         !sak.sakAvsluttet &&
         (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato)
     ) {

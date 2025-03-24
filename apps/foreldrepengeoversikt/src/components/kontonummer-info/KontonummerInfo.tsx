@@ -53,7 +53,7 @@ interface KontonummerInfoTekstProps {
 }
 
 const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhold }: KontonummerInfoTekstProps) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD || !harMinstEttArbeidsforhold) {
+    if (ytelse === 'ENGANGSSTØNAD' || !harMinstEttArbeidsforhold) {
         if (harKontonummer) {
             return (
                 <BodyLong size="small">
@@ -83,7 +83,7 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
         );
     }
 
-    if (ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') {
         return (
             <BodyLong size="small">
                 Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.

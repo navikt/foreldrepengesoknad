@@ -111,7 +111,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {ytelse === Ytelse.ENGANGSSTØNAD && (
+                {ytelse === 'ENGANGSSTØNAD' && (
                     <>
                         <Accordion.Item>
                             <Accordion.Header>
@@ -153,7 +153,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Item>
                     </>
                 )}
-                {ytelse === Ytelse.FORELDREPENGER && harMinstEttArbeidsforhold && (
+                {ytelse === 'FORELDREPENGER' && harMinstEttArbeidsforhold && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -170,7 +170,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {(ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) && (
+                {(ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -183,7 +183,7 @@ export const BekreftelseSendtSøknad = ({
                                     {!tidligstBehandlingsDato && (
                                         <FormattedMessage
                                             id="BekreftelseSendtSøknad.FireUkerFør"
-                                            values={{ erFp: ytelse === Ytelse.FORELDREPENGER }}
+                                            values={{ erFp: ytelse === 'FORELDREPENGER' }}
                                         />
                                     )}
                                 </BodyShort>
@@ -192,7 +192,7 @@ export const BekreftelseSendtSøknad = ({
                         <Accordion.Content>
                             <FormattedMessage
                                 id="BekreftelseSendtSøknad.TidligstSvarForklaring"
-                                values={{ erFp: ytelse === Ytelse.FORELDREPENGER }}
+                                values={{ erFp: ytelse === 'FORELDREPENGER' }}
                             />
                         </Accordion.Content>
                     </Accordion.Item>
@@ -202,7 +202,7 @@ export const BekreftelseSendtSøknad = ({
                     bankkonto={bankkonto}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                 />
-                {ytelse === Ytelse.FORELDREPENGER && (
+                {ytelse === 'FORELDREPENGER' && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">

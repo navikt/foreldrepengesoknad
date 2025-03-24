@@ -1,5 +1,5 @@
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EttersendingDto, Ytelse } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
 import { isAttachmentWithError } from '../../utils/attachmentUtils';
@@ -11,7 +11,7 @@ export const mapMinidialogInputTilDTO = (
     brukerØnskerÅUttaleSeg: boolean,
     vedlegg: Attachment[],
     tilbakemelding?: string,
-): EttersendingDto => {
+): EttersendelseDto => {
     return {
         vedlegg: brukerØnskerÅUttaleSeg && vedlegg ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)) : [],
         saksnummer,

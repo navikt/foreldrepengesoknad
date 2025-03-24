@@ -1,7 +1,5 @@
 import { Tag } from '@navikt/ds-react';
 
-import { BehandlingTilstand } from '@navikt/fp-types';
-
 import { Sak } from '../../types/Sak';
 
 interface Props {
@@ -12,7 +10,7 @@ interface Props {
 export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
     if (sak.åpenBehandling) {
         if (!sak.sakAvsluttet) {
-            if (sak.åpenBehandling.tilstand === BehandlingTilstand.UNDER_BEHANDLING) {
+            if (sak.åpenBehandling.tilstand === 'UNDER_BEHANDLING') {
                 return (
                     <Tag variant="warning-moderate" size="xsmall">
                         Under behandling
@@ -20,7 +18,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
                 );
             }
 
-            if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
+            if (sak.åpenBehandling.tilstand === 'VENT_INNTEKTSMELDING') {
                 return harMinstEttArbeidsforhold ? (
                     <Tag variant="warning-moderate" size="xsmall">
                         Venter på inntektsmelding fra arbeidsgiver
@@ -32,7 +30,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
                 );
             }
 
-            if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON) {
+            if (sak.åpenBehandling.tilstand === 'VENT_DOKUMENTASJON') {
                 return (
                     <Tag variant="warning-moderate" size="xsmall">
                         Du må sende dokumentasjon
@@ -40,7 +38,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
                 );
             }
 
-            if (sak.åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD) {
+            if (sak.åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD') {
                 return (
                     <Tag variant="warning-moderate" size="xsmall">
                         Søknaden vil bli behandlet senere
@@ -48,7 +46,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
                 );
             }
 
-            if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
+            if (sak.åpenBehandling.tilstand === 'VENT_MELDEKORT') {
                 return (
                     <Tag variant="warning-moderate" size="xsmall">
                         Du må sende meldekort

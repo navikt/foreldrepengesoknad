@@ -12,7 +12,7 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { BehandlingTilstand, SaksperiodeNy, Søkerinfo } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
@@ -91,13 +91,7 @@ export const Engangsstønad: Story = {
                                     antallBarn: 1,
                                 },
                                 åpenBehandling: {
-                                    tilstand: BehandlingTilstand.UNDER_BEHANDLING,
-                                    søknadsperioder: [
-                                        {
-                                            fom: '2024-01-01',
-                                            tom: '2024-10-01',
-                                        },
-                                    ] as SaksperiodeNy[],
+                                    tilstand: '',
                                 },
                                 oppdatertTidspunkt: '2024-02-28T21:19:08.911',
                             },

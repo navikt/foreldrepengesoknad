@@ -5,9 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
+import { FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
@@ -15,8 +14,8 @@ import { getVarighetString } from './utils/dateUtils';
 type Props = {
     konto: KontoBeregningDto;
     perioder: SaksperiodeNy[];
-    rettighetType: RettighetType;
-    forelder: Forelder;
+    rettighetType: FpSak['rettighetType'];
+    forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
 };

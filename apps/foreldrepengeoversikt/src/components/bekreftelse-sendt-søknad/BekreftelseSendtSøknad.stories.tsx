@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
+import { TidslinjeHendelseDto } from '@navikt/fp-types';
 
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
@@ -34,7 +34,7 @@ export const ForForeldrepenger: Story = {
             ],
         } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -69,7 +69,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
             ],
         } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -89,7 +89,7 @@ export const ForEngangsstønad: Story = {
             ],
         } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.ENGANGSSTØNAD,
+        ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -117,7 +117,7 @@ export const ForSvangerskapspenger: Story = {
             ],
         } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -144,7 +144,7 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
             ],
         } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };

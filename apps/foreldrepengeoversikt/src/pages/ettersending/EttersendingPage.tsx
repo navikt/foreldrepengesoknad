@@ -18,7 +18,7 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EttersendingDto, Ytelse } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -35,10 +35,10 @@ import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
-    if (sakstype === Ytelse.ENGANGSSTØNAD) {
+    if (sakstype === 'ENGANGSSTØNAD') {
         return 'engangsstonad';
     }
-    if (sakstype === Ytelse.FORELDREPENGER) {
+    if (sakstype === 'FORELDREPENGER') {
         return 'foreldrepenger';
     }
     return 'svangerskapspenger';
@@ -122,7 +122,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
     };
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: (valuesToSend: EttersendingDto) => sendEttersending(valuesToSend),
+        mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
     const onSubmit = (e: FormEvent<any>) => {

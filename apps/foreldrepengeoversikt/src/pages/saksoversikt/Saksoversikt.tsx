@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser, Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
+import { Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -187,7 +187,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
-                    {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                    {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                         <LenkePanel
                             tittel="Endre planen din"
                             to="https://nav.no/foreldrepenger/soknad"
@@ -197,7 +197,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                     <InntektsmeldingLenkePanel />
                 </HGrid>
 
-                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                     <div>
                         <ContentSection
                             heading={
@@ -221,8 +221,8 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         </ContentSection>
                     </div>
                 )}
-                {gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER && <Svangerskapspenger svpSak={gjeldendeSak} />}
-                {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
+                {gjeldendeSak.ytelse === 'SVANGERSKAPSPENGER' && <Svangerskapspenger svpSak={gjeldendeSak} />}
+                {gjeldendeSak.ytelse === 'ENGANGSSTØNAD' && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection
                             heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}

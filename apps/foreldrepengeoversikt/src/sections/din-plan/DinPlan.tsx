@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, RettighetType, SaksperiodeNy, Ytelse } from '@navikt/fp-types';
+import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
@@ -24,7 +24,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const [visKalender, setVisKalender] = useState(false);
 
-    if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
+    if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
         return null;
     }
 

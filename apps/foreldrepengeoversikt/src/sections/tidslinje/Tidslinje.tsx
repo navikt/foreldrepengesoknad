@@ -6,7 +6,7 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
+import { Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 
 import { Sak } from '../../types/Sak';
 import { guid } from '../../utils/guid';
@@ -34,16 +34,16 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
     const intl = useIntl();
 
     const førsteUttaksdagISaken =
-        sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
+        sak.ytelse === 'FORELDREPENGER' ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const erAvslåttForeldrepengesøknad =
-        sak.ytelse === Ytelse.FORELDREPENGER &&
+        sak.ytelse === 'FORELDREPENGER' &&
         !!sak.gjeldendeVedtak &&
         (sak.gjeldendeVedtak.perioder.length === 0 ||
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
-        sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
+        sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
     if (tidslinjeHendelser.length === 0) {
         return null;
