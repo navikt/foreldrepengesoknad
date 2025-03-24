@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -20,7 +19,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -53,7 +52,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
 
     const onSubmit = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
-        const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+        const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
         const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart;
         const nextRoute =
             beggeHarRett && !(erFarOgFar && barnet.erFødsel)
@@ -120,42 +119,48 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                 />
                             </BodyShort>
                         </Infobox>
-                        {!erAlenesøker && kunEnAvSøkereneHarRett && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
-                            <NårBareEnPartHarRettInfoboks
-                                hvemPlanlegger={hvemPlanlegger}
-                                arbeidssituasjon={arbeidssituasjon}
-                            />
-                        )}
-                        {kunEnAvSøkereneHarRett && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon && (
-                            <Infobox
-                                header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
-                                color="gray"
-                            >
-                                <VStack gap="2">
-                                    <BodyShort>
-                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
-                                    </BodyShort>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <Link
-                                                        inlineText
-                                                        href={links.godkjentAktivitet}
-                                                        className="lenke"
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                    >
-                                                        {msg}
-                                                    </Link>
-                                                ),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                </VStack>
-                            </Infobox>
-                        )}
+                        {!erAlenesøker &&
+                            kunEnAvSøkereneHarRett &&
+                            hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR && (
+                                <NårBareEnPartHarRettInfoboks
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                />
+                            )}
+                        {kunEnAvSøkereneHarRett &&
+                            hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
+                            erAdopsjon && (
+                                <Infobox
+                                    header={
+                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />
+                                    }
+                                    color="gray"
+                                >
+                                    <VStack gap="2">
+                                        <BodyShort>
+                                            <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
+                                        </BodyShort>
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
+                                                values={{
+                                                    a: (msg: any) => (
+                                                        <Link
+                                                            inlineText
+                                                            href={links.godkjentAktivitet}
+                                                            className="lenke"
+                                                            rel="noreferrer"
+                                                            target="_blank"
+                                                        >
+                                                            {msg}
+                                                        </Link>
+                                                    ),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    </VStack>
+                                </Infobox>
+                            )}
                         <BlueRadioGroup
                             label={
                                 <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />

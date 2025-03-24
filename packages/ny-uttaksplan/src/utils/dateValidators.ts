@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
@@ -12,15 +13,29 @@ import {
     isWeekday,
 } from '@navikt/fp-validation';
 
-export const getFomValidators = (
-    intl: IntlShape,
-    familiehendelsedato: string,
-    kontoType: StønadskontoType | undefined,
-    tomValue: string | undefined,
-    erBarnetFødt: boolean,
-    minDate: string,
-    maxDate: string,
-) => {
+import { PeriodeHullType } from '../types/Planperiode';
+
+interface FomValidatorProps {
+    intl: IntlShape;
+    familiehendelsedato: string;
+    kontoType: StønadskontoType | undefined;
+    tomValue: string | undefined;
+    erBarnetFødt: boolean;
+    minDate: string;
+    maxDate: string;
+    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+}
+
+export const getFomValidators = ({
+    intl,
+    familiehendelsedato,
+    kontoType,
+    tomValue,
+    erBarnetFødt,
+    minDate,
+    maxDate,
+    årsak,
+}: FomValidatorProps) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
@@ -72,6 +87,20 @@ export const getFomValidators = (
             break;
     }
 
+    switch (årsak) {
+        case UtsettelseÅrsakType.Ferie:
+        case PeriodeHullType.PERIODE_UTEN_UTTAK:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+            break;
+    }
+
     validators.push(
         isAfterOrSame(
             intl.formatMessage({ id: 'endreTidsPeriodeModal.minDato' }, { minDate: formatDateMedUkedag(minDate) }),
@@ -88,15 +117,27 @@ export const getFomValidators = (
     return validators;
 };
 
-export const getTomValidators = (
-    intl: IntlShape,
-    familiehendelsedato: string,
-    kontoType: StønadskontoType | undefined,
-    fomValue: string | undefined,
-    erBarnetFødt: boolean,
-    minDate: string,
-    maxDate: string,
-) => {
+interface TomValidatorProps {
+    intl: IntlShape;
+    familiehendelsedato: string;
+    kontoType: StønadskontoType | undefined;
+    fomValue: string | undefined;
+    erBarnetFødt: boolean;
+    minDate: string;
+    maxDate: string;
+    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+}
+
+export const getTomValidators = ({
+    intl,
+    familiehendelsedato,
+    kontoType,
+    fomValue,
+    erBarnetFødt,
+    minDate,
+    maxDate,
+    årsak,
+}: TomValidatorProps) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
@@ -144,6 +185,20 @@ export const getTomValidators = (
 
                 return null;
             });
+            break;
+    }
+
+    switch (årsak) {
+        case UtsettelseÅrsakType.Ferie:
+        case PeriodeHullType.PERIODE_UTEN_UTTAK:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
             break;
     }
 

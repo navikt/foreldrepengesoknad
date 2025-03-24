@@ -1,10 +1,16 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Forelder, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { PlanForslag, SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    HvemPlanleggerType,
+    PlanForslag,
+    SaksperiodeNy,
+    Stønadskonto,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -152,12 +158,12 @@ const finnDeltUttaksdata = (
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     const startdatoPeriode1 =
-        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR_OG_FAR
+        erBarnetAdoptert(barnet) || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
             ? getUttaksdagFraOgMedDato(getUttaksdagFraOgMedDato(familiehendelsedato))
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
     const sluttdatoPeriode1 =
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
             ? Uttaksdagen(dayjs(startdatoPeriode1).toDate()).leggTil(
                   antallDagerMødrekvote + antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager - 1,
               )
@@ -174,7 +180,7 @@ const finnDeltUttaksdata = (
         antallUkerOgDagerFellesperiodeForSøker2.totaltAntallDager + antallDagerFedrekvote - 1,
     );
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
         return {
             familiehendelsedato,
             startdatoPeriode1,
@@ -201,7 +207,7 @@ const finnEnsligUttaksdata = (
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = Uttaksdagen(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
@@ -254,7 +260,7 @@ const finnEnsligUttaksdata = (
     const antallDagerForeldrepengerFørFødsel = getAntallDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
     const startdatoSøker =
-        erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
+        erBarnetAdoptert(barnet) || hvemPlanlegger.type === HvemPlanleggerType.FAR
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
@@ -278,7 +284,7 @@ export const finnUttaksdata = (
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
         return finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
     }
 

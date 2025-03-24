@@ -8,10 +8,11 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { PlanenDeresSteg } from './PlanenDeresSteg';
 
@@ -70,7 +71,7 @@ export const MorOgFarBeggeHarRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erFødsel: false,
@@ -202,7 +203,7 @@ export const MorOgMedmorBeggeHarRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
     },
 };
@@ -213,7 +214,7 @@ export const MorOgMedmorKunMorHarRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
     },
 };
@@ -224,7 +225,7 @@ export const MorOgMedmorKunMedmorHarRettMorErUfør: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
     },
 };
@@ -235,7 +236,7 @@ export const MorOgMedmorKunMedmorHarRettMorIngenAvDisse: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
     },
 };
@@ -245,7 +246,7 @@ export const BareMorSøkerOgHarRett: Story = {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         fordeling: undefined,
         arbeidssituasjon: {
@@ -261,7 +262,7 @@ export const BareFarSøkerOgHarRett: Story = {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.FAR,
+            type: HvemPlanleggerType.FAR,
         },
         fordeling: undefined,
         arbeidssituasjon: {
@@ -278,7 +279,7 @@ export const FarOgFarBeggeHarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
     },
 };
@@ -349,7 +350,7 @@ export const MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         omBarnet: {
             erFødsel: false,

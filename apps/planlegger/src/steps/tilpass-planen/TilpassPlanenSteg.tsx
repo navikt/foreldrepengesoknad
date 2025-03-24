@@ -170,6 +170,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                             />
                             <KvoteOppsummering
+                                hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
                                 perioder={[
@@ -216,6 +217,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                         hvemPlanlegger={hvemPlanlegger}
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
+                                        uttaksplan={gjeldendeUttaksplan}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}

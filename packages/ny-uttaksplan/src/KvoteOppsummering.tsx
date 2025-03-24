@@ -5,7 +5,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
+import {
+    Familiehendelse,
+    FpSak,
+    HvemPlanleggerType,
+    KontoBeregningDto,
+    KontoDto,
+    SaksperiodeNy,
+} from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
@@ -17,6 +24,7 @@ type Props = {
     forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
+    hvemPlanleggerType?: HvemPlanleggerType;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -162,7 +170,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse } = useKvote();
+    const { konto, perioder, familiehendelse, hvemPlanleggerType } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -294,7 +302,12 @@ const KvoteTittel = () => {
     const beskrivelseMor =
         ubrukteDagerMor > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilMor' },
+                  {
+                      id:
+                          hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
+                              ? 'kvote.varighet.tilFar'
+                              : 'kvote.varighet.tilMor',
+                  },
                   { varighet: getVarighetString(ubrukteDagerMor, intl) },
               )
             : '';
@@ -308,7 +321,14 @@ const KvoteTittel = () => {
     const beskrivelseFar =
         ubrukteDagerFar > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilFar' },
+                  {
+                      id:
+                          hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
+                              ? 'kvote.varighet.tilMedmor'
+                              : hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
+                                ? 'kvote.varighet.tilMedfar'
+                                : 'kvote.varighet.tilFar',
+                  },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
             : '';

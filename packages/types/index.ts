@@ -69,5 +69,6 @@ export { OverføringÅrsakType } from './src/OverføringÅrsakType';
 export { OppholdÅrsakType } from './src/OppholdÅrsakType';
 export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
+export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/dto/apiDTOs';
 export * from './src/dto/apiDTOGenerert';

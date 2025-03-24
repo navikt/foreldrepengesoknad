@@ -76,9 +76,12 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                     capitalizeFirstLetter(p.aktivitet.type.toLowerCase()).replace('_', ' ');
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
 
-                const prosentJobb = p.type === 'HEL' ? 100 : p.type === 'INGEN' ? 0 : (p.arbeidstidprosent ?? 0);
+                const prosentJobb = (() => {
+                    if (p.type === 'HEL') return 100;
+                    if (p.type === 'INGEN') return 0;
+                    return p.arbeidstidprosent ?? 0;
+                })();
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
-                // const prosentSvangerskapspengerHvisInnvilget = 0;
 
                 const skalViseSomSvp = prosentSvangerskapspengerHvisInnvilget > 0;
                 const skalViseSomJobb = prosentSvangerskapspengerHvisInnvilget <= 0 && prosentJobb > 0;

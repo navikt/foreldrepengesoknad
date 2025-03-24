@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
@@ -15,7 +15,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
@@ -78,7 +78,7 @@ export const OppgittInformasjon = ({
         ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
         : undefined;
 
-    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdoptert;
 
     const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
 

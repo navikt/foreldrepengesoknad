@@ -4,14 +4,14 @@ import ky from 'ky';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { Loader } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
@@ -28,11 +28,11 @@ const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRet
 };
 
 const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnet) => {
-    if (hvemPlanlegger.type === Situasjon.MOR || hvemPlanlegger.type === Situasjon.FAR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR || hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return 'ALENEOMSORG';
     }
 
-    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
         return 'BARE_SØKER_RETT';
     }
 
@@ -90,7 +90,7 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
         select: (data: TilgjengeligeStønadskontoer): TilgjengeligeStønadskontoer => {
             // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
             // Hvis ikke far-og-far, returner uendret
-            if (hvemPlanlegger?.type !== Situasjon.FAR_OG_FAR) {
+            if (hvemPlanlegger?.type !== HvemPlanleggerType.FAR_OG_FAR) {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data

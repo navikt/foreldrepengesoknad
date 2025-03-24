@@ -5,7 +5,7 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
@@ -32,7 +32,7 @@ import {
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { HvemPlanleggerType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -76,7 +76,8 @@ export const OppsummeringHarRett = ({
     let startdato = undefined;
 
     if (
-        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
         startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
@@ -94,13 +95,14 @@ export const OppsummeringHarRett = ({
         erFarEllerMedmor: erFarEllerMedmor,
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
-        farOgFar: hvemPlanlegger.type === Situasjon.FAR_OG_FAR,
+        erAleneOmOmsorg:
+            hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR,
+        farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
     });
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
 
-    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -278,6 +280,11 @@ export const OppsummeringHarRett = ({
                                     hvemPlanlegger={hvemPlanlegger}
                                     barnet={barnet}
                                     hvemHarRett={hvemHarRett}
+                                    uttaksplan={
+                                        tilpassPlan
+                                            ? gjeldendeUttaksplan
+                                            : [...planforslag.søker1, ...planforslag.søker2]
+                                    }
                                 />
                             }
                             barnehagestartdato={barnehagestartdato}

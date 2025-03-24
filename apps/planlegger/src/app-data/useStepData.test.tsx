@@ -4,9 +4,10 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -212,7 +213,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Helga Utvikler',
             navnPåFar: 'Espen Utvikler',
         };
@@ -290,7 +291,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Helga Utvikler',
             navnPåFar: 'Espen Utvikler',
         };
@@ -363,7 +364,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Helga Utvikler',
             navnPåFar: 'Espen Utvikler',
         };
@@ -436,7 +437,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
             navnPåMor: 'Helga Utvikler',
         };
         const arbeidssituasjon = {
@@ -508,7 +509,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
             navnPåFar: 'Anders Utvikler',
             navnPåMedfar: 'Espen Utvikler',
         };
@@ -581,7 +582,7 @@ describe('useStepData', () => {
             fødselsdato: dayjs().format(ISO_DATE_FORMAT),
         };
         const hvemPlanlegger = {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Helga Utvikler',
             navnPåFar: 'Espen Utvikler',
         };

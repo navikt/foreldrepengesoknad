@@ -110,11 +110,17 @@ const EttersendingPageInner = ({ saker }: Props) => {
     const { search } = useLocation();
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
     const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
-    const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
-    const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
-    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
+    const relevantSkjemanummer = sak
+        ? getRelevanteSkjemanummer(sak).filter((skjemanummer) =>
+              manglendeSkjemanummer.length === 0 ? true : manglendeSkjemanummer.includes(skjemanummer),
+          )
+        : [];
+    const initialType = relevantSkjemanummer.length === 1 ? relevantSkjemanummer[0] : DEFAULT_OPTION;
+    const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(initialType);
+    const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const updateAttachments = (v: Attachment[], hasPendingUploads: boolean) => {
         setVedlegg(v);
@@ -170,6 +176,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                     className="mb-4"
                     label="Hva inneholder dokumentene dine?"
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
+                    value={type}
                 >
                     {getAttachmentTypeSelectOptions(intl, manglendeSkjemanummer, sak)}
                 </Select>
