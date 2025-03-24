@@ -7,9 +7,10 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -86,7 +87,7 @@ export const FlereForsørgereEttBarn: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -106,7 +107,7 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -125,7 +126,7 @@ export const FlereForsørgereToBarn: Story = {
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -144,7 +145,7 @@ export const FarOgFar: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Petter Pjokk',
             navnPåMedfar: 'Espen Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         omBarnet: {
             erFødsel: false,

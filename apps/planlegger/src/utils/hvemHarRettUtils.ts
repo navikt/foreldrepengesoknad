@@ -1,5 +1,7 @@
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 
@@ -23,16 +25,16 @@ export const utledHvemSomHarRett = (arbeidssituasjon: Arbeidssituasjon): HvemHar
 
 export const harKunMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     hvemHarRett === 'kunSøker2HarRett' &&
-    (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-        hvemPlanlegger.type === Situasjon.MOR_OG_FAR);
+    (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
+        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
 
 export const harFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) &&
+    (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
     (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
 
 export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) &&
+    (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
     hvemHarRett === 'kunSøker1HarRett';
 
 export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>

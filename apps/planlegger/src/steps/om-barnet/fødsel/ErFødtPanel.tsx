@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
@@ -16,6 +16,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -35,7 +36,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
     const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type !== Situasjon.MOR;
+    const erFar = hvemPlanlegger.type !== HvemPlanleggerType.MOR;
 
     return (
         <VStack gap="5">

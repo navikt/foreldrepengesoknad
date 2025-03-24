@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -17,7 +17,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -61,7 +61,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
     fornavnSøker2?: string,
     erOversiktSteg?: boolean,
 ) => {
-    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
     const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
 

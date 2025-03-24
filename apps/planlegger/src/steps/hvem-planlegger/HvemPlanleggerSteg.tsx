@@ -4,25 +4,33 @@ import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll } from '@navikt/fp-types';
 import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
 
-const erMorDelAvSøknadenGittType = (type: Situasjon) => {
-    return type === Situasjon.MOR_OG_FAR || type === Situasjon.MOR_OG_MEDMOR || type === Situasjon.MOR;
+const erMorDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
+    return (
+        type === HvemPlanleggerType.MOR_OG_FAR ||
+        type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+        type === HvemPlanleggerType.MOR
+    );
 };
 
-const erFarDelAvSøknadenGittType = (type: Situasjon) => {
-    return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
+const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
+    return (
+        type === HvemPlanleggerType.MOR_OG_FAR ||
+        type === HvemPlanleggerType.FAR_OG_FAR ||
+        type === HvemPlanleggerType.FAR
+    );
 };
 
 interface Props {
@@ -72,19 +80,19 @@ export const HvemPlanleggerSteg = ({ locale }: Props) => {
                             ]}
                             onChange={scrollToBottom}
                         >
-                            <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
+                            <Radio value={HvemPlanleggerType.MOR_OG_FAR} autoFocus>
                                 <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />
                             </Radio>
-                            <Radio value={Situasjon.MOR_OG_MEDMOR}>
+                            <Radio value={HvemPlanleggerType.MOR_OG_MEDMOR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.MorOgMedmor" />
                             </Radio>
-                            <Radio value={Situasjon.FAR_OG_FAR}>
+                            <Radio value={HvemPlanleggerType.FAR_OG_FAR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.FarOgFar" />
                             </Radio>
-                            <Radio value={Situasjon.MOR}>
+                            <Radio value={HvemPlanleggerType.MOR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.BareMor" />
                             </Radio>
-                            <Radio value={Situasjon.FAR}>
+                            <Radio value={HvemPlanleggerType.FAR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
                             </Radio>
                         </BlueRadioGroup>
@@ -105,14 +113,14 @@ export const HvemPlanleggerSteg = ({ locale }: Props) => {
                                             customErrorFormatter={formatError}
                                         />
                                     )}
-                                    {type === Situasjon.MOR_OG_MEDMOR && (
+                                    {type === HvemPlanleggerType.MOR_OG_MEDMOR && (
                                         <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             name="navnPåMedmor"
                                             customErrorFormatter={formatError}
                                         />
                                     )}
-                                    {type === Situasjon.FAR_OG_FAR && (
+                                    {type === HvemPlanleggerType.FAR_OG_FAR && (
                                         <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåMedfar"
