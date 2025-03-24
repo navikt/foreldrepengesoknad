@@ -972,7 +972,7 @@ export type EttersendelseDto = {
     saksnummer?: string;
     brukerTekst?: BrukerTekstDto;
     dialogId?: string;
-    vedlegg?: VedleggDto[];
+    vedlegg: VedleggDto[];
 };
 
 export type EngangsstønadDto = {

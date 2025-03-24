@@ -8,9 +8,10 @@ import {
     AnnenPartSak,
     AnnenPartSakIdentifikator,
     DokumentDto,
-    EttersendingDto,
+    EttersendelseDto,
     KontoBeregningDto,
     KontoBeregningGrunnlagDto,
+    Kvittering,
     MinidialogInnslag,
     Saker,
     Satser,
@@ -116,7 +117,7 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
             ky.get(`${urlPrefiks}/rest/historikk/vedlegg`, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
-export const sendEttersending = async (ettersending: EttersendingDto, fnr?: string) => {
+export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: string) => {
     // Det funker ikke å bruke ky.post() her.
     // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
     // Undersøke videre senere, gjør det slik for nå for å rette feil.
@@ -134,7 +135,7 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return (await response.json()) as unknown;
+    return (await response.json()) as Kvittering;
 };
 
 export const erSakOppdatertOptions = () =>
