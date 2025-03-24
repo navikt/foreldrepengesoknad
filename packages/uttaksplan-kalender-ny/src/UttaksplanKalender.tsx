@@ -204,6 +204,10 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     erFarEllerMedmor: boolean,
     foreldrepengerHarAktivitetskrav: boolean,
 ): PeriodeColor => {
+    if (periode.utsettelseÅrsak) {
+        return PeriodeColor.BLUEOUTLINE;
+    }
+
     if (periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
         return PeriodeColor.BLACK;
     }

@@ -13,6 +13,7 @@ import {
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
+import { SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
@@ -25,9 +26,10 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
+    uttaksplan: SaksperiodeNy[];
 }
 
-export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) => {
+export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan }: Props) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -38,6 +40,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
+
+    const inneholderFerie =
+        uttaksplan.find((p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) !== undefined;
 
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&
@@ -61,6 +66,11 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     <CalendarLabel iconType={PeriodeColor.BLACK}>
                         <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
                     </CalendarLabel>
+                    {inneholderFerie && (
+                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>Ferie</BodyShort>
+                        </CalendarLabel>
+                    )}
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
@@ -72,6 +82,11 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     <CalendarLabel iconType={PeriodeColor.BLACK}>
                         <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
                     </CalendarLabel>
+                    {inneholderFerie && (
+                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>Ferie</BodyShort>
+                        </CalendarLabel>
+                    )}
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
@@ -82,6 +97,11 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) =
                     <CalendarLabel iconType={PeriodeColor.BLACK}>
                         <BodyShort style={{ whiteSpace: 'nowrap' }}>Tapte dager</BodyShort>
                     </CalendarLabel>
+                    {inneholderFerie && (
+                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>Ferie</BodyShort>
+                        </CalendarLabel>
+                    )}
                 </HStack>
             )}
         </VStack>
