@@ -299,6 +299,18 @@ const KvoteTittel = () => {
         );
     }
 
+    const getBeskrivelseFarId = () => {
+        if (hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR) {
+            return 'kvote.varighet.tilMedmor';
+        }
+
+        if (hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR) {
+            return 'kvote.varighet.tilMedfar';
+        }
+
+        return 'kvote.varighet.tilFar';
+    };
+
     const beskrivelseMor =
         ubrukteDagerMor > 0
             ? intl.formatMessage(
@@ -322,12 +334,7 @@ const KvoteTittel = () => {
         ubrukteDagerFar > 0
             ? intl.formatMessage(
                   {
-                      id:
-                          hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
-                              ? 'kvote.varighet.tilMedmor'
-                              : hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
-                                ? 'kvote.varighet.tilMedfar'
-                                : 'kvote.varighet.tilFar',
+                      id: getBeskrivelseFarId(),
                   },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
