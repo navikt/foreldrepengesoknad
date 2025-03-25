@@ -12,7 +12,7 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { Saker, Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
@@ -91,13 +91,13 @@ export const Engangsstønad: Story = {
                                     antallBarn: 1,
                                 },
                                 åpenBehandling: {
-                                    tilstand: '',
+                                    tilstand: 'UNDER_BEHANDLING',
                                 },
                                 oppdatertTidspunkt: '2024-02-28T21:19:08.911',
                             },
                         ],
                         svangerskapspenger: [],
-                    }),
+                    } satisfies Saker),
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
                     HttpResponse.json([
