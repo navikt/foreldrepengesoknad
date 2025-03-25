@@ -68,7 +68,7 @@ export const Foreldrepenger: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as Søkerinfo,
+        søkerinfo: søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -127,7 +127,7 @@ export const Engangsstønad: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as Søkerinfo,
+        søkerinfo: søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -159,6 +159,6 @@ export const Svangerskapspenger: Story = {
     },
     args: {
         saksnummer: '202',
-        søkerinfo: søkerinfo as Søkerinfo,
+        søkerinfo: søkerinfo,
     },
 };

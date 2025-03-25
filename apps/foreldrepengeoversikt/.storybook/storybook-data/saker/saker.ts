@@ -1,5 +1,5 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { DekningsgradDTO, PeriodeResultatÅrsak, RettighetType, Saker } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak, RettighetType, Saker } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -84,7 +84,7 @@ export const saker = {
                     fnr: '01472254177',
                 },
             ],
-            dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+            dekningsgrad: 'HUNDRE',
             forelder: Forelder.mor,
         },
         {
@@ -164,7 +164,7 @@ export const saker = {
                 ],
             },
             barn: [],
-            dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+            dekningsgrad: 'HUNDRE',
         },
     ],
     engangsstønad: [],

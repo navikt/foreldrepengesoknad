@@ -12,6 +12,7 @@ import { Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
+import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
 import { Forside } from './Forside';
 
 const queryClient = new QueryClient();
@@ -58,8 +59,7 @@ export const Default: Story = {
         },
     },
     args: {
-        // @ts-expect-error Er backend og frontend-typar like her? Fiks!
-        saker,
-        søkerinfo: søkerinfo as Søkerinfo,
+        saker: mapSakerDTOToSaker(saker),
+        søkerinfo: søkerinfo,
     },
 };
