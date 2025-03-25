@@ -15,6 +15,7 @@ interface Props {
     familiehendelsesdato: string;
     termindato: string | undefined;
     situasjon: Situasjon;
+    trengerDokumentereMorsArbeid: boolean;
 }
 
 export const MorJobberDokumentasjon = ({
@@ -25,11 +26,16 @@ export const MorJobberDokumentasjon = ({
     familiehendelsesdato,
     situasjon,
     termindato,
+    trengerDokumentereMorsArbeid,
 }: Props) => {
     const intl = useIntl();
 
     if (perioder.length === 0) {
         return null;
+    }
+
+    if (!trengerDokumentereMorsArbeid) {
+        return 'Vi trenger ikke dokumentasjon';
     }
 
     return (

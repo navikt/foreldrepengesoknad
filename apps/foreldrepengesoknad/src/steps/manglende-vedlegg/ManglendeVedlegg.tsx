@@ -135,7 +135,9 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const termindato = getTermindato(barn);
 
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
-    const trengerDokumentereMorsArbeid = useQuery(trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams));
+    const trengerDokumentereMorsArbeid = useQuery(
+        trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
+    ).data;
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
@@ -267,6 +269,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                         attachments={morJobberVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
+                        trengerDokumentereMorsArbeid={trengerDokumentereMorsArbeid}
                         perioder={morJobberPerioder}
                         situasjon={søkersituasjon.situasjon}
                         termindato={termindato}
