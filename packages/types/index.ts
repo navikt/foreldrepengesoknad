@@ -70,5 +70,5 @@ export { OppholdÅrsakType } from './src/OppholdÅrsakType';
 export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
-export * from './src/dto/apiDTOGenerert';
+export * from './src/apiDTOGenerert';
 export * from './src/Ytelse';
