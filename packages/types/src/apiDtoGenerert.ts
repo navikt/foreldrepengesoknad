@@ -1138,7 +1138,7 @@ export type AnnenForelderFrontend = {
 export type Arbeidsforhold = {
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;
-    arbeidsgiverNavn?: string;
+    arbeidsgiverNavn: string;
     stillingsprosent: number;
     fom: string;
     tom?: string;
