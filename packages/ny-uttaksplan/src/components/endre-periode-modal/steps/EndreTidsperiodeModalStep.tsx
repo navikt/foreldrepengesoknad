@@ -20,6 +20,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
     erBarnetFødt: boolean;
+    gjelderAdopsjon: boolean;
 }
 
 interface FormValues {
@@ -35,6 +36,7 @@ export const EndreTidsperiodeModalStep = ({
     handleUpdatePeriode,
     inneholderKunEnPeriode,
     erBarnetFødt,
+    gjelderAdopsjon,
 }: Props) => {
     const { valgtPeriode } = modalData;
     const intl = useIntl();
@@ -70,7 +72,7 @@ export const EndreTidsperiodeModalStep = ({
     };
 
     const årsak = getÅrsak();
-    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato });
+    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato, gjelderAdopsjon });
     const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
 
     return (
@@ -95,6 +97,7 @@ export const EndreTidsperiodeModalStep = ({
                                 minDate,
                                 maxDate,
                                 årsak,
+                                gjelderAdopsjon,
                             })}
                         />
                         <RhfDatepicker
@@ -107,6 +110,7 @@ export const EndreTidsperiodeModalStep = ({
                                 minDate,
                                 maxDate,
                                 årsak,
+                                gjelderAdopsjon,
                             })}
                             label="Til og med dato"
                             name="tom"

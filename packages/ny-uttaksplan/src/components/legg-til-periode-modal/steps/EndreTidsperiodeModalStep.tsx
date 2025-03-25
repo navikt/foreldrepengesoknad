@@ -21,6 +21,7 @@ interface Props {
     familiehendelsedato: string;
     handleAddPeriode: (periode: Planperiode) => void;
     erBarnetFødt: boolean;
+    gjelderAdopsjon: boolean;
 }
 
 interface FormValues {
@@ -35,6 +36,7 @@ export const EndreTidsperiodeModalStep = ({
     familiehendelsedato,
     handleAddPeriode,
     erBarnetFødt,
+    gjelderAdopsjon,
 }: Props) => {
     const intl = useIntl();
     const { fom, tom, kontoType, forelder, årsak } = modalData;
@@ -63,7 +65,7 @@ export const EndreTidsperiodeModalStep = ({
         closeModal();
     };
 
-    const minDate = getMinDate({ årsak, kontoType, familiehendelsedato });
+    const minDate = getMinDate({ årsak, kontoType, familiehendelsedato, gjelderAdopsjon });
     const maxDate = getMaxDate({ familiehendelsedato, kontoType });
 
     return (
@@ -85,6 +87,7 @@ export const EndreTidsperiodeModalStep = ({
                                 minDate,
                                 maxDate,
                                 årsak,
+                                gjelderAdopsjon,
                             })}
                             disableWeekends={true}
                             label="Fra og med dato"
@@ -104,6 +107,7 @@ export const EndreTidsperiodeModalStep = ({
                                 minDate,
                                 maxDate,
                                 årsak,
+                                gjelderAdopsjon,
                             })}
                             disableWeekends={true}
                             label="Til og med dato"

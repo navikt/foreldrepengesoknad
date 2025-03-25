@@ -10,10 +10,15 @@ interface MinDateProps {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     kontoType?: StønadskontoType;
     familiehendelsedato: string;
+    gjelderAdopsjon: boolean;
 }
 
-export const getMinDate = ({ årsak, kontoType, familiehendelsedato }: MinDateProps) => {
+export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdopsjon }: MinDateProps) => {
     if (årsak === UtsettelseÅrsakType.Ferie) {
+        if (gjelderAdopsjon) {
+            return UttaksdagenString(familiehendelsedato).denneEllerNeste();
+        }
+
         return UttaksdagenString(familiehendelsedato).leggTil(30);
     }
 

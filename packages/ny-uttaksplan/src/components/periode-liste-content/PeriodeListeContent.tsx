@@ -131,6 +131,7 @@ export const PeriodeListeContent = ({
     const familiehendelseType = getFamiliehendelseType(barn);
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
+    const gjelderAdopsjon = isAdoptertBarn(barn);
 
     const erBarnetFødt = isFødtBarn(barn);
 
@@ -197,6 +198,7 @@ export const PeriodeListeContent = ({
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     isModalOpen={isEndringsModalOpen}
                     erBarnetFødt={erBarnetFødt}
+                    gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
             {isDeleteModalOpen ? (
