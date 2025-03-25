@@ -43,7 +43,7 @@ describe('<MinidialogSkjema>', () => {
             },
             dialogId: '1',
             saksnummer: '1',
-            type: 'foreldrepenger',
+            type: 'FORELDREPENGER',
             vedlegg: [],
         });
     });
@@ -94,7 +94,7 @@ describe('<MinidialogSkjema>', () => {
             },
             dialogId: '1',
             saksnummer: '1',
-            type: 'foreldrepenger',
+            type: 'FORELDREPENGER',
             vedlegg: [],
         });
     });

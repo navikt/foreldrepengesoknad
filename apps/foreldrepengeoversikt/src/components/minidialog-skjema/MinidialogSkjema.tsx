@@ -148,7 +148,10 @@ export const MinidialogSkjema = ({
                 <VStack gap="5">
                     <Chat avatar="Nav" name="Nav" timestamp={formatDate(minidialog.opprettet)}>
                         <Chat.Bubble>
-                            <FormattedMessage id="miniDialog.tilbakekreving.tittel" values={{ sakstype }} />
+                            <FormattedMessage
+                                id="miniDialog.tilbakekreving.tittel"
+                                values={{ sakstype: mapYtelse(sakstype) }}
+                            />
                         </Chat.Bubble>
                     </Chat>
                     <HvaLeggerNAVVektPå />
