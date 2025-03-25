@@ -1,16 +1,13 @@
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { StønadskontoType } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { getMaxDate, getMinDate } from '../../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../EndrePeriodeModal';
@@ -60,15 +57,6 @@ export const EndreTidsperiodeModalStep = ({
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
-    const minDate =
-        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? dayjs(familiehendelsedato).subtract(3, 'weeks').format(ISO_DATE_FORMAT)
-            : dayjs(familiehendelsedato).subtract(12, 'weeks').format(ISO_DATE_FORMAT);
-    const maxDate =
-        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
-            : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
-
     const getÅrsak = () => {
         if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
             return valgtPeriode.utsettelseÅrsak;
@@ -80,6 +68,10 @@ export const EndreTidsperiodeModalStep = ({
 
         return undefined;
     };
+
+    const årsak = getÅrsak();
+    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
 
     return (
         <>
@@ -102,7 +94,7 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                                årsak: getÅrsak(),
+                                årsak,
                             })}
                         />
                         <RhfDatepicker
@@ -114,7 +106,7 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
-                                årsak: getÅrsak(),
+                                årsak,
                             })}
                             label="Til og med dato"
                             name="tom"

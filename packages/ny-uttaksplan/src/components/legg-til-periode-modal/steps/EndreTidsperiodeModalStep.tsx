@@ -1,16 +1,15 @@
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Forelder, ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
 import { isEmpty } from '@navikt/fp-validation';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { getMaxDate, getMinDate } from '../../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../LeggTilPeriodeModal';
@@ -64,14 +63,8 @@ export const EndreTidsperiodeModalStep = ({
         closeModal();
     };
 
-    const minDate =
-        kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? dayjs(familiehendelsedato).subtract(3, 'weeks').format(ISO_DATE_FORMAT)
-            : dayjs(familiehendelsedato).subtract(12, 'weeks').format(ISO_DATE_FORMAT);
-    const maxDate =
-        kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
-            : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
+    const minDate = getMinDate({ årsak, kontoType, familiehendelsedato });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType });
 
     return (
         <>
