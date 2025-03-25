@@ -1,3 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
+import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
@@ -6,8 +9,18 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils';
 
-import { AnnenForelder, Barn, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    AnnenForelder,
+    Barn,
+    Søkerrolle,
+    Tidsperiode,
+    TidsperiodeDate,
+    isAnnenForelderOppgitt,
+    isFødtBarn,
+    isUfødtBarn,
+    isUttaksperiode,
+} from '@navikt/fp-common';
+import { Arbeidsforhold, Periode, SøkersituasjonFp } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -173,10 +186,47 @@ const showManglendeDokumentasjonSteg = (
             (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
         );
 
+        const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
+        //const trengerDokumentereMorsArbeid = useQuery(trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams));
+
         return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
     }
 
     return false;
+};
+
+const getDokumentereMorsArbeidParams = (
+    uttaksplan: Periode[],
+    annenForelder: AnnenForelder,
+    barn: Barn,
+): DokumentereMorsArbeidParams => {
+    const perioderMedAktivitetskrav = (uttaksplan || []).filter(
+        (p) => isUttaksperiode(p) && p.morsAktivitetIPerioden !== undefined,
+    );
+    const tidsperiode = konverterTidsperiodeDateArrayTilTidsperiodeArray(
+        perioderMedAktivitetskrav.map((t) => t.tidsperiode),
+    );
+    const annenPartFødselsnummer =
+        annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const barnFødselsnummer = barn && isFødtBarn(barn) ? barn.fnr : undefined;
+    const familiehendelse = barn ? dayjs(getFamiliehendelsedato(barn)).format('DD-MM-YYYY') : undefined;
+
+    return {
+        annenPartFødselsnummer,
+        barnFødselsnummer,
+        familiehendelse,
+        perioder: tidsperiode,
+    };
+};
+
+const konverterTidsperiodeDateTilTidsperiode = (tidsperiodeDate: TidsperiodeDate): Tidsperiode => {
+    return {
+        fom: dayjs(tidsperiodeDate.fom).format('DD-MM-YYYY'),
+        tom: dayjs(tidsperiodeDate.tom).format('DD-MM-YYYY'),
+    };
+};
+const konverterTidsperiodeDateArrayTilTidsperiodeArray = (tidsperiodeDates: TidsperiodeDate[]): Tidsperiode[] => {
+    return tidsperiodeDates.map(konverterTidsperiodeDateTilTidsperiode);
 };
 
 export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {

@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 
+import { Tidsperiode } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 type AnnenPartVedtakParams = {
@@ -19,6 +20,13 @@ type StønadskontoParams = {
     omsorgsovertakelseDato: string | undefined;
     morHarUføretrygd: boolean;
     familieHendelseDatoNesteSak: Date | undefined;
+};
+
+type DokumentereMorsArbeidParams = {
+    annenPartFødselsnummer: string;
+    barnFødselsnummer?: string;
+    familiehendelse?: string;
+    perioder: Tidsperiode[];
 };
 
 export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
@@ -48,3 +56,13 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
             ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
         enabled,
     });
+
+export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) => {
+    queryOptions({
+        queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
+        queryFn: () =>
+            ky
+                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`, { json: data })
+                .json<boolean>(),
+    });
+};
