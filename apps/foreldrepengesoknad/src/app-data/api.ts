@@ -22,7 +22,7 @@ type StønadskontoParams = {
     familieHendelseDatoNesteSak: Date | undefined;
 };
 
-type DokumentereMorsArbeidParams = {
+export type DokumentereMorsArbeidParams = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
     familiehendelse?: string;
@@ -57,7 +57,7 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
         enabled,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) => {
+export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
         queryFn: () =>
@@ -65,4 +65,3 @@ export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidP
                 .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`, { json: data })
                 .json<boolean>(),
     });
-};

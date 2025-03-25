@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
@@ -11,7 +13,17 @@ import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    Barn,
+    Periode,
+    Tidsperiode,
+    TidsperiodeDate,
+    isAnnenForelderOppgitt,
+    isFødtBarn,
+    isUtsettelseBarnInnlagt,
+    isUttaksperiode,
+} from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
@@ -121,6 +133,9 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
+
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
+    const trengerDokumentereMorsArbeid = useQuery(trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams));
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
@@ -327,4 +342,29 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
             </RhfForm>
         </Step>
     );
+};
+
+// TODO: ligge hvor?
+const getDokumentereMorsArbeidParams = (
+    uttaksplan: Periode[],
+    annenForelder: AnnenForelder,
+    barn: Barn,
+): DokumentereMorsArbeidParams => {
+    const perioderMedAktivitetskrav = uttaksplan
+        .filter((p) => isUttaksperiode(p))
+        .filter((p) => p.morsAktivitetIPerioden !== undefined);
+
+    const annenPartFødselsnummer =
+        annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const barnFødselsnummer = barn && isFødtBarn(barn) ? barn.fnr : undefined;
+
+    return {
+        annenPartFødselsnummer,
+        barnFødselsnummer,
+        familiehendelse: getFamiliehendelsedato(barn),
+        perioder: perioderMedAktivitetskrav.map((p) => ({
+            fom: p.tidsperiode.fom.toISOString(),
+            tom: p.tidsperiode.tom.toISOString(),
+        })),
+    };
 };
