@@ -7,9 +7,10 @@ import { HStack, Heading, VStack } from '@navikt/ds-react';
 import { StønadskontoType } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../EndrePeriodeModal';
@@ -68,6 +69,18 @@ export const EndreTidsperiodeModalStep = ({
             ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
             : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
 
+    const getÅrsak = () => {
+        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+            return valgtPeriode.utsettelseÅrsak;
+        }
+
+        if (valgtPeriode?.periodeHullÅrsak && valgtPeriode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            return valgtPeriode.periodeHullÅrsak;
+        }
+
+        return undefined;
+    };
+
     return (
         <>
             <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
@@ -89,6 +102,7 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
+                                årsak: getÅrsak(),
                             })}
                         />
                         <RhfDatepicker
@@ -100,6 +114,7 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
+                                årsak: getÅrsak(),
                             })}
                             label="Til og med dato"
                             name="tom"

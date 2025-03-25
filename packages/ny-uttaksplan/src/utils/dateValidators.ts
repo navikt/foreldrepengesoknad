@@ -89,6 +89,23 @@ export const getFomValidators = ({
 
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
+                    UttaksdagenString(familiehendelsedato).leggTil(30),
+                ),
+            );
+            break;
         case PeriodeHullType.PERIODE_UTEN_UTTAK:
             validators.push(
                 isAfterOrSame(
@@ -139,9 +156,9 @@ export const getTomValidators = ({
     årsak,
 }: TomValidatorProps) => {
     const validators = [
-        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
-        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
-        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
+        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
+        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
+        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.måVæreUkedag' })),
     ];
 
     const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
@@ -190,6 +207,23 @@ export const getTomValidators = ({
 
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
+                    UttaksdagenString(familiehendelsedato).leggTil(30),
+                ),
+            );
+            break;
         case PeriodeHullType.PERIODE_UTEN_UTTAK:
             validators.push(
                 isAfterOrSame(
