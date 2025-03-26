@@ -1065,8 +1065,8 @@ export type Arbeidsgiver = {
 };
 
 export type Gradering = {
-    arbeidstidprosent?: number;
-    aktivitet?: Aktivitet;
+    arbeidstidprosent: number;
+    aktivitet: Aktivitet;
 };
 
 export type UttakPeriode = {
@@ -1165,15 +1165,12 @@ export type PersonFrontend = {
     fornavn: string;
     mellomnavn?: string;
     etternavn: string;
-    kjønn: 'M' | 'K';
+    kjønn: Kjønn;
     fødselsdato: string;
     bankkonto?: Bankkonto;
     barn: BarnFrontend[];
     sivilstand?: Sivilstand;
 };
-
-// TODO: manuelt lagt til
-export type Kjønn = 'M' | 'K';
 
 export type Sivilstand = {
     type?:
@@ -1203,7 +1200,7 @@ export type MinidialogInnslag = {
 
 export type EsSak = {
     saksnummer: string;
-    familiehendelse?: Familiehendelse;
+    familiehendelse: Familiehendelse;
     sakAvsluttet?: boolean;
     åpenBehandling?: EsÅpenBehandling;
     gjelderAdopsjon?: boolean;
@@ -1260,6 +1257,18 @@ export type FpÅpenBehandling = {
     søknadsperioder: UttakPeriode[];
 };
 
+export type OppholdPeriode = {
+    fom: string;
+    tom: string;
+    årsak: 'SYKEPENGER' | 'FERIE';
+    oppholdKilde: 'SAKSBEHANDLER' | 'INNTEKTSMELDING' | 'SØKNAD';
+};
+
+export type PeriodeResultat = {
+    resultatType?: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
+    utbetalingsgrad?: number;
+};
+
 export type Person = {
     fnr?: string;
     aktørId?: string;
@@ -1271,34 +1280,13 @@ export type Saker = {
     svangerskapspenger: SvpSak[];
 };
 
-export type SvpSak = {
-    saksnummer: string;
-    familiehendelse: Familiehendelse;
-    sakAvsluttet: boolean;
-    åpenBehandling?: ÅpenBehandling;
-    gjeldendeVedtak?: Vedtak;
-    oppdatertTidspunkt: string;
-};
-
-export type Søknad = {
-    arbeidsforhold: ArbeidsforholdSVP[];
-};
-
-export type Vedtak = {
-    arbeidsforhold: ArbeidsforholdSVP[];
-    avslagÅrsak?:
-        | 'ARBEIDSGIVER_KAN_TILRETTELEGGE'
-        | 'SØKER_ER_INNVILGET_SYKEPENGER'
-        | 'MANGLENDE_DOKUMENTASJON'
-        | 'ANNET';
-};
-
-// TODO: forsvinner pga navnkollisjon ved typegenerering
-export type ArbeidsforholdSVP = {
+export type SvpArbeidsforhold = {
     aktivitet: Aktivitet;
-    behovFrom: string;
-    tilrettelegginger: TilretteleggingPeriodeSVP[];
-    oppholdsperioder: Oppholdsperiode[];
+    behovFrom?: string;
+    risikofaktorer?: string;
+    tiltak?: string;
+    tilrettelegginger: Tilrettelegging[];
+    oppholdsperioder: OppholdPeriode[];
     avslutningÅrsak?:
         | 'NORMAL'
         | 'TILBAKE_I_HEL_STILLING'
@@ -1309,26 +1297,16 @@ export type ArbeidsforholdSVP = {
         | 'AVSLAG_INNGANGSVILKÅR';
 };
 
-type Oppholdsperiode = {
-    fom: string;
-    tom: string;
-    årsak: 'FERIE' | 'SYKEPENGER';
-    oppholdKilde: 'SØKNAD' | 'SAKSBEHANDLER' | 'INNTEKTSMELDING';
+export type SvpSak = {
+    saksnummer: string;
+    familiehendelse: Familiehendelse;
+    sakAvsluttet: boolean;
+    åpenBehandling?: SvpÅpenBehandling;
+    gjeldendeVedtak?: Vedtak;
+    oppdatertTidspunkt: string;
 };
 
-export interface TilretteleggingPeriodeSVP {
-    type: 'INGEN' | 'DELVIS' | 'HEL';
-    fom: string;
-    tom: string;
-    arbeidstidprosent?: number;
-    resultat?: Resultat;
-}
-type Resultat = {
-    resultatType: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
-    utbetalingsgrad: number;
-};
-
-export type ÅpenBehandling = {
+export type SvpÅpenBehandling = {
     tilstand:
         | 'UNDER_BEHANDLING'
         | 'VENT_TIDLIG_SØKNAD'
@@ -1336,6 +1314,27 @@ export type ÅpenBehandling = {
         | 'VENT_DOKUMENTASJON'
         | 'VENT_INNTEKTSMELDING';
     søknad: Søknad;
+};
+
+export type Søknad = {
+    arbeidsforhold: SvpArbeidsforhold[];
+};
+
+export type Tilrettelegging = {
+    fom: string;
+    tom: string;
+    type?: 'HEL' | 'DELVIS' | 'INGEN';
+    arbeidstidprosent?: number;
+    resultat?: PeriodeResultat;
+};
+
+export type Vedtak = {
+    arbeidsforhold: SvpArbeidsforhold[];
+    avslagÅrsak?:
+        | 'ARBEIDSGIVER_KAN_TILRETTELEGGE'
+        | 'SØKER_ER_INNVILGET_SYKEPENGER'
+        | 'MANGLENDE_DOKUMENTASJON'
+        | 'ANNET';
 };
 
 export type Dokument = {
@@ -1415,3 +1414,5 @@ export type DokumentDto = {
     dokumentId?: string;
     mottatt: string;
 };
+
+export type Kjønn = 'M' | 'K';

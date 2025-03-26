@@ -7,9 +7,9 @@ import {
     EsÅpenBehandling,
     Familiehendelse,
     FpÅpenBehandling,
+    SvpÅpenBehandling,
     TidslinjeHendelseDto,
     Ytelse,
-    ÅpenBehandling,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -23,7 +23,6 @@ import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
 dayjs.extend(minMax);
 
-// TODO: lag egen type?
 type BehandlingTilstand = FpÅpenBehandling['tilstand'];
 
 enum Vedtaksbrev {
@@ -323,7 +322,7 @@ export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: Fp
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandling) => {
+export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: SvpÅpenBehandling) => {
     const tilretteleggingerFomDatoer =
         åpenBehandling.søknad.arbeidsforhold
             .map((a) => {
@@ -337,10 +336,10 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: �
 
 export const getTidligstBehandlingsDatoForTidligSøknad = (
     ytelse: Ytelse,
-    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling,
+    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | SvpÅpenBehandling,
 ) => {
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandling);
+        return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as SvpÅpenBehandling);
     }
 
     return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling as FpÅpenBehandling);
@@ -498,7 +497,7 @@ const finnInfoTekstForYtelse = (intl: IntlShape, ytelse: Ytelse) =>
         : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
 
 export const getTidslinjehendelserFraBehandlingPåVent = (
-    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling,
+    åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | SvpÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
     intl: IntlShape,
     ytelse: Ytelse,
@@ -630,7 +629,7 @@ export const getHendelserForVisning = (
 
 export const getAlleTidslinjehendelser = (
     tidslinjeHendelserData: TidslinjeHendelseDto[],
-    åpenBehandlingPåVent: EsÅpenBehandling | FpÅpenBehandling | ÅpenBehandling | undefined,
+    åpenBehandlingPåVent: EsÅpenBehandling | FpÅpenBehandling | SvpÅpenBehandling | undefined,
     manglendeVedleggData: Skjemanummer[],
     sak: Sak,
     barnFraSak: BarnGruppering,
