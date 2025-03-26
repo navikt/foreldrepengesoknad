@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { AnnenForelder, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Kjønn, PersonFrontend } from '@navikt/fp-types';
+import { PersonFrontend } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -11,7 +11,7 @@ export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: b
     return mellomnavn ? `${fornavn} ${mellomnavn}` : `${fornavn}`;
 };
 
-export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn | undefined => {
+export const getKjønnFromFnr = (annenForelder: AnnenForelder): PersonFrontend['kjønn'] | undefined => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { fnr } = annenForelder;
 
@@ -24,7 +24,7 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn | undefin
     return undefined;
 };
 
-export const getKjønnFromFnrString = (fnr: string): Kjønn | undefined => {
+export const getKjønnFromFnrString = (fnr: string): PersonFrontend['kjønn'] | undefined => {
     if (fnr.length !== 11) {
         return undefined;
     }

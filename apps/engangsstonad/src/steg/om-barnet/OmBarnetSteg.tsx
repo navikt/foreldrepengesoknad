@@ -9,7 +9,7 @@ import { OmBarnet } from 'types/OmBarnet';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Kjønn, Søkersituasjon } from '@navikt/fp-types';
+import { PersonFrontend, Søkersituasjon } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -44,7 +44,7 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
 });
 
 export interface Props {
-    kjønn: Kjønn;
+    kjønn: PersonFrontend['kjønn'];
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
