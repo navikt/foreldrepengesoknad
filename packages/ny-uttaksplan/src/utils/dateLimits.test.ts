@@ -67,7 +67,7 @@ describe('Datobegrensninger', () => {
         expect(maxDate).toEqual(UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige());
     });
 
-    it('Skal gi korrekte begrensninger for ferie', () => {
+    it('Skal gi korrekte begrensninger for ferie - ved fødsel', () => {
         const årsak = UtsettelseÅrsakType.Ferie;
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
@@ -76,6 +76,18 @@ describe('Datobegrensninger', () => {
         const maxDate = getMaxDate({ familiehendelsedato });
 
         expect(minDate).toEqual(UttaksdagenString(familiehendelsedato).leggTil(30));
+        expect(maxDate).toEqual(dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT));
+    });
+
+    it('Skal gi korrekte begrensninger for ferie - ved adopsjon', () => {
+        const årsak = UtsettelseÅrsakType.Ferie;
+        const familiehendelsedato = '2025-03-26';
+        const gjelderAdopsjon = true;
+
+        const minDate = getMinDate({ årsak, familiehendelsedato, gjelderAdopsjon });
+        const maxDate = getMaxDate({ familiehendelsedato });
+
+        expect(minDate).toEqual(familiehendelsedato);
         expect(maxDate).toEqual(dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT));
     });
 });
