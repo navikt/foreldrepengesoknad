@@ -24,6 +24,7 @@ interface FomValidatorProps {
     minDate: string;
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    gjelderAdopsjon: boolean;
 }
 
 export const getFomValidators = ({
@@ -35,6 +36,7 @@ export const getFomValidators = ({
     minDate,
     maxDate,
     årsak,
+    gjelderAdopsjon,
 }: FomValidatorProps) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
@@ -89,6 +91,27 @@ export const getFomValidators = ({
 
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+
+            if (!gjelderAdopsjon) {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
+                        UttaksdagenString(familiehendelsedato).leggTil(30),
+                    ),
+                );
+            }
+
+            break;
         case PeriodeHullType.PERIODE_UTEN_UTTAK:
             validators.push(
                 isAfterOrSame(
@@ -126,6 +149,7 @@ interface TomValidatorProps {
     minDate: string;
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    gjelderAdopsjon: boolean;
 }
 
 export const getTomValidators = ({
@@ -137,11 +161,12 @@ export const getTomValidators = ({
     minDate,
     maxDate,
     årsak,
+    gjelderAdopsjon,
 }: TomValidatorProps) => {
     const validators = [
-        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
-        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
-        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
+        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
+        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
+        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.måVæreUkedag' })),
     ];
 
     const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
@@ -190,6 +215,27 @@ export const getTomValidators = ({
 
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
+            validators.push(
+                isAfterOrSame(
+                    erBarnetFødt
+                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                ),
+            );
+
+            if (!gjelderAdopsjon) {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
+                        UttaksdagenString(familiehendelsedato).leggTil(30),
+                    ),
+                );
+            }
+
+            break;
         case PeriodeHullType.PERIODE_UTEN_UTTAK:
             validators.push(
                 isAfterOrSame(

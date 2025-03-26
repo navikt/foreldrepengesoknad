@@ -1,15 +1,13 @@
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { StønadskontoType } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { getMaxDate, getMinDate } from '../../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../../utils/dateValidators';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../EndrePeriodeModal';
@@ -22,6 +20,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
     erBarnetFødt: boolean;
+    gjelderAdopsjon: boolean;
 }
 
 interface FormValues {
@@ -37,6 +36,7 @@ export const EndreTidsperiodeModalStep = ({
     handleUpdatePeriode,
     inneholderKunEnPeriode,
     erBarnetFødt,
+    gjelderAdopsjon,
 }: Props) => {
     const { valgtPeriode } = modalData;
     const intl = useIntl();
@@ -59,14 +59,21 @@ export const EndreTidsperiodeModalStep = ({
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
 
-    const minDate =
-        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? dayjs(familiehendelsedato).subtract(3, 'weeks').format(ISO_DATE_FORMAT)
-            : dayjs(familiehendelsedato).subtract(12, 'weeks').format(ISO_DATE_FORMAT);
-    const maxDate =
-        valgtPeriode?.kontoType === StønadskontoType.ForeldrepengerFørFødsel
-            ? UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige()
-            : dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT);
+    const getÅrsak = () => {
+        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+            return valgtPeriode.utsettelseÅrsak;
+        }
+
+        if (valgtPeriode?.periodeHullÅrsak && valgtPeriode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            return valgtPeriode.periodeHullÅrsak;
+        }
+
+        return undefined;
+    };
+
+    const årsak = getÅrsak();
+    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato, gjelderAdopsjon });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
 
     return (
         <>
@@ -89,6 +96,8 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
+                                årsak,
+                                gjelderAdopsjon,
                             })}
                         />
                         <RhfDatepicker
@@ -100,6 +109,8 @@ export const EndreTidsperiodeModalStep = ({
                                 erBarnetFødt,
                                 minDate,
                                 maxDate,
+                                årsak,
+                                gjelderAdopsjon,
                             })}
                             label="Til og med dato"
                             name="tom"

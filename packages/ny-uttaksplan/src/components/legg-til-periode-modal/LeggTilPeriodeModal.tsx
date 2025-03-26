@@ -21,6 +21,7 @@ interface Props {
     familiehendelsedato: string;
     isModalOpen: boolean;
     erBarnetFødt: boolean;
+    gjelderAdopsjon: boolean;
 }
 
 export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
@@ -41,6 +42,7 @@ export const LeggTilPeriodeModal = ({
     familiehendelsedato,
     isModalOpen,
     erBarnetFødt,
+    gjelderAdopsjon,
 }: Props) => {
     const initialModalState: ModalData = {
         hvaVilDuGjøre: undefined,
@@ -96,6 +98,7 @@ export const LeggTilPeriodeModal = ({
                         familiehendelsedato={familiehendelsedato}
                         handleAddPeriode={handleAddPeriode}
                         erBarnetFødt={erBarnetFødt}
+                        gjelderAdopsjon={gjelderAdopsjon}
                     />
                 );
 

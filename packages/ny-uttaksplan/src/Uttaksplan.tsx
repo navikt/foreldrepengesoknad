@@ -207,6 +207,7 @@ export const UttaksplanNy = ({
                     familiehendelsedato={familiehendelsedato}
                     isModalOpen={isModalOpen}
                     erBarnetFødt={erBarnetFødt}
+                    gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
         </UttaksplanDataContext>
