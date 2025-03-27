@@ -16,7 +16,6 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
 
 const useGetYtelse = () => {
@@ -38,7 +37,7 @@ export const InntektsmeldingPage = () => {
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
     const GRUNNBELØP =
         useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
-    const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
+    const ytelseTekst = useGetYtelse() === 'SVANGERSKAPSPENGER' ? 'svangerskapspengene' : 'foreldrepengene';
     const locale = useIntl().locale;
 
     const params = useParams();

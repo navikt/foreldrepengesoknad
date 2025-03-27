@@ -1,18 +1,17 @@
 import { Skjemanummer } from '@navikt/fp-constants';
 
-import { Sak } from './../types/Sak';
-import { Ytelse } from './../types/Ytelse';
+import { Sak } from '../types/Sak';
 
 export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
     const alleSkjemanummere = Object.values(Skjemanummer);
 
-    if (sak.ytelse === Ytelse.FORELDREPENGER) {
+    if (sak.ytelse === 'FORELDREPENGER') {
         return sak.kanSøkeOmEndring
             ? alleSkjemanummere.filter(isSkjemanummerForEndringssøknadForeldrepenger)
             : alleSkjemanummere.filter(skjemanummerForFørstegangssøknadForeldrepenger);
     }
 
-    if (sak.ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (sak.ytelse === 'ENGANGSSTØNAD') {
         return alleSkjemanummere.filter(isSkjemanummerForEngangsstønad);
     }
     return alleSkjemanummere.filter(isSkjemanummerForSvangerskapspengesoknad);

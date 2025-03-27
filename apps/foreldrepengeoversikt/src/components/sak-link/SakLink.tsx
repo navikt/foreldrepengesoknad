@@ -1,7 +1,7 @@
+import { Ytelse } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { Sak } from '../../types/Sak';
-import { Ytelse } from '../../types/Ytelse';
 import { LenkePanel } from '../lenke-panel/LenkePanel';
 import { StatusTag } from '../status-tag/StatusTag';
 
@@ -12,11 +12,11 @@ interface Props {
 
 const getHeading = (ytelse: Ytelse) => {
     switch (ytelse) {
-        case Ytelse.ENGANGSSTØNAD:
+        case 'ENGANGSSTØNAD':
             return 'Engangsstønad';
-        case Ytelse.FORELDREPENGER:
+        case 'FORELDREPENGER':
             return 'Foreldrepenger';
-        case Ytelse.SVANGERSKAPSPENGER:
+        case 'SVANGERSKAPSPENGER':
             return 'Svangerskapspenger';
     }
 };

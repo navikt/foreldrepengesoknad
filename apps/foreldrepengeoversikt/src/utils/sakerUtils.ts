@@ -3,21 +3,13 @@ import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Familiesituasjon } from '@navikt/fp-types';
+import { Barn, Familiehendelse, Familiesituasjon, Saker, Søkerinfo, Ytelse } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
-import { BarnGruppering } from './../types/BarnGruppering';
-import { EngangsstønadSak, EngangsstønadSakDTO } from './../types/EngangsstønadSak';
-import { Familiehendelse } from './../types/Familiehendelse';
-import { Foreldrepengesak, ForeldrepengesakDTO } from './../types/Foreldrepengesak';
-import { GruppertSak } from './../types/GruppertSak';
-import { Person } from './../types/Person';
-import { Sak } from './../types/Sak';
-import { SakOppslag, SakOppslagDTO } from './../types/SakOppslag';
-import { Situasjon } from './../types/Situasjon';
-import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from './../types/SvangerskapspengeSak';
-import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
-import { Ytelse } from './../types/Ytelse';
+import { BarnGruppering } from '../types/BarnGruppering';
+import { GruppertSak } from '../types/GruppertSak';
+import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../types/Sak';
+import { SakOppslag } from '../types/SakOppslag';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';
 
@@ -25,7 +17,7 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
+export function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
@@ -70,8 +62,8 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): BarnGruppering => {
-    const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
+    const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
@@ -106,7 +98,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): Ba
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -127,7 +119,10 @@ export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag
             if (relevantSak && result.includes(relevantSak)) {
                 return result;
             } else {
-                const type = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon!);
+                const type = utledFamiliesituasjon(
+                    sak.familiehendelse,
+                    'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
+                );
                 const gruppertSak: GruppertSak = {
                     antallBarn: sak.familiehendelse.antallBarn,
                     familiehendelsedato,
@@ -148,10 +143,10 @@ export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag
 };
 
 const addYtelseToSak = (
-    saker: ForeldrepengesakDTO[] | SvangerskapspengeSakDTO[] | EngangsstønadSakDTO[],
+    saker: Saker['foreldrepenger'] | Saker['engangsstønad'] | Saker['svangerskapspenger'],
     ytelse: Ytelse,
-): Foreldrepengesak[] | SvangerskapspengeSak[] | EngangsstønadSak[] => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+): Sak[] => {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return saker.map(
             (sak) =>
                 ({
@@ -161,7 +156,7 @@ const addYtelseToSak = (
         );
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return saker.map(
             (sak) =>
                 ({
@@ -180,14 +175,11 @@ const addYtelseToSak = (
     );
 };
 
-export const mapSakerDTOToSaker = (saker: SakOppslagDTO): SakOppslag => {
+export const mapSakerDTOToSaker = (saker: Saker): SakOppslag => {
     return {
-        foreldrepenger: addYtelseToSak(saker.foreldrepenger, Ytelse.FORELDREPENGER) as Foreldrepengesak[],
-        engangsstønad: addYtelseToSak(saker.engangsstønad, Ytelse.ENGANGSSTØNAD) as EngangsstønadSak[],
-        svangerskapspenger: addYtelseToSak(
-            saker.svangerskapspenger,
-            Ytelse.SVANGERSKAPSPENGER,
-        ) as SvangerskapspengeSak[],
+        foreldrepenger: addYtelseToSak(saker.foreldrepenger, 'FORELDREPENGER') as Foreldrepengesak[],
+        engangsstønad: addYtelseToSak(saker.engangsstønad, 'ENGANGSSTØNAD') as EngangsstønadSak[],
+        svangerskapspenger: addYtelseToSak(saker.svangerskapspenger, 'SVANGERSKAPSPENGER') as SvangerskapspengeSak[],
     };
 };
 
@@ -242,7 +234,7 @@ export const getFamiliehendelseDato = (familiehendelse: Familiehendelse): string
 };
 
 export const getNavnAnnenForelder = (
-    søkerinfo: SøkerinfoDTO,
+    søkerinfo: Søkerinfo,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined,
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
@@ -291,7 +283,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     fødselsdatoer: Date[] | undefined,
     antallBarn: number,
     intl: IntlShape,
-    type: Situasjon,
+    type: Familiesituasjon,
 ): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
     if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
@@ -353,7 +345,7 @@ type SakTittelArguments = {
     familiehendelsedato: string;
     antallBarn: number;
     intl: IntlShape;
-    situasjon: Situasjon;
+    situasjon: Familiesituasjon;
 };
 export const getSakTittel = (sakTittelArguments: SakTittelArguments): { tittel: string; undertittel: string } => {
     const { barngruppering, familiehendelsedato, antallBarn, intl, situasjon } = sakTittelArguments;

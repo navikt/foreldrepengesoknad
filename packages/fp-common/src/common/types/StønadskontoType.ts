@@ -1,5 +1,4 @@
-//TODO Fjern denne. Bruk heller den i types-pakka
-
+// Bruk heller den i types-pakka
 export enum StønadskontoType {
     Mødrekvote = 'MØDREKVOTE',
     Fedrekvote = 'FEDREKVOTE',

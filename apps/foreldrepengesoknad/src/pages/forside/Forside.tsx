@@ -14,10 +14,9 @@ import {
 
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Sak } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
@@ -33,7 +32,7 @@ type VelkommenFormData = {
 interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     locale: LocaleNo;
-    saker: Sak[];
+    saker: FpSak[];
     harGodkjentVilkår: boolean;
     søkerInfo: Søkerinfo;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;

@@ -12,7 +12,7 @@ import { getKjønnFromFnr } from 'utils/personUtils';
 
 import { Box, HStack, Loader } from '@navikt/ds-react';
 
-import { Dekningsgrad, DekningsgradDTO, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { IconCircleWrapper, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -94,13 +94,13 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                             fornavnAnnenForelder={annenForelder.fornavn}
                             kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                             dekningsgrad={
-                                annenPartVedtakQuery.data.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+                                annenPartVedtakQuery.data.dekningsgrad === 'HUNDRE'
                                     ? Dekningsgrad.HUNDRE_PROSENT
                                     : Dekningsgrad.ÅTTI_PROSENT
                             }
                             valgtStønadskonto={
                                 tilgjengeligeStønadskontoerQuery.data[
-                                    annenPartVedtakQuery.data.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+                                    annenPartVedtakQuery.data.dekningsgrad === 'HUNDRE'
                                         ? Dekningsgrad.HUNDRE_PROSENT
                                         : Dekningsgrad.ÅTTI_PROSENT
                                 ]

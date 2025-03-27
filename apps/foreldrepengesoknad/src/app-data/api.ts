@@ -1,8 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
-import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { AnnenPartSak, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 type AnnenPartVedtakParams = {
     annenPartFødselsnummer?: string;
@@ -25,9 +24,7 @@ export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boo
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () =>
-            ky
-                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
-                .json<AnnenPartVedtakDTO>(),
+            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
         enabled,
     });
 
@@ -35,9 +32,7 @@ export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enab
     queryOptions({
         queryKey: ['NESTE_SAK_ANNEN_PART_VEDTAK', data],
         queryFn: () =>
-            ky
-                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
-                .json<AnnenPartVedtakDTO>(),
+            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
         enabled,
     });
 

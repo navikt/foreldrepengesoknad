@@ -2,17 +2,16 @@ import { FileIcon } from '@navikt/aksel-icons';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
+import { DokumentDto } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
-import { Dokument as DokumentType } from '../../types/Dokument';
-import { DokumentType as DokumentTypeEnum } from '../../types/DokumentType';
 import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
-    readonly dokument: DokumentType;
+    readonly dokument: DokumentDto;
 }
 
-function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
+function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
     const url = lagUrl(dokument);
 
     return (
@@ -25,14 +24,12 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentDto['type'] }) {
     const text = (() => {
         switch (dokumentType) {
-            case DokumentTypeEnum.ARBEIDSGIVER:
-                return 'Arbeidsgiver';
-            case DokumentTypeEnum.UTGÅENDE_DOKUMENT:
+            case 'UTGÅENDE_DOKUMENT':
                 return 'Nav';
-            case DokumentTypeEnum.INNGÅENDE_DOKUMENT:
+            case 'INNGÅENDE_DOKUMENT':
                 return 'Du';
         }
     })();

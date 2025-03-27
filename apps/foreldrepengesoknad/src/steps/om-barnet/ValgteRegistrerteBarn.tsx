@@ -12,14 +12,14 @@ import {
 import { Label, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    valgteRegistrerteBarn: SøkerBarn[];
+    valgteRegistrerteBarn: BarnFrontend[];
     skalInkludereTermindato: boolean;
 }
 

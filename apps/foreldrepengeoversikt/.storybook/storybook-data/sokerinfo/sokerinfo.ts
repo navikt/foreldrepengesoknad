@@ -1,4 +1,4 @@
-import { SøkerinfoDTO } from '../../../src/types/SøkerinfoDTO';
+import { Søkerinfo } from '@navikt/fp-types';
 
 export const søkerinfo = {
     søker: {
@@ -27,4 +27,5 @@ export const søkerinfo = {
             },
         ],
     },
-} satisfies SøkerinfoDTO;
+    arbeidsforhold: [],
+} satisfies Søkerinfo;
