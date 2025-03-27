@@ -72,7 +72,9 @@ export const Snarveier = () => {
     const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;
     const ytelseTekst =
-        currentSak !== undefined ? currentSak.ytelse : intl.formatMessage({ id: 'snarveier.pengestøtter' });
+        currentSak !== undefined
+            ? currentSak.ytelse.toLowerCase()
+            : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
         <div className="bg-white p-8">
