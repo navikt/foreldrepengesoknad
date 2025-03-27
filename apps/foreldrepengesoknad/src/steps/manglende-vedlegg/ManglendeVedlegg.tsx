@@ -5,6 +5,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { IngenDokumentasjonPåkrevd } from 'steps/manglende-vedlegg/dokumentasjon/IngenDokumentasjonPåkrevd';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
@@ -17,8 +18,6 @@ import {
     AnnenForelder,
     Barn,
     Periode,
-    Tidsperiode,
-    TidsperiodeDate,
     isAnnenForelderOppgitt,
     isFødtBarn,
     isUtsettelseBarnInnlagt,
@@ -101,6 +100,10 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         erEndringssøknad,
     );
 
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
+    const trengerDokumentereMorsArbeid =
+        useQuery(trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams)).data ?? true;
+
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(relevantePerioder, erFarEllerMedmor, annenForelder);
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
@@ -125,7 +128,9 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelse);
     const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
     const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
-    const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
+    const morJobberPerioder = trengerDokumentereMorsArbeid
+        ? perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber)
+        : [];
     const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
@@ -133,11 +138,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
-
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
-    const trengerDokumentereMorsArbeid = useQuery(
-        trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
-    ).data;
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
@@ -197,6 +197,20 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         formMethods.clearErrors(skjemanummer);
     };
 
+    const kreverIngenDokumentasjon =
+        [
+            morInnlagtPerioder,
+            barnInnlagtPerioder,
+            farForSykPerioder,
+            farInnlagtPerioder,
+            morForSykPerioder,
+            morIntroPerioder,
+            morJobberPerioder,
+            morJobberOgStudererPerioder,
+            morKvalPerioder,
+            morStudererPerioder,
+        ].flat().length === 0;
+
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -207,6 +221,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         >
             <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
+                    {kreverIngenDokumentasjon && <IngenDokumentasjonPåkrevd />}
                     <MorInnlagtDokumentasjon
                         attachments={morInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
@@ -269,7 +284,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                         attachments={morJobberVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
-                        trengerDokumentereMorsArbeid={trengerDokumentereMorsArbeid}
                         perioder={morJobberPerioder}
                         situasjon={søkersituasjon.situasjon}
                         termindato={termindato}
@@ -332,14 +346,16 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                         andreInntektskilder={andreInntektskilder}
                     />
 
-                    <Alert size="small" variant="info">
-                        <Heading level="2" size="small">
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
-                        </Heading>
-                        <BodyLong>
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
-                        </BodyLong>
-                    </Alert>
+                    {!kreverIngenDokumentasjon && (
+                        <Alert size="small" variant="info">
+                            <Heading level="2" size="small">
+                                <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
+                            </Heading>
+                            <BodyLong>
+                                <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
+                            </BodyLong>
+                        </Alert>
+                    )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>
@@ -359,7 +375,7 @@ const getDokumentereMorsArbeidParams = (
 
     const annenPartFødselsnummer =
         annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const barnFødselsnummer = barn && isFødtBarn(barn) ? barn.fnr : undefined;
+    const barnFødselsnummer = barn && isFødtBarn(barn) ? barn.fnr[0] : undefined;
 
     return {
         annenPartFødselsnummer,

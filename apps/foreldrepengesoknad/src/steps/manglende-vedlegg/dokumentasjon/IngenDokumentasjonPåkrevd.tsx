@@ -13,10 +13,10 @@ export const IngenDokumentasjonPåkrevd = () => {
                     <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.tittel" />
                 </Heading>
                 <BodyLong spacing>
-                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del1"></FormattedMessage>
+                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del1" />
                 </BodyLong>
                 <BodyLong>
-                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del2"></FormattedMessage>
+                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del2" />
                 </BodyLong>
             </Alert>
         </>
