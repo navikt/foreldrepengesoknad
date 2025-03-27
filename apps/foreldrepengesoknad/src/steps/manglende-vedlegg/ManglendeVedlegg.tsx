@@ -15,7 +15,6 @@ import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
-    AnnenForelder,
     Barn,
     Periode,
     isAnnenForelderOppgitt,
@@ -100,9 +99,14 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         erEndringssøknad,
     );
 
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, annenForelder, barn);
+    const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
     const trengerDokumentereMorsArbeid =
-        useQuery(trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams)).data ?? true;
+        useQuery({
+            // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
+            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
+            enabled: !!dokumentereMorsArbeidParams,
+        }).data ?? true;
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(relevantePerioder, erFarEllerMedmor, annenForelder);
@@ -363,19 +367,21 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     );
 };
 
-// TODO: ligge hvor?
 const getDokumentereMorsArbeidParams = (
     uttaksplan: Periode[],
-    annenForelder: AnnenForelder,
     barn: Barn,
-): DokumentereMorsArbeidParams => {
+    annenPartFødselsnummer?: string,
+): DokumentereMorsArbeidParams | undefined => {
+    if (!annenPartFødselsnummer) {
+        return undefined;
+    }
+
     const perioderMedAktivitetskrav = uttaksplan
         .filter((p) => isUttaksperiode(p))
         .filter((p) => p.morsAktivitetIPerioden !== undefined);
 
-    const annenPartFødselsnummer =
-        annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const barnFødselsnummer = barn && isFødtBarn(barn) ? barn.fnr[0] : undefined;
+    const barnFødselsnummer =
+        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
 
     return {
         annenPartFødselsnummer,

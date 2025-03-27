@@ -25,7 +25,7 @@ type StønadskontoParams = {
 export type DokumentereMorsArbeidParams = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
-    familiehendelse?: string;
+    familiehendelse: string;
     perioder: Tidsperiode[];
 };
 
