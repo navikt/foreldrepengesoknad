@@ -42,7 +42,7 @@ import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 
 //TODO (TOR) temp-mapping. Fjern
-const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined): OldArbeidsforhold[] => {
+const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[]): OldArbeidsforhold[] => {
     if (!arbeidsforhold) {
         return [];
     }
@@ -51,7 +51,7 @@ const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined)
         return {
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
-            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn,
+            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn ?? '',
             fom: dayjs.utc(arbforhold.fom).toDate(),
             stillingsprosent: arbforhold.stillingsprosent,
             tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,

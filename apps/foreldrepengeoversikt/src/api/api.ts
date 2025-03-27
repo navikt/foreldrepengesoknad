@@ -3,18 +3,23 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import {
+    AktivMellomlagringDto,
+    AnnenPartSak,
+    AnnenPartSakIdentifikator,
+    DokumentDto,
+    EttersendelseDto,
+    KontoBeregningDto,
+    KontoBeregningGrunnlagDto,
+    Kvittering,
+    MinidialogInnslag,
+    Saker,
+    Satser,
+    Søkerinfo,
+    TidslinjeHendelseDto,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
-import { Dokument } from '../types/Dokument';
-import { EttersendingDto } from '../types/EttersendingDTO';
-import { KontoBeregningGrunnlagDto } from '../types/KontoBeregningGrunnlagDto';
-import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
-import { MinidialogInnslag } from '../types/MinidialogInnslag';
-import { SakOppslagDTO } from '../types/SakOppslag';
-import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
-import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
 import { InntektsmeldingDtoSchema } from './zodSchemas';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
@@ -22,7 +27,7 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const søkerInfoOptions = () =>
     queryOptions({
         queryKey: ['SØKER_INFO'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/sokerinfo`).json<SøkerinfoDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/sokerinfo`).json<Søkerinfo>(),
     });
 
 export const minidialogOptions = () =>
@@ -34,19 +39,23 @@ export const minidialogOptions = () =>
 export const hentSakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<Saker>(),
     });
 
 export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
-        queryFn: () => ky.post(`${urlPrefiks}/rest/konto`, { json: body }).json<TilgjengeligeStønadskontoer>(),
+        queryFn: () =>
+            ky
+                .post(`${urlPrefiks}/rest/konto`, { json: body })
+                .json<{ '80': KontoBeregningDto; '100': KontoBeregningDto }>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['DOKUMENTER', saksnummer],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+        queryFn: () =>
+            ky.get(`${urlPrefiks}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<DokumentDto[]>(),
     });
 
 export const hentInntektsmelding = (saksnummer: string) =>
@@ -83,27 +92,22 @@ export const hentSatserOptions = () =>
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<MellomlagredeYtelser>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<AktivMellomlagringDto>(),
     });
 
-type AnnenPartsVedtakRequestBody = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse?: string;
-};
-
-export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
+export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () =>
-            ky.post<AnnenPartVedtakDTO>(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, { json: body }).json(),
+        queryFn: () => ky.post<AnnenPartSak>(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, { json: body }).json(),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['TIDSLINJEHENDELSER', saksnummer],
         queryFn: () =>
-            ky.get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
+            ky
+                .get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } })
+                .json<TidslinjeHendelseDto[]>(),
     });
 
 export const hentManglendeVedleggOptions = (saksnummer: string) =>
@@ -113,7 +117,7 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
             ky.get(`${urlPrefiks}/rest/historikk/vedlegg`, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
-export const sendEttersending = async (ettersending: EttersendingDto, fnr?: string) => {
+export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: string) => {
     // Det funker ikke å bruke ky.post() her.
     // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
     // Undersøke videre senere, gjør det slik for nå for å rette feil.
@@ -131,7 +135,7 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return (await response.json()) as unknown;
+    return (await response.json()) as Kvittering;
 };
 
 export const erSakOppdatertOptions = () =>

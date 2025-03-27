@@ -21,7 +21,7 @@ import {
     treUkerSiden,
 } from '@navikt/fp-utils';
 
-import { SvangerskapspengeSak } from '../../types/SvangerskapspengeSak';
+import { SvangerskapspengeSak } from '../../types/Sak';
 
 type SvangerskapspengerProps = {
     svpSak: SvangerskapspengeSak;

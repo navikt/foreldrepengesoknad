@@ -1,12 +1,4 @@
-import { EngangsstønadSak, EngangsstønadSakDTO } from './EngangsstønadSak';
-import { Foreldrepengesak, ForeldrepengesakDTO } from './Foreldrepengesak';
-import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from './SvangerskapspengeSak';
-
-export interface SakOppslagDTO {
-    engangsstønad: EngangsstønadSakDTO[];
-    foreldrepenger: ForeldrepengesakDTO[];
-    svangerskapspenger: SvangerskapspengeSakDTO[];
-}
+import { EngangsstønadSak, Foreldrepengesak, SvangerskapspengeSak } from './Sak';
 
 export interface SakOppslag {
     engangsstønad: EngangsstønadSak[];

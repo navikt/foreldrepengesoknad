@@ -1,4 +1,4 @@
-import { MinidialogInnslag } from '../../../src/types/MinidialogInnslag';
+import { MinidialogInnslag } from '@navikt/fp-types';
 
 export const miniDialog = [
     {

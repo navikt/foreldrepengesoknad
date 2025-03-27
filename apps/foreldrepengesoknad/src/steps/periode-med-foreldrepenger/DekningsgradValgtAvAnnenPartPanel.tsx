@@ -8,7 +8,7 @@ import { getAntallUker } from 'utils/stønadskontoerUtils';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad } from '@navikt/fp-common';
-import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -18,7 +18,7 @@ type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
     fornavnAnnenForelder: string;
-    kjønnAnnenForelder?: Kjønn;
+    kjønnAnnenForelder?: 'M' | 'K';
     dekningsgrad: Dekningsgrad;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 };

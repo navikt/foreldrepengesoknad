@@ -1,5 +1,5 @@
 import { AnnenForelder } from '@navikt/fp-common';
-import { Søker } from '@navikt/fp-types';
+import { PersonFrontend } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import {
@@ -103,7 +103,7 @@ describe('personUtils', () => {
     it.skip('skal returnere navn på foreldre der far er søker', () => {
         const person = {
             fornavn: 'Espen',
-        } as Søker;
+        } as PersonFrontend;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Olga',
@@ -119,7 +119,7 @@ describe('personUtils', () => {
     it.skip('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
             fornavn: 'Olga',
-        } as Søker;
+        } as PersonFrontend;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Espen',

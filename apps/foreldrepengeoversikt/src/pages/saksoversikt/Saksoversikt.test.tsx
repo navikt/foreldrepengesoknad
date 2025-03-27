@@ -30,7 +30,7 @@ describe('<Saksoversikt>', () => {
 
         // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
         expect(await screen.findByText('Din sak')).toBeInTheDocument();
-        expect((await screen.findAllByText('svangerskapspenger')).length).toBeGreaterThan(0);
+        expect((await screen.findAllByText('SVANGERSKAPSPENGER')).length).toBeGreaterThan(0);
 
         // ... når vi senere skal sjekke for at noe ikke eksisterer.
         expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
@@ -42,7 +42,8 @@ describe('<Saksoversikt>', () => {
 
         // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
         expect(await screen.findByText('Din sak')).toBeInTheDocument();
-        expect((await screen.findAllByText('engangsstønad')).length).toBeGreaterThan(0);
+        screen.debug();
+        expect((await screen.findAllByText('ENGANGSSTØNAD')).length).toBeGreaterThan(0);
 
         // ... når vi senere skal sjekke for at noe ikke eksisterer.
         expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();

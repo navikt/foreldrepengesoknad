@@ -1,4 +1,3 @@
-import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
@@ -16,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { AnnenPartSak, SøkersituasjonFp } from '@navikt/fp-types';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -95,7 +94,7 @@ export const getStønadskontoParams = (
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
     barnFraNesteSak?: BarnFraNesteSak,
-    annenPartsVedtak?: AnnenPartVedtakDTO,
+    annenPartsVedtak?: AnnenPartSak,
     eksisterendeSak?: EksisterendeSak,
 ) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;

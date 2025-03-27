@@ -6,18 +6,16 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
-import { Bankkonto } from '@navikt/fp-types';
+import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { Ytelse } from '../../types/Ytelse';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
-    relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
-    bankkonto: Bankkonto | undefined;
+    relevantNyTidslinjehendelse: TidslinjeHendelseDto | undefined;
+    bankkonto: Søkerinfo['søker']['bankkonto'];
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
     manglendeVedlegg?: Skjemanummer[];
@@ -50,9 +48,13 @@ export const BekreftelseSendtSøknad = ({
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
-    const tidligstBehandlingsDato = relevantNyTidslinjehendelse
-        ? relevantNyTidslinjehendelse.tidligstBehandlingsDato
-        : undefined;
+
+    // TODO: mistenker denne alltid vil være undefined?
+    // const tidligstBehandlingsDato = relevantNyTidslinjehendelse
+    //     ? relevantNyTidslinjehendelse.tidligstBehandlingsDato
+    //     : undefined;
+    const tidligstBehandlingsDato = undefined;
+
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
@@ -70,7 +72,7 @@ export const BekreftelseSendtSøknad = ({
             </HStack>
             {relevantDokument && (
                 <ul className="p-0 m-0">
-                    <DokumentHendelse dokument={relevantDokument} key={relevantDokument.url} visesITidslinjen={false} />
+                    <DokumentHendelse dokument={relevantDokument} visesITidslinjen={false} />
                 </ul>
             )}
             <Accordion>
@@ -109,7 +111,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {ytelse === Ytelse.ENGANGSSTØNAD && (
+                {ytelse === 'ENGANGSSTØNAD' && (
                     <>
                         <Accordion.Item>
                             <Accordion.Header>
@@ -151,7 +153,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Item>
                     </>
                 )}
-                {ytelse === Ytelse.FORELDREPENGER && harMinstEttArbeidsforhold && (
+                {ytelse === 'FORELDREPENGER' && harMinstEttArbeidsforhold && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -168,7 +170,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {(ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) && (
+                {(ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -181,7 +183,7 @@ export const BekreftelseSendtSøknad = ({
                                     {!tidligstBehandlingsDato && (
                                         <FormattedMessage
                                             id="BekreftelseSendtSøknad.FireUkerFør"
-                                            values={{ erFp: ytelse === Ytelse.FORELDREPENGER }}
+                                            values={{ erFp: ytelse === 'FORELDREPENGER' }}
                                         />
                                     )}
                                 </BodyShort>
@@ -190,7 +192,7 @@ export const BekreftelseSendtSøknad = ({
                         <Accordion.Content>
                             <FormattedMessage
                                 id="BekreftelseSendtSøknad.TidligstSvarForklaring"
-                                values={{ erFp: ytelse === Ytelse.FORELDREPENGER }}
+                                values={{ erFp: ytelse === 'FORELDREPENGER' }}
                             />
                         </Accordion.Content>
                     </Accordion.Item>
@@ -200,7 +202,7 @@ export const BekreftelseSendtSøknad = ({
                     bankkonto={bankkonto}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                 />
-                {ytelse === Ytelse.FORELDREPENGER && (
+                {ytelse === 'FORELDREPENGER' && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">

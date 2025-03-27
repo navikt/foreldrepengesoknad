@@ -5,24 +5,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
-import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { StønadskontoType } from '@navikt/fp-constants';
 import {
+    Familiehendelse,
+    FpSak,
     HvemPlanleggerType,
+    KontoBeregningDto,
+    KontoDto,
     SaksperiodeNy,
-    Stønadskonto,
-    TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    konto: KontoBeregningDto;
     perioder: SaksperiodeNy[];
-    rettighetType: RettighetType;
-    forelder: Forelder;
+    rettighetType: FpSak['rettighetType'];
+    forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
     hvemPlanleggerType?: HvemPlanleggerType;
@@ -300,6 +299,18 @@ const KvoteTittel = () => {
         );
     }
 
+    const getBeskrivelseFarId = () => {
+        if (hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR) {
+            return 'kvote.varighet.tilMedmor';
+        }
+
+        if (hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR) {
+            return 'kvote.varighet.tilMedfar';
+        }
+
+        return 'kvote.varighet.tilFar';
+    };
+
     const beskrivelseMor =
         ubrukteDagerMor > 0
             ? intl.formatMessage(
@@ -323,12 +334,7 @@ const KvoteTittel = () => {
         ubrukteDagerFar > 0
             ? intl.formatMessage(
                   {
-                      id:
-                          hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
-                              ? 'kvote.varighet.tilMedmor'
-                              : hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
-                                ? 'kvote.varighet.tilMedfar'
-                                : 'kvote.varighet.tilFar',
+                      id: getBeskrivelseFarId(),
                   },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
@@ -489,12 +495,11 @@ const FellesKvoter = () => {
                 <FordelingsBar
                     fordelinger={[
                         {
-                            kontoType: forelder === 'MOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
+                            kontoType: forelder === 'MOR' ? 'MØDREKVOTE' : 'FEDREKVOTE',
                             prosent: prosentBruktAvDeg,
                         },
                         {
-                            kontoType:
-                                forelder === 'FAR_MEDMOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
+                            kontoType: forelder === 'FAR_MEDMOR' ? 'MØDREKVOTE' : 'FEDREKVOTE',
                             prosent: prosentBruktAvAnnenPart,
                         },
                         {
@@ -535,7 +540,7 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
     const { visStatusIkoner, familiehendelse } = useKvote();
 
@@ -633,19 +638,19 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     );
 };
 
-const VisningsnavnForKvote = ({ kontoType }: { kontoType: StønadskontoType }) => {
+const VisningsnavnForKvote = ({ kontoType }: { kontoType: KontoDto['konto'] }) => {
     switch (kontoType) {
-        case StønadskontoType.AktivitetsfriKvote:
+        case 'AKTIVITETSFRI_KVOTE':
             return <FormattedMessage id="kvote.konto.Aktivitetsfrikvote" />;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             return <FormattedMessage id="kvote.konto.Fedrekvote" />;
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             return <FormattedMessage id="kvote.konto.Mødrekvote" />;
-        case StønadskontoType.ForeldrepengerFørFødsel:
+        case 'FORELDREPENGER_FØR_FØDSEL':
             return <FormattedMessage id="kvote.konto.ForeldrepengerFørFødsel" />;
-        case StønadskontoType.Foreldrepenger:
+        case 'FORELDREPENGER':
             return <FormattedMessage id="kvote.konto.Foreldrepenger" />;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             return <FormattedMessage id="kvote.konto.Fellesperioder" />;
     }
 };
@@ -666,7 +671,7 @@ const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }
 };
 
 type FordelingSegmentProps = {
-    kontoType?: StønadskontoType;
+    kontoType?: KontoDto['konto'];
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;

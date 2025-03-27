@@ -100,6 +100,8 @@
     "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode": "Kun foreldrepenger før fødsel kan taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.fellesperiodeOverFPFF": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikke legges inn de første seks ukene etter fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikke legges inn de første seks ukene etter termin.",
     "endreTidsPeriodeModal.minDato": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
     "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}"
 }

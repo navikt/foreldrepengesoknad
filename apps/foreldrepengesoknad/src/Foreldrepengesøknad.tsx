@@ -1,25 +1,24 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { storageParser } from 'api/storageParser';
+import { FpDataContext } from 'appData/FpDataContext';
+import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagretDataTilAppData';
+import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { SakerOppslag } from 'types/SakerOppslag';
+import { Kvittering } from 'types/Kvittering';
+import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
-import { FpDataContext } from './app-data/FpDataContext';
-import { konverterMellomlagretDataTilAppData } from './app-data/konverterMellomlagretDataTilAppData';
-import { SøknadRoutes } from './app-data/routes';
-import { Kvittering } from './types/Kvittering';
-import { shouldApplyStorage } from './utils/mellomlagringUtils';
 
 const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -55,7 +54,7 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
 
     const sakerQuery = useQuery({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<SakerOppslag>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
     });
 
     const mellomlagretInfoQuery = useQuery({

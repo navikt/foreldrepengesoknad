@@ -6,14 +6,13 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { Søkerinfo, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
 import { InntektsmeldingDto } from '../../api/zodSchemas';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { Sak } from '../../types/Sak';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
-import { Ytelse } from '../../types/Ytelse';
 import {
     getFamiliehendelseDato,
     getSakTittel,
@@ -24,11 +23,11 @@ import {
 import { StatusTag } from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return 'Engangsstønadsak';
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return 'Svangerskapspengesak';
     }
 
@@ -58,10 +57,10 @@ function BlueDot() {
 function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
     const YtelseIkon = (() => {
         switch (ytelse) {
-            case Ytelse.FORELDREPENGER:
-            case Ytelse.ENGANGSSTØNAD:
+            case 'FORELDREPENGER':
+            case 'ENGANGSSTØNAD':
                 return BabyWrappedIcon;
-            case Ytelse.SVANGERSKAPSPENGER:
+            case 'SVANGERSKAPSPENGER':
                 return PersonPregnantIcon;
             default:
                 return StrollerIcon;
@@ -152,7 +151,7 @@ export const InntektsmeldingOversiktHeader = () => {
     );
 };
 
-function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: SøkerinfoDTO }) {
+function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: Søkerinfo }) {
     const intl = useIntl();
 
     const saker = useQuery({
@@ -168,12 +167,15 @@ function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; re
     const sakIGrupperteSaker = sak
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;
-    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
+    const situasjon = utledFamiliesituasjon(
+        sak.familiehendelse,
+        'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
+    );
     const barnTittel = getSakTittel({
         barngruppering: sakIGrupperteSaker?.barn,
         familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
         intl,
-        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+        antallBarn: sak.ytelse === 'FORELDREPENGER' ? sak.familiehendelse.antallBarn : 0,
         situasjon,
     });
 

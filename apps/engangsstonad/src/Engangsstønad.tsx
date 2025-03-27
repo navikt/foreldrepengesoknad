@@ -4,7 +4,7 @@ import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellom
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
-import { LocaleAll, Søker } from '@navikt/fp-types';
+import { LocaleAll, PersonFrontend } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -22,7 +22,7 @@ export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
 
     const personinfo = useQuery({
         queryKey: ['PERSONINFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/personinfo`).json<Søker>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/personinfo`).json<PersonFrontend>(),
     });
 
     const mellomlagretInfo = useQuery({

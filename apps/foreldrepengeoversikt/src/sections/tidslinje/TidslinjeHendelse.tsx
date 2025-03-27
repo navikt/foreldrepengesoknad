@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import { BodyShort, Detail } from '@navikt/ds-react';
 
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
+import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { formaterDato, formaterTid } from '../../utils/dateUtils';
 import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils';
 import styles from './tidslinjeHendelse.module.css';
@@ -15,7 +15,7 @@ interface Props {
     title: string;
     isActiveStep: boolean;
     visKlokkeslett: boolean;
-    type: TidslinjehendelseType;
+    utvidetTidslinjeHendelseType: Tidslinjehendelse['utvidetTidslinjeHendelseType'];
     førsteUttaksdagISaken: string | undefined;
     tidligstBehandlingsDato: string | undefined;
     finnesHendelserFørAktivtSteg: boolean;
@@ -43,23 +43,23 @@ const getTimelineClassModifier = (opprettet: string, isActiveStep: boolean) => {
 };
 
 const getDateTekst = (
-    type: TidslinjehendelseType,
+    utvidetTidslinjeHendelseType: Tidslinjehendelse['utvidetTidslinjeHendelseType'],
     date: string,
     førsteUttaksdagISaken: string | undefined,
     tidligstBehandlingsDato: string | undefined,
 ) => {
-    if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
+    if (utvidetTidslinjeHendelseType === 'VENTER_INNTEKTSMELDING') {
         const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);
         if (dayjs(tidligstDato).isAfter(dayjs())) {
             return tidligstDato ? `TIDLIGST ${formaterDato(tidligstDato, 'D. MMM YYYY').toUpperCase()}` : '';
         } else {
             return 'SNAREST';
         }
-    } else if (type === TidslinjehendelseType.VENTER_PGA_TIDLIG_SØKNAD) {
+    } else if (utvidetTidslinjeHendelseType === 'VENTER_PGA_TIDLIG_SØKNAD') {
         return `TIDLIGST ${formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY').toUpperCase()}`;
-    } else if ([TidslinjehendelseType.VENTER_MELDEKORT, TidslinjehendelseType.VENT_DOKUMENTASJON].includes(type)) {
+    } else if (['VENTER_MELDEKORT', 'VENT_DOKUMENTASJON'].includes(utvidetTidslinjeHendelseType)) {
         return 'SNAREST';
-    } else if (type === TidslinjehendelseType.FREMTIDIG_VEDTAK) {
+    } else if (utvidetTidslinjeHendelseType === 'FREMTIDIG_VEDTAK') {
         return 'SENERE';
     } else if (dayjs(date).isSame(new Date(), 'd')) {
         return 'I DAG';
@@ -76,7 +76,7 @@ export const TidslinjeHendelse = ({
     children,
     isActiveStep,
     visKlokkeslett,
-    type,
+    utvidetTidslinjeHendelseType,
     førsteUttaksdagISaken,
     tidligstBehandlingsDato,
     finnesHendelserFørAktivtSteg,
@@ -84,7 +84,7 @@ export const TidslinjeHendelse = ({
     erSistePåForsidenMenIkkeSisteIHeleTidslinjen,
 }: Props) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
-    const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
+    const dateTekst = getDateTekst(utvidetTidslinjeHendelseType, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
     return (
         <div
             className={classNames(

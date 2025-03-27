@@ -3,32 +3,32 @@ import { useIntl } from 'react-intl';
 import { HGrid, Heading } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Ytelse } from '@navikt/fp-types';
 
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { NavRoutes } from './../../routes/routes';
-import { Sak } from './../../types/Sak';
-import { Ytelse } from './../../types/Ytelse';
-import { LenkePanel } from './../lenke-panel/LenkePanel';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { NavRoutes } from '../../routes/routes';
+import { Sak } from '../../types/Sak';
+import { LenkePanel } from '../lenke-panel/LenkePanel';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {
-    if (stønadstype === Ytelse.FORELDREPENGER) {
+    if (stønadstype === 'FORELDREPENGER') {
         return NavRoutes.LES_MER_OM_FORELDREPENGER;
     }
-    if (stønadstype === Ytelse.SVANGERSKAPSPENGER) {
+    if (stønadstype === 'SVANGERSKAPSPENGER') {
         return NavRoutes.LES_MER_OM_SVANGERSKAPSPENGER;
     }
-    if (stønadstype === Ytelse.ENGANGSSTØNAD) {
+    if (stønadstype === 'ENGANGSSTØNAD') {
         return NavRoutes.LES_MER_OM_ENGANGSTØNAD;
     }
     return NavRoutes.LES_MER_OM_VÅRE_PENGESTØTTER;
 };
 
 const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return `https://klage.nav.no/nb/klage/ENGANGSSTONAD?saksnummer=${sak.saksnummer}`;
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return `https://klage.nav.no/nb/klage/SVANGERSKAPSPENGER?saksnummer=${sak.saksnummer}`;
     }
 
@@ -36,15 +36,15 @@ const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
 };
 
 const getKlageLink = (ytelse: Ytelse | undefined) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return NavRoutes.KLAGERETTIGHETER_ES;
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return NavRoutes.KLAGERETTIGHETER_SVP;
     }
 
-    if (ytelse === Ytelse.FORELDREPENGER) {
+    if (ytelse === 'FORELDREPENGER') {
         return NavRoutes.KLAGERETTIGHETER_FP;
     }
 
@@ -52,15 +52,15 @@ const getKlageLink = (ytelse: Ytelse | undefined) => {
 };
 
 const getSaksbehandlingstidLink = (ytelse: Ytelse | undefined) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+    if (ytelse === 'ENGANGSSTØNAD') {
         return NavRoutes.SAKSBEHANDLINGSTIDER_ES;
     }
 
-    if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'SVANGERSKAPSPENGER') {
         return NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
     }
 
-    if (ytelse === Ytelse.FORELDREPENGER) {
+    if (ytelse === 'FORELDREPENGER') {
         return NavRoutes.SAKSBEHANDLINGSTIDER_FP;
     }
 

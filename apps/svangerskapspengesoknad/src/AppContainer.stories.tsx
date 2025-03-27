@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { Søker } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -15,13 +15,12 @@ const defaultSøkerinfo = {
         etternavn: 'ORAVAKANGAS',
         kjønn: 'K',
         fødselsdato: '1989-08-30',
-        land: 'NO',
         barn: [],
         bankkonto: {
             kontonummer: '10824223373',
             banknavn: 'Din Bank',
         },
-    } as Søker,
+    },
     arbeidsforhold: [
         {
             arbeidsgiverId: '975326209',
@@ -69,7 +68,7 @@ const defaultSøkerinfo = {
             fom: '2018-06-01',
         },
     ],
-};
+} satisfies Søkerinfo;
 
 const KVITTERING = {
     mottattDato: '2019-02-19T13:40:45.115',

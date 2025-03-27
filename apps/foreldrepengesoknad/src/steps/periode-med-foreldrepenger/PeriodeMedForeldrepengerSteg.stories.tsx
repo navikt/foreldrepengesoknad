@@ -7,7 +7,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
@@ -726,7 +726,7 @@ export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan: Story = {
                 http.post(UTTAKSPLAN_ANNEN_URL, () =>
                     HttpResponse.json({
                         perioder: [uttaksperiode],
-                        dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+                        dekningsgrad: 'HUNDRE',
                     }),
                 ),
                 http.post(STØNADSKONTO_URL, () =>
@@ -791,7 +791,7 @@ export const MorMedTermin1Juli2024OgFarsSøknad: Story = {
                 http.post(UTTAKSPLAN_ANNEN_URL, () =>
                     HttpResponse.json({
                         perioder: [uttaksperiode],
-                        dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
+                        dekningsgrad: 'ÅTTI',
                     }),
                 ),
                 http.post(STØNADSKONTO_URL, () =>
