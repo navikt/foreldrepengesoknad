@@ -51,6 +51,7 @@
         "@testing-library/user-event": "^14.6.0",
         "@types/lodash": "^4.17.14",
         "@vitejs/plugin-react": "^4.3.4",
+        "eslint": "9.18.0",
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
         "react-dom": "^19.0.0",

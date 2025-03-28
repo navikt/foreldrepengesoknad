@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { isAxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
 
 // TODO: Legg til mer avansert feilhåndtering
@@ -9,7 +9,7 @@ export function errorHandling(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction,
 ) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
         // eslint-disable-next-line no-console
         console.error(error.response?.data);
     }
