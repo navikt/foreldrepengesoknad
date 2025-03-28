@@ -67,6 +67,13 @@ export const BeggeRettMorogMedmorLedigeDager: Story = {
     },
 };
 
+export const BeggeRettFarOgFarLedigeDager: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        hvemPlanleggerType: HvemPlanleggerType.FAR_OG_FAR,
+    },
+};
+
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
         visStatusIkoner: true,
