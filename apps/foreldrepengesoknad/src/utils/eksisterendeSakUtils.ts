@@ -143,7 +143,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 };
 
 export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartSak | undefined): Date | undefined => {
-    if (annenPartsSak === undefined || annenPartsSak.perioder.length === 0) {
+    if (!annenPartsSak || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
     return ISOStringToDate(annenPartsSak.perioder[0].fom);
