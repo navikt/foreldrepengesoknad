@@ -32,7 +32,7 @@ async function injectDecorator(filePath) {
         filePath,
         params: {
             enforceLogin: false,
-            simple: true,
+            simple: false,
         },
     });
 }
@@ -71,7 +71,7 @@ const startServer = async () => {
 
     const vite = await require('vite').createServer({
         root: __dirname,
-        base: "./",
+        base: './',
         define: {
             'import.meta.env.BASE_URL': '""',
         },

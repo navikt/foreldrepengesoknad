@@ -8,7 +8,7 @@ import config from './config.js';
 const dekoratørProps = {
     env: config.app.env,
     params: {
-        simple: true,
+        simple: false,
         enforceLogin: false,
     },
 };
