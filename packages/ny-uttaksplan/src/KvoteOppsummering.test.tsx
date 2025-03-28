@@ -41,13 +41,13 @@ describe('<KvoteOppsummering >', () => {
 
     it('<BeggeRettMorogMedmorLedigeDager >', async () => {
         render(<BeggeRettMorogMedmorLedigeDager />);
-
         expect(
-            screen.getByText('16 uker av fellesperioden, 18 uker til mor og 15 uker til medmor ligger ikke i planen.', {
-                exact: false,
-            }),
+            await screen.findByText(
+                '16 uker av fellesperioden, 18 uker til mor og 15 uker til medmor ligger ikke i planen.',
+                { exact: false },
+            ),
         ).toBeInTheDocument();
-        expect(screen.getByText('', { exact: false })).toBeInTheDocument();
+
         expect(
             screen.getByText(
                 'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
