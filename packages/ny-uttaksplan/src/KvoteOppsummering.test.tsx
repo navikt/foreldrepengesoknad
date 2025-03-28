@@ -8,6 +8,7 @@ const {
     EnRettFarAlleDagerBrukt,
     BeggeRettMorAlleDagerBrukt,
     BeggeRettMorLedigeDager,
+    BeggeRettMorogMedmorLedigeDager,
     AleneomsorgMorLedigeDager,
     EnRettFarLedigeDager,
     AleneomsorgFarForMangeDager,
@@ -37,6 +38,29 @@ describe('<KvoteOppsummering >', () => {
             }),
         ).toBeInTheDocument();
     });
+
+    it('<BeggeRettMorogMedmorLedigeDager >', async () => {
+        render(<BeggeRettMorogMedmorLedigeDager />);
+
+        expect(
+            screen.getByText('16 uker av fellesperioden, 18 uker til mor og 15 uker til medmor ligger ikke i planen.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+        expect(screen.getByText('', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('Annen forelder må sende søknad selv for å bruke sine uker med foreldrepenger.', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+    });
+
     it('<AleneomsorgMorLedigeDager >', async () => {
         render(<AleneomsorgMorLedigeDager />);
 

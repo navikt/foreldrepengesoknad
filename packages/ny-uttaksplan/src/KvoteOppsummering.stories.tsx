@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import dayjs from 'dayjs';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
+    HvemPlanleggerType,
     MorsAktivitet,
     OppholdÅrsakType,
     TilgjengeligeStønadskontoerForDekningsgrad,
@@ -55,6 +57,13 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         perioder: [],
         rettighetType: RettighetType.BEGGE_RETT,
         forelder: Forelder.mor,
+    },
+};
+
+export const BeggeRettMorogMedmorLedigeDager: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        hvemPlanleggerType: HvemPlanleggerType.MOR_OG_MEDMOR,
     },
 };
 
@@ -565,5 +574,45 @@ export const AleneomsorgFarForMangeDager: Story = {
         ],
         rettighetType: RettighetType.ALENEOMSORG,
         forelder: Forelder.farMedmor,
+    },
+};
+
+export const MorOgMedmorBeggeHarRettLedigeDager: Story = {
+    args: {
+        visStatusIkoner: true,
+        konto: {
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                flerbarn: 0,
+                prematur: 0,
+            },
+        },
+        perioder: [
+            {
+                fom: '2024-11-01',
+                tom: '2025-07-04',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-09-12',
+                tom: '2025-12-30',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
     },
 };
