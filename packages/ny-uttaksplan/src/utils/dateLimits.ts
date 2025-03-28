@@ -14,23 +14,25 @@ interface MinDateProps {
 }
 
 export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdopsjon }: MinDateProps) => {
+    const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+
     if (årsak === UtsettelseÅrsakType.Ferie) {
         if (gjelderAdopsjon) {
-            return UttaksdagenString(familiehendelsedato).denneEllerNeste();
+            return UttaksdagenString(ukedagFamiliehendelsedato).denneEllerNeste();
         }
 
-        return UttaksdagenString(familiehendelsedato).leggTil(30);
+        return UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     }
 
     if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
-        return UttaksdagenString(familiehendelsedato).trekkFra(15);
+        return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     }
 
     if (kontoType === StønadskontoType.Fellesperiode) {
-        return UttaksdagenString(familiehendelsedato).trekkFra(60);
+        return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(60);
     }
 
-    return UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    return UttaksdagenString(ukedagFamiliehendelsedato).denneEllerNeste();
 };
 
 interface MaxDateProps {

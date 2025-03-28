@@ -45,8 +45,9 @@ export const getFomValidators = ({
         isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
     ];
 
-    const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
-    const maxDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
+    const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
+    const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
 
     switch (kontoType) {
         case StønadskontoType.AktivitetsfriKvote:
@@ -106,7 +107,7 @@ export const getFomValidators = ({
                         erBarnetFødt
                             ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
                             : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
-                        UttaksdagenString(familiehendelsedato).leggTil(30),
+                        UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30),
                     ),
                 );
             }
@@ -169,8 +170,9 @@ export const getTomValidators = ({
         isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.måVæreUkedag' })),
     ];
 
-    const minDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
-    const maxDateFPFF = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
+    const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
+    const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
 
     switch (kontoType) {
         case StønadskontoType.AktivitetsfriKvote:
@@ -230,7 +232,7 @@ export const getTomValidators = ({
                         erBarnetFødt
                             ? intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel' })
                             : intl.formatMessage({ id: 'endreTidsPeriodeModal.ferieFørsteSeksUker.termin' }),
-                        UttaksdagenString(familiehendelsedato).leggTil(30),
+                        UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30),
                     ),
                 );
             }
