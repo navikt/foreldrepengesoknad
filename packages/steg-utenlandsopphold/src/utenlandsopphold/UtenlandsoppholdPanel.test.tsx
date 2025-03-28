@@ -129,9 +129,9 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Avslutt'));
+        await userEvent.click(screen.getAllByText('Avslutt')[0]);
 
-        expect(screen.getByText('Fortsett senere')).toBeInTheDocument();
+        expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });
 
     it('skal gå til et tidligere steg', async () => {
