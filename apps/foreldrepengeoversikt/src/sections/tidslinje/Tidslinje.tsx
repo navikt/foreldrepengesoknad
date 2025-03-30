@@ -6,12 +6,9 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 
 import { Sak } from '../../types/Sak';
-import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
-import { Ytelse } from '../../types/Ytelse';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils';
 import {
@@ -28,25 +25,25 @@ import styles from './tidslinje.module.css';
 interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
-    søkersBarn: SøkerinfoDTOBarn[];
+    søkersBarn: Søkerinfo['søker']['barn'];
     manglendeVedlegg: Skjemanummer[];
-    tidslinjeHendelser: Tidslinjehendelse[];
+    tidslinjeHendelser: TidslinjeHendelseDto[];
 }
 
 export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
 
     const førsteUttaksdagISaken =
-        sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
+        sak.ytelse === 'FORELDREPENGER' ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const erAvslåttForeldrepengesøknad =
-        sak.ytelse === Ytelse.FORELDREPENGER &&
+        sak.ytelse === 'FORELDREPENGER' &&
         !!sak.gjeldendeVedtak &&
         (sak.gjeldendeVedtak.perioder.length === 0 ||
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
-        sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
+        sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
     if (tidslinjeHendelser.length === 0) {
         return null;
@@ -81,7 +78,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
             {hendelserForVisning.map((hendelse, index) => {
                 const isActiveStep = index === aktivtStegIndex;
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
-                    if (hendelse.tidslinjeHendelseType === TidslinjehendelseType.INNTEKTSMELDING) {
+                    if (hendelse.utvidetTidslinjeHendelseType === 'INNTEKTSMELDING') {
                         return (
                             <InntektsmeldingDokumentHendelse
                                 key={`${dokument.journalpostId}-${dokument.dokumentId}`}
@@ -99,7 +96,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                     );
                 });
                 const visKlokkeslett =
-                    hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&
+                    hendelse.utvidetTidslinjeHendelseType !== 'FAMILIEHENDELSE' &&
                     dayjs(hendelse.opprettet).isSameOrBefore(dayjs());
                 const erSisteHendelsenIHeleTidslinjen =
                     alleSorterteHendelser.findIndex((h) => h === hendelse) === alleSorterteHendelser.length - 1;
@@ -119,7 +116,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         key={guid()}
                         isActiveStep={isActiveStep}
                         visKlokkeslett={visKlokkeslett}
-                        type={hendelse.tidslinjeHendelseType}
+                        utvidetTidslinjeHendelseType={hendelse.utvidetTidslinjeHendelseType}
                         førsteUttaksdagISaken={førsteUttaksdagISaken?.toISOString()}
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                         finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
@@ -127,7 +124,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
                         <ul className="list-none p-0">
-                            {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
+                            {hendelse.utvidetTidslinjeHendelseType === 'VENT_DOKUMENTASJON' &&
                                 manglendeVedlegg &&
                                 manglendeVedlegg.length > 1 && (
                                     <div className={styles.manglendeVedlegg}>

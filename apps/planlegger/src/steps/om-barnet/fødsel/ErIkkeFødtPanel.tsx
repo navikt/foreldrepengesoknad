@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
@@ -17,13 +17,14 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();
 
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
-    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
@@ -51,7 +52,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type === Situasjon.FAR;
+    const erFar = hvemPlanlegger.type === HvemPlanleggerType.FAR;
 
     return (
         <VStack gap="5">
@@ -148,7 +149,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             {!erFedre && (
                                 <>
                                     <BodyShort>
-                                        {hvemPlanlegger.type === Situasjon.MOR && (
+                                        {hvemPlanlegger.type === HvemPlanleggerType.MOR && (
                                             <FormattedMessage
                                                 id="ErIkkeFødtPanel.UnderTreMndTilTermin"
                                                 values={{ erAlenesøker }}
@@ -166,7 +167,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                             />
                                         </BodyShort>
                                     )}
-                                    {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
+                                    {(!erAlenesøker || hvemPlanlegger.type === HvemPlanleggerType.FAR) && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"

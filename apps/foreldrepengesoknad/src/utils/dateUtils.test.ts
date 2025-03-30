@@ -12,7 +12,7 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {
@@ -82,7 +82,7 @@ describe('dateUtils', () => {
     });
 
     it('skal finne det eldste barnet', () => {
-        const eldsteBarn: SøkerBarn = {
+        const eldsteBarn: BarnFrontend = {
             etternavn: 'test',
             fnr: '123123',
             fornavn: 'test',
@@ -90,7 +90,7 @@ describe('dateUtils', () => {
             kjønn: 'K',
         };
 
-        const yngsteBarn: SøkerBarn = {
+        const yngsteBarn: BarnFrontend = {
             etternavn: 'test',
             fnr: '234234',
             fornavn: 'test',

@@ -1,5 +1,4 @@
-import { SvangerskapspengeSak } from '../../../src/types/SvangerskapspengeSak';
-import { Ytelse } from '../../../src/types/Ytelse';
+import { SvangerskapspengeSak } from '../../../src/types/Sak';
 
 export const SAK_1 = {
     saksnummer: '202',
@@ -109,7 +108,7 @@ export const SAK_1 = {
         ],
     },
     oppdatertTidspunkt: '2025-03-05T19:59:55.57',
-    ytelse: Ytelse.SVANGERSKAPSPENGER,
+    ytelse: 'SVANGERSKAPSPENGER',
 } satisfies SvangerskapspengeSak;
 
 export const SAK_2 = {
@@ -172,7 +171,7 @@ export const SAK_2 = {
         ],
     },
     oppdatertTidspunkt: '2025-03-06T09:24:34.799',
-    ytelse: Ytelse.SVANGERSKAPSPENGER,
+    ytelse: 'SVANGERSKAPSPENGER',
 } satisfies SvangerskapspengeSak;
 
 export const SAK_3 = {
@@ -250,7 +249,7 @@ export const SAK_3 = {
         ],
     },
     oppdatertTidspunkt: '2025-03-06T10:02:20.368',
-    ytelse: Ytelse.SVANGERSKAPSPENGER,
+    ytelse: 'SVANGERSKAPSPENGER',
 } satisfies SvangerskapspengeSak;
 
 export const SAK_4 = {
@@ -394,5 +393,5 @@ export const SAK_4 = {
         ],
     },
     oppdatertTidspunkt: '2025-03-06T10:27:19.01',
-    ytelse: Ytelse.SVANGERSKAPSPENGER,
+    ytelse: 'SVANGERSKAPSPENGER',
 } satisfies SvangerskapspengeSak;

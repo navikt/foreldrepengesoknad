@@ -5,7 +5,7 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
@@ -22,15 +22,23 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import {
+    finnAntallUkerOgDagerMedForeldrepenger,
+    getAnnenpartsPerioder,
+    getFamiliehendelsedato,
+    getSøkersPerioder,
+    lagForslagTilPlan,
+} from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { HvemPlanleggerType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
@@ -68,7 +76,8 @@ export const OppsummeringHarRett = ({
     let startdato = undefined;
 
     if (
-        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
         startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
@@ -86,18 +95,28 @@ export const OppsummeringHarRett = ({
         erFarEllerMedmor: erFarEllerMedmor,
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+        erAleneOmOmsorg:
+            hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR,
+        farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
     });
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
 
-    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
     const barnehagestartdato = barnehagestartDato(barnet);
+
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const tilpassPlan = notEmpty(useContextGetData(ContextDataType.TILPASS_PLAN));
+    const gjeldendeUttaksplan = uttaksplan && uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const erDeltUttak = fordeling !== undefined;
+
+    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
 
     return (
         <VStack gap="10">
@@ -252,8 +271,8 @@ export const OppsummeringHarRett = ({
                             bareFarHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={planforslag.søker1}
-                            annenPartsPerioder={planforslag.søker2}
+                            søkersPerioder={tilpassPlan ? søkersPerioder : planforslag.søker1}
+                            annenPartsPerioder={tilpassPlan ? annenPartsPerioder : planforslag.søker2}
                             navnAnnenPart="Test"
                             barn={mapOmBarnetTilBarn(barnet)}
                             planleggerLegend={
@@ -261,6 +280,11 @@ export const OppsummeringHarRett = ({
                                     hvemPlanlegger={hvemPlanlegger}
                                     barnet={barnet}
                                     hvemHarRett={hvemHarRett}
+                                    uttaksplan={
+                                        tilpassPlan
+                                            ? gjeldendeUttaksplan
+                                            : [...planforslag.søker1, ...planforslag.søker2]
+                                    }
                                 />
                             }
                             barnehagestartdato={barnehagestartdato}

@@ -9,7 +9,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Satser } from '@navikt/fp-types';
+import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -23,6 +23,7 @@ import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søk
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
+import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import {
@@ -37,10 +38,6 @@ import { DinPlan } from '../../sections/din-plan/DinPlan';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { RedirectSource } from '../../types/RedirectSource';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
-import { Ytelse } from '../../types/Ytelse';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';
@@ -49,21 +46,17 @@ import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/Inntektsmeldi
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined) => {
-    if (!tidslinjehendelser) {
-        return undefined;
-    }
+const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
-        .find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY);
+        .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
     return nySøknadHendelse
         ? nySøknadHendelse.opprettet
-        : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD)
-              ?.opprettet;
+        : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD')?.opprettet;
 };
 
 const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
@@ -109,7 +102,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
-    const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data);
+    const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
     const ENGANGSTØNAD = useQuery({
         ...hentSatserOptions(),
         select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
@@ -121,7 +114,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
 
-    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data);
+    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
@@ -191,7 +184,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
-                    {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                    {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                         <LenkePanel
                             tittel="Endre planen din"
                             to="https://nav.no/foreldrepenger/soknad"
@@ -201,7 +194,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                     <InntektsmeldingLenkePanel />
                 </HGrid>
 
-                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                     <div>
                         <ContentSection
                             heading={
@@ -215,7 +208,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
-                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
+                                annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.søker.fornavn,
@@ -225,8 +218,8 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         </ContentSection>
                     </div>
                 )}
-                {/*{gjeldendeSak.ytelse === Ytelse.SVANGERSKAPSPENGER && <Svangerskapspenger svpSak={gjeldendeSak} />}*/}
-                {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
+                {gjeldendeSak.ytelse === 'SVANGERSKAPSPENGER' && <Svangerskapspenger svpSak={gjeldendeSak} />}
+                {gjeldendeSak.ytelse === 'ENGANGSSTØNAD' && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection
                             heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}

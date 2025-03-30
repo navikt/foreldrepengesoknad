@@ -7,11 +7,12 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -50,6 +51,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
+    tilpassPlan?: boolean;
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -65,6 +67,7 @@ const meta = {
         satser,
         locale,
         hvorMye,
+        tilpassPlan = false,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -76,6 +79,7 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.HVOR_MYE]: hvorMye,
+                        [ContextDataType.TILPASS_PLAN]: tilpassPlan,
                     }}
                 >
                     <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
@@ -95,7 +99,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         fordeling: {
             antallDagerSøker1: 25,
@@ -153,7 +157,7 @@ export const MorOgFarKunFarHarRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         hvorMye: {
             lønnSøker1: 1000,
@@ -197,7 +201,7 @@ export const FarOgFarFødsel: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         fordeling: undefined,
         hvorMye: {
@@ -247,7 +251,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
         locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         fordeling: undefined,
         hvorMye: {
@@ -268,7 +272,16 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 261 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 200 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+        },
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
@@ -278,7 +291,7 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         fordeling: {
             antallDagerSøker1: 25,
@@ -311,7 +324,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         fordeling: {
             antallDagerSøker1: 25,
@@ -356,7 +369,7 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.FAR,
+            type: HvemPlanleggerType.FAR,
         },
         hvorMye: {
             lønnSøker1: 1000,
@@ -394,7 +407,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåMedmor: 'Esther Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         fordeling: {
             antallDagerSøker1: 25,
@@ -428,7 +441,7 @@ export const HarIkkeRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erFødsel: false,
@@ -451,7 +464,7 @@ export const KunMorHarRett: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erFødsel: true,
@@ -521,7 +534,7 @@ export const AleneforsørgerMorErUfør: Story = {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         omBarnet: {
             erFødsel: true,
@@ -547,7 +560,7 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         omBarnet: {
             erFødsel: true,
@@ -567,14 +580,14 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,

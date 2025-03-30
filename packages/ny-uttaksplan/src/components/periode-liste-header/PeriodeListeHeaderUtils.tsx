@@ -5,6 +5,7 @@ import {
     CloudFillIcon,
     HeartFillIcon,
     InformationSquareFillIcon,
+    ParasolBeachFillIcon,
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
 
@@ -147,7 +148,7 @@ export const getTekst = ({
             case UtsettelseÅrsakType.Arbeid:
                 return 'Utsettelse grunnet arbeid';
             case UtsettelseÅrsakType.Ferie:
-                return 'Utsettelse grunnet ferie';
+                return 'Ferie';
             case UtsettelseÅrsakType.HvØvelse:
                 return 'Utsettelse grunnet heimvernsøvelse';
             case UtsettelseÅrsakType.NavTiltak:
@@ -155,8 +156,6 @@ export const getTekst = ({
             case UtsettelseÅrsakType.Fri:
                 return 'Uten foreldrepenger';
         }
-
-        return 'Utsettelse';
     }
 
     if (erHull) {
@@ -168,10 +167,10 @@ export const getTekst = ({
     }
 
     if (erSamtidigUttak) {
-        return `Dere er i permisjon`;
+        return 'Dere har foreldrepenger';
     }
 
-    return erEgenPeriode ? `${navnPåForelder} er i permisjon` : `${navnPåAnnenForelder} er i permisjon`;
+    return erEgenPeriode ? `${navnPåForelder} har foreldrepenger` : `${navnPåAnnenForelder} har foreldrepenger`;
 };
 
 type GetIkonProps = {
@@ -231,6 +230,23 @@ export const getIkon = ({
         if (utsettelseÅrsak === UtsettelseÅrsakType.Arbeid || utsettelseÅrsak === UtsettelseÅrsakType.Fri) {
             return (
                 <BriefcaseFillIcon
+                    className={getIkonFarge({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        erUtsettelse: utsettelseÅrsak !== undefined,
+                        erHull,
+                        erFamiliehendelse,
+                    })}
+                    width={24}
+                    height={24}
+                />
+            );
+        }
+
+        if (utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+            return (
+                <ParasolBeachFillIcon
                     className={getIkonFarge({
                         bem,
                         erMor,

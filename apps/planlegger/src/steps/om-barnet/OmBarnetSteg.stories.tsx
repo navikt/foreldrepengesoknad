@@ -4,7 +4,9 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
@@ -41,7 +43,7 @@ export const FlereForsørgere: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
     },
 };
@@ -51,7 +53,7 @@ export const AleneforsørgerMor: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
     },
 };
@@ -61,7 +63,7 @@ export const AleneforsørgerFar: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.FAR,
+            type: HvemPlanleggerType.FAR,
         },
     },
 };
@@ -71,7 +73,7 @@ export const FlereForsørgereFarOgFar: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
     },
 };

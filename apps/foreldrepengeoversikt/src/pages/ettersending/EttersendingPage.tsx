@@ -18,7 +18,7 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -29,18 +29,16 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { EttersendingDto } from '../../types/EttersendingDTO';
 import { Sak } from '../../types/Sak';
 import { SakOppslag } from '../../types/SakOppslag';
-import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
-    if (sakstype === Ytelse.ENGANGSSTØNAD) {
+    if (sakstype === 'ENGANGSSTØNAD') {
         return 'engangsstonad';
     }
-    if (sakstype === Ytelse.FORELDREPENGER) {
+    if (sakstype === 'FORELDREPENGER') {
         return 'foreldrepenger';
     }
     return 'svangerskapspenger';
@@ -112,11 +110,17 @@ const EttersendingPageInner = ({ saker }: Props) => {
     const { search } = useLocation();
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
     const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
-    const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
-    const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
-    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
+    const relevantSkjemanummer = sak
+        ? getRelevanteSkjemanummer(sak).filter((skjemanummer) =>
+              manglendeSkjemanummer.length === 0 ? true : manglendeSkjemanummer.includes(skjemanummer),
+          )
+        : [];
+    const initialType = relevantSkjemanummer.length === 1 ? relevantSkjemanummer[0] : DEFAULT_OPTION;
+    const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(initialType);
+    const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
+    const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const updateAttachments = (v: Attachment[], hasPendingUploads: boolean) => {
         setVedlegg(v);
@@ -124,7 +128,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
     };
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: (valuesToSend: EttersendingDto) => sendEttersending(valuesToSend),
+        mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
     const onSubmit = (e: FormEvent<any>) => {
@@ -172,6 +176,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                     className="mb-4"
                     label="Hva inneholder dokumentene dine?"
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
+                    value={type}
                 >
                     {getAttachmentTypeSelectOptions(intl, manglendeSkjemanummer, sak)}
                 </Select>

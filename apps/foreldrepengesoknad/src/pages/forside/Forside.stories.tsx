@@ -5,9 +5,7 @@ import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import { Søker, SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend, FpSak, FpÅpenBehandling, PersonFrontend, Søkerinfo } from '@navikt/fp-types';
 
 import { Forside } from './Forside';
 
@@ -25,29 +23,29 @@ const defaultPerson = {
     kjønn: 'K',
     fødselsdato: '1978-04-19',
     barn: [],
-} as Søker;
+} satisfies PersonFrontend;
 
 interface SakInfo {
     kanSøkeOmEndring: boolean;
     gjelderAdopsjon: boolean;
     antallBarn: number;
     sakErAvsluttet: boolean;
-    åpenbehandlingTilstand?: BehandlingTilstand;
+    åpenbehandlingTilstand?: FpÅpenBehandling['tilstand'];
     fødselsdato?: string;
     termindato?: string;
     omsorgsovertakelse?: string;
 }
 
-const getSakMedBarn = (sak: Sak, barnFnr: string[]): Sak => {
+const getSakMedBarn = (sak: FpSak, barnFnr: string[]): FpSak => {
     const barna = barnFnr.map((fnrBarn) => {
         return { fnr: fnrBarn };
     });
     return { ...sak, barn: barna };
 };
 
-const getSak = (sakinfo: SakInfo): Sak => {
+const getSak = (sakinfo: SakInfo): FpSak => {
     return {
-        dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+        dekningsgrad: 'HUNDRE',
         familiehendelse: {
             fødselsdato: sakinfo.fødselsdato,
             omsorgsovertakelse: sakinfo.omsorgsovertakelse,
@@ -59,17 +57,17 @@ const getSak = (sakinfo: SakInfo): Sak => {
         gjelderAdopsjon: sakinfo.gjelderAdopsjon,
         kanSøkeOmEndring: sakinfo.kanSøkeOmEndring,
         morUføretrygd: false,
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         sakAvsluttet: sakinfo.sakErAvsluttet,
         sakTilhørerMor: true,
         saksnummer: '123456',
         ønskerJustertUttakVedFødsel: false,
-        sisteSøknadMottattDato: '2022-05-06',
+        oppdatertTidspunkt: '2022-05-06',
         åpenBehandling:
             sakinfo.åpenbehandlingTilstand !== undefined
                 ? {
                       tilstand: sakinfo.åpenbehandlingTilstand,
-                      søknadsperioder: [] as SaksperiodeDTO[],
+                      søknadsperioder: [],
                   }
                 : undefined,
         annenPart: {
@@ -78,7 +76,7 @@ const getSak = (sakinfo: SakInfo): Sak => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: SøkerBarn[]): Søker => {
+const getSøkerinfoMedBarn = (barna: BarnFrontend[]): Søkerinfo['søker'] => {
     return { ...defaultPerson, barn: barna };
 };
 
@@ -91,35 +89,42 @@ const levendeBarn = {
     etternavn: 'Bokhylle',
     fødselsdato: dato,
     kjønn: 'K',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const dødtBarn = {
     ...levendeBarn,
     dødsdato: '2022-12-07',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const levendeTvilling = {
     fnr: '2',
     fornavn: 'Vakker',
     etternavn: 'Bokhylle',
     fødselsdato: dato,
-} as SøkerBarn;
+    kjønn: 'K',
+} satisfies BarnFrontend;
 
 const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
-const dødfødtBarn = { fødselsdato: dato, dødsdato: dato } as SøkerBarn;
+const dødfødtBarn = {
+    fødselsdato: dato,
+    dødsdato: dato,
+    kjønn: 'K',
+    fnr: '2',
+    fornavn: 'Vakker',
+    etternavn: 'Bokhylle',
+} satisfies BarnFrontend;
 
 const sakErIkkeAvsluttet = false;
 
 const ettBarn = {
-    type: 'person',
     fnr: '3',
     fornavn: 'Evig',
     mellomnavn: 'Lykkelig',
     etternavn: 'Vår',
     fødselsdato: dato,
     kjønn: 'M',
-} as SøkerBarn;
+} satisfies BarnFrontend;
 
 const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
 const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };
@@ -138,7 +143,7 @@ const sakUnderBehandlingTermin = getSak({
     antallBarn: 1,
     sakErAvsluttet: sakErIkkeAvsluttet,
     termindato: '2024-06-28',
-    åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
+    åpenbehandlingTilstand: 'UNDER_BEHANDLING',
 });
 const erEndringssøknadUnderBehandlingAdopsjon = getSak({
     kanSøkeOmEndring: true,
@@ -147,7 +152,7 @@ const erEndringssøknadUnderBehandlingAdopsjon = getSak({
     sakErAvsluttet: false,
     omsorgsovertakelse: datoAdopsjon,
     fødselsdato: dato,
-    åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
+    åpenbehandlingTilstand: 'UNDER_BEHANDLING',
 });
 const sakAvsluttet = getSak({
     kanSøkeOmEndring: false,
@@ -180,7 +185,7 @@ const sakMedTvillinger = getSak({
     antallBarn: 2,
     sakErAvsluttet: false,
     fødselsdato: dato,
-    åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
+    åpenbehandlingTilstand: 'UNDER_BEHANDLING',
 });
 
 const sakMedTrillinger = getSak({

@@ -5,7 +5,9 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 
@@ -44,7 +46,7 @@ export const FlereForsørgereBarnTerminDesemberStartAugustOmToÅr: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: false,
@@ -61,7 +63,7 @@ export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             erBarnetFødt: true,
@@ -78,7 +80,7 @@ export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         omBarnet: {
             erBarnetFødt: true,
@@ -96,7 +98,7 @@ export const FlereForsørgereAdoptertBarnFødtJanuarStartJuni2027: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
             antallBarn: '1',

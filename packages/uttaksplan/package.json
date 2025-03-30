@@ -29,6 +29,7 @@
         "date-fns": "4.1.0",
         "date-holidays": "^3.23.18",
         "dayjs": "^1.11.12",
+        "eslint": "9.18.0",
         "formik": "^2.4.6",
         "i18n-iso-countries": "7.13.0",
         "lodash": "^4.17.21",

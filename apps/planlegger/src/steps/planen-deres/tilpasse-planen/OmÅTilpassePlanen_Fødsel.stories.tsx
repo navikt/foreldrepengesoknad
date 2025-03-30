@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { OmÅTilpassePlanen } from './OmÅTilpassePlanen';
 
@@ -23,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const FødselMorOgFarBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },
@@ -43,7 +44,7 @@ export const FødselMorOgFarBeggeHarRett: Story = {
 export const FødselMorOgFarKunMorHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },
@@ -63,7 +64,7 @@ export const FødselMorOgFarKunMorHarRett: Story = {
 export const FødselMorOgFarKunFarHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Mor',
             navnPåFar: 'Far',
         },
@@ -83,7 +84,7 @@ export const FødselMorOgFarKunFarHarRett: Story = {
 export const FødselMorOgMedmorBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
             navnPåMor: 'Mor',
             navnPåMedmor: 'Medmor',
         },
@@ -103,7 +104,7 @@ export const FødselMorOgMedmorBeggeHarRett: Story = {
 export const FødselMorOgMedmorKunMorHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
             navnPåMor: 'Mor',
             navnPåMedmor: 'Medmor',
         },
@@ -123,7 +124,7 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
 export const FødselMorOgMedmorKunMedmorHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
             navnPåMor: 'Mor',
             navnPåMedmor: 'Medmor',
         },
@@ -143,7 +144,7 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
 export const FødselFarOgFarBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
             navnPåMedfar: 'Medfar',
             navnPåFar: 'Far',
         },
@@ -163,7 +164,7 @@ export const FødselFarOgFarBeggeHarRett: Story = {
 export const FødselFarOgFarKunFar1HarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
             navnPåMedfar: 'Medfar',
             navnPåFar: 'Far',
         },
@@ -183,7 +184,7 @@ export const FødselFarOgFarKunFar1HarRett: Story = {
 export const FødselAleneforsørgerMor: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
             navnPåMor: 'Mor',
         },
         arbeidssituasjon: {
@@ -201,7 +202,7 @@ export const FødselAleneforsørgerMor: Story = {
 export const FødselAleneforsørgerFar: Story = {
     args: {
         hvemPlanlegger: {
-            type: Situasjon.FAR,
+            type: HvemPlanleggerType.FAR,
             navnPåFar: 'Far',
         },
         arbeidssituasjon: {

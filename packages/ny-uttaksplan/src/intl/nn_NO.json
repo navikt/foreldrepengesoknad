@@ -16,7 +16,7 @@
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak": "Ny periode utan kvote",
     "uttaksplan.avslåttPeriode": "Avslått periode",
     "uttaksplan.avslåttPeriode.utsettelse": "Avslått utsettelse",
-    "uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE": "Utsettelse på grunn av ferie",
+    "uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "uttaksplan.utsettelsesårsak.ARBEID": "Utsettelse på grunn av heiltidsarbeid",
     "uttaksplan.utsettelsesårsak.SØKER_SYKDOM": "Utsettelse på grunn av sykdom",
     "uttaksplan.utsettelsesårsak.SØKER_INNLAGT": "Utsettelse på grunn av innleggelse i helseinstitusjon",
@@ -77,6 +77,7 @@
     "kvote.beskrivelse.forMyeTidIPlan": "Det er lagt til {varighet} for mye i planen. Rett opp i dette før du går videre til neste steg.",
     "kvote.varighet.tilMor": "{varighet} til mor",
     "kvote.varighet.tilFar": "{varighet} til far",
+    "kvote.varighet.tilMedmor": "{varighet} til medmor",
     "kvote.varighet.fellesperiode": "{varighet} av fellesperioden",
     "kvote.varighet.fellesperiode.deg": "{varighet} er lagt til for deg",
     "kvote.varighet.fellesperiode.annenForeldre": "{varighet} er lagt til for annan forelder",
@@ -98,6 +99,8 @@
     "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode": "Kun foreldrepenger før fødsel kan taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.fellesperiodeOverFPFF": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikke legges inn de første seks ukene etter fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikke legges inn de første seks ukene etter termin.",
     "endreTidsPeriodeModal.minDato": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
     "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}"
 }

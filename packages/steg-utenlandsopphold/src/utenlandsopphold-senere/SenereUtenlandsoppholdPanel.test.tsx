@@ -163,7 +163,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Avslutt'));
+        await userEvent.click(screen.getAllByText('Avslutt')[0]);
 
         expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
     });

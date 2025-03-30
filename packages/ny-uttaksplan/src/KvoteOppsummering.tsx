@@ -3,23 +3,28 @@ import { sum, sumBy } from 'lodash';
 import { ReactNode, createContext, useContext } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
-import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
-import { StønadskontoType } from '@navikt/fp-constants';
-import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    Familiehendelse,
+    FpSak,
+    HvemPlanleggerType,
+    KontoBeregningDto,
+    KontoDto,
+    SaksperiodeNy,
+} from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    konto: KontoBeregningDto;
     perioder: SaksperiodeNy[];
-    rettighetType: RettighetType;
-    forelder: Forelder;
+    rettighetType: FpSak['rettighetType'];
+    forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
+    hvemPlanleggerType?: HvemPlanleggerType;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -165,7 +170,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse } = useKvote();
+    const { konto, perioder, familiehendelse, hvemPlanleggerType } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -209,7 +214,12 @@ const KvoteTittel = () => {
         const beskrivelseMor =
             ubrukteDagerMor < 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilMor' },
+                      {
+                          id:
+                              hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
+                                  ? 'kvote.varighet.tilFar'
+                                  : 'kvote.varighet.tilMor',
+                      },
                       { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
                   )
                 : '';
@@ -223,7 +233,12 @@ const KvoteTittel = () => {
         const beskrivelseFar =
             ubrukteDagerFar < 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilFar' },
+                      {
+                          id:
+                              hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
+                                  ? 'kvote.varighet.tilMedmor'
+                                  : 'kvote.varighet.tilFar',
+                      },
                       { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
                   )
                 : '';
@@ -256,7 +271,12 @@ const KvoteTittel = () => {
         const beskrivelseMor =
             dagerBruktAvMor > 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilMor' },
+                      {
+                          id:
+                              hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
+                                  ? 'kvote.varighet.tilFar'
+                                  : 'kvote.varighet.tilMor',
+                      },
                       { varighet: getVarighetString(dagerBruktAvMor, intl) },
                   )
                 : '';
@@ -270,7 +290,12 @@ const KvoteTittel = () => {
         const beskrivelseFar =
             dagerBruktAvFar > 0
                 ? intl.formatMessage(
-                      { id: 'kvote.varighet.tilFar' },
+                      {
+                          id:
+                              hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
+                                  ? 'kvote.varighet.tilMedmor'
+                                  : 'kvote.varighet.tilFar',
+                      },
                       { varighet: getVarighetString(dagerBruktAvFar, intl) },
                   )
                 : '';
@@ -297,7 +322,12 @@ const KvoteTittel = () => {
     const beskrivelseMor =
         ubrukteDagerMor > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilMor' },
+                  {
+                      id:
+                          hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
+                              ? 'kvote.varighet.tilFar'
+                              : 'kvote.varighet.tilMor',
+                  },
                   { varighet: getVarighetString(ubrukteDagerMor, intl) },
               )
             : '';
@@ -311,7 +341,12 @@ const KvoteTittel = () => {
     const beskrivelseFar =
         ubrukteDagerFar > 0
             ? intl.formatMessage(
-                  { id: 'kvote.varighet.tilFar' },
+                  {
+                      id:
+                          hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
+                              ? 'kvote.varighet.tilMedmor'
+                              : 'kvote.varighet.tilFar',
+                  },
                   { varighet: getVarighetString(ubrukteDagerFar, intl) },
               )
             : '';
@@ -471,12 +506,11 @@ const FellesKvoter = () => {
                 <FordelingsBar
                     fordelinger={[
                         {
-                            kontoType: forelder === 'MOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
+                            kontoType: forelder === 'MOR' ? 'MØDREKVOTE' : 'FEDREKVOTE',
                             prosent: prosentBruktAvDeg,
                         },
                         {
-                            kontoType:
-                                forelder === 'FAR_MEDMOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
+                            kontoType: forelder === 'FAR_MEDMOR' ? 'MØDREKVOTE' : 'FEDREKVOTE',
                             prosent: prosentBruktAvAnnenPart,
                         },
                         {
@@ -517,7 +551,7 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
     const { visStatusIkoner, familiehendelse } = useKvote();
 
@@ -615,35 +649,40 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     );
 };
 
-const VisningsnavnForKvote = ({ kontoType }: { kontoType: StønadskontoType }) => {
+const VisningsnavnForKvote = ({ kontoType }: { kontoType: KontoDto['konto'] }) => {
     switch (kontoType) {
-        case StønadskontoType.AktivitetsfriKvote:
+        case 'AKTIVITETSFRI_KVOTE':
             return <FormattedMessage id="kvote.konto.Aktivitetsfrikvote" />;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             return <FormattedMessage id="kvote.konto.Fedrekvote" />;
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             return <FormattedMessage id="kvote.konto.Mødrekvote" />;
-        case StønadskontoType.ForeldrepengerFørFødsel:
+        case 'FORELDREPENGER_FØR_FØDSEL':
             return <FormattedMessage id="kvote.konto.ForeldrepengerFørFødsel" />;
-        case StønadskontoType.Foreldrepenger:
+        case 'FORELDREPENGER':
             return <FormattedMessage id="kvote.konto.Foreldrepenger" />;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             return <FormattedMessage id="kvote.konto.Fellesperioder" />;
     }
 };
 
 const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }) => {
     return (
-        <HStack gap="2">
+        <HGrid
+            columns={fordelinger
+                .filter((f) => f.prosent > 0)
+                .map((f) => `${f.prosent}% `)
+                .join('')}
+        >
             {fordelinger.map((fordeling) => (
                 <FordelingSegment key={Object.values(fordeling).join('-')} {...fordeling} />
             ))}
-        </HStack>
+        </HGrid>
     );
 };
 
 type FordelingSegmentProps = {
-    kontoType?: StønadskontoType;
+    kontoType?: KontoDto['konto'];
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
@@ -660,14 +699,13 @@ const FordelingSegment = ({
     if (prosent <= 0) {
         return null;
     }
-    const style = { width: `${prosent - 1.5}%` };
 
     if (erOvertrukket) {
-        return <div className={`rounded-full h-4 border-2 bg-red-300 border-red-300`} style={style} />;
+        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-red-300 border-red-300`} />;
     }
 
     if (erUtløpt) {
-        return <div className={`rounded-full h-4 border-2 bg-gray-300 border-gray-300`} style={style} />;
+        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-gray-300 border-gray-300`} />;
     }
 
     if (forelder === 'MOR') {
@@ -679,16 +717,14 @@ const FordelingSegment = ({
         ) {
             return (
                 <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
-                    style={style}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
                 />
             );
         }
         if (kontoType === 'FEDREKVOTE') {
             return (
                 <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
-                    style={style}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
                 />
             );
         }
@@ -703,21 +739,21 @@ const FordelingSegment = ({
     ) {
         return (
             <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
-                style={style}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
             />
         );
     }
     if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
             <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
-                style={style}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
             />
         );
     }
 
-    return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
+    return (
+        <div className="first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-bg-default border-surface-neutral-hover" />
+    );
 };
 
 type IkonProps = { size: 'stor' | 'liten' };

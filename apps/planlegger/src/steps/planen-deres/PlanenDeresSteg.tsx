@@ -10,7 +10,6 @@ import {
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, getErFarEllerMedmor, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -18,7 +17,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagFors
 
 import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
@@ -103,7 +102,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
-        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
@@ -118,7 +117,8 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
     let startdato = undefined;
 
     if (
-        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
     ) {
         startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
@@ -136,7 +136,9 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
         erAdopsjon: erBarnetAdoptert(omBarnet),
         erFarEllerMedmor: erFarEllerMedmor,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+        erAleneOmOmsorg:
+            hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR,
+        farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
     });
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -216,7 +218,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                             </ToggleGroup.Item>
                         </ToggleGroup>
                         {hvemHarRett === 'beggeHarRett' &&
-                            (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
+                            (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
                                     label="Velg fordeling fellesperiode"
@@ -262,6 +264,7 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                                         hvemPlanlegger={hvemPlanlegger}
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
+                                        uttaksplan={[...planforslag.søker1, ...planforslag.søker2]}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}

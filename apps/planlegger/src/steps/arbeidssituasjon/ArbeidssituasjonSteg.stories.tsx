@@ -4,7 +4,9 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { ArbeidssituasjonSteg } from './ArbeidssituasjonSteg';
 
@@ -72,7 +74,7 @@ export const ArbeidssituasjonMorOgFar: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_FAR,
         },
         satser: DEFAULT_SATSER,
     },
@@ -83,7 +85,7 @@ export const ArbeidssituasjonAleneforsørger: Story = {
         locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
-            type: Situasjon.MOR,
+            type: HvemPlanleggerType.MOR,
         },
         satser: DEFAULT_SATSER,
     },
@@ -95,7 +97,7 @@ export const ArbeidssituasjonMorOgMedmor: Story = {
         hvemPlanlegger: {
             navnPåMor: 'Esther Utvikler',
             navnPåMedmor: 'Klara Utvikler',
-            type: Situasjon.MOR_OG_MEDMOR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         satser: DEFAULT_SATSER,
     },
@@ -107,7 +109,7 @@ export const ArbeidssituasjonFarOgFar: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
-            type: Situasjon.FAR_OG_FAR,
+            type: HvemPlanleggerType.FAR_OG_FAR,
         },
         satser: DEFAULT_SATSER,
     },

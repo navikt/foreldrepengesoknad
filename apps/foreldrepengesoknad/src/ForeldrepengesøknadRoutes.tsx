@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
@@ -22,12 +23,9 @@ import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSte
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
-import { Sak } from '@navikt/fp-common';
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
-
-import { SøknadRoutes, isRouteAvailable } from './app-data/routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -255,7 +253,7 @@ interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
-    saker: Sak[];
+    saker: FpSak[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;

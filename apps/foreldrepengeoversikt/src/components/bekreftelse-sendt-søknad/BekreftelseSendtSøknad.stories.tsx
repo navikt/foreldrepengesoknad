@@ -2,10 +2,8 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { TidslinjeHendelseDto } from '@navikt/fp-types';
 
-import { DokumentType } from '../../types/DokumentType';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { Ytelse } from '../../types/Ytelse';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
 const meta = {
@@ -25,21 +23,18 @@ export const ForForeldrepenger: Story = {
     args: {
         relevantNyTidslinjehendelse: {
             opprettet: new Date().toISOString(),
-            tidligstBehandlingsDato: new Date().toISOString(),
+            aktørType: 'BRUKER',
+            tidslinjeHendelseType: 'INNTEKTSMELDING',
             dokumenter: [
                 {
                     dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date().toISOString(),
-                    saksnummer: '1212',
                     tittel: 'Søknad',
-                    url: 'test',
                 },
             ],
-        } as Tidslinjehendelse,
+        } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -63,20 +58,18 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
     args: {
         relevantNyTidslinjehendelse: {
             opprettet: new Date().toISOString(),
+            aktørType: 'BRUKER',
+            tidslinjeHendelseType: 'INNTEKTSMELDING',
             dokumenter: [
                 {
                     dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date().toISOString(),
-                    saksnummer: '1212',
                     tittel: 'Søknad',
-                    url: 'test',
                 },
             ],
-        } as Tidslinjehendelse,
+        } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -85,21 +78,18 @@ export const ForEngangsstønad: Story = {
     args: {
         relevantNyTidslinjehendelse: {
             opprettet: new Date().toISOString(),
-            tidligstBehandlingsDato: new Date().toISOString(),
+            aktørType: 'BRUKER',
+            tidslinjeHendelseType: 'INNTEKTSMELDING',
             dokumenter: [
                 {
                     dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date().toISOString(),
-                    saksnummer: '1212',
                     tittel: 'Søknad',
-                    url: 'test',
                 },
             ],
-        } as Tidslinjehendelse,
+        } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.ENGANGSSTØNAD,
+        ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -116,21 +106,18 @@ export const ForSvangerskapspenger: Story = {
     args: {
         relevantNyTidslinjehendelse: {
             opprettet: new Date().toISOString(),
-            tidligstBehandlingsDato: new Date().toISOString(),
+            aktørType: 'BRUKER',
+            tidslinjeHendelseType: 'INNTEKTSMELDING',
             dokumenter: [
                 {
                     dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date().toISOString(),
-                    saksnummer: '1212',
                     tittel: 'Søknad',
-                    url: 'test',
                 },
             ],
-        } as Tidslinjehendelse,
+        } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -145,21 +132,19 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
 export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
     args: {
         relevantNyTidslinjehendelse: {
+            aktørType: 'BRUKER',
+            tidslinjeHendelseType: 'INNTEKTSMELDING',
             opprettet: new Date().toISOString(),
             dokumenter: [
                 {
                     dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
                     journalpostId: '1',
-                    mottatt: new Date().toISOString(),
-                    saksnummer: '1212',
                     tittel: 'Søknad',
-                    url: 'test',
                 },
             ],
-        } as Tidslinjehendelse,
+        } satisfies TidslinjeHendelseDto,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };

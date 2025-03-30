@@ -1,5 +1,5 @@
 import { Barn, BarnType } from '@navikt/fp-common';
-import { SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 
@@ -48,7 +48,7 @@ describe('barnUtils', () => {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
             },
-        ] as SøkerBarn[];
+        ] as BarnFrontend[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -64,7 +64,7 @@ describe('barnUtils', () => {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
             },
-        ] as SøkerBarn[];
+        ] as BarnFrontend[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -81,7 +81,7 @@ describe('barnUtils', () => {
                 fødselsdato: '2017-01-01',
                 fnr: '123',
             },
-        ] as SøkerBarn[];
+        ] as BarnFrontend[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -93,7 +93,7 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
         } as Barn;
-        const registrerteBarn = [] as SøkerBarn[];
+        const registrerteBarn = [] as BarnFrontend[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 

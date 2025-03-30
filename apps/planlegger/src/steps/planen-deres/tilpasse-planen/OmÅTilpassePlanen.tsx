@@ -2,7 +2,7 @@ import { PencilWritingIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -10,6 +10,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { Barnehageplass } from './Barnehageplass';
@@ -33,7 +34,8 @@ export const OmÅTilpassePlanen = ({ hvemPlanlegger, arbeidssituasjon, barnet }:
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
     const kunFarSøker2EllerMedmorHarRett =
         hvemHarRett === 'kunSøker2HarRett' &&
-        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR);
+        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
     const søker1HarRett = hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett';
 
     return (
@@ -63,7 +65,7 @@ export const OmÅTilpassePlanen = ({ hvemPlanlegger, arbeidssituasjon, barnet }:
                     </BodyLong>
                     {!erBarnetAdoptert(barnet) && (
                         <>
-                            {søker1HarRett && !erFedre && hvemPlanlegger.type !== Situasjon.FAR && (
+                            {søker1HarRett && !erFedre && hvemPlanlegger.type !== HvemPlanleggerType.FAR && (
                                 <FørTermin hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                             )}
 

@@ -79,6 +79,8 @@
         "@types/react-dom": "^19.0.3",
         "@types/react-router-dom": "^5.3.3",
         "@vitejs/plugin-react": "^4.3.4",
+        "autoprefixer": "^10.4.18",
+        "eslint": "9.18.0",
         "fast-glob": "^3.3.3",
         "http-proxy-middleware": "3.0.3",
         "mockdate": "^3.0.5",
