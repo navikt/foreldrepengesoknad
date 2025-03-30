@@ -1,5 +1,5 @@
 import { StrollerIcon } from '@navikt/aksel-icons';
-import { StoryObj } from '@storybook/react/*';
+import { StoryObj } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Tag, VStack } from '@navikt/ds-react';
