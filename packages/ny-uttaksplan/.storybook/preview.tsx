@@ -4,7 +4,8 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/intl/nb_NO.json';
 import nnMessages from '../src/intl/nn_NO.json';
-import './index.css';
+
+// import './index.css';
 
 const withIntlProvider = getIntlDecorator({
     nb: nbMessages,
