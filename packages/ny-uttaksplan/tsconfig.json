@@ -4,11 +4,10 @@
         "moduleResolution": "bundler",
         "baseUrl": "src",
         "jsx": "react-jsx",
-        "resolveJsonModule": true,
         "rootDir": "src",
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*", ".storybook/**/*"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules"],
     "references": [
         {
