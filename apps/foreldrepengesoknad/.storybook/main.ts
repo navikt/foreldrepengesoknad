@@ -12,7 +12,7 @@ const config: StorybookConfig = {
     },
     async viteFinal(c, { configType }) {
         return mergeConfig(c, {
-            base: configType === 'DEVELOPMENT' ? viteConfig.base : './',
+            base: configType === 'DEVELOPMENT' ? '/foreldrepenger/soknad' : './',
         });
     },
     staticDirs: ['../../../scripts/mock-service-worker'],
