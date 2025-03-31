@@ -2197,6 +2197,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -2219,6 +2222,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2270,6 +2276,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2312,6 +2321,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -2334,6 +2346,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2385,6 +2400,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2418,6 +2436,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -2440,6 +2461,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2494,6 +2518,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2527,6 +2554,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -2546,6 +2576,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2597,6 +2630,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2639,6 +2675,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -2661,6 +2700,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2712,6 +2754,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3293,6 +3338,9 @@ importers:
       '@navikt/fp-uttaksplan-ny':
         specifier: workspace:*
         version: link:../ny-uttaksplan
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@types/react':
         specifier: ^19.0.7
         version: 19.0.7
@@ -3312,6 +3360,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 6.6.1
         version: 6.6.1
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -3363,6 +3414,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.4(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -4816,6 +4870,9 @@ packages:
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@7.17.2':
     resolution: {integrity: sha512-MEihduITXdk6aEYjPz7jOfIRCJWh850YLn9TidTykMPz5BSOgdLctUQyMeWK4nOW+uQBK5N+O9Dth0RigoNKBw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.17.2/c09cd166bab20c848f98e86838f521a6174c06a1}
@@ -12496,11 +12553,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@navikt/aksel-icons': 7.18.0
       '@navikt/ds-tokens': 7.18.0
-      '@types/react': 19.0.7
       clsx: 2.1.1
       date-fns: 4.1.0
       react: 19.0.0
       react-day-picker: 9.5.0(react@19.0.0)
+    optionalDependencies:
+      '@types/react': 19.0.7
     transitivePeerDependencies:
       - react-dom
 
