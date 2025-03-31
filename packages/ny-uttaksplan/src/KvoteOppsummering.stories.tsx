@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import dayjs from 'dayjs';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
