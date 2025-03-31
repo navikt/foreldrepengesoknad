@@ -38,6 +38,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.17.2
         version: 7.17.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -71,6 +74,9 @@ importers:
       '@sentry/browser':
         specifier: ^8.50.0
         version: 8.50.0
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -216,6 +222,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.4.2)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -469,6 +478,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.17.2
         version: 7.17.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/fnrvalidator':
         specifier: ^2.1.5
         version: 2.1.5
@@ -526,6 +538,9 @@ importers:
       '@snyk/protect':
         specifier: ^1.1295.0
         version: 1.1295.0
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.10.7)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -761,6 +776,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.4.2)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -887,9 +905,6 @@ importers:
       request:
         specifier: ^2.88.2
         version: 2.88.2
-      tailwindcss:
-        specifier: ^4.0.7
-        version: 4.0.7
     devDependencies:
       '@formatjs/cli-lib':
         specifier: 6.6.1
@@ -966,6 +981,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.5.3)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1005,6 +1023,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.17.2
         version: 7.17.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/fnrvalidator':
         specifier: ^2.1.5
         version: 2.1.5
@@ -1047,6 +1068,9 @@ importers:
       '@sentry/browser':
         specifier: ^8.50.0
         version: 8.50.0
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -1261,6 +1285,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.4.2)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1285,6 +1312,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.17.2
         version: 7.17.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1312,6 +1342,9 @@ importers:
       '@sentry/browser':
         specifier: ^8.50.0
         version: 8.50.0
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -1439,6 +1472,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.4.2)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1463,6 +1499,9 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.17.2
         version: 7.17.2(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1490,6 +1529,9 @@ importers:
       '@sentry/browser':
         specifier: ^8.50.0
         version: 8.50.0
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -1614,6 +1656,9 @@ importers:
       storybook:
         specifier: 8.5.0
         version: 8.5.0(prettier@3.5.3)
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig

@@ -6,8 +6,6 @@ import storageKvittering from 'storybookData/kvittering/storage_kvittering.json'
 import saker from 'storybookData/saker/saker.json';
 import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
 
-import '@navikt/ds-css';
-
 import { Søkerinfo } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';

@@ -2,13 +2,12 @@ import { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import 'styles/globals.css';
 
-import '@navikt/ds-css';
-
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
+import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';

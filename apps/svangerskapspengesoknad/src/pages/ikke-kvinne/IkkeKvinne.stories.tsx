@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import '@navikt/ds-css';
-
 import { IkkeKvinne } from './IkkeKvinne';
 
 const meta = {
