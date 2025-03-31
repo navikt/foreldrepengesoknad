@@ -1,8 +1,10 @@
 {
     "extends": "tsconfig/vite.json",
     "compilerOptions": {
+        "moduleResolution": "bundler",
         "baseUrl": "src",
         "jsx": "react-jsx",
+        "allowImportingTsExtensions": true,
         "paths": {
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
