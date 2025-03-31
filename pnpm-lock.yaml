@@ -1733,6 +1733,9 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
+      '@tailwindcss/vite':
+        specifier: ^4.0.13
+        version: 4.0.17(vite@6.0.11(@types/node@22.13.9)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.39.0)(yaml@2.7.0))
       '@types/react':
         specifier: ^19.0.7
         version: 19.0.7
@@ -1752,6 +1755,9 @@ importers:
         specifier: 7.54.2
         version: 7.54.2(react@19.0.0)
     devDependencies:
+      '@navikt/ds-tailwind':
+        specifier: 7.17.2
+        version: 7.17.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -1797,6 +1803,9 @@ importers:
       storybook-react-intl:
         specifier: ^3.2.3
         version: 3.2.3(react-intl@7.1.6(react@19.0.0)(typescript@5.7.3))
+      tailwindcss:
+        specifier: 4.0.7
+        version: 4.0.7
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
