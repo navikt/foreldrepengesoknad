@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import '@navikt/ds-css';
-
 import { Søkerinfo } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';

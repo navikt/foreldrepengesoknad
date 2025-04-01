@@ -1,13 +1,20 @@
 {
     "extends": "tsconfig/vite.json",
     "compilerOptions": {
+        "moduleResolution": "bundler",
         "baseUrl": "src",
         "jsx": "react-jsx",
+        "allowImportingTsExtensions": true,
         "paths": {
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
         "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]
     },
     "include": ["src"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
 }

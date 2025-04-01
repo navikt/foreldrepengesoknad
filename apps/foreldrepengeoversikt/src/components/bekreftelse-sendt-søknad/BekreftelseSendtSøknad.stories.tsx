@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react/*';
+import { Meta, StoryObj } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Skjemanummer } from '@navikt/fp-constants';

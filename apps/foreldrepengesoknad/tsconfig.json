@@ -15,5 +15,10 @@
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src/**/*", "@types", ".storybook/testData/**/*"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
 }

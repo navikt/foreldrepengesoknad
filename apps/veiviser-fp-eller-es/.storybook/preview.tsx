@@ -4,11 +4,10 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import '@navikt/ds-css';
-
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
+import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
