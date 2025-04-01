@@ -9,5 +9,11 @@
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "exclude": ["node_modules"]
+    "include": ["src"],
+    "exclude": ["node_modules"],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
 }
