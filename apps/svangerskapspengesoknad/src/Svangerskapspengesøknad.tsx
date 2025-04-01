@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { SvpDataContext } from 'appData/SvpDataContext';
+import { ContextDataMap, SvpDataContext } from 'appData/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
+import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
+import { Barn } from 'types/Barn';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -31,6 +33,31 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () =>
             ky.get(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
+    });
+
+    const sak = useQuery({
+        queryKey: ['SAKER'],
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+        select: (saker) => {
+            const svpSak = saker.svangerskapspenger[0]; //TODO: gal antagelse om bare 1 sak
+            if (!svpSak) {
+                return undefined;
+            }
+
+            const barnet = {
+                erBarnetFødt: svpSak.familiehendelse.antallBarn > 0,
+                fødselsdato: svpSak.familiehendelse.fødselsdato,
+                termindato: svpSak.familiehendelse.termindato!, //TODO: denne skal vel alltid være satt?
+            } satisfies Barn;
+
+            const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
+                .map((a) => a.aktivitet.arbeidsgiver?.id)
+                .filter((s) => s !== undefined);
+
+            const ferie = {} satisfies AvtaltFeriePerArbeidsgiver;
+
+            return { OM_BARNET: barnet, VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold } satisfies ContextDataMap;
+        },
     });
 
     if (søkerinfo.error || mellomlagretInfo.error) {
