@@ -1,24 +1,18 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyLong, Heading } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Heading, Label, VStack } from '@navikt/ds-react';
 
 export const IngenDokumentasjonPåkrevd = () => {
     return (
-        <>
-            <BodyLong>
+        <VStack gap="2">
+            <Label>
                 <FormattedMessage id="dokumentasjon.ikke.påkrevd.tittel" />
+            </Label>
+            <BodyLong>
+                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.tittel" />
+                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del1" />
+                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del2" />
             </BodyLong>
-            <Alert variant="info">
-                <Heading level="2" size="small">
-                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.tittel" />
-                </Heading>
-                <BodyLong spacing>
-                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del1" />
-                </BodyLong>
-                <BodyLong>
-                    <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del2" />
-                </BodyLong>
-            </Alert>
-        </>
+        </VStack>
     );
 };

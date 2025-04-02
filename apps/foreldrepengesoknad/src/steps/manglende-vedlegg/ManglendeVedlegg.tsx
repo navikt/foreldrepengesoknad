@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { IngenDokumentasjonPåkrevd } from 'steps/manglende-vedlegg/dokumentasjon/IngenDokumentasjonPåkrevd';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
@@ -99,15 +97,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         erEndringssøknad,
     );
 
-    const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
-    const trengerDokumentereMorsArbeid =
-        useQuery({
-            // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
-            enabled: !!dokumentereMorsArbeidParams,
-        }).data ?? true;
-
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(relevantePerioder, erFarEllerMedmor, annenForelder);
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
@@ -132,9 +121,8 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelse);
     const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
     const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
-    const morJobberPerioder = trengerDokumentereMorsArbeid
-        ? perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber)
-        : [];
+    const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
+
     const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
@@ -225,7 +213,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         >
             <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
-                    {kreverIngenDokumentasjon && <IngenDokumentasjonPåkrevd />}
+                    {/* {kreverIngenDokumentasjon && <IngenDokumentasjonPåkrevd />} */}
                     <MorInnlagtDokumentasjon
                         attachments={morInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
@@ -365,31 +353,4 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
             </RhfForm>
         </Step>
     );
-};
-
-const getDokumentereMorsArbeidParams = (
-    uttaksplan: Periode[],
-    barn: Barn,
-    annenPartFødselsnummer?: string,
-): DokumentereMorsArbeidParams | undefined => {
-    if (!annenPartFødselsnummer) {
-        return undefined;
-    }
-
-    const perioderMedAktivitetskrav = uttaksplan
-        .filter((p) => isUttaksperiode(p))
-        .filter((p) => p.morsAktivitetIPerioden !== undefined);
-
-    const barnFødselsnummer =
-        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
-
-    return {
-        annenPartFødselsnummer,
-        barnFødselsnummer,
-        familiehendelse: getFamiliehendelsedato(barn),
-        perioder: perioderMedAktivitetskrav.map((p) => ({
-            fom: p.tidsperiode.fom.toISOString(),
-            tom: p.tidsperiode.tom.toISOString(),
-        })),
-    };
 };
