@@ -28,6 +28,8 @@ const customRenderer = ({
                 [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: erFarEllerMedmor,
                 [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
                 [UttaksplanContextDataType.BARN]: barn,
+                [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
+                [UttaksplanContextDataType.MODUS]: 'planlegger',
                 [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
                     farMedmor: 'Far',
                     mor: 'Mor',

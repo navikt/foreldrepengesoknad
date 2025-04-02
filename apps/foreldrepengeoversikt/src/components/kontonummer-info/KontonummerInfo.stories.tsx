@@ -1,7 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react/*';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { Ytelse } from './../../types/Ytelse';
-import { KontonummerInfo } from './../kontonummer-info/KontonummerInfo';
+import { KontonummerInfo } from './KontonummerInfo';
 
 const meta = {
     title: 'KontonummerInfo',
@@ -17,7 +16,7 @@ export const ForForeldrepenger: Story = {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -28,7 +27,7 @@ export const ForForeldrepengerUtenArbeidsforhold: Story = {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
-        ytelse: Ytelse.FORELDREPENGER,
+        ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: false,
     },
 };
@@ -39,7 +38,7 @@ export const ForEngangsstønad: Story = {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
-        ytelse: Ytelse.ENGANGSSTØNAD,
+        ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -50,7 +49,7 @@ export const ForSvangerskapspenger: Story = {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
 };
@@ -61,14 +60,14 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
-        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: false,
     },
 };
 
 export const HarIkkeKontonr: Story = {
     args: {
-        ytelse: Ytelse.ENGANGSSTØNAD,
+        ytelse: 'ENGANGSSTØNAD',
         bankkonto: undefined,
         harMinstEttArbeidsforhold: true,
     },

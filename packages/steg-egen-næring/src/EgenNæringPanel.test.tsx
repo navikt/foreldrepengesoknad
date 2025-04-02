@@ -170,9 +170,9 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Avslutt'));
+        await userEvent.click(screen.getAllByText('Avslutt')[0]);
 
-        expect(screen.getByText('Fortsett senere')).toBeInTheDocument();
+        expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });
 
     it('skal gå til et tidligere steg', async () => {

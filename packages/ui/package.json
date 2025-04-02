@@ -14,9 +14,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.16.0",
-        "@navikt/ds-css": "^7.16.0",
-        "@navikt/ds-react": "^7.16.0",
+        "@navikt/aksel-icons": "^7.17.2",
+        "@navikt/ds-css": "^7.17.2",
+        "@navikt/ds-react": "^7.17.2",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -48,6 +48,7 @@
         "@types/react": "^19.0.7",
         "@types/react-aria-menubutton": "^6.2.14",
         "@vitejs/plugin-react": "^4.3.4",
+        "eslint": "9.18.0",
         "fast-glob": "^3.3.3",
         "storybook": "8.5.0",
         "storybook-react-intl": "^3.2.3",

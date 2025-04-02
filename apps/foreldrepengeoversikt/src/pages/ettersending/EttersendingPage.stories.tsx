@@ -1,11 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react/*';
+import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
-import { Ytelse } from '../../types/Ytelse';
 import { EttersendingPage } from './EttersendingPage';
 
 const queryClient = new QueryClient({
@@ -60,7 +59,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         saker: {
             engangsstønad: [
                 {
-                    ytelse: Ytelse.ENGANGSSTØNAD,
+                    ytelse: 'ENGANGSSTØNAD',
                     saksnummer: '1',
                     sakAvsluttet: false,
                     gjelderAdopsjon: false,

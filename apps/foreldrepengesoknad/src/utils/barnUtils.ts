@@ -4,7 +4,7 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { SøkerBarn } from '@navikt/fp-types';
+import { BarnFrontend } from '@navikt/fp-types';
 
 import { ISOStringToDate } from './dateUtils';
 
@@ -34,7 +34,10 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined
         : false;
 };
 
-export const getRegistrerteBarnOmDeFinnes = (barn: Barn, registrerteBarn: SøkerBarn[]): SøkerBarn[] | undefined => {
+export const getRegistrerteBarnOmDeFinnes = (
+    barn: Barn,
+    registrerteBarn: BarnFrontend[],
+): BarnFrontend[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
@@ -52,7 +55,7 @@ export const getFødselsdato = (barn: Barn): string | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
-export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBarn) => {
+export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: BarnFrontend) => {
     const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
     return (
         registrerteBarn.dødsdato !== undefined &&
@@ -71,14 +74,14 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intl.formatMessage({ id: 'flerlinger' });
 };
 
-export const getLeverBarnet = (barn: SøkerBarn) => {
+export const getLeverBarnet = (barn: BarnFrontend) => {
     return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
     barnFødselsdato: string,
-    registrerteBarn: SøkerBarn[],
+    registrerteBarn: BarnFrontend[],
 ) => {
     const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
     const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');
@@ -161,7 +164,7 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
     return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);
 };
 
-export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: SøkerBarn, b2: SøkerBarn) => {
+export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: BarnFrontend, b2: BarnFrontend) => {
     if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {

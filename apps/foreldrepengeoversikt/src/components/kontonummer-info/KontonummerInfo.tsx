@@ -3,9 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Bankkonto } from '@navikt/fp-types';
-
-import { Ytelse } from './../../types/Ytelse';
+import { Bankkonto, Ytelse } from '@navikt/fp-types';
 
 interface Props {
     bankkonto: Bankkonto | undefined;
@@ -55,7 +53,7 @@ interface KontonummerInfoTekstProps {
 }
 
 const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhold }: KontonummerInfoTekstProps) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD || !harMinstEttArbeidsforhold) {
+    if (ytelse === 'ENGANGSSTØNAD' || !harMinstEttArbeidsforhold) {
         if (harKontonummer) {
             return (
                 <BodyLong size="small">
@@ -85,7 +83,7 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
         );
     }
 
-    if (ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) {
+    if (ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') {
         return (
             <BodyLong size="small">
                 Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react/*';
+import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
@@ -8,16 +8,18 @@ import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
+import { Søkerinfo } from '@navikt/fp-types';
+
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
 import { Forside } from './Forside';
 
 const queryClient = new QueryClient();
 
 type StoryArgs = {
     saker: SakOppslag;
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
 };
 
 const meta = {
@@ -57,8 +59,7 @@ export const Default: Story = {
         },
     },
     args: {
-        // @ts-expect-error Er backend og frontend-typar like her? Fiks!
-        saker,
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        saker: mapSakerDTOToSaker(saker),
+        søkerinfo: søkerinfo,
     },
 };

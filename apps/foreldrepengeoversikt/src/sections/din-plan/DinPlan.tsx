@@ -10,7 +10,6 @@ import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
 import { KvoteOversikt } from './KvoteOppsummering';
 
@@ -25,7 +24,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const [visKalender, setVisKalender] = useState(false);
 
-    if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
+    if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
         return null;
     }
 
@@ -37,7 +36,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const rettighetType = gjeldendeSak.rettighetType;
     const sakAvsluttet = gjeldendeSak.sakAvsluttet;
 
-    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
+    const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;

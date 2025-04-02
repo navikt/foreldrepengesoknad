@@ -164,7 +164,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Avslutt'));
+        await userEvent.click(screen.getAllByText('Avslutt')[0]);
 
         expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
     });

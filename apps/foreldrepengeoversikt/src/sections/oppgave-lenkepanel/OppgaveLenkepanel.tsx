@@ -1,10 +1,10 @@
 import { ChatExclamationmarkIcon } from '@navikt/aksel-icons';
 
+import { MinidialogInnslag } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { OversiktRoutes } from '../../routes/routes';
-import { MinidialogInnslag } from '../../types/MinidialogInnslag';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;

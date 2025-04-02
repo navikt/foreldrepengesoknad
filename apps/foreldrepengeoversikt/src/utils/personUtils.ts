@@ -1,5 +1,6 @@
-import { Foreldrepengesak } from './../types/Foreldrepengesak';
-import { Person } from './../types/Person';
+import { Søkerinfo } from '@navikt/fp-types';
+
+import { Foreldrepengesak } from '../types/Sak';
 
 export interface NavnPåForeldre {
     farMedmor: string;
@@ -18,6 +19,6 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getLeverPerson = (person: Person) => {
+export const getLeverPerson = (person: Søkerinfo['søker']['barn'][0]) => {
     return !person.dødsdato;
 };

@@ -78,7 +78,6 @@
     "kvote.varighet.tilMor": "{varighet} til mor",
     "kvote.varighet.tilFar": "{varighet} til far",
     "kvote.varighet.tilMedmor": "{varighet} til medmor",
-    "kvote.varighet.tilMedfar": "{varighet} til medfar",
     "kvote.varighet.fellesperiode": "{varighet} av fellesperioden",
     "kvote.varighet.fellesperiode.deg": "{varighet} er lagt til for deg",
     "kvote.varighet.fellesperiode.annenForeldre": "{varighet} er lagt til for annan forelder",
@@ -100,6 +99,8 @@
     "endreTidsPeriodeModal.foreldrepengerFørFødsel": "Foreldrepenger før fødsel kan kun taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode": "Kun foreldrepenger før fødsel kan taes ut i de tre ukene før fødsel.",
     "endreTidsPeriodeModal.fellesperiodeOverFPFF": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikke legges inn de første seks ukene etter fødsel.",
+    "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikke legges inn de første seks ukene etter termin.",
     "endreTidsPeriodeModal.minDato": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
     "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}"
 }

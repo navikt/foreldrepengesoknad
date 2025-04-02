@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 import { Søknad } from 'types/Søknad';
 import { ValgtBarn } from 'types/ValgtBarn';
 
@@ -10,12 +9,10 @@ import {
     Barn,
     BarnType,
     Dekningsgrad,
-    DekningsgradDTO,
     EksisterendeSak,
     FamiliehendelseType,
     OppholdÅrsakType,
     OppholdÅrsakTypeDTO,
-    Sak,
     Saksgrunnlag,
     Saksperiode,
     SaksperiodeDTO,
@@ -28,10 +25,9 @@ import {
     isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { PersonFnrDTO } from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+import { AnnenForelderFrontend, AnnenPartSak, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -146,15 +142,15 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartVedtakDTO | undefined): Date | undefined => {
-    if (annenPartsSak === undefined || annenPartsSak.perioder.length === 0) {
+export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartSak | undefined): Date | undefined => {
+    if (!annenPartsSak || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
     return ISOStringToDate(annenPartsSak.perioder[0].fom);
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined,
+    eksisterendeSakAnnenPart: AnnenPartSak | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -163,7 +159,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     if (
         eksisterendeSakAnnenPart === undefined ||
         eksisterendeSakAnnenPart === null ||
-        //@ts-ignore Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
+        //@ts-expect-error Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
         eksisterendeSakAnnenPart === ''
     ) {
         return undefined;
@@ -171,6 +167,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
+            //@ts-expect-error -- ignorer frem til typer er ported til autogenererte
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -185,7 +182,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 
     const grunnlagForAnnenPart = {
         dekningsgrad:
-            eksisterendeSakAnnenPart.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+            eksisterendeSakAnnenPart.dekningsgrad === 'HUNDRE'
                 ? Dekningsgrad.HUNDRE_PROSENT
                 : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: eksisterendeSakAnnenPart.antallBarn ? eksisterendeSakAnnenPart.antallBarn : barn.antallBarn,
@@ -223,7 +220,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: Sak,
+    eksisterendeSak: FpSak,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
     valgtBarnFødselsdatoer: Date[] | undefined,
 ): EksisterendeSak => {
@@ -247,8 +244,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
             : undefined;
     const fødselsdatoForSaken = fødselsdatoFraFPSak || fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
-        dekningsgrad:
-            dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: dekningsgrad === 'HUNDRE' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: antallBarn,
         morErAleneOmOmsorg: sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
         morErUfør: morUføretrygd,
@@ -269,6 +265,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
 
     const saksperioder = perioder
         .map((p) => {
+            // @ts-expect-error -- feil frem til alt er over på nye autogenererte typer
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -292,7 +289,7 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (søker: Søker, grunnlag: Saksgrunnlag): Søkerrolle => {
+const getSøkerrolleFromSaksgrunnlag = (søker: PersonFrontend, grunnlag: Saksgrunnlag): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = søker.kjønn === 'K';
     if (søkerErKvinne) {
@@ -341,7 +338,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
     }
 };
 
-const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
+const finnFornavn = (annenPart: AnnenForelderFrontend, intl: IntlShape) => {
     return annenPart.fornavn !== undefined && annenPart.fornavn !== ''
         ? annenPart.fornavn
         : intl.formatMessage({ id: 'annen.forelder' });
@@ -350,7 +347,7 @@ const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
-    annenPart: SøkerAnnenForelder,
+    annenPart: AnnenForelderFrontend,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): AnnenForelder => {
@@ -386,7 +383,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 };
 
 const finnAnnenForelderForSaken = (
-    barn: SøkerBarn[],
+    barn: BarnFrontend[],
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
@@ -415,7 +412,7 @@ const finnAnnenForelderForSaken = (
         const { fornavn } = annenForelder;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
-        const annenPart: SøkerAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
+        const annenPart: AnnenForelderFrontend = { ...annenForelder, fornavn: fornavnAnnenForelder };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 
@@ -493,9 +490,9 @@ export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
 
 export const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
-    annenPartFraSak: PersonFnrDTO | undefined,
+    annenPartFraSak: Person | undefined,
     grunnlag: Saksgrunnlag,
-    barn: SøkerBarn[],
+    barn: BarnFrontend[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -526,9 +523,9 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 };
 
 export const lagSøknadFraValgteBarnMedSak = (
-    valgteBarn: ValgtBarn & { sak: Sak },
+    valgteBarn: ValgtBarn & { sak: FpSak },
     intl: IntlShape,
-    registrerteBarn: SøkerBarn[],
+    registrerteBarn: BarnFrontend[],
     søkerFnr: string,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
@@ -558,10 +555,10 @@ export const lagSøknadFraValgteBarnMedSak = (
 };
 
 export const lagEndringsSøknad = (
-    søker: Søker,
+    søker: PersonFrontend,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
-    annenPartFraSak: PersonFnrDTO | undefined,
+    annenPartFraSak: Person | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
     const { grunnlag, uttaksplan } = eksisterendeSak;

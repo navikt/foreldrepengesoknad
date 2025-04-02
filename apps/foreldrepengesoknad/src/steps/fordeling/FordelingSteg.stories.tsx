@@ -8,9 +8,14 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    Arbeidsforhold,
+    PersonFrontend,
+    SøkersituasjonFp,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -18,7 +23,7 @@ const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPa
 const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const vedtakFar = {
-    dekningsgrad: 'HUNDRE' as DekningsgradDTO,
+    dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-02-07',
@@ -47,7 +52,7 @@ const vedtakFar = {
 };
 
 const vedtakMor = {
-    dekningsgrad: 'HUNDRE' as DekningsgradDTO,
+    dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-07-07',
@@ -81,7 +86,7 @@ const søkerInfoKvinne = {
     etternavn: 'Mygg',
     kjønn: 'K',
     fødselsdato: '1978-04-19',
-} as Søker;
+} as PersonFrontend;
 
 const søkerInfoMann = {
     fnr: '19047815715',
@@ -89,7 +94,7 @@ const søkerInfoMann = {
     etternavn: 'Mygg',
     kjønn: 'M',
     fødselsdato: '1972-06-07',
-} as Søker;
+} as PersonFrontend;
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -114,7 +119,7 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    søker: Søker;
+    søker: PersonFrontend;
     dekningsgrad: Dekningsgrad;
     arbeidsforhold: Arbeidsforhold[];
 } & ComponentProps<typeof FordelingSteg>;

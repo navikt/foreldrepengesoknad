@@ -5,8 +5,6 @@ import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import React from 'react';
 
-import '@navikt/ds-css';
-
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -16,6 +14,7 @@ import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 
+import '../src/index.css';
 import nbMessages from '../src/intl/nb_NO.json';
 import nnMessages from '../src/intl/nn_NO.json';
 import '../src/styles/app.css';

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
+    HvemPlanleggerType,
     MorsAktivitet,
     OppholdÅrsakType,
     TilgjengeligeStønadskontoerForDekningsgrad,
@@ -55,6 +56,20 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         perioder: [],
         rettighetType: RettighetType.BEGGE_RETT,
         forelder: Forelder.mor,
+    },
+};
+
+export const BeggeRettMorogMedmorLedigeDager: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        hvemPlanleggerType: HvemPlanleggerType.MOR_OG_MEDMOR,
+    },
+};
+
+export const BeggeRettFarOgFarLedigeDager: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        hvemPlanleggerType: HvemPlanleggerType.FAR_OG_FAR,
     },
 };
 

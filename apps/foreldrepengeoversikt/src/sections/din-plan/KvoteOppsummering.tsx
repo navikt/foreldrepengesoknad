@@ -1,18 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { DekningsgradDTO } from '../../types/DekningsgradDTO';
-import { Foreldrepengesak } from '../../types/Foreldrepengesak';
-import { Ytelse } from '../../types/Ytelse';
+import { Foreldrepengesak } from '../../types/Sak';
 
 export const KvoteOversikt = () => {
     const gjeldendeSak = useGetSelectedSak();
 
-    const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === Ytelse.FORELDREPENGER;
+    const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';
 
     if (!harFpSak) {
         return null;
@@ -35,8 +34,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
             fødselsdato: sak.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
         }),
     );
-    const konto =
-        sak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
+    const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
     if (!konto) {
         return null;
@@ -59,7 +57,7 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
         <KvoteOppsummering
             familiehendelse={sak.familiehendelse}
             konto={konto}
-            perioder={aktuellePerioder}
+            perioder={aktuellePerioder as SaksperiodeNy[]}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
             visStatusIkoner={false}

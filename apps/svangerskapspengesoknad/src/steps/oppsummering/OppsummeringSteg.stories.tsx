@@ -9,7 +9,7 @@ import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søker } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søkerinfo } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -20,7 +20,6 @@ const TREDJE_ARBEIDSFORHOLD_ID = '995090910';
 const DEFAULT_SØKERINFO = {
     arbeidsforhold: [
         {
-            id: '1669400414-9409-3313-0700-3334116100409',
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -29,7 +28,6 @@ const DEFAULT_SØKERINFO = {
             tom: '2019-05-31T00:00:00.000Z',
         },
         {
-            id: '149599873-5769-19110-21897-6184606004018',
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -38,7 +36,6 @@ const DEFAULT_SØKERINFO = {
             tom: '2018-09-09T00:00:00.000Z',
         },
         {
-            id: '86832061-1118-9701-6179-20647729409710',
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -47,7 +44,6 @@ const DEFAULT_SØKERINFO = {
             tom: '2018-08-05T00:00:00.000Z',
         },
         {
-            id: '186699244-06994-0884-1562-860234771205',
             arbeidsgiverId: ANNEN_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -55,7 +51,6 @@ const DEFAULT_SØKERINFO = {
             stillingsprosent: 85.09,
         },
         {
-            id: '263929546-6215-9868-5127-161910165730101',
             arbeidsgiverId: ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
@@ -63,7 +58,6 @@ const DEFAULT_SØKERINFO = {
             stillingsprosent: 100,
         },
         {
-            id: '0132715641-23932-19917-03900-809964087910',
             arbeidsgiverId: TREDJE_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Re Kommune',
@@ -78,8 +72,8 @@ const DEFAULT_SØKERINFO = {
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
-    } as Søker,
-};
+    },
+} satisfies Søkerinfo;
 
 const promiseAction =
     () =>

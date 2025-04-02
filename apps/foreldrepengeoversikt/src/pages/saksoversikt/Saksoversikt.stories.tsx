@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react/*';
+import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
@@ -12,17 +12,15 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { Saker, Søkerinfo } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
-import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import { Saksoversikt } from './Saksoversikt';
 
 const queryClient = new QueryClient();
 
 type StoryArgs = {
-    søkerinfo: SøkerinfoDTO;
+    søkerinfo: Søkerinfo;
     saksnummer: string;
 };
 
@@ -70,7 +68,7 @@ export const Foreldrepenger: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -93,19 +91,13 @@ export const Engangsstønad: Story = {
                                     antallBarn: 1,
                                 },
                                 åpenBehandling: {
-                                    tilstand: BehandlingTilstand.UNDER_BEHANDLING,
-                                    søknadsperioder: [
-                                        {
-                                            fom: '2024-01-01',
-                                            tom: '2024-10-01',
-                                        },
-                                    ] as SaksperiodeNy[],
+                                    tilstand: 'UNDER_BEHANDLING',
                                 },
                                 oppdatertTidspunkt: '2024-02-28T21:19:08.911',
                             },
                         ],
                         svangerskapspenger: [],
-                    }),
+                    } satisfies Saker),
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
                     HttpResponse.json([
@@ -135,7 +127,7 @@ export const Engangsstønad: Story = {
         },
     },
     args: {
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo,
         saksnummer: '352011079',
     },
 };
@@ -167,6 +159,6 @@ export const Svangerskapspenger: Story = {
     },
     args: {
         saksnummer: '202',
-        søkerinfo: søkerinfo as SøkerinfoDTO,
+        søkerinfo: søkerinfo,
     },
 };

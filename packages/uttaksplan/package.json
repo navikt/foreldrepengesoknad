@@ -13,9 +13,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.16.0",
-        "@navikt/ds-css": "^7.16.0",
-        "@navikt/ds-react": "^7.16.0",
+        "@navikt/aksel-icons": "^7.17.2",
+        "@navikt/ds-css": "^7.17.2",
+        "@navikt/ds-react": "^7.17.2",
         "@navikt/fnrvalidator": "2.1.5",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
@@ -29,6 +29,7 @@
         "date-fns": "4.1.0",
         "date-holidays": "^3.23.18",
         "dayjs": "^1.11.12",
+        "eslint": "9.18.0",
         "formik": "^2.4.6",
         "i18n-iso-countries": "7.13.0",
         "lodash": "^4.17.21",
