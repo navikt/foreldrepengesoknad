@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyLong, BodyShort, Heading, Label, VStack } from '@navikt/ds-react';
+import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 export const IngenDokumentasjonPåkrevd = () => {
     return (
@@ -8,10 +8,8 @@ export const IngenDokumentasjonPåkrevd = () => {
             <Label>
                 <FormattedMessage id="dokumentasjon.ikke.påkrevd.tittel" />
             </Label>
-            <BodyLong>
-                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.tittel" />
-                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del1" />
-                <FormattedMessage id="dokumentasjon.ikke.påkrevd.alert.beskrivelse.del2" />
+            <BodyLong className="text-text-subtle">
+                <FormattedMessage id="dokumentasjon.ikke.påkrevd.beskrivelse" />
             </BodyLong>
         </VStack>
     );
