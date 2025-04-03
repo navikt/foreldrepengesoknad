@@ -1,3 +1,4 @@
 @import 'tailwindcss';
 @import "@navikt/ds-css" layer(components);
 @config "@navikt/ds-tailwind";
+@source "../../../packages/*/src/**";
