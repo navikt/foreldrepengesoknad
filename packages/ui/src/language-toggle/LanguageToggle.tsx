@@ -3,6 +3,8 @@ import { JSX } from 'react';
 import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import { FormattedMessage } from 'react-intl';
 
+import { List } from '@navikt/ds-react';
+
 import { LocaleAll } from '@navikt/fp-types';
 
 import { NorwayFlagSVG } from './NorwayFlag';
@@ -10,7 +12,7 @@ import './languageToggle.css';
 
 const MenuListItem = ({ locale }: { locale: LocaleAll }) => {
     return (
-        <li key={locale}>
+        <List.Item key={locale}>
             <MenuItem className="languageToggle__menu__item">
                 <div className="languageToggle__button__flag">
                     <NorwayFlagSVG />
@@ -21,7 +23,7 @@ const MenuListItem = ({ locale }: { locale: LocaleAll }) => {
                     {locale === 'nn' && <FormattedMessage id="LanguageToggle.nn" />}
                 </div>
             </MenuItem>
-        </li>
+        </List.Item>
     );
 };
 
@@ -58,11 +60,11 @@ export const LanguageToggle = <T extends LocaleAll>({
                     </div>
                 </Button>
                 <Menu className="languageToggle__menu">
-                    <ul>
+                    <List>
                         {selectableOtherMenuLanguages.map((code) => (
                             <MenuListItem key={code} locale={code} />
                         ))}
-                    </ul>
+                    </List>
                 </Menu>
             </Wrapper>
         </div>

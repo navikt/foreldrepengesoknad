@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, GuidePanel } from '@navikt/ds-react';
+import { BodyLong, GuidePanel, List } from '@navikt/ds-react';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
@@ -12,18 +12,18 @@ export const FlereArbeidsforholdGuidePanel = () => {
             <BodyLong>
                 <FormattedMessage id="velgArbeid.guidepanel.tekst" />
             </BodyLong>
-            <ul>
-                <li>
+            <List>
+                <List.Item>
                     <BodyLong>
                         <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />
                     </BodyLong>
-                </li>
-                <li>
+                </List.Item>
+                <List.Item>
                     <BodyLong>
                         <FormattedMessage id="velgArbeid.guidepanel.liste.del2" />
                     </BodyLong>
-                </li>
-            </ul>
+                </List.Item>
+            </List>
         </GuidePanel>
     );
 };

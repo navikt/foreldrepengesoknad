@@ -1,13 +1,13 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, Link } from '@navikt/ds-react';
+import { BodyLong, Link, List } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
 export const DinePlikter = () => {
     return (
-        <ul>
-            <li>
+        <List>
+            <List.Item>
                 <BodyLong>
                     <FormattedMessage
                         id="velkommen.dinePlikter.listeElement.1"
@@ -20,12 +20,12 @@ export const DinePlikter = () => {
                         }}
                     />
                 </BodyLong>
-            </li>
-            <li>
+            </List.Item>
+            <List.Item>
                 <BodyLong>
                     <FormattedMessage id="velkommen.dinePlikter.listeElement.2" />
                 </BodyLong>
-            </li>
-        </ul>
+            </List.Item>
+        </List>
     );
 };

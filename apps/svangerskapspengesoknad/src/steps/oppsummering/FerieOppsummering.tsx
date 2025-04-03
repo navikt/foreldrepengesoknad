@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { AvtaltFerieDto } from 'types/AvtaltFerie';
 
-import { FormSummary } from '@navikt/ds-react';
+import { FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -72,13 +72,13 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { readonly avtaltFerie: Avtal
                             <FormattedMessage id="oppsummering.ferie.perioder" />
                         </FormSummary.Label>
                         <FormSummary.Value>
-                            <ul>
+                            <List>
                                 {avtaltFerie.map((feriePeriode) => (
-                                    <li key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
+                                    <List.Item key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
                                         {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
-                                    </li>
+                                    </List.Item>
                                 ))}
-                            </ul>
+                            </List>
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 </>
