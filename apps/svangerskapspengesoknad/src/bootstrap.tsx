@@ -13,6 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { AppContainer } from './AppContainer';
 import './index.css';
+import './styles/app.css';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
