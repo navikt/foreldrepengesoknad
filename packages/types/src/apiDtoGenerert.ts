@@ -1282,9 +1282,9 @@ export type Saker = {
 
 export type SvpArbeidsforhold = {
     aktivitet: Aktivitet;
-    behovFrom?: string;
-    risikofaktorer?: string;
-    tiltak?: string;
+    behovFrom: string; //TODO: sjekk
+    risikofaktorer?: string; // TODO: brukes?
+    tiltak?: string; // TODO: brukes?
     tilrettelegginger: Tilrettelegging[];
     oppholdsperioder: OppholdPeriode[];
     avslutningÅrsak?:

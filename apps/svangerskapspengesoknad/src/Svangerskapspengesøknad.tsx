@@ -5,6 +5,13 @@ import ky from 'ky';
 import { useIntl } from 'react-intl';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
+import {
+    DelivisTilretteleggingPeriodeType,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    TilOgMedDatoType,
+    Tilretteleggingstype,
+} from 'types/Tilrettelegging';
 
 import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
@@ -55,8 +62,47 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                 .filter((s) => s !== undefined);
 
             const ferie = {} satisfies AvtaltFeriePerArbeidsgiver;
+            const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
+                (acc, a) => {
+                    const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
+                    // TODO: dette caset
+                    if (!arbeidsgiverId) {
+                        return acc;
+                    }
+                    if (a.tilrettelegginger.length === 1) {
+                        const tilrettelegging = a.tilrettelegginger[0];
 
-            return { OM_BARNET: barnet, VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold } satisfies ContextDataMap;
+                        if (tilrettelegging.type === 'INGEN') {
+                            acc[arbeidsgiverId] = {
+                                type: Tilretteleggingstype.INGEN,
+                                enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                                behovForTilretteleggingFom: a.behovFrom,
+                            } satisfies IngenTilrettelegging;
+                        }
+
+                        if (tilrettelegging.type === 'DELVIS') {
+                            acc[arbeidsgiverId] = {
+                                type: Tilretteleggingstype.DELVIS,
+                                delvisTilretteleggingPeriodeType:
+                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN, //TODO
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                                enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
+                                behovForTilretteleggingFom: a.behovFrom,
+                            } satisfies DelvisTilrettelegging;
+                        }
+                    }
+                    return acc;
+                },
+                {} as Record<string, IngenTilrettelegging | DelvisTilrettelegging>,
+            );
+
+            return {
+                OM_BARNET: barnet,
+                VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold,
+                FERIE: ferie,
+                TILRETTELEGGINGER: tilrettelegginer,
+            } satisfies ContextDataMap;
         },
     });
 
@@ -79,17 +125,23 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
+    const m = {
+        version: mellomlagretState?.version ?? 1,
+        locale: mellomlagretState?.locale ?? 'nb',
+        ...sak.data,
+    }; //TODO: temp
+
     return (
         <div>
             {!erPersonMyndig ? (
                 <Umyndig appnavn="Svangerskapspenger" />
             ) : (
-                <SvpDataContext initialState={mellomlagretState}>
+                <SvpDataContext initialState={m}>
                     <SvangerskapspengesøknadRoutes
                         locale={locale}
                         onChangeLocale={onChangeLocale}
                         søkerInfo={søkerinfo.data}
-                        mellomlagretData={mellomlagretState}
+                        mellomlagretData={m}
                     />
                 </SvpDataContext>
             )}
