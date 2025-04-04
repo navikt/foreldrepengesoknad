@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { dateToISOString } from 'utils/dateUtils';
-import { addMetadata, lagAutomatiskDokument, lagSendSenereDokument } from 'utils/vedleggUtils';
+import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import { NavnPåForeldre, Periode, Situasjon, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -68,7 +68,6 @@ export const MorJobberDokumentasjon = ({
 
     return (
         <UttakUploader
-            erAutomatisk={false}
             attachments={attachments}
             updateAttachments={updateDokArbeidMorAttachment}
             perioder={perioder}
