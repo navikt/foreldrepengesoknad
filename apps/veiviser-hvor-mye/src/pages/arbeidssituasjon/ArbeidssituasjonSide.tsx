@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Label, Link, List, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfCheckbox, RhfForm, RhfTextField } from '@navikt/fp-form-hooks';
@@ -237,26 +237,26 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                 </BluePanel>
                                 <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
                                     <FormattedMessage id="ArbeidssituasjonSide.EnAvDisse" />
-                                    <ul>
-                                        <li>
+                                    <List>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.Sykepenger" />
-                                        </li>
-                                        <li>
+                                        </List.Item>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.Foreldrepenger" />
-                                        </li>
-                                        <li>
+                                        </List.Item>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.Svangerskapspenger" />
-                                        </li>
-                                        <li>
+                                        </List.Item>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidsavklaring" />
-                                        </li>
-                                        <li>
+                                        </List.Item>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.Dagpenger" />
-                                        </li>
-                                        <li>
+                                        </List.Item>
+                                        <List.Item>
                                             <FormattedMessage id="ArbeidssituasjonSide.OmsorgOgPleie" />
-                                        </li>
-                                    </ul>
+                                        </List.Item>
+                                    </List>
                                 </ReadMore>
                             </VStack>
                         )}
