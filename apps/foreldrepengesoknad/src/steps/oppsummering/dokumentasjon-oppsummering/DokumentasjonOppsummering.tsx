@@ -4,7 +4,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { InnsendingsType } from '@navikt/fp-constants';
+import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
@@ -36,6 +36,9 @@ export const DokumentasjonOppsummering = ({
     if (!harVedlegg) {
         return null;
     }
+
+    // TODO: Heller reduce? Men dette er ganske mye mer lesbart
+    delete alleVedlegg[Skjemanummer.DOK_ARBEID_MOR];
 
     return (
         <>
