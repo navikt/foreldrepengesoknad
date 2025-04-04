@@ -43,7 +43,6 @@ export const MorJobberDokumentasjon = ({
 
     const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
-
     const trengerDokumentereMorsArbeid =
         useQuery({
             // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion

@@ -81,6 +81,7 @@ export const Oppsummering = (props: Props) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    console.log(uttaksplan);
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);

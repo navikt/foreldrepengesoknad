@@ -3,13 +3,23 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
+import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import {
+    AnnenForelder,
+    Barn,
+    BarnType,
+    Forelder,
+    MorsAktivitet,
+    Periode,
+    Periodetype,
+    StønadskontoType,
+} from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, Situasjon, Søkerinfo } from '@navikt/fp-types';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -77,7 +87,8 @@ const defaultAnnenForelder = {
     fornavn: 'Eline',
     etternavn: 'Hagen',
     kanIkkeOppgis: false,
-} as AnnenForelder;
+    fnr: '21091981144',
+} satisfies AnnenForelder;
 
 const defaultBarn = {
     antallBarn: 1,
@@ -103,6 +114,7 @@ type StoryArgs = {
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
     barn?: Barn;
+    uttaksplan?: Periode[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
     gåTilNesteSide?: (action: Action) => void;
@@ -123,6 +135,7 @@ const meta = {
     },
     render: ({
         situasjon = 'fødsel',
+        uttaksplan = [],
         annenForelder = defaultAnnenForelder,
         barn = defaultBarn,
         arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
@@ -136,7 +149,7 @@ const meta = {
                     <FpDataContext
                         onDispatch={gåTilNesteSide}
                         initialState={{
-                            [ContextDataType.UTTAKSPLAN]: [],
+                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.ANNEN_FORELDER]: annenForelder,
                             [ContextDataType.OM_BARNET]: barn,
                             [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
@@ -169,6 +182,78 @@ export const Termindatodokumentasjon: Story = {
         erEndringssøknad: false,
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
+    },
+};
+
+export const MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                id: '08499121-6620-16419-3321-0027063089154',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                tidsperiode: {
+                    fom: new Date('2025-04-04T00:00:00.000Z'),
+                    tom: new Date('2025-04-17T00:00:00.000Z'),
+                },
+                type: Periodetype.Uttak,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+            },
+            {
+                id: '0700701673-1838-30857-30810-219862607326',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: {
+                    fom: new Date('2025-04-18T00:00:00.000Z'),
+                    tom: new Date('2025-04-25T00:00:00.000Z'),
+                },
+                type: Periodetype.Uttak,
+                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: false,
+            },
+            {
+                id: '0970716026-2165-1467-27124-9449179006146',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: {
+                    fom: new Date('2025-04-28T00:00:00.000Z'),
+                    tom: new Date('2025-04-30T00:00:00.000Z'),
+                },
+                type: Periodetype.Uttak,
+                morsAktivitetIPerioden: MorsAktivitet.ArbeidOgUtdanning,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: false,
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
     },
 };
 
