@@ -228,21 +228,6 @@ export const MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid: Story = {
                 orgnumre: [],
                 ønskerSamtidigUttak: false,
             },
-            {
-                id: '0970716026-2165-1467-27124-9449179006146',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fellesperiode,
-                tidsperiode: {
-                    fom: new Date('2025-04-28T00:00:00.000Z'),
-                    tom: new Date('2025-04-30T00:00:00.000Z'),
-                },
-                type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.ArbeidOgUtdanning,
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: false,
-            },
         ],
     },
     parameters: {
