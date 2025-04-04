@@ -88,7 +88,14 @@ export default [
 
             // TODO (TOR) Ignorert inntil videre grunnet kost/nytte
             '@typescript-eslint/no-explicit-any': OFF,
-            '@typescript-eslint/ban-ts-comment': OFF,
+            '@typescript-eslint/ban-ts-comment': [
+                ERROR,
+                {
+                    'ts-ignore': {
+                        descriptionFormat: '^ fordi .+$',
+                    },
+                },
+            ],
         },
     },
     {
