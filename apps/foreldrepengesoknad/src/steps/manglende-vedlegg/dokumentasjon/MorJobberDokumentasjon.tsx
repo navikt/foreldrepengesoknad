@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { dateToISOString } from 'utils/dateUtils';
+import { addMetadata, lagAutomatiskDokument, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { NavnPåForeldre, Periode, Situasjon, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, isFødtBarn, isUttaksperiode } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -48,18 +51,26 @@ export const MorJobberDokumentasjon = ({
             enabled: !!dokumentereMorsArbeidParams,
         }).data ?? true;
 
+    const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
+
     if (perioder.length === 0) {
         return null;
     }
 
     if (!trengerDokumentereMorsArbeid) {
-        return <IngenDokumentasjonPåkrevd />;
+        return (
+            <TrengerIkkeMorIArbeidDokumentasjon
+                perioder={perioder}
+                updateDokArbeidMorAttachment={updateDokArbeidMorAttachment}
+            />
+        );
     }
 
     return (
         <UttakUploader
+            erAutomatisk={false}
             attachments={attachments}
-            updateAttachments={updateAttachments(Skjemanummer.DOK_ARBEID_MOR)}
+            updateAttachments={updateDokArbeidMorAttachment}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
             familiehendelsesdato={familiehendelsesdato}
@@ -74,6 +85,30 @@ export const MorJobberDokumentasjon = ({
             attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
         />
     );
+};
+
+const TrengerIkkeMorIArbeidDokumentasjon = ({
+    updateDokArbeidMorAttachment,
+    perioder,
+}: {
+    updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
+    perioder: Periode[];
+}) => {
+    useEffect(() => {
+        const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
+
+        const sendAutomatiskVedlegg = addMetadata(init, {
+            type: AttachmentMetadataType.UTTAK,
+            perioder: perioder.map((p) => ({
+                fom: dateToISOString(p.tidsperiode.fom),
+                tom: dateToISOString(p.tidsperiode.tom),
+            })),
+        });
+
+        updateDokArbeidMorAttachment([sendAutomatiskVedlegg]);
+    }, []);
+
+    return <IngenDokumentasjonPåkrevd />;
 };
 
 const getDokumentereMorsArbeidParams = (
