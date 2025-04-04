@@ -25,25 +25,25 @@ export const DokumentasjonOppsummering = ({
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
-    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
+    // Fjerner vedlegg som er automatisk slik at disse ikke vises for bruker.
+    const faktiskeVedlegg = Object.fromEntries(
+        Object.entries(alleVedlegg ?? {}).map(([key, attachments]) => [
+            key,
+            attachments.filter((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK),
+        ]),
+    );
+
+    const harVedlegg = Object.values(faktiskeVedlegg).some((v) => v.length > 0);
 
     const harSendSenereDokument =
         harVedlegg &&
-        Object.values(alleVedlegg)
+        Object.values(faktiskeVedlegg)
             .flatMap((vedlegg) => vedlegg)
             .find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE);
 
     if (!harVedlegg) {
         return null;
     }
-
-    // Fjerner vedlegg som er automatisk slik at disse ikke vises for bruker.
-    const updatedVedlegg2 = Object.fromEntries(
-        Object.entries(alleVedlegg).map(([key, attachments]) => [
-            key,
-            attachments.filter((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK),
-        ]),
-    );
 
     return (
         <>
@@ -61,7 +61,7 @@ export const DokumentasjonOppsummering = ({
                     </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
-                    {Object.entries(updatedVedlegg2)
+                    {Object.entries(faktiskeVedlegg)
                         .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
                         .map((idOgVedlegg) => (
                             <FormSummary.Answer key={idOgVedlegg[1][0].id}>
