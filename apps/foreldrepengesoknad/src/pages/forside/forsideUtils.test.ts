@@ -1,11 +1,11 @@
+import dayjs from 'dayjs';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 
 import { BarnFrontend, FpSak } from '@navikt/fp-types';
 
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
 
-const fødselsdato = '2022-01-01';
-const fødselsdatoDate = fødselsdato;
+const fødselsdato = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
 const sak = {
     dekningsgrad: 'HUNDRE',
     familiehendelse: {
@@ -32,21 +32,21 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
     const barnFraPDL = {
         fornavn: 'Grønn',
         etternavn: 'Dinosaur',
-        fødselsdato: fødselsdatoDate,
+        fødselsdato: fødselsdato,
         fnr: '123456789',
         kjønn: 'K',
     } satisfies BarnFrontend;
     const barnFraPDL2 = {
         fornavn: 'Svart',
         etternavn: 'Edderkopp',
-        fødselsdato: '2022-03-01',
+        fødselsdato: dayjs(fødselsdato).add(2, 'month').format('YYYY-MM-DD'),
         fnr: '123456780',
         kjønn: 'K',
     } satisfies BarnFrontend;
     const barnTvilling = {
         fornavn: 'Blå',
         etternavn: 'Dinosaur',
-        fødselsdato: '2022-01-02',
+        fødselsdato: dayjs(fødselsdato).add(1, 'day').format('YYYY-MM-DD'),
         fnr: '123456788',
         kjønn: 'K',
     } satisfies BarnFrontend;
