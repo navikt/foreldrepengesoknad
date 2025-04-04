@@ -1,3 +1,5 @@
+import { TextField } from '@navikt/ds-react';
+
 import planBemUtils from '../../utils/planBemUtils';
 import StepperKnapp from './StepperKnapp';
 import './numberStepper.less';
@@ -39,11 +41,12 @@ const NumberStepper: React.FunctionComponent<Props> = ({
                 />
             </div>
             <div className={bem.element('input')}>
-                <input
-                    type="number"
+                <TextField
+                    label=""
                     value={value}
-                    onChange={(evt) => onChange(parseInt(evt.target.value, 10))}
+                    type="number"
                     aria-labelledby={legendId}
+                    onChange={(evt) => onChange(parseInt(evt.target.value, 10))}
                 />
             </div>
             <div className={bem.element('increase')}>
