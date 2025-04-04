@@ -4,7 +4,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { InnsendingsType } from '@navikt/fp-constants';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
@@ -37,8 +37,13 @@ export const DokumentasjonOppsummering = ({
         return null;
     }
 
-    // TODO: Heller reduce? Men dette er ganske mye mer lesbart
-    delete alleVedlegg[Skjemanummer.DOK_ARBEID_MOR];
+    // Fjerner vedlegg som er automatisk slik at disse ikke vises for bruker.
+    const updatedVedlegg2 = Object.fromEntries(
+        Object.entries(alleVedlegg).map(([key, attachments]) => [
+            key,
+            attachments.filter((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK),
+        ]),
+    );
 
     return (
         <>
@@ -56,7 +61,7 @@ export const DokumentasjonOppsummering = ({
                     </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
-                    {Object.entries(alleVedlegg)
+                    {Object.entries(updatedVedlegg2)
                         .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
                         .map((idOgVedlegg) => (
                             <FormSummary.Answer key={idOgVedlegg[1][0].id}>
