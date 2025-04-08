@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import {
+    Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
@@ -13,7 +14,7 @@ import {
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 
-import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektSvp, LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -60,7 +61,32 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                 .map((a) => a.aktivitet.arbeidsgiver?.id)
                 .filter((s) => s !== undefined);
 
-            const ferie = {} satisfies AvtaltFeriePerArbeidsgiver;
+            const avtalteFeriePerArbeidsgiver = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce((acc, a) => {
+                const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
+                // TODO: dette caset
+                if (!arbeidsgiverId) {
+                    return acc;
+                }
+                const b = a.oppholdsperioder
+                    .filter((opphold) => opphold.årsak === 'FERIE')
+                    .map((ferie) => {
+                        return {
+                            arbeidsforhold: {
+                                type: Arbeidsforholdstype.VIRKSOMHET, // TODO
+                                id: arbeidsgiverId,
+                            },
+                            fom: ferie.fom,
+                            tom: ferie.tom,
+                        };
+                    });
+
+                acc[arbeidsgiverId] = {
+                    skalHaFerie: b.length > 0,
+                    feriePerioder: b,
+                };
+
+                return acc;
+            }, {} as AvtaltFeriePerArbeidsgiver);
             const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
                 (acc, a) => {
                     const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
@@ -87,6 +113,8 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                                     DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN, //TODO
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
                                 enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
+                                enPeriodeMedTilretteleggingStillingsprosent:
+                                    tilrettelegging.arbeidstidprosent?.toString(),
                                 behovForTilretteleggingFom: a.behovFrom,
                             } satisfies DelvisTilrettelegging;
                         }
@@ -96,14 +124,23 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                 {} as Record<string, IngenTilrettelegging | DelvisTilrettelegging>,
             );
 
+            const arbeidsforholdOgInntekt = {
+                //TODO: dynamisk alle felter
+                harHattArbeidIUtlandet: false,
+                harJobbetSomFrilans: false,
+                harJobbetSomSelvstendigNæringsdrivende: false,
+            } satisfies ArbeidsforholdOgInntektSvp;
+
             return {
                 OM_BARNET: barnet,
                 VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold,
-                FERIE: ferie,
+                FERIE: avtalteFeriePerArbeidsgiver,
                 TILRETTELEGGINGER: tilrettelegginer,
+                ARBEIDSFORHOLD_OG_INNTEKT: arbeidsforholdOgInntekt,
             } satisfies ContextDataMap;
         },
     });
+    console.log(sak);
 
     if (søkerinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(søkerinfo.error || mellomlagretInfo.error)} />;
