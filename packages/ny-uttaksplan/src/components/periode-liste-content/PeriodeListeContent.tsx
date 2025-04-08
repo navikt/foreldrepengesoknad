@@ -1,5 +1,6 @@
 import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
@@ -184,7 +185,7 @@ export const PeriodeListeContent = ({
                             openDeleteModal();
                         }}
                     >
-                        Slett
+                        <FormattedMessage id="uttaksplan.slett" />
                     </Button>
                 </div>
             )}

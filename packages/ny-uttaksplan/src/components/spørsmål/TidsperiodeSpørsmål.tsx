@@ -1,4 +1,4 @@
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
@@ -44,7 +44,9 @@ export const TidsperiodeSpørsmål = ({ formMethods, valgtPeriode, gjelderAdopsj
 
     return (
         <>
-            <Heading size="medium">Hvilke datoer skal perioden være?</Heading>
+            <Heading size="medium">
+                <FormattedMessage id="uttaksplan.tidsperiodeSpørsmål.heading" />
+            </Heading>
             <HStack gap="4">
                 <RhfDatepicker
                     showMonthAndYearDropdowns
