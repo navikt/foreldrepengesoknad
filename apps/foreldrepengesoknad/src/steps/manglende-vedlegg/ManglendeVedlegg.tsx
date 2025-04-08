@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -12,14 +11,7 @@ import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import {
-    Barn,
-    Periode,
-    isAnnenForelderOppgitt,
-    isFødtBarn,
-    isUtsettelseBarnInnlagt,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';

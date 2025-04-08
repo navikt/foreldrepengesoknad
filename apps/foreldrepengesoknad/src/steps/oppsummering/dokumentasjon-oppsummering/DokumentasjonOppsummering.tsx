@@ -12,7 +12,6 @@ import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 interface Props {
     alleVedlegg?: VedleggDataType;
     onVilEndreSvar: () => Promise<void>;
-    setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
