@@ -123,7 +123,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         visHeleTidslinjen={visHeleTidslinjen}
                         erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
-                        <ul className="list-none p-0">
+                        <ul>
                             {hendelse.utvidetTidslinjeHendelseType === 'VENT_DOKUMENTASJON' &&
                                 manglendeVedlegg &&
                                 manglendeVedlegg.length > 1 && (
