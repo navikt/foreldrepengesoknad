@@ -3,7 +3,17 @@ import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
+import {
+    Alert,
+    BodyShort,
+    Button,
+    ConfirmationPanel,
+    GuidePanel,
+    HStack,
+    Heading,
+    List,
+    VStack,
+} from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { LocaleNo } from '@navikt/fp-types';
@@ -61,17 +71,17 @@ export const Forside = ({
                         <BodyShort size="medium">
                             <FormattedMessage id="forside.guidepanel" />
                         </BodyShort>
-                        <ul className={styles.liste}>
-                            <li>
+                        <List>
+                            <List.Item>
                                 <FormattedMessage id="forside.guidepanel.punkt1" />
-                            </li>
-                            <li>
+                            </List.Item>
+                            <List.Item>
                                 <FormattedMessage id="forside.guidepanel.punkt2" />
-                            </li>
-                            <li>
+                            </List.Item>
+                            <List.Item>
                                 <FormattedMessage id="forside.guidepanel.punkt3" />
-                            </li>
-                        </ul>
+                            </List.Item>
+                        </List>
                         <FormattedMessage
                             id="forside.guidepanel.lesMer"
                             values={{
@@ -126,11 +136,11 @@ export const Forside = ({
                         }
                     >
                         <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
-                        <ul className={styles.liste}>
-                            <li>
+                        <List>
+                            <List.Item>
                                 <FormattedMessage id="forside.samtykkeIntro.punkt1" />
-                            </li>
-                            <li>
+                            </List.Item>
+                            <List.Item>
                                 <FormattedMessage
                                     id="forside.samtykkeIntro.punkt2"
                                     values={{
@@ -141,8 +151,8 @@ export const Forside = ({
                                         ),
                                     }}
                                 />
-                            </li>
-                        </ul>
+                            </List.Item>
+                        </List>
                     </ConfirmationPanel>
                     <HStack justify="center">
                         <Button type="button" onClick={bekreft}>
