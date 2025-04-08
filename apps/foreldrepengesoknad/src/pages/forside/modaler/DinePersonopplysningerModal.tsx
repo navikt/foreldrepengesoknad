@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Ingress, Link, Modal, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Ingress, Link, List, Modal, VStack } from '@navikt/ds-react';
 
 export const DinePersonopplysningerModal = () => {
     const intl = useIntl();
@@ -53,28 +53,28 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
                                 </BodyShort>
-                                <ul>
-                                    <li>
+                                <List>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt2" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt3" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt4" />
                                         </BodyShort>
-                                    </li>
-                                </ul>
+                                    </List.Item>
+                                </List>
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del2" />
                                 </BodyShort>
@@ -86,33 +86,33 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
                                 </BodyShort>
-                                <ul>
-                                    <li>
+                                <List>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
                                         </BodyShort>
-                                    </li>
-                                </ul>
+                                    </List.Item>
+                                </List>
                             </div>
                             <div>
                                 <Ingress>
@@ -121,23 +121,23 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
                                 </BodyShort>
-                                <ul>
-                                    <li>
+                                <List>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
                                         </BodyShort>
-                                    </li>
-                                    <li>
+                                    </List.Item>
+                                    <List.Item>
                                         <BodyShort>
                                             <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
                                         </BodyShort>
-                                    </li>
-                                </ul>
+                                    </List.Item>
+                                </List>
                             </div>
                             <div>
                                 <Ingress as="h2">
