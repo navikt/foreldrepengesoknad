@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Label, VStack } from '@navikt/ds-react';
+import { BodyShort, Label, List, VStack } from '@navikt/ds-react';
 
 import {
     NavnPåForeldre,
@@ -264,30 +264,28 @@ export const DokumentasjonSendSenereLabel = ({
                                 values={{ navn: navnPåForeldre.mor }}
                             />
                         </BodyShort>
-                        <ul style={{ margin: '0', padding: '0.5rem 2.5rem' }}>
-                            <VStack gap="2">
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
-                                    </BodyShort>
-                                </li>
-                            </VStack>
-                        </ul>
+                        <List>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
+                                </BodyShort>
+                            </List.Item>
+                        </List>
                     </div>
                 </VStack>
             );
@@ -305,30 +303,28 @@ export const DokumentasjonSendSenereLabel = ({
                                 values={{ navn: navnPåForeldre.mor }}
                             />
                         </BodyShort>
-                        <ul style={{ margin: '0', padding: '0.5rem 2.5rem' }}>
-                            <VStack gap="2">
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
-                                    </BodyShort>
-                                </li>
-                            </VStack>
-                        </ul>
+                        <List>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
+                                </BodyShort>
+                            </List.Item>
+                            <List.Item>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
+                                </BodyShort>
+                            </List.Item>
+                        </List>
                     </div>
                 </VStack>
             );
