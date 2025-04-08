@@ -1,6 +1,6 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { ReadMore } from '@navikt/ds-react';
+import { List, ReadMore } from '@navikt/ds-react';
 
 const getPunktTekster = (intl: IntlShape) => [
     intl.formatMessage({ id: 'minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt1' }),
@@ -16,11 +16,11 @@ export const HvaLeggerNAVVektPå = () => {
 
     return (
         <ReadMore header={intl.formatMessage({ id: 'minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel' })}>
-            <ul className="text-medium">
+            <List>
                 {getPunktTekster(intl).map((punktTekst) => (
-                    <li key={`${punktTekst}`}>{punktTekst}</li>
+                    <List.Item key={`${punktTekst}`}>{punktTekst}</List.Item>
                 ))}
-            </ul>
+            </List>
         </ReadMore>
     );
 };
