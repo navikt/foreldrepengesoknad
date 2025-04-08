@@ -1,4 +1,4 @@
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
@@ -21,7 +21,9 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
 
     return (
         <VStack gap="4">
-            <Heading size="medium">Hvilken del av foreldrepengene vil du bruke?</Heading>
+            <Heading size="medium">
+                <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
+            </Heading>
             <RhfRadioGroup
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
                 label="Velg kontotype"
@@ -41,8 +43,12 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
                     label="Hvem gjelder fellesperioden?"
                     name="forelder"
                 >
-                    <Radio value={Forelder.mor}>Mor</Radio>
-                    <Radio value={Forelder.farMedmor}>Far eller medmor</Radio>
+                    <Radio value={Forelder.mor}>
+                        <FormattedMessage id="uttaksplan.mor" />
+                    </Radio>
+                    <Radio value={Forelder.farMedmor}>
+                        <FormattedMessage id="uttaksplan.far" />
+                    </Radio>
                 </RhfRadioGroup>
             )}
         </VStack>

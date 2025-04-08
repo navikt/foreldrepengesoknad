@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, Heading, Radio } from '@navikt/ds-react';
 
@@ -76,11 +76,13 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                 >
                     <div>
                         <Button type="button" variant="secondary" onClick={closeModal}>
-                            Avbryt
+                            <FormattedMessage id="uttaksplan.avbryt" />
                         </Button>
                     </div>
                     <div>
-                        <Button>Gå videre</Button>
+                        <Button>
+                            <FormattedMessage id="uttaksplan.gåVidere" />
+                        </Button>
                     </div>
                 </div>
             </RhfForm>

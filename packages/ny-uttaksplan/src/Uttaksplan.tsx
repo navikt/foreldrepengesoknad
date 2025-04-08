@@ -197,7 +197,7 @@ export const UttaksplanNy = ({
 
             {modus !== 'innsyn' && (
                 <Button variant="secondary" onClick={openModal}>
-                    Legg til periode
+                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
             {isModalOpen ? (

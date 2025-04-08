@@ -1,5 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
@@ -117,7 +118,7 @@ export const EndrePeriodeModal = ({
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
-                        Endre periode
+                        <FormattedMessage id="endrePeriodeModal.tittel" />
                     </Heading>
                 </div>
             </Modal.Header>

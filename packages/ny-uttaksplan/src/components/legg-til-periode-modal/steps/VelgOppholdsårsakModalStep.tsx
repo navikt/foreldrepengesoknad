@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
@@ -40,15 +40,21 @@ export const VelgOppholdsårsakModalStep = ({ modalData, setModalData, closeModa
 
     return (
         <>
-            <Heading size="medium">Hva vil du legge til?</Heading>
+            <Heading size="medium">
+                <FormattedMessage id="uttaksplan.oppholdsårsakModal.tittel" />
+            </Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                 <VStack gap="4">
                     <RhfRadioGroup
                         name="årsak"
                         validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
                     >
-                        <Radio value={UtsettelseÅrsakType.Ferie}>Ferie</Radio>
-                        <Radio value={PeriodeHullType.PERIODE_UTEN_UTTAK}>Periode uten foreldrepenger</Radio>
+                        <Radio value={UtsettelseÅrsakType.Ferie}>
+                            <FormattedMessage id="uttaksplan.oppholdsårsakModal.ferie" />
+                        </Radio>
+                        <Radio value={PeriodeHullType.PERIODE_UTEN_UTTAK}>
+                            <FormattedMessage id="uttaksplan.oppholdsårsakModal.periodeUtenForeldrepenger" />
+                        </Radio>
                     </RhfRadioGroup>
                     <ModalButtons
                         onCancel={closeModal}

@@ -1,3 +1,5 @@
+import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, Button, Heading } from '@navikt/ds-react';
 
 import { Planperiode } from '../../../types/Planperiode';
@@ -42,7 +44,7 @@ export const OppsummeringModalStep = ({ modalData, closeModal, handleUpdatePerio
                             setModalData({ ...modalData, currentStep: 'step3' });
                         }}
                     >
-                        Gå tilbake
+                        <FormattedMessage id="uttaksplan.gåTilbake" />
                     </Button>
                     <Button
                         onClick={() => {
@@ -54,7 +56,7 @@ export const OppsummeringModalStep = ({ modalData, closeModal, handleUpdatePerio
                             closeModal();
                         }}
                     >
-                        Ferdig, legg til i planen
+                        <FormattedMessage id="uttaksplan.ferdig" />
                     </Button>
                 </div>
             </div>

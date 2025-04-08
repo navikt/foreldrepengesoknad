@@ -120,7 +120,7 @@ export const EndreTidsperiodeModalStep = ({
                         onGoPreviousStep={() => {
                             setModalData({ ...modalData, currentStep: 'step2' });
                         }}
-                        isFinalStep={false}
+                        isFinalStep={true}
                     />
                 </VStack>
             </RhfForm>

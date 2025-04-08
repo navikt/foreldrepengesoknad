@@ -1,5 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
@@ -101,16 +102,6 @@ export const LeggTilPeriodeModal = ({
                         gjelderAdopsjon={gjelderAdopsjon}
                     />
                 );
-
-            // case 'step3':
-            //     return (
-            //         <OppsummeringModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             handleAddPeriode={handleAddPeriode}
-            //         />
-            //     );
             default:
                 return null;
         }
@@ -122,7 +113,7 @@ export const LeggTilPeriodeModal = ({
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
-                        Legg til periode
+                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
                     </Heading>
                 </div>
             </Modal.Header>

@@ -1,6 +1,9 @@
+import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, Button, Heading } from '@navikt/ds-react';
 
 import { Planperiode } from '../../../types/Planperiode';
+import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
@@ -38,7 +41,7 @@ export const OppsummeringModalStep = ({ modalData, closeModal, handleAddPeriode,
                             setModalData({ ...modalData, currentStep: 'step3' });
                         }}
                     >
-                        Gå tilbake
+                        <FormattedMessage id="uttaksplan.gåTilbake" />
                     </Button>
                     <Button
                         onClick={() => {
@@ -53,10 +56,11 @@ export const OppsummeringModalStep = ({ modalData, closeModal, handleAddPeriode,
                             closeModal();
                         }}
                     >
-                        Ferdig, legg til i planen
+                        <FormattedMessage id="uttaksplan.ferdig" />
                     </Button>
                 </div>
             </div>
+            <ModalButtons isFinalStep={true} onCancel={closeModal} />
         </>
     );
 };

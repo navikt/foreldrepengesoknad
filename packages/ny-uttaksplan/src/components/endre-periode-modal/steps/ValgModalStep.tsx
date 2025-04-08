@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 
 import { Button, Heading, Radio } from '@navikt/ds-react';
 
@@ -59,7 +60,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal, kunEnPeriod
                 >
                     <div>
                         <Button type="button" variant="secondary" onClick={closeModal}>
-                            Avbryt
+                            <FormattedMessage id="uttaksplan.avbryt" />
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -71,10 +72,12 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal, kunEnPeriod
                                     setModalData({ ...modalData, currentStep: 'step1' });
                                 }}
                             >
-                                Gå tilbake
+                                <FormattedMessage id="uttaksplan.gåTilbake" />
                             </Button>
                         ) : null}
-                        <Button>Gå videre</Button>
+                        <Button>
+                            <FormattedMessage id="uttaksplan.gåVidere" />
+                        </Button>
                     </div>
                 </div>
             </RhfForm>
