@@ -30,7 +30,6 @@ export const setupAndServeHtml = async (router: Router) => {
 
     router.get('*splat', async (_, response) => {
         response.send(renderedHtml);
-        return;
     });
 };
 

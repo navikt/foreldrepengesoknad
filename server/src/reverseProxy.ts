@@ -37,7 +37,6 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
             } else {
                 console.log('OBO-exchange failed', obo.error);
                 response.status(403).send();
-                return;
             }
         },
         createProxyMiddleware({
