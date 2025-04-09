@@ -282,7 +282,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        await applyRequestHandlers(MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid.parameters.msw);
+        applyRequestHandlers(MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid.parameters.msw);
         const screen = render(
             <MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid
                 gåTilNesteSide={gåTilNesteSide}
