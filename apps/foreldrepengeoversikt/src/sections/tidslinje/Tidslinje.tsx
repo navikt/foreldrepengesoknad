@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Button, Link, List, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
@@ -123,7 +123,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                         visHeleTidslinjen={visHeleTidslinjen}
                         erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
-                        <ul className="list-none p-0">
+                        <ul>
                             {hendelse.utvidetTidslinjeHendelseType === 'VENT_DOKUMENTASJON' &&
                                 manglendeVedlegg &&
                                 manglendeVedlegg.length > 1 && (
@@ -133,15 +133,15 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                                                 id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
                                             })}
                                         </div>
-                                        <ul>
+                                        <List>
                                             {manglendeVedlegg.map((skjemaId) => {
                                                 return (
-                                                    <li key={guid()}>
+                                                    <List.Item key={guid()}>
                                                         {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
-                                                    </li>
+                                                    </List.Item>
                                                 );
                                             })}
-                                        </ul>
+                                        </List>
                                     </div>
                                 )}
                             {hendelse.merInformasjon && (

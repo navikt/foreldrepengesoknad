@@ -11,6 +11,7 @@ import {
     HStack,
     Heading,
     Link,
+    List,
     VStack,
 } from '@navikt/ds-react';
 
@@ -66,14 +67,14 @@ export const Velkommen = ({ locale, onChangeLocale, startSøknad, erVelkommen, m
                             </Link>
                         </BodyShort>
                     </VStack>
-                    <ul>
-                        <li>
+                    <List>
+                        <List.Item>
                             <FormattedMessage id={'Velkommen.Bobletekst.Del1'} />
-                        </li>
-                        <li>
+                        </List.Item>
+                        <List.Item>
                             <FormattedMessage id={'Velkommen.Bobletekst.Del2'} />
-                        </li>
-                    </ul>
+                        </List.Item>
+                    </List>
                     <VStack gap="5">
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del3" />
