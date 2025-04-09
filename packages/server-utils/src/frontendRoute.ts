@@ -28,8 +28,9 @@ export const setupAndServeHtml = async (router: Router) => {
     });
     const renderedHtml = replaceAppSettings(html);
 
-    router.get('*', async (_request, response) => {
-        return response.send(renderedHtml);
+    router.get('/*splat', async (_, response) => {
+        response.send(renderedHtml);
+        return;
     });
 };
 
@@ -54,7 +55,7 @@ const setupViteMode = (router: Router) => {
         mountId: 'app',
         setCSPHeaders: false,
     });
-    router.get('*', async (_, response, next) => {
+    router.get('/*splat', async (_, response, next) => {
         const viteModeHtml = response.viteModeHtml;
 
         if (viteModeHtml) {
@@ -72,7 +73,8 @@ const setupViteMode = (router: Router) => {
                 DECORATOR_FOOTER,
             ].join('');
 
-            return response.send(html);
+            response.send(html);
+            return;
         }
 
         return next();

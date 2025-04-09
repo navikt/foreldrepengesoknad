@@ -15,7 +15,7 @@ export function configureReverseProxyApi(router: Router) {
         throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
     }
     addProxyHandler(router, {
-        ingoingUrl: "/rest",
+        ingoingUrl: '/rest',
         outgoingUrl: serverConfig.proxy.apiUrl,
         scope: serverConfig.proxy.apiScope,
     });
@@ -27,7 +27,8 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
         async (request: Request, response: Response, next: NextFunction) => {
             const token = getToken(request);
             if (!token) {
-                return response.status(401).send();
+                response.status(401).send();
+                return;
             }
             const obo = await requestTokenxOboToken(token, scope);
             if (obo.ok) {
@@ -35,7 +36,8 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                 return next();
             } else {
                 console.log('OBO-exchange failed', obo.error);
-                return response.status(403).send();
+                response.status(403).send();
+                return;
             }
         },
         createProxyMiddleware({
