@@ -1,15 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
-import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { dateToISOString } from 'utils/dateUtils';
-import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
-import { NavnPåForeldre, Periode, Situasjon, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, Barn, isFødtBarn, isUttaksperiode } from '@navikt/fp-types';
+import { NavnPåForeldre, Periode, Situasjon, isAnnenForelderOppgitt, isUttaksperiode } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, Barn, isFødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -57,12 +54,7 @@ export const MorJobberDokumentasjon = ({
     }
 
     if (!trengerDokumentereMorsArbeid) {
-        return (
-            <TrengerIkkeMorIArbeidDokumentasjon
-                perioder={perioder}
-                updateDokArbeidMorAttachment={updateDokArbeidMorAttachment}
-            />
-        );
+        return <TrengerIkkeMorIArbeidDokumentasjon />;
     }
 
     return (
@@ -85,29 +77,7 @@ export const MorJobberDokumentasjon = ({
     );
 };
 
-const TrengerIkkeMorIArbeidDokumentasjon = ({
-    updateDokArbeidMorAttachment,
-    perioder,
-}: {
-    updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
-    perioder: Periode[];
-}) => {
-    useEffect(() => {
-        const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
-
-        const sendAutomatiskVedlegg = addMetadata(init, {
-            type: AttachmentMetadataType.UTTAK,
-            perioder: perioder.map((p) => ({
-                fom: dateToISOString(p.tidsperiode.fom),
-                tom: dateToISOString(p.tidsperiode.tom),
-            })),
-        });
-
-        updateDokArbeidMorAttachment([sendAutomatiskVedlegg]);
-    }, []);
-
-    return <IngenDokumentasjonPåkrevd />;
-};
+const TrengerIkkeMorIArbeidDokumentasjon = () => <IngenDokumentasjonPåkrevd />;
 
 const getDokumentereMorsArbeidParams = (
     uttaksplan: Periode[],
