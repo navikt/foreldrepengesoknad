@@ -1,5 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Heading, Modal } from '@navikt/ds-react';
 
@@ -8,17 +9,12 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
-import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
+import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
 import { HvaVilDuGjøre, ValgModalStep } from './steps/ValgModalStep';
-// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-// import { ValgModalStep } from './steps/ValgModalStep';
-import { VelgKontotypeModalStep } from './steps/VelgKontotypeModalStep';
-import { VelgOppholdsårsakModalStep } from './steps/VelgOppholdsårsakModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
-    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
-    familiehendelsedato: string;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     isModalOpen: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
@@ -39,7 +35,6 @@ export interface ModalData {
 export const LeggTilPeriodeModal = ({
     closeModal,
     handleAddPeriode,
-    familiehendelsedato,
     isModalOpen,
     erBarnetFødt,
     gjelderAdopsjon,
@@ -51,6 +46,7 @@ export const LeggTilPeriodeModal = ({
         currentStep: 'step1',
         kontoType: undefined,
         forelder: undefined,
+        årsak: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
@@ -72,45 +68,17 @@ export const LeggTilPeriodeModal = ({
                     <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModalWrapper} />
                 );
             case 'step2':
-                if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-                    return (
-                        <VelgOppholdsårsakModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
-                        />
-                    );
-                }
-
                 return (
-                    <VelgKontotypeModalStep
+                    <LeggTilPeriodeModalStep
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
-                    />
-                );
-            case 'step3':
-                return (
-                    <EndreTidsperiodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        familiehendelsedato={familiehendelsedato}
-                        handleAddPeriode={handleAddPeriode}
                         erBarnetFødt={erBarnetFødt}
                         gjelderAdopsjon={gjelderAdopsjon}
+                        handleAddPeriode={handleAddPeriode}
+                        isOpphold={hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD}
                     />
                 );
-
-            // case 'step3':
-            //     return (
-            //         <OppsummeringModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             handleAddPeriode={handleAddPeriode}
-            //         />
-            //     );
             default:
                 return null;
         }
@@ -122,7 +90,7 @@ export const LeggTilPeriodeModal = ({
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
-                        Legg til periode
+                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
                     </Heading>
                 </div>
             </Modal.Header>

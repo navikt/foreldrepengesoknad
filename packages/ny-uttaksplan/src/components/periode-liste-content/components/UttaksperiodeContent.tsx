@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -23,7 +23,9 @@ interface Props {
 const getArbeidsTekst = (arbeidstidprosent: number) => {
     const uttaksprosent = 100 - arbeidstidprosent;
 
-    return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
+    return (
+        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
+    );
 };
 
 const getSamtidigUttakTekst = (
@@ -37,9 +39,14 @@ const getSamtidigUttakTekst = (
         : forelderIPerioden === Forelder.mor;
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
-    return periodenGjelderSøker
-        ? `Du skal ha ${samtidiguttaksProsent} % foreldrepenger`
-        : `${navnPåAnnenForelderIPerioden} skal ha ${samtidiguttaksProsent} % foreldrepenger`;
+    return periodenGjelderSøker ? (
+        <FormattedMessage id="uttaksplan.periodeListeContent.samtidigUttak" values={{ samtidiguttaksProsent }} />
+    ) : (
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
+            values={{ navnPåAnnenForelderIPerioden, samtidiguttaksProsent }}
+        />
+    );
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {

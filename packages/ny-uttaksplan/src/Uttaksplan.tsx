@@ -197,14 +197,13 @@ export const UttaksplanNy = ({
 
             {modus !== 'innsyn' && (
                 <Button variant="secondary" onClick={openModal}>
-                    Legg til periode
+                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
             {isModalOpen ? (
                 <LeggTilPeriodeModal
                     closeModal={closeModal}
                     handleAddPeriode={handleAddPeriode}
-                    familiehendelsedato={familiehendelsedato}
                     isModalOpen={isModalOpen}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}

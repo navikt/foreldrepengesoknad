@@ -1,21 +1,21 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Heading, Modal } from '@navikt/ds-react';
+
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
-import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
-// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-// import { ValgModalStep } from './steps/ValgModalStep';
+import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
 import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
-    familiehendelsedato: string;
     inneholderKunEnPeriode: boolean;
     isModalOpen: boolean;
     erBarnetFødt: boolean;
@@ -30,13 +30,14 @@ export interface ModalData {
     currentStep: ModalStep;
     fom?: string;
     tom?: string;
+    forelder?: Forelder;
+    kontoType: StønadskontoType | undefined;
 }
 
 export const EndrePeriodeModal = ({
     closeModal,
     permisjonsperiode,
     handleUpdatePeriode,
-    familiehendelsedato,
     inneholderKunEnPeriode,
     isModalOpen,
     erBarnetFødt,
@@ -49,6 +50,8 @@ export const EndrePeriodeModal = ({
         fom: undefined,
         tom: undefined,
         currentStep: kunEnPeriode ? 'step2' : 'step1',
+        forelder: undefined,
+        kontoType: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
@@ -72,19 +75,9 @@ export const EndrePeriodeModal = ({
                         closeModal={closeModalWrapper}
                     />
                 );
-            // case 'step2':
-            //     return (
-            //         <ValgModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             kunEnPeriode={kunEnPeriode}
-            //         />
-            //     );
             case 'step2':
                 return (
-                    <EndreTidsperiodeModalStep
-                        familiehendelsedato={familiehendelsedato}
+                    <EndrePeriodeModalStep
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
@@ -94,15 +87,6 @@ export const EndrePeriodeModal = ({
                         gjelderAdopsjon={gjelderAdopsjon}
                     />
                 );
-            // case 'step3':
-            //     return (
-            //         <OppsummeringModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             handleUpdatePeriode={handleUpdatePeriode}
-            //         />
-            //     );
             default:
                 return null;
         }
@@ -114,7 +98,7 @@ export const EndrePeriodeModal = ({
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
-                        Endre periode
+                        <FormattedMessage id="endrePeriodeModal.tittel" />
                     </Heading>
                 </div>
             </Modal.Header>
