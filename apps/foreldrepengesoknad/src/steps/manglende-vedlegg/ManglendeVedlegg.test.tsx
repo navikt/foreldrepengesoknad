@@ -294,7 +294,9 @@ describe('<ManglendeVedlegg>', () => {
         expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
         expect(
             await screen.findByText(
-                'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid fra arbeidsgiver og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                // Delt i to for å unngå at linjelengden blir for lang
+                'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                    'fra arbeidsgiver og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
