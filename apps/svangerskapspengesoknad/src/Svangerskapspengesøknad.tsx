@@ -13,6 +13,7 @@ import {
     TilOgMedDatoType,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
+import { tilSkjematilstandFraEksisterendeSak } from 'utils/endresøknadUtils';
 
 import { ArbeidsforholdOgInntektSvp, LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
@@ -51,93 +52,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                 return undefined;
             }
 
-            const barnet = {
-                erBarnetFødt: svpSak.familiehendelse.antallBarn > 0,
-                fødselsdato: svpSak.familiehendelse.fødselsdato,
-                termindato: svpSak.familiehendelse.termindato!, //TODO: denne skal vel alltid være satt?
-            } satisfies Barn;
-
-            const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
-                .map((a) => a.aktivitet.arbeidsgiver?.id)
-                .filter((s) => s !== undefined);
-
-            const avtalteFeriePerArbeidsgiver = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce((acc, a) => {
-                const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
-                // TODO: dette caset
-                if (!arbeidsgiverId) {
-                    return acc;
-                }
-                const b = a.oppholdsperioder
-                    .filter((opphold) => opphold.årsak === 'FERIE')
-                    .map((ferie) => {
-                        return {
-                            arbeidsforhold: {
-                                type: Arbeidsforholdstype.VIRKSOMHET, // TODO
-                                id: arbeidsgiverId,
-                            },
-                            fom: ferie.fom,
-                            tom: ferie.tom,
-                        };
-                    });
-
-                acc[arbeidsgiverId] = {
-                    skalHaFerie: b.length > 0,
-                    feriePerioder: b,
-                };
-
-                return acc;
-            }, {} as AvtaltFeriePerArbeidsgiver);
-            const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
-                (acc, a) => {
-                    const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
-                    // TODO: dette caset
-                    if (!arbeidsgiverId) {
-                        return acc;
-                    }
-                    if (a.tilrettelegginger.length === 1) {
-                        const tilrettelegging = a.tilrettelegginger[0];
-
-                        if (tilrettelegging.type === 'INGEN') {
-                            acc[arbeidsgiverId] = {
-                                type: Tilretteleggingstype.INGEN,
-                                enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
-                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
-                                behovForTilretteleggingFom: a.behovFrom,
-                            } satisfies IngenTilrettelegging;
-                        }
-
-                        if (tilrettelegging.type === 'DELVIS') {
-                            acc[arbeidsgiverId] = {
-                                type: Tilretteleggingstype.DELVIS,
-                                delvisTilretteleggingPeriodeType:
-                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN, //TODO
-                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
-                                enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
-                                enPeriodeMedTilretteleggingStillingsprosent:
-                                    tilrettelegging.arbeidstidprosent?.toString(),
-                                behovForTilretteleggingFom: a.behovFrom,
-                            } satisfies DelvisTilrettelegging;
-                        }
-                    }
-                    return acc;
-                },
-                {} as Record<string, IngenTilrettelegging | DelvisTilrettelegging>,
-            );
-
-            const arbeidsforholdOgInntekt = {
-                //TODO: dynamisk alle felter
-                harHattArbeidIUtlandet: false,
-                harJobbetSomFrilans: false,
-                harJobbetSomSelvstendigNæringsdrivende: false,
-            } satisfies ArbeidsforholdOgInntektSvp;
-
-            return {
-                OM_BARNET: barnet,
-                VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold,
-                FERIE: avtalteFeriePerArbeidsgiver,
-                TILRETTELEGGINGER: tilrettelegginer,
-                ARBEIDSFORHOLD_OG_INNTEKT: arbeidsforholdOgInntekt,
-            } satisfies ContextDataMap;
+            return tilSkjematilstandFraEksisterendeSak(svpSak);
         },
     });
     console.log(sak);
