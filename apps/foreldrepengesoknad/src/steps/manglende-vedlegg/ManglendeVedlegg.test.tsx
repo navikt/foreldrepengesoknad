@@ -9,11 +9,15 @@ import { Skjemanummer } from '@navikt/fp-constants';
 
 import * as stories from './ManglendeVedlegg.stories';
 
-const { Termindatodokumentasjon, Omsorgsovertakelsedokumentasjon, Aleneomsorgdokumentasjon } = composeStories(stories);
+const {
+    Termindatodokumentasjon,
+    Omsorgsovertakelsedokumentasjon,
+    Aleneomsorgdokumentasjon,
+    MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid,
+} = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
-    it.skip('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {
-        // TODO Fiks test
+    it('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -56,8 +60,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal laste opp vedlegg for terminbekreftelse', async () => {
-        // TODO Fiks test
+    it('skal laste opp vedlegg for terminbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -101,8 +104,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal lage "send inn senere" vedlegg for omsorgsovertakelse', async () => {
-        // TODO Fiks test
+    it('skal lage "send inn senere" vedlegg for omsorgsovertakelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -145,8 +147,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal laste opp vedlegg for omsorgsovertakelse', async () => {
-        // TODO Fiks test
+    it('skal laste opp vedlegg for omsorgsovertakelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -190,8 +191,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
+    it('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -234,8 +234,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal laste opp vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
+    it('skal laste opp vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -275,6 +274,36 @@ describe('<ManglendeVedlegg>', () => {
                 ],
             }),
             key: ContextDataType.VEDLEGG,
+            type: 'update',
+        });
+    });
+
+    it('skal håndtere automatisk dokumentasjon når mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        await applyRequestHandlers(MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid.parameters.msw);
+        const screen = render(
+            <MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid fra arbeidsgiver og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
     });
