@@ -4,10 +4,12 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
+import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -18,13 +20,15 @@ interface Props {
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
+    isOpphold: boolean;
 }
 
 interface FormValues {
-    kontoType: StønadskontoType;
+    kontoType?: StønadskontoType;
     forelder: Forelder;
     fom: string;
     tom: string;
+    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 }
 
 export const LeggTilPeriodeModalStep = ({
@@ -34,8 +38,9 @@ export const LeggTilPeriodeModalStep = ({
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
+    isOpphold,
 }: Props) => {
-    const { forelder, kontoType, fom, tom } = modalData;
+    const { forelder, kontoType, fom, tom, årsak } = modalData;
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -43,11 +48,12 @@ export const LeggTilPeriodeModalStep = ({
             kontoType: kontoType,
             fom,
             tom,
+            årsak,
         },
     });
 
     const getForelderFromKontoType = (
-        ktValue: StønadskontoType,
+        ktValue: StønadskontoType | undefined,
         fValue: Forelder | undefined,
     ): Forelder | undefined => {
         switch (ktValue) {
@@ -80,11 +86,13 @@ export const LeggTilPeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="4">
-                <KontotypeSpørsmål formMethods={formMethods} />
+                {isOpphold === false ? <KontotypeSpørsmål formMethods={formMethods} /> : null}
+                {isOpphold ? <OppholdsÅrsakSpørsmål /> : null}
                 <TidsperiodeSpørsmål
                     formMethods={formMethods}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
+                    oppholdsårsak={årsak}
                 />
                 <ModalButtons
                     onCancel={closeModal}

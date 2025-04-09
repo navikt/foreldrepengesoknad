@@ -9,15 +9,12 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
-import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
 import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
 import { HvaVilDuGjøre, ValgModalStep } from './steps/ValgModalStep';
-import { VelgOppholdsårsakModalStep } from './steps/VelgOppholdsårsakModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    familiehendelsedato: string;
     isModalOpen: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
@@ -38,7 +35,6 @@ export interface ModalData {
 export const LeggTilPeriodeModal = ({
     closeModal,
     handleAddPeriode,
-    familiehendelsedato,
     isModalOpen,
     erBarnetFødt,
     gjelderAdopsjon,
@@ -50,6 +46,7 @@ export const LeggTilPeriodeModal = ({
         currentStep: 'step1',
         kontoType: undefined,
         forelder: undefined,
+        årsak: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
@@ -71,16 +68,6 @@ export const LeggTilPeriodeModal = ({
                     <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModalWrapper} />
                 );
             case 'step2':
-                if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-                    return (
-                        <VelgOppholdsårsakModalStep
-                            modalData={modalData}
-                            setModalData={setModalData}
-                            closeModal={closeModalWrapper}
-                        />
-                    );
-                }
-
                 return (
                     <LeggTilPeriodeModalStep
                         modalData={modalData}
@@ -89,18 +76,7 @@ export const LeggTilPeriodeModal = ({
                         erBarnetFødt={erBarnetFødt}
                         gjelderAdopsjon={gjelderAdopsjon}
                         handleAddPeriode={handleAddPeriode}
-                    />
-                );
-            case 'step3':
-                return (
-                    <EndreTidsperiodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        familiehendelsedato={familiehendelsedato}
-                        handleAddPeriode={handleAddPeriode}
-                        erBarnetFødt={erBarnetFødt}
-                        gjelderAdopsjon={gjelderAdopsjon}
+                        isOpphold={hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD}
                     />
                 );
             default:

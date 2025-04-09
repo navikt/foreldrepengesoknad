@@ -204,7 +204,6 @@ export const UttaksplanNy = ({
                 <LeggTilPeriodeModal
                     closeModal={closeModal}
                     handleAddPeriode={handleAddPeriode}
-                    familiehendelsedato={familiehendelsedato}
                     isModalOpen={isModalOpen}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
