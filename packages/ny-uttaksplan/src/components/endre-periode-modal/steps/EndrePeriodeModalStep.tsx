@@ -28,7 +28,7 @@ interface FormValues {
     forelder?: Forelder;
 }
 
-export const EndreTidsperiodeModalStep = ({
+export const EndrePeriodeModalStep = ({
     modalData,
     setModalData,
     closeModal,

@@ -10,15 +10,13 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
+import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
 import { HvaVilDuGjøre, ValgModalStep } from './steps/ValgModalStep';
-// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-// import { ValgModalStep } from './steps/ValgModalStep';
-import { VelgKontotypeModalStep } from './steps/VelgKontotypeModalStep';
 import { VelgOppholdsårsakModalStep } from './steps/VelgOppholdsårsakModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
-    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     familiehendelsedato: string;
     isModalOpen: boolean;
     erBarnetFødt: boolean;
@@ -84,10 +82,13 @@ export const LeggTilPeriodeModal = ({
                 }
 
                 return (
-                    <VelgKontotypeModalStep
+                    <LeggTilPeriodeModalStep
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
+                        erBarnetFødt={erBarnetFødt}
+                        gjelderAdopsjon={gjelderAdopsjon}
+                        handleAddPeriode={handleAddPeriode}
                     />
                 );
             case 'step3':

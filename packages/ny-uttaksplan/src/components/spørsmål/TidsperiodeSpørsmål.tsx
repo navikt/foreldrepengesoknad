@@ -13,12 +13,19 @@ import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
 
 type Props = {
     formMethods: any;
-    valgtPeriode: Planperiode | undefined;
+    valgtPeriode?: Planperiode;
     gjelderAdopsjon: boolean;
     erBarnetFødt: boolean;
+    oppholdsårsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 };
 
-export const TidsperiodeSpørsmål = ({ formMethods, valgtPeriode, gjelderAdopsjon, erBarnetFødt }: Props) => {
+export const TidsperiodeSpørsmål = ({
+    formMethods,
+    valgtPeriode,
+    gjelderAdopsjon,
+    erBarnetFødt,
+    oppholdsårsak,
+}: Props) => {
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
@@ -38,7 +45,7 @@ export const TidsperiodeSpørsmål = ({ formMethods, valgtPeriode, gjelderAdopsj
         return undefined;
     };
 
-    const årsak = getÅrsak();
+    const årsak = oppholdsårsak ?? getÅrsak();
     const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato, gjelderAdopsjon });
     const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
 

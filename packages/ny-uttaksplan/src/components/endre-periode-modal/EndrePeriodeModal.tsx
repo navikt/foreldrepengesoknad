@@ -9,9 +9,7 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
-import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
-// import { OppsummeringModalStep } from './steps/OppsummeringModalStep';
-// import { ValgModalStep } from './steps/ValgModalStep';
+import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
 import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
 interface Props {
@@ -77,18 +75,9 @@ export const EndrePeriodeModal = ({
                         closeModal={closeModalWrapper}
                     />
                 );
-            // case 'step2':
-            //     return (
-            //         <ValgModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             kunEnPeriode={kunEnPeriode}
-            //         />
-            //     );
             case 'step2':
                 return (
-                    <EndreTidsperiodeModalStep
+                    <EndrePeriodeModalStep
                         modalData={modalData}
                         setModalData={setModalData}
                         closeModal={closeModalWrapper}
@@ -98,15 +87,6 @@ export const EndrePeriodeModal = ({
                         gjelderAdopsjon={gjelderAdopsjon}
                     />
                 );
-            // case 'step3':
-            //     return (
-            //         <OppsummeringModalStep
-            //             modalData={modalData}
-            //             setModalData={setModalData}
-            //             closeModal={closeModalWrapper}
-            //             handleUpdatePeriode={handleUpdatePeriode}
-            //         />
-            //     );
             default:
                 return null;
         }
