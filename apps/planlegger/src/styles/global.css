@@ -11,10 +11,6 @@ body {
     min-height: 100vh;
 }
 
-.lenke {
-    color: black;
-}
-
 #app {
     flex: 1;
     background-color: var(--a-gray-100);

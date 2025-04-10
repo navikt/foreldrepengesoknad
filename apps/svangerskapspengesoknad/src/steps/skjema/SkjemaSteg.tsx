@@ -8,7 +8,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { VStack } from '@navikt/ds-react';
+import { Link, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
@@ -136,14 +136,13 @@ export const SkjemaSteg = ({
                                         id={'skjema.vedlegg.description.arbeidsgiver'}
                                         values={{
                                             a: (msg: any) => (
-                                                <a
-                                                    className="lenke"
+                                                <Link
                                                     rel="noopener noreferrer"
                                                     href={links.arbeidstilsynetSkjema}
                                                     target="_blank"
                                                 >
                                                     {msg}
-                                                </a>
+                                                </Link>
                                             ),
                                         }}
                                     />

@@ -146,13 +146,7 @@ export const ValgtDekningsgradInfoboks = ({
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 a: (msg: any) => (
-                                    <Link
-                                        inlineText
-                                        href={links.godkjentAktivitet}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                        target="_blank"
-                                    >
+                                    <Link inlineText href={links.godkjentAktivitet} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),

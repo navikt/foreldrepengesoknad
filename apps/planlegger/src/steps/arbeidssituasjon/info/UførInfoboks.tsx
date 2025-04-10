@@ -37,13 +37,7 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
                         id="Arbeidssituasjon.Ufør.Infoboks.LesMer"
                         values={{
                             a: (msg: any) => (
-                                <Link
-                                    inlineText
-                                    href={links.hvorLenge}
-                                    className="lenke"
-                                    rel="noreferrer"
-                                    target="_blank"
-                                >
+                                <Link inlineText href={links.hvorLenge} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>
                             ),

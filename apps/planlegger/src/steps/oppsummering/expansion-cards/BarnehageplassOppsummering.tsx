@@ -82,12 +82,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
                                             antallBarn,
                                             erFødt: erBarnetFødt(barnet),
                                             a: (msg) => (
-                                                <Link
-                                                    href={links.barnehageloven}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="lenke"
-                                                >
+                                                <Link href={links.barnehageloven} target="_blank" rel="noreferrer">
                                                     {msg}
                                                 </Link>
                                             ),

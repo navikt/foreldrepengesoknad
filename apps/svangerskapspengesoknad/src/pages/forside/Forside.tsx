@@ -11,6 +11,7 @@ import {
     GuidePanel,
     HStack,
     Heading,
+    Link,
     List,
     VStack,
 } from '@navikt/ds-react';
@@ -86,9 +87,9 @@ export const Forside = ({
                             id="forside.guidepanel.lesMer"
                             values={{
                                 a: (msg: any) => (
-                                    <a className="lenke" rel="noopener noreferrer" href={links.svangerskapspenger}>
+                                    <Link rel="noopener noreferrer" href={links.svangerskapspenger}>
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                             }}
                         />
@@ -100,13 +101,9 @@ export const Forside = ({
                                     id="forside.tilrettelegging.info.del1"
                                     values={{
                                         a: (msg: any) => (
-                                            <a
-                                                className="lenke"
-                                                rel="noopener noreferrer"
-                                                href={links.tilretteleggingsskjema}
-                                            >
+                                            <Link rel="noopener noreferrer" href={links.tilretteleggingsskjema}>
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />
@@ -116,9 +113,9 @@ export const Forside = ({
                                     id="forside.tilrettelegging.info.del2"
                                     values={{
                                         a: (msg: any) => (
-                                            <a className="lenke" rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
+                                            <Link rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />
@@ -145,9 +142,9 @@ export const Forside = ({
                                     id="forside.samtykkeIntro.punkt2"
                                     values={{
                                         a: (msg: any) => (
-                                            <a className="lenke" rel="noopener noreferrer" href={links.rettOgPlikt}>
+                                            <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />

@@ -12,7 +12,7 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from 'utils/eksisterendeSakUtils';
 
-import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
@@ -167,9 +167,9 @@ export const Forside = ({
                                     id="velkommen.guidepanel.del2"
                                     values={{
                                         a: (msg: any) => (
-                                            <a className="lenke" rel="noopener noreferrer" href={links.foreldrepenger}>
+                                            <Link rel="noopener noreferrer" href={links.foreldrepenger}>
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />

@@ -20,7 +20,6 @@ const ValidationSummary: React.FunctionComponent<Props> = ({ errors, heading, he
             {errors.map((error, idx) => (
                 <ValidationErrorLink
                     key={`validation_error_key_${idx}`}
-                    className={'lenke'}
                     onClick={() => {
                         const elementById = document.getElementById(error.fieldName);
                         const elementByName = document.getElementsByName(error.fieldName)[0];
