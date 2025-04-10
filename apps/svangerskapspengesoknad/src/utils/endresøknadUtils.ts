@@ -72,7 +72,6 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
     const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
-            // TODO: dette caset
             if (!nøkkel) {
                 return acc;
             }
