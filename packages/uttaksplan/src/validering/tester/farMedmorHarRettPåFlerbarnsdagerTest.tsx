@@ -1,3 +1,5 @@
+import { Link } from '@navikt/ds-react';
+
 import { Søknadsinfo } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
@@ -45,9 +47,9 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
                 antallUker: flerbarnsUker,
                 antallUkerÅTaUtFlerbarnsdager: antallUkerPåÅTaUtDager,
                 a: () => (msg: any) => (
-                    <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
+                    <Link href={links.aktivitetsfriUttakInfo} rel="noreferrer" target="_blank">
                         {msg}
-                    </a>
+                    </Link>
                 ),
             },
         },

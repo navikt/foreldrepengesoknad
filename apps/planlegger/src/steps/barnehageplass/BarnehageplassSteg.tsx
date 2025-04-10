@@ -110,13 +110,7 @@ export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
                                 id="Barnehageplass.DatoTekst"
                                 values={{
                                     a: (msg) => (
-                                        <Link
-                                            inlineText
-                                            href={links.barnehageloven}
-                                            className="lenke"
-                                            rel="noreferrer"
-                                            target="_blank"
-                                        >
+                                        <Link inlineText href={links.barnehageloven} rel="noreferrer" target="_blank">
                                             {msg}
                                         </Link>
                                     ),

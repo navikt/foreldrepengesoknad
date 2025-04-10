@@ -148,7 +148,6 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                                         <Link
                                                             inlineText
                                                             href={links.godkjentAktivitet}
-                                                            className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
                                                         >

@@ -131,12 +131,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                 </BodyShort>
                                 <BodyShort>
                                     <FormattedMessage id="ArbeidssituasjonSide.LesOm" />
-                                    <Link
-                                        inlineText
-                                        href={links.selvstendigNæringsdrivendeHvorMye}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                    >
+                                    <Link inlineText href={links.selvstendigNæringsdrivendeHvorMye} rel="noreferrer">
                                         <FormattedMessage id="ArbeidssituasjonSide.Lenke" />
                                     </Link>
                                 </BodyShort>

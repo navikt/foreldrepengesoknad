@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, VStack } from '@navikt/ds-react';
+import { Alert, Link, VStack } from '@navikt/ds-react';
 
 export const BrukerKanIkkeSøke = () => {
     return (
@@ -17,13 +17,9 @@ export const BrukerKanIkkeSøke = () => {
                         id="inntektsinformasjon.alert.ingenArbeidsforhold"
                         values={{
                             a: (msg: any) => (
-                                <a
-                                    className="lenke"
-                                    rel="noopener noreferrer"
-                                    href="https://familie.nav.no/om-svangerskapspenger"
-                                >
+                                <Link rel="noopener noreferrer" href="https://familie.nav.no/om-svangerskapspenger">
                                     {msg}
-                                </a>
+                                </Link>
                             ),
                         }}
                     />
@@ -31,13 +27,12 @@ export const BrukerKanIkkeSøke = () => {
                         id="inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse"
                         values={{
                             a: (msg: any) => (
-                                <a
-                                    className="lenke"
+                                <Link
                                     rel="noopener noreferrer"
                                     href="https://www.nav.no/no/Nav+og+samfunn/Kontakt+Nav/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
                                 >
                                     {msg}
-                                </a>
+                                </Link>
                             ),
                         }}
                     />

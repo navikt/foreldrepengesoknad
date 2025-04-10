@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
@@ -71,14 +71,9 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                                     values={{
                                         maksInntekt: formatCurrencyWithKr(annualMax, locale),
                                         a: (msg: any) => (
-                                            <a
-                                                href={links.grunnbeløpet}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="lenke"
-                                            >
+                                            <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer">
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />
