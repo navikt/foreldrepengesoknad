@@ -44,7 +44,7 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return PeriodeColor.GRAY;
     }
 
-    return period?.color || PeriodeColor.NONE;
+    return period?.color ?? PeriodeColor.NONE;
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {

@@ -77,7 +77,7 @@ class CountrySelect extends React.Component<Props> {
         return (
             <Select name={name} {...restProps} onChange={(e) => onChange(e.target.value)} autoComplete="off">
                 <option value="" />
-                {this.getCountryOptions(locale || 'nb')}
+                {this.getCountryOptions(locale ?? 'nb')}
             </Select>
         );
     }

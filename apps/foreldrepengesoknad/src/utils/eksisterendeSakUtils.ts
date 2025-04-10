@@ -185,7 +185,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
             eksisterendeSakAnnenPart.dekningsgrad === 'HUNDRE'
                 ? Dekningsgrad.HUNDRE_PROSENT
                 : Dekningsgrad.ÅTTI_PROSENT,
-        antallBarn: eksisterendeSakAnnenPart.antallBarn ? eksisterendeSakAnnenPart.antallBarn : barn.antallBarn,
+        antallBarn: eksisterendeSakAnnenPart.antallBarn ?? barn.antallBarn,
         morErAleneOmOmsorg: false,
         morErUfør: false,
         morHarRett: true,
@@ -242,7 +242,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         valgtBarnFødselsdatoer && valgtBarnFødselsdatoer.length > 0
             ? dateToISOString(valgtBarnFødselsdatoer[0])
             : undefined;
-    const fødselsdatoForSaken = fødselsdatoFraFPSak || fødselsdatoFraValgtBarn;
+    const fødselsdatoForSaken = fødselsdatoFraFPSak ?? fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
         dekningsgrad: dekningsgrad === 'HUNDRE' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: antallBarn,
@@ -315,7 +315,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
                     type: BarnType.FØDT,
                     antallBarn: sak.antallBarn,
                     fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
-                    termindato: sak.termindato ? sak.termindato : undefined,
+                    termindato: sak.termindato,
                     fnr: valgteBarn?.fnr,
                 };
             }
@@ -405,7 +405,7 @@ const finnAnnenForelderForSaken = (
               )
             : undefined;
 
-    const barnet = barnMedGittFnr || barnMedGittFødselsdato;
+    const barnet = barnMedGittFnr ?? barnMedGittFødselsdato;
 
     if (barnet !== undefined && barnet.annenForelder?.fnr === annenForeldersFnrFraSaken) {
         const annenForelder = barnet.annenForelder;

@@ -34,8 +34,8 @@ const getInputForAntallDagerFellesperiode = (
     if (valgtFordeling === FellesperiodeFordelingValg.ALT) {
         return antallDagerFellesperiode;
     }
-    const antallUker = getNumberFromNumberInputValue(antallUkerFellesperiodeTilSøker) || 0;
-    const antallDager = getNumberFromNumberInputValue(antallDagerFellesperiodeTilSøker) || 0;
+    const antallUker = getNumberFromNumberInputValue(antallUkerFellesperiodeTilSøker) ?? 0;
+    const antallDager = getNumberFromNumberInputValue(antallDagerFellesperiodeTilSøker) ?? 0;
     const antallUkerInputErGyldigTall = getInputErNullEllerHeltall(antallUker);
     const antallDagerInputErGyldigTall = getInputErNullEllerHeltall(antallDager);
     const totallAntallDager = antallUker * 5 + antallDager;

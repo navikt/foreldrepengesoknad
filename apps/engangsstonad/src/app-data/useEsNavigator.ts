@@ -10,7 +10,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id || Path.VELKOMMEN;
+        const previousPath = stepConfig[index]?.id ?? Path.VELKOMMEN;
         oppdaterPath(previousPath);
         return mellomlagreOgNaviger();
     };

@@ -63,7 +63,7 @@ export const DelvisTilretteleggingPanel = ({
     const delvisTilretteleggingPeriodeType = formMethods.watch('delvisTilretteleggingPeriodeType');
     const enPeriodeMedTilretteleggingTomType = formMethods.watch('enPeriodeMedTilretteleggingTomType');
 
-    const minDatoPeriodeFom = behovForTilretteleggingFom ? behovForTilretteleggingFom : minDatoBehovFom;
+    const minDatoPeriodeFom = behovForTilretteleggingFom ?? minDatoBehovFom;
     const minDatoTilbakeIJobb = enPeriodeMedTilretteleggingFom
         ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
         : behovForTilretteleggingFom;

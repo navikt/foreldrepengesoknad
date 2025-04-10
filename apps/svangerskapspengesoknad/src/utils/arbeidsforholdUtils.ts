@@ -24,7 +24,7 @@ export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termin
 };
 
 const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
-    return arbeidsforhold.arbeidsgiverId || '';
+    return arbeidsforhold.arbeidsgiverId ?? '';
 };
 
 export const getTotalStillingsprosentPåSkjæringstidspunktet = (
@@ -48,7 +48,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
                 (ar, { stillingsprosent }) => ar + stillingsprosent,
                 0,
             );
-            return totalProsent || 100;
+            return totalProsent ?? 100;
         }
     }
     return 100;

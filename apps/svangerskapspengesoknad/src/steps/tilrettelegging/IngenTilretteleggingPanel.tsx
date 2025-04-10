@@ -56,7 +56,7 @@ export const IngenTilretteleggingPanel = ({
     const enPeriodeMedTilretteleggingFom = formMethods.watch('enPeriodeMedTilretteleggingFom');
     const enPeriodeMedTilretteleggingTomType = formMethods.watch('enPeriodeMedTilretteleggingTomType');
 
-    const minDatoPeriodeFom = behovForTilretteleggingFom ? behovForTilretteleggingFom : minDatoBehovFom;
+    const minDatoPeriodeFom = behovForTilretteleggingFom ?? minDatoBehovFom;
     const minDatoTilbakeIJobb = enPeriodeMedTilretteleggingFom
         ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
         : behovForTilretteleggingFom;

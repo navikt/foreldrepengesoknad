@@ -10,7 +10,7 @@ describe('intl foreldrepengeoversikt', () => {
     const getAdditionalIntlString = (fileLoc: string) => {
         const fileBuffer = fs.readFileSync(fileLoc);
         const matches = fileBuffer.toString().match(regex);
-        return matches || [];
+        return matches ?? [];
     };
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {

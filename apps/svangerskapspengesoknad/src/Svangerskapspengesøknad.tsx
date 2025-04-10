@@ -34,7 +34,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     });
 
     if (søkerinfo.error || mellomlagretInfo.error) {
-        return <ApiErrorHandler error={notEmpty(søkerinfo.error || mellomlagretInfo.error)} />;
+        return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;
     }
 
     if (!søkerinfo.data || mellomlagretInfo.isPending) {

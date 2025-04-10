@@ -45,7 +45,7 @@ export const RhfTextarea = ({ name, label, maxLength, minLength, validate = [], 
             className={className}
             autoComplete="off"
             {...field}
-            value={field.value || ''}
+            value={field.value ?? ''}
             onChange={onChange}
             error={getError(errors, name)}
             maxLength={maxLength}
