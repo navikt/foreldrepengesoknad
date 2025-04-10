@@ -329,7 +329,7 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: S
                 const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             })
-            .flat(1) || [];
+            .flat(1) ?? [];
     const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.toDate();
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };

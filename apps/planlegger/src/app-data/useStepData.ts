@@ -135,7 +135,7 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
 
     const currentPath = useMemo(() => {
         const route = Object.values(PlanleggerRoutes).find((v) => v === decodeURIComponent(location.pathname));
-        return route || PlanleggerRoutes.OM_PLANLEGGEREN;
+        return route ?? PlanleggerRoutes.OM_PLANLEGGEREN;
     }, [location.pathname]);
 
     const appPathList = useMemo(

@@ -35,13 +35,13 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
         return (
-            hvemPlanlegger.navnPåMor ||
+            hvemPlanlegger.navnPåMor ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }))
         );
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
         return (
-            hvemPlanlegger.navnPåFar ||
+            hvemPlanlegger.navnPåFar ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }
@@ -51,19 +51,19 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return (
-            hvemPlanlegger.navnPåMedmor ||
+            hvemPlanlegger.navnPåMedmor ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
         );
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
         return (
-            hvemPlanlegger.navnPåFar ||
+            hvemPlanlegger.navnPåFar ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return (
-            hvemPlanlegger.navnPåMedfar ||
+            hvemPlanlegger.navnPåMedfar ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }

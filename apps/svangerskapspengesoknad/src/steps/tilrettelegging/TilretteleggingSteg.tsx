@@ -135,7 +135,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
         egenNæring,
         frilans,
     );
-    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom)) || undefined;
+    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))!.toDate()
         : sisteDagForSvangerskapspenger;

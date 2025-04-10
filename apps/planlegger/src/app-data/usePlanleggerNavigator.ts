@@ -22,7 +22,7 @@ export const usePlanleggerNavigator = (locale: string) => {
 
     const goToPreviousDefaultStep = useCallback(() => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id || PlanleggerRoutes.OM_PLANLEGGEREN;
+        const previousPath = stepConfig[index]?.id ?? PlanleggerRoutes.OM_PLANLEGGEREN;
         setPath(previousPath);
     }, [stepConfig]);
 

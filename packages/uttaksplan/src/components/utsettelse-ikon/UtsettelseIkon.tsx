@@ -35,7 +35,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
             <UttaksplanIkon
                 ikon={getIkonForÅrsak(årsak)}
                 // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-                title={intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}` })}
+                title={intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${årsak ?? 'ukjent'}` })}
             />
         </IconBox>
     );

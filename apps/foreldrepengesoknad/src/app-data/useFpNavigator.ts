@@ -16,7 +16,7 @@ export const useFpNavigator = (
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id || SøknadRoutes.VELKOMMEN;
+        const previousPath = stepConfig[index]?.id ?? SøknadRoutes.VELKOMMEN;
         oppdaterPath(previousPath);
         return mellomlagreOgNaviger();
     };

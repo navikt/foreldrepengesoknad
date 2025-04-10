@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<Props, State> {
             if (errorMessage && retryCallback) {
                 return <ErrorPage appName={appName} errorMessage={errorMessage} retryCallback={retryCallback} />;
             }
-            return <div>{errorMessage || errorInfo}</div>;
+            return <div>{errorMessage ?? errorInfo}</div>;
         }
         return this.props.children;
     }

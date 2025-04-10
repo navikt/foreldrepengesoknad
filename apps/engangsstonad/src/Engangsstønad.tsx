@@ -31,7 +31,7 @@ export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
     });
 
     if (personinfo.error || mellomlagretInfo.error) {
-        return <ApiErrorHandler error={notEmpty(personinfo.error || mellomlagretInfo.error)} />;
+        return <ApiErrorHandler error={notEmpty(personinfo.error ?? mellomlagretInfo.error)} />;
     }
 
     if (!personinfo.data || mellomlagretInfo.isPending) {

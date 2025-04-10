@@ -67,7 +67,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
     };
 
     const dekningsgrad = formMethods.watch('dekningsgrad');
-    const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
+    const valgtDekningsgrad = dekningsgrad ?? periode?.dekningsgrad;
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
