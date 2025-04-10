@@ -5,8 +5,6 @@ const multer = require('multer');
 const MockStorage = require('./mock-storage.cjs');
 const morgan = require('morgan');
 
-require('dotenv').config();
-
 app.disable('x-powered-by');
 
 const allowCrossDomain = function (req, res, next) {
