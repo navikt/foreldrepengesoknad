@@ -14,22 +14,17 @@ import { ArbeidsforholdOgInntektSvp, EGEN_NÆRING_ID, FRILANS_ID, SvpArbeidsforh
 
 export const tilSkjematilstandFraEksisterendeSak = (svpSak: SvpSak) => {
     const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
-        .map((a) => a.aktivitet.arbeidsgiver?.id)
+        .map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
         .filter((s) => s !== undefined);
-
-    const arbeidsforholdOgInntekt = {
-        //TODO: dynamisk alle felter
-        harHattArbeidIUtlandet: false,
-        harJobbetSomFrilans: false,
-        harJobbetSomSelvstendigNæringsdrivende: false,
-    } satisfies ArbeidsforholdOgInntektSvp;
 
     return {
         OM_BARNET: tilBarnetSkjema(svpSak),
         VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold,
         FERIE: tilFerie(svpSak),
         TILRETTELEGGINGER: tilTilrettelegginger(svpSak),
-        ARBEIDSFORHOLD_OG_INNTEKT: arbeidsforholdOgInntekt,
+        ARBEIDSFORHOLD_OG_INNTEKT: finnArbeidsforholdOgInntektSkjemaverdier(
+            svpSak.gjeldendeVedtak?.arbeidsforhold ?? [],
+        ),
     } satisfies ContextDataMap;
 };
 
@@ -76,25 +71,27 @@ const tilFerie = (svpSak: SvpSak) => {
 const tilTilrettelegginger = (svpSak: SvpSak) => {
     const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
         (acc, a) => {
-            const arbeidsgiverId = a.aktivitet.arbeidsgiver?.id;
+            const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
             // TODO: dette caset
-            if (!arbeidsgiverId) {
+            if (!nøkkel) {
                 return acc;
             }
             if (a.tilrettelegginger.length === 1) {
                 const tilrettelegging = a.tilrettelegginger[0];
 
                 if (tilrettelegging.type === 'INGEN') {
-                    acc[arbeidsgiverId] = {
+                    acc[nøkkel] = {
                         type: Tilretteleggingstype.INGEN,
                         enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
                         enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
                         behovForTilretteleggingFom: a.behovFrom,
+                        risikofaktorer: a.risikofaktorer,
+                        tilretteleggingstiltak: a.tiltak,
                     } satisfies IngenTilrettelegging;
                 }
 
                 if (tilrettelegging.type === 'DELVIS') {
-                    acc[arbeidsgiverId] = {
+                    acc[nøkkel] = {
                         type: Tilretteleggingstype.DELVIS,
                         delvisTilretteleggingPeriodeType:
                             DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN, //TODO
@@ -102,6 +99,8 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
                         enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
                         enPeriodeMedTilretteleggingStillingsprosent: tilrettelegging.arbeidstidprosent?.toString(),
                         behovForTilretteleggingFom: a.behovFrom,
+                        risikofaktorer: a.risikofaktorer,
+                        tilretteleggingstiltak: a.tiltak,
                     } satisfies DelvisTilrettelegging;
                 }
             }
@@ -126,6 +125,21 @@ const finnTilretteleggingsnøkkel = (aktivitet: SvpArbeidsforhold['aktivitet']) 
         default:
             throw new Error(`Fant ukjent aktivitetstype ${aktivitet.type}`);
     }
+};
+
+const finnArbeidsforholdOgInntektSkjemaverdier = (arbeidsforhold: SvpArbeidsforhold[]) => {
+    const harJobbetSomFrilans = arbeidsforhold.some((a) => a.aktivitet.type === 'FRILANS');
+    const harJobbetSomSelvstendigNæringsdrivende = arbeidsforhold.some(
+        (a) => a.aktivitet.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
+    );
+    const harHattArbeidIUtlandet = false; // TODO
+    const arbeidsforholdOgInntekt = {
+        harHattArbeidIUtlandet,
+        harJobbetSomFrilans,
+        harJobbetSomSelvstendigNæringsdrivende,
+    } satisfies ArbeidsforholdOgInntektSvp;
+
+    return arbeidsforholdOgInntekt;
 };
 
 // TODO: rotete
