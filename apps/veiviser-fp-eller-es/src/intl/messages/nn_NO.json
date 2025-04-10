@@ -51,7 +51,7 @@
     "OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden": "Du har ikkje rett til eingongsstønad når du ikkje er medlem av folketrygda.",
     "OppsummeringFpEllerEsSide.HvaErFp": "Kva er foreldrepengar?",
     "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månadlege lønna du har oppgitt, vil du foreldrepengane dine vera ca {utbetaling} kronar per månad før skatt, viss du tek 100 % foreldrepengar. Talet på månader blir delt mellom far og mor, og vil variera viss ein vel 100 % eller 100 % foreldrepengar.",
-    "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "Du kan velja mellom <b>49 veker med 100 % foreldrepengar eller 59 veker med 80 % foreldrepengar</b>.",
+    "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "Du kan velja mellom <b>49 veker med 100 % foreldrepengar eller 61 veker og 1 dag med 80 % foreldrepengar</b>.",
     "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett til foreldrepengar kan du òg ha rett til eingongsstønad. Vanlegvis vil det lønna seg å velgja foreldrepengar. Du kan kun velge én av stønadene og du kan ikkje ombestemma deg.",
     "OppsummeringFpEllerEsSide.DuFårUtbetaltEs": "Med eingongsstønad får du utbetalt ein eingongssum på {engangsstønad} kronar.",
     "OppsummeringFpEllerEsSide.EsSkalBidra": "Eingongsstønad er meint å bidra til å dekkje nokre av utgiftene i samband med å få barn. Stønaden er ein <b>eingongssum på {engangsstønad} kronar</b>.",

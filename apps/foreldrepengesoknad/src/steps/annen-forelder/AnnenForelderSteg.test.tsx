@@ -168,7 +168,7 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Har den andre forelderen rett til pengestøtte i et annet EØS-land i 6 eller mer måneder før barnet blir født?',
+                'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -424,7 +424,7 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Har den andre forelderen rett til pengestøtte i et annet EØS-land i 6 eller mer måneder før barnet blir født?',
+                'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
                 {
                     exact: false,
                 },

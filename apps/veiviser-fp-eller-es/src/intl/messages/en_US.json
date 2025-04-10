@@ -51,7 +51,7 @@
     "OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden": "You are not entitled to a lump sum benefit if you are not a member of the National Insurance Scheme.",
     "OppsummeringFpEllerEsSide.HvaErFp": "What is parental benefit?",
     "OppsummeringFpEllerEsSide.BasertPåSvarene": "Based on the monthly salary you provided, your parental benefit will be approximately {utbetaling} NOK per month before tax, if you take 100 % parental benefit. The number of months is shared between the father and mother, and will vary if you choose 100 % or 80 % parental benefit.",
-    "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "You can choose between <b>49 weeks with 100 % parental benefit or 59 weeks with 80 % parental benefit</b>..",
+    "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "You can choose between <b>49 weeks with 100 % parental benefit or 61 weeks and 1 day with 80 % parental benefit</b>..",
     "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "When you are entitled to parental benefit, you may also be entitled to lump sum benefit. Usually, it will pay off to choose parental benefit. You can only choose one of the benefits and you cannot change your mind.",
     "OppsummeringFpEllerEsSide.DuFårUtbetaltEs": "With a lump-sum benefit, you will receive a one-off of {engangsstønad} NOK.",
     "OppsummeringFpEllerEsSide.EsSkalBidra": "A lump sum grant is meant to help cover some of the expenses associated with having a child. The grant is a <b>one-off of {engangsstønad} NOK</b>.",
