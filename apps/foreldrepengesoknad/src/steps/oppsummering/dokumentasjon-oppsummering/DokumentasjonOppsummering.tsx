@@ -1,3 +1,4 @@
+// apps/foreldrepengesoknad/src/steps/oppsummering/dokumentasjon-oppsummering/DokumentasjonOppsummering.tsx
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -6,6 +7,7 @@ import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { InnsendingsType } from '@navikt/fp-constants';
 
+import { useTrengerDokumentereMorsArbeid } from '../../../hooks/useTrengerDokumentereMorsarbeid';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
@@ -24,19 +26,13 @@ export const DokumentasjonOppsummering = ({
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
-    // Fjerner vedlegg som er automatisk slik at disse ikke vises for bruker.
-    const faktiskeVedlegg = Object.fromEntries(
-        Object.entries(alleVedlegg ?? {}).map(([key, attachments]) => [
-            key,
-            attachments.filter((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK),
-        ]),
-    );
-
-    const harVedlegg = Object.values(faktiskeVedlegg).some((v) => v.length > 0);
+    const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid(); // Bruk hooken
+    console.log(trengerDokumentereMorsArbeid);
+    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
     const harSendSenereDokument =
         harVedlegg &&
-        Object.values(faktiskeVedlegg)
+        Object.values(alleVedlegg)
             .flatMap((vedlegg) => vedlegg)
             .find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE);
 
@@ -60,7 +56,7 @@ export const DokumentasjonOppsummering = ({
                     </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
-                    {Object.entries(faktiskeVedlegg)
+                    {Object.entries(alleVedlegg)
                         .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
                         .map((idOgVedlegg) => (
                             <FormSummary.Answer key={idOgVedlegg[1][0].id}>
