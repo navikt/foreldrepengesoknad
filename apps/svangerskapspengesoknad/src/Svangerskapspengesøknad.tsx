@@ -12,7 +12,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
-import { RegisterdataUtdatert } from './pages/registerdata-utdatert/RegisterDataUtdatert';
+import { RegisterdataUtdatert } from './pages/registerdata-utdatert/RegisterdataUtdatert';
 import './styles/app.css';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
@@ -64,7 +64,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !isEqual(mellomlagretState?.søkerInfo, søkerinfo.data)) {
+    if (mellomlagretState && !isEqual(mellomlagretState.søkerInfo, søkerinfo.data)) {
         return <RegisterdataUtdatert slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt} />;
     }
 
