@@ -26,8 +26,7 @@ export const DokumentasjonOppsummering = ({
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
-    const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid(); // Bruk hooken
-
+    const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid();
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
     const harSendSenereDokument =
@@ -72,7 +71,7 @@ export const DokumentasjonOppsummering = ({
                                 }
 
                                 // 2. Vedlegget er "Send senere" og det er dokumentasjon for mors arbeid,
-                                // men vi trenger ikke dokumentere mors arbeid og svar på hook viser at mor ikke må dokumntere
+                                // men vi trenger ikke dokumentere mors arbeid og svar på hook viser at mor ikke må dokumentere
                                 // sitt arbeid
                                 const vedlegg = idOgVedlegg[1][0];
                                 if (
