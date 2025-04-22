@@ -40,7 +40,7 @@ export const Step = <TYPE extends string>({
 }: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     if (currentStepIndex === -1) {
-        return null;
+        throw new Error('Ingen valgte steg funnet');
     }
 
     const title = steps[currentStepIndex].label;
