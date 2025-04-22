@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { SvpDataContext } from 'appData/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
+import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
@@ -11,7 +12,18 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
+import { RegisterdataUtdatert } from './pages/registerdata-utdatert/RegisterDataUtdatert';
 import './styles/app.css';
+
+export const slettMellomlagringOgLastSidePåNytt = async () => {
+    try {
+        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`);
+    } catch {
+        // Vi bryr oss ikke om feil her. Logges bare i backend
+    }
+
+    location.reload();
+};
 
 interface Props {
     locale: LocaleNo;
@@ -51,6 +63,10 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
 
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
+
+    if (mellomlagretState && !isEqual(mellomlagretState?.søkerInfo, søkerinfo.data)) {
+        return <RegisterdataUtdatert slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt} />;
+    }
 
     return (
         <div>

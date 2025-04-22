@@ -29,8 +29,7 @@ const Spinner = () => (
 export const retryCallback = async () => {
     try {
         await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
 

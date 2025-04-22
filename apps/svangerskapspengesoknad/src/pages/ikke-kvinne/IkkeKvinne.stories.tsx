@@ -5,9 +5,6 @@ import { IkkeKvinne } from './IkkeKvinne';
 const meta = {
     title: 'pages/IkkeKvinne',
     component: IkkeKvinne,
-    render: () => {
-        return <IkkeKvinne />;
-    },
 } satisfies Meta;
 export default meta;
 

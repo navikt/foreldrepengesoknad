@@ -263,5 +263,9 @@
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
     "ArbeidIUtlandetFieldArray.arbeid.tom.description": "Hvis du sluttet i jobben mer enn 4 uker før du skal starte svangerskapspengene dine, vil ikke arbeidsforholdet ha betydning for retten din til svangerskapspenger.",
     "JobbetIUtlandetOppsummering.arbeidsforhold.periode": "{fom} - {tom}",
-    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobber du der fortsatt?"
+    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobber du der fortsatt?",
+    "RegisterdataUtdatert.Svangerskapspenger": "Svangerskapspenger",
+    "RegisterdataUtdatert.StartPaNytt": "Start på nytt",
+    "RegisterdataUtdatert.Heading": "Opplysninger er endret",
+    "RegisterdataUtdatert.Message": "Opplysninger om deg er endret siden sist du fylte ut søknaden. Du må derfor starte utfyllingen av søknaden på nytt."
 }

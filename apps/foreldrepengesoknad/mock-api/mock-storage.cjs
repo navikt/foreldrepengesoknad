@@ -30,7 +30,7 @@ const getSoknad = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -43,7 +43,7 @@ const getSokerInfo = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -76,7 +76,7 @@ const getSoknadSendt = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -89,7 +89,7 @@ const getSaker = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -103,7 +103,7 @@ const getAnnenPartVedtak = function () {
         try {
             const data = fs.readFileSync(fileName, 'utf8');
             return data && data !== '' ? JSON.parse(data) : null;
-        } catch (err) {
+        } catch {
             return null;
         }
     }
@@ -116,7 +116,7 @@ const getUttaksplan = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -129,7 +129,7 @@ const getUttaksplanannen = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -142,7 +142,7 @@ const getStorageKvittering = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }

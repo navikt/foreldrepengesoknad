@@ -14,7 +14,7 @@ const getMellomlagretData = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(getFilePath(), 'utf8'));
-        } catch (err) {
+        } catch {
             return undefined;
         }
     }
