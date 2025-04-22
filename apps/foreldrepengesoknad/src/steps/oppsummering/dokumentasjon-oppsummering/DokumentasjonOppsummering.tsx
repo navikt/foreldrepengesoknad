@@ -5,7 +5,8 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { InnsendingsType } from '@navikt/fp-constants';
+import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 
 import { useTrengerDokumentereMorsArbeid } from '../../../hooks/useTrengerDokumentereMorsarbeid';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
@@ -29,7 +30,7 @@ export const DokumentasjonOppsummering = ({
     const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid(); // Bruk hooken
     console.log(trengerDokumentereMorsArbeid);
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
-
+    console.log(alleVedlegg);
     const harSendSenereDokument =
         harVedlegg &&
         Object.values(alleVedlegg)
@@ -57,7 +58,26 @@ export const DokumentasjonOppsummering = ({
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     {Object.entries(alleVedlegg)
-                        .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
+                        .filter((idOgVedlegg) => {
+                            // Filtrere ut vedlegg der:
+                            // 1. Vedlegglisten er tom
+                            if (idOgVedlegg[1].length === 0) {
+                                return false;
+                            }
+
+                            // 2. Vedlegget er "Send senere" og det er dokumentasjon for mors arbeid,
+                            // men vi trenger ikke dokumentere mors arbeid
+                            const vedlegg = idOgVedlegg[1][0];
+                            if (
+                                vedlegg.innsendingsType === InnsendingsType.SEND_SENERE &&
+                                vedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON &&
+                                vedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR &&
+                                !trengerDokumentereMorsArbeid
+                            ) {
+                                return false;
+                            }
+                            return true;
+                        })
                         .map((idOgVedlegg) => (
                             <FormSummary.Answer key={idOgVedlegg[1][0].id}>
                                 <FormSummary.Label>
