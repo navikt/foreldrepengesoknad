@@ -216,7 +216,7 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, locale, onChangeLoc
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, locale, søkerInfo.arbeidsforhold);
-    const mellomlagreOgNaviger = useMellomlagreSøknad(locale, setHarGodkjentVilkår);
+    const mellomlagreOgNaviger = useMellomlagreSøknad(locale, søkerInfo, setHarGodkjentVilkår);
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {

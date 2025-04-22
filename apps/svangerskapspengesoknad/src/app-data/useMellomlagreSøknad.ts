@@ -4,19 +4,23 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LocaleNo } from '@navikt/fp-types';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 6;
+export const VERSJON_MELLOMLAGRING = 7;
 
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
+export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo; søkerInfo: Søkerinfo } & ContextDataMap;
 
-export const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+export const useMellomlagreSøknad = (
+    locale: LocaleNo,
+    søkerInfo: Søkerinfo,
+    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
+) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -42,8 +46,9 @@ export const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (
                         const data = {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
+                            søkerInfo,
                             ...state,
-                        } as SvpDataMapAndMetaData;
+                        } satisfies SvpDataMapAndMetaData;
                         await ky.post(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
