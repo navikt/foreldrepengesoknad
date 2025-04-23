@@ -90,8 +90,7 @@ export const LeggTilPeriodeModalStep = ({
                 forelder: Forelder.farMedmor,
                 periodeHullÅrsak: årsak,
             });
-        }
-        {
+        } else {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
