@@ -70,15 +70,37 @@ export const LeggTilPeriodeModalStep = ({
     const onSubmit = (values: FormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
+        const årsak = values.årsak;
 
-        handleAddPeriode({
-            fom: fomValue,
-            tom: tomValue,
-            id: `${fomValue} - ${tomValue} - ${kontoType}`,
-            readOnly: false,
-            kontoType: values.kontoType,
-            forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-        });
+        if (årsak === UtsettelseÅrsakType.Ferie) {
+            handleAddPeriode({
+                fom: fomValue,
+                tom: tomValue,
+                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                readOnly: false,
+                forelder: Forelder.farMedmor,
+                utsettelseÅrsak: årsak,
+            });
+        } else if (årsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            handleAddPeriode({
+                fom: fomValue,
+                tom: tomValue,
+                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                readOnly: false,
+                forelder: Forelder.farMedmor,
+                periodeHullÅrsak: årsak,
+            });
+        }
+        {
+            handleAddPeriode({
+                fom: fomValue,
+                tom: tomValue,
+                id: `${fomValue} - ${tomValue} - ${kontoType}`,
+                readOnly: false,
+                kontoType: values.kontoType,
+                forelder: getForelderFromKontoType(values.kontoType, values.forelder),
+            });
+        }
 
         closeModal();
     };
