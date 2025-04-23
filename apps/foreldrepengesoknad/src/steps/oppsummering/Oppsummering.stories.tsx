@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -186,6 +187,14 @@ const defaultVedlegg = {
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
 };
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
 type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
@@ -232,33 +241,35 @@ const meta = {
         ...rest
     }) => {
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                        [ContextDataType.FRILANS]: frilans,
-                        [ContextDataType.EGEN_NÆRING]: egenNæring,
-                        [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.UTTAKSPLAN_METADATA]: {
-                            ønskerJustertUttakVedFødsel: false,
-                            harUttaksplanBlittSlettet: false,
-                            antallUkerIUttaksplan: 1,
-                        },
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
-                        [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                        [ContextDataType.VEDLEGG]: vedlegg,
-                    }}
-                >
-                    <Oppsummering {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                            [ContextDataType.FRILANS]: frilans,
+                            [ContextDataType.EGEN_NÆRING]: egenNæring,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.UTTAKSPLAN_METADATA]: {
+                                ønskerJustertUttakVedFødsel: false,
+                                harUttaksplanBlittSlettet: false,
+                                antallUkerIUttaksplan: 1,
+                            },
+                            [ContextDataType.OM_BARNET]: barn,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                            [ContextDataType.VEDLEGG]: vedlegg,
+                        }}
+                    >
+                        <Oppsummering {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;
