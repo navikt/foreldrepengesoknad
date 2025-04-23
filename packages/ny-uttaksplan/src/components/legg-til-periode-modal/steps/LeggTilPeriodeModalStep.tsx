@@ -4,10 +4,12 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
@@ -29,6 +31,8 @@ interface FormValues {
     fom: string;
     tom: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    skalDuJobbe: boolean;
+    stillingsprosent?: string;
 }
 
 export const LeggTilPeriodeModalStep = ({
@@ -71,6 +75,8 @@ export const LeggTilPeriodeModalStep = ({
         const fomValue = values.fom;
         const tomValue = values.tom;
         const årsak = values.årsak;
+        const skalDuJobbe = values.skalDuJobbe;
+        const stillingsprosent = values.stillingsprosent;
 
         if (årsak === UtsettelseÅrsakType.Ferie) {
             handleAddPeriode({
@@ -98,6 +104,14 @@ export const LeggTilPeriodeModalStep = ({
                 readOnly: false,
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
+                gradering: skalDuJobbe
+                    ? {
+                          aktivitet: {
+                              type: UttakArbeidType.ORDINÆRT_ARBEID,
+                          },
+                          arbeidstidprosent: getNumberFromNumberInputValue(stillingsprosent)!,
+                      }
+                    : undefined,
             });
         }
 
@@ -107,14 +121,30 @@ export const LeggTilPeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="4">
-                {isOpphold === false ? <KontotypeSpørsmål formMethods={formMethods} /> : null}
-                {isOpphold ? <OppholdsÅrsakSpørsmål /> : null}
-                <TidsperiodeSpørsmål
-                    formMethods={formMethods}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                    oppholdsårsak={årsak}
-                />
+                {isOpphold === false ? (
+                    <>
+                        <KontotypeSpørsmål formMethods={formMethods} />
+                        <TidsperiodeSpørsmål
+                            formMethods={formMethods}
+                            erBarnetFødt={erBarnetFødt}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            oppholdsårsak={årsak}
+                        />
+                        <GraderingSpørsmål formMethods={formMethods} />
+                    </>
+                ) : null}
+                {isOpphold ? (
+                    <>
+                        <OppholdsÅrsakSpørsmål />{' '}
+                        <TidsperiodeSpørsmål
+                            formMethods={formMethods}
+                            erBarnetFødt={erBarnetFødt}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            oppholdsårsak={årsak}
+                        />
+                    </>
+                ) : null}
+
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={() => {
