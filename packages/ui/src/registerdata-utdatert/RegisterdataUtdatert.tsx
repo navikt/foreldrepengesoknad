@@ -3,15 +3,18 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { AppName } from '@navikt/fp-types';
+
+import { ContentWrapper } from '../content-wrapper/ContentWrapper';
 
 interface Props {
     slettMellomlagringOgLastSidePåNytt: () => void;
+    appName: AppName;
 }
 
-export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt }: Props) => {
+export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appName }: Props) => {
     loggAmplitudeEvent({
-        origin: 'svangerskapspengesoknad',
+        origin: appName,
         eventName: 'besøk',
         eventData: { tittel: 'registerdataUtdatert' },
     });
@@ -20,7 +23,11 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt }: Pr
         <ContentWrapper>
             <VStack gap="10">
                 <Heading size="large" level="2">
-                    <FormattedMessage id="RegisterdataUtdatert.Svangerskapspenger" />
+                    {appName === 'engangsstonad' && <FormattedMessage id="RegisterdataUtdatert.Engangsstønad" />}
+                    {appName === 'foreldrepengesoknad' && <FormattedMessage id="RegisterdataUtdatert.Foreldrepenger" />}
+                    {appName === 'svangerskapspengesoknad' && (
+                        <FormattedMessage id="RegisterdataUtdatert.Svangerskapspenger" />
+                    )}
                 </Heading>
                 <Alert variant="warning">
                     <VStack gap="4">

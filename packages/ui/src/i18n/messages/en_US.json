@@ -64,5 +64,11 @@
     "Step.HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
     "Step.HarObligatoriskeFelt": "All fields must be filled in.",
     "AndreVeivisereLinkPanel.AndreVeivisere": "Other guides:",
-    "FrontPage.Start": "Start"
+    "FrontPage.Start": "Start",
+    "RegisterdataUtdatert.Engangsstønad": "Lump-sum grant",
+    "RegisterdataUtdatert.Foreldrepenger": "Parental benefit",
+    "RegisterdataUtdatert.Svangerskapspenger": "Pregnancy allowance",
+    "RegisterdataUtdatert.StartPaNytt": "Start again",
+    "RegisterdataUtdatert.Heading": "Information has changed",
+    "RegisterdataUtdatert.Message": "Information about you has changed since you last filled out the application. You must therefore start filling out the application again."
 }

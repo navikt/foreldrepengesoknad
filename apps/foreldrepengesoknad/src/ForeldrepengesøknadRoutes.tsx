@@ -345,7 +345,7 @@ export const ForeldrepengesøknadRoutes = ({
                     />
                 }
             />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appnavn="Foreldrepenger" />} />
+            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
             {renderSøknadRoutes(
                 harGodkjentVilkår,

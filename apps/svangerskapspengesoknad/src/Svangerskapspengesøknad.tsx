@@ -6,13 +6,12 @@ import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
-import { RegisterdataUtdatert } from './pages/registerdata-utdatert/RegisterdataUtdatert';
 import './styles/app.css';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
@@ -65,13 +64,18 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
     if (mellomlagretState && !isEqual(mellomlagretState.søkerInfo, søkerinfo.data)) {
-        return <RegisterdataUtdatert slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt} />;
+        return (
+            <RegisterdataUtdatert
+                slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
+                appName="svangerskapspengesoknad"
+            />
+        );
     }
 
     return (
         <div>
             {!erPersonMyndig ? (
-                <Umyndig appnavn="Svangerskapspenger" />
+                <Umyndig appName="svangerskapspengesoknad" />
             ) : (
                 <SvpDataContext initialState={mellomlagretState}>
                     <SvangerskapspengesøknadRoutes

@@ -14,4 +14,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Svangerskapspenger: Story = {
+    args: {
+        appName: 'svangerskapspengesoknad',
+    },
+};
+export const Foreldrepenger: Story = {
+    args: {
+        appName: 'foreldrepengesoknad',
+    },
+};
+
+export const Engangsstønad: Story = {
+    args: {
+        appName: 'engangsstonad',
+    },
+};
