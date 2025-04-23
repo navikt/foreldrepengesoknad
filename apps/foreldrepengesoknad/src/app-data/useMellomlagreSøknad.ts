@@ -7,7 +7,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { LocaleNo } from '@navikt/fp-types';
+import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -16,6 +16,8 @@ import { SøknadRoutes } from './routes';
 export interface FpMellomlagretData {
     version: number;
     locale: LocaleNo;
+    søkerInfo: Søkerinfo;
+    foreldrepengerSaker: FpSak[];
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
@@ -35,6 +37,8 @@ const FEIL_VED_INNSENDING =
 
 const getDataForMellomlagring = (
     locale: LocaleNo,
+    foreldrepengerSaker: FpSak[],
+    søkerInfo: Søkerinfo,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -64,6 +68,8 @@ const getDataForMellomlagring = (
     const dataSomSkalMellomlagres = {
         version: MELLOMLAGRET_VERSJON,
         locale,
+        foreldrepengerSaker,
+        søkerInfo,
         currentRoute,
         søknadGjelderEtNyttBarn,
         søknad: {
@@ -99,7 +105,8 @@ const getDataForMellomlagring = (
 
 export const useMellomlagreSøknad = (
     locale: LocaleNo,
-    fødselsnr: string,
+    foreldrepengerSaker: FpSak[],
+    søkerInfo: Søkerinfo,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
@@ -122,6 +129,8 @@ export const useMellomlagreSøknad = (
 
                 const data = getDataForMellomlagring(
                     locale,
+                    foreldrepengerSaker,
+                    søkerInfo,
                     getDataFromState,
                     erEndringssøknad,
                     harGodkjentVilkår,
@@ -132,7 +141,7 @@ export const useMellomlagreSøknad = (
                     await ky.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`, {
                         json: data,
                         headers: {
-                            fnr: fødselsnr,
+                            fnr: søkerInfo.søker.fnr,
                         },
                     });
                 } catch (error: unknown) {

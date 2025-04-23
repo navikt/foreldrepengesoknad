@@ -253,7 +253,7 @@ interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
-    saker: FpSak[];
+    foreldrepengerSaker: FpSak[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;
@@ -265,7 +265,7 @@ export const ForeldrepengesøknadRoutes = ({
     onChangeLocale,
     currentRoute,
     søkerInfo,
-    saker,
+    foreldrepengerSaker,
     lagretErEndringssøknad,
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
@@ -283,7 +283,8 @@ export const ForeldrepengesøknadRoutes = ({
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         locale,
-        søkerInfo.søker.fnr,
+        foreldrepengerSaker,
+        søkerInfo,
         erEndringssøknad,
         harGodkjentVilkår,
         søknadGjelderNyttBarn,
@@ -334,7 +335,7 @@ export const ForeldrepengesøknadRoutes = ({
                 element={
                     <Forside
                         locale={locale}
-                        saker={saker}
+                        saker={foreldrepengerSaker}
                         onChangeLocale={onChangeLocale}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
