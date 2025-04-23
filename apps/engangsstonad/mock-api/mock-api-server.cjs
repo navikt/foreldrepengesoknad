@@ -73,7 +73,7 @@ router.delete('/rest/storage/engangsstonad/vedlegg', (_req, res) => {
     res.sendStatus(204);
 });
 
-app.use('*splat', router);
+app.use('', router);
 
 const port = process.env.PORT || 8888;
 app.listen(port, () => {
