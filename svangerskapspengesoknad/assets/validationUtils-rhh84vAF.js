@@ -1,0 +1,1 @@
+import{e}from"./RegisterdataUtdatert--ubjgill.js";import{m as o}from"./minMax-IPiMxzf2.js";e.extend(o);const i=10,m=1e3,r=s=>s!==""&&s!==void 0&&s!==null,d=(s,t)=>{let a=t;if(s&&r(s)){const n=e.max([e(t),e(s)]);a=n?n.toDate():t}return a},l=(s,t)=>e().isBefore(e(s),"d")?t.formatMessage({id:"slutter"}):t.formatMessage({id:"sluttet"});export{m as T,i as a,l as b,d as g,r as h};
