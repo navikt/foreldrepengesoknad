@@ -107,6 +107,9 @@ importers:
       ky:
         specifier: ^1.7.4
         version: 1.7.4
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -177,6 +180,9 @@ importers:
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.1
         version: 5.2.1(prettier@3.4.2)
+      '@types/lodash':
+        specifier: ^4.17.14
+        version: 4.17.14
       '@types/react':
         specifier: ^19.0.7
         version: 19.0.7

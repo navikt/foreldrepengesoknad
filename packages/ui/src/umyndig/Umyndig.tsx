@@ -4,29 +4,32 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { AppName } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { ContentWrapper } from '../content-wrapper/ContentWrapper';
 
 interface Props {
-    appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
+    appName: AppName;
 }
 
-const getTitleText = (appnavn: Props['appnavn'], intl: IntlShape): string => {
+const getTitleText = (appnavn: Props['appName'], intl: IntlShape): string => {
     switch (appnavn) {
-        case 'Engangsstønad':
+        case 'engangsstonad':
             return intl.formatMessage({ id: 'Umyndig.Pageheading.Engangsstonad' });
-        case 'Foreldrepenger':
+        case 'foreldrepengesoknad':
             return intl.formatMessage({ id: 'Umyndig.Pageheading.Foreldrepenger' });
-        case 'Svangerskapspenger':
+        case 'svangerskapspengesoknad':
             return intl.formatMessage({ id: 'Umyndig.Pageheading.Svangerskapspenger' });
+        default:
+            throw new Error(`App ikke supportert: ${appnavn}`);
     }
 };
 
-export const Umyndig = ({ appnavn }: Props) => {
+export const Umyndig = ({ appName }: Props) => {
     const intl = useIntl();
 
-    const titleText = getTitleText(appnavn, intl);
+    const titleText = getTitleText(appName, intl);
     useDocumentTitle(titleText);
 
     return (

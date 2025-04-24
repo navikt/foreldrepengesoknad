@@ -14,7 +14,7 @@ import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages }
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
-import { Foreldrepengesøknad, retryCallback } from './Foreldrepengesøknad';
+import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -71,7 +71,7 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="foreldrepengesoknad" retryCallback={retryCallback}>
+            <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />

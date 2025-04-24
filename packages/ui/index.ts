@@ -37,3 +37,4 @@ export { ByttBrowserModal } from './src/bytt-browser-modal/ByttBrowserModal';
 export { VeiviserPage } from './src/veivisere/VeiviserPage';
 export { AndreVeivisereLinkPanel } from './src/veivisere/andre-veivisere/AndreVeivisereLinkPanel';
 export { FrontPage } from './src/veivisere/frontpage/FrontPage';
+export { RegisterdataUtdatert } from './src/registerdata-utdatert/RegisterdataUtdatert';

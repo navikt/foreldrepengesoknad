@@ -2,14 +2,25 @@ import { useQuery } from '@tanstack/react-query';
 import { EsDataContext } from 'appData/EsDataContext';
 import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
+import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { LocaleAll, PersonFrontend } from '@navikt/fp-types';
-import { Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, EngangsstønadRoutes, Spinner } from './EngangsstønadRoutes';
+
+export const slettMellomlagringOgLastSidePåNytt = async () => {
+    try {
+        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`);
+    } catch {
+        // Vi bryr oss ikke om feil her. Logges bare i backend
+    }
+
+    location.reload();
+};
 
 interface Props {
     locale: LocaleAll;
@@ -39,18 +50,27 @@ export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
     }
 
     if (!erMyndig(personinfo.data.fødselsdato)) {
-        return <Umyndig appnavn="Engangsstønad" />;
+        return <Umyndig appName="engangsstonad" />;
     }
 
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
+
+    if (mellomlagretState && !isEqual(mellomlagretState.personinfo, personinfo.data)) {
+        return (
+            <RegisterdataUtdatert
+                slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
+                appName="engangsstonad"
+            />
+        );
+    }
 
     return (
         <EsDataContext initialState={mellomlagretState}>
             <EngangsstønadRoutes
                 locale={locale}
                 onChangeLocale={onChangeLocale}
-                søker={personinfo.data}
+                personinfo={personinfo.data}
                 mellomlagretData={mellomlagretState}
             />
         </EsDataContext>
