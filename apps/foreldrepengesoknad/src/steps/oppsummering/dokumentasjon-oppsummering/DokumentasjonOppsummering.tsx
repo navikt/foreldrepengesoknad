@@ -1,4 +1,3 @@
-// apps/foreldrepengesoknad/src/steps/oppsummering/dokumentasjon-oppsummering/DokumentasjonOppsummering.tsx
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 

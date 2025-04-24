@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
 
-import { AnnenForelder, Barn, Periode } from '@navikt/fp-common';
+import { Barn, Periode } from '@navikt/fp-common';
 import { isFødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -36,17 +36,19 @@ const getDokumentereMorsArbeidParams = (
 };
 
 export const useTrengerDokumentereMorsArbeid = () => {
-    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER) as NonNullable<AnnenForelder | undefined>;
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const annenPartFødselsnummer = annenForelder && 'fnr' in annenForelder ? annenForelder.fnr : undefined;
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
 
-    const { data: trengerDokumentereMorsArbeid = true } = useQuery({
-        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
-        enabled: !!dokumentereMorsArbeidParams,
-    });
+    // fallback-konfigurasjon når params er undefined
+    const queryOptions = dokumentereMorsArbeidParams
+        ? trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams)
+        : { queryKey: ['trengerDokumentereMorsArbeid'], enabled: false };
+
+    const { data: trengerDokumentereMorsArbeid = true } = useQuery(queryOptions);
 
     return trengerDokumentereMorsArbeid;
 };
