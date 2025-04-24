@@ -111,33 +111,6 @@ VisMorTrengerDokumentereArbeid.parameters = {
     },
 };
 
-export const VisMorTrengerIkkeDokumentereArbeid = Template.bind({});
-VisMorTrengerIkkeDokumentereArbeid.args = {
-    ...defaultProps,
-    alleVedlegg: {
-        'mors-arbeid': [
-            {
-                id: '1',
-                filename: 'arbeidsavtale.pdf',
-                url: 'http://example.com/arbeidsavtale.pdf',
-                innsendingsType: InnsendingsType.SEND_SENERE,
-                type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-            },
-        ],
-    } as VedleggDataType,
-};
-
-VisMorTrengerIkkeDokumentereArbeid.parameters = {
-    msw: {
-        handlers: [
-            http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                return HttpResponse.json(false);
-            }),
-        ],
-    },
-};
-
 export const VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning = Template.bind({});
 VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning.args = {
     ...defaultProps,

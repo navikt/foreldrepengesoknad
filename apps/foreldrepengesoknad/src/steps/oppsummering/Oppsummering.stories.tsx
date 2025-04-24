@@ -1020,10 +1020,6 @@ export const VisMorTrengerDokumentereArbeid: Story = {
     },
 };
 
-// 1. Test der mor jobber over 80% og ikke trenger å dokumentere jobb
-// 2. Test der mor jobber under 80% og må dokumentere jobb
-// 3. Test der mor jobber under 80% men skal studier, skal trigge uttak dok krav til studier
-
 export const ErEndringssøknad: Story = {
     args: {
         ...Default.args,
