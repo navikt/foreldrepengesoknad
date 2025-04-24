@@ -830,7 +830,7 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
-const MORS_STILLINGSPROSENT = 79;
+const MORS_STILLINGSPROSENT = 81; // Endret til under 80 for testing
 
 export const VisMorTrengerIkkeDokumentereArbeid: Story = {
     args: {
@@ -862,10 +862,10 @@ export const VisMorTrengerIkkeDokumentereArbeid: Story = {
         },
         vedlegg: {
             ...defaultVedlegg,
-            [Skjemanummer.DOK_UTDANNING_MOR]: [
+            [Skjemanummer.DOK_ARBEID_MOR]: [
                 {
                     ...FIL_INFO_UTTAK_MED_PERIODE,
-                    filename: 'dok-utdanning-mor.pdf',
+                    filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
                     innsendingsType: InnsendingsType.SEND_SENERE,
@@ -881,9 +881,11 @@ export const VisMorTrengerIkkeDokumentereArbeid: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('*/rest/soknad/trenger-dokumentere-mors-arbeid', () =>
-                    HttpResponse.json(MORS_STILLINGSPROSENT <= 80),
-                ),
+                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                    const needsDocumentation = MORS_STILLINGSPROSENT <= 80;
+                    console.log('Returning needsDocumentation:', needsDocumentation);
+                    return HttpResponse.json(needsDocumentation);
+                }),
             ],
         },
     },
