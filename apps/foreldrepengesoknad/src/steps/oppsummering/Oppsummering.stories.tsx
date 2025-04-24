@@ -830,7 +830,64 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
-// TODO:
+const MORS_STILLINGSPROSENT = 79;
+
+export const VisMorTrengerIkkeDokumentereArbeid: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    arbeidsgiverId: '1',
+                    arbeidsgiverIdType: 'orgnr',
+                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    fom: '2020-01-01',
+                },
+            ],
+        },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Mor',
+            etternavn: 'Morsen',
+            fnr: '02520489226',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erInformertOmSøknaden: true,
+        },
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_UTDANNING_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('*/rest/soknad/trenger-dokumentere-mors-arbeid', () =>
+                    HttpResponse.json(MORS_STILLINGSPROSENT <= 80),
+                ),
+            ],
+        },
+    },
+};
 
 // 1. Test der mor jobber over 80% og ikke trenger å dokumentere jobb
 // 2. Test der mor jobber under 80% og må dokumentere jobb

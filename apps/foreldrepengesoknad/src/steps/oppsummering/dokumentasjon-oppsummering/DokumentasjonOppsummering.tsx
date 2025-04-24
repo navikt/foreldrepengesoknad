@@ -19,6 +19,31 @@ interface Props {
     uttaksperioderSomManglerVedlegg: Periode[];
 }
 
+const skalViseVedlegg = (
+    alleVedlegg: VedleggDataType | undefined,
+    trengerDokumentereMorsArbeid: boolean | undefined,
+    harSendSenereDokument: boolean,
+): boolean => {
+    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
+
+    console.log('Debug vedleggsvisning:', {
+        harVedlegg,
+        harSendSenereDokument,
+        trengerDokumentereMorsArbeid,
+    });
+
+    if (!harVedlegg) {
+        return false;
+    }
+
+    // Hvis vi har send-senere-dokument og IKKE trenger dokumentere mors arbeid, skal vi ikke vise noe
+    if (harSendSenereDokument && !(trengerDokumentereMorsArbeid ?? false)) {
+        return false;
+    }
+
+    return true;
+};
+
 export const DokumentasjonOppsummering = ({
     alleVedlegg,
     onVilEndreSvar,
@@ -27,22 +52,18 @@ export const DokumentasjonOppsummering = ({
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
     const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid();
-    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
-    const harSendSenereDokument =
-        harVedlegg &&
-        Object.values(alleVedlegg)
-            .flatMap((vedlegg) => vedlegg)
-            .find(
-                (v) =>
-                    v.innsendingsType === InnsendingsType.SEND_SENERE &&
-                    v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-            );
+    const harSendSenereDokument = alleVedlegg
+        ? Object.values(alleVedlegg)
+              .flatMap((vedlegg) => vedlegg)
+              .some(
+                  (v) =>
+                      v.innsendingsType === InnsendingsType.SEND_SENERE &&
+                      v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+              )
+        : false;
 
-    if (!harVedlegg) {
-        return null;
-    }
-    if (!harSendSenereDokument && (trengerDokumentereMorsArbeid ?? false)) {
+    if (!skalViseVedlegg(alleVedlegg, trengerDokumentereMorsArbeid, harSendSenereDokument)) {
         return null;
     }
 
