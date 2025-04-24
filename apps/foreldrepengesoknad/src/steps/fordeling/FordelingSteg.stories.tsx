@@ -1,6 +1,5 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -16,6 +15,7 @@ import {
     SøkersituasjonFp,
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -96,14 +96,6 @@ const søkerInfoMann = {
     fødselsdato: '1972-06-07',
 } as PersonFrontend;
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -127,28 +119,27 @@ type StoryArgs = {
 const meta = {
     title: 'steps/FordelingSteg',
     component: FordelingSteg,
+    decorators: [withQueryClient],
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, dekningsgrad, ...rest }) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.OM_BARNET]: barnet,
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harHattAndreInntektskilder: false,
-                                harJobbetSomFrilans: false,
-                                harJobbetSomSelvstendigNæringsdrivende: false,
-                            },
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
-                        }}
-                    >
-                        <FordelingSteg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.OM_BARNET]: barnet,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattAndreInntektskilder: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                    }}
+                >
+                    <FordelingSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;

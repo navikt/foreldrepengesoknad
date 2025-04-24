@@ -1,31 +1,26 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
+import { withQueryClient } from '@navikt/fp-utils-test';
+
 import { OversiktRoutes } from '../../routes/routes';
 import { TidslinjePage } from './TidslinjePage';
-
-const queryClient = new QueryClient();
 
 const meta = {
     title: 'TidslinjePage',
     component: TidslinjePage,
+    decorators: [withQueryClient],
     render: (props) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
-                    <Routes>
-                        <Route
-                            element={<TidslinjePage {...props} />}
-                            path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
+                <Routes>
+                    <Route element={<TidslinjePage {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof TidslinjePage>;

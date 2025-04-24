@@ -1,6 +1,5 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -10,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { AnnenForelder, Barn, BarnType, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
 
@@ -104,14 +104,6 @@ const fellesProps = {
     avbrytSøknad: action('button-click'),
 };
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 type StoryArgs = {
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
@@ -122,27 +114,26 @@ type StoryArgs = {
 const meta = {
     title: 'steps/PeriodeMedForeldrepengerSteg',
     component: PeriodeMedForeldrepengerSteg,
+    decorators: [withQueryClient],
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, ...rest }) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.OM_BARNET]: barnet,
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harHattAndreInntektskilder: false,
-                                harJobbetSomFrilans: false,
-                                harJobbetSomSelvstendigNæringsdrivende: false,
-                            },
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        }}
-                    >
-                        <PeriodeMedForeldrepengerSteg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.OM_BARNET]: barnet,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattAndreInntektskilder: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                    }}
+                >
+                    <PeriodeMedForeldrepengerSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
