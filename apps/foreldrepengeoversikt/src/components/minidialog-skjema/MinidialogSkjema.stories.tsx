@@ -1,28 +1,20 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 
-import { MinidialogSkjema } from './MinidialogSkjema';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
+import { MinidialogSkjema } from './MinidialogSkjema';
 
 const meta = {
     title: 'MinidialogSkjema',
     component: MinidialogSkjema,
+    decorators: [withQueryClient],
     render: (props) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <div style={{ backgroundColor: 'white', padding: '50px' }}>
-                    <MinidialogSkjema {...props} />
-                </div>
-            </QueryClientProvider>
+            <div style={{ backgroundColor: 'white', padding: '50px' }}>
+                <MinidialogSkjema {...props} />
+            </div>
         );
     },
 } satisfies Meta<typeof MinidialogSkjema>;

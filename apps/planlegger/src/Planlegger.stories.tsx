@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
@@ -8,20 +7,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { withQueryClient } from '@navikt/fp-utils-test';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 
 import { PlanleggerDataFetcher } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
 
 const STØNADSKONTOER = {
     '100': {
@@ -108,6 +100,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const meta = {
     title: 'PlanleggerDataFetcher',
     component: PlanleggerDataFetcher,
+    decorators: [withQueryClient],
     parameters: {
         msw: {
             handlers: [
@@ -137,11 +130,9 @@ const meta = {
                 <MemoryRouter>
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                         <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
-                            <QueryClientProvider client={queryClient}>
-                                <PlanleggerDataContext initialState={{}}>
-                                    <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
-                                </PlanleggerDataContext>
-                            </QueryClientProvider>
+                            <PlanleggerDataContext initialState={{}}>
+                                <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
+                            </PlanleggerDataContext>
                         </ErrorBoundary>
                     </IntlProvider>
                 </MemoryRouter>

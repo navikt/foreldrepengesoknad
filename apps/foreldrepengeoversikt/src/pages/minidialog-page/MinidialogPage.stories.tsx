@@ -1,29 +1,27 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
+import { withQueryClient } from '@navikt/fp-utils-test';
+
 import { OversiktRoutes } from './../../routes/routes';
 import { MinidialogPage } from './MinidialogPage';
-
-const queryClient = new QueryClient();
 
 const meta = {
     title: 'MinidialogPage',
     component: MinidialogPage,
+    decorators: [withQueryClient],
     render: (props) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079/1111111112`]}>
-                    <Routes>
-                        <Route
-                            element={<MinidialogPage {...props} />}
-                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer/:oppgaveId`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079/1111111112`]}>
+                <Routes>
+                    <Route
+                        element={<MinidialogPage {...props} />}
+                        path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer/:oppgaveId`}
+                    />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof MinidialogPage>;

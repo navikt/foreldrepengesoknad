@@ -1,6 +1,5 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -11,6 +10,7 @@ import { AnnenInntektType } from 'types/AnnenInntekt';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, Situasjon, Søkerinfo } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
 
@@ -91,14 +91,6 @@ const defaultArbeidsforholdOgInntekt = {
     harJobbetSomSelvstendigNæringsdrivende: false,
 };
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 type StoryArgs = {
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
@@ -111,6 +103,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
+    decorators: [withQueryClient],
     parameters: {
         msw: {
             handlers: [
@@ -131,26 +124,24 @@ const meta = {
         ...rest
     }) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.UTTAKSPLAN]: [],
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            [ContextDataType.OM_BARNET]: barn,
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                            [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
-                            [ContextDataType.SØKERSITUASJON]: {
-                                rolle: 'mor',
-                                situasjon: situasjon,
-                            },
-                        }}
-                    >
-                        <ManglendeVedlegg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTTAKSPLAN]: [],
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle: 'mor',
+                            situasjon: situasjon,
+                        },
+                    }}
+                >
+                    <ManglendeVedlegg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;

@@ -1,28 +1,23 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
+
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { DinSakHeader } from './Header';
 
-const queryClient = new QueryClient();
-
 const meta = {
     title: 'DinSakHeader',
     component: DinSakHeader,
+    decorators: [withQueryClient],
     render: (params) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
-                    <Routes>
-                        <Route
-                            element={<DinSakHeader {...params} />}
-                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
+                <Routes>
+                    <Route element={<DinSakHeader {...params} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof DinSakHeader>;

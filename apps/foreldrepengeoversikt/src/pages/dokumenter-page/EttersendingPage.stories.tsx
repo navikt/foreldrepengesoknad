@@ -1,26 +1,24 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 
+import { withQueryClient } from '@navikt/fp-utils-test';
+
 import { OversiktRoutes } from './../../routes/routes';
 import { DokumenterPage } from './DokumenterPage';
-
-const queryClient = new QueryClient();
 
 const meta = {
     title: 'DokumenterPage',
     component: DokumenterPage,
+    decorators: [withQueryClient],
     render: () => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.DOKUMENTER}/1`]}>
-                    <Routes>
-                        <Route element={<DokumenterPage />} path={`/${OversiktRoutes.DOKUMENTER}/:saksnummer`} />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.DOKUMENTER}/1`]}>
+                <Routes>
+                    <Route element={<DokumenterPage />} path={`/${OversiktRoutes.DOKUMENTER}/:saksnummer`} />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof DokumenterPage>;
