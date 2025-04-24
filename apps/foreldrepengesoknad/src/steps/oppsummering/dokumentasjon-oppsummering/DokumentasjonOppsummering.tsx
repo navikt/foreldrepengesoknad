@@ -41,7 +41,25 @@ const skalViseVedlegg = (
         return false;
     }
 
-    return true;
+    // Sjekk om det er noen gyldige answers å vise
+    const harGyldigeAnswers =
+        alleVedlegg &&
+        Object.values(alleVedlegg).some((vedleggListe) => {
+            if (vedleggListe.length === 0) return false;
+
+            const førsteVedlegg = vedleggListe[0];
+            if (
+                førsteVedlegg.innsendingsType === InnsendingsType.SEND_SENERE &&
+                førsteVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON &&
+                førsteVedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR &&
+                !(trengerDokumentereMorsArbeid ?? false)
+            ) {
+                return false;
+            }
+            return true;
+        });
+
+    return harGyldigeAnswers;
 };
 
 export const DokumentasjonOppsummering = ({

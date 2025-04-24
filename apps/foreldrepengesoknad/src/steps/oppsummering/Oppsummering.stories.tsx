@@ -891,6 +891,135 @@ export const VisMorTrengerIkkeDokumentereArbeid: Story = {
     },
 };
 
+export const VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    arbeidsgiverId: '1',
+                    arbeidsgiverIdType: 'orgnr',
+                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    fom: '2020-01-01',
+                },
+            ],
+        },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Mor',
+            etternavn: 'Morsen',
+            fnr: '02520489226',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erInformertOmSøknaden: true,
+        },
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                    const needsDocumentation = MORS_STILLINGSPROSENT <= 80;
+                    console.log('Returning needsDocumentation:', needsDocumentation);
+                    return HttpResponse.json(needsDocumentation);
+                }),
+            ],
+        },
+    },
+};
+
+const MORS_STILLINGSPROSENT2 = 79; // Endret til under 80 for testing
+
+export const VisMorTrengerDokumentereArbeid: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    arbeidsgiverId: '1',
+                    arbeidsgiverIdType: 'orgnr',
+                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    fom: '2020-01-01',
+                },
+            ],
+        },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Mor',
+            etternavn: 'Morsen',
+            fnr: '02520489226',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erInformertOmSøknaden: true,
+        },
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                    const needsDocumentation = MORS_STILLINGSPROSENT2 <= 80;
+                    console.log('Returning needsDocumentation:', needsDocumentation);
+                    return HttpResponse.json(needsDocumentation);
+                }),
+            ],
+        },
+    },
+};
+
 // 1. Test der mor jobber over 80% og ikke trenger å dokumentere jobb
 // 2. Test der mor jobber under 80% og må dokumentere jobb
 // 3. Test der mor jobber under 80% men skal studier, skal trigge uttak dok krav til studier
