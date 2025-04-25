@@ -830,9 +830,7 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
-const MORS_STILLINGSPROSENT = 81; // Endret til under 80 for testing
-
-export const VisMorTrengerIkkeDokumentereArbeid: Story = {
+export const MorTrengerIkkeDokumentereArbeid: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -846,7 +844,7 @@ export const VisMorTrengerIkkeDokumentereArbeid: Story = {
                     arbeidsgiverId: '1',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    stillingsprosent: 80,
                     fom: '2020-01-01',
                 },
             ],
@@ -882,16 +880,14 @@ export const VisMorTrengerIkkeDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    const needsDocumentation = MORS_STILLINGSPROSENT <= 80;
-                    console.log('Returning needsDocumentation:', needsDocumentation);
-                    return HttpResponse.json(needsDocumentation);
+                    return HttpResponse.json(false);
                 }),
             ],
         },
     },
 };
 
-export const VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+export const MorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -905,7 +901,7 @@ export const VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
                     arbeidsgiverId: '1',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    stillingsprosent: 80,
                     fom: '2020-01-01',
                 },
             ],
@@ -950,18 +946,14 @@ export const VisMorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
         msw: {
             handlers: [
                 http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    const needsDocumentation = MORS_STILLINGSPROSENT <= 80;
-                    console.log('Returning needsDocumentation:', needsDocumentation);
-                    return HttpResponse.json(needsDocumentation);
+                    return HttpResponse.json(false);
                 }),
             ],
         },
     },
 };
 
-const MORS_STILLINGSPROSENT2 = 79; // Endret til under 80 for testing
-
-export const VisMorTrengerDokumentereArbeid: Story = {
+export const MorTrengerDokumentereArbeid: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -975,7 +967,7 @@ export const VisMorTrengerDokumentereArbeid: Story = {
                     arbeidsgiverId: '1',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: MORS_STILLINGSPROSENT,
+                    stillingsprosent: 50,
                     fom: '2020-01-01',
                 },
             ],
@@ -1011,9 +1003,7 @@ export const VisMorTrengerDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    const needsDocumentation = MORS_STILLINGSPROSENT2 <= 80;
-                    console.log('Returning needsDocumentation:', needsDocumentation);
-                    return HttpResponse.json(needsDocumentation);
+                    return HttpResponse.json(true);
                 }),
             ],
         },

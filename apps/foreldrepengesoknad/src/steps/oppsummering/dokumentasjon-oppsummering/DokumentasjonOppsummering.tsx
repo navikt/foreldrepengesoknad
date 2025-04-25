@@ -6,7 +6,7 @@ import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 
-import { useTrengerDokumentereMorsArbeid } from '../../../hooks/useTrengerDokumentereMorsarbeid';
+import { useTrengerDokumentereMorsArbeid } from '../../../utils/hooks/useTrengerDokumentereMorsarbeid';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
