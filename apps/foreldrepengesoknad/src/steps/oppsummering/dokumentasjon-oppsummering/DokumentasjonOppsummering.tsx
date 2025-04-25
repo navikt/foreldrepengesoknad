@@ -137,7 +137,7 @@ export const DokumentasjonOppsummering = ({
                                         )}
                                     </FormSummary.Label>
                                     <FormSummary.Value>
-                                        <VStack>
+                                        <VStack gap="2">
                                             {idOgVedlegg[1]
                                                 .filter(
                                                     (vedlegg) =>
