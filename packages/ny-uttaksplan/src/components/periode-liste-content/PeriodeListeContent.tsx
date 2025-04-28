@@ -124,7 +124,9 @@ export const PeriodeListeContent = ({
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const erRedigerbar =
-        permisjonsperiode.perioder.find((p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p)) === undefined;
+        permisjonsperiode.perioder.find(
+            (p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
+        ) === undefined;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));

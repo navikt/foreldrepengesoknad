@@ -6,7 +6,9 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 
 import { Planperiode } from '../../../types/Planperiode';
+import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../EndrePeriodeModal';
@@ -26,6 +28,8 @@ interface FormValues {
     tom: string | undefined;
     kontoType: StønadskontoType;
     forelder?: Forelder;
+    skalDuJobbe: boolean;
+    stillingsprosent?: number;
 }
 
 export const EndrePeriodeModalStep = ({
@@ -37,13 +41,17 @@ export const EndrePeriodeModalStep = ({
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
-    const { valgtPeriode } = modalData;
+    const { valgtPeriode, årsak } = modalData;
+    const graderingsInfo = getGraderingsInfo(valgtPeriode);
+
     const formMethods = useForm<FormValues>({
         defaultValues: {
             fom: modalData.valgtPeriode?.fom,
             tom: modalData.valgtPeriode?.tom,
             forelder: modalData.valgtPeriode?.forelder,
             kontoType: modalData.valgtPeriode?.kontoType,
+            skalDuJobbe: graderingsInfo?.skalDuJobbe,
+            stillingsprosent: graderingsInfo?.stillingsprosent,
         },
     });
 
@@ -69,6 +77,7 @@ export const EndrePeriodeModalStep = ({
             tom: values.tom ?? valgtPeriode!.tom,
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
             kontoType: values.kontoType,
+            gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
         });
         closeModal();
     };
@@ -81,8 +90,9 @@ export const EndrePeriodeModalStep = ({
                     formMethods={formMethods}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
-                    valgtPeriode={valgtPeriode}
+                    oppholdsårsak={årsak}
                 />
+                <GraderingSpørsmål formMethods={formMethods} />
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={

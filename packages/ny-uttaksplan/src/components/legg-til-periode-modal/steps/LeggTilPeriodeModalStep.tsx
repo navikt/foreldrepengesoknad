@@ -135,7 +135,7 @@ export const LeggTilPeriodeModalStep = ({
                 ) : null}
                 {isOpphold ? (
                     <>
-                        <OppholdsÅrsakSpørsmål />{' '}
+                        <OppholdsÅrsakSpørsmål />
                         <TidsperiodeSpørsmål
                             formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}

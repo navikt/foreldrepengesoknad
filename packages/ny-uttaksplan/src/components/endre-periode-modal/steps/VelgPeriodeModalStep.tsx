@@ -35,9 +35,11 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
     });
 
     const onSubmit = (values: FormValues) => {
+        const valgtPeriode = perioder.find((p) => p.id === values.periodeId);
+
         setModalData({
             ...modalData,
-            valgtPeriode: perioder.find((p) => p.id === values.periodeId),
+            valgtPeriode,
             currentStep: 'step2',
         });
     };
