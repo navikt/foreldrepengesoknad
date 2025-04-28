@@ -168,6 +168,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 handleOnPlanChange={handleOnPlanChange}
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
+                                erAleneOmOmsorg={erAleneforsørger}
                             />
                             <KvoteOppsummering
                                 hvemPlanleggerType={hvemPlanlegger.type}

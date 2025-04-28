@@ -17,6 +17,7 @@ export enum UttaksplanContextDataType {
     FAMILIESITUASJON = 'FAMILIESITUASJON',
     MODUS = 'MODUS',
     VALGT_STØNADSKONTO = 'VALGT_STØNADSKONTO',
+    ALENE_OM_OMSORG = 'ALENE_OM_OMSORG',
 }
 
 export type UttaksplanContextDataMap = {
@@ -28,6 +29,7 @@ export type UttaksplanContextDataMap = {
     [UttaksplanContextDataType.FAMILIESITUASJON]?: Familiesituasjon;
     [UttaksplanContextDataType.MODUS]?: UttaksplanModus;
     [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: TilgjengeligeStønadskontoerForDekningsgrad;
+    [UttaksplanContextDataType.ALENE_OM_OMSORG]?: boolean;
 };
 
 const defaultInitialState = {} as UttaksplanContextDataMap;

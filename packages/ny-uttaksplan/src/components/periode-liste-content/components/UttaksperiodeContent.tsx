@@ -7,11 +7,12 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
 import { MorsAktivitet } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
-import { assertUnreachable } from '@navikt/fp-validation';
+import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
-import { getStønadskontoNavnSimple } from '../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
     periode: Planperiode;
@@ -84,7 +85,14 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
 
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const stønadskontoNavn = getStønadskontoNavnSimple(intl, periode.kontoType!);
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        periode.kontoType!,
+        navnPåForeldre,
+        erFarEllerMedmor,
+        erAleneOmOmsorg,
+    );
 
     return (
         <div style={{ marginBottom: '2rem', display: 'flex' }}>

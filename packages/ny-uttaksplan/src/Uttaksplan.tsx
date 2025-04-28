@@ -38,6 +38,7 @@ interface Props {
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
     modus: UttaksplanModus;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
+    erAleneOmOmsorg: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -55,6 +56,7 @@ export const UttaksplanNy = ({
     handleOnPlanChange,
     modus,
     valgtStønadskonto,
+    erAleneOmOmsorg,
 }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const søkersPlanperioder = finnOgSettInnHull(
@@ -170,6 +172,7 @@ export const UttaksplanNy = ({
                 FAMILIESITUASJON: familiesituasjon,
                 MODUS: modus,
                 VALGT_STØNADSKONTO: valgtStønadskonto,
+                ALENE_OM_OMSORG: erAleneOmOmsorg,
             }}
         >
             {komplettPlan.length > 0 && (
