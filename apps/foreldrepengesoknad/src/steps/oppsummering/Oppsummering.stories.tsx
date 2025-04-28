@@ -187,6 +187,26 @@ const defaultVedlegg = {
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
 };
 
+const annenForelderKariNordmann = {
+    erAleneOmOmsorg: false,
+    fornavn: 'Kari',
+    etternavn: 'Nordmann',
+    fnr: '02520489226',
+    harRettPåForeldrepengerINorge: true,
+    kanIkkeOppgis: false,
+    erInformertOmSøknaden: true,
+};
+
+const arbeidsforholdMorJobber80Prosent = [
+    {
+        arbeidsgiverId: '1',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+        stillingsprosent: 80,
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+    },
+];
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -830,7 +850,7 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
-export const MorTrengerIkkeDokumentereArbeid: Story = {
+export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -839,25 +859,9 @@ export const MorTrengerIkkeDokumentereArbeid: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
-            arbeidsforhold: [
-                {
-                    arbeidsgiverId: '1',
-                    arbeidsgiverIdType: 'orgnr',
-                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: 80,
-                    fom: '2020-01-01',
-                },
-            ],
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
         },
-        annenForelder: {
-            erAleneOmOmsorg: false,
-            fornavn: 'Mor',
-            etternavn: 'Morsen',
-            fnr: '02520489226',
-            harRettPåForeldrepengerINorge: true,
-            kanIkkeOppgis: false,
-            erInformertOmSøknaden: true,
-        },
+        annenForelder: annenForelderKariNordmann,
         vedlegg: {
             ...defaultVedlegg,
             [Skjemanummer.DOK_ARBEID_MOR]: [
@@ -887,7 +891,7 @@ export const MorTrengerIkkeDokumentereArbeid: Story = {
     },
 };
 
-export const MorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -896,25 +900,9 @@ export const MorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
-            arbeidsforhold: [
-                {
-                    arbeidsgiverId: '1',
-                    arbeidsgiverIdType: 'orgnr',
-                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: 80,
-                    fom: '2020-01-01',
-                },
-            ],
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
         },
-        annenForelder: {
-            erAleneOmOmsorg: false,
-            fornavn: 'Mor',
-            etternavn: 'Morsen',
-            fnr: '02520489226',
-            harRettPåForeldrepengerINorge: true,
-            kanIkkeOppgis: false,
-            erInformertOmSøknaden: true,
-        },
+        annenForelder: annenForelderKariNordmann,
         vedlegg: {
             ...defaultVedlegg,
             [Skjemanummer.DOK_ARBEID_MOR]: [
@@ -953,7 +941,7 @@ export const MorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
     },
 };
 
-export const MorTrengerDokumentereArbeid: Story = {
+export const FarSøkerMorMåDokumentereArbeid: Story = {
     args: {
         ...Default.args,
         søkersituasjon: {
@@ -964,23 +952,12 @@ export const MorTrengerDokumentereArbeid: Story = {
             ...defaultSøkerinfoFar,
             arbeidsforhold: [
                 {
-                    arbeidsgiverId: '1',
-                    arbeidsgiverIdType: 'orgnr',
-                    arbeidsgiverNavn: 'Mors Arbeidsplass AS',
-                    stillingsprosent: 50,
-                    fom: '2020-01-01',
+                    ...arbeidsforholdMorJobber80Prosent[0],
+                    stillingsprosent: 70,
                 },
             ],
         },
-        annenForelder: {
-            erAleneOmOmsorg: false,
-            fornavn: 'Mor',
-            etternavn: 'Morsen',
-            fnr: '02520489226',
-            harRettPåForeldrepengerINorge: true,
-            kanIkkeOppgis: false,
-            erInformertOmSøknaden: true,
-        },
+        annenForelder: annenForelderKariNordmann,
         vedlegg: {
             ...defaultVedlegg,
             [Skjemanummer.DOK_ARBEID_MOR]: [

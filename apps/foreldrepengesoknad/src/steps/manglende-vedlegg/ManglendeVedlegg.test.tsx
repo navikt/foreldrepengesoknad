@@ -9,12 +9,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 
 import * as stories from './ManglendeVedlegg.stories';
 
-const {
-    Termindatodokumentasjon,
-    Omsorgsovertakelsedokumentasjon,
-    Aleneomsorgdokumentasjon,
-    MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid,
-} = composeStories(stories);
+const { Termindatodokumentasjon, Omsorgsovertakelsedokumentasjon, Aleneomsorgdokumentasjon } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
     it('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {

@@ -298,7 +298,7 @@ export const HarAndreInntektskilderEtterlønn: Story = {
     },
 };
 
-export const MorJobberMerEnn80ProsentOgTrengerIkkeDokumentereArbeid: Story = {
+export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = {
     args: {
         søkerInfo: defaultSøkerinfoFar,
         rolle: 'far',
@@ -356,7 +356,7 @@ export const MorJobberMerEnn80ProsentOgTrengerIkkeDokumentereArbeid: Story = {
     },
 };
 
-export const MorTrengerIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
     args: {
         søkerInfo: defaultSøkerinfoFar,
         rolle: 'far',

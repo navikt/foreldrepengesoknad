@@ -1,22 +1,15 @@
 import { composeStories } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
-import { HttpResponse, http } from 'msw';
-import { setupServer } from 'msw/node';
-import { MemoryRouter } from 'react-router-dom';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 import { vi } from 'vitest';
 
-import { AnnenForelderOppgitt, BarnType, MorsAktivitet, Periode, UfødtBarn } from '@navikt/fp-common';
-import { AttachmentType, DDMMYYYY_DATE_FORMAT, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
-import { IntlProvider } from '@navikt/fp-ui';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
-import nbMessages from '../../intl/nb_NO.json';
-import { Oppsummering } from './Oppsummering';
 import * as stories from './Oppsummering.stories';
 
 const {
@@ -31,153 +24,10 @@ const {
     MorMedAleneOmsorg,
     FarMedAleneOmsorg,
     ErEndringssøknad,
+    FarSøkerMorMåIkkeDokumentereArbeid,
+    FarSøkerMorMåDokumentereArbeid,
+    FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
 } = composeStories(stories);
-
-const server = setupServer();
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
-const mockBarn: UfødtBarn = {
-    type: BarnType.UFØDT,
-    termindato: '2024-01-01',
-    antallBarn: 1,
-};
-
-const mockUttaksplan: Periode[] = [
-    {
-        type: 'UTTAK',
-        tidsperiode: {
-            fom: new Date('2024-01-01'),
-            tom: new Date('2024-01-31'),
-        },
-        morsAktivitetIPerioden: {
-            type: 'arbeid',
-            prosent: 50,
-        } as unknown as MorsAktivitet,
-        årsak: 'UTTAK',
-        erArbeidstaker: true,
-        forelder: 'mor',
-        id: '1',
-    } as unknown as Periode,
-];
-
-const mockAnnenForelder: AnnenForelderOppgitt = {
-    fnr: '09876543210',
-    fornavn: 'Ola',
-    etternavn: 'Nordmann',
-    erAleneOmOmsorg: false,
-    kanIkkeOppgis: false,
-};
-
-const mockContext = {
-    [ContextDataType.OM_BARNET]: mockBarn,
-    [ContextDataType.UTTAKSPLAN]: mockUttaksplan,
-    [ContextDataType.ANNEN_FORELDER]: mockAnnenForelder,
-    [ContextDataType.SØKERSITUASJON]: {
-        situasjon: 'fødsel',
-        rolle: 'far',
-    },
-    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-        harJobbetSomFrilans: false,
-        harHattAndreInntektskilder: false,
-        harJobbetSomSelvstendigNæringsdrivende: false,
-    },
-    [ContextDataType.VEDLEGG]: {
-        [Skjemanummer.DOK_ARBEID_MOR]: [
-            {
-                id: '1',
-                filename: 'arbeidsavtale.pdf',
-                url: 'http://example.com/arbeidsavtale.pdf',
-                innsendingsType: InnsendingsType.SEND_SENERE,
-                type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                filesize: 1234,
-                file: new File(['abc'.repeat(100000)], 'arbeidsavtale.pdf'),
-                pending: false,
-                uploaded: true,
-            },
-        ],
-        [Skjemanummer.DOK_UTDANNING_MOR]: [
-            {
-                id: '2',
-                filename: 'utdanning.pdf',
-                url: 'http://example.com/utdanning.pdf',
-                innsendingsType: InnsendingsType.SEND_SENERE,
-                type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-                skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
-                filesize: 1234,
-                file: new File(['abc'.repeat(100000)], 'utdanning.pdf'),
-                pending: false,
-                uploaded: true,
-            },
-        ],
-    },
-};
-
-const mockNavnPåForeldre = {
-    mor: 'Mor',
-    farMedmor: 'Far',
-};
-
-const mockUttaksperioderSomManglerVedlegg: Periode[] = [];
-
-const defaultProps = {
-    erEndringssøknad: false,
-    sendSøknad: () => Promise.resolve(),
-    avbrytSøknad: () => {},
-    mellomlagreSøknadOgNaviger: () => Promise.resolve(),
-    søkerInfo: {
-        søker: {
-            fnr: '12345678910',
-            fornavn: 'Kari',
-            etternavn: 'Nordmann',
-        },
-    },
-};
-
-const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: nbMessages,
-};
-
-const renderWithContext = (props: any) => {
-    return render(
-        <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-                    <FpDataContext
-                        initialState={{
-                            [ContextDataType.OM_BARNET]: mockBarn,
-                            [ContextDataType.UTTAKSPLAN]: mockUttaksplan,
-                            [ContextDataType.ANNEN_FORELDER]: mockAnnenForelder,
-                            [ContextDataType.SØKERSITUASJON]: {
-                                situasjon: 'fødsel',
-                                rolle: 'far',
-                            },
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harJobbetSomFrilans: false,
-                                harHattAndreInntektskilder: false,
-                                harJobbetSomSelvstendigNæringsdrivende: false,
-                            },
-                            [ContextDataType.VEDLEGG]: mockContext[ContextDataType.VEDLEGG],
-                        }}
-                    >
-                        <Oppsummering {...props} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
-        </IntlProvider>,
-    );
-};
 
 describe('<Oppsummering>', () => {
     const getParentDiv = (element: HTMLElement) => within(notEmpty(element.closest('div')));
@@ -547,42 +397,117 @@ describe('<Oppsummering>', () => {
         });
     });
 
-    it('skal vise dokumentasjon for mors arbeid når mor trenger å dokumentere arbeid', async () => {
-        server.use(
-            http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                return HttpResponse.json(true);
-            }),
-        );
+    it('far søker, skal ikke vise at dokumentasjon for mors arbeid mangler', async () => {
+        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
 
-        renderWithContext({
-            ...defaultProps,
-            vedlegg: mockContext[ContextDataType.VEDLEGG],
-            erSøkerFarEllerMedmor: true,
-            navnPåForeldre: mockNavnPåForeldre,
-            uttaksperioderSomManglerVedlegg: mockUttaksperioderSomManglerVedlegg,
-            onVilEndreSvar: () => Promise.resolve(),
-        });
+        render(<FarSøkerMorMåIkkeDokumentereArbeid />);
 
-        expect(await screen.findByText('arbeidsavtale.pdf')).toBeInTheDocument();
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                'Kari Nordmann, 02520489226',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
+                'Ja',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+
+        expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
+        await expect(
+            screen.queryByText(
+                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+            ),
+        ).not.toBeInTheDocument();
     });
 
-    it('skal vise dokumentasjon for både mors arbeid og utdanning når mor ikke trenger å dokumentere arbeid, men må dokumentere utdanning', async () => {
-        server.use(
-            http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                return HttpResponse.json(false);
-            }),
-        );
+    it('far søker, skal ikke vise at dokumentasjon for mors arbeid mangler, men at dokumentasjon for utdanning må mangler', async () => {
+        await applyRequestHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
+        render(<FarSøkerMorMåDokumentereArbeid />);
 
-        renderWithContext({
-            ...defaultProps,
-            vedlegg: mockContext[ContextDataType.VEDLEGG],
-            erSøkerFarEllerMedmor: true,
-            navnPåForeldre: mockNavnPåForeldre,
-            uttaksperioderSomManglerVedlegg: mockUttaksperioderSomManglerVedlegg,
-            onVilEndreSvar: () => Promise.resolve(),
-        });
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        expect(await screen.findByText('arbeidsavtale.pdf')).toBeInTheDocument();
-        expect(await screen.findByText('utdanning.pdf')).toBeInTheDocument();
+        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                'Kari Nordmann, 02520489226',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
+                'Ja',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+            ),
+        ).not.toBeInTheDocument();
+
+        expect(screen.getByText('Dokumentasjon på at mor studerer (mangler)')).toBeInTheDocument();
+        expect(screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. ')).toBeInTheDocument();
+    });
+
+    it('far søker, skal vise at dokumentasjon for mors arbeid mangler', async () => {
+        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
+        render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                'Kari Nordmann, 02520489226',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
+                'Ja',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Dokumentasjon på at mor er i arbeid (mangler)')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+            ),
+        ).toBeInTheDocument();
     });
 });
