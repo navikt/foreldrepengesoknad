@@ -96,6 +96,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             modus="innsyn"
                             handleOnPlanChange={() => null}
                             valgtStønadskonto={{} as any}
+                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                         <KvoteOversikt />
                     </>
