@@ -40,13 +40,10 @@ export const useTrengerDokumentereMorsArbeid = () => {
     const annenPartFødselsnummer =
         annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
-
-    // fallback-konfigurasjon når params er undefined
-    const queryOptions = dokumentereMorsArbeidParams
-        ? trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams)
-        : { queryKey: ['trengerDokumentereMorsArbeid'], enabled: false };
-
-    const { data: trengerDokumentereMorsArbeid = true } = useQuery(queryOptions);
+    // Funksjonen håndterer enabled-logikken internt basert på om data er tilgjengelig
+    const { data: trengerDokumentereMorsArbeid = true } = useQuery(
+        trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
+    );
 
     return trengerDokumentereMorsArbeid;
 };

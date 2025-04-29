@@ -511,7 +511,7 @@ describe('<Oppsummering>', () => {
                 'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.',
             ),
         ).not.toBeInTheDocument();
-        // Denne feiler, men vises korrekt i storybook.
+        // TODO: Denne feiler, men vises korrekt i storybook.
         // await expect(screen.getByText('Dokumentasjon på at mor studerer')).toBeInTheDocument();
         // await expect(screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. ')).toBeInTheDocument();
     });

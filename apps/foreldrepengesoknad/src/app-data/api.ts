@@ -52,11 +52,16 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
         enabled,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
+export const trengerDokumentereMorsArbeidOptions = (data?: DokumentereMorsArbeidParams) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
-        queryFn: () =>
-            ky
+        queryFn: () => {
+            if (!data) {
+                return Promise.resolve(true); // Default til true hvis data er undefined
+            }
+            return ky
                 .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`, { json: data })
-                .json<boolean>(),
+                .json<boolean>();
+        },
+        enabled: !!data, // Aktiverer spørringen kun hvis data finnes
     });
