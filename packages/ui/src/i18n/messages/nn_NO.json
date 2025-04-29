@@ -70,5 +70,8 @@
     "RegisterdataUtdatert.Svangerskapspenger": "Svangerskapspengar",
     "RegisterdataUtdatert.StartPaNytt": "Start på nytt",
     "RegisterdataUtdatert.Heading": "Opplysningar er endra",
-    "RegisterdataUtdatert.Message": "Opplysningar om deg er endra sidan sist du fylte ut søknaden. Du må derfor starta utfyllinga av søknaden på nytt."
+    "RegisterdataUtdatert.Message": "Opplysningar om deg er endra sidan sist du fylte ut søknaden. Du må derfor starta utfyllinga av søknaden på nytt.",
+    "ProgressStepper.ShowSteps": "Vis alle steg",
+    "ProgressStepper.HideSteps": "Skjul alle steg",
+    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}"
 }
