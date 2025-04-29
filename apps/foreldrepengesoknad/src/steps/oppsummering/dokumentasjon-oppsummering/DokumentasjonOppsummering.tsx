@@ -25,12 +25,6 @@ const skalViseVedlegg = (
 ): boolean => {
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
-    console.log('Debug vedleggsvisning:', {
-        harVedlegg,
-        harSendSenereDokument,
-        trengerDokumentereMorsArbeid,
-    });
-
     if (!harVedlegg) {
         return false;
     }
