@@ -103,21 +103,21 @@ export const DokumentasjonOppsummering = ({
                     {alleVedlegg &&
                         Object.entries(alleVedlegg)
                             .filter((idOgVedlegg) => {
-                                // 1. Vedlegglisten er tom
+                                // Vedlegglisten er tom
                                 if (idOgVedlegg[1].length === 0) {
                                     return false;
                                 }
-
-                                // 2. Vedlegget er "Send senere" og det er dokumentasjon for mors arbeid,
-                                // men vi trenger ikke dokumentere mors arbeid og svar på hook viser at mor ikke må dokumentere
-                                // sitt arbeid
                                 const vedlegg = idOgVedlegg[1][0];
-                                if (
+
+                                // Skip dokumentasjon for mors arbeid når det ikke er nødvendig
+                                const erMorsArbeidsDokumentasjon =
                                     vedlegg.innsendingsType === InnsendingsType.SEND_SENERE &&
                                     vedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON &&
-                                    vedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR &&
-                                    !(trengerDokumentereMorsArbeid ?? false)
-                                ) {
+                                    vedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR;
+
+                                const skalDokumentereMorsArbeid = trengerDokumentereMorsArbeid ?? false;
+
+                                if (erMorsArbeidsDokumentasjon && !skalDokumentereMorsArbeid) {
                                     return false;
                                 }
                                 return true;
