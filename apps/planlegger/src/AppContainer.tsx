@@ -3,6 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { en, nb, nn } from '@navikt/ds-react/locales';
+
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
@@ -89,9 +92,22 @@ export const AppContainer = () => {
             >
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
+                    <Provider locale={getDsProviderLocale(locale)}>
+                        <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );
+};
+
+const getDsProviderLocale = (locale: LocaleAll) => {
+    switch (locale) {
+        case 'nn':
+            return nn;
+        case 'en':
+            return en;
+        default:
+            return nb;
+    }
 };
