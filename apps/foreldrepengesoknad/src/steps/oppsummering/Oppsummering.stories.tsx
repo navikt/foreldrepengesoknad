@@ -207,14 +207,6 @@ const arbeidsforholdMorJobber80Prosent = [
     },
 ];
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
@@ -260,8 +252,15 @@ const meta = {
         vedlegg = defaultVedlegg,
         ...rest
     }) => {
+        const freshQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        });
         return (
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={freshQueryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
                     <FpDataContext
                         onDispatch={gåTilNesteSide}

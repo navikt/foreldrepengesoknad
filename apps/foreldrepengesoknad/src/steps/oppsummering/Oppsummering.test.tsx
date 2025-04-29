@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -400,8 +400,8 @@ describe('<Oppsummering>', () => {
     // TODO: De gjenværende må det oppdateres slik at testene gjennomføres uavhengig av rekkefølge, msw-handler virker ikke å resettes som de skal.
 
     it('far søker, skal vise at dokumentasjon for mors arbeid mangler', async () => {
-        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
-        render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
+        await applyRequestHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
+        render(<FarSøkerMorMåDokumentereArbeid />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
@@ -466,6 +466,8 @@ describe('<Oppsummering>', () => {
             ).getByText('Ja'),
         ).toBeInTheDocument();
 
+        await waitForElementToBeRemoved(() => screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)'));
+
         expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
         expect(
             screen.queryByText(
@@ -476,8 +478,8 @@ describe('<Oppsummering>', () => {
     });
 
     it('far søker, skal ikke vise at dokumentasjon for mors arbeid mangler, men at dokumentasjon for utdanning må mangler', async () => {
-        await applyRequestHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
-        render(<FarSøkerMorMåDokumentereArbeid />);
+        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
+        render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
@@ -503,15 +505,12 @@ describe('<Oppsummering>', () => {
                 denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
             ).getByText('Ja'),
         ).toBeInTheDocument();
-
         expect(screen.queryByText('Dokumentasjon på at mor er i arbeid')).not.toBeInTheDocument();
         expect(
             screen.queryByText(
-                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
-                    ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.',
             ),
         ).not.toBeInTheDocument();
-
         // Denne feiler, men vises korrekt i storybook.
         // await expect(screen.getByText('Dokumentasjon på at mor studerer')).toBeInTheDocument();
         // await expect(screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. ')).toBeInTheDocument();

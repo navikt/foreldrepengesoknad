@@ -1,4 +1,3 @@
-// apps/foreldrepengesoknad/src/hooks/useTrengerDokumentereMorsArbeid.ts
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
