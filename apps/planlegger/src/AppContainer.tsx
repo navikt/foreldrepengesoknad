@@ -52,6 +52,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...enMessages,
         ...uiMessages.en,
         ...utilsMessages.en,
+        ...nyUttaksplanMessages.en,
         ...uttaksplanKalenderMessages.en,
     },
 };

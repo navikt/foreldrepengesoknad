@@ -26,7 +26,7 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
             </Heading>
             <RhfRadioGroup
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
-                label="Velg kontotype"
+                label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
                 name="kontoType"
             >
                 {valgtStønadskonto.kontoer.map((konto) => {
@@ -40,7 +40,7 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
             {kontoTypeValue === StønadskontoType.Fellesperiode && (
                 <RhfRadioGroup
                     validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
-                    label="Hvem gjelder fellesperioden?"
+                    label={intl.formatMessage({ id: 'KontotypeSpørsmål.hvemGjelder' })}
                     name="forelder"
                 >
                     <Radio value={Forelder.mor}>

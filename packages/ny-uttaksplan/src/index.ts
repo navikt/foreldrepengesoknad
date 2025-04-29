@@ -1,3 +1,4 @@
+import enMessages from './intl/en_US.json';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -29,6 +30,7 @@ export { KvoteOppsummering } from './KvoteOppsummering';
 export const nyUttaksplanMessages = {
     nb: nbMessages,
     nn: nnMessages,
+    en: enMessages,
 };
 
 export type { Planperiode } from './types/Planperiode';

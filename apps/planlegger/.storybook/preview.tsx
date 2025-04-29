@@ -28,7 +28,7 @@ dayjs.locale('nb');
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb, ...uttaksplanKalenderMessages.nb, ...nyUttaksplanMessages.nb },
     nn: { ...nnMessages, ...uiMessages.nn, ...uttaksplanKalenderMessages.nn, ...nyUttaksplanMessages.nn },
-    en: { ...enMessages, ...uiMessages.en, ...uttaksplanKalenderMessages.en },
+    en: { ...enMessages, ...uiMessages.en, ...uttaksplanKalenderMessages.en, ...nyUttaksplanMessages.en },
 });
 
 export const globalTypes = {
