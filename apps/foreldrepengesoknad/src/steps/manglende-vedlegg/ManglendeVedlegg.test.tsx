@@ -13,7 +13,7 @@ const {
     Termindatodokumentasjon,
     Omsorgsovertakelsedokumentasjon,
     Aleneomsorgdokumentasjon,
-    MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid,
+    FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
@@ -282,9 +282,9 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        applyRequestHandlers(MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid.parameters.msw);
+        applyRequestHandlers(FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
         const screen = render(
-            <MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid
+            <FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,

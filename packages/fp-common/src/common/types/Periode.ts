@@ -158,6 +158,9 @@ export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
     return periode.type === Periodetype.Uttak;
 }
 
+export const isHarMorsAktivitet = (periode: Periode): periode is Periode & { morsAktivitetIPerioden: unknown } =>
+    'morsAktivitetIPerioden' in periode;
+
 export const isForeldrepengerFørFødselUttaksperiode = (
     periode: Periode,
 ): periode is ForeldrepengerFørFødselUttaksperiode => {
