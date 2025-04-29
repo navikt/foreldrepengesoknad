@@ -2,6 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 
+import { Provider } from '@navikt/ds-react';
+import { nb } from '@navikt/ds-react/locales';
+
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -47,10 +50,12 @@ export const AppContainer = () => {
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools />
-                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <ByttBrowserModal />
-                    <Foreldrepengeoversikt />
-                </IntlProvider>
+                <Provider locale={nb}>
+                    <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                        <ByttBrowserModal />
+                        <Foreldrepengeoversikt />
+                    </IntlProvider>
+                </Provider>
             </QueryClientProvider>
         </ErrorBoundary>
     );

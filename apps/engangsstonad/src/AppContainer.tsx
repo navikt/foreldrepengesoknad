@@ -3,6 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { en, nb, nn } from '@navikt/ds-react/locales';
+
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
@@ -73,9 +76,22 @@ export const AppContainer = () => {
             <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    <Provider locale={getDsProviderLocale(locale)}>
+                        <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );
+};
+
+const getDsProviderLocale = (locale: LocaleAll) => {
+    switch (locale) {
+        case 'nn':
+            return nn;
+        case 'en':
+            return en;
+        default:
+            return nb;
+    }
 };
