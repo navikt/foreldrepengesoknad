@@ -75,7 +75,7 @@ export const AppContainer = () => {
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
+                    <Provider locale={locale === 'nb' ? nb : nn}>
                         <Svangerskapspengesøknad
                             locale={locale}
                             onChangeLocale={(activeLocale: LocaleNo) => {
@@ -89,13 +89,4 @@ export const AppContainer = () => {
             </ErrorBoundary>
         </IntlProvider>
     );
-};
-
-const getDsProviderLocale = (locale: LocaleNo) => {
-    switch (locale) {
-        case 'nn':
-            return nn;
-        default:
-            return nb;
-    }
 };
