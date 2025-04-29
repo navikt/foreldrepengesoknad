@@ -149,5 +149,11 @@
     "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Vacation cannot be scheduled during the first six weeks after birth.",
     "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Vacation cannot be scheduled during the first six weeks after the due date.",
     "endreTidsPeriodeModal.minDato": "The shared period cannot overlap with parental benefits before birth.",
-    "endreTidsPeriodeModal.maksDato": "The latest possible date for the period is {maxDate}"
+    "endreTidsPeriodeModal.maksDato": "The latest possible date for the period is {maxDate}",
+    "TidsperiodeSpørsmål.fom": "From date",
+    "TidsperiodeSpørsmål.tom": "To date",
+    "KontotypeSpørsmål.velgKontotype": "Select account type",
+    "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
+    "GraderingSpørsmål.HvorMangeProsent": "What percentage should you work?",
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit"
 }

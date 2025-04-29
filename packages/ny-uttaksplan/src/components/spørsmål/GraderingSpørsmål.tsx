@@ -33,7 +33,7 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
             {graderingValue && (
                 <RhfTextField
                     className="w-xs"
-                    label="Hvor mange prosent skal du jobbe?"
+                    label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
                     name="stillingsprosent"
                     validate={[prosentValideringGradering(intl)]}
                 />

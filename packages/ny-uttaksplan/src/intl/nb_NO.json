@@ -148,5 +148,11 @@
     "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikke legges inn de første seks ukene etter fødsel.",
     "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikke legges inn de første seks ukene etter termin.",
     "endreTidsPeriodeModal.minDato": "Fellesperioden kan ikke legges over foreldrepenger før fødsel.",
-    "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}"
+    "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}",
+    "TidsperiodeSpørsmål.fom": "Fra og med dato",
+    "TidsperiodeSpørsmål.tom": "Til og med dato",
+    "KontotypeSpørsmål.velgKontotype": "Velg kontotype",
+    "KontotypeSpørsmål.hvemGjelder": "Hvem gjelder fellesperioden?",
+    "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?",
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepenger"
 }

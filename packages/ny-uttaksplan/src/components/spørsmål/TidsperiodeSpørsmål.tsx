@@ -59,7 +59,7 @@ export const TidsperiodeSpørsmål = ({
                     showMonthAndYearDropdowns
                     minDate={minDate}
                     maxDate={maxDate}
-                    label="Fra og med dato"
+                    label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     name="fom"
                     disableWeekends={true}
                     validate={getFomValidators({
@@ -86,7 +86,7 @@ export const TidsperiodeSpørsmål = ({
                         årsak,
                         gjelderAdopsjon,
                     })}
-                    label="Til og med dato"
+                    label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
                     name="tom"
                     disableWeekends={true}
                     minDate={fomValue}

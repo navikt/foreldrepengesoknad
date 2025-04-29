@@ -173,7 +173,10 @@ export const getTekst = ({
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.samtidigUttak' });
     }
 
-    return erEgenPeriode ? `${navnPåForelder} har foreldrepenger` : `${navnPåAnnenForelder} har foreldrepenger`;
+    return intl.formatMessage(
+        { id: 'uttaksplan.periodeListeHeader.HarForeldrepenger' },
+        { navn: erEgenPeriode ? navnPåForelder : navnPåAnnenForelder },
+    );
 };
 
 type GetIkonProps = {
