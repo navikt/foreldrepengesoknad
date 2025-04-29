@@ -141,7 +141,7 @@
     "OmPlanleggerenSteg.Ingress": "Planleggeren er både for de som er i permisjon, venter barn og for de som planlegger å få barn.",
     "OmPlanleggerenSteg.Underoverskrift": "Planleggeren består av to deler:",
     "OmPlanleggerenSteg.Trinn1": "Man må svare på noen spørsmål",
-    "OmPlanleggerenSteg.Trinn2": "Så kan du se hvordan permisjonen din kan se ut",
+    "OmPlanleggerenSteg.Trinn2": "Så kan du se og tilpasse permisjonen",
     "OmPlanleggerenSteg.Start.Planlegger": "Start",
     "OmPlanleggerenSteg.TaVarePåHeader": "{erAlenesøker, select, true {Du} other {Dere}} kan ta vare på resultatet",
     "OmPlanleggerenSteg.TaVarePå": "Ved å kopiere lenken kan {erAlenesøker, select, true {du} other {dere}} ta vare på resultatet for å se på det senere, endre eller dele. Det {erAlenesøker, select, true {du} other {dere}} har oppgitt vil da bli synlig for den du deler med",
