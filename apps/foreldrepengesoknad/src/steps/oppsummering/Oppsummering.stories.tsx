@@ -883,9 +883,10 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    return HttpResponse.json(false);
-                }),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
             ],
         },
     },
@@ -933,9 +934,10 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    return HttpResponse.json(false);
-                }),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
             ],
         },
     },
@@ -979,9 +981,10 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
-                    return HttpResponse.json(true);
-                }),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+                ),
             ],
         },
     },

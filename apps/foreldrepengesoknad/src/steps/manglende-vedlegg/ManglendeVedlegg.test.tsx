@@ -9,7 +9,12 @@ import { Skjemanummer } from '@navikt/fp-constants';
 
 import * as stories from './ManglendeVedlegg.stories';
 
-const { Termindatodokumentasjon, Omsorgsovertakelsedokumentasjon, Aleneomsorgdokumentasjon } = composeStories(stories);
+const {
+    Termindatodokumentasjon,
+    Omsorgsovertakelsedokumentasjon,
+    Aleneomsorgdokumentasjon,
+    FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+} = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
     it('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {
@@ -277,9 +282,9 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        applyRequestHandlers(MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid.parameters.msw);
+        applyRequestHandlers(FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
         const screen = render(
-            <MorJobberMerEnn75ProsentOgTrengerIkkeDokumentereArbeid
+            <FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
