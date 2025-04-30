@@ -1,4 +1,4 @@
-import { ArrowRedoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowLeftIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -138,12 +138,10 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
                 </Heading>
 
-                <VStack gap="5">
+                <VStack gap="6">
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
-                    <VStack gap="10">
-                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-                    </VStack>
+                    <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
                     {visningsmodus === 'liste' && (
                         <>
                             <UttaksplanNy
@@ -170,6 +168,36 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneforsørger}
                             />
+                            <HStack gap="4">
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => {
+                                        lagreUttaksplan([originalUttaksplan]);
+                                    }}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
+                                </Button>
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => {
+                                        lagreUttaksplan([originalUttaksplan]);
+                                    }}
+                                >
+                                    Angre
+                                </Button>
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<TrashIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => setOpen(true)}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
+                                </Button>
+                            </HStack>
                             <KvoteOppsummering
                                 hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner
@@ -225,27 +253,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                             />
                         </div>
                     )}
-                    <HStack gap="4">
-                        <Button
-                            // TODO: Legg til funksjonalitet som gjør at denne gir feilmelding dersom det ikke er noe å angre på
-                            size="xsmall"
-                            variant="secondary"
-                            icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
-                            onClick={() => {
-                                lagreUttaksplan([originalUttaksplan]);
-                            }}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                        </Button>
-                        <Button
-                            size="xsmall"
-                            variant="secondary"
-                            icon={<TrashIcon aria-hidden height={24} width={24} />}
-                            onClick={() => setOpen(true)}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                        </Button>
-                    </HStack>
                 </VStack>
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
