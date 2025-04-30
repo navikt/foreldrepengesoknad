@@ -2,7 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
 
-import { Barn, Periode, isAnnenForelderOppgitt, isHarMorsAktivitet } from '@navikt/fp-common';
+import {
+    Barn,
+    Forelder,
+    Periode,
+    StønadskontoType,
+    isAnnenForelderOppgitt,
+    isHarMorsAktivitet,
+    isUttaksperiode,
+} from '@navikt/fp-common';
 import { isFødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -36,6 +44,14 @@ export const useTrengerDokumentereMorsArbeid = () => {
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const ønskerSamtidigUttakFarMedmor = uttaksplan.some(
+        (p) =>
+            isUttaksperiode(p) &&
+            p.ønskerSamtidigUttak === true &&
+            p.forelder === Forelder.farMedmor &&
+            p.konto === StønadskontoType.Fellesperiode &&
+            p.tidsperiode,
+    );
 
     const annenPartFødselsnummer =
         annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
@@ -45,5 +61,5 @@ export const useTrengerDokumentereMorsArbeid = () => {
         trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
     );
 
-    return trengerDokumentereMorsArbeid;
+    return trengerDokumentereMorsArbeid || ønskerSamtidigUttakFarMedmor;
 };

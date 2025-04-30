@@ -205,7 +205,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         >
             <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
-                    {/* {kreverIngenDokumentasjon && <IngenDokumentasjonPåkrevd />} */}
                     <MorInnlagtDokumentasjon
                         attachments={morInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}

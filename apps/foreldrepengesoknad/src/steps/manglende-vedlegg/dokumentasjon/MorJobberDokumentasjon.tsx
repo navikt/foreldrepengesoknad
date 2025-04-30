@@ -4,7 +4,15 @@ import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre, Periode, Situasjon, isAnnenForelderOppgitt, isUttaksperiode } from '@navikt/fp-common';
+import {
+    Forelder,
+    NavnPåForeldre,
+    Periode,
+    Situasjon,
+    StønadskontoType,
+    isAnnenForelderOppgitt,
+    isUttaksperiode,
+} from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, isFødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -39,6 +47,13 @@ export const MorJobberDokumentasjon = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
+    const inneholderSamtidigUttakFarMedmor = perioder.some(
+        (p) =>
+            isUttaksperiode(p) &&
+            p.ønskerSamtidigUttak === true &&
+            p.forelder === Forelder.farMedmor &&
+            p.konto === StønadskontoType.Fellesperiode,
+    );
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
     const trengerDokumentereMorsArbeid =
         useQuery({
@@ -53,7 +68,7 @@ export const MorJobberDokumentasjon = ({
         return null;
     }
 
-    if (!trengerDokumentereMorsArbeid) {
+    if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
         return <TrengerIkkeMorIArbeidDokumentasjon />;
     }
 
