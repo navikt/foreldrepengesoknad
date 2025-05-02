@@ -14,6 +14,8 @@ const {
     Omsorgsovertakelsedokumentasjon,
     Aleneomsorgdokumentasjon,
     FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+    FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
+    FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
@@ -297,6 +299,66 @@ describe('<ManglendeVedlegg>', () => {
                 // Delt i to for å unngå at linjelengden blir for lang
                 'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
                     'fra arbeidsgiver og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal vise krav om dokumentasjon for mors arbeid når stillingsprosenten er < 75%', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        applyRequestHandlers(FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid.parameters.msw);
+        const screen = render(
+            <FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                    ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        applyRequestHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
+        const screen = render(
+            <FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                    ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
