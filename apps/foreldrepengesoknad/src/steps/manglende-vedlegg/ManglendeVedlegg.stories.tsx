@@ -16,7 +16,6 @@ import {
     BarnType,
     Forelder,
     MorsAktivitet,
-    NavnPåForeldre,
     Periode,
     Periodetype,
     SivilstandType,
@@ -152,6 +151,8 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof ManglendeVedlegg>;
 
+// TODO: Kalle legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+
 const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
@@ -203,6 +204,16 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+const arbeidsforholdMorJobber80Prosent = [
+    {
+        arbeidsgiverId: '1',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+        stillingsprosent: 80,
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+    },
+];
 
 export const Termindatodokumentasjon: Story = {
     args: {
@@ -300,7 +311,10 @@ export const HarAndreInntektskilderEtterlønn: Story = {
 
 export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = {
     args: {
-        søkerInfo: defaultSøkerinfoFar,
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
         rolle: 'far',
         barn: {
             antallBarn: 1,
@@ -356,6 +370,72 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
     },
 };
 
+export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    ...arbeidsforholdMorJobber80Prosent[0],
+                    stillingsprosent: 70,
+                },
+            ],
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                id: '08499121-6620-16419-3321-0027063089154',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                tidsperiode: {
+                    fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
+                    tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
+                },
+                type: Periodetype.Uttak,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+            },
+            {
+                id: '0700701673-1838-30857-30810-219862607326',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: {
+                    fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
+                    tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
+                },
+                type: Periodetype.Uttak,
+                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: false,
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
 export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
     args: {
         søkerInfo: defaultSøkerinfoFar,
@@ -394,6 +474,65 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                 http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
                     return HttpResponse.json(true);
                 }),
+            ],
+        },
+    },
+};
+
+export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfoFar,
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                id: '08499121-6620-16419-3321-0027063089154',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                tidsperiode: {
+                    fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
+                    tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
+                },
+                type: Periodetype.Uttak,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: false,
+                samtidigUttakProsent: '100',
+            },
+            {
+                id: '0700701673-1838-30857-30810-219862607326',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: {
+                    fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
+                    tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
+                },
+                type: Periodetype.Uttak,
+                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: true,
+                samtidigUttakProsent: '100',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
             ],
         },
     },
