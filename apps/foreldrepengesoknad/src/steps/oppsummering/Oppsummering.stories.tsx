@@ -849,6 +849,9 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
+// TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+// TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
+
 export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
     args: {
         ...Default.args,
@@ -986,6 +989,98 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
                 ),
             ],
         },
+    },
+};
+
+export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
+        annenForelder: annenForelderKariNordmann,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    // Ny render-funksjon som overskriver uttaksplanen med samtidig uttak
+    render: (args) => {
+        const freshQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                    staleTime: 0,
+                },
+            },
+        });
+
+        // Ny uttaksplan med samtidig uttak
+        const uttaksplanMedSamtidigUttak = [
+            ...defaultUttaksplan.slice(0, 3), // Behold de første periodene
+            {
+                id: '3',
+                type: 'uttak',
+                forelder: 'MOR',
+                konto: 'FELLESPERIODE',
+                tidsperiode: {
+                    fom: new Date('2022-03-29T23:00:00.000Z'),
+                    tom: new Date('2022-06-06T23:00:00.000Z'),
+                },
+                ønskerSamtidigUttak: true,
+                gradert: false,
+            } as Periode,
+        ];
+
+        return (
+            <QueryClientProvider client={freshQueryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                    <FpDataContext
+                        onDispatch={args.gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: args.arbeidsforholdOgInntekt,
+                            [ContextDataType.FRILANS]: args.frilans,
+                            [ContextDataType.EGEN_NÆRING]: args.egenNæring,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: args.andreInntekter,
+                            [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                            [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
+                            [ContextDataType.UTTAKSPLAN_METADATA]: {
+                                ønskerJustertUttakVedFødsel: false,
+                                harUttaksplanBlittSlettet: false,
+                                antallUkerIUttaksplan: 1,
+                            },
+                            [ContextDataType.OM_BARNET]: args.barn || defaultBarn,
+                            [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
+                            [ContextDataType.VEDLEGG]: args.vedlegg,
+                        }}
+                    >
+                        <Oppsummering {...args} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
     },
 };
 
