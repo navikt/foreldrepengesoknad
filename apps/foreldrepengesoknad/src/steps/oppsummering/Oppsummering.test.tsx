@@ -27,6 +27,7 @@ const {
     FarSøkerMorMåIkkeDokumentereArbeid,
     FarSøkerMorMåDokumentereArbeid,
     FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
+    FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
@@ -36,7 +37,7 @@ describe('<Oppsummering>', () => {
         return getParentDiv(element);
     };
 
-    it('skal bekrefte vilkårene og sende inn søknad', async () => {
+    it('Skal bekrefte vilkårene og sende inn søknad', async () => {
         const sendSøknad = vi.fn();
 
         render(<Default sendSøknad={sendSøknad} />);
@@ -60,7 +61,7 @@ describe('<Oppsummering>', () => {
         expect(sendSøknad).toHaveBeenCalledTimes(1);
     });
 
-    it('skal vise informasjon om barnet, men har ikke info om andre foreldre eller arbeidsforhold', async () => {
+    it('Skal vise informasjon om barnet, men har ikke info om andre foreldre eller arbeidsforhold', async () => {
         render(<Default />);
 
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
@@ -78,7 +79,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om farskapserklæring', async () => {
+    it('Skal vise informasjon om farskapserklæring', async () => {
         render(<MorMedAnnenForelderUgift />);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
@@ -142,7 +143,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om adoptert barn', async () => {
+    it('Skal vise informasjon om adoptert barn', async () => {
         render(<MorMedAdoptertBarn />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -161,7 +162,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om utenlandsopphold', async () => {
+    it('Skal vise informasjon om utenlandsopphold', async () => {
         render(<MorMedUtenlandsopphold />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -185,7 +186,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
+    it('Skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
         render(<MorMedArbeidsforholdOgAndreInntekter />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
@@ -220,7 +221,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om uttaksplan', async () => {
+    it('Skal vise informasjon om uttaksplan', async () => {
         render(<FarMedUførMorUgift />);
 
         const dinPlanDiv = getParentDiv(screen.getByText('Din plan'));
@@ -325,7 +326,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
+    it('Skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
         render(<FarMedMorSomHarRettINorge />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -354,7 +355,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal gå til dokumentasjon når førstegangssøknad og en går til forrige steg', async () => {
+    it('Skal gå til dokumentasjon når førstegangssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -373,7 +374,7 @@ describe('<Oppsummering>', () => {
         });
     });
 
-    it('skal gå til uttaksplan når endringssøknad og en går til forrige steg', async () => {
+    it('Skal gå til uttaksplan når endringssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -399,7 +400,7 @@ describe('<Oppsummering>', () => {
 
     // TODO: De gjenværende må det oppdateres slik at testene gjennomføres uavhengig av rekkefølge, msw-handler virker ikke å resettes som de skal.
 
-    it('far søker, skal vise at dokumentasjon for mors arbeid mangler', async () => {
+    it('Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%', async () => {
         await applyRequestHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
         render(<FarSøkerMorMåDokumentereArbeid />);
 
@@ -437,7 +438,42 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('far søker, skal ikke vise at dokumentasjon for mors arbeid mangler', async () => {
+    it('Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden', async () => {
+        await applyRequestHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
+        render(<FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                'Kari Nordmann, 02520489226',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
+                'Ja',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+        expect(
+            checkAndGetParentDiv(
+                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+            ).getByText('Ja'),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Dine perioder med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
+        expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
+        expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
+    });
+
+    it('Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer', async () => {
         await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
 
         render(<FarSøkerMorMåIkkeDokumentereArbeid />);
@@ -477,7 +513,7 @@ describe('<Oppsummering>', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('far søker, skal ikke vise at dokumentasjon for mors arbeid mangler, men at dokumentasjon for utdanning må mangler', async () => {
+    it('Far er hovedsøker - Skal vise krav om dokumentasjon for utdanning men ikke for arbeid', async () => {
         await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
         render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
 
@@ -511,8 +547,22 @@ describe('<Oppsummering>', () => {
                 'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.',
             ),
         ).not.toBeInTheDocument();
-        // TODO: Denne feiler, men vises korrekt i storybook.
-        // await expect(screen.getByText('Dokumentasjon på at mor studerer')).toBeInTheDocument();
-        // await expect(screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. ')).toBeInTheDocument();
+        await waitForElementToBeRemoved(() => screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)'));
+
+        expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
+        expect(screen.getByText('Dokumentasjon på at mor studerer (mangler)')).toBeInTheDocument();
+
+        expect(
+            screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. Bekreftelsen må vise', {
+                exact: false,
+            }),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('navn og fødselsnummer')).toBeInTheDocument();
+        expect(screen.getByText('studiested, fag eller studieprogram')).toBeInTheDocument();
+        expect(screen.getByText('oppstart og varighet av studiet')).toBeInTheDocument();
+        expect(
+            screen.getByText('har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen'),
+        ).toBeInTheDocument();
     });
 });
