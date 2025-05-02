@@ -144,7 +144,7 @@
     "tidslinje.BARN_TRE_ÅR.fødsel.informasjon": "Du må ta ut foreldrepengene før {antallBarn, plural, one {barnet} other {barna}} fyller 3 år. Venter dere nytt barn, må dere ta ut foreldrepengene før ny foreldrepengeperiode starter.",
     "tidslinje.BARN_TRE_ÅR.adopsjon.informasjon": "Du må ta ut foreldrepengene før det har gått 3 år siden adopsjonen av {antallBarn, plural, one {barnet} other {barna}}.",
     "tidslinje.BARN_TRE_ÅR.linkTittel": "Hvor lenge kan man ha foreldrepenger?",
-    "tidslinje.FREMTIDIG_VEDTAK.informasjon": "Nav bruker vanligvis 6 uker på å behandle søknaden.",
+    "tidslinje.FREMTIDIG_VEDTAK.informasjon": "Nav bruker vanligvis 10 uker på å behandle søknaden.",
     "tidslinje.FREMTIDIG_VEDTAK.informasjon.engangsstønad": "Nav bruker vanligvis 10 uker på å behandle søknaden.",
     "tidslinje.FREMTIDIG_VEDTAK.linkTittel": "Saksbehandlingstider i Nav",
     "tidslinje.navVenterPå": "Du må sende inn {dokumentasjon}",
