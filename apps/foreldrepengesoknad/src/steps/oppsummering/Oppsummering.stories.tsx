@@ -1022,16 +1022,6 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
-                ),
-            ],
-        },
-    },
     // Ny render-funksjon som overskriver uttaksplanen med samtidig uttak
     render: (args) => {
         const freshQueryClient = new QueryClient({
