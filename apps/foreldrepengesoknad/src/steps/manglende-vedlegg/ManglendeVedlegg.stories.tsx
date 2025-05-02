@@ -151,7 +151,8 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof ManglendeVedlegg>;
 
-// TODO: Kalle legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+// TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+// TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
 
 const meta = {
     title: 'steps/ManglendeVedlegg',
