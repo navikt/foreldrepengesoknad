@@ -88,6 +88,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                                         <Link inlineText href={links.veiviser}>
                                             <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad.Link" />
                                         </Link>
+                                        .
                                     </BodyShort>
                                 </Infobox>
                             </VStack>
