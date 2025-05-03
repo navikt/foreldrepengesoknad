@@ -116,7 +116,6 @@ export const RhfDatepicker = ({
         () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
         [fromDate, toDate],
     );
-    // console.log(locale)
 
     return (
         <DatePicker
