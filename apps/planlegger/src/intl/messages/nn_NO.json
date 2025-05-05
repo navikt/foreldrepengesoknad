@@ -266,6 +266,5 @@
     "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
     "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar",
     "CalendarLabels.TapteDager": "Tapte dagar",
-    "CalendarLabels.Ferie": "Ferie",
-    "Skjema.input.dato.placeholder": "dd.mm.åååå"
+    "CalendarLabels.Ferie": "Ferie"
 }
