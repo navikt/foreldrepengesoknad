@@ -24,6 +24,7 @@
         "glob": "11.0.1",
         "husky": "9.1.7",
         "lint-staged": "15.4.1",
+        "react-intl": "^7.1.11",
         "shelljs": "0.8.5",
         "turbo": "^2.3.3"
     },

@@ -6,7 +6,6 @@ import { useCallback, useState } from 'react';
 import { Provider } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
-import { formHooksMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
@@ -27,7 +26,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...utilsMessages.nb,
-        ...formHooksMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -35,7 +33,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...utilsMessages.nn,
-        ...formHooksMessages.nn,
     },
     en: {
         ...enMessages,
@@ -43,7 +40,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.en,
         ...oppsummeringMessages.en,
         ...utilsMessages.en,
-        ...formHooksMessages.nb,
     },
 };
 
