@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Provider } from '@navikt/ds-react';
 import { nb, nn } from '@navikt/ds-react/locales';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -35,6 +36,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...arbeidsforholdOgInntektMessages.nb,
         ...egenNæringMessages.nb,
         ...frilansMessages.nb,
+        ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -47,6 +49,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...arbeidsforholdOgInntektMessages.nn,
         ...egenNæringMessages.nn,
         ...frilansMessages.nn,
+        ...formHookMessages.nn,
     },
 };
 
