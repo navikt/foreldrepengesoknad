@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Provider } from '@navikt/ds-react';
 import { nb } from '@navikt/ds-react/locales';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -28,6 +29,7 @@ const allNbMessages = {
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
     ...uttaksplanKalenderMessages.nb,
+    ...formHookMessages.nb,
 };
 
 declare global {
