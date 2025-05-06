@@ -73,6 +73,5 @@
     "RegisterdataUtdatert.Message": "Information about you has changed since you last filled out the application. You must therefore start filling out the application again.",
     "ProgressStepper.ShowSteps": "Show all steps",
     "ProgressStepper.HideSteps": "Hide all steps",
-    "ProgressStepper.StepCounter": "Step {activeStep} of {totalSteps}",
-    "Skjema.input.dato.placeholder": "dd.mm.yyyy"
+    "ProgressStepper.StepCounter": "Step {activeStep} of {totalSteps}"
 }

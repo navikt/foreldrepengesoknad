@@ -74,27 +74,27 @@ export const LeggTilPeriodeModalStep = ({
     const onSubmit = (values: FormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
-        const årsak = values.årsak;
+        const selectedÅrsak = values.årsak;
         const skalDuJobbe = values.skalDuJobbe;
         const stillingsprosent = values.stillingsprosent;
 
-        if (årsak === UtsettelseÅrsakType.Ferie) {
+        if (selectedÅrsak === UtsettelseÅrsakType.Ferie) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                id: `${fomValue} - ${tomValue} - ${selectedÅrsak}`,
                 readOnly: false,
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: årsak,
+                utsettelseÅrsak: selectedÅrsak,
             });
-        } else if (årsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        } else if (selectedÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                id: `${fomValue} - ${tomValue} - ${selectedÅrsak}`,
                 readOnly: false,
                 forelder: Forelder.farMedmor,
-                periodeHullÅrsak: årsak,
+                periodeHullÅrsak: selectedÅrsak,
             });
         } else {
             handleAddPeriode({
@@ -128,7 +128,7 @@ export const LeggTilPeriodeModalStep = ({
                             formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            oppholdsårsak={årsak}
+                            oppholdsårsak={formMethods.watch('årsak')}
                         />
                         <GraderingSpørsmål formMethods={formMethods} />
                     </>
@@ -140,7 +140,7 @@ export const LeggTilPeriodeModalStep = ({
                             formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            oppholdsårsak={årsak}
+                            oppholdsårsak={formMethods.watch('årsak')}
                         />
                     </>
                 ) : null}

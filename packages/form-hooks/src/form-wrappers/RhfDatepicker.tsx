@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { JSX, ReactNode, useCallback, useMemo, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+// import { useIntl } from 'react-intl';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
@@ -63,7 +63,7 @@ export const RhfDatepicker = ({
     customErrorFormatter,
     useStrategyAbsolute = false,
 }: Props): JSX.Element => {
-    const intl = useIntl();
+    // const intl = useIntl();
     const {
         formState: { errors },
     } = useFormContext();
@@ -135,7 +135,8 @@ export const RhfDatepicker = ({
                 label={label}
                 description={description}
                 error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
-                placeholder={intl.formatMessage({ id: 'Skjema.input.dato.placeholder' })}
+                // placeholder={intl.formatMessage({ id: 'Skjema.input.dato.placeholder' })}
+                placeholder="test"
                 autoFocus={autofocusWhenEmpty && field.value === undefined}
             />
         </DatePicker>

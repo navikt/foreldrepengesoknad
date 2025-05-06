@@ -51,7 +51,6 @@ type Story = StoryObj<typeof meta>;
 export const LeggTilMødrekvote: Story = {
     args: {
         erBarnetFødt: true,
-        familiehendelsedato: '2025-03-03',
         gjelderAdopsjon: false,
         isModalOpen: true,
     },

@@ -28,7 +28,7 @@
         "@types/react": "^19.0.7",
         "dayjs": "^1.11.12",
         "react": "^19.0.0",
-        "react-intl": "^7.1.4",
+        "react-intl": "^7.1.11",
         "react-to-pdf": "1.0.1"
     },
     "devDependencies": {

@@ -4,12 +4,12 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './RegisterdataUtdatert.stories';
 
-const { Default } = composeStories(stories);
+const { Foreldrepenger } = composeStories(stories);
 
 describe('RegisterdataUdatert', () => {
     it('skal vise at registerdata er utdatert og knapp for å starte på nytt', async () => {
         const slettMellomlagringOgLastSidePåNytt = vi.fn();
-        render(<Default slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt} />);
+        render(<Foreldrepenger slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt} />);
 
         expect(await screen.findByText('Opplysninger er endret')).toBeInTheDocument();
 

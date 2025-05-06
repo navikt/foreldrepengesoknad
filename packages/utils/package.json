@@ -19,7 +19,7 @@
         "i18n-iso-countries": "^7.13.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-intl": "^7.1.4"
+        "react-intl": "^7.1.11"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.6.1",
