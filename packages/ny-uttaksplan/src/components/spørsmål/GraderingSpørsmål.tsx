@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
+import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import { prosentValideringGradering } from './validators';
@@ -31,11 +31,12 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
                 </Radio>
             </RhfRadioGroup>
             {graderingValue && (
-                <RhfTextField
+                <RhfNumericField
                     className="w-xs"
                     label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
                     name="stillingsprosent"
                     validate={[prosentValideringGradering(intl)]}
+                    maxLength={5}
                 />
             )}
         </VStack>

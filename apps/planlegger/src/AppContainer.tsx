@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Provider } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
@@ -23,6 +24,7 @@ const allNbMessages = {
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
     ...uttaksplanKalenderMessages.nb,
+    ...formHookMessages.nb,
 };
 
 declare global {
@@ -50,6 +52,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.nn,
         ...nyUttaksplanMessages.nn,
         ...uttaksplanKalenderMessages.nn,
+        ...formHookMessages.nn,
     },
     en: {
         ...enMessages,
@@ -57,6 +60,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.en,
         ...nyUttaksplanMessages.en,
         ...uttaksplanKalenderMessages.en,
+        ...formHookMessages.en,
     },
 };
 

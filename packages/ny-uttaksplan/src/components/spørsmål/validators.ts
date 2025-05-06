@@ -17,7 +17,7 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
         });
     }
 
-    if (stillingsprosent < 0) {
+    if (stillingsprosent <= 0) {
         return intl.formatMessage({
             id: 'leggTilPeriodeModal.stillingsprosent.måVæreStørreEnn0',
         });

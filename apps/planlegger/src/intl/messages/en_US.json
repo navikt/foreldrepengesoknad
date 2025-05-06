@@ -266,6 +266,5 @@
     "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
     "SøkOmForeldrepenger.Søk": "Apply for parental benefit",
     "CalendarLabels.TapteDager": "Days lost",
-    "CalendarLabels.Ferie": "Vacation",
-    "Skjema.input.dato.placeholder": "dd.mm.yyyy"
+    "CalendarLabels.Ferie": "Vacation"
 }

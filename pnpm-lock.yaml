@@ -273,6 +273,9 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
+      '@navikt/fp-form-hooks':
+        specifier: workspace:*
+        version: link:../../packages/form-hooks
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1793,6 +1796,9 @@ importers:
       react-hook-form:
         specifier: 7.54.2
         version: 7.54.2(react@19.0.0)
+      react-intl:
+        specifier: ^7.1.4
+        version: 7.1.10(react@19.0.0)(typescript@5.7.3)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 7.17.2
@@ -14239,7 +14245,7 @@ snapshots:
 
   '@types/hoist-non-react-statics@3.3.6':
     dependencies:
-      '@types/react': 19.0.7
+      '@types/react': 19.1.0
       hoist-non-react-statics: 3.3.2
 
   '@types/http-errors@2.0.4': {}

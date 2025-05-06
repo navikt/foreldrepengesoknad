@@ -28,7 +28,8 @@
         "dayjs": "^1.11.12",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-hook-form": "7.54.2"
+        "react-hook-form": "7.54.2",
+        "react-intl": "^7.1.4"
     },
     "devDependencies": {
         "@navikt/ds-tailwind": "7.17.2",
