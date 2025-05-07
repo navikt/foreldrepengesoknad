@@ -34,6 +34,36 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                         <Route
+                            path={OversiktRoutes.INFORMASJON}
+                            element={
+                                <PageRouteLayout
+                                    header={
+                                        <>
+                                            <h1 className="text-3xl font-bold text-purple-600 animate-bounce">
+                                                🦄 SUPERSØTT UNICORN SIDE 🦄
+                                            </h1>
+                                            <div className="flex justify-center mt-4">
+                                                <img
+                                                    src="https://media.giphy.com/media/j0kQJxo5mzGYb4EvWK/giphy.gif"
+                                                    alt="Dansende unicorn"
+                                                    className="rounded-lg shadow-xl"
+                                                />
+                                            </div>
+                                            <p className="text-center mt-4 text-pink-500 font-bold text-xl">
+                                                Dette er en hemmelig side som egentlig ikke finnes! Men nå kan du se den
+                                                likevel. Gratulerer!
+                                            </p>
+                                        </>
+                                    }
+                                >
+                                    <div>
+                                        <p>Dette er en proof-of-concept for å vise at rutingen faktisk fungerer!</p>
+                                    </div>
+                                </PageRouteLayout>
+                            }
+                        />
+
+                        <Route
                             path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                             element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                         />

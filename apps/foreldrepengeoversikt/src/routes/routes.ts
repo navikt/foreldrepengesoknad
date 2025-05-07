@@ -7,6 +7,7 @@ export enum OversiktRoutes {
     INNTEKTSMELDING = 'inntektsmelding',
     TIDSLINJEN = 'tidslinjen',
     OPPGAVER = 'oppgaver',
+    INFORMASJON = 'informasjon',
 }
 
 export enum NavRoutes {
