@@ -12,3 +12,13 @@ export { RhfConfirmationPanel } from './src/form-wrappers/RhfConfirmationPanel';
 export { StepButtonsHookForm } from './src/StepButtonsHookForm';
 export { ErrorMessageHookForm } from './src/error/ErrorMessageHookForm';
 export { ErrorSummaryHookForm } from './src/error/ErrorSummaryHookForm';
+
+import enMessages from './src/intl/messages/en_US.json';
+import nbMessages from './src/intl/messages/nb_NO.json';
+import nnMessages from './src/intl/messages/nn_NO.json';
+
+export const formHookMessages = {
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
+};

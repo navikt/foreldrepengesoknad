@@ -3,6 +3,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { en, nb, nn } from '@navikt/ds-react/locales';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
@@ -23,6 +27,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...utilsMessages.nb,
+        ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -30,6 +35,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...utilsMessages.nn,
+        ...formHookMessages.nn,
     },
     en: {
         ...enMessages,
@@ -37,6 +43,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.en,
         ...oppsummeringMessages.en,
         ...utilsMessages.en,
+        ...formHookMessages.en,
     },
 };
 
@@ -73,9 +80,22 @@ export const AppContainer = () => {
             <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    <Provider locale={getDsProviderLocale(locale)}>
+                        <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );
+};
+
+const getDsProviderLocale = (locale: LocaleAll) => {
+    switch (locale) {
+        case 'nn':
+            return nn;
+        case 'en':
+            return en;
+        default:
+            return nb;
+    }
 };

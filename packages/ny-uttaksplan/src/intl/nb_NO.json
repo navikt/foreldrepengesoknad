@@ -131,7 +131,7 @@
     "leggTilPeriodeModal.stillingsprosent.påkrevd": "Du må oppgi stillingsprosenten du skal jobbe",
     "leggTilPeriodeModal.stillingsprosent.måVæreEtTall": "Stillingsprosenten må være et tall",
     "leggTilPeriodeModal.stillingsprosent.måVæreStørreEnn0": "Stillingsprosenten må være et tall større enn 0",
-    "leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100": "Stillingsprosenten kan ikke være mer enn 100",
+    "leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100": "Stillingsprosenten må være et tall mindre enn 100",
     "endrePeriodeModal.tittel": "Endre periode",
     "endreTidsPeriodeModal.fom.påkrevd": "Du må oppgi en startdato",
     "endreTidsPeriodeModal.fom.gyldigDato": "Startdatoen må være en gyldig dato på formatet dd.mm.åååå",
