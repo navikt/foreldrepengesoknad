@@ -6,6 +6,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import {
     Forelder,
+    MorsAktivitet,
     NavnPåForeldre,
     Periode,
     Situasjon,
@@ -43,7 +44,6 @@ export const MorJobberDokumentasjon = ({
     const intl = useIntl();
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
@@ -54,7 +54,7 @@ export const MorJobberDokumentasjon = ({
             p.forelder === Forelder.farMedmor &&
             p.konto === StønadskontoType.Fellesperiode,
     );
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(uttaksplan, barn, annenPartFødselsnummer);
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer);
     const trengerDokumentereMorsArbeid =
         useQuery({
             // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
@@ -63,16 +63,17 @@ export const MorJobberDokumentasjon = ({
         }).data ?? true;
 
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
+    const bareFarHarRett = isAnnenForelderOppgitt(annenForelder)
+        ? annenForelder.harRettPåForeldrepengerINorge === false &&
+          perioder.some(
+              (p) =>
+                  isUttaksperiode(p) &&
+                  p.forelder === Forelder.farMedmor &&
+                  p.morsAktivitetIPerioden === MorsAktivitet.Arbeid,
+          )
+        : false;
 
-    if (perioder.length === 0) {
-        return null;
-    }
-
-    if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
-        return <TrengerIkkeMorIArbeidDokumentasjon />;
-    }
-
-    return (
+    const renderUttakUploader = () => (
         <UttakUploader
             attachments={attachments}
             updateAttachments={updateDokArbeidMorAttachment}
@@ -90,6 +91,21 @@ export const MorJobberDokumentasjon = ({
             attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
         />
     );
+
+    if (perioder.length === 0) {
+        return null;
+    }
+
+    // Når bare far har rett, så er det krav å dokumentere mors arbeid
+    if (bareFarHarRett) {
+        return renderUttakUploader();
+    }
+
+    if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
+        return <TrengerIkkeMorIArbeidDokumentasjon />;
+    }
+
+    return renderUttakUploader();
 };
 
 const TrengerIkkeMorIArbeidDokumentasjon = () => <IngenDokumentasjonPåkrevd />;
@@ -103,10 +119,6 @@ const getDokumentereMorsArbeidParams = (
         return undefined;
     }
 
-    const perioderMedAktivitetskrav = uttaksplan
-        .filter((p) => isUttaksperiode(p))
-        .filter((p) => p.morsAktivitetIPerioden !== undefined);
-
     const barnFødselsnummer =
         isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
 
@@ -114,7 +126,7 @@ const getDokumentereMorsArbeidParams = (
         annenPartFødselsnummer,
         barnFødselsnummer,
         familiehendelse: getFamiliehendelsedato(barn),
-        perioder: perioderMedAktivitetskrav.map((p) => ({
+        perioder: uttaksplan.map((p) => ({
             fom: p.tidsperiode.fom.toISOString(),
             tom: p.tidsperiode.tom.toISOString(),
         })),

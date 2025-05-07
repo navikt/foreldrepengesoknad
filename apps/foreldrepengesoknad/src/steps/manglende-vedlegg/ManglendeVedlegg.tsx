@@ -189,7 +189,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
             farInnlagtPerioder,
             morForSykPerioder,
             morIntroPerioder,
-            morJobberPerioder,
             morJobberOgStudererPerioder,
             morKvalPerioder,
             morStudererPerioder,
