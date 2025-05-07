@@ -29,7 +29,7 @@ interface FormValues {
     kontoType: StønadskontoType;
     forelder?: Forelder;
     skalDuJobbe: boolean;
-    stillingsprosent?: number;
+    stillingsprosent?: string;
 }
 
 export const EndrePeriodeModalStep = ({

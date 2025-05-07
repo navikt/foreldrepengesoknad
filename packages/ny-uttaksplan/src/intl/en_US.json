@@ -131,7 +131,7 @@
     "leggTilPeriodeModal.stillingsprosent.påkrevd": "You must specify what percentage you will be working",
     "leggTilPeriodeModal.stillingsprosent.måVæreEtTall": "The percentage must be a number",
     "leggTilPeriodeModal.stillingsprosent.måVæreStørreEnn0": "The percentage must be a number greater than 0",
-    "leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100": "The percentage cannot be more than 100",
+    "leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100": "The percentage must be a number smaller than 100",
     "endrePeriodeModal.tittel": "Change period",
     "endreTidsPeriodeModal.fom.påkrevd": "You must specify a start date",
     "endreTidsPeriodeModal.fom.gyldigDato": "The start date must be a valid date in dd.mm.yyyy format",
