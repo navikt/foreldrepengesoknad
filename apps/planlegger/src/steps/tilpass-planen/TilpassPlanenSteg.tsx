@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, ArrowLeftIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -59,13 +59,15 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         'Uttaksplan ikke oppgitt',
     );
 
+    const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(0);
+
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
-    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -93,9 +95,17 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        const nyUttaksplan = [...uttaksplan];
-        nyUttaksplan.push(perioder);
-        lagreUttaksplan(nyUttaksplan);
+        if (uttaksplan.length >= 6) {
+            const nyUttaksplan = [...uttaksplan.toSpliced(1, 1)];
+            nyUttaksplan.push(perioder);
+            setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
+            lagreUttaksplan(nyUttaksplan);
+        } else {
+            const nyUttaksplan = [...uttaksplan];
+            nyUttaksplan.push(perioder);
+            setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
+            lagreUttaksplan(nyUttaksplan);
+        }
     };
 
     return (
@@ -184,7 +194,9 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                     variant="secondary"
                                     icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
-                                        lagreUttaksplan([originalUttaksplan]);
+                                        if (currentUttaksplanIndex > 0) {
+                                            setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+                                        }
                                     }}
                                 >
                                     Angre
