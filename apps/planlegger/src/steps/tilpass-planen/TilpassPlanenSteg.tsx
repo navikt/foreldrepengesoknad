@@ -95,17 +95,11 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        if (uttaksplan.length >= 6) {
-            const nyUttaksplan = [...uttaksplan.toSpliced(1, 1)];
-            nyUttaksplan.push(perioder);
-            setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
-            lagreUttaksplan(nyUttaksplan);
-        } else {
-            const nyUttaksplan = [...uttaksplan];
-            nyUttaksplan.push(perioder);
-            setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
-            lagreUttaksplan(nyUttaksplan);
-        }
+        let nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
+
+        nyUttaksplan.push(perioder);
+        setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
+        lagreUttaksplan(nyUttaksplan);
     };
 
     return (
