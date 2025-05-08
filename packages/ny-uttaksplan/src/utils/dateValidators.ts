@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
@@ -25,6 +25,8 @@ interface FomValidatorProps {
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
+    skalDuJobbe: boolean | undefined;
+    forelder?: Forelder;
 }
 
 export const getFomValidators = ({
@@ -37,6 +39,8 @@ export const getFomValidators = ({
     maxDate,
     årsak,
     gjelderAdopsjon,
+    skalDuJobbe,
+    forelder,
 }: FomValidatorProps) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
@@ -46,6 +50,7 @@ export const getFomValidators = ({
     ];
 
     const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    const seksUkerEtterFamiliehendelse = UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
 
@@ -138,6 +143,27 @@ export const getFomValidators = ({
         ),
     );
 
+    if (skalDuJobbe && !gjelderAdopsjon) {
+        if (
+            kontoType === StønadskontoType.Mødrekvote ||
+            (kontoType === StønadskontoType.Fellesperiode && forelder === Forelder.mor) ||
+            (kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor)
+        ) {
+            validators.push((date) => {
+                if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
+                    const feilmelding =
+                        kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor
+                            ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
+                            : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
+
+                    return feilmelding;
+                } else {
+                    return null;
+                }
+            });
+        }
+    }
+
     return validators;
 };
 
@@ -151,6 +177,8 @@ interface TomValidatorProps {
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
+    skalDuJobbe: boolean | undefined;
+    forelder?: Forelder;
 }
 
 export const getTomValidators = ({
@@ -163,6 +191,8 @@ export const getTomValidators = ({
     maxDate,
     årsak,
     gjelderAdopsjon,
+    skalDuJobbe,
+    forelder,
 }: TomValidatorProps) => {
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
@@ -171,6 +201,7 @@ export const getTomValidators = ({
     ];
 
     const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    const seksUkerEtterFamiliehendelse = UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
 
@@ -262,6 +293,27 @@ export const getTomValidators = ({
             maxDate,
         ),
     );
+
+    if (skalDuJobbe && !gjelderAdopsjon) {
+        if (
+            kontoType === StønadskontoType.Mødrekvote ||
+            (kontoType === StønadskontoType.Fellesperiode && forelder === Forelder.mor) ||
+            (kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor)
+        ) {
+            validators.push((date) => {
+                if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
+                    const feilmelding =
+                        kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor
+                            ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
+                            : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
+
+                    return feilmelding;
+                } else {
+                    return null;
+                }
+            });
+        }
+    }
 
     return validators;
 };

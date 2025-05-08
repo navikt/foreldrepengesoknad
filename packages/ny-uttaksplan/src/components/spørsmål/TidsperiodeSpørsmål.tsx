@@ -32,6 +32,9 @@ export const TidsperiodeSpørsmål = ({
 
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
+    const skalDuJobbe = formMethods.watch('skalDuJobbe');
+    const forelder = formMethods.watch('forelder');
+    const kontoType = formMethods.watch('kontoType');
 
     const getÅrsak = () => {
         if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
@@ -65,26 +68,30 @@ export const TidsperiodeSpørsmål = ({
                     validate={getFomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType,
+                        kontoType: valgtPeriode?.kontoType ?? kontoType,
                         tomValue,
                         erBarnetFødt,
                         minDate,
                         maxDate,
                         årsak,
                         gjelderAdopsjon,
+                        skalDuJobbe,
+                        forelder,
                     })}
                 />
                 <RhfDatepicker
                     validate={getTomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType,
+                        kontoType: valgtPeriode?.kontoType ?? kontoType,
                         fomValue,
                         erBarnetFødt,
                         minDate,
                         maxDate,
                         årsak,
                         gjelderAdopsjon,
+                        skalDuJobbe,
+                        forelder,
                     })}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
                     name="tom"
