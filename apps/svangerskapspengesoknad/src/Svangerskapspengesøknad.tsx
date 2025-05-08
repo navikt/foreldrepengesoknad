@@ -1,22 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { ContextDataMap, SvpDataContext } from 'appData/SvpDataContext';
+import { SvpDataContext } from 'appData/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
-import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
-import { Barn } from 'types/Barn';
-import {
-    Arbeidsforholdstype,
-    DelivisTilretteleggingPeriodeType,
-    DelvisTilrettelegging,
-    IngenTilrettelegging,
-    TilOgMedDatoType,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
 import { tilSkjematilstandFraEksisterendeSak } from 'utils/endresøknadUtils';
 
-import { ArbeidsforholdOgInntektSvp, LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
+import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -99,6 +89,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const m = {
         version: mellomlagretState?.version ?? 1,
         locale: mellomlagretState?.locale ?? 'nb',
+        søkerInfo: søkerinfo.data,
         ...sak.data,
     }; //TODO: temp
 
