@@ -180,5 +180,9 @@
     "SøkelenkerPanel.SokSvp": "Søk om svangerskapspenger",
     "SøkelenkerPanel.SokEs": "Søk om engangsstønad",
     "HarIkkeSaker.IngenSoknader": "Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger",
-    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker før søknaden din er synlig her hvis du har søkt via brev."
+    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker før søknaden din er synlig her hvis du har søkt via brev.",
+    "BruktOpplysningerOmArbeidsforhold.tittel": "Informasjon om innhenting av opplysninger i forbindelse med aktivitetskravet",
+    "BruktOpplysningerOmArbeidsforhold.tekst.1": "Vi behandler nå en sak om foreldrepenger der aktivitetskravet skal vurderes. I den forbindelse vil vi innhente opplysninger om dine arbeidsforhold fra Arbeidsgiver- og arbeidstakerregisteret (Aa-registeret).",
+    "BruktOpplysningerOmArbeidsforhold.tekst.2": "Dette gjør vi for å kunne vurdere om aktivitetskravet er oppfylt, og det er nødvendig for å kunne behandle saken korrekt."
+
 }

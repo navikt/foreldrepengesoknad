@@ -7,7 +7,7 @@ export enum OversiktRoutes {
     INNTEKTSMELDING = 'inntektsmelding',
     TIDSLINJEN = 'tidslinjen',
     OPPGAVER = 'oppgaver',
-    INFORMASJON = 'informasjon',
+    BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD = 'beskjeder/brukt-opplysninger-om-arbeidsforhold',
 }
 
 export enum NavRoutes {
