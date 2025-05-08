@@ -1,7 +1,7 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Heading, List, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
 
@@ -28,13 +28,13 @@ export const KravFarEllerMedmor = () => {
                                 id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
                                 values={{
                                     a: (msg: any) => (
-                                        <a
+                                        <Link
                                             href="https://lovdata.no/dokument/NL/lov/1981-04-08-7"
                                             target="_blank"
                                             rel="noreferrer"
                                         >
                                             {msg}
-                                        </a>
+                                        </Link>
                                     ),
                                 }}
                             />

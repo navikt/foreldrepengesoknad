@@ -152,13 +152,7 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
                                             a: (msg: any) => (
-                                                <Link
-                                                    href={links.hvorMye}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="lenke"
-                                                    inlineText
-                                                >
+                                                <Link href={links.hvorMye} target="_blank" rel="noreferrer" inlineText>
                                                     {msg}
                                                 </Link>
                                             ),

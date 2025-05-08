@@ -14,18 +14,18 @@ type Story = StoryObj<typeof meta>;
 
 export const UmyndigForeldrepenger: Story = {
     args: {
-        appnavn: 'Foreldrepenger',
+        appName: 'foreldrepengesoknad',
     },
 };
 
 export const UmyndigEngangsstonad: Story = {
     args: {
-        appnavn: 'Engangsstønad',
+        appName: 'engangsstonad',
     },
 };
 
 export const UmyndigSvangerskapspenger: Story = {
     args: {
-        appnavn: 'Svangerskapspenger',
+        appName: 'svangerskapspengesoknad',
     },
 };

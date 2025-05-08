@@ -38,7 +38,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     const onSubmit = (values: SøkersituasjonFp) => {
         oppdaterSøkersituasjon({
             situasjon: values.situasjon,
-            rolle: values.rolle || 'far',
+            rolle: values.rolle ?? 'far',
         });
 
         return navigator.goToNextDefaultStep();

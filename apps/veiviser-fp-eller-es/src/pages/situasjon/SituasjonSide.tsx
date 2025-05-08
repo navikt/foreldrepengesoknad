@@ -5,7 +5,7 @@ import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Label, Link, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfNumericField } from '@navikt/fp-form-hooks';
@@ -340,9 +340,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a href={links.folketrygden} target="_blank" rel="noreferrer">
+                                                    <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
-                                                    </a>
+                                                    </Link>
                                                 ),
                                             }}
                                         />

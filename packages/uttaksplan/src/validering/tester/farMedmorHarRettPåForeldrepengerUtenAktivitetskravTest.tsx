@@ -1,5 +1,7 @@
 import { IntlShape } from 'react-intl';
 
+import { Link } from '@navikt/ds-react';
+
 import { StønadskontoType, Søknadsinfo } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
@@ -31,9 +33,9 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
     const testPasserer = !kontoUtenAktivitetskrav || kontoUtenAktivitetskrav.dager === 0;
     const renderAsHtml = true;
     const link = () => (msg: any) => (
-        <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
+        <Link href={links.aktivitetsfriUttakInfo} rel="noreferrer" target="_blank">
             {msg}
-        </a>
+        </Link>
     );
 
     if (andreAugust2022ReglerGjelder(grunnlag.familiehendelsesdato)) {

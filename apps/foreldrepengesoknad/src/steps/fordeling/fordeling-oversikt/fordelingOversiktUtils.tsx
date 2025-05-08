@@ -15,6 +15,8 @@ import {
     getAntallUkerMødrekvote,
 } from 'utils/stønadskontoerUtils';
 
+import { Link } from '@navikt/ds-react';
+
 import {
     AnnenForelder,
     Barn,
@@ -221,9 +223,9 @@ const getFellesInfoTekst = (
                     farTekst,
                     b: (msg) => <b>{msg}</b>,
                     a: (msg) => (
-                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                        <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                             {msg}
-                        </a>
+                        </Link>
                     ),
                 }}
             />
@@ -239,9 +241,9 @@ const getFellesInfoTekst = (
                     farTekst,
                     b: (msg) => <b>{msg}</b>,
                     a: (msg) => (
-                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                        <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                             {msg}
-                        </a>
+                        </Link>
                     ),
                 }}
             />
@@ -257,9 +259,9 @@ const getFellesInfoTekst = (
                 farTekst,
                 b: (msg) => <b>{msg}</b>,
                 a: (msg) => (
-                    <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                    <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                         {msg}
-                    </a>
+                    </Link>
                 ),
             }}
         />
@@ -362,9 +364,9 @@ const getFordelingFelles = (
                     varighetAnnenPart,
                     b: (msg) => <b>{msg}</b>,
                     a: (msg) => (
-                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                        <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                             {msg}
-                        </a>
+                        </Link>
                     ),
                 }}
             />,
@@ -725,9 +727,9 @@ const getFordelingForeldrepengerFar = (
                     morNavn: morTekst,
                     b: (msg) => <b>{msg}</b>,
                     a: (msg) => (
-                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                        <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                             {msg}
-                        </a>
+                        </Link>
                     ),
                 }}
             />,

@@ -10,7 +10,7 @@ import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
 import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
@@ -235,14 +235,9 @@ export const Oppsummering = (props: Props) => {
                                 values={{
                                     hvem: søkersituasjon.rolle,
                                     a: (msg: any) => (
-                                        <a
-                                            href={links.farskapsportal}
-                                            className="lenke"
-                                            rel="noreferrer"
-                                            target="_blank"
-                                        >
+                                        <Link href={links.farskapsportal} rel="noreferrer" target="_blank">
                                             {msg}
-                                        </a>
+                                        </Link>
                                     ),
                                     antallBarn: barn.antallBarn,
                                 }}

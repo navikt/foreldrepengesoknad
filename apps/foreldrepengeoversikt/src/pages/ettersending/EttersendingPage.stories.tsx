@@ -1,19 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { EttersendingPage } from './EttersendingPage';
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
 
 interface QueryParamAwareEttersendingPage {
     saker: SakOppslag;
@@ -23,20 +16,16 @@ interface QueryParamAwareEttersendingPage {
 const meta: Meta<QueryParamAwareEttersendingPage> = {
     title: 'EttersendingPage',
     component: EttersendingPage,
+    decorators: [withQueryClient],
     render: (props) => {
         const { skjematypeQueryParamValue, ...rest } = props as QueryParamAwareEttersendingPage;
         const queryString = skjematypeQueryParamValue ? `?skjematype=${skjematypeQueryParamValue}` : '';
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.ETTERSEND}/1${queryString}`]}>
-                    <Routes>
-                        <Route
-                            element={<EttersendingPage {...rest} />}
-                            path={`/${OversiktRoutes.ETTERSEND}/:saksnummer`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.ETTERSEND}/1${queryString}`]}>
+                <Routes>
+                    <Route element={<EttersendingPage {...rest} />} path={`/${OversiktRoutes.ETTERSEND}/:saksnummer`} />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof EttersendingPage>;

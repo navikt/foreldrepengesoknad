@@ -6,6 +6,7 @@ import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagr
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
+import isEqual from 'lodash/isEqual';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Kvittering } from 'types/Kvittering';
@@ -14,7 +15,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 import { Loader } from '@navikt/ds-react';
 
 import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
-import { ErrorBoundary } from '@navikt/fp-ui';
+import { ErrorBoundary, RegisterdataUtdatert } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
@@ -26,11 +27,10 @@ const Spinner = () => (
     </div>
 );
 
-export const retryCallback = async () => {
+export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {
         await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
 
@@ -83,10 +83,13 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 
-    const applyStorage = mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
+    const skalBrukeMellomlagretData =
+        mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
 
     // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = applyStorage ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data) : undefined;
+    const initialState = skalBrukeMellomlagretData
+        ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
+        : undefined;
 
     useEffect(() => {
         if (mellomlagretInfoQuery.data?.locale && mellomlagretInfoQuery.data.locale !== locale) {
@@ -110,21 +113,38 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
         return <Spinner />;
     }
 
+    if (
+        skalBrukeMellomlagretData &&
+        (!isEqual(mellomlagretInfoQuery.data.søkerInfo, søkerinfoQuery.data) ||
+            !isEqual(mellomlagretInfoQuery.data.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
+    ) {
+        return (
+            <RegisterdataUtdatert
+                slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
+                appName="foreldrepengesoknad"
+            />
+        );
+    }
+
     return (
-        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={retryCallback}>
+        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
                     locale={locale}
                     onChangeLocale={onChangeLocale}
                     søkerInfo={søkerinfoQuery.data}
-                    saker={sakerQuery.data.foreldrepenger}
-                    currentRoute={applyStorage ? mellomlagretInfoQuery.data.currentRoute : SøknadRoutes.VELKOMMEN}
-                    lagretErEndringssøknad={applyStorage ? mellomlagretInfoQuery.data.søknad?.erEndringssøknad : false}
+                    foreldrepengerSaker={sakerQuery.data.foreldrepenger}
+                    currentRoute={
+                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.currentRoute : SøknadRoutes.VELKOMMEN
+                    }
+                    lagretErEndringssøknad={
+                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.erEndringssøknad : false
+                    }
                     lagretHarGodkjentVilkår={
-                        applyStorage ? mellomlagretInfoQuery.data.søknad?.harGodkjentVilkår : false
+                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.harGodkjentVilkår : false
                     }
                     lagretSøknadGjelderNyttBarn={
-                        applyStorage ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
+                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
                     }
                     setKvittering={setKvittering}
                 />

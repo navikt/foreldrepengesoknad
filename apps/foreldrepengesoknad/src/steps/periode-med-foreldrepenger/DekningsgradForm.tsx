@@ -259,8 +259,8 @@ export const DekningsgradForm = ({
                             <FormattedMessage
                                 id="DekningsgradForm.InformasjonFlerbarnUker"
                                 values={{
-                                    uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn || 0, intl),
-                                    uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn || 0, intl),
+                                    uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn ?? 0, intl),
+                                    uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn ?? 0, intl),
                                     soker: søkerAntallTekst,
                                 }}
                             />

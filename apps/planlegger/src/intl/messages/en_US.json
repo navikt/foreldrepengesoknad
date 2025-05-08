@@ -87,8 +87,8 @@
     "HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor": "As a {hvem}, you have a part of the parental benefit you can use without any requirements to the {erMorHovedsøker, select, true {mother} other {father}}, and a part where it is required that the {erMorHovedsøker, select, true {mother} other {father}} is in <a>approved activity</a> while you are at home with the child.",
     "HvorLangPeriodeSteg.HvorLangPeriode": "How long period of parental benefit do you want?",
     "HvorLangPeriodeSteg.HvorLangPeriode.Required": "You must answer how long period of parental benefit you want.",
-    "HvorLangPeriodeSteg.100": "100 % payment over {uker100} weeks {dager100, select, 0 {} 1 {+ {dager100} dag} other {+ {dager100} dager}}",
-    "HvorLangPeriodeSteg.80": "80 % payment over over {uker80} uker {dager80, select, 0 {} 1 {+ {dager80} dag} other {+ {dager80} dager}}",
+    "HvorLangPeriodeSteg.100": "100 % payment over {uker100} weeks {dager100, select, 0 {} 1 {+ {dager100} day} other {+ {dager100} days}}",
+    "HvorLangPeriodeSteg.80": "80 % payment over {uker80} weeks {dager80, select, 0 {} 1 {+ {dager80} day} other {+ {dager80} days}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "The last day with parental benefit can be {dato}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin": "If the {antallBarn, select, 1 {child} other {children}} is born on the due date{kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from {erMorDelAvSøknaden, select, true {three weeks before the due date} other {the due date}}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel": "If the {antallBarn, select, 1 {child} other {children}} is born {dato}{kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from the birth.}}",
@@ -264,5 +264,7 @@
     "Validering.ValidNumber": "You have written something that is not a number. Letters, spaces, periods, and commas are not allowed.",
     "SøkOmForeldrepenger.Tittel": "Apply for parental benefit!",
     "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
-    "SøkOmForeldrepenger.Søk": "Apply for parental benefit"
+    "SøkOmForeldrepenger.Søk": "Apply for parental benefit",
+    "CalendarLabels.TapteDager": "Days lost",
+    "CalendarLabels.Ferie": "Vacation"
 }

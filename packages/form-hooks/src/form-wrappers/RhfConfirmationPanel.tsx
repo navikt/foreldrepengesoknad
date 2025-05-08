@@ -29,7 +29,7 @@ export const RhfConfirmationPanel = ({ name, label, validate = [], children }: P
             ref={field.ref}
             label={label}
             onChange={(evt) => field.onChange(evt)}
-            checked={field.value ? field.value : ''}
+            checked={field.value ?? ''}
             error={getError(errors, name)}
         >
             {children}

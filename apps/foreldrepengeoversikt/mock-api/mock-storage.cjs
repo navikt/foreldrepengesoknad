@@ -13,7 +13,7 @@ const getFileContent = function (filnavn) {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }
@@ -62,7 +62,7 @@ const getUttaksplan = function () {
     } else {
         try {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
+        } catch {
             return {};
         }
     }

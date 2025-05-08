@@ -1,3 +1,5 @@
+import { FormattedMessage } from 'react-intl';
+
 import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
@@ -10,15 +12,21 @@ export const ModalButtons = ({ onCancel, onGoPreviousStep, isFinalStep }: Props)
     return (
         <HStack gap="2" justify="space-between">
             <Button type="button" variant="secondary" onClick={onCancel}>
-                Avbryt
+                <FormattedMessage id="uttaksplan.avbryt" />
             </Button>
             <HStack gap="2">
                 {onGoPreviousStep && (
                     <Button type="button" variant="secondary" onClick={onGoPreviousStep}>
-                        Gå tilbake
+                        <FormattedMessage id="uttaksplan.gåTilbake" />
                     </Button>
                 )}
-                <Button>{isFinalStep ? 'Ferdig, legg til i planen' : 'Gå videre'}</Button>
+                <Button>
+                    {isFinalStep ? (
+                        <FormattedMessage id="uttaksplan.ferdig" />
+                    ) : (
+                        <FormattedMessage id="uttaksplan.gåVidere" />
+                    )}
+                </Button>
             </HStack>
         </HStack>
     );

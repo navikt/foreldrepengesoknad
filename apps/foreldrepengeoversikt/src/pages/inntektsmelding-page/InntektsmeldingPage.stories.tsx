@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { enBortfaltNaturalytelse } from 'storybookData/inntektsmeldinger/enBortfaltNaturalytelse';
@@ -11,29 +10,28 @@ import { satser } from 'storybookData/inntektsmeldinger/satser';
 import { utenRefusjon } from 'storybookData/inntektsmeldinger/utenRefusjon';
 import { saker } from 'storybookData/saker/saker';
 
+import { withQueryClient } from '@navikt/fp-utils-test';
+
 import { OversiktRoutes } from '../../routes/routes';
 import { InntektsmeldingPage } from './InntektsmeldingPage';
 
-const queryClient = new QueryClient();
-
 const meta = {
     title: 'Inntektsmelding',
+    decorators: [withQueryClient],
     render: (args) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter
-                    initialEntries={[
-                        `${OversiktRoutes.SAKSOVERSIKT}/${args.saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${args.journalpostId}`,
-                    ]}
-                >
-                    <Routes>
-                        <Route
-                            element={<InntektsmeldingPage />}
-                            path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter
+                initialEntries={[
+                    `${OversiktRoutes.SAKSOVERSIKT}/${args.saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${args.journalpostId}`,
+                ]}
+            >
+                <Routes>
+                    <Route
+                        element={<InntektsmeldingPage />}
+                        path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
+                    />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta;

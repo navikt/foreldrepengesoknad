@@ -264,5 +264,7 @@
     "Validering.ValidNumber": "Du har skrive noko som ikkje er eit tal. Bokstavar, mellomrom, punktum og komma er ikkje tillate.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepengar!",
     "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
-    "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar"
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar",
+    "CalendarLabels.TapteDager": "Tapte dagar",
+    "CalendarLabels.Ferie": "Ferie"
 }

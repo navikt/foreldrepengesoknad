@@ -1,7 +1,7 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { IconCircleWrapper } from '@navikt/fp-ui';
@@ -46,9 +46,9 @@ export const HvorforHarJegIkkeRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a href={links.folketrygden} target="_blank" rel="noreferrer">
+                                                    <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
-                                                    </a>
+                                                    </Link>
                                                 ),
                                             }}
                                         />

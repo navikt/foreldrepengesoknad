@@ -40,7 +40,7 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                                 <FormattedMessage id="oppsummering.annenForelder.navn" />
                             </FormSummary.Label>
                             <FormSummary.Value>
-                                {`${annenForelder.fornavn} ${annenForelder.etternavn}, ${annenForelder.fnr || annenForelder.utenlandskFnr}`}
+                                {`${annenForelder.fornavn} ${annenForelder.etternavn}, ${annenForelder.fnr ?? annenForelder.utenlandskFnr}`}
                             </FormSummary.Value>
                         </FormSummary.Answer>
                         <FormSummary.Answer>

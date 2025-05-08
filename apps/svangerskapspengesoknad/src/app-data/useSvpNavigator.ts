@@ -11,7 +11,7 @@ export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbei
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id || SøknadRoute.FORSIDE;
+        const previousPath = stepConfig[index]?.id ?? SøknadRoute.FORSIDE;
         oppdaterPath(previousPath);
         return mellomlagreOgNaviger();
     };

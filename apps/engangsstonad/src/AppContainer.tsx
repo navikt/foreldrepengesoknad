@@ -1,16 +1,19 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import ky from 'ky';
 import { useCallback, useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { en, nb, nn } from '@navikt/ds-react/locales';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
-import { Engangsstønad } from './Engangsstønad';
+import { Engangsstønad, slettMellomlagringOgLastSidePåNytt } from './Engangsstønad';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -24,6 +27,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...utilsMessages.nb,
+        ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -31,6 +35,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...utilsMessages.nn,
+        ...formHookMessages.nn,
     },
     en: {
         ...enMessages,
@@ -38,6 +43,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.en,
         ...oppsummeringMessages.en,
         ...utilsMessages.en,
+        ...formHookMessages.en,
     },
 };
 
@@ -60,17 +66,6 @@ const queryClient = new QueryClient({
 
 dayjs.locale(localeFromSessionStorage);
 
-const retryCallback = async () => {
-    try {
-        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-        // Vi bryr oss ikke om feil her. Logges bare i backend
-    }
-
-    location.reload();
-};
-
 export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
 
@@ -82,12 +77,25 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="engangsstonad" retryCallback={retryCallback}>
+            <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    <Provider locale={getDsProviderLocale(locale)}>
+                        <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );
+};
+
+const getDsProviderLocale = (locale: LocaleAll) => {
+    switch (locale) {
+        case 'nn':
+            return nn;
+        case 'en':
+            return en;
+        default:
+            return nb;
+    }
 };

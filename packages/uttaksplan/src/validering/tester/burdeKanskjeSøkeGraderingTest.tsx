@@ -1,3 +1,5 @@
+import { Link } from '@navikt/ds-react';
+
 import {
     Periode,
     Søknadsinfo,
@@ -116,9 +118,9 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: Søknadsinfo
                 renderAsHtml: true,
                 values: {
                     a: () => (msg: any) => (
-                        <a href={links.graderingInfo} className="lenke" rel="noreferrer" target="_blank">
+                        <Link href={links.graderingInfo} rel="noreferrer" target="_blank">
                             {msg}
-                        </a>
+                        </Link>
                     ),
                 },
             },

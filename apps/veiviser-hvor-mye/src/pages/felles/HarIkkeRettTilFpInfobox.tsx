@@ -46,7 +46,7 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
                 </BodyShort>
                 <BodyShort>
                     <FormattedMessage id="HarIkkeRettTilFpInfobox.Lenke1" />
-                    <Link inlineText href={links.veiviser} className="lenke" rel="noreferrer" target="_blank">
+                    <Link inlineText href={links.veiviser} rel="noreferrer" target="_blank">
                         <FormattedMessage id="HarIkkeRettTilFpInfobox.Lenke2" />
                     </Link>
                     <FormattedMessage id="HarIkkeRettTilFpInfobox.Lenke3" />

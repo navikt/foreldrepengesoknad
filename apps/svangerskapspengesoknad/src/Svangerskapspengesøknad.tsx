@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ContextDataMap, SvpDataContext } from 'appData/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
+import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
@@ -16,12 +17,22 @@ import {
 import { tilSkjematilstandFraEksisterendeSak } from 'utils/endresøknadUtils';
 
 import { ArbeidsforholdOgInntektSvp, LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
-import { Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
+
+export const slettMellomlagringOgLastSidePåNytt = async () => {
+    try {
+        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`);
+    } catch {
+        // Vi bryr oss ikke om feil her. Logges bare i backend
+    }
+
+    location.reload();
+};
 
 interface Props {
     locale: LocaleNo;
@@ -58,7 +69,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     console.log(sak);
 
     if (søkerinfo.error || mellomlagretInfo.error) {
-        return <ApiErrorHandler error={notEmpty(søkerinfo.error || mellomlagretInfo.error)} />;
+        return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;
     }
 
     if (!søkerinfo.data || mellomlagretInfo.isPending) {
@@ -76,6 +87,15 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
+    if (mellomlagretState && !isEqual(mellomlagretState.søkerInfo, søkerinfo.data)) {
+        return (
+            <RegisterdataUtdatert
+                slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
+                appName="svangerskapspengesoknad"
+            />
+        );
+    }
+
     const m = {
         version: mellomlagretState?.version ?? 1,
         locale: mellomlagretState?.locale ?? 'nb',
@@ -85,7 +105,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     return (
         <div>
             {!erPersonMyndig ? (
-                <Umyndig appnavn="Svangerskapspenger" />
+                <Umyndig appName="svangerskapspengesoknad" />
             ) : (
                 <SvpDataContext initialState={m}>
                     <SvangerskapspengesøknadRoutes

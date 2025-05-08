@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -9,13 +8,12 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { Søkerinfo } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
 import { Forside } from './Forside';
-
-const queryClient = new QueryClient();
 
 type StoryArgs = {
     saker: SakOppslag;
@@ -24,19 +22,18 @@ type StoryArgs = {
 
 const meta = {
     title: 'Forside',
+    decorators: [withQueryClient],
     render: (props) => {
         const isFirstRender = useRef(false);
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
-                    <Routes>
-                        <Route
-                            element={<Forside {...props} isFirstRender={isFirstRender} />}
-                            path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
-                        />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
+                <Routes>
+                    <Route
+                        element={<Forside {...props} isFirstRender={isFirstRender} />}
+                        path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
+                    />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;

@@ -153,12 +153,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         </BodyShort>
                                         <BodyShort>
                                             <FormattedMessage id="OppsummeringSide.SammenlignFpOgEsInfoPart2" />
-                                            <Link
-                                                href={links.veiviser}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
+                                            <Link href={links.veiviser} rel="noreferrer" target="_blank">
                                                 <FormattedMessage id="OppsummeringSide.Veiviser" />
                                             </Link>
                                             <FormattedMessage id="OppsummeringSide.SammenlignFpOgEsInfoPart3" />

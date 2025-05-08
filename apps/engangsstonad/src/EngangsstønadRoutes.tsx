@@ -34,18 +34,18 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
-    søker: PersonFrontend;
+    personinfo: PersonFrontend;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 
-export const EngangsstønadRoutes = ({ locale, onChangeLocale, søker, mellomlagretData }: Props) => {
+export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(locale, setErVelkommen);
+    const mellomlagreOgNaviger = useEsMellomlagring(locale, personinfo, setErVelkommen);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
@@ -96,7 +96,7 @@ export const EngangsstønadRoutes = ({ locale, onChangeLocale, søker, mellomlag
                     />
                     <Route
                         path={Path.OM_BARNET}
-                        element={<OmBarnetSteg kjønn={søker.kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />}
+                        element={<OmBarnetSteg kjønn={personinfo.kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />}
                     />
                     <Route
                         path={Path.TERMINBEKREFTELSE}

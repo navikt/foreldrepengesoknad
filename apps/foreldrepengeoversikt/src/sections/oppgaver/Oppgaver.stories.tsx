@@ -1,22 +1,20 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Oppgaver } from './Oppgaver';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
-const queryClient = new QueryClient();
+import { Oppgaver } from './Oppgaver';
 
 const meta = {
     title: 'Oppgaver',
     component: Oppgaver,
+    decorators: [withQueryClient],
     render: (props) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <Oppgaver {...props} />
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter>
+                <Oppgaver {...props} />
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof Oppgaver>;

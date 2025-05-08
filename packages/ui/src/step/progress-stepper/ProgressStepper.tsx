@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import { FormProgress, Heading, VStack } from '@navikt/ds-react';
 
@@ -19,6 +20,8 @@ export const ProgressStepper = <TYPE extends string>({
     onStepChange,
     hideHeader = false,
 }: ProgressStepperProps<TYPE>) => {
+    const intl = useIntl();
+
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     const [activeStep, setActiveStep] = useState(currentStepIndex + 1);
 
@@ -43,6 +46,11 @@ export const ProgressStepper = <TYPE extends string>({
                     }
                 }}
                 interactiveSteps={!!onStepChange}
+                translations={{
+                    hideAllSteps: intl.formatMessage({ id: 'ProgressStepper.HideSteps' }),
+                    showAllSteps: intl.formatMessage({ id: 'ProgressStepper.ShowSteps' }),
+                    step: intl.formatMessage({ id: 'ProgressStepper.StepCounter' }),
+                }}
             >
                 {steps.map((step, index) => (
                     <FormProgress.Step key={step.id} href="#" interactive={onStepChange && index < currentStepIndex}>

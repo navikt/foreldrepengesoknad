@@ -10,7 +10,7 @@ const app = {
     innsyn: process.env.INNSYN,
     test1Juli2024Regler: process.env.FEATURE_TEST_1JULI2024_REGLER,
     logValidation: process.env.LOG_VALIDATION,
-    publicPath: process.env.PUBLIC_PATH || '',
+    publicPath: process.env.PUBLIC_PATH ?? '',
 };
 
 // eslint-disable-next-line import/no-default-export

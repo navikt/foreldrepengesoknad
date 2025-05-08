@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, ExpansionCard, VStack } from '@navikt/ds-react';
+import { BodyLong, ExpansionCard, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
@@ -22,19 +22,14 @@ export const InfoOmFørstegangstjeneste = () => {
                             id="inntektsinformasjon.infoOmFørstegangstjeneste.content.del2"
                             values={{
                                 a: (msg: any) => (
-                                    <a href={links.papirsøknadSvp} target="_blank" rel="noreferrer" className="lenke">
+                                    <Link href={links.papirsøknadSvp} target="_blank" rel="noreferrer">
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                                 b: (msg: any) => (
-                                    <a
-                                        href={links.arbeidstilsynetSkjema}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="lenke"
-                                    >
+                                    <Link href={links.arbeidstilsynetSkjema} target="_blank" rel="noreferrer">
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                             }}
                         />

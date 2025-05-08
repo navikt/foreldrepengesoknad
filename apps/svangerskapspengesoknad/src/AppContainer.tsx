@@ -1,9 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import ky from 'ky';
 import { useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { nb, nn } from '@navikt/ds-react/locales';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -13,7 +16,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
-import { Svangerskapspengesøknad } from './Svangerskapspengesøknad';
+import { Svangerskapspengesøknad, slettMellomlagringOgLastSidePåNytt } from './Svangerskapspengesøknad';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -26,6 +29,7 @@ const allNbMessages = {
     ...frilansMessages.nb,
     ...egenNæringMessages.nb,
     ...arbeidsforholdOgInntektMessages.nb,
+    ...formHookMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -36,6 +40,7 @@ const allNnMessages = {
     ...frilansMessages.nn,
     ...egenNæringMessages.nn,
     ...arbeidsforholdOgInntektMessages.nn,
+    ...formHookMessages.nn,
 };
 
 declare global {
@@ -64,34 +69,25 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 
 dayjs.locale(localeFromSessionStorage);
 
-const retryCallback = async () => {
-    try {
-        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-        // Vi bryr oss ikke om feil her. Logges bare i backend
-    }
-
-    location.reload();
-};
-
 export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="svangerskapspengesoknad" retryCallback={retryCallback}>
+            <ErrorBoundary appName="svangerskapspengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Svangerskapspengesøknad
-                        locale={locale}
-                        onChangeLocale={(activeLocale: LocaleNo) => {
-                            setLocaleInSessionStorage(activeLocale);
-                            setLocale(activeLocale);
-                            document.documentElement.setAttribute('lang', activeLocale);
-                        }}
-                    />
+                    <Provider locale={locale === 'nb' ? nb : nn}>
+                        <Svangerskapspengesøknad
+                            locale={locale}
+                            onChangeLocale={(activeLocale: LocaleNo) => {
+                                setLocaleInSessionStorage(activeLocale);
+                                setLocale(activeLocale);
+                                document.documentElement.setAttribute('lang', activeLocale);
+                            }}
+                        />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>

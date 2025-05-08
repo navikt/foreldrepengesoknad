@@ -54,7 +54,7 @@ export const RhfNumericField = ({
     return (
         <TextField
             ref={field.ref}
-            value={field.value || ''}
+            value={field.value ?? ''}
             label={label}
             description={description}
             type="text"

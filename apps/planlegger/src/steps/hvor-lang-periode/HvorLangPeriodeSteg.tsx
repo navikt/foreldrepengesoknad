@@ -67,7 +67,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
     };
 
     const dekningsgrad = formMethods.watch('dekningsgrad');
-    const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
+    const valgtDekningsgrad = dekningsgrad ?? periode?.dekningsgrad;
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
@@ -148,7 +148,6 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                                         <Link
                                                             inlineText
                                                             href={links.godkjentAktivitet}
-                                                            className="lenke"
                                                             rel="noreferrer"
                                                             target="_blank"
                                                         >
