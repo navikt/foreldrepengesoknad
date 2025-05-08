@@ -54,13 +54,6 @@ export const MorJobberDokumentasjon = ({
             p.forelder === Forelder.farMedmor &&
             p.konto === StønadskontoType.Fellesperiode,
     );
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer);
-    const trengerDokumentereMorsArbeid =
-        useQuery({
-            // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
-            enabled: !!dokumentereMorsArbeidParams,
-        }).data ?? true;
 
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
     const bareFarHarRett = isAnnenForelderOppgitt(annenForelder)
@@ -100,6 +93,14 @@ export const MorJobberDokumentasjon = ({
     if (bareFarHarRett) {
         return renderUttakUploader();
     }
+
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer);
+    const trengerDokumentereMorsArbeid =
+        useQuery({
+            // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
+            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
+            enabled: !!dokumentereMorsArbeidParams,
+        }).data ?? true;
 
     if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
         return <TrengerIkkeMorIArbeidDokumentasjon />;
