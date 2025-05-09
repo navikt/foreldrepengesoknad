@@ -23,7 +23,7 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
         });
     }
 
-    if (stillingsprosent > 100) {
+    if (stillingsprosent >= 100) {
         return intl.formatMessage({
             id: 'leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100',
         });

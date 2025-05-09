@@ -180,5 +180,9 @@
     "SøkelenkerPanel.SokSvp": "Søk om svangerskapspenger",
     "SøkelenkerPanel.SokEs": "Søk om engangsstønad",
     "HarIkkeSaker.IngenSoknader": "Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger",
-    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker før søknaden din er synlig her hvis du har søkt via brev."
+    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker før søknaden din er synlig her hvis du har søkt via brev.",
+    "BruktOpplysningerOmArbeidsforhold.tittel": "Nav har brukt opplysninger om arbeidsforholdet ditt",
+    "BruktOpplysningerOmArbeidsforhold.tekst.1": "Den andre forelderen har søkt om foreldrepenger på grunn av at du skal være i arbeid.",
+    "BruktOpplysningerOmArbeidsforhold.tekst.2": "Derfor har Nav slått opp arbeidsforholdet ditt i Arbeidsgiver og arbeidstakerregisteret, og bruker opplysningene i behandlingen av saken til den andre forelderen. Opplysningene vil brukes også om det er flere perioder eller søknader.",
+    "BruktOpplysningerOmArbeidsforhold.tekst.3": "Dette har vi gjort med hjemmel i folketrygdlovens §21-4. Du kan lese mer om behandlingsgrunnlaget <a>her (åpner i en ny fane)</a>."
 }

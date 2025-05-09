@@ -4,10 +4,10 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
-import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
@@ -75,8 +75,6 @@ export const LeggTilPeriodeModalStep = ({
         const fomValue = values.fom;
         const tomValue = values.tom;
         const årsak = values.årsak;
-        const skalDuJobbe = values.skalDuJobbe;
-        const stillingsprosent = values.stillingsprosent;
 
         if (årsak === UtsettelseÅrsakType.Ferie) {
             handleAddPeriode({
@@ -104,14 +102,7 @@ export const LeggTilPeriodeModalStep = ({
                 readOnly: false,
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-                gradering: skalDuJobbe
-                    ? {
-                          aktivitet: {
-                              type: UttakArbeidType.ORDINÆRT_ARBEID,
-                          },
-                          arbeidstidprosent: getNumberFromNumberInputValue(stillingsprosent)!,
-                      }
-                    : undefined,
+                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
             });
         }
 
