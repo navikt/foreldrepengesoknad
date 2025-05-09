@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyLong, BodyShort, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 

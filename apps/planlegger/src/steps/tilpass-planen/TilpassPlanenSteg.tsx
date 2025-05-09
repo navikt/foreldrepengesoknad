@@ -6,7 +6,7 @@ import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
-import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import {
@@ -100,7 +100,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
@@ -134,6 +133,17 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
             </Modal>
 
             <VStack gap="6">
+                <Alert variant="info">
+                    <Heading size="medium" spacing level="2">
+                        Savner du noe i planleggeren?
+                    </Heading>
+                    <BodyLong>
+                        Vi jobber med å forbedre planleggeren. Det betyr at flere funksjoner kommer snart. Det kan
+                        derfor være forskjeller mellom det du kan legge inn i planleggeren og det du faktisk kan søke
+                        om.
+                    </BodyLong>
+                </Alert>
+
                 <Heading size="medium" spacing level="2">
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
                 </Heading>
