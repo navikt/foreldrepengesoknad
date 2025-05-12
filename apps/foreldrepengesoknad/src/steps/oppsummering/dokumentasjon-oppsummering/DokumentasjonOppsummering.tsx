@@ -16,6 +16,7 @@ interface Props {
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
+    trengerDokumentereMorsArbeid?: boolean;
 }
 
 const skalViseVedlegg = (
@@ -62,17 +63,21 @@ export const DokumentasjonOppsummering = ({
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
+    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
+
+    if (!harVedlegg) {
+        return null;
+    }
+
     const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid();
 
-    const harSendSenereDokument = alleVedlegg
-        ? Object.values(alleVedlegg)
-              .flatMap((vedlegg) => vedlegg)
-              .some(
-                  (v) =>
-                      v.innsendingsType === InnsendingsType.SEND_SENERE &&
-                      v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-              )
-        : false;
+    const harSendSenereDokument = Object.values(alleVedlegg!)
+        .flatMap((vedlegg) => vedlegg)
+        .some(
+            (v) =>
+                v.innsendingsType === InnsendingsType.SEND_SENERE &&
+                v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+        );
 
     if (!skalViseVedlegg(alleVedlegg, trengerDokumentereMorsArbeid, harSendSenereDokument)) {
         return null;
