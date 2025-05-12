@@ -16,7 +16,6 @@ interface Props {
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
-    trengerDokumentereMorsArbeid?: boolean;
 }
 
 const skalViseVedlegg = (
