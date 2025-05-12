@@ -95,7 +95,15 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        let nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
+        let nyUttaksplan = [];
+
+        if (currentUttaksplanIndex !== uttaksplan.length - 1) {
+            nyUttaksplan = uttaksplan.slice(0, currentUttaksplanIndex + 1);
+        } else {
+            nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
+        }
+
+        console.log(nyUttaksplan);
 
         nyUttaksplan.push(perioder);
         setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
@@ -178,6 +186,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                     variant="secondary"
                                     icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
+                                        setCurrentUttaksplanIndex(0);
                                         lagreUttaksplan([originalUttaksplan]);
                                     }}
                                 >
