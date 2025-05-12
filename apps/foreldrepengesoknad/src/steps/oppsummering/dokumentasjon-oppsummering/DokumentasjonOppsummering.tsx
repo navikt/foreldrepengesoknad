@@ -4,9 +4,8 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 
-import { useTrengerDokumentereMorsArbeid } from '../../../utils/hooks/useTrengerDokumentereMorsarbeid';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
@@ -18,41 +17,15 @@ interface Props {
     uttaksperioderSomManglerVedlegg: Periode[];
 }
 
-const skalViseVedlegg = (
-    alleVedlegg: VedleggDataType | undefined,
-    trengerDokumentereMorsArbeid: boolean | undefined,
-    harSendSenereDokument: boolean,
-): boolean => {
-    const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
-
-    if (!harVedlegg) {
-        return false;
-    }
-
-    // Hvis vi har send-senere-dokument og IKKE trenger dokumentere mors arbeid, skal vi ikke vise noe
-    if (harSendSenereDokument && !(trengerDokumentereMorsArbeid ?? false)) {
-        return false;
-    }
-
+const skalViseVedlegg = (alleVedlegg: VedleggDataType | undefined): boolean => {
     // Sjekk om det er noen gyldige answers å vise
-    const harGyldigeAnswers =
-        alleVedlegg &&
-        Object.values(alleVedlegg).some((vedleggListe) => {
-            if (vedleggListe.length === 0) return false;
-
-            const førsteVedlegg = vedleggListe[0];
-            if (
-                førsteVedlegg.innsendingsType === InnsendingsType.SEND_SENERE &&
-                førsteVedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON &&
-                førsteVedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR &&
-                !(trengerDokumentereMorsArbeid ?? false)
-            ) {
-                return false;
-            }
-            return true;
+    const harVedleggÅVise = Object.values(alleVedlegg ?? {}).some((vedleggListe) => {
+        return vedleggListe.some((vedlegg) => {
+            return vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK;
         });
+    });
 
-    return harGyldigeAnswers;
+    return harVedleggÅVise;
 };
 
 export const DokumentasjonOppsummering = ({
@@ -68,8 +41,6 @@ export const DokumentasjonOppsummering = ({
         return null;
     }
 
-    const trengerDokumentereMorsArbeid = useTrengerDokumentereMorsArbeid();
-
     const harSendSenereDokument = Object.values(alleVedlegg!)
         .flatMap((vedlegg) => vedlegg)
         .some(
@@ -78,7 +49,7 @@ export const DokumentasjonOppsummering = ({
                 v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
         );
 
-    if (!skalViseVedlegg(alleVedlegg, trengerDokumentereMorsArbeid, harSendSenereDokument)) {
+    if (!skalViseVedlegg(alleVedlegg)) {
         return null;
     }
 
@@ -107,15 +78,7 @@ export const DokumentasjonOppsummering = ({
                                 }
                                 const vedlegg = idOgVedlegg[1][0];
 
-                                // Skip dokumentasjon for mors arbeid når det ikke er nødvendig
-                                const erMorsArbeidsDokumentasjon =
-                                    vedlegg.innsendingsType === InnsendingsType.SEND_SENERE &&
-                                    vedlegg.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON &&
-                                    vedlegg.skjemanummer === Skjemanummer.DOK_ARBEID_MOR;
-
-                                const skalDokumentereMorsArbeid = trengerDokumentereMorsArbeid ?? false;
-
-                                if (erMorsArbeidsDokumentasjon && !skalDokumentereMorsArbeid) {
+                                if (vedlegg.innsendingsType === InnsendingsType.AUTOMATISK) {
                                     return false;
                                 }
                                 return true;

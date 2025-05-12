@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import {
     Forelder,
@@ -14,9 +16,9 @@ import {
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, isFødtBarn } from '@navikt/fp-types';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { dateToISOString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
@@ -103,13 +105,40 @@ export const MorJobberDokumentasjon = ({
         }).data ?? true;
 
     if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
-        return <TrengerIkkeMorIArbeidDokumentasjon />;
+        return (
+            <TrengerIkkeMorIArbeidDokumentasjon
+                perioder={perioder}
+                updateDokArbeidMorAttachment={updateDokArbeidMorAttachment}
+            />
+        );
     }
 
     return renderUttakUploader();
 };
 
-const TrengerIkkeMorIArbeidDokumentasjon = () => <IngenDokumentasjonPåkrevd />;
+const TrengerIkkeMorIArbeidDokumentasjon = ({
+    updateDokArbeidMorAttachment,
+    perioder,
+}: {
+    updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
+    perioder: Periode[];
+}) => {
+    useEffect(() => {
+        const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
+
+        const sendAutomatiskVedlegg = addMetadata(init, {
+            type: AttachmentMetadataType.UTTAK,
+            perioder: perioder.map((p) => ({
+                fom: dateToISOString(p.tidsperiode.fom),
+                tom: dateToISOString(p.tidsperiode.tom),
+            })),
+        });
+
+        updateDokArbeidMorAttachment([sendAutomatiskVedlegg]);
+    }, []);
+
+    return <IngenDokumentasjonPåkrevd />;
+};
 
 const getDokumentereMorsArbeidParams = (
     uttaksplan: Periode[],
