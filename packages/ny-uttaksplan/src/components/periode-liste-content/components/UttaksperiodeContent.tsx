@@ -22,7 +22,7 @@ interface Props {
 }
 
 const getArbeidsTekst = (arbeidstidprosent: number) => {
-    const uttaksprosent = 100 - arbeidstidprosent;
+    const uttaksprosent = Math.round((100 - arbeidstidprosent) * 100) / 100;
 
     return (
         <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
