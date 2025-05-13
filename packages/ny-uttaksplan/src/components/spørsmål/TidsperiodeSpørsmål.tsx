@@ -49,8 +49,13 @@ export const TidsperiodeSpørsmål = ({
     };
 
     const årsak = oppholdsårsak ?? getÅrsak();
-    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato, gjelderAdopsjon });
-    const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
+    const minDate = getMinDate({
+        årsak,
+        kontoType: kontoType ?? valgtPeriode?.kontoType,
+        familiehendelsedato,
+        gjelderAdopsjon,
+    });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType });
 
     return (
         <>
