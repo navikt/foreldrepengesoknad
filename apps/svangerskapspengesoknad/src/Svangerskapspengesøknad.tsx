@@ -4,14 +4,14 @@ import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMelloml
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
-import { tilSkjematilstandFraEksisterendeSak } from 'utils/endresøknadUtils';
 
-import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
+import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
+import { hentSakerOptions } from './api/queries';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
@@ -44,25 +44,14 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
             ky.get(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
     });
 
-    const sak = useQuery({
-        queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
-        select: (saker) => {
-            const svpSak = saker.svangerskapspenger[0]; //TODO: gal antagelse om bare 1 sak
-            if (!svpSak) {
-                return undefined;
-            }
-
-            return tilSkjematilstandFraEksisterendeSak(svpSak);
-        },
-    });
+    const sak = useQuery(hentSakerOptions());
     console.log(sak);
 
     if (søkerinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;
     }
 
-    if (!søkerinfo.data || mellomlagretInfo.isPending) {
+    if (!søkerinfo.data || mellomlagretInfo.isPending || sak.isPending) {
         return <Spinner />;
     }
 

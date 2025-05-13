@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextSaveData } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ import { links } from '@navikt/fp-constants';
 import { LocaleNo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
+import { hentSakerOptions } from '../../api/queries';
 import styles from './forside.module.css';
 
 interface Props {
@@ -40,6 +42,7 @@ export const Forside = ({
     const intl = useIntl();
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+    const sak = useQuery(hentSakerOptions());
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setIsChecked] = useState(harGodkjentVilkår);
@@ -122,6 +125,7 @@ export const Forside = ({
                             </div>
                         </VStack>
                     </Alert>
+                    {sak.data && <span>Du har allerede sak for barn med termin {sak.data.OM_BARNET.termindato}</span>}
                     <ConfirmationPanel
                         label={intl.formatMessage({ id: 'forside.samtykke' })}
                         onChange={() => setIsChecked((state) => !state)}
@@ -153,7 +157,7 @@ export const Forside = ({
                     </ConfirmationPanel>
                     <HStack justify="center">
                         <Button type="button" onClick={bekreft}>
-                            <FormattedMessage id="forside.begynnMedSøknad" />
+                            {sak.data ? 'Endre søknad' : <FormattedMessage id="forside.begynnMedSøknad" />}
                         </Button>
                     </HStack>
                 </VStack>

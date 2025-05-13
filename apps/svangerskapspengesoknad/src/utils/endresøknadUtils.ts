@@ -6,6 +6,7 @@ import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
+    PeriodeMedVariasjon,
     TilOgMedDatoType,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
@@ -13,15 +14,20 @@ import {
 import { ArbeidsforholdOgInntektSvp, EGEN_NÆRING_ID, FRILANS_ID, SvpArbeidsforhold, SvpSak } from '@navikt/fp-types';
 
 export const tilSkjematilstandFraEksisterendeSak = (svpSak: SvpSak) => {
-    const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
+    // const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
+    //     .map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
+    //     .filter((s) => s !== undefined);
+
+    const valgteArbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold
         .map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
-        .filter((s) => s !== undefined);
+        .filter((s) => s !== undefined); //TODO: temp
 
     return {
         OM_BARNET: tilBarnetSkjema(svpSak),
         VALGTE_ARBEIDSFORHOLD: valgteArbeidsforhold,
         FERIE: tilFerie(svpSak),
         TILRETTELEGGINGER: tilTilrettelegginger(svpSak),
+        TILRETTELEGGINGER_PERIODER: tilTilretteleggingPerioder(svpSak),
         ARBEIDSFORHOLD_OG_INNTEKT: finnArbeidsforholdOgInntektSkjemaverdier(
             svpSak.gjeldendeVedtak?.arbeidsforhold ?? [],
         ),
@@ -69,12 +75,13 @@ const tilFerie = (svpSak: SvpSak) => {
 };
 
 const tilTilrettelegginger = (svpSak: SvpSak) => {
-    const tilrettelegginer = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce(
+    const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
             if (!nøkkel) {
                 return acc;
             }
+
             if (a.tilrettelegginger.length === 1) {
                 const tilrettelegging = a.tilrettelegginger[0];
 
@@ -102,10 +109,47 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
                         tilretteleggingstiltak: a.tiltak,
                     } satisfies DelvisTilrettelegging;
                 }
+            } else {
+                acc[nøkkel] = {
+                    behovForTilretteleggingFom: a.behovFrom,
+                    delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+                    type: Tilretteleggingstype.DELVIS,
+                };
             }
             return acc;
         },
         {} as Record<string, IngenTilrettelegging | DelvisTilrettelegging>,
+    );
+
+    return tilrettelegginer;
+};
+
+const tilTilretteleggingPerioder = (svpSak: SvpSak) => {
+    const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
+        (acc, a) => {
+            const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
+            if (!nøkkel) {
+                return acc;
+            }
+
+            if (a.tilrettelegginger.length === 1) {
+                return acc;
+            }
+
+            const asd = a.tilrettelegginger.map((tilrettelegging) => {
+                return {
+                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                    fom: tilrettelegging.fom,
+                    tom: tilrettelegging.tom,
+                    stillingsprosent: tilrettelegging.arbeidstidprosent?.toString() ?? '0', //TODO
+                };
+            });
+
+            acc[nøkkel] = asd;
+
+            return acc;
+        },
+        {} as Record<string, PeriodeMedVariasjon[]>,
     );
 
     return tilrettelegginer;
