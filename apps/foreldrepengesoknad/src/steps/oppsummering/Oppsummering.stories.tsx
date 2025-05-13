@@ -872,7 +872,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: InnsendingsType.AUTOMATISK,
                 },
             ],
         },
@@ -914,7 +914,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: InnsendingsType.AUTOMATISK,
                 },
             ],
             [Skjemanummer.DOK_UTDANNING_MOR]: [
