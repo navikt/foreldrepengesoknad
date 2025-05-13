@@ -103,8 +103,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
             nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
         }
 
-        console.log(nyUttaksplan);
-
         nyUttaksplan.push(perioder);
         setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
         lagreUttaksplan(nyUttaksplan);
