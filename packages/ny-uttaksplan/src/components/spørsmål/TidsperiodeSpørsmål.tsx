@@ -68,7 +68,7 @@ export const TidsperiodeSpørsmål = ({
                     validate={getFomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType ?? kontoType,
+                        kontoType: kontoType ?? valgtPeriode?.kontoType,
                         tomValue,
                         erBarnetFødt,
                         minDate,
@@ -83,7 +83,7 @@ export const TidsperiodeSpørsmål = ({
                     validate={getTomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType ?? kontoType,
+                        kontoType: kontoType ?? valgtPeriode?.kontoType,
                         fomValue,
                         erBarnetFødt,
                         minDate,
