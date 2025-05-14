@@ -49,8 +49,13 @@ export const TidsperiodeSpørsmål = ({
     };
 
     const årsak = oppholdsårsak ?? getÅrsak();
-    const minDate = getMinDate({ årsak, kontoType: valgtPeriode?.kontoType, familiehendelsedato, gjelderAdopsjon });
-    const maxDate = getMaxDate({ familiehendelsedato, kontoType: valgtPeriode?.kontoType });
+    const minDate = getMinDate({
+        årsak,
+        kontoType: kontoType ?? valgtPeriode?.kontoType,
+        familiehendelsedato,
+        gjelderAdopsjon,
+    });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType });
 
     return (
         <>
@@ -68,7 +73,7 @@ export const TidsperiodeSpørsmål = ({
                     validate={getFomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType ?? kontoType,
+                        kontoType: kontoType ?? valgtPeriode?.kontoType,
                         tomValue,
                         erBarnetFødt,
                         minDate,
@@ -83,7 +88,7 @@ export const TidsperiodeSpørsmål = ({
                     validate={getTomValidators({
                         intl,
                         familiehendelsedato,
-                        kontoType: valgtPeriode?.kontoType ?? kontoType,
+                        kontoType: kontoType ?? valgtPeriode?.kontoType,
                         fomValue,
                         erBarnetFødt,
                         minDate,
