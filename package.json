@@ -21,11 +21,11 @@
     },
     "dependencies": {
         "gh-pages": "6.3.0",
-        "glob": "11.0.1",
+        "glob": "11.0.2",
         "husky": "9.1.7",
         "lint-staged": "15.4.1",
         "shelljs": "0.8.5",
-        "turbo": "^2.3.3"
+        "turbo": "^2.5.3"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
