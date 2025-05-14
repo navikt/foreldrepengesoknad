@@ -31,7 +31,7 @@
         "dayjs": "^1.11.12",
         "react": "^19.1.0",
         "react-intl": "^7.1.11",
-        "react-to-pdf": "1.0.1"
+        "react-to-pdf": "2.0.0"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.6.1",
@@ -53,7 +53,7 @@
         "fast-glob": "^3.3.3",
         "react-dom": "^19.1.0",
         "storybook": "8.6.12",
-        "storybook-react-intl": "^3.2.3",
+        "storybook-react-intl": "^4.0.1",
         "tailwindcss": "4.1.6",
         "tsconfig": "workspace:*",
         "typescript": "^5.8.3",

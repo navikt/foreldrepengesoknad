@@ -27,7 +27,7 @@
         "eslint-plugin-prettier": "5.4.0",
         "eslint-plugin-react": "7.37.5",
         "eslint-plugin-simple-import-sort": "12.1.1",
-        "eslint-plugin-unicorn": "56.0.1",
+        "eslint-plugin-unicorn": "59.0.1",
         "morgan": "^1.10.0",
         "prettier": "3.5.3",
         "tsconfig": "workspace:*",

@@ -47,7 +47,7 @@
         "@navikt/fp-uttaksplan": "workspace:*",
         "@navikt/fp-uttaksplan-kalender": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@sentry/browser": "^8.50.0",
+        "@sentry/browser": "^9.19.0",
         "@snyk/protect": "^1.1297.0",
         "@tailwindcss/vite": "^4.1.6",
         "@tanstack/react-query": "5.76.1",

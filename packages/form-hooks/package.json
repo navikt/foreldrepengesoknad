@@ -48,7 +48,7 @@
         "cross-env": "^7.0.3",
         "eslint": "9.26.0",
         "storybook": "8.6.12",
-        "storybook-react-intl": "^3.2.3",
+        "storybook-react-intl": "^4.0.1",
         "tailwindcss": "4.1.6",
         "tsconfig": "workspace:*",
         "typescript": "^5.8.3",
