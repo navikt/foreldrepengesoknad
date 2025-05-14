@@ -100,12 +100,15 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
     const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);
 
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const perioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
+
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterVariertePerioder = useContextSaveData(ContextDataType.TILRETTELEGGINGER_PERIODER);
 
     const tilrettelegging = tilrettelegginger?.[valgtTilretteleggingId];
 
@@ -151,6 +154,13 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
             values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
         ) {
             return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId));
+        }
+
+        // Siden vi ikke skal gå videre til å oppgi varierte perioder for dette arbeidsforholdet må vi slette eksisterende skjemadata for varierte perioder.
+        if (perioder !== undefined) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { [valgtTilretteleggingId]: _, ...periodeRest } = perioder;
+            oppdaterVariertePerioder(periodeRest);
         }
 
         // Bare virksomheter eller private skal oppgi ferie.
