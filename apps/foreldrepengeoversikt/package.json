@@ -82,7 +82,7 @@
         "express": "^5.1.0",
         "fast-glob": "^3.3.3",
         "http-proxy-middleware": "3.0.5",
-        "jsdom": "^26.0.0",
+        "jsdom": "^26.1.0",
         "morgan": "^1.10.0",
         "msw": "2.8.2",
         "msw-storybook-addon": "^2.0.4",
