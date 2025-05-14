@@ -22,7 +22,7 @@
         "react-intl": "^7.1.11"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.4.1",
+        "@formatjs/cli-lib": "6.6.1",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",

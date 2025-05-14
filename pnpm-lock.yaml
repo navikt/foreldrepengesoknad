@@ -139,8 +139,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -344,8 +344,8 @@ importers:
         version: 3.24.4
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -657,8 +657,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -913,8 +913,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
@@ -1166,8 +1166,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1404,8 +1404,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
@@ -1588,8 +1588,8 @@ importers:
         version: 2.88.2
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
@@ -1735,7 +1735,7 @@ importers:
         version: 10.1.5(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-import:
         specifier: 2.31.0
-        version: 2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.26.0(jiti@2.4.2))
+        version: 2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-jsx-a11y:
         specifier: 6.10.2
         version: 6.10.2(eslint@9.26.0(jiti@2.4.2))
@@ -1744,16 +1744,16 @@ importers:
         version: 7.37.5(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-vitest:
         specifier: 0.5.4
-        version: 0.5.4(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.1.3(jiti@2.4.2))
+        version: 0.5.4(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)(vitest@3.1.3(jiti@2.4.2))
       globals:
         specifier: 16.1.0
         version: 16.1.0
       typescript:
         specifier: 5.4.5
-        version: 5.8.3
+        version: 5.4.5
       typescript-eslint:
         specifier: 8.32.1
-        version: 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+        version: 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
 
   packages/form-hooks:
     dependencies:
@@ -2193,7 +2193,7 @@ importers:
         version: 10.1.5(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-import:
         specifier: 2.31.0
-        version: 2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.26.0(jiti@2.4.2))
+        version: 2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint@9.26.0(jiti@2.4.2))
       eslint-plugin-prettier:
         specifier: 5.4.0
         version: 5.4.0(@types/eslint@9.6.1)(eslint-config-prettier@10.1.5(eslint@9.26.0(jiti@2.4.2)))(eslint@9.26.0(jiti@2.4.2))(prettier@3.5.3)
@@ -2274,8 +2274,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -2398,8 +2398,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -2513,8 +2513,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -2628,8 +2628,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -2752,8 +2752,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -2888,8 +2888,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -2991,8 +2991,8 @@ importers:
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -3185,8 +3185,8 @@ importers:
         version: 11.1.0
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -3306,8 +3306,8 @@ importers:
         version: 2.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -3424,8 +3424,8 @@ importers:
         version: 2.0.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@formatjs/cli-lib':
-        specifier: 7.4.1
-        version: 7.4.1
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
@@ -4488,18 +4488,18 @@ packages:
   '@fontsource/source-sans-3@5.2.7':
     resolution: {integrity: sha512-xxubrpz6z3CAdQd8kx99gyK7AfIuunN53BlcuZdpYRfyAlI69a0LJ03G5KOZZp+kR+qjLmK1qHwlucWAWg4XXw==}
 
-  '@formatjs/cli-lib@7.4.1':
-    resolution: {integrity: sha512-fatt6mxYEuawmPphFrwYehSIz35hfjwR0Z20U1AqInGn9Fc/OCbn0QMsVTaTZ8mBuvLnyCUUZiZGm0E77WoolA==}
+  '@formatjs/cli-lib@6.6.1':
+    resolution: {integrity: sha512-CTz2bT+S8b8DkQm4mdfYFH/LerBX7PKbh+Y0LhANCFKozabaaqvgA9+56mkaiDChOJNitxhQwvDTHxkJN/msFg==}
     engines: {node: '>= 16'}
     peerDependencies:
       '@glimmer/env': ^0.1.7
-      '@glimmer/reference': ^0.94.0
-      '@glimmer/syntax': ^0.94.9
-      '@glimmer/validator': ^0.94.0
-      '@vue/compiler-core': ^3.5.12
-      content-tag: ^3.0.0
-      ember-template-recast: ^6.1.5
-      vue: ^3.5.12
+      '@glimmer/reference': ^0.91.1 || ^0.92.0
+      '@glimmer/syntax': ^0.92.0
+      '@glimmer/validator': ^0.92.0
+      '@vue/compiler-core': ^3.4.0
+      content-tag: ^2.0.1
+      ember-template-recast: ^6.1.4
+      vue: ^3.4.0
     peerDependenciesMeta:
       '@glimmer/env':
         optional: true
@@ -4518,8 +4518,14 @@ packages:
       vue:
         optional: true
 
+  '@formatjs/ecma402-abstract@2.2.1':
+    resolution: {integrity: sha512-O4ywpkdJybrjFc9zyL8qK5aklleIAi5O4nYhBVJaOFtCkNrnU+lKFeJOFC48zpsZQmR8Aok2V79hGpHnzbmFpg==}
+
   '@formatjs/ecma402-abstract@2.3.4':
     resolution: {integrity: sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==}
+
+  '@formatjs/fast-memoize@2.2.2':
+    resolution: {integrity: sha512-mzxZcS0g1pOzwZTslJOBTmLzDXseMLLvnh25ymRilCm8QLMObsQ7x/rj9GNrH0iUhZMlFisVOD6J1n6WQqpKPQ==}
 
   '@formatjs/fast-memoize@2.2.7':
     resolution: {integrity: sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==}
@@ -4527,11 +4533,20 @@ packages:
   '@formatjs/icu-messageformat-parser@2.11.2':
     resolution: {integrity: sha512-AfiMi5NOSo2TQImsYAg8UYddsNJ/vUEv/HaNqiFjnI3ZFfWihUtD5QtuX6kHl8+H+d3qvnE/3HZrfzgdWpsLNA==}
 
+  '@formatjs/icu-messageformat-parser@2.9.1':
+    resolution: {integrity: sha512-7AYk4tjnLi5wBkxst2w7qFj38JLMJoqzj7BhdEl7oTlsWMlqwgx4p9oMmmvpXWTSDGNwOKBRc1SfwMh5MOHeNg==}
+
   '@formatjs/icu-skeleton-parser@1.8.14':
     resolution: {integrity: sha512-i4q4V4qslThK4Ig8SxyD76cp3+QJ3sAqr7f6q9VVfeGtxG9OhiAk3y9XF6Q41OymsKzsGQ6OQQoJNY4/lI8TcQ==}
 
+  '@formatjs/icu-skeleton-parser@1.8.5':
+    resolution: {integrity: sha512-zRZ/e3B5qY2+JCLs7puTzWS1Jb+t/K+8Jur/gEZpA2EjWeLDE17nsx8thyo9P48Mno7UmafnPupV2NCJXX17Dg==}
+
   '@formatjs/intl-datetimeformat@6.18.0':
     resolution: {integrity: sha512-x0/TGT5N3B8rC8hR8fcmaZXX/u+fef5u6+Tcm9o2/8fkBizM09gBI2eK7UM6/+p0ZBdwaKeQT/hxM5CK7Kdh1A==}
+
+  '@formatjs/intl-localematcher@0.5.6':
+    resolution: {integrity: sha512-roz1+Ba5e23AHX6KUAWmLEyTRZegM5YDuxuvkHCyK3RJddf/UXB2f+s7pOMm9ktfPGla0g+mQXOn5vsuYirnaA==}
 
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
@@ -4553,10 +4568,10 @@ packages:
       typescript:
         optional: true
 
-  '@formatjs/ts-transformer@3.13.34':
-    resolution: {integrity: sha512-N1n7dA+6dfHn/LDQXrUPOC90Z+7dsDB5cQIJeIysVwGhk8PRyYo2eaotDszZMjQp8+hvs98kJyekn1X7mK1yHQ==}
+  '@formatjs/ts-transformer@3.13.20':
+    resolution: {integrity: sha512-63zGIsaLpxfu0w3jclfrgh8EBxbwO43IbCNIAWj31ZowFtgqIOBo7j/DspQCEhvpwDM2ErYfZv8DjV3cabphVQ==}
     peerDependencies:
-      ts-jest: ^29
+      ts-jest: '>=27'
     peerDependenciesMeta:
       ts-jest:
         optional: true
@@ -5460,6 +5475,9 @@ packages:
 
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
+
+  '@types/node@20.17.47':
+    resolution: {integrity: sha512-3dLX0Upo1v7RvUimvxLeXqwrfyKxUINk0EAM83swP2mlSUcwV73sZy8XhNz8bcZ3VbsfQyC/y6jRdL5tgCNpDQ==}
 
   '@types/node@22.15.18':
     resolution: {integrity: sha512-v1DKRfUdyW+jJhZNEI1PYy29S2YRxMV5AOO/x/SjKmW0acCIOqmbj6Haf9eHAhsPmrhlHSxEhv/1WszcLWV4cg==}
@@ -9601,6 +9619,11 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <5.9.0'
 
+  typescript@5.4.5:
+    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
@@ -9617,6 +9640,9 @@ packages:
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
@@ -10929,17 +10955,17 @@ snapshots:
 
   '@fontsource/source-sans-3@5.2.7': {}
 
-  '@formatjs/cli-lib@7.4.1':
+  '@formatjs/cli-lib@6.6.1':
     dependencies:
-      '@formatjs/icu-messageformat-parser': 2.11.2
-      '@formatjs/icu-skeleton-parser': 1.8.14
-      '@formatjs/ts-transformer': 3.13.34
+      '@formatjs/icu-messageformat-parser': 2.9.1
+      '@formatjs/icu-skeleton-parser': 1.8.5
+      '@formatjs/ts-transformer': 3.13.20
       '@types/estree': 1.0.7
       '@types/fs-extra': 11.0.4
       '@types/json-stable-stringify': 1.2.0
-      '@types/node': 22.15.18
+      '@types/node': 20.17.47
       chalk: 4.1.2
-      commander: 13.1.0
+      commander: 12.1.0
       fast-glob: 3.3.3
       fs-extra: 11.3.0
       json-stable-stringify: 1.3.0
@@ -10949,11 +10975,21 @@ snapshots:
     transitivePeerDependencies:
       - ts-jest
 
+  '@formatjs/ecma402-abstract@2.2.1':
+    dependencies:
+      '@formatjs/fast-memoize': 2.2.2
+      '@formatjs/intl-localematcher': 0.5.6
+      tslib: 2.8.1
+
   '@formatjs/ecma402-abstract@2.3.4':
     dependencies:
       '@formatjs/fast-memoize': 2.2.7
       '@formatjs/intl-localematcher': 0.6.1
       decimal.js: 10.5.0
+      tslib: 2.8.1
+
+  '@formatjs/fast-memoize@2.2.2':
+    dependencies:
       tslib: 2.8.1
 
   '@formatjs/fast-memoize@2.2.7':
@@ -10966,9 +11002,20 @@ snapshots:
       '@formatjs/icu-skeleton-parser': 1.8.14
       tslib: 2.8.1
 
+  '@formatjs/icu-messageformat-parser@2.9.1':
+    dependencies:
+      '@formatjs/ecma402-abstract': 2.2.1
+      '@formatjs/icu-skeleton-parser': 1.8.5
+      tslib: 2.8.1
+
   '@formatjs/icu-skeleton-parser@1.8.14':
     dependencies:
       '@formatjs/ecma402-abstract': 2.3.4
+      tslib: 2.8.1
+
+  '@formatjs/icu-skeleton-parser@1.8.5':
+    dependencies:
+      '@formatjs/ecma402-abstract': 2.2.1
       tslib: 2.8.1
 
   '@formatjs/intl-datetimeformat@6.18.0':
@@ -10976,6 +11023,10 @@ snapshots:
       '@formatjs/ecma402-abstract': 2.3.4
       '@formatjs/intl-localematcher': 0.6.1
       decimal.js: 10.5.0
+      tslib: 2.8.1
+
+  '@formatjs/intl-localematcher@0.5.6':
+    dependencies:
       tslib: 2.8.1
 
   '@formatjs/intl-localematcher@0.6.1':
@@ -11012,11 +11063,11 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.3
 
-  '@formatjs/ts-transformer@3.13.34':
+  '@formatjs/ts-transformer@3.13.20':
     dependencies:
-      '@formatjs/icu-messageformat-parser': 2.11.2
+      '@formatjs/icu-messageformat-parser': 2.9.1
       '@types/json-stable-stringify': 1.2.0
-      '@types/node': 22.15.18
+      '@types/node': 20.17.47
       chalk: 4.1.2
       json-stable-stringify: 1.3.0
       tslib: 2.8.1
@@ -11977,6 +12028,10 @@ snapshots:
     dependencies:
       '@types/node': 22.15.18
 
+  '@types/node@20.17.47':
+    dependencies:
+      undici-types: 6.19.8
+
   '@types/node@22.15.18':
     dependencies:
       undici-types: 6.21.0
@@ -12059,32 +12114,32 @@ snapshots:
 
   '@types/uuid@9.0.8': {}
 
-  '@typescript-eslint/eslint-plugin@8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@typescript-eslint/eslint-plugin@8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       '@typescript-eslint/scope-manager': 8.32.1
-      '@typescript-eslint/type-utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/type-utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 8.32.1
       eslint: 9.26.0(jiti@2.4.2)
       graphemer: 1.4.0
       ignore: 7.0.4
       natural-compare: 1.4.0
-      ts-api-utils: 2.1.0(typescript@5.8.3)
-      typescript: 5.8.3
+      ts-api-utils: 2.1.0(typescript@5.4.5)
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.32.1
       '@typescript-eslint/types': 8.32.1
-      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.8.3)
+      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.4.5)
       '@typescript-eslint/visitor-keys': 8.32.1
       debug: 4.4.1
       eslint: 9.26.0(jiti@2.4.2)
-      typescript: 5.8.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
@@ -12098,14 +12153,14 @@ snapshots:
       '@typescript-eslint/types': 8.32.1
       '@typescript-eslint/visitor-keys': 8.32.1
 
-  '@typescript-eslint/type-utils@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@typescript-eslint/type-utils@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       debug: 4.4.1
       eslint: 9.26.0(jiti@2.4.2)
-      ts-api-utils: 2.1.0(typescript@5.8.3)
-      typescript: 5.8.3
+      ts-api-utils: 2.1.0(typescript@5.4.5)
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
@@ -12113,7 +12168,7 @@ snapshots:
 
   '@typescript-eslint/types@8.32.1': {}
 
-  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.8.3)':
+  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
@@ -12122,13 +12177,13 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
-      ts-api-utils: 1.4.3(typescript@5.8.3)
+      ts-api-utils: 1.4.3(typescript@5.4.5)
     optionalDependencies:
-      typescript: 5.8.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@8.32.1(typescript@5.8.3)':
+  '@typescript-eslint/typescript-estree@8.32.1(typescript@5.4.5)':
     dependencies:
       '@typescript-eslint/types': 8.32.1
       '@typescript-eslint/visitor-keys': 8.32.1
@@ -12137,30 +12192,30 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.7.2
-      ts-api-utils: 2.1.0(typescript@5.8.3)
-      typescript: 5.8.3
+      ts-api-utils: 2.1.0(typescript@5.4.5)
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@7.18.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@typescript-eslint/utils@7.18.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)':
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@9.26.0(jiti@2.4.2))
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.8.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.4.5)
       eslint: 9.26.0(jiti@2.4.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  '@typescript-eslint/utils@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)':
+  '@typescript-eslint/utils@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)':
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@9.26.0(jiti@2.4.2))
       '@typescript-eslint/scope-manager': 8.32.1
       '@typescript-eslint/types': 8.32.1
-      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.8.3)
+      '@typescript-eslint/typescript-estree': 8.32.1(typescript@5.4.5)
       eslint: 9.26.0(jiti@2.4.2)
-      typescript: 5.8.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
@@ -13410,17 +13465,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.26.0(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint@9.26.0(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       eslint: 9.26.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.26.0(jiti@2.4.2)):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint@9.26.0(jiti@2.4.2)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -13431,7 +13486,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.26.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint@9.26.0(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint@9.26.0(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -13443,7 +13498,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -13525,9 +13580,9 @@ snapshots:
       semver: 7.7.2
       strip-indent: 4.0.0
 
-  eslint-plugin-vitest@0.5.4(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.1.3(jiti@2.4.2)):
+  eslint-plugin-vitest@0.5.4(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)(vitest@3.1.3(jiti@2.4.2)):
     dependencies:
-      '@typescript-eslint/utils': 7.18.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/utils': 7.18.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       eslint: 9.26.0(jiti@2.4.2)
     optionalDependencies:
       vitest: 3.1.3(@types/node@22.15.18)(jiti@2.4.2)(jsdom@26.1.0)(less@4.3.0)(lightningcss@1.30.1)(msw@2.8.2(@types/node@22.15.18)(typescript@5.8.3))(sass@1.88.0)(terser@5.39.1)(yaml@2.7.1)
@@ -16387,13 +16442,13 @@ snapshots:
 
   triple-beam@1.4.1: {}
 
-  ts-api-utils@1.4.3(typescript@5.8.3):
+  ts-api-utils@1.4.3(typescript@5.4.5):
     dependencies:
-      typescript: 5.8.3
+      typescript: 5.4.5
 
-  ts-api-utils@2.1.0(typescript@5.8.3):
+  ts-api-utils@2.1.0(typescript@5.4.5):
     dependencies:
-      typescript: 5.8.3
+      typescript: 5.4.5
 
   ts-dedent@2.2.0: {}
 
@@ -16501,15 +16556,17 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typescript-eslint@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3):
+  typescript-eslint@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
-      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
-      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+      '@typescript-eslint/eslint-plugin': 8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5))(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
+      '@typescript-eslint/parser': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.4.5)
       eslint: 9.26.0(jiti@2.4.2)
-      typescript: 5.8.3
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
+
+  typescript@5.4.5: {}
 
   typescript@5.8.3: {}
 
@@ -16526,6 +16583,8 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
+
+  undici-types@6.19.8: {}
 
   undici-types@6.21.0: {}
 
