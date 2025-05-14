@@ -15,13 +15,9 @@ import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { ArbeidsforholdOgInntektSvp, EGEN_NÆRING_ID, FRILANS_ID, SvpArbeidsforhold, SvpSak } from '@navikt/fp-types';
 
 export const tilSkjematilstandFraEksisterendeSak = (svpSak: SvpSak) => {
-    // const valgteArbeidsforhold = svpSak.gjeldendeVedtak?.arbeidsforhold
-    //     .map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
-    //     .filter((s) => s !== undefined);
-
-    const valgteArbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold
-        .map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
-        .filter((s) => s !== undefined); //TODO: temp
+    const valgteArbeidsforhold = finnArbeidsforhold(svpSak)
+        ?.map((a) => finnTilretteleggingsnøkkel(a.aktivitet))
+        .filter((s) => s !== undefined);
 
     return {
         OM_BARNET: tilBarnetSkjema(svpSak),
@@ -35,6 +31,10 @@ export const tilSkjematilstandFraEksisterendeSak = (svpSak: SvpSak) => {
     } satisfies ContextDataMap;
 };
 
+const finnArbeidsforhold = (svpSak: SvpSak) => {
+    return (svpSak.gjeldendeVedtak ?? svpSak.åpenBehandling?.søknad)?.arbeidsforhold;
+};
+
 const tilBarnetSkjema = (svpSak: SvpSak) => {
     const barnet = {
         erBarnetFødt: svpSak.familiehendelse.antallBarn > 0,
@@ -46,7 +46,7 @@ const tilBarnetSkjema = (svpSak: SvpSak) => {
 };
 
 const tilFerie = (svpSak: SvpSak) => {
-    const avtalteFeriePerArbeidsgiver = svpSak.gjeldendeVedtak?.arbeidsforhold.reduce((acc, a) => {
+    const avtalteFeriePerArbeidsgiver = finnArbeidsforhold(svpSak)?.reduce((acc, a) => {
         const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
         if (!nøkkel) {
             return acc;
@@ -78,7 +78,7 @@ const tilFerie = (svpSak: SvpSak) => {
 const tilTilrettelegginger = (svpSak: SvpSak) => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(tilBarnetSkjema(svpSak));
 
-    const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
+    const tilrettelegginer = finnArbeidsforhold(svpSak)?.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
             if (!nøkkel) {
@@ -135,7 +135,7 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
 const tilTilretteleggingPerioder = (svpSak: SvpSak) => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(tilBarnetSkjema(svpSak));
 
-    const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
+    const tilrettelegginer = finnArbeidsforhold(svpSak)?.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
             if (!nøkkel) {
