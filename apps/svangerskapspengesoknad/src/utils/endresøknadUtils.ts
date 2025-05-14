@@ -10,6 +10,7 @@ import {
     TilOgMedDatoType,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
+import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
 import { ArbeidsforholdOgInntektSvp, EGEN_NÆRING_ID, FRILANS_ID, SvpArbeidsforhold, SvpSak } from '@navikt/fp-types';
 
@@ -75,6 +76,8 @@ const tilFerie = (svpSak: SvpSak) => {
 };
 
 const tilTilrettelegginger = (svpSak: SvpSak) => {
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(tilBarnetSkjema(svpSak));
+
     const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
@@ -85,11 +88,16 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
             if (a.tilrettelegginger.length === 1) {
                 const tilrettelegging = a.tilrettelegginger[0];
 
+                const tomType =
+                    sisteDagForSvangerskapspenger === tilrettelegging.tom
+                        ? TilOgMedDatoType.SISTE_DAG_MED_SVP
+                        : TilOgMedDatoType.VALGFRI_DATO;
+
                 if (tilrettelegging.type === 'INGEN') {
                     acc[nøkkel] = {
                         type: Tilretteleggingstype.INGEN,
                         enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
-                        enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                        enPeriodeMedTilretteleggingTomType: tomType,
                         behovForTilretteleggingFom: a.behovFrom,
                         risikofaktorer: a.risikofaktorer,
                         tilretteleggingstiltak: a.tiltak,
@@ -100,8 +108,8 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
                     acc[nøkkel] = {
                         type: Tilretteleggingstype.DELVIS,
                         delvisTilretteleggingPeriodeType:
-                            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN, //TODO
-                        enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                            DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                        enPeriodeMedTilretteleggingTomType: tomType,
                         enPeriodeMedTilretteleggingFom: tilrettelegging.fom,
                         enPeriodeMedTilretteleggingStillingsprosent: tilrettelegging.arbeidstidprosent?.toString(),
                         behovForTilretteleggingFom: a.behovFrom,
@@ -125,6 +133,8 @@ const tilTilrettelegginger = (svpSak: SvpSak) => {
 };
 
 const tilTilretteleggingPerioder = (svpSak: SvpSak) => {
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(tilBarnetSkjema(svpSak));
+
     const tilrettelegginer = svpSak.åpenBehandling?.søknad.arbeidsforhold.reduce(
         (acc, a) => {
             const nøkkel = finnTilretteleggingsnøkkel(a.aktivitet);
@@ -136,16 +146,17 @@ const tilTilretteleggingPerioder = (svpSak: SvpSak) => {
                 return acc;
             }
 
-            const asd = a.tilrettelegginger.map((tilrettelegging) => {
+            acc[nøkkel] = a.tilrettelegginger.map((tilrettelegging) => {
                 return {
-                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP, //TODO
+                    tomType:
+                        sisteDagForSvangerskapspenger === tilrettelegging.tom
+                            ? TilOgMedDatoType.SISTE_DAG_MED_SVP
+                            : TilOgMedDatoType.VALGFRI_DATO,
                     fom: tilrettelegging.fom,
                     tom: tilrettelegging.tom,
                     stillingsprosent: tilrettelegging.arbeidstidprosent?.toString() ?? '0', //TODO
                 };
             });
-
-            acc[nøkkel] = asd;
 
             return acc;
         },
