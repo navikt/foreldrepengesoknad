@@ -13,7 +13,7 @@ export function errorHandling(
         // eslint-disable-next-line no-console
         console.error(error.response?.data);
     }
-    return response.status(500).json({
+    response.status(500).json({
         error: 'Internal server error',
     });
 }

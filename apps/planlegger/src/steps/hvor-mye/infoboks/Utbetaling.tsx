@@ -79,13 +79,7 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                                     values={{
                                         grunnbeløpet: formatCurrencyWithKr(grunnbeløpet * 6, locale),
                                         a: (msg: any) => (
-                                            <Link
-                                                href={links.grunnbeløpet}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="lenke"
-                                                inlineText
-                                            >
+                                            <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer" inlineText>
                                                 {msg}
                                             </Link>
                                         ),

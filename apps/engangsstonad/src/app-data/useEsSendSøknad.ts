@@ -76,7 +76,7 @@ export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: 
                     dokumenterer: {
                         type: 'barn',
                     },
-                })) || [],
+                })) ?? [],
         };
 
         const signal = initAbortSignal();

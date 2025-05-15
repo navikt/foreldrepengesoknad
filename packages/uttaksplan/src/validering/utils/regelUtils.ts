@@ -90,7 +90,7 @@ export const regelPasserer = (regel: Regel): RegelStatus => ({
 });
 
 export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, periodeId: string): RegelAvvik[] => {
-    return resultat?.avvikPerPeriode?.[periodeId] ? resultat.avvikPerPeriode[periodeId] : [];
+    return resultat.avvikPerPeriode[periodeId] ?? [];
 };
 
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {

@@ -8,6 +8,7 @@ import {
     ParasolBeachFillIcon,
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
+import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
@@ -109,6 +110,7 @@ type GetTekstProps = {
     erFarEllerMedmor: boolean;
     forelder: Forelder | undefined;
     familiesituasjon: Familiesituasjon;
+    intl: IntlShape;
 };
 
 export const getTekst = ({
@@ -121,6 +123,7 @@ export const getTekst = ({
     erFarEllerMedmor,
     forelder,
     familiesituasjon,
+    intl,
 }: GetTekstProps) => {
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
@@ -129,48 +132,51 @@ export const getTekst = ({
     if (erFamiliehendelse) {
         switch (familiesituasjon) {
             case 'adopsjon':
-                return 'Omsorgsovertakelse';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.adopsjon' });
             case 'fødsel':
-                return 'Fødsel';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.fødsel' });
             default:
-                return 'Termin';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.termin' });
         }
     }
 
     if (utsettelseÅrsak !== undefined) {
         switch (utsettelseÅrsak) {
             case UtsettelseÅrsakType.InstitusjonSøker:
-                return 'Du er innlagt';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonSøker' });
             case UtsettelseÅrsakType.Sykdom:
-                return 'Du er syk';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.sykdom' });
             case UtsettelseÅrsakType.InstitusjonBarnet:
-                return 'Barnet er innlagt';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonBarn' });
             case UtsettelseÅrsakType.Arbeid:
-                return 'Utsettelse grunnet arbeid';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.arbeid' });
             case UtsettelseÅrsakType.Ferie:
-                return 'Ferie';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.ferie' });
             case UtsettelseÅrsakType.HvØvelse:
-                return 'Utsettelse grunnet heimvernsøvelse';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.hvØvelse' });
             case UtsettelseÅrsakType.NavTiltak:
-                return 'Utsettelse grunnet Nav tiltak';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.navTiltak' });
             case UtsettelseÅrsakType.Fri:
-                return 'Uten foreldrepenger';
+                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.fri' });
         }
     }
 
     if (erHull) {
-        return 'Dager du kan tape';
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.dagerDuKanTape' });
     }
 
     if (erPeriodeUtenUttak) {
-        return 'Uten foreldrepenger';
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.periodeUtenUttak' });
     }
 
     if (erSamtidigUttak) {
-        return 'Dere har foreldrepenger';
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.samtidigUttak' });
     }
 
-    return erEgenPeriode ? `${navnPåForelder} har foreldrepenger` : `${navnPåAnnenForelder} har foreldrepenger`;
+    return intl.formatMessage(
+        { id: 'uttaksplan.periodeListeHeader.HarForeldrepenger' },
+        { navn: erEgenPeriode ? navnPåForelder : navnPåAnnenForelder },
+    );
 };
 
 type GetIkonProps = {

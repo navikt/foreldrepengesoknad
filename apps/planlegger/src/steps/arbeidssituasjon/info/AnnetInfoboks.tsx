@@ -49,13 +49,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                             id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
                             values={{
                                 a: (msg: any) => (
-                                    <Link
-                                        inlineText
-                                        href={links.veiviser}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                        target="_blank"
-                                    >
+                                    <Link inlineText href={links.veiviser} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),
@@ -70,13 +64,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                         id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                         values={{
                             a: (msg: any) => (
-                                <Link
-                                    inlineText
-                                    href={links.foreldrepengerOpptjening}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="lenke"
-                                >
+                                <Link inlineText href={links.foreldrepengerOpptjening} target="_blank" rel="noreferrer">
                                     {msg}
                                 </Link>
                             ),

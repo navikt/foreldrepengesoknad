@@ -1,5 +1,6 @@
 import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
@@ -123,13 +124,14 @@ export const PeriodeListeContent = ({
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const erRedigerbar =
-        permisjonsperiode.perioder.find((p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p)) === undefined;
+        permisjonsperiode.perioder.find(
+            (p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
+        ) === undefined;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
     const gjelderAdopsjon = isAdoptertBarn(barn);
 
@@ -185,13 +187,12 @@ export const PeriodeListeContent = ({
                             openDeleteModal();
                         }}
                     >
-                        Slett
+                        <FormattedMessage id="uttaksplan.slett" />
                     </Button>
                 </div>
             )}
             {isEndringsModalOpen ? (
                 <EndrePeriodeModal
-                    familiehendelsedato={familiehendelsedato}
                     closeModal={closeEndringsModal}
                     handleUpdatePeriode={handleUpdatePeriode}
                     permisjonsperiode={permisjonsperiode}

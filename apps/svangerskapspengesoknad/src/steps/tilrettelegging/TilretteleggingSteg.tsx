@@ -3,6 +3,7 @@ import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
+import { omit } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -100,12 +101,15 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
     const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);
 
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const perioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
+
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterVariertePerioder = useContextSaveData(ContextDataType.TILRETTELEGGINGER_PERIODER);
 
     const tilrettelegging = tilrettelegginger?.[valgtTilretteleggingId];
 
@@ -135,7 +139,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
         egenNæring,
         frilans,
     );
-    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom)) || undefined;
+    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))!.toDate()
         : sisteDagForSvangerskapspenger;
@@ -151,6 +155,11 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
             values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
         ) {
             return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId));
+        }
+
+        // Siden vi ikke skal gå videre til å oppgi varierte perioder for dette arbeidsforholdet må vi slette eksisterende skjemadata for varierte perioder.
+        if (perioder !== undefined) {
+            oppdaterVariertePerioder(omit(perioder, valgtTilretteleggingId));
         }
 
         // Bare virksomheter eller private skal oppgi ferie.

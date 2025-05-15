@@ -9,6 +9,18 @@ Dette monorepoet bruker følgende verktøy:
 - node (v22)
 - pnpm - som npm, men mer plasseffektiv.
 - turbo - for å kjøre tasks parrallelt i et monorepo.
+- et personal access token for å installere alle dependencies
+
+### Hvordan lage token
+
+1. Gå til https://github.com/settings/tokens og velg "Generate new token (classic)".
+2. Gi tokenet et navn og velg "read:packages" scopet.
+3. Velg en utløpsdato og trykk på "Generate token".
+4. Kopier tokenet ditt og lagre et trygt sted.
+5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
+6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin.
+
+### Installere dependencies og teste at alt bygger
 
 1. Installer node hvis du ikke allerede har det.
 2. Installer pnpm: `npm install -g pnpm`.
@@ -33,8 +45,14 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
 2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:8080/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
-4. Skru på vite-mode ved å legge til `/vite-on` til url'en.
-   Dette setter en cookie `use-local-vite-server` som ber deployet server om å gi deg en index.html som heller leter etter javascript på `localhost:8080/foreldrepenger/oversikt` istedetfor assets som er bundlet på server.
+4. **Identifiser appens wonderwall port**:
+   Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.
+5. **Aktiver Vite-mode**:
+    - Legg til `/vite-on` i slutten av URL-en du bruker i nettleseren (fra steg 3)
+    - Dette setter en cookie kalt `use-local-vite-server` i nettleseren din
+    - Cookien instruerer den deployede serveren til å sende deg en spesiell `index.html`
+    - Denne HTML-filen laster JavaScript fra din lokale utviklingsserver (f.eks. `localhost:9100/foreldrepenger/oversikt` dersom dette er porten du identifiserer i steg 4) i stedet for de ferdig bygde filene på serveren
+    - Du vil nå se endringer du gjør lokalt mens du bruker den deployede backend-en
 
 #### 2. Storybook
 

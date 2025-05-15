@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -13,11 +12,10 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { Saker, Søkerinfo } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
-
-const queryClient = new QueryClient();
 
 type StoryArgs = {
     søkerinfo: Søkerinfo;
@@ -26,20 +24,19 @@ type StoryArgs = {
 
 const meta = {
     title: 'Saksoversikt',
+    decorators: [withQueryClient],
     render: ({ saksnummer, ...props }) => {
         const isFirstRender = useRef(false);
         return (
             <div className="bg-deepblue-50">
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
-                        <Routes>
-                            <Route
-                                element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
-                                path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
-                            />
-                        </Routes>
-                    </MemoryRouter>
-                </QueryClientProvider>
+                <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
+                    <Routes>
+                        <Route
+                            element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
+                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
+                        />
+                    </Routes>
+                </MemoryRouter>
             </div>
         );
     },

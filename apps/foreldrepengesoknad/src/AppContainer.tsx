@@ -3,6 +3,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
+import { Provider } from '@navikt/ds-react';
+import { nb, nn } from '@navikt/ds-react/locales';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -14,7 +18,7 @@ import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages }
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
-import { Foreldrepengesøknad, retryCallback } from './Foreldrepengesøknad';
+import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -32,6 +36,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...arbeidsforholdOgInntektMessages.nb,
         ...egenNæringMessages.nb,
         ...frilansMessages.nb,
+        ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -44,6 +49,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...arbeidsforholdOgInntektMessages.nn,
         ...egenNæringMessages.nn,
         ...frilansMessages.nn,
+        ...formHookMessages.nn,
     },
 };
 
@@ -71,18 +77,20 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="foreldrepengesoknad" retryCallback={retryCallback}>
+            <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Foreldrepengesøknad
-                        locale={locale}
-                        onChangeLocale={(activeLocale: LocaleNo) => {
-                            setLocaleInSessionStorage(activeLocale);
-                            setLocale(activeLocale);
-                            document.documentElement.setAttribute('lang', activeLocale);
-                        }}
-                    />
+                    <Provider locale={locale === 'nb' ? nb : nn}>
+                        <Foreldrepengesøknad
+                            locale={locale}
+                            onChangeLocale={(activeLocale: LocaleNo) => {
+                                setLocaleInSessionStorage(activeLocale);
+                                setLocale(activeLocale);
+                                document.documentElement.setAttribute('lang', activeLocale);
+                            }}
+                        />
+                    </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>

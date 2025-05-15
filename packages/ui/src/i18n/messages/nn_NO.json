@@ -64,5 +64,14 @@
     "Step.HarValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
     "Step.HarObligatoriskeFelt": "Alle felt må fyllast ut.",
     "AndreVeivisereLinkPanel.AndreVeivisere": "Andre vegvisarar:",
-    "FrontPage.Start": "Start"
+    "FrontPage.Start": "Start",
+    "RegisterdataUtdatert.Engangsstønad": "Eingongsstønad",
+    "RegisterdataUtdatert.Foreldrepenger": "Foreldrepengar",
+    "RegisterdataUtdatert.Svangerskapspenger": "Svangerskapspengar",
+    "RegisterdataUtdatert.StartPaNytt": "Start på nytt",
+    "RegisterdataUtdatert.Heading": "Opplysningar er endra",
+    "RegisterdataUtdatert.Message": "Opplysningar om deg er endra sidan sist du fylte ut søknaden. Du må derfor starta utfyllinga av søknaden på nytt.",
+    "ProgressStepper.ShowSteps": "Vis alle steg",
+    "ProgressStepper.HideSteps": "Skjul alle steg",
+    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}"
 }

@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from './DinPlan';
@@ -13,15 +13,14 @@ import { DinPlan } from './DinPlan';
 const meta = {
     title: 'DinPlan',
     component: DinPlan,
+    decorators: [withQueryClient],
     render: (props) => {
         return (
-            <QueryClientProvider client={new QueryClient()}>
-                <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
-                    <Routes>
-                        <Route element={<DinPlan {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
-                    </Routes>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
+                <Routes>
+                    <Route element={<DinPlan {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
+                </Routes>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof DinPlan>;

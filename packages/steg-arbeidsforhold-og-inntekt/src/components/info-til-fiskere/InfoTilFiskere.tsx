@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
@@ -30,14 +30,9 @@ export const InfoTilFiskere = () => {
                             id="inntektsinformasjon.infoTilFiskere.del3"
                             values={{
                                 a: (msg: any) => (
-                                    <a
-                                        href={links.hvordanSendeInntektsmelding}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="lenke"
-                                    >
+                                    <Link href={links.hvordanSendeInntektsmelding} target="_blank" rel="noreferrer">
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                             }}
                         />
@@ -55,9 +50,9 @@ export const InfoTilFiskere = () => {
                             id="inntektsinformasjon.infoTilFiskere.del5"
                             values={{
                                 a: (msg: any) => (
-                                    <a href={links.omLottOgHyre} target="_blank" rel="noreferrer" className="lenke">
+                                    <Link href={links.omLottOgHyre} target="_blank" rel="noreferrer">
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                             }}
                         />
@@ -89,9 +84,9 @@ export const InfoTilFiskere = () => {
                             id="inntektsinformasjon.infoTilFiskere.del10"
                             values={{
                                 a: (msg: any) => (
-                                    <a href={links.omLottOgHyre} target="_blank" rel="noreferrer" className="lenke">
+                                    <Link href={links.omLottOgHyre} target="_blank" rel="noreferrer">
                                         {msg}
-                                    </a>
+                                    </Link>
                                 ),
                             }}
                         />

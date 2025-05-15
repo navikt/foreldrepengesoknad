@@ -42,7 +42,7 @@ const kvitteringMock = {
     journalId: '439772941',
 };
 
-router.get(['/', '/rest/personinfo?'], (_req, res) => {
+router.get(['/', '/rest/personinfo'], (_req, res) => {
     res.send(personMock);
 });
 

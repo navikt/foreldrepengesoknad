@@ -78,7 +78,7 @@ const startDatoMorFødtBarn = (termindato: Date | undefined, fødselsdato: Date)
         };
     } else {
         const tidligstOppstartsdato =
-            termindatoMinus12Uker ||
+            termindatoMinus12Uker ??
             dayjs(Uttaksdagen(fødselsdato).denneEllerNeste())
                 .subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
                 .toDate();

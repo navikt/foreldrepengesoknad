@@ -31,7 +31,9 @@ export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
     if (familiehendelseType === FamiliehendelseType.ADOPSJON) {
         return (
             <HStack>
-                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>Adopsjon</div>
+                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
+                    <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.adopsjon" />
+                </div>
             </HStack>
         );
     }

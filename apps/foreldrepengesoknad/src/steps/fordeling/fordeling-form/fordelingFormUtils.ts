@@ -23,7 +23,7 @@ export const isValidAntallUkerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, dagerInput: string | undefined) =>
     (value: string | number | undefined) => {
         const ukerValue = isString(value) ? getNumberFromNumberInputValue(value) : value;
-        const antallDager = getNumberFromNumberInputValue(dagerInput) || 0;
+        const antallDager = getNumberFromNumberInputValue(dagerInput) ?? 0;
 
         if (ukerValue && ukerValue < 0) {
             return intl.formatMessage({ id: 'fordeling.antallUker.forLiten' });
@@ -48,7 +48,7 @@ export const isValidAntallDagerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, ukerInput: string | undefined) =>
     (value: string | number | undefined) => {
         const dagerValue = isString(value) ? getNumberFromNumberInputValue(value) : value;
-        const antallUker = getNumberFromNumberInputValue(ukerInput) || 0;
+        const antallUker = getNumberFromNumberInputValue(ukerInput) ?? 0;
 
         if (dagerValue && dagerValue < 0) {
             return intl.formatMessage({ id: 'fordeling.antallDager.forLiten' });

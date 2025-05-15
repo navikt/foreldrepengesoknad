@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -7,11 +7,12 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
 import { MorsAktivitet } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
-import { assertUnreachable } from '@navikt/fp-validation';
+import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
-import { getStønadskontoNavnSimple } from '../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
     periode: Planperiode;
@@ -21,9 +22,11 @@ interface Props {
 }
 
 const getArbeidsTekst = (arbeidstidprosent: number) => {
-    const uttaksprosent = 100 - arbeidstidprosent;
+    const uttaksprosent = Math.round((100 - arbeidstidprosent) * 100) / 100;
 
-    return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
+    return (
+        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
+    );
 };
 
 const getSamtidigUttakTekst = (
@@ -37,9 +40,14 @@ const getSamtidigUttakTekst = (
         : forelderIPerioden === Forelder.mor;
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
-    return periodenGjelderSøker
-        ? `Du skal ha ${samtidiguttaksProsent} % foreldrepenger`
-        : `${navnPåAnnenForelderIPerioden} skal ha ${samtidiguttaksProsent} % foreldrepenger`;
+    return periodenGjelderSøker ? (
+        <FormattedMessage id="uttaksplan.periodeListeContent.samtidigUttak" values={{ samtidiguttaksProsent }} />
+    ) : (
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
+            values={{ navnPåAnnenForelderIPerioden, samtidiguttaksProsent }}
+        />
+    );
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
@@ -77,7 +85,14 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
 
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const stønadskontoNavn = getStønadskontoNavnSimple(intl, periode.kontoType!);
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        periode.kontoType!,
+        navnPåForeldre,
+        erFarEllerMedmor,
+        erAleneOmOmsorg,
+    );
 
     return (
         <div style={{ marginBottom: '2rem', display: 'flex' }}>

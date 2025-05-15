@@ -141,7 +141,7 @@
     "OmPlanleggerenSteg.Ingress": "Planleggeren er både for de som er i permisjon, venter barn og for de som planlegger å få barn.",
     "OmPlanleggerenSteg.Underoverskrift": "Planleggeren består av to deler:",
     "OmPlanleggerenSteg.Trinn1": "Man må svare på noen spørsmål",
-    "OmPlanleggerenSteg.Trinn2": "Så kan du se hvordan permisjonen din kan se ut",
+    "OmPlanleggerenSteg.Trinn2": "Så kan man se og tilpasse permisjonen",
     "OmPlanleggerenSteg.Start.Planlegger": "Start",
     "OmPlanleggerenSteg.TaVarePåHeader": "{erAlenesøker, select, true {Du} other {Dere}} kan ta vare på resultatet",
     "OmPlanleggerenSteg.TaVarePå": "Ved å kopiere lenken kan {erAlenesøker, select, true {du} other {dere}} ta vare på resultatet for å se på det senere, endre eller dele. Det {erAlenesøker, select, true {du} other {dere}} har oppgitt vil da bli synlig for den du deler med",
@@ -150,8 +150,8 @@
     "OppsummeringSteg.Infoboks.IngenHarRettDeg": "Du har ikke rett til foreldrepenger",
     "OppsummeringSteg.Infoboks.IngenHarRett": "Ingen av dere har rett til foreldrepenger",
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Basert på svarene {erAleneforsørger, select, true {dine har du ikke} other {deres har ingen av dere}} rett på foreldrepenger.",
-    "OppsummeringSteg.Infoboks.Engangsstønad": "Man kan ha rett til engangsstønad, som er en engangssum man får utbetalt. Det kan man finne ut i ",
-    "OppsummeringSteg.Infoboks.Engangsstønad.Link": "veiviseren “Foreldrepenger eller engangsstønad”.",
+    "OppsummeringSteg.Infoboks.Engangsstønad": "Mor kan ha rett til engangsstønad, som er en engangssum hun får utbetalt. Det kan hun finne ut i ",
+    "OppsummeringSteg.Infoboks.Engangsstønad.Link": "veiviseren “Foreldrepenger eller engangsstønad”",
     "OppsummeringSteg.DereValgte": "Dere valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { + {antallDager} dag } other { + {antallDager} dager }} og fordeler fellesperioden med {uker} uker {dager, select, 0 {} 1 {+ {dager} dag } other {+ {dager} dager }}til {hvem} og {uker2} uker{dager2, select, 0 {} 1 { + {dager2} dag} other { + {dager2} dager}} til {hvem2}.",
     "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {Dere}} valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { og {antallDager} dag} other { og {antallDager} dager}}.",
     "OppsummeringSteg.DereValgteAktivitetskrav": "Dere valgte {prosent} % i {antallUker} uker {dager, select, 0 {} 1 {og {dager} dag } other {og {dager} dager }}, hvor {uker1} uker {dager1, select, 0 {} 1 {og {dager1} dag } other {og {dager1} dager }} er uten aktivitetskrav til {hvem} og {uker2} uker {dager2, select, 0 {} 1 {og {dager2} dag } other {og {dagerS2} dager }} er med aktivitetskrav.",
@@ -264,5 +264,7 @@
     "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall. Bokstaver, mellomrom, punktum og komma er ikke tillatt.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepenger!",
     "SøkOmForeldrepenger.BasertPå": "Basert på {erAdopsjon, select, true {overtakelsesdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {dere}} søke om foreldrepenger nå.",
-    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger"
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger",
+    "CalendarLabels.TapteDager": "Tapte dager",
+    "CalendarLabels.Ferie": "Ferie"
 }

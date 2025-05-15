@@ -1,6 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, Checkbox, Heading, Modal } from '@navikt/ds-react';
 
@@ -80,12 +80,14 @@ export const SlettPeriodeModal = ({
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
-                        Slett periode
+                        <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
                     </Heading>
                 </div>
             </Modal.Header>
             <Modal.Body>
-                <Heading size="medium">Hvilke perioder vil du slette?</Heading>
+                <Heading size="medium">
+                    <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
+                </Heading>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                     <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                         <RhfCheckboxGroup
@@ -96,7 +98,7 @@ export const SlettPeriodeModal = ({
                             {perioder.map((p) => {
                                 return (
                                     <Checkbox key={p.id} name={p.id} value={p.id}>
-                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} - 
+                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                                     </Checkbox>
                                 );
@@ -113,11 +115,13 @@ export const SlettPeriodeModal = ({
                     >
                         <div>
                             <Button type="button" variant="secondary" onClick={closeModal}>
-                                Avbryt
+                                <FormattedMessage id="uttaksplan.avbryt" />
                             </Button>
                         </div>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <Button>Slett valgte perioder</Button>
+                            <Button>
+                                <FormattedMessage id="uttaksplan.slettValgte" />
+                            </Button>
                         </div>
                     </div>
                 </RhfForm>

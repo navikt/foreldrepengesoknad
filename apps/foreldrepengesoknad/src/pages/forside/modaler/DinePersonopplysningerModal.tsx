@@ -34,14 +34,13 @@ export const DinePersonopplysningerModal = () => {
                                     id="velkommen.dinePersonopplysninger.behandling.html"
                                     values={{
                                         a: (msg: any) => (
-                                            <a
+                                            <Link
                                                 href="https://www.nav.no/foreldrepenger"
-                                                className="lenke"
                                                 rel="noreferrer"
                                                 target="_blank"
                                             >
                                                 {msg}
-                                            </a>
+                                            </Link>
                                         ),
                                     }}
                                 />
@@ -148,8 +147,7 @@ export const DinePersonopplysningerModal = () => {
                                         id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.html"
                                         values={{
                                             a: (msg: any) => (
-                                                <a
-                                                    className="lenke"
+                                                <Link
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     href={
@@ -158,7 +156,7 @@ export const DinePersonopplysningerModal = () => {
                                                     }
                                                 >
                                                     {msg}
-                                                </a>
+                                                </Link>
                                             ),
                                         }}
                                     />

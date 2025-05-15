@@ -144,8 +144,8 @@ const showManglendeDokumentasjonSteg = (
         const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
-        const skalHaAnnenForelderDok =
-            annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : false;
+        const skalHaAleneomsorgDok =
+            !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
 
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
 
@@ -173,7 +173,7 @@ const showManglendeDokumentasjonSteg = (
             (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
         );
 
-        return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
+        return skalHaAleneomsorgDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
     }
 
     return false;

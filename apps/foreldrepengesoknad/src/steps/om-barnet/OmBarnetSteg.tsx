@@ -61,7 +61,7 @@ const skalViseTermindato = (
         return false;
     }
 
-    const relevantFødselsdato = eldsteBarnFødselsdato || fødselsdato;
+    const relevantFødselsdato = eldsteBarnFødselsdato ?? fødselsdato;
 
     if (isFarEllerMedmor(rolle)) {
         if (andreAugust2022ReglerGjelder(relevantFødselsdato!)) {

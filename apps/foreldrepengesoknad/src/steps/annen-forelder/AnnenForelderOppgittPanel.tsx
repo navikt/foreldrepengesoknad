@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Barn } from '@navikt/fp-common';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
@@ -120,17 +120,17 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                         })}
                     >
                         <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
-                        <ul style={{ margin: '0', padding: '1rem 2rem 0' }}>
-                            <li>
+                        <List>
+                            <List.Item>
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
-                            </li>
-                            <li>
+                            </List.Item>
+                            <List.Item>
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
-                            </li>
-                            <li>
+                            </List.Item>
+                            <List.Item>
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
-                            </li>
-                        </ul>
+                            </List.Item>
+                        </List>
                     </ReadMore>
                 </div>
             )}

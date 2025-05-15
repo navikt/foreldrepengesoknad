@@ -145,7 +145,7 @@ export const leggTilPeriode = ({
 
         const erstattedeBerørtePerioder = normaliserteBerørtePerioder.map((p) => {
             const overlappendeNyPeriode = normaliserteNyePerioder.find((per) => dayjs(per.fom).isSame(p.fom, 'day'));
-            return overlappendeNyPeriode || p;
+            return overlappendeNyPeriode ?? p;
         });
 
         //Når ny periode starter før alle de gamle periodene

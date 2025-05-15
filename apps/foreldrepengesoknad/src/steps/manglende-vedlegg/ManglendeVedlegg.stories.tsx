@@ -1,6 +1,5 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -22,6 +21,7 @@ import {
     StønadskontoType,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonFrontend, Situasjon, Søkerinfo } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
 
@@ -157,6 +157,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
+    decorators: [withQueryClient],
     parameters: {
         msw: {
             handlers: [
@@ -179,26 +180,24 @@ const meta = {
         ...rest
     }) => {
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            [ContextDataType.OM_BARNET]: barn,
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                            [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
-                            [ContextDataType.SØKERSITUASJON]: {
-                                rolle,
-                                situasjon,
-                            },
-                        }}
-                    >
-                        <ManglendeVedlegg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle,
+                            situasjon,
+                        },
+                    }}
+                >
+                    <ManglendeVedlegg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;

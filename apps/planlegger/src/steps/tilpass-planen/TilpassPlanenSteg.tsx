@@ -1,4 +1,4 @@
-import { ArrowRedoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -6,7 +6,7 @@ import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
-import { BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import {
@@ -59,13 +59,15 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         'Uttaksplan ikke oppgitt',
     );
 
+    const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(0);
+
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
-    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex] : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -93,14 +95,21 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        const nyUttaksplan = [...uttaksplan];
+        let nyUttaksplan = [];
+
+        if (currentUttaksplanIndex !== uttaksplan.length - 1) {
+            nyUttaksplan = uttaksplan.slice(0, currentUttaksplanIndex + 1);
+        } else {
+            nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
+        }
+
         nyUttaksplan.push(perioder);
+        setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
         lagreUttaksplan(nyUttaksplan);
     };
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            {/* // TODO: Legg modal i eget komponent - få tekst inn i intl.  */}
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
@@ -134,16 +143,25 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
             </Modal>
 
             <VStack gap="6">
+                <Alert variant="info">
+                    <Heading size="medium" spacing level="2">
+                        Savner du noe i planleggeren?
+                    </Heading>
+                    <BodyLong>
+                        Vi jobber med å forbedre planleggeren. Det betyr at flere funksjoner kommer snart. Det kan
+                        derfor være forskjeller mellom det du kan legge inn i planleggeren og det du faktisk kan søke
+                        om.
+                    </BodyLong>
+                </Alert>
+
                 <Heading size="medium" spacing level="2">
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
                 </Heading>
 
-                <VStack gap="5">
+                <VStack gap="6">
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
-                    <VStack gap="10">
-                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-                    </VStack>
+                    <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
                     {visningsmodus === 'liste' && (
                         <>
                             <UttaksplanNy
@@ -168,7 +186,41 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 handleOnPlanChange={handleOnPlanChange}
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
+                                erAleneOmOmsorg={erAleneforsørger}
                             />
+                            <HStack gap="4">
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => {
+                                        setCurrentUttaksplanIndex(0);
+                                        lagreUttaksplan([originalUttaksplan]);
+                                    }}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
+                                </Button>
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => {
+                                        if (currentUttaksplanIndex > 0) {
+                                            setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+                                        }
+                                    }}
+                                >
+                                    Angre
+                                </Button>
+                                <Button
+                                    size="xsmall"
+                                    variant="secondary"
+                                    icon={<TrashIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => setOpen(true)}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
+                                </Button>
+                            </HStack>
                             <KvoteOppsummering
                                 hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner
@@ -224,27 +276,6 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                             />
                         </div>
                     )}
-                    <HStack gap="4">
-                        <Button
-                            // TODO: Legg til funksjonalitet som gjør at denne gir feilmelding dersom det ikke er noe å angre på
-                            size="xsmall"
-                            variant="secondary"
-                            icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
-                            onClick={() => {
-                                lagreUttaksplan([originalUttaksplan]);
-                            }}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                        </Button>
-                        <Button
-                            size="xsmall"
-                            variant="secondary"
-                            icon={<TrashIcon aria-hidden height={24} width={24} />}
-                            onClick={() => setOpen(true)}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                        </Button>
-                    </HStack>
                 </VStack>
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}

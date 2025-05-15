@@ -95,6 +95,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse }: Pro
                             navnPåForeldre,
                             forelder,
                             familiesituasjon,
+                            intl,
                         })}
                     </BodyShort>
                 </Hide>
@@ -127,6 +128,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse }: Pro
                                 navnPåForeldre,
                                 forelder,
                                 familiesituasjon,
+                                intl,
                             })}
                         </BodyShort>
                     </Show>

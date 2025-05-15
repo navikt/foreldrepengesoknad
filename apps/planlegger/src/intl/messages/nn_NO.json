@@ -150,8 +150,8 @@
     "OppsummeringSteg.Infoboks.IngenHarRettDeg": "Du har ikkje rett til foreldrepengar",
     "OppsummeringSteg.Infoboks.IngenHarRett": "Ingen av dykk har rett til foreldrepengar",
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Basert på svara {erAleneforsørger, select, true {dine har du ikkje} other {dykkar har ingen av dykk}} rett på foreldrepengar",
-    "OppsummeringSteg.Infoboks.Engangsstønad": "Ein kan ha rett til eingongsstønad, som er ein eingongsutbetaling. Dette kan ein finne ut i ",
-    "OppsummeringSteg.Infoboks.Engangsstønad.Link": "vegvisaren “Foreldrepengar eller eingongsstønad”.",
+    "OppsummeringSteg.Infoboks.Engangsstønad": "Mor kan ha rett til eingongsstønad, som er ein eingongsutbetaling. Dette kan ho finne ut i ",
+    "OppsummeringSteg.Infoboks.Engangsstønad.Link": "vegvisaren “Foreldrepengar eller eingongsstønad”",
     "OppsummeringSteg.DereValgte": "De valde {prosent} % i {antallUker} veker og fordelar fellesperioden med {uker} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem} og {uker2} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem2}.",
     "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % i {antallUker} veker{antallDager, select, 0 {} 1 { + {antallDager} dag } other { + {antallDager} dager }}.",
     "OppsummeringSteg.DereValgteAktivitetskrav": "De valde {prosent} % i {antallUker} veker, der {uker1} veker er utan aktivitetskrav til {hvem} og {uker2} veker er med aktivitetskrav.",
@@ -264,5 +264,7 @@
     "Validering.ValidNumber": "Du har skrive noko som ikkje er eit tal. Bokstavar, mellomrom, punktum og komma er ikkje tillate.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepengar!",
     "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
-    "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar"
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar",
+    "CalendarLabels.TapteDager": "Tapte dagar",
+    "CalendarLabels.Ferie": "Ferie"
 }

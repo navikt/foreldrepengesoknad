@@ -281,7 +281,7 @@ describe('<Oppsummering>', () => {
         expect(
             checkAndGetParentDiv(
                 denAndreForelderenDiv.getByText(
-                    'Har den andre forelderen arbeidet eller mottatt pengestøtte i et EØS-land i 6 eller mer måneder før barnet blir født?',
+                    'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
                 ),
             ).getByText('Ja'),
         ).toBeInTheDocument();
@@ -320,7 +320,7 @@ describe('<Oppsummering>', () => {
         expect(
             checkAndGetParentDiv(
                 denAndreForelderenDiv.getByText(
-                    'Har den andre forelderen arbeidet eller mottatt pengestøtte i et EØS-land i 6 eller mer måneder før barnet blir født?',
+                    'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
                 ),
             ).getByText('Ja'),
         ).toBeInTheDocument();
