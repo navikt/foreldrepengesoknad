@@ -6,6 +6,8 @@ import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
+import { Loader } from '@navikt/ds-react';
+
 import {
     Forelder,
     MorsAktivitet,
@@ -97,12 +99,16 @@ export const MorJobberDokumentasjon = ({
     }
 
     const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer);
-    const trengerDokumentereMorsArbeid =
-        useQuery({
-            // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
-            enabled: !!dokumentereMorsArbeidParams,
-        }).data ?? true;
+    const trengerDokumentereMorsArbeidQuery = useQuery({
+        // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
+        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
+        enabled: !!dokumentereMorsArbeidParams,
+    });
+
+    if (trengerDokumentereMorsArbeidQuery.isPending) {
+        return <Loader className="self-center" size="large" />;
+    }
+    const trengerDokumentereMorsArbeid = trengerDokumentereMorsArbeidQuery.data ?? true;
 
     if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
         return (
