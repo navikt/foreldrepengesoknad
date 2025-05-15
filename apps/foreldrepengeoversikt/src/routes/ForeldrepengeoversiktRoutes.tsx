@@ -32,13 +32,12 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
     return (
         <>
             <Routes>
+                <Route
+                    path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                    element={<BruktOpplysniungerOmArbeidsforhold />}
+                />
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
-                        <Route
-                            path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                            element={<BruktOpplysniungerOmArbeidsforhold />}
-                        />
-
                         <Route
                             path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                             element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
