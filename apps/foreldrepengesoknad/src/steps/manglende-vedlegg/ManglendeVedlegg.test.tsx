@@ -298,7 +298,7 @@ describe('<ManglendeVedlegg>', () => {
             await screen.findByText(
                 // Delt i to for å unngå at linjelengden blir for lang
                 'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
-                    'fra arbeidsgiver og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                    'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
