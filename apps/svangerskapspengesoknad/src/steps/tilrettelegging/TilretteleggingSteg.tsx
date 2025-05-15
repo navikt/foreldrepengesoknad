@@ -3,6 +3,7 @@ import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
+import { omit } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -158,9 +159,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
 
         // Siden vi ikke skal gå videre til å oppgi varierte perioder for dette arbeidsforholdet må vi slette eksisterende skjemadata for varierte perioder.
         if (perioder !== undefined) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { [valgtTilretteleggingId]: _, ...periodeRest } = perioder;
-            oppdaterVariertePerioder(periodeRest);
+            oppdaterVariertePerioder(omit(perioder, valgtTilretteleggingId));
         }
 
         // Bare virksomheter eller private skal oppgi ferie.
