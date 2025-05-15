@@ -25,6 +25,7 @@ type Props = {
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
     hvemPlanleggerType?: HvemPlanleggerType;
+    brukesIHvilkenApp: 'PLANLEGGER' | 'INNSYN' | 'SØKNAD';
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -170,7 +171,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, hvemPlanleggerType } = useKvote();
+    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -351,6 +352,8 @@ const KvoteTittel = () => {
               )
             : '';
 
+    const visInformasjonOmHvordanEndre = brukesIHvilkenApp === 'INNSYN';
+
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
@@ -371,8 +374,12 @@ const KvoteTittel = () => {
                             ),
                         }}
                     />{' '}
-                    <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
-                    <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
+                    {visInformasjonOmHvordanEndre && (
+                        <>
+                            <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
+                            <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
+                        </>
+                    )}
                 </>
             }
         />

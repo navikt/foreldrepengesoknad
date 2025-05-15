@@ -222,6 +222,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 </Button>
                             </HStack>
                             <KvoteOppsummering
+                                brukesIHvilkenApp="PLANLEGGER"
                                 hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
