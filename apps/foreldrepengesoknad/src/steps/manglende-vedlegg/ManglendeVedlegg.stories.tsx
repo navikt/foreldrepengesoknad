@@ -132,14 +132,6 @@ const defaultSøkerinfoFar = {
     arbeidsforhold: [],
 };
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';
     situasjon?: Situasjon;
