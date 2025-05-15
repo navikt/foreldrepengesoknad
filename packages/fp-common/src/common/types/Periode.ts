@@ -235,15 +235,6 @@ export const isMorJobber = (periode: Periode) => {
     return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid;
 };
 
-export const erPeriodeMedSamtidigUttakHvorMorJobber = (periode: Periode) => {
-    return (
-        isUttaksperiode(periode) &&
-        periode.ønskerSamtidigUttak === true &&
-        periode.forelder === Forelder.farMedmor &&
-        periode.konto === StønadskontoType.Fellesperiode
-    );
-};
-
 export const isPeriodeUtenUttakMorJobber = (periode: Periode) => {
     return (
         isUtsettelsesperiode(periode) &&

@@ -2,7 +2,6 @@ import { VedleggDataType } from 'types/VedleggDataType';
 
 import {
     Periode,
-    erPeriodeMedSamtidigUttakHvorMorJobber,
     isFellesperiodeMorForSyk,
     isFellesperiodeMorInnlagt,
     isForeldrepengerMedAktivitetskravMorForSyk,
@@ -77,9 +76,7 @@ export const isPeriodeMedMorStuderer = (periode: Periode) => {
 };
 
 export const isPeriodeMedMorJobber = (periode: Periode) => {
-    return (
-        isMorJobber(periode) || isPeriodeUtenUttakMorJobber(periode) || erPeriodeMedSamtidigUttakHvorMorJobber(periode)
-    );
+    return isMorJobber(periode) || isPeriodeUtenUttakMorJobber(periode);
 };
 
 export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {

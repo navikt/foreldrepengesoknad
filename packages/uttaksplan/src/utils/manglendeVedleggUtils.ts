@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    Forelder,
     MissingAttachment,
     MorsAktivitet,
     Overføringsperiode,
@@ -203,10 +202,7 @@ const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean 
 
     return (
         (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== MorsAktivitet.Uføre) ||
-        (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true) ||
-        (periode.ønskerSamtidigUttak === true &&
-            periode.forelder === Forelder.farMedmor &&
-            periode.konto === StønadskontoType.Fellesperiode)
+        (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)
     );
 };
 

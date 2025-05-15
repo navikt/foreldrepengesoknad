@@ -14,7 +14,6 @@ import {
     NavnPåForeldre,
     Periode,
     Situasjon,
-    StønadskontoType,
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
@@ -51,13 +50,6 @@ export const MorJobberDokumentasjon = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const inneholderSamtidigUttakFarMedmor = perioder.some(
-        (p) =>
-            isUttaksperiode(p) &&
-            p.ønskerSamtidigUttak === true &&
-            p.forelder === Forelder.farMedmor &&
-            p.konto === StønadskontoType.Fellesperiode,
-    );
 
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
     const bareFarHarRett = isAnnenForelderOppgitt(annenForelder)
@@ -110,7 +102,7 @@ export const MorJobberDokumentasjon = ({
     }
     const trengerDokumentereMorsArbeid = trengerDokumentereMorsArbeidQuery.data ?? true;
 
-    if (!trengerDokumentereMorsArbeid && !inneholderSamtidigUttakFarMedmor) {
+    if (!trengerDokumentereMorsArbeid) {
         return (
             <TrengerIkkeMorIArbeidDokumentasjon
                 perioder={perioder}
