@@ -224,7 +224,8 @@ export type VedleggDto = {
         | 'VEDLEGG_ALLEREDE_SENDT'
         | 'IKKE_VALGT'
         | 'VEDLEGG_SENDES_AV_ANDRE'
-        | 'SENDES_IKKE';
+        | 'SENDES_IKKE'
+        | 'AUTOMATISK';
     beskrivelse?: string;
     dokumenterer?: Dokumenterer;
 };

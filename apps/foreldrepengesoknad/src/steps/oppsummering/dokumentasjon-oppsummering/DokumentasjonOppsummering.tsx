@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { FormSummary, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { InnsendingsType } from '@navikt/fp-constants';
+import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
@@ -13,83 +12,121 @@ import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 interface Props {
     alleVedlegg?: VedleggDataType;
     onVilEndreSvar: () => Promise<void>;
-    setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
 }
 
+const skalViseVedlegg = (alleVedlegg: VedleggDataType | undefined): boolean => {
+    // Sjekk om det er noen gyldige answers å vise
+    const harVedleggÅVise = Object.values(alleVedlegg ?? {}).some((vedleggListe) => {
+        return vedleggListe.some((vedlegg) => {
+            return vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK;
+        });
+    });
+
+    return harVedleggÅVise;
+};
+
 export const DokumentasjonOppsummering = ({
     alleVedlegg,
     onVilEndreSvar,
-    setManglerDokumentasjon,
     erSøkerFarEllerMedmor,
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
 }: Props) => {
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
-    const harSendSenereDokument =
-        harVedlegg &&
-        Object.values(alleVedlegg)
-            .flatMap((vedlegg) => vedlegg)
-            .find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE);
-
-    useEffect(() => {
-        if (harSendSenereDokument) {
-            setManglerDokumentasjon(true);
-        }
-    }, []);
-
     if (!harVedlegg) {
         return null;
     }
 
+    const harSendSenereDokument = Object.values(alleVedlegg!)
+        .flatMap((vedlegg) => vedlegg)
+        .some(
+            (v) =>
+                v.innsendingsType === InnsendingsType.SEND_SENERE &&
+                v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+        );
+
+    if (!skalViseVedlegg(alleVedlegg)) {
+        return null;
+    }
+
     return (
-        <FormSummary>
-            <FormSummary.Header>
-                <FormSummary.Heading level="2">
-                    {harSendSenereDokument ? (
-                        <FormattedMessage id="oppsummering.manglerDokumentasjon" />
-                    ) : (
-                        <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
-                    )}
-                </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
-            </FormSummary.Header>
-            <FormSummary.Answers>
-                {Object.entries(alleVedlegg)
-                    .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
-                    .map((idOgVedlegg) => (
-                        <FormSummary.Answer key={idOgVedlegg[1][0].id}>
-                            <FormSummary.Label>
-                                {idOgVedlegg[1][0].innsendingsType === InnsendingsType.SEND_SENERE ? (
-                                    <DokumentasjonSendSenereLabel
-                                        attachment={idOgVedlegg[1][0]}
-                                        erFarEllerMedmor={erSøkerFarEllerMedmor}
-                                        navnPåForeldre={navnPåForeldre}
-                                        uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
-                                    />
-                                ) : (
-                                    <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]} />
-                                )}
-                            </FormSummary.Label>
-                            <FormSummary.Value>
-                                <VStack>
-                                    {idOgVedlegg[1]
-                                        .filter((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE)
-                                        .map((vedlegg) => (
-                                            <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
-                                                {vedlegg.filename}
-                                            </Link>
-                                        ))}
-                                </VStack>
-                            </FormSummary.Value>
-                        </FormSummary.Answer>
-                    ))}
-            </FormSummary.Answers>
-        </FormSummary>
+        <>
+            <FormSummary>
+                <FormSummary.Header>
+                    <FormSummary.Heading level="2">
+                        {harSendSenereDokument ? (
+                            <FormattedMessage id="oppsummering.manglerDokumentasjon" />
+                        ) : (
+                            <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
+                        )}
+                    </FormSummary.Heading>
+                    <FormSummary.EditLink onClick={onVilEndreSvar}>
+                        <FormattedMessage id="Oppsummering.EndreSvar" />
+                    </FormSummary.EditLink>
+                </FormSummary.Header>
+                <FormSummary.Answers>
+                    {alleVedlegg &&
+                        Object.entries(alleVedlegg)
+                            .filter((idOgVedlegg) => {
+                                // Vedlegglisten er tom
+                                if (idOgVedlegg[1].length === 0) {
+                                    return false;
+                                }
+                                const vedlegg = idOgVedlegg[1][0];
+
+                                if (vedlegg.innsendingsType === InnsendingsType.AUTOMATISK) {
+                                    return false;
+                                }
+                                return true;
+                            })
+                            .map((idOgVedlegg) => (
+                                <FormSummary.Answer key={idOgVedlegg[1][0].id}>
+                                    <FormSummary.Label>
+                                        {idOgVedlegg[1][0].innsendingsType === InnsendingsType.SEND_SENERE ? (
+                                            <DokumentasjonSendSenereLabel
+                                                attachment={idOgVedlegg[1][0]}
+                                                erFarEllerMedmor={erSøkerFarEllerMedmor}
+                                                navnPåForeldre={navnPåForeldre}
+                                                uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
+                                            />
+                                        ) : (
+                                            <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]} />
+                                        )}
+                                    </FormSummary.Label>
+                                    <FormSummary.Value>
+                                        <VStack gap="2">
+                                            {idOgVedlegg[1]
+                                                .filter(
+                                                    (vedlegg) =>
+                                                        vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE,
+                                                )
+                                                .map((vedlegg) => (
+                                                    <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                                        {vedlegg.filename}
+                                                    </Link>
+                                                ))}
+                                        </VStack>
+                                    </FormSummary.Value>
+                                </FormSummary.Answer>
+                            ))}
+                </FormSummary.Answers>
+            </FormSummary>
+            {harSendSenereDokument && (
+                <Alert variant="info">
+                    <VStack gap="2">
+                        <Heading size="small" level="2">
+                            <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
+                        </BodyLong>
+                    </VStack>
+                </Alert>
+            )}
+        </>
     );
 };
