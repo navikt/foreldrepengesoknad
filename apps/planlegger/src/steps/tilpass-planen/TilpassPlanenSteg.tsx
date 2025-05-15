@@ -108,6 +108,11 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
         lagreUttaksplan(nyUttaksplan);
     };
 
+    const navnPåForeldre = {
+        farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
+        mor: getNavnPåSøker1(hvemPlanlegger, intl),
+    };
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Modal
@@ -170,10 +175,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 familiesituasjon={familiesituasjon}
                                 gjelderAdopsjon={familiesituasjon === 'adopsjon'}
-                                navnPåForeldre={{
-                                    farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
-                                    mor: getNavnPåSøker1(hvemPlanlegger, intl),
-                                }}
+                                navnPåForeldre={navnPåForeldre}
                                 førsteUttaksdagNesteBarnsSak={undefined}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
@@ -222,6 +224,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
                                 </Button>
                             </HStack>
                             <KvoteOppsummering
+                                navnPåForeldre={navnPåForeldre}
                                 brukesIHvilkenApp="PLANLEGGER"
                                 hvemPlanleggerType={hvemPlanlegger.type}
                                 visStatusIkoner

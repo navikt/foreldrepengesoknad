@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
+import { NavnPåForeldre } from '@navikt/fp-common';
 import {
     Familiehendelse,
     FpSak,
@@ -25,6 +26,7 @@ type Props = {
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
     hvemPlanleggerType?: HvemPlanleggerType;
+    navnPåForeldre: NavnPåForeldre;
     brukesIHvilkenApp: 'PLANLEGGER' | 'INNSYN' | 'SØKNAD';
 };
 const KvoteContext = createContext<Props | null>(null);
@@ -171,7 +173,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp } = useKvote();
+    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp, navnPåForeldre } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -216,12 +218,9 @@ const KvoteTittel = () => {
             ubrukteDagerMor < 0
                 ? intl.formatMessage(
                       {
-                          id:
-                              hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
-                                  ? 'kvote.varighet.tilFar'
-                                  : 'kvote.varighet.tilMor',
+                          id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(ubrukteDagerMor * -1, intl) },
+                      { varighet: getVarighetString(ubrukteDagerMor * -1, intl), forelder: navnPåForeldre.mor },
                   )
                 : '';
         const beskrivelseFelles =
@@ -235,12 +234,12 @@ const KvoteTittel = () => {
             ubrukteDagerFar < 0
                 ? intl.formatMessage(
                       {
-                          id:
-                              hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
-                                  ? 'kvote.varighet.tilMedmor'
-                                  : 'kvote.varighet.tilFar',
+                          id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(ubrukteDagerFar * -1, intl) },
+                      {
+                          varighet: getVarighetString(ubrukteDagerFar * -1, intl),
+                          navnPåForeldre: navnPåForeldre.farMedmor,
+                      },
                   )
                 : '';
 
@@ -273,12 +272,9 @@ const KvoteTittel = () => {
             dagerBruktAvMor > 0
                 ? intl.formatMessage(
                       {
-                          id:
-                              hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
-                                  ? 'kvote.varighet.tilFar'
-                                  : 'kvote.varighet.tilMor',
+                          id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(dagerBruktAvMor, intl) },
+                      { varighet: getVarighetString(dagerBruktAvMor, intl), forelder: navnPåForeldre.mor },
                   )
                 : '';
         const beskrivelseFelles =
@@ -292,12 +288,9 @@ const KvoteTittel = () => {
             dagerBruktAvFar > 0
                 ? intl.formatMessage(
                       {
-                          id:
-                              hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
-                                  ? 'kvote.varighet.tilMedmor'
-                                  : 'kvote.varighet.tilFar',
+                          id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(dagerBruktAvFar, intl) },
+                      { varighet: getVarighetString(dagerBruktAvFar, intl), forelder: navnPåForeldre.farMedmor },
                   )
                 : '';
 
@@ -324,12 +317,9 @@ const KvoteTittel = () => {
         ubrukteDagerMor > 0
             ? intl.formatMessage(
                   {
-                      id:
-                          hvemPlanleggerType === HvemPlanleggerType.FAR_OG_FAR
-                              ? 'kvote.varighet.tilFar'
-                              : 'kvote.varighet.tilMor',
+                      id: 'kvote.varighet.tilForelder',
                   },
-                  { varighet: getVarighetString(ubrukteDagerMor, intl) },
+                  { varighet: getVarighetString(ubrukteDagerMor, intl), forelder: navnPåForeldre.mor },
               )
             : '';
     const beskrivelseFelles =
@@ -343,12 +333,9 @@ const KvoteTittel = () => {
         ubrukteDagerFar > 0
             ? intl.formatMessage(
                   {
-                      id:
-                          hvemPlanleggerType === HvemPlanleggerType.MOR_OG_MEDMOR
-                              ? 'kvote.varighet.tilMedmor'
-                              : 'kvote.varighet.tilFar',
+                      id: 'kvote.varighet.tilForelder',
                   },
-                  { varighet: getVarighetString(ubrukteDagerFar, intl) },
+                  { varighet: getVarighetString(ubrukteDagerFar, intl), forelder: navnPåForeldre.farMedmor },
               )
             : '';
 
@@ -466,7 +453,7 @@ const MødreKvoter = () => {
 
 const FellesKvoter = () => {
     const intl = useIntl();
-    const { konto, perioder, forelder, visStatusIkoner } = useKvote();
+    const { konto, perioder, forelder, visStatusIkoner, navnPåForeldre } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -537,11 +524,17 @@ const FellesKvoter = () => {
                         [
                             intl.formatMessage(
                                 { id: 'kvote.varighet.fellesperiode.deg' },
-                                { varighet: getVarighetString(dagerBruktAvDeg, intl) },
+                                {
+                                    varighet: getVarighetString(dagerBruktAvDeg, intl),
+                                    forelder: forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                                },
                             ),
                             intl.formatMessage(
                                 { id: 'kvote.varighet.fellesperiode.annenForeldre' },
-                                { varighet: getVarighetString(dagerBruktAvAnnenPart, intl) },
+                                {
+                                    varighet: getVarighetString(dagerBruktAvAnnenPart, intl),
+                                    forelder: forelder !== 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                                },
                             ),
                             ubrukteDager > 0
                                 ? intl.formatMessage(

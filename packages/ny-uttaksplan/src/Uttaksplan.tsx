@@ -58,6 +58,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
 }: Props) => {
+    console.log(navnPåForeldre);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const søkersPlanperioder = finnOgSettInnHull(
         mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
