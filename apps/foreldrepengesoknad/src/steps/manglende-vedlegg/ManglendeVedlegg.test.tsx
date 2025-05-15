@@ -193,8 +193,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    // TODO: (KALLE) Fiks denne testen
-    it.skip('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
+    it('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -238,8 +237,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    // TODO: (KALLE) Fiks denne testen
-    it.skip('skal laste opp vedlegg for aleneomsorg', async () => {
+    it('skal laste opp vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -283,8 +281,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    // TODO: (KALLE) Fiks denne testen
-    it.skip('skal håndtere automatisk dokumentasjon når mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid', async () => {
+    it('skal håndtere automatisk dokumentasjon når mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -297,7 +294,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
-        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
         expect(
             await screen.findByText(
                 // Delt i to for å unngå at linjelengden blir for lang
@@ -316,8 +313,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    // TODO: (KALLE) Fiks denne testen
-    it.skip('skal vise krav om dokumentasjon for mors arbeid når stillingsprosenten er < 75%', async () => {
+    it('skal vise krav om dokumentasjon for mors arbeid når stillingsprosenten er < 75%', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -329,7 +325,7 @@ describe('<ManglendeVedlegg>', () => {
             />,
         );
 
-        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
         expect(
             await screen.findByText(
                 'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
@@ -360,7 +356,7 @@ describe('<ManglendeVedlegg>', () => {
             />,
         );
 
-        expect(screen.getByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
         expect(
             await screen.findByText(
                 'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +

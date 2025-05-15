@@ -240,6 +240,7 @@ export const Aleneomsorgdokumentasjon: Story = {
         søkerInfo: defaultSøkerinfo,
         annenForelder: {
             ...defaultAnnenForelder,
+            erAleneOmOmsorg: true,
             datoForAleneomsorg: '2024-01-01',
         },
         erEndringssøknad: false,

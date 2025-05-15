@@ -5,6 +5,7 @@ import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import React from 'react';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -39,6 +40,7 @@ const withIntlProvider = getIntlDecorator({
         ...arbeidsforholdOgInntektMessages.nb,
         ...egenNæringMessages.nb,
         ...frilansMessages.nb,
+        ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -49,6 +51,7 @@ const withIntlProvider = getIntlDecorator({
         ...arbeidsforholdOgInntektMessages.nn,
         ...egenNæringMessages.nn,
         ...frilansMessages.nn,
+        ...formHookMessages.nn,
     },
 });
 
