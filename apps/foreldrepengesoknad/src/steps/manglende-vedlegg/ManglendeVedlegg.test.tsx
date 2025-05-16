@@ -15,7 +15,6 @@ const {
     Aleneomsorgdokumentasjon,
     FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
     FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
-    FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
@@ -320,37 +319,6 @@ describe('<ManglendeVedlegg>', () => {
         applyRequestHandlers(FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid.parameters.msw);
         const screen = render(
             <FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
-
-        expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
-        expect(
-            await screen.findByText(
-                'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
-                    ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
-                { exact: false },
-            ),
-        ).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
-
-    // TODO: (KALLE) Fiks denne testen
-    it.skip('skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden', async () => {
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
-
-        applyRequestHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
-        const screen = render(
-            <FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
