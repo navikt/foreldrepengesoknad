@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
+import { Route, Routes } from 'react-router-dom';
 
 import { Provider } from '@navikt/ds-react';
 import { nb } from '@navikt/ds-react/locales';
@@ -14,6 +15,8 @@ import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import nbMessages from './intl/messages/nb_NO.json';
+import { BruktOpplysniungerOmArbeidsforhold } from './pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold.tsx';
+import { OversiktRoutes } from './routes/routes.ts';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -55,7 +58,13 @@ export const AppContainer = () => {
                 <Provider locale={nb}>
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                         <ByttBrowserModal />
-                        <Foreldrepengeoversikt />
+                        <Routes>
+                            <Route
+                                path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                                element={<BruktOpplysniungerOmArbeidsforhold />}
+                            />
+                            <Route element={<Foreldrepengeoversikt />} />
+                        </Routes>
                     </IntlProvider>
                 </Provider>
             </QueryClientProvider>

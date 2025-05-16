@@ -4,12 +4,11 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
-import { ForsideHeader } from '../../components/header/Header';
-import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
 
 export const BruktOpplysniungerOmArbeidsforhold = () => {
     return (
-        <PageRouteLayout header={<ForsideHeader />}>
+        <LayoutWrapper className="md:pb-28 p-4">
             <VStack className="bg-white p-4 rounded-2xl border-2 shadow border-deepblue-200" gap="2">
                 <Heading size="small" level="2">
                     <FormattedMessage id="BruktOpplysningerOmArbeidsforhold.tittel" />
@@ -33,6 +32,6 @@ export const BruktOpplysniungerOmArbeidsforhold = () => {
                     />
                 </BodyLong>
             </VStack>
-        </PageRouteLayout>
+        </LayoutWrapper>
     );
 };

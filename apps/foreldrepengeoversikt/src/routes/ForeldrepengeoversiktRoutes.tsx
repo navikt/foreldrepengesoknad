@@ -5,7 +5,6 @@ import { Søkerinfo } from '@navikt/fp-types';
 
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
-import { BruktOpplysniungerOmArbeidsforhold } from '../pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold';
 import { Sak } from '../pages/Sak';
 import { DokumenterPage } from '../pages/dokumenter-page/DokumenterPage';
 import { EttersendingPage } from '../pages/ettersending/EttersendingPage';
@@ -34,11 +33,6 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
             <Routes>
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
-                        <Route
-                            path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                            element={<BruktOpplysniungerOmArbeidsforhold />}
-                        />
-
                         <Route
                             path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                             element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
