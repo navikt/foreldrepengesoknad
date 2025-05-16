@@ -1,0 +1,336 @@
+import{j as i}from"./jsx-runtime-D_zvdyIk.js";import{u as fe}from"./useQuery-Km81jHJP.js";import{r as m,R as r}from"./index-DQLiH3RP.js";import{u as re}from"./index-ClyUrrHr.js";import{k as pe,u as W}from"./api-By2d6bGs.js";import{L as J,S as le}from"./List-8OReSfJu.js";import"./dates-efjv5HSM.js";import{u as Y,a as he,R as Ce,t as Ee,b as ye,d as be,e as Q,F as ke}from"./dateFormValidation-bO8eWKCv.js";import{a as Se}from"./UttaksdagenString-DRcuPL2E.js";import{b as Ne,L as z}from"./chunk-D4RADZKF-BhdFhvqI.js";import{u as j,H as ie,D as K,b as se,a as we,e as oe,B as Z,d as Le,L as xe,E as Re}from"./Label-DsXbSMDU.js";import{c as U}from"./composeEventHandlers-DeH74NdU.js";import{u as _e,S as Oe}from"./ChevronDown-B3pJ6oOa.js";import{A as G}from"./Alert-Dg8kz-yc.js";import{H as de,V as H}from"./VStack-BrvoQt_9.js";import{u as q,L as je,B as Ve}from"./Button-BX6Y31yB.js";import{M as A}from"./message-DohILNTk.js";import{r as Te}from"./stringUtils-DGs1tyYX.js";import{a as De,o as Ae}from"./useId-B0ho74s8.js";import{h as Pe}from"./index-B8qOg7Wt.js";var ue=(e=>(e.OMSORGSOVERTAKELSE="omsorgsovertakelse",e.ADOPSJONSVEDTAK="adopsjonsvedtak",e.TERMINBEKREFTELSE="terminbekreftelse",e.FØDSELSATTEST="fødselsattest",e.ANNEN_INNTEKT="anneninntektDokumentasjon",e.UTSETTELSE_SYKDOM="utsettelseSykdomUttaksplan",e.MORS_AKTIVITET_DOKUMENTASJON="morsaktivitetdokumentasjon",e.OVERFØRING_KVOTE="dokumentasjonOverføringAvKvote",e.ALENEOMSORG="dokumentasjonAvAleneomsorg",e.HV_ØVELSE="hvØvelse",e.NAV_TILTAK="navTiltak",e.TILBAKEBETALING="tilbakebetaling",e.TILRETTELEGGING="tilrettelegging",e))(ue||{});function me(e,l=166,t=!1){let n;function a(...s){const o=()=>{n=void 0,e.apply(this,s)};!n&&t&&o(),clearTimeout(n),n=setTimeout(o,l)}return a.clear=()=>{clearTimeout(n)},a}var He=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const Me=m.forwardRef((e,l)=>{var{children:t,className:n,name:a,timestamp:s,toptextPosition:o,toptextHeadingLevel:d="3"}=e,I=He(e,["children","className","name","timestamp","toptextPosition","toptextHeadingLevel"]);const{cn:u}=j();return r.createElement("div",Object.assign({ref:l,className:u("navds-chat__bubble",n)},I),(s||a)&&r.createElement(ie,{size:"xsmall",level:d,className:u("navds-chat__top-text",o&&`navds-chat__top-text--${o}`)},a&&r.createElement(K,{as:"span"},a),a&&s&&r.createElement(K,{as:"span","aria-hidden":!0},"•"),s&&r.createElement(K,{as:"span"},s)),t)});var Ge=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const B=m.forwardRef((e,l)=>{var{children:t,className:n,name:a,timestamp:s,avatar:o,position:d="left",variant:I="neutral",toptextPosition:u,size:p="medium",toptextHeadingLevel:c="3"}=e,E=Ge(e,["children","className","name","timestamp","avatar","position","variant","toptextPosition","size","toptextHeadingLevel"]);const{cn:g}=j();return r.createElement("div",Object.assign({ref:l,className:g("navds-chat",n,`navds-chat--${d}`,`navds-chat--top-text-${u??d}`,`navds-chat--${p}`,`navds-chat--${I}`)},E),o&&r.createElement("div",{className:g("navds-chat__avatar"),"aria-hidden":!0},o),r.createElement("ol",{className:g("navds-chat__bubble-wrapper")},r.Children.map(t,(C,k)=>{if(r.isValidElement(C))return r.createElement(se,{as:"li",size:p},r.cloneElement(C,Object.assign({name:a&&k===0?a:void 0,timestamp:s&&k===0?s:void 0,toptextHeadingLevel:c},C.props)))})))});B.Bubble=Me;const Fe=()=>{const e=q("GuidePanel");return r.createElement("svg",{width:"56",height:"85",viewBox:"0 0 56 85",fill:"none",xmlns:"http://www.w3.org/2000/svg","aria-label":e("illustrationLabel"),focusable:!1,role:"img"},r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M43.1888 40.4308C41.795 44.9808 39.0663 48.7576 35.5693 51.069L35.7484 53.0952L35.7474 53.1777L33.857 69.8797H21.8679L21.8181 69.5289L19.5004 53.1489L19.5862 51.1002C16.0715 48.795 13.3274 45.0119 11.9257 40.4499C11.8781 40.4544 11.83 40.4566 11.7812 40.4566C10.8745 40.4566 10.1562 39.6595 10.1562 38.6939V33.2298C10.1562 32.5825 10.479 32.0106 10.9648 31.7039C11.7229 21.5028 18.8443 13.4855 27.554 13.4855C36.2401 13.4855 43.3472 21.4596 44.1376 31.6211C44.7049 31.8986 45.0937 32.5184 45.0937 33.2298V38.6939C45.0937 39.66 44.3765 40.4566 43.4687 40.4566C43.3731 40.4566 43.2796 40.4478 43.1888 40.4308Z",fill:"#F7F7F7"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M35.1471 51.6345C35.0789 55.2819 31.7373 59.0239 27.625 59.0239C23.4949 59.0239 20.142 55.2493 20.1022 51.5869C17.9622 52.1325 14.6956 53.7781 11.9995 56.5281C9.38852 59.1912 7.3125 63.1941 7.3125 66.2993V85.0001H47.9375V66.2993C47.9375 63.1878 45.8167 59.178 43.1575 56.5119C40.4983 53.8458 37.3007 52.2225 35.1471 51.6345Z",fill:"#005B82"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M19.9671 51.7134C17.9959 52.4333 14.6891 54.0068 12.1875 56.3964C4.875 54.7595 1.625 50.87 1.625 50.87C1.625 50.87 8.36213 44.2596 8.3662 32.698V32.6857C8.3662 19.1478 15.6319 9.80762 27.6022 9.80762C39.5742 9.80762 46.8399 19.1478 46.8399 32.6857H46.883C46.883 44.2555 53.625 50.87 53.625 50.87C53.625 50.87 50.375 54.7595 43.0625 56.3942L43.0515 56.3964C40.6353 54.1853 37.1309 52.4799 35.2243 51.7589L35.2265 51.7582L35.1508 50.9012L35.1917 50.8302C38.7891 48.5155 41.5804 44.6159 42.9262 39.904C43.0909 39.9961 43.277 40.048 43.4739 40.048C44.1476 40.048 44.6928 39.4431 44.6928 38.6939V33.2298C44.6928 32.5887 44.2936 32.0528 43.7564 31.9114C43.7559 31.904 43.7554 31.8966 43.7549 31.8892C26.7466 33.7984 20.6199 22.068 20.117 22.0672C20.117 22.0672 14.4686 26.1538 11.769 31.0124C11.769 31.0124 11.3576 31.9296 11.3556 31.9605C10.8934 32.1527 10.5637 32.648 10.5637 33.2298V38.6939C10.5637 39.4431 11.1103 40.048 11.7826 40.048C11.9316 40.048 12.0743 40.0184 12.2062 39.9642C13.5668 44.6785 16.3759 48.5738 19.9901 50.8732L20.0035 50.9012L19.9695 51.7134H19.9671Z",fill:"#F25C5C"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M21.8159 35.8563C20.766 35.9417 20.4722 34.2696 20.7885 33.1776C20.848 32.9706 21.1956 32.0283 21.8109 32.0283C22.4254 32.0283 22.6968 32.5434 22.7345 32.632C23.1865 33.6965 22.9645 35.7622 21.8159 35.8563",fill:"#262626"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M33.9927 35.8563C35.0425 35.9417 35.3364 34.2696 35.0201 33.1776C34.9606 32.9706 34.613 32.0283 33.9977 32.0283C33.3832 32.0283 33.1118 32.5434 33.0741 32.632C32.6221 33.6965 32.8441 35.7622 33.9927 35.8563",fill:"#262626"}),r.createElement("path",{d:"M28.2935 37.5041C28.9213 37.396 29.3501 37.4638 29.5036 37.6748C30.0833 38.4721 29.8979 39.3156 28.9035 40.0081C28.3806 40.372 27.661 40.5001 27.28 40.3114C27.0937 40.2191 26.8758 40.3133 26.7934 40.5218C26.7109 40.7304 26.7951 40.9742 26.9814 41.0665C27.6111 41.3784 28.5794 41.206 29.2931 40.7092C30.6445 39.7682 30.9537 38.3611 30.0758 37.1534C29.7042 36.643 29.0465 36.5389 28.1812 36.688C27.9799 36.7227 27.8418 36.9335 27.8728 37.1589C27.9038 37.3842 28.0921 37.5388 28.2935 37.5041Z",fill:"#262626"}),r.createElement("path",{d:"M32.8337 42.9837C32.7968 43.0623 32.7122 43.2128 32.5763 43.411C32.3463 43.7465 32.0574 44.0829 31.7066 44.3966C30.6611 45.3314 29.3002 45.872 27.5683 45.8225C25.8795 45.7743 24.5247 45.2421 23.4626 44.3839C23.0726 44.0688 22.7506 43.7314 22.4933 43.395C22.3415 43.1967 22.2468 43.0463 22.2053 42.9679C22.1056 42.7794 21.8606 42.7018 21.6581 42.7946C21.4555 42.8873 21.3721 43.1153 21.4718 43.3039C21.5318 43.4174 21.6487 43.6029 21.8273 43.8363C22.1206 44.2196 22.4852 44.6018 22.9266 44.9584C24.1256 45.9272 25.6579 46.5292 27.5432 46.583C29.5064 46.6391 31.0759 46.0156 32.273 44.9453C32.6733 44.5874 33.0023 44.2042 33.2656 43.8202C33.4257 43.5867 33.5298 43.4014 33.5829 43.2881C33.6733 43.0955 33.5788 42.8713 33.3719 42.7872C33.165 42.7032 32.924 42.7911 32.8337 42.9837Z",fill:"#262626"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M41.8629 70.5H30.8865C30.3966 70.5 30 70.0974 30 69.6001V63.609C30 63.1117 30.3966 62.7084 30.8865 62.7084H41.8629C42.3527 62.7084 42.75 63.1117 42.75 63.609V69.6001C42.75 70.0974 42.3527 70.5 41.8629 70.5",fill:"white"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M37.0345 63.9451H35.8971C35.8128 63.9451 35.7449 63.8775 35.7449 63.7937V63.6029C35.7449 63.5197 35.8128 63.4515 35.8971 63.4515H37.0345C37.1188 63.4515 37.1867 63.5197 37.1867 63.6029V63.7937C37.1867 63.8775 37.1188 63.9451 37.0345 63.9451",fill:"#262626"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M36.1365 63.7708H36.7955V62H36.1365V63.7708Z",fill:"#8F8F8F"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M40.5417 65.5H39.6457C39.6457 65.5 39.5839 65.5 39.5621 65.5545L39.0662 67.0725L38.5708 65.5545C38.5489 65.5 38.4868 65.5 38.4868 65.5H36.764C36.7267 65.5 36.6954 65.5311 36.6954 65.5682V66.0837C36.6954 65.6748 36.2603 65.5 36.0055 65.5C35.4349 65.5 35.053 65.8758 34.934 66.4472C34.9276 66.0681 34.8961 65.9323 34.794 65.7932C34.7471 65.7251 34.6793 65.6678 34.6055 65.6204C34.4535 65.5314 34.317 65.5 34.0237 65.5H33.6794C33.6794 65.5 33.6171 65.5 33.5952 65.5545L33.2818 66.331V65.5682C33.2818 65.5311 33.2508 65.5 33.2136 65.5H32.4167C32.4167 65.5 32.3552 65.5 32.3328 65.5545L32.0071 66.362C32.0071 66.362 31.9746 66.4427 32.0489 66.4427H32.3552V67.9813C32.3552 68.0195 32.3853 68.0497 32.4236 68.0497H33.2136C33.2508 68.0497 33.2818 68.0195 33.2818 67.9813V66.4427H33.5898C33.7664 66.4427 33.8039 66.4475 33.8726 66.4796C33.914 66.4952 33.9513 66.5268 33.9716 66.5633C34.0133 66.6417 34.0237 66.7359 34.0237 67.0135V67.9813C34.0237 68.0195 34.0544 68.0497 34.0923 68.0497H34.8494C34.8494 68.0497 34.935 68.0497 34.9688 67.9652L35.1366 67.5505C35.3597 67.863 35.7269 68.0497 36.1833 68.0497H36.283C36.283 68.0497 36.3691 68.0497 36.4032 67.9652L36.6954 67.2415V67.9813C36.6954 68.0195 36.7267 68.0497 36.764 68.0497H37.5368C37.5368 68.0497 37.6221 68.0497 37.6564 67.9652C37.6564 67.9652 37.9655 67.1978 37.9667 67.192H37.9671C37.979 67.1281 37.8983 67.1281 37.8983 67.1281H37.6225V65.8113L38.4904 67.9652C38.5243 68.0497 38.6097 68.0497 38.6097 68.0497H39.5228C39.5228 68.0497 39.6087 68.0497 39.6426 67.9652L40.6048 65.5826C40.6381 65.5 40.5417 65.5 40.5417 65.5V65.5ZM36.6954 67.128H36.1763C35.9696 67.128 35.8015 66.9607 35.8015 66.7538C35.8015 66.5473 35.9696 66.3789 36.1763 66.3789H36.3215C36.5276 66.3789 36.6954 66.5473 36.6954 66.7538V67.128Z",fill:"#C30000"}))},qe=()=>{const e=q("GuidePanel");return r.createElement("svg",{width:"80",height:"80",viewBox:"0 0 80 80",fill:"none",xmlns:"http://www.w3.org/2000/svg","aria-label":e("illustrationLabel"),focusable:!1,role:"img"},r.createElement("g",{clipPath:"url(#clip0_1387_21067)"},r.createElement("rect",{width:"80",height:"80",rx:"40",fill:"var(--ax-bg-info-moderate)"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M55.1888 40.4309C53.795 44.9809 51.0663 48.7578 47.5693 51.0691L47.7484 53.0953L47.7474 53.1777L45.857 69.8798H33.8679L33.8181 69.5289L31.5004 53.149L31.5862 51.1003C28.0715 48.7951 25.3274 45.012 23.9257 40.4499C23.8781 40.4544 23.83 40.4567 23.7812 40.4567C22.8745 40.4567 22.1562 39.6596 22.1562 38.694V33.2299C22.1562 32.5826 22.479 32.0107 22.9648 31.704C23.7229 21.5029 30.8443 13.4856 39.554 13.4856C48.2401 13.4856 55.3472 21.4598 56.1376 31.6212C56.7049 31.8987 57.0938 32.5185 57.0938 33.2299V38.694C57.0938 39.6601 56.3765 40.4567 55.4688 40.4567C55.3731 40.4567 55.2796 40.4479 55.1888 40.4309Z",fill:"#F5F6F7"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M47.1471 51.6344C47.0789 55.2818 43.7373 59.0238 39.625 59.0238C35.4948 59.0238 32.142 55.2492 32.1022 51.5868C29.9622 52.1324 26.6956 53.778 23.9995 56.528C21.3885 59.191 19.3125 63.194 19.3125 66.2992V85H59.9375V66.2992C59.9375 63.1877 57.8167 59.1779 55.1575 56.5118C52.4983 53.8457 49.3007 52.2224 47.1471 51.6344Z",fill:"#156389"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M31.9671 51.7135C29.9959 52.4334 26.6891 54.0069 24.1875 56.3965C16.875 54.7596 13.625 50.8701 13.625 50.8701C13.625 50.8701 20.3621 44.2597 20.3662 32.698V32.6858C20.3662 19.1479 27.6319 9.80769 39.6022 9.80769C51.5742 9.80769 58.8399 19.1479 58.8399 32.6858H58.883C58.883 44.2556 65.625 50.8701 65.625 50.8701C65.625 50.8701 62.375 54.7596 55.0625 56.3942L55.0515 56.3965C52.6353 54.1854 49.1309 52.48 47.2243 51.759L47.2265 51.7583L47.1508 50.9013L47.1917 50.8303C50.7891 48.5155 53.5804 44.616 54.9262 39.904C55.0909 39.9962 55.277 40.0481 55.4739 40.0481C56.1476 40.0481 56.6928 39.4432 56.6928 38.694V33.2299C56.6928 32.5888 56.2936 32.0529 55.7564 31.9115C55.7559 31.9041 55.7554 31.8967 55.7549 31.8893C38.7466 33.7984 32.6199 22.0681 32.117 22.0673C32.117 22.0673 26.4686 26.1538 23.769 31.0125C23.769 31.0125 23.3576 31.9297 23.3556 31.9605C22.8934 32.1528 22.5637 32.648 22.5637 33.2299V38.694C22.5637 39.4432 23.1103 40.0481 23.7826 40.0481C23.9316 40.0481 24.0743 40.0185 24.2062 39.9643C25.5668 44.6786 28.3759 48.5739 31.9901 50.8733L32.0035 50.9013L31.9695 51.7135H31.9671Z",fill:"#A93D70"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M33.8159 35.8563C32.766 35.9417 32.4722 34.2696 32.7885 33.1775C32.848 32.9706 33.1956 32.0283 33.8109 32.0283C34.4254 32.0283 34.6968 32.5433 34.7345 32.6319C35.1865 33.6965 34.9645 35.7622 33.8159 35.8563",fill:"#202733"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M45.9927 35.8563C47.0425 35.9417 47.3364 34.2696 47.0201 33.1775C46.9606 32.9706 46.613 32.0283 45.9977 32.0283C45.3832 32.0283 45.1118 32.5433 45.0741 32.6319C44.6221 33.6965 44.8441 35.7622 45.9927 35.8563",fill:"#202733"}),r.createElement("path",{d:"M40.2935 37.5041C40.9213 37.396 41.3501 37.4638 41.5036 37.6748C42.0833 38.4721 41.8979 39.3156 40.9035 40.0081C40.3806 40.372 39.661 40.5001 39.28 40.3114C39.0937 40.2191 38.8758 40.3133 38.7934 40.5218C38.7109 40.7304 38.7951 40.9742 38.9814 41.0665C39.6111 41.3784 40.5794 41.206 41.2931 40.7092C42.6445 39.7682 42.9537 38.3611 42.0758 37.1534C41.7042 36.643 41.0465 36.5389 40.1812 36.688C39.9799 36.7227 39.8418 36.9335 39.8728 37.1589C39.9038 37.3842 40.0921 37.5388 40.2935 37.5041Z",fill:"#202733"}),r.createElement("path",{d:"M44.8337 42.9837C44.7968 43.0623 44.7122 43.2128 44.5763 43.4111C44.3463 43.7466 44.0574 44.083 43.7066 44.3967C42.6611 45.3315 41.3002 45.8721 39.5683 45.8226C37.8795 45.7744 36.5247 45.2422 35.4626 44.384C35.0726 44.0689 34.7506 43.7315 34.4933 43.3951C34.3415 43.1967 34.2468 43.0464 34.2053 42.968C34.1056 42.7795 33.8606 42.7019 33.6581 42.7946C33.4555 42.8874 33.3721 43.1154 33.4718 43.3039C33.5318 43.4175 33.6487 43.6029 33.8273 43.8364C34.1206 44.2197 34.4852 44.6019 34.9266 44.9585C36.1256 45.9273 37.6579 46.5293 39.5432 46.5831C41.5064 46.6391 43.0759 46.0157 44.273 44.9453C44.6733 44.5875 45.0023 44.2043 45.2656 43.8203C45.4257 43.5868 45.5298 43.4015 45.5829 43.2882C45.6733 43.0956 45.5788 42.8714 45.3719 42.7873C45.165 42.7033 44.924 42.7912 44.8337 42.9837Z",fill:"#202733"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M53.8629 70.5H42.8865C42.3966 70.5 42 70.0974 42 69.6V63.609C42 63.1117 42.3966 62.7083 42.8865 62.7083H53.8629C54.3527 62.7083 54.75 63.1117 54.75 63.609V69.6C54.75 70.0974 54.3527 70.5 53.8629 70.5",fill:"white"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M49.0346 63.9451H47.8971C47.8128 63.9451 47.7449 63.8775 47.7449 63.7937V63.6029C47.7449 63.5197 47.8128 63.4515 47.8971 63.4515H49.0346C49.1188 63.4515 49.1867 63.5197 49.1867 63.6029V63.7937C49.1867 63.8775 49.1188 63.9451 49.0346 63.9451",fill:"#202733"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M48.1365 63.7708H48.7955V62H48.1365V63.7708Z",fill:"#818997"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M52.5417 65.5H51.6457C51.6457 65.5 51.5839 65.5 51.5621 65.5545L51.0662 67.0725L50.5708 65.5545C50.5489 65.5 50.4868 65.5 50.4868 65.5H48.764C48.7267 65.5 48.6954 65.5311 48.6954 65.5682V66.0837C48.6954 65.6748 48.2603 65.5 48.0055 65.5C47.4349 65.5 47.053 65.8758 46.934 66.4472C46.9276 66.0681 46.8961 65.9323 46.794 65.7932C46.7471 65.7251 46.6793 65.6678 46.6055 65.6204C46.4535 65.5314 46.317 65.5 46.0237 65.5H45.6794C45.6794 65.5 45.6171 65.5 45.5952 65.5545L45.2818 66.331V65.5682C45.2818 65.5311 45.2508 65.5 45.2136 65.5H44.4167C44.4167 65.5 44.3552 65.5 44.3328 65.5545L44.0071 66.362C44.0071 66.362 43.9746 66.4427 44.0489 66.4427H44.3552V67.9813C44.3552 68.0195 44.3853 68.0497 44.4236 68.0497H45.2136C45.2508 68.0497 45.2818 68.0195 45.2818 67.9813V66.4427H45.5898C45.7664 66.4427 45.8039 66.4475 45.8726 66.4796C45.914 66.4952 45.9513 66.5268 45.9716 66.5633C46.0133 66.6417 46.0237 66.7359 46.0237 67.0135V67.9813C46.0237 68.0195 46.0544 68.0497 46.0923 68.0497H46.8494C46.8494 68.0497 46.935 68.0497 46.9688 67.9652L47.1366 67.5505C47.3597 67.863 47.7269 68.0497 48.1833 68.0497H48.283C48.283 68.0497 48.3691 68.0497 48.4032 67.9652L48.6954 67.2415V67.9813C48.6954 68.0195 48.7267 68.0497 48.764 68.0497H49.5368C49.5368 68.0497 49.6221 68.0497 49.6564 67.9652C49.6564 67.9652 49.9655 67.1978 49.9667 67.192H49.9671C49.979 67.1281 49.8983 67.1281 49.8983 67.1281H49.6225V65.8113L50.4904 67.9652C50.5243 68.0497 50.6097 68.0497 50.6097 68.0497H51.5228C51.5228 68.0497 51.6087 68.0497 51.6426 67.9652L52.6048 65.5826C52.6381 65.5 52.5417 65.5 52.5417 65.5V65.5ZM48.6954 67.128H48.1763C47.9696 67.128 47.8015 66.9607 47.8015 66.7538C47.8015 66.5473 47.9696 66.3789 48.1763 66.3789H48.3215C48.5276 66.3789 48.6954 66.5473 48.6954 66.7538V67.128Z",fill:"#C30000"})),r.createElement("defs",null,r.createElement("clipPath",{id:"clip0_1387_21067"},r.createElement("rect",{width:"80",height:"80",rx:"40",fill:"white"}))))};var Ke=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const ze=m.forwardRef((e,l)=>{var{children:t,className:n,illustration:a,poster:s}=e,o=Ke(e,["children","className","illustration","poster"]);const{cn:d}=j(),I=we(!1);return r.createElement("div",Object.assign({},o,{ref:l,className:d("navds-guide-panel",n,{"navds-guide-panel--poster":s===!0,"navds-guide-panel--not-poster":s===!1,"navds-guide-panel--responsive-poster":s===void 0}),"data-responsive":s===void 0,"data-poster":s}),r.createElement("div",{className:d("navds-guide")},a??(I?r.createElement(qe,null):r.createElement(Fe,null))),r.createElement("div",{className:d("navds-guide-panel__content")},I&&r.createElement("svg",{viewBox:"0 0 33 22",width:"33",height:"22",fill:"none",xmlns:"http://www.w3.org/2000/svg",className:d("navds-guide-panel__tail")},r.createElement("path",{d:"M8.74229e-08 22L0 20L33 20V22L8.74229e-08 22Z",fill:"var(--ax-bg-raised)"}),r.createElement("path",{d:"M31 20.0001L2 20.0001C2.09817 10.0296 3 7.00011 6 2.00011C8 12.5001 20 20.0001 31 20.0001Z",fill:"var(--ax-bg-raised)"}),r.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M0 20C-2.87106e-10 19.9934 3.21047e-05 19.987 9.68646e-05 19.9804C0.0494722 14.9659 0.299239 11.5341 0.964025 8.68212C1.64231 5.77217 2.72947 3.56367 4.28501 0.971094C4.71185 0.259692 5.53358 -0.114327 6.35038 0.0310157C7.16718 0.176359 7.80944 0.810884 7.96467 1.62586C8.84145 6.22896 11.9453 10.3172 16.2599 13.2908C20.5715 16.2623 25.9294 18.0001 31 18.0001C32.1046 18.0001 33 18.8954 33 20L0 20ZM6.755 4.70521C8.97688 10.7068 14.4934 15.469 20.8803 18.0001C24.1345 19.2897 27.6146 20.0001 31 20.0001L2 20.0001C2.00689 19.3003 2.01774 18.6346 2.033 18.0001C2.19625 11.2107 2.86405 7.98363 4.58479 4.54371C4.9944 3.72487 5.46367 2.89399 6 2.00011C6.17639 2.92619 6.43058 3.82889 6.755 4.70521Z",fill:"var(--ax-border-info)"})),I?r.createElement("div",{className:d("navds-guide-panel__content-inner")},t):t))});var Be=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const $e=m.forwardRef((e,l)=>{var{className:t,header:n,children:a,open:s,defaultOpen:o=!1,onClick:d,size:I="medium",onOpenChange:u}=e,p=Be(e,["className","header","children","open","defaultOpen","onClick","size","onOpenChange"]);const{cn:c}=j(),[E,g]=_e({defaultValue:o,value:s,onChange:u}),C=I==="small"?"small":"medium";return r.createElement("div",{className:c("navds-read-more",`navds-read-more--${I}`,t,{"navds-read-more--open":E}),"data-volume":"low"},r.createElement("button",Object.assign({},p,{ref:l,type:"button",className:c("navds-read-more__button","navds-body-short",{"navds-body-short--small":I==="small"}),onClick:U(d,()=>g(k=>!k)),"aria-expanded":E,"data-state":E?"open":"closed"}),r.createElement(Oe,{className:c("navds-read-more__expand-icon"),"aria-hidden":!0}),r.createElement("span",null,n)),r.createElement(se,{as:"div","aria-hidden":!E,className:c("navds-read-more__content",{"navds-read-more__content--closed":!E}),size:C,"data-state":E?"open":"closed"},a))});var Ze=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const Ue=m.forwardRef((e,l)=>{var{children:t,as:n="a",className:a}=e,s=Ze(e,["children","as","className"]);const{cn:o}=j();return r.createElement("li",null,r.createElement(n,Object.assign({},s,{ref:l,className:o(a,"navds-error-summary__item","navds-link")}),t))});var We=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const $=m.forwardRef((e,l)=>{var{children:t,className:n,size:a="medium",headingTag:s="h2",heading:o}=e,d=We(e,["children","className","size","headingTag","heading"]);const{cn:I}=j(),u=q("ErrorSummary"),p=m.useRef(null),c=m.useRef(null),E=oe(l,p);return r.createElement("div",Object.assign({ref:E},d,{className:I(n,"navds-error-summary",`navds-error-summary--${a}`),tabIndex:-1,onFocus:U(d.onFocus,g=>{var C;g.target===p.current&&((C=c==null?void 0:c.current)===null||C===void 0||C.focus())})}),r.createElement(ie,{className:I("navds-error-summary__heading"),as:s,size:"small",ref:c,tabIndex:-1},o??u("heading")),r.createElement(Z,{as:"ul",size:a,className:I("navds-error-summary__list")},t))});$.Item=Ue;var Je=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const X=(e,l,t)=>{const{outerHeightStyle:n,overflow:a}=l;return t.current<20&&(n>0&&Math.abs((e.outerHeightStyle||0)-n)>1||e.overflow!==a)?(t.current+=1,l):e},ee=e=>((e==null?void 0:e.ownerDocument)||document).defaultView||window;function M(e){return parseInt(e,10)||0}const Ye=m.forwardRef((e,l)=>{var t,n,{className:a,onChange:s,maxRows:o,minRows:d=1,autoScrollbar:I,style:u,value:p}=e,c=Je(e,["className","onChange","maxRows","minRows","autoScrollbar","style","value"]);const{current:E}=m.useRef(p!=null),g=m.useRef(null),C=oe(g,l),k=m.useRef(null),w=m.useRef(0),[L,V]=m.useState({outerHeightStyle:0}),S=r.useCallback(()=>{const v=g.current,y=ee(v).getComputedStyle(v);if(y.width==="0px")return{outerHeightStyle:0};const N=k.current;N.style.width=y.width,N.value=v.value||c.placeholder||"x",N.value.slice(-1)===`
+`&&(N.value+=" ");const R=y.boxSizing,b=M(y.paddingBottom)+M(y.paddingTop),T=M(y.borderBottomWidth)+M(y.borderTopWidth),D=N.scrollHeight-b;N.value="x";const P=N.scrollHeight-b;let O=D;d&&(O=Math.max(Number(d)*P,O)),o&&(O=Math.min(Number(o)*P,O)),O=Math.max(O,P);const Ie=O+(R==="border-box"?b+T:0),ge=Math.abs(O-D)<=1;return{outerHeightStyle:Ie,overflow:ge}},[o,d,c.placeholder]),h=()=>{const v=S();ne(v)||V(f=>X(f,v,w))};Y(()=>{const v=()=>{const b=S();ne(b)||Pe.flushSync(()=>{V(T=>X(T,b,w))})},f=me(()=>{var b,T,D;if(w.current=0,!((b=g.current)===null||b===void 0)&&b.style.height||!((T=g.current)===null||T===void 0)&&T.style.width){((D=g.current)===null||D===void 0?void 0:D.style.overflow)==="hidden"&&V(P=>Object.assign(Object.assign({},P),{overflow:!1}));return}v()},166,!0),y=g.current,N=ee(y);N.addEventListener("resize",f);let R;return typeof ResizeObserver<"u"&&(R=new ResizeObserver(f),R.observe(y)),()=>{f.clear(),N.removeEventListener("resize",f),R&&R.disconnect()}},[S]),Y(()=>{h()}),m.useEffect(()=>{w.current=0},[p]);const x=v=>{w.current=0,E||h(),s&&s(v)},_=Object.assign({"--__ac-textarea-height":L.outerHeightStyle+"px","--__axc-textarea-height":L.outerHeightStyle+"px",overflow:L.overflow&&!I&&!(!((t=g.current)===null||t===void 0)&&t.style.height)&&!(!((n=g.current)===null||n===void 0)&&n.style.width)?"hidden":void 0},u);return r.createElement(r.Fragment,null,r.createElement("textarea",Object.assign({value:p,onChange:x,ref:C,rows:d,style:_},c,{className:a})),r.createElement("textarea",{"aria-hidden":!0,className:a,readOnly:!0,ref:k,tabIndex:-1,style:Object.assign({visibility:"hidden",position:"absolute",overflow:"hidden",height:0,top:0,left:0,transform:"translateZ(0)"},u)}))});function ne(e){return e==null||Object.keys(e).length===0||e.outerHeightStyle===0&&!e.overflow}const Qe=({maxLengthId:e,maxLength:l,currentLength:t,size:n,i18n:a})=>{const{cn:s}=j(),o=q("Textarea",{charsLeft:a!=null&&a.counterLeft?`{chars} ${a.counterLeft}`:void 0,charsTooMany:a!=null&&a.counterTooMuch?`{chars} ${a.counterTooMuch}`:void 0}),d=l-t,[I,u]=m.useState(d);return m.useEffect(()=>{const p=me(()=>{u(d)},2e3);return p(),()=>{p.clear()}},[d]),r.createElement(r.Fragment,null,r.createElement("span",{id:e,className:s("navds-sr-only")},o("maxLength",{maxLength:l})),d<20&&r.createElement("span",{role:"status",className:s("navds-textarea__sr-counter navds-sr-only")},ae(I,o)),r.createElement(Z,{className:s("navds-textarea__counter",{"navds-textarea__counter--error":d<0}),size:n},ae(d,o)))},ae=(e,l)=>e<0?l("charsTooMany",{chars:Math.abs(e)}):l("charsLeft",{chars:e});var Xe=function(e,l){var t={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&l.indexOf(n)<0&&(t[n]=e[n]);if(e!=null&&typeof Object.getOwnPropertySymbols=="function")for(var a=0,n=Object.getOwnPropertySymbols(e);a<n.length;a++)l.indexOf(n[a])<0&&Object.prototype.propertyIsEnumerable.call(e,n[a])&&(t[n[a]]=e[n[a]]);return t};const e0=m.forwardRef((e,l)=>{var t,n,a;const{inputProps:s,errorId:o,showErrorMsg:d,hasError:I,size:u,inputDescriptionId:p}=he(e,"textarea"),{label:c,className:E,description:g,maxLength:C,hideLabel:k=!1,resize:w,UNSAFE_autoScrollbar:L,i18n:V,readOnly:S}=e,h=Xe(e,["label","className","description","maxLength","hideLabel","resize","UNSAFE_autoScrollbar","i18n","readOnly"]),{cn:x}=j(),_=De(),v=C!==void 0&&C>0,[f,y]=m.useState((t=e==null?void 0:e.defaultValue)!==null&&t!==void 0?t:""),N=()=>{let b=h!=null&&h.minRows?h==null?void 0:h.minRows:3;return u==="small"&&(b=h!=null&&h.minRows?h==null?void 0:h.minRows:2),b},R=Le(s["aria-describedby"],{[_??""]:v});return r.createElement("div",{className:x(E,"navds-form-field",`navds-form-field--${u}`,{"navds-form-field--disabled":!!s.disabled,"navds-form-field--readonly":S,"navds-textarea--readonly":S,"navds-textarea--error":I,"navds-textarea--autoscrollbar":L,[`navds-textarea--resize-${w===!0?"both":w}`]:w})},r.createElement(xe,{htmlFor:s.id,size:u,className:x("navds-form-field__label",{"navds-sr-only":k})},S&&r.createElement(Ce,null),c),!!g&&r.createElement(Z,{className:x("navds-form-field__description",{"navds-sr-only":k}),id:p,size:u,as:"div"},g),r.createElement(Ye,Object.assign({},Ae(h,["error","errorId","size"]),s,{onChange:U(e.onChange,e.value===void 0?b=>y(b.target.value):void 0),minRows:N(),autoScrollbar:L,ref:l,readOnly:S,className:x("navds-textarea__input","navds-body-short",`navds-body-short--${u??"medium"}`)},R?{"aria-describedby":R}:{})),v&&!S&&!s.disabled&&r.createElement(Qe,{maxLengthId:_,maxLength:C,currentLength:(a=(n=e.value)===null||n===void 0?void 0:n.length)!==null&&a!==void 0?a:f.length,size:u,i18n:V}),r.createElement("div",{className:x("navds-form-field__error"),id:o,"aria-relevant":"additions removals","aria-live":"polite"},d&&r.createElement(Re,{size:u,showIcon:!0},e.error)))}),F=()=>{const{pathname:e}=Ne();return m.useEffect(()=>{window.scrollTo(0,0)},[e]),null},n0=(e,l)=>async t=>{const n=new FormData;n.append("id",t.id),n.append("vedlegg",t.file,t.filename);const a=await pe.post(`${e}/rest/storage/${l}/vedlegg`,{body:n});return{headers:{location:a.headers.get("Location")},data:await a.text()}},a0=e=>{const l=e.replace(ye,""),t=new Set(l.split(""));return Array.from(t).join("")},t0=(e,l,t)=>{const n=a0(e).replace(/\t/g,"Tabulatortegn");return t.formatMessage({id:"valideringsfeil.fritekst.kanIkkeInneholdeTegn"},{feltNavn:l,ugyldigeTegn:n})},r0=e=>Ee.test(e),l0=(e,l,t)=>{if(!r0(e))return t0(e,l,t)},i0=(e,l,t)=>t==null||t.length===0||t.length<25?e.formatMessage({id:"valideringsfeil.fritekst.forKort"},{feltNavn:l}):t.length>1e3?e.formatMessage({id:"valideringsfeil.fritekst.forLang"},{feltNavn:l}):l0(t,l,e),s0=e=>[e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt1"}),e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt2"}),e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt3"}),e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt4"}),e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt5"}),e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt6"})],ce=()=>{const e=re();return i.jsx($e,{header:e.formatMessage({id:"minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel"}),children:i.jsx(J,{children:s0(e).map(l=>i.jsx(J.Item,{children:l},`${l}`))})})};ce.__docgenInfo={description:"",methods:[],displayName:"HvaLeggerNAVVektPå"};const ve=({fetchCounter:e,allowedToFetch:l,saksnummer:t})=>e<30&&l?i.jsxs(i.Fragment,{children:[i.jsx(F,{}),i.jsx(G,{variant:"info",children:i.jsxs(de,{gap:"4",justify:"center",children:[i.jsx(je,{}),"Svaret ditt registreres i våre systemer."]})})]}):e<30&&!l?i.jsxs(i.Fragment,{children:[i.jsx(F,{}),i.jsxs(H,{gap:"2",children:[i.jsx(G,{variant:"success",children:"Svaret ditt er registrert"}),i.jsx(z,{to:`/sak/${t}`,children:i.jsx(A,{id:"miniDialog.kvittering.gåTilbakeTilSaken"})})]})]}):i.jsxs(i.Fragment,{children:[i.jsx(F,{}),i.jsxs(H,{gap:"2",children:[i.jsx(G,{variant:"info",children:"Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å sende igjen."}),i.jsx(z,{to:`/sak/${t}`,children:i.jsx(A,{id:"miniDialog.kvittering.gåTilbakeTilSaken"})})]})]});ve.__docgenInfo={description:"",methods:[],displayName:"MinidialogVenterPåSvar",props:{fetchCounter:{required:!0,tsType:{name:"number"},description:""},allowedToFetch:{required:!0,tsType:{name:"boolean"},description:""},saksnummer:{required:!0,tsType:{name:"string"},description:""}}};const o0=({pending:e,uploaded:l,filesize:t})=>e===!1&&l===!1||t===0,d0=(e,l,t,n,a,s)=>({vedlegg:n&&a?a.filter(o=>!o0(o)):[],saksnummer:e,type:l,dialogId:t,brukerTekst:{dokumentType:le.TILBAKEBETALING,overskrift:"Svar på tilbakebetalingen",tekst:n&&s!==void 0&&s!==null?Te(s)??"":"Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig."}}),te=e=>e==="ENGANGSSTØNAD"?"engangsstonad":e==="FORELDREPENGER"?"foreldrepenger":"svangerskapspenger",u0=({ettersendelseErSendt:e,isSendingEttersendelse:l,sakstype:t,minidialog:n,ettersendelseError:a,onSubmit:s})=>{const o=re(),[d,I]=m.useState([]),[u,p]=m.useState(!1),[c,E]=m.useState(),[g,C]=m.useState(),[k,w]=m.useState(),[L,V]=m.useState(0),[S,h]=m.useState(!0),x=(v,f)=>{I(v),p(f)};fe({queryKey:["minidialog"],queryFn:async()=>(V(v=>v+1),await fetch(`${W}/rest/minidialog`,{credentials:"include"}).then(v=>v.json())),refetchInterval:v=>{const f=v.state.data;return!f||f!=null&&f.find(y=>y.dialogId===(n==null?void 0:n.dialogId))?1e3:(e&&h(!1),!1)},enabled:e&&L<30&&S});const _=v=>{v.preventDefault();const f=c?i0(o,o.formatMessage({id:"minidialog.tilbakekreving.tilbakekreving.label"}).replace(":",""),g):void 0;if(f)w(f);else if(c!==void 0){const y=d0(n.saksnr,t,n.dialogId,c,d,g);s(y)}};return e?i.jsx(ve,{fetchCounter:L,allowedToFetch:S,saksnummer:n.saksnr}):a?i.jsxs(H,{gap:"4",children:[i.jsx(F,{}),i.jsxs(G,{variant:"error",children:[" ",a]}),i.jsx(z,{to:`/sak/${n.saksnr}`,children:i.jsx(A,{id:"miniDialog.kvittering.gåTilbakeTilSaken"})})]}):i.jsx("form",{onSubmit:_,children:i.jsxs(H,{gap:"8",children:[i.jsxs(H,{gap:"5",children:[i.jsx(B,{avatar:"Nav",name:"Nav",timestamp:Se(n.opprettet),children:i.jsx(B.Bubble,{children:i.jsx(A,{id:"miniDialog.tilbakekreving.tittel",values:{sakstype:te(t)}})})}),i.jsx(ce,{})]}),i.jsxs(be,{legend:o.formatMessage({id:"miniDialog.tilbakekreving.radioPanelGruppe.legend"}),onChange:E,children:[i.jsx(Q,{value:!0,children:"Ja"}),i.jsx(Q,{value:!1,children:"Nei"})]}),c===!0&&i.jsxs(i.Fragment,{children:[i.jsx("div",{children:i.jsx(e0,{label:o.formatMessage({id:"minidialog.tilbakekreving.tilbakekreving.label"}),onChange:v=>C(v.target.value),error:k})}),i.jsx(ke,{label:o.formatMessage({id:"minidialog.dokumenter"}),updateAttachments:x,attachmentType:ue.TILBAKEBETALING,skjemanummer:le.TILBAKEBETALING,saveAttachment:n0(W,te(t))})]}),c===!1&&i.jsx(ze,{children:i.jsx(A,{id:"minidialog.tilbakekreving.veilederpanel"})}),c!==void 0&&i.jsx(de,{children:i.jsx(Ve,{type:"submit",loading:l||u,disabled:l||u,children:i.jsx(A,{id:"miniDialog.tilbakekreving.sendButton"})})}),c&&k&&i.jsx($,{heading:"Feil i skjema",children:i.jsx($.Item,{href:"#1",children:k})})]})})};u0.__docgenInfo={description:"",methods:[],displayName:"MinidialogSkjema",props:{ettersendelseErSendt:{required:!0,tsType:{name:"boolean"},description:""},isSendingEttersendelse:{required:!0,tsType:{name:"boolean"},description:""},minidialog:{required:!0,tsType:{name:"signature",type:"object",raw:`{
+    saksnr: string;
+    opprettet: string;
+    dialogId: string;
+    frist?: string;
+}`,signature:{properties:[{key:"saksnr",value:{name:"string",required:!0}},{key:"opprettet",value:{name:"string",required:!0}},{key:"dialogId",value:{name:"string",required:!0}},{key:"frist",value:{name:"string",required:!1}}]}},description:""},onSubmit:{required:!0,tsType:{name:"signature",type:"function",raw:"(ettersendelse: EttersendelseDto) => void",signature:{arguments:[{type:{name:"signature",type:"object",raw:`{
+    mottattdato?: string;
+    type: 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
+    saksnummer: string;
+    brukerTekst?: BrukerTekstDto;
+    dialogId?: string;
+    vedlegg: VedleggDto[];
+}`,signature:{properties:[{key:"mottattdato",value:{name:"string",required:!1}},{key:"type",value:{name:"union",raw:"'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD'",elements:[{name:"literal",value:"'FORELDREPENGER'"},{name:"literal",value:"'SVANGERSKAPSPENGER'"},{name:"literal",value:"'ENGANGSSTØNAD'"}],required:!0}},{key:"saksnummer",value:{name:"string",required:!0}},{key:"brukerTekst",value:{name:"signature",type:"object",raw:`{
+    dokumentType:
+        | 'I000001'
+        | 'I000002'
+        | 'I000003'
+        | 'I000004'
+        | 'I000005'
+        | 'I000006'
+        | 'I000050'
+        | 'I000027'
+        | 'I500027'
+        | 'I000114'
+        | 'I000119'
+        | 'I000067'
+        | 'I000007'
+        | 'I000023'
+        | 'I000026'
+        | 'I000032'
+        | 'I000036'
+        | 'I000037'
+        | 'I000038'
+        | 'I000039'
+        | 'I000041'
+        | 'I000042'
+        | 'I000043'
+        | 'I000044'
+        | 'I000045'
+        | 'I000047'
+        | 'I000049'
+        | 'I000051'
+        | 'I000060'
+        | 'I000061'
+        | 'I000062'
+        | 'I000063'
+        | 'I000064'
+        | 'I000065'
+        | 'I000066'
+        | 'I000107'
+        | 'I000108'
+        | 'I000109'
+        | 'I000110'
+        | 'I000111'
+        | 'I000112'
+        | 'I000116'
+        | 'I000117'
+        | 'I000118'
+        | 'I000120'
+        | 'I000121'
+        | 'I000122'
+        | 'I000123'
+        | 'I000124'
+        | 'I000130'
+        | 'I000131'
+        | 'I000132'
+        | 'I000133'
+        | 'I000140'
+        | 'I000141'
+        | 'I000143'
+        | 'I000144'
+        | 'I000145'
+        | 'I000146'
+        | 'I500001'
+        | 'I500002'
+        | 'I500003'
+        | 'I500004'
+        | 'I500005'
+        | 'I500006'
+        | 'I500050';
+    tekst?: string;
+    overskrift?: string;
+}`,signature:{properties:[{key:"dokumentType",value:{name:"union",raw:`| 'I000001'
+| 'I000002'
+| 'I000003'
+| 'I000004'
+| 'I000005'
+| 'I000006'
+| 'I000050'
+| 'I000027'
+| 'I500027'
+| 'I000114'
+| 'I000119'
+| 'I000067'
+| 'I000007'
+| 'I000023'
+| 'I000026'
+| 'I000032'
+| 'I000036'
+| 'I000037'
+| 'I000038'
+| 'I000039'
+| 'I000041'
+| 'I000042'
+| 'I000043'
+| 'I000044'
+| 'I000045'
+| 'I000047'
+| 'I000049'
+| 'I000051'
+| 'I000060'
+| 'I000061'
+| 'I000062'
+| 'I000063'
+| 'I000064'
+| 'I000065'
+| 'I000066'
+| 'I000107'
+| 'I000108'
+| 'I000109'
+| 'I000110'
+| 'I000111'
+| 'I000112'
+| 'I000116'
+| 'I000117'
+| 'I000118'
+| 'I000120'
+| 'I000121'
+| 'I000122'
+| 'I000123'
+| 'I000124'
+| 'I000130'
+| 'I000131'
+| 'I000132'
+| 'I000133'
+| 'I000140'
+| 'I000141'
+| 'I000143'
+| 'I000144'
+| 'I000145'
+| 'I000146'
+| 'I500001'
+| 'I500002'
+| 'I500003'
+| 'I500004'
+| 'I500005'
+| 'I500006'
+| 'I500050'`,elements:[{name:"literal",value:"'I000001'"},{name:"literal",value:"'I000002'"},{name:"literal",value:"'I000003'"},{name:"literal",value:"'I000004'"},{name:"literal",value:"'I000005'"},{name:"literal",value:"'I000006'"},{name:"literal",value:"'I000050'"},{name:"literal",value:"'I000027'"},{name:"literal",value:"'I500027'"},{name:"literal",value:"'I000114'"},{name:"literal",value:"'I000119'"},{name:"literal",value:"'I000067'"},{name:"literal",value:"'I000007'"},{name:"literal",value:"'I000023'"},{name:"literal",value:"'I000026'"},{name:"literal",value:"'I000032'"},{name:"literal",value:"'I000036'"},{name:"literal",value:"'I000037'"},{name:"literal",value:"'I000038'"},{name:"literal",value:"'I000039'"},{name:"literal",value:"'I000041'"},{name:"literal",value:"'I000042'"},{name:"literal",value:"'I000043'"},{name:"literal",value:"'I000044'"},{name:"literal",value:"'I000045'"},{name:"literal",value:"'I000047'"},{name:"literal",value:"'I000049'"},{name:"literal",value:"'I000051'"},{name:"literal",value:"'I000060'"},{name:"literal",value:"'I000061'"},{name:"literal",value:"'I000062'"},{name:"literal",value:"'I000063'"},{name:"literal",value:"'I000064'"},{name:"literal",value:"'I000065'"},{name:"literal",value:"'I000066'"},{name:"literal",value:"'I000107'"},{name:"literal",value:"'I000108'"},{name:"literal",value:"'I000109'"},{name:"literal",value:"'I000110'"},{name:"literal",value:"'I000111'"},{name:"literal",value:"'I000112'"},{name:"literal",value:"'I000116'"},{name:"literal",value:"'I000117'"},{name:"literal",value:"'I000118'"},{name:"literal",value:"'I000120'"},{name:"literal",value:"'I000121'"},{name:"literal",value:"'I000122'"},{name:"literal",value:"'I000123'"},{name:"literal",value:"'I000124'"},{name:"literal",value:"'I000130'"},{name:"literal",value:"'I000131'"},{name:"literal",value:"'I000132'"},{name:"literal",value:"'I000133'"},{name:"literal",value:"'I000140'"},{name:"literal",value:"'I000141'"},{name:"literal",value:"'I000143'"},{name:"literal",value:"'I000144'"},{name:"literal",value:"'I000145'"},{name:"literal",value:"'I000146'"},{name:"literal",value:"'I500001'"},{name:"literal",value:"'I500002'"},{name:"literal",value:"'I500003'"},{name:"literal",value:"'I500004'"},{name:"literal",value:"'I500005'"},{name:"literal",value:"'I500006'"},{name:"literal",value:"'I500050'"}],required:!0}},{key:"tekst",value:{name:"string",required:!1}},{key:"overskrift",value:{name:"string",required:!1}}]},required:!1}},{key:"dialogId",value:{name:"string",required:!1}},{key:"vedlegg",value:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    uuid?: string;
+    skjemanummer:
+        | 'I000001'
+        | 'I000002'
+        | 'I000003'
+        | 'I000004'
+        | 'I000005'
+        | 'I000006'
+        | 'I000050'
+        | 'I000027'
+        | 'I500027'
+        | 'I000114'
+        | 'I000119'
+        | 'I000067'
+        | 'I000007'
+        | 'I000023'
+        | 'I000026'
+        | 'I000032'
+        | 'I000036'
+        | 'I000037'
+        | 'I000038'
+        | 'I000039'
+        | 'I000041'
+        | 'I000042'
+        | 'I000043'
+        | 'I000044'
+        | 'I000045'
+        | 'I000047'
+        | 'I000049'
+        | 'I000051'
+        | 'I000060'
+        | 'I000061'
+        | 'I000062'
+        | 'I000063'
+        | 'I000064'
+        | 'I000065'
+        | 'I000066'
+        | 'I000107'
+        | 'I000108'
+        | 'I000109'
+        | 'I000110'
+        | 'I000111'
+        | 'I000112'
+        | 'I000116'
+        | 'I000117'
+        | 'I000118'
+        | 'I000120'
+        | 'I000121'
+        | 'I000122'
+        | 'I000123'
+        | 'I000124'
+        | 'I000130'
+        | 'I000131'
+        | 'I000132'
+        | 'I000133'
+        | 'I000140'
+        | 'I000141'
+        | 'I000143'
+        | 'I000144'
+        | 'I000145'
+        | 'I000146'
+        | 'I500001'
+        | 'I500002'
+        | 'I500003'
+        | 'I500004'
+        | 'I500005'
+        | 'I500006'
+        | 'I500050';
+    innsendingsType?:
+        | 'LASTET_OPP'
+        | 'SEND_SENERE'
+        | 'VEDLEGG_ALLEREDE_SENDT'
+        | 'IKKE_VALGT'
+        | 'VEDLEGG_SENDES_AV_ANDRE'
+        | 'SENDES_IKKE';
+    beskrivelse?: string;
+    dokumenterer?: Dokumenterer;
+}`,signature:{properties:[{key:"uuid",value:{name:"string",required:!1}},{key:"skjemanummer",value:{name:"union",raw:`| 'I000001'
+| 'I000002'
+| 'I000003'
+| 'I000004'
+| 'I000005'
+| 'I000006'
+| 'I000050'
+| 'I000027'
+| 'I500027'
+| 'I000114'
+| 'I000119'
+| 'I000067'
+| 'I000007'
+| 'I000023'
+| 'I000026'
+| 'I000032'
+| 'I000036'
+| 'I000037'
+| 'I000038'
+| 'I000039'
+| 'I000041'
+| 'I000042'
+| 'I000043'
+| 'I000044'
+| 'I000045'
+| 'I000047'
+| 'I000049'
+| 'I000051'
+| 'I000060'
+| 'I000061'
+| 'I000062'
+| 'I000063'
+| 'I000064'
+| 'I000065'
+| 'I000066'
+| 'I000107'
+| 'I000108'
+| 'I000109'
+| 'I000110'
+| 'I000111'
+| 'I000112'
+| 'I000116'
+| 'I000117'
+| 'I000118'
+| 'I000120'
+| 'I000121'
+| 'I000122'
+| 'I000123'
+| 'I000124'
+| 'I000130'
+| 'I000131'
+| 'I000132'
+| 'I000133'
+| 'I000140'
+| 'I000141'
+| 'I000143'
+| 'I000144'
+| 'I000145'
+| 'I000146'
+| 'I500001'
+| 'I500002'
+| 'I500003'
+| 'I500004'
+| 'I500005'
+| 'I500006'
+| 'I500050'`,elements:[{name:"literal",value:"'I000001'"},{name:"literal",value:"'I000002'"},{name:"literal",value:"'I000003'"},{name:"literal",value:"'I000004'"},{name:"literal",value:"'I000005'"},{name:"literal",value:"'I000006'"},{name:"literal",value:"'I000050'"},{name:"literal",value:"'I000027'"},{name:"literal",value:"'I500027'"},{name:"literal",value:"'I000114'"},{name:"literal",value:"'I000119'"},{name:"literal",value:"'I000067'"},{name:"literal",value:"'I000007'"},{name:"literal",value:"'I000023'"},{name:"literal",value:"'I000026'"},{name:"literal",value:"'I000032'"},{name:"literal",value:"'I000036'"},{name:"literal",value:"'I000037'"},{name:"literal",value:"'I000038'"},{name:"literal",value:"'I000039'"},{name:"literal",value:"'I000041'"},{name:"literal",value:"'I000042'"},{name:"literal",value:"'I000043'"},{name:"literal",value:"'I000044'"},{name:"literal",value:"'I000045'"},{name:"literal",value:"'I000047'"},{name:"literal",value:"'I000049'"},{name:"literal",value:"'I000051'"},{name:"literal",value:"'I000060'"},{name:"literal",value:"'I000061'"},{name:"literal",value:"'I000062'"},{name:"literal",value:"'I000063'"},{name:"literal",value:"'I000064'"},{name:"literal",value:"'I000065'"},{name:"literal",value:"'I000066'"},{name:"literal",value:"'I000107'"},{name:"literal",value:"'I000108'"},{name:"literal",value:"'I000109'"},{name:"literal",value:"'I000110'"},{name:"literal",value:"'I000111'"},{name:"literal",value:"'I000112'"},{name:"literal",value:"'I000116'"},{name:"literal",value:"'I000117'"},{name:"literal",value:"'I000118'"},{name:"literal",value:"'I000120'"},{name:"literal",value:"'I000121'"},{name:"literal",value:"'I000122'"},{name:"literal",value:"'I000123'"},{name:"literal",value:"'I000124'"},{name:"literal",value:"'I000130'"},{name:"literal",value:"'I000131'"},{name:"literal",value:"'I000132'"},{name:"literal",value:"'I000133'"},{name:"literal",value:"'I000140'"},{name:"literal",value:"'I000141'"},{name:"literal",value:"'I000143'"},{name:"literal",value:"'I000144'"},{name:"literal",value:"'I000145'"},{name:"literal",value:"'I000146'"},{name:"literal",value:"'I500001'"},{name:"literal",value:"'I500002'"},{name:"literal",value:"'I500003'"},{name:"literal",value:"'I500004'"},{name:"literal",value:"'I500005'"},{name:"literal",value:"'I500006'"},{name:"literal",value:"'I500050'"}],required:!0}},{key:"innsendingsType",value:{name:"union",raw:`| 'LASTET_OPP'
+| 'SEND_SENERE'
+| 'VEDLEGG_ALLEREDE_SENDT'
+| 'IKKE_VALGT'
+| 'VEDLEGG_SENDES_AV_ANDRE'
+| 'SENDES_IKKE'`,elements:[{name:"literal",value:"'LASTET_OPP'"},{name:"literal",value:"'SEND_SENERE'"},{name:"literal",value:"'VEDLEGG_ALLEREDE_SENDT'"},{name:"literal",value:"'IKKE_VALGT'"},{name:"literal",value:"'VEDLEGG_SENDES_AV_ANDRE'"},{name:"literal",value:"'SENDES_IKKE'"}],required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}},{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: 'BARN' | 'OPPTJENING' | 'UTTAK' | 'TILRETTELEGGING';
+    arbeidsforhold?: FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto;
+    perioder?: ÅpenPeriodeDto[];
+}`,signature:{properties:[{key:"type",value:{name:"union",raw:"'BARN' | 'OPPTJENING' | 'UTTAK' | 'TILRETTELEGGING'",elements:[{name:"literal",value:"'BARN'"},{name:"literal",value:"'OPPTJENING'"},{name:"literal",value:"'UTTAK'"},{name:"literal",value:"'TILRETTELEGGING'"}],required:!0}},{key:"arbeidsforhold",value:{name:"union",raw:"FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto",elements:[{name:"intersection",raw:`ArbeidsforholdDto & {
+    type: 'FrilanserDto';
+}`,elements:[{name:"signature",type:"object",raw:`{
+    type: string;
+}`,signature:{properties:[{key:"type",value:{name:"string",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    type: 'FrilanserDto';
+}`,signature:{properties:[{key:"type",value:{name:"literal",value:"'FrilanserDto'",required:!0}}]}}]},{name:"intersection",raw:`ArbeidsforholdDto & {
+    type: 'PrivatArbeidsgiverDto';
+} & {
+    id: string;
+}`,elements:[{name:"signature",type:"object",raw:`{
+    type: string;
+}`,signature:{properties:[{key:"type",value:{name:"string",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    type: 'PrivatArbeidsgiverDto';
+}`,signature:{properties:[{key:"type",value:{name:"literal",value:"'PrivatArbeidsgiverDto'",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    id: string;
+}`,signature:{properties:[{key:"id",value:{name:"string",required:!0}}]}}]},{name:"intersection",raw:`ArbeidsforholdDto & {
+    type: 'SelvstendigNæringsdrivendeDto';
+}`,elements:[{name:"signature",type:"object",raw:`{
+    type: string;
+}`,signature:{properties:[{key:"type",value:{name:"string",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    type: 'SelvstendigNæringsdrivendeDto';
+}`,signature:{properties:[{key:"type",value:{name:"literal",value:"'SelvstendigNæringsdrivendeDto'",required:!0}}]}}]},{name:"intersection",raw:`ArbeidsforholdDto & {
+    type: 'VirksomhetDto';
+} & {
+    id: string;
+}`,elements:[{name:"signature",type:"object",raw:`{
+    type: string;
+}`,signature:{properties:[{key:"type",value:{name:"string",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    type: 'VirksomhetDto';
+}`,signature:{properties:[{key:"type",value:{name:"literal",value:"'VirksomhetDto'",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    id: string;
+}`,signature:{properties:[{key:"id",value:{name:"string",required:!0}}]}}]}],required:!1}},{key:"perioder",value:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    fom: string;
+    tom?: string;
+}`,signature:{properties:[{key:"fom",value:{name:"string",required:!0}},{key:"tom",value:{name:"string",required:!1}}]}}],raw:"ÅpenPeriodeDto[]",required:!1}}]},required:!1}}]}}],raw:"VedleggDto[]",required:!0}}]}},name:"ettersendelse"}],return:{name:"void"}}},description:""},sakstype:{required:!0,tsType:{name:"union",raw:"'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD'",elements:[{name:"literal",value:"'FORELDREPENGER'"},{name:"literal",value:"'SVANGERSKAPSPENGER'"},{name:"literal",value:"'ENGANGSSTØNAD'"}]},description:""},ettersendelseError:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""}}};export{ue as A,ze as G,u0 as M,$e as R,F as S,n0 as g};

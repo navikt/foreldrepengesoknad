@@ -1,0 +1,1 @@
+const n={kontaktOss:"https://www.nav.no/person/kontakt-oss/nb/tilbakemeldinger/feil-og-mangler",papirsøknad:"https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad",scanneDokument:"https://www.nav.no/brukerstotte#bilde-vedlegg"};export{n as l};

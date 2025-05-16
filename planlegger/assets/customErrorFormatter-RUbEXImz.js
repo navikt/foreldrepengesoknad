@@ -1,1 +1,0 @@
-import{j as o}from"./jsx-runtime-CLpGMVip.js";const e=r=>r?o.jsx("span",{role:"alert",style:{borderRadius:4,width:"100%"},children:r}):void 0;e.__docgenInfo={description:"",methods:[],displayName:"formatError"};export{e as f};

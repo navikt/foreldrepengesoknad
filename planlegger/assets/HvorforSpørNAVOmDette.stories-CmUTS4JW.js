@@ -1,0 +1,5 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{d as m,M as p}from"./VeiviserPage-8Wpng40q.js";import"./index-DQLiH3RP.js";import{E as r}from"./ExpansionCard-DSVZz3RH.js";import{H as d}from"./VStack-TyG4_st1.js";import{S as c}from"./Information-CKlGeGdR.js";const n=({text:i})=>e.jsxs(r,{"aria-label":"",children:[e.jsx(r.Header,{children:e.jsxs(d,{gap:"10",align:"center",children:[e.jsx(m,{size:"xl",color:"green",children:e.jsx(c,{height:25,width:25,"aria-hidden":!0})}),e.jsx(r.Title,{size:"medium",children:e.jsx(p,{id:"HvorforSpørNAVOmDette.Info.Tittel"})})]})}),e.jsx(r.Content,{children:i})]});n.__docgenInfo={description:"",methods:[],displayName:"HvorforSpørNAVOmDette",props:{text:{required:!0,tsType:{name:"string"},description:""}}};const j={title:"components/HvorforSpørNAVOmDette",component:n},t={args:{text:"Dette er en tekst"}};var o,s,a;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`{
+  args: {
+    text: 'Dette er en tekst'
+  }
+}`,...(a=(s=t.parameters)==null?void 0:s.docs)==null?void 0:a.source}}};const D=["Default"];export{t as Default,D as __namedExportsOrder,j as default};

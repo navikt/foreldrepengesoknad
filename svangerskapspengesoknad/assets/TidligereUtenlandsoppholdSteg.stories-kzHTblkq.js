@@ -1,0 +1,7 @@
+import{j as o}from"./index-BAINcZ39.js";import{a as e}from"./index-B-lxVbXh.js";import{a as l,S as d,C as c}from"./routes-WhC7e2fT.js";import{T as a}from"./TidligereUtenlandsoppholdSteg-BVpnxydK.js";import{M as u}from"./useSvpNavigator-CoLzKHrm.js";import"./index-DQLiH3RP.js";import"./index-CJPVTaBz.js";import"./v4-CtRu48qb.js";import"./RegisterdataUtdatert-DMUBYJEW.js";import"./TidligereUtenlandsoppholdPanel-DFp_e_5M.js";import"./ErrorSummaryHookForm-BBYayIAp.js";import"./Checkbox-DYAMtiSP.js";import"./minMax-CJdGciy9.js";import"./ExpansionCard-CA65l24-.js";import"./Plus-PaSKWZoe.js";const g=()=>(...r)=>(e("button-click")(...r),Promise.resolve()),E={title:"steps/TidligereUtenlandsoppholdSteg",component:a,render:({gåTilNesteSide:r=e("button-click"),utenlandsopphold:m={harBoddUtenforNorgeSiste12Mnd:!0,skalBoUtenforNorgeNeste12Mnd:!1},...p})=>o.jsx(u,{initialEntries:[l.HAR_BODD_I_UTLANDET],children:o.jsx(d,{onDispatch:r,initialState:{[c.UTENLANDSOPPHOLD]:m},children:o.jsx(a,{...p})})})},t={args:{mellomlagreSøknadOgNaviger:g(),avbrytSøknad:e("button-click"),arbeidsforhold:[]}};var i,n,s;t.parameters={...t.parameters,docs:{...(i=t.parameters)==null?void 0:i.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: action('button-click'),
+    arbeidsforhold: []
+  }
+}`,...(s=(n=t.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const y=["Default"];export{t as Default,y as __namedExportsOrder,E as default};
