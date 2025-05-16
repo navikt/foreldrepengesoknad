@@ -190,8 +190,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
+    it('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -234,8 +233,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it.skip('skal laste opp vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
+    it('skal laste opp vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
