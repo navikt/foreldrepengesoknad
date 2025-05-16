@@ -70,9 +70,9 @@ const queryClient = new QueryClient({
 });
 
 export const getLanguageCookie = (cookieName: 'decorator-language') => {
-    let name = cookieName + '=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let cookies = decodedCookie.split(';');
+    const name = cookieName + '=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
         let cookie = cookies[i];
         while (cookie.charAt(0) == ' ') {
