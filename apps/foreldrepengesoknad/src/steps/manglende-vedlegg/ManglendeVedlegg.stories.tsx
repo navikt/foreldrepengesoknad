@@ -183,6 +183,7 @@ export const Aleneomsorgdokumentasjon: Story = {
         annenForelder: {
             ...defaultAnnenForelder,
             datoForAleneomsorg: '2024-01-01',
+            erAleneOmOmsorg: true,
         },
         erEndringssøknad: false,
         mellomlagreSøknadOgNaviger: promiseAction(),
