@@ -46,7 +46,7 @@
         "eslint": "9.26.0",
         "fast-glob": "^3.3.3",
         "storybook": "8.6.12",
-        "storybook-react-intl": "^4.0.1",
+        "storybook-react-intl": "^3.2.3",
         "tailwindcss": "4.1.6",
         "tsconfig": "workspace:*",
         "typescript": "^5.8.3",

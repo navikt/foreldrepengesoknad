@@ -1846,8 +1846,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2143,8 +2143,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2328,8 +2328,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2452,8 +2452,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2570,8 +2570,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2682,8 +2682,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2806,8 +2806,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -2945,8 +2945,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3248,8 +3248,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3357,8 +3357,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3478,8 +3478,8 @@ importers:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
       storybook-react-intl:
-        specifier: ^4.0.1
-        version: 4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3))
+        specifier: ^3.2.3
+        version: 3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))
       tailwindcss:
         specifier: 4.1.6
         version: 4.1.6
@@ -9230,16 +9230,13 @@ packages:
   std-env@3.9.0:
     resolution: {integrity: sha512-UGvjygr6F6tpH7o2qyqR6QYpwraIjKSdtzyBdyytFOHmPZY917kwdwLG0RbOjWOnKmnm3PeHjaoLLMie7kPLQw==}
 
-  storybook-i18n@4.0.2:
-    resolution: {integrity: sha512-yjdnebNcuu+QxExe9kiqQwXuS850dKAmzkVRHX1/K1mVdF8q46FvaczEYgCCUTepKvx+ZB3UFkvj2I73n2AK0w==}
-    peerDependencies:
-      storybook: ^9.0.0-beta.10
+  storybook-i18n@3.1.1:
+    resolution: {integrity: sha512-k1/lS+Rx6l5mJEYAHQWEgXuwU5IyWk7kjcJtm2FDIn1UqZwbEraGlrp/fEZKK2e/7+SXEQdKeCaTz7+63WTQxw==}
 
-  storybook-react-intl@4.0.1:
-    resolution: {integrity: sha512-yv8OmUYscejj8IqaHOFxrJ7c/p186yJmr8aX33gEhcIooIf+YM77cnUxezqlTcL477stIqoFPdXzjAshJW1e+w==}
+  storybook-react-intl@3.2.3:
+    resolution: {integrity: sha512-AJLei5j7PNiiSR0MyCE6scS3nBKy9cFAig4Y+47PsWHde+QkmiedMneo95w/n4xavNktHxmJoKcLaTgCKJ/nkw==}
     peerDependencies:
       react-intl: ^5.24.0 || ^6.0.0 || ^7.0.0
-      storybook: ^9.0.0-beta.10
 
   storybook@8.6.12:
     resolution: {integrity: sha512-Z/nWYEHBTLK1ZBtAWdhxC0l5zf7ioJ7G4+zYqtTdYeb67gTnxNj80gehf8o8QY9L2zA2+eyMRGLC2V5fI7Z3Tw==}
@@ -16142,15 +16139,12 @@ snapshots:
 
   std-env@3.9.0: {}
 
-  storybook-i18n@4.0.2(storybook@8.6.12(prettier@3.5.3)):
-    dependencies:
-      storybook: 8.6.12(prettier@3.5.3)
+  storybook-i18n@3.1.1: {}
 
-  storybook-react-intl@4.0.1(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3))(storybook@8.6.12(prettier@3.5.3)):
+  storybook-react-intl@3.2.3(react-intl@7.1.11(react@19.1.0)(typescript@5.8.3)):
     dependencies:
       react-intl: 7.1.11(react@19.1.0)(typescript@5.8.3)
-      storybook: 8.6.12(prettier@3.5.3)
-      storybook-i18n: 4.0.2(storybook@8.6.12(prettier@3.5.3))
+      storybook-i18n: 3.1.1
 
   storybook@8.6.12(prettier@3.5.3):
     dependencies:
