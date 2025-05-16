@@ -44,6 +44,8 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
+import { getLanguageCookie } from '../AppContainer';
+
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
         AnnenForelder,
@@ -346,7 +348,6 @@ export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefine
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: string,
-    locale: LocaleNo,
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -367,7 +368,6 @@ export const cleanSøknad = (
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
     const søkerInnsending = cleanSøker(
         søkersituasjon,
-        locale,
         annenForelder,
         arbeidsforholdOgInntekt,
         frilans,
@@ -409,7 +409,6 @@ export const cleanSøknad = (
 
 const cleanSøker = (
     søkersituasjon: Søkersituasjon,
-    locale: LocaleNo,
     annenForelder: AnnenForelder,
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp,
     frilans?: Frilans,
@@ -421,7 +420,7 @@ const cleanSøker = (
 
     const common = {
         rolle: rolle,
-        språkkode: locale,
+        språkkode: getLanguageCookie('decorator-language') as LocaleNo,
         erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
 
@@ -475,13 +474,12 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): SøknadForInnsending | EndringssøknadForInnsending => {
     if (erEndringssøknad) {
-        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, locale, endringstidspunkt);
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
     } else {
-        return cleanSøknad(hentData, familiehendelsesdato, locale);
+        return cleanSøknad(hentData, familiehendelsesdato);
     }
 };
 
@@ -489,7 +487,6 @@ export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    locale: LocaleNo,
     endringstidspunkt?: Date,
 ): EndringssøknadForInnsending => {
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
@@ -521,7 +518,6 @@ export const cleanEndringssøknad = (
         ),
         søker: cleanSøker(
             søkersituasjon,
-            locale,
             annenForelder,
             arbeidsforholdOgInntekt,
             frilans,

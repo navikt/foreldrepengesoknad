@@ -23,7 +23,7 @@ import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSte
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
@@ -249,8 +249,6 @@ const renderSøknadRoutes = (
 };
 
 interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
     foreldrepengerSaker: FpSak[];
@@ -261,8 +259,6 @@ interface Props {
 }
 
 export const ForeldrepengesøknadRoutes = ({
-    locale,
-    onChangeLocale,
     currentRoute,
     søkerInfo,
     foreldrepengerSaker,
@@ -279,10 +275,9 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering, locale);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
-        locale,
         foreldrepengerSaker,
         søkerInfo,
         erEndringssøknad,
@@ -334,9 +329,7 @@ export const ForeldrepengesøknadRoutes = ({
                 path={SøknadRoutes.VELKOMMEN}
                 element={
                     <Forside
-                        locale={locale}
                         saker={foreldrepengerSaker}
-                        onChangeLocale={onChangeLocale}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
