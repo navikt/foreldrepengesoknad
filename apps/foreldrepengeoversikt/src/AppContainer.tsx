@@ -63,7 +63,7 @@ export const AppContainer = () => {
                                 path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
                                 element={<BruktOpplysniungerOmArbeidsforhold />}
                             />
-                            <Route element={<Foreldrepengeoversikt />} />
+                            <Route path="*" element={<Foreldrepengeoversikt />} />
                         </Routes>
                     </IntlProvider>
                 </Provider>
