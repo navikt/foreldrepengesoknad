@@ -98,7 +98,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             valgtStønadskonto={{} as any}
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
-                        <KvoteOversikt />
+                        <KvoteOversikt navnPåForeldre={navnPåForeldre} />
                     </>
                 )}
                 {visKalender && (
