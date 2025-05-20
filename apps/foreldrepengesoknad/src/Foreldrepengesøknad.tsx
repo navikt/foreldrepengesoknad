@@ -50,11 +50,13 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     const søkerinfoQuery = useQuery({
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, { timeout: 30000 }).json<Søkerinfo>(),
+        staleTime: Infinity,
     });
 
     const sakerQuery = useQuery({
         queryKey: ['SAKER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+        staleTime: Infinity,
     });
 
     const mellomlagretInfoQuery = useQuery({
@@ -64,6 +66,7 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
             // TODO (TOR) Ta vekk parsing her etter at ny uttaksplan (og rydding av andre Date i context) er gjort
             return storageParser(text) as FpMellomlagretData;
         },
+        staleTime: Infinity,
     });
 
     const [kvittering, setKvittering] = useState<Kvittering>();

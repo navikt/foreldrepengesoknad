@@ -4,6 +4,7 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
@@ -22,6 +23,7 @@ const withIntlProvider = getIntlDecorator({
         ...utilsMessages.nb,
         ...nyUttaksplanMessages.nb,
         ...uttaksplanKalenderMessages.nb,
+        ...formHookMessages.nb,
     },
 });
 

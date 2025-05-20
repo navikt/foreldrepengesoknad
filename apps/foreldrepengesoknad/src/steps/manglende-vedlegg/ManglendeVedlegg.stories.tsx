@@ -242,6 +242,7 @@ export const Aleneomsorgdokumentasjon: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2024-01-01',
+            erAleneOmOmsorg: true,
         },
         erEndringssøknad: false,
         mellomlagreSøknadOgNaviger: promiseAction(),

@@ -48,7 +48,8 @@ export const useSendSøknad = (
                 }
 
                 const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {

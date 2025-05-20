@@ -66,7 +66,7 @@
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
         "storybook": "8.6.12",
-        "storybook-react-intl": "^4.0.1",
+        "storybook-react-intl": "^3.2.3",
         "tsconfig": "workspace:*",
         "vite": "^6.3.5",
         "vitest": "^3.1.3"
