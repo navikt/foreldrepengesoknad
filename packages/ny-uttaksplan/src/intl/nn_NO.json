@@ -112,7 +112,7 @@
     "kvote.enRett.beskrivelse.forMyeTidIPlan": "Du har lagt til {varighet} for mye i planen.",
     "kvote.beskrivelse.gjenståendeTid": "{varighet} ligg ikkje i planen.",
     "kvote.beskrivelse.endre.du": "Viss du ønsker å bruke meir foreldrepengar enn det som ligg i planen nå, kan du sende ein endringssøknad.",
-    "kvote.beskrivelse.endre.annenPart": "Annan forelder må sende søknad sjølv for å bruke sine veker med foreldrepengar.",
+    "kvote.beskrivelse.endre.annenPart": "{forelder} må sende søknad sjølv for å bruke sine veker med foreldrepengar.",
     "kvote.beskrivelse.allTidIPlan": "{varighet} er lagt til i planen.",
     "kvote.beskrivelse.forMyeTidIPlan": "Det er lagt til {varighet} for mye i planen. Rett opp i dette før du går videre til neste steg.",
     "kvote.varighet.tilForelder": "{varighet} til {forelder}",

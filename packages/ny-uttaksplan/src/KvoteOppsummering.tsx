@@ -173,7 +173,8 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp, navnPåForeldre } = useKvote();
+    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp, navnPåForeldre, forelder } =
+        useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -341,6 +342,8 @@ const KvoteTittel = () => {
 
     const visInformasjonOmHvordanEndre = brukesIHvilkenApp === 'INNSYN';
 
+    const navnPåAnnenForelder = forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
@@ -364,7 +367,10 @@ const KvoteTittel = () => {
                     {visInformasjonOmHvordanEndre && (
                         <>
                             <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
-                            <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
+                            <FormattedMessage
+                                id="kvote.beskrivelse.endre.annenPart"
+                                values={{ forelder: navnPåAnnenForelder }}
+                            />
                         </>
                     )}
                 </>
