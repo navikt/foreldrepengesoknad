@@ -36,12 +36,14 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const søkerinfo = useQuery({
         queryKey: ['SOKERINFO'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`).json<Søkerinfo>(),
+        staleTime: Infinity,
     });
 
     const mellomlagretInfo = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () =>
             ky.get(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
+        staleTime: Infinity,
     });
 
     if (søkerinfo.error || mellomlagretInfo.error) {

@@ -461,6 +461,9 @@ const cleanSøker = (
                                     }
                                   : undefined,
                           ...egenNæring,
+                          // Fiskere har valgfritt organisasjonsnummer. Men backend aksepterer ikke tom streng.
+                          organisasjonsnummer:
+                              egenNæring.organisasjonsnummer === '' ? undefined : egenNæring.organisasjonsnummer,
                       },
                   ]
                 : [],

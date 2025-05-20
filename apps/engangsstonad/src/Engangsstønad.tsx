@@ -34,11 +34,13 @@ export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
     const personinfo = useQuery({
         queryKey: ['PERSONINFO'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/personinfo`).json<PersonFrontend>(),
+        staleTime: Infinity,
     });
 
     const mellomlagretInfo = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`).json<EsDataMapAndMetaData>(),
+        staleTime: Infinity,
     });
 
     if (personinfo.error || mellomlagretInfo.error) {
