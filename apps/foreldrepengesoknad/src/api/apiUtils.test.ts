@@ -100,7 +100,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const dataFelles = getStateMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato, 'nb');
+    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato);
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
         expect(Object.hasOwn(cleanedSøknad.annenForelder, 'erForSyk')).toBe(false);
@@ -108,14 +108,14 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const data = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato, 'nb');
+        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenForelder.annenForelder.kanIkkeOppgis).toBe(true);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(Object.hasOwn(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
     });
 
@@ -133,7 +133,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(1);
         expect(Object.hasOwn(cleanedSøknadUtenUførInfo.uttaksplan[0], 'erMorForSyk')).toBe(false);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -149,7 +149,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         } as Uttaksperiode;
 
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, 'nb');
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.length).toBe(0);
     });
 
