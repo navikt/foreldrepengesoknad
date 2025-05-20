@@ -1800,12 +1800,18 @@ importers:
         specifier: ^7.1.11
         version: 7.1.11(react@19.1.0)(typescript@5.8.3)
     devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.6.1
+        version: 6.6.1
       '@navikt/ds-tailwind':
         specifier: 7.21.1
         version: 7.21.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
       '@originjs/vite-plugin-commonjs':
         specifier: ^1.0.3
         version: 1.0.3
@@ -1842,6 +1848,9 @@ importers:
       eslint:
         specifier: 9.26.0
         version: 9.26.0(jiti@2.4.2)
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
       storybook:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)

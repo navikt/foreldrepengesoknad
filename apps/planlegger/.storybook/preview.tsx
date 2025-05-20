@@ -4,6 +4,7 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -26,9 +27,27 @@ document.head.appendChild(scriptTag);
 dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...uttaksplanKalenderMessages.nb, ...nyUttaksplanMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn, ...uttaksplanKalenderMessages.nn, ...nyUttaksplanMessages.nn },
-    en: { ...enMessages, ...uiMessages.en, ...uttaksplanKalenderMessages.en, ...nyUttaksplanMessages.en },
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...uttaksplanKalenderMessages.nb,
+        ...nyUttaksplanMessages.nb,
+        ...formHookMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...uttaksplanKalenderMessages.nn,
+        ...nyUttaksplanMessages.nn,
+        ...formHookMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...uttaksplanKalenderMessages.en,
+        ...nyUttaksplanMessages.en,
+        ...formHookMessages.en,
+    },
 });
 
 export const globalTypes = {
