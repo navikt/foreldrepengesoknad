@@ -5,7 +5,7 @@ import ky from 'ky';
 import { Loader } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import { HvorMyeRouter } from './HvorMyeRouter';
@@ -24,12 +24,7 @@ const STØNADSKONTO_PARAMS = {
     morHarUføretrygd: false,
 };
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const HvorMyeVeiviser = ({ locale, changeLocale }: Props) => {
+export const HvorMyeVeiviser = () => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
@@ -53,12 +48,5 @@ export const HvorMyeVeiviser = ({ locale, changeLocale }: Props) => {
         return <Spinner />;
     }
 
-    return (
-        <HvorMyeRouter
-            locale={locale}
-            changeLocale={changeLocale}
-            satser={satserData.data}
-            stønadskontoer={stønadskontoerData.data}
-        />
-    );
+    return <HvorMyeRouter satser={satserData.data} stønadskontoer={stønadskontoerData.data} />;
 };

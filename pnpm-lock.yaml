@@ -1468,7 +1468,7 @@ importers:
         version: 2.0.4(msw@2.8.2(@types/node@22.15.18)(typescript@5.8.3))
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8(esbuild@0.25.4))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8)
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -1529,6 +1529,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 3.2.3
+        version: 3.2.3(csp-header@6.1.0)(html-react-parser@5.2.5(@types/react@19.1.4)(react@19.1.0))(jsdom@26.1.0)(react@19.1.0)
       '@sentry/browser':
         specifier: ^9.19.0
         version: 9.19.0
@@ -1652,7 +1655,7 @@ importers:
         version: 2.0.4(msw@2.8.2(@types/node@22.15.18)(typescript@5.8.3))
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8(esbuild@0.25.4))
       storybook:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
