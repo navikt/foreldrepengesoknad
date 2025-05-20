@@ -5,23 +5,15 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { LocaleAll } from '@navikt/fp-types';
 import { FrontPage, Infobox } from '@navikt/fp-ui';
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const FpEllerEsForside = ({ locale, changeLocale }: Props) => {
+export const FpEllerEsForside = () => {
     const intl = useIntl();
 
     const { goToRoute } = useVeiviserNavigator();
 
     return (
         <FrontPage
-            changeLocale={changeLocale}
-            locale={locale}
             titleLabel={intl.formatMessage({ id: 'FpEllerEsForside.Title' })}
             minutesLabel={intl.formatMessage({ id: 'FpEllerEsForside.Minutes' })}
             innholdLabel={intl.formatMessage({ id: 'FpEllerEsForside.Innhold' })}
