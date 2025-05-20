@@ -4,6 +4,7 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
@@ -24,9 +25,9 @@ document.head.appendChild(scriptTag);
 dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nb: { ...nbMessages, ...uiMessages.nb, ...formHookMessages.nb },
+    nn: { ...nnMessages, ...uiMessages.nn, ...formHookMessages.nn },
+    en: { ...enMessages, ...uiMessages.en, ...formHookMessages.en },
 });
 
 export const globalTypes = {
