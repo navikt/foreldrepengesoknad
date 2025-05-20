@@ -173,8 +173,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, hvemPlanleggerType, brukesIHvilkenApp, navnPåForeldre, forelder } =
-        useKvote();
+    const { konto, perioder, familiehendelse, brukesIHvilkenApp, navnPåForeldre, forelder } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
