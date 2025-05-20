@@ -85,3 +85,4 @@ export * from './src/uttak/UttaksdagenString';
 export * from './src/uttak/Tidsperioden';
 export * from './src/uttak/TidsperiodenString';
 export * from './src/uttak/uttakUtils';
+export * from './src/cookieUtils';
