@@ -59,6 +59,7 @@ export const AppContainer = () => {
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                         <ByttBrowserModal />
                         <Routes>
+                            {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
                             <Route
                                 path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
                                 element={<BruktOpplysniungerOmArbeidsforhold />}

@@ -17,15 +17,11 @@ interface Props {
     uttaksperioderSomManglerVedlegg: Periode[];
 }
 
-const skalViseVedlegg = (alleVedlegg: VedleggDataType | undefined): boolean => {
+const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
     // Sjekk om det er noen gyldige answers å vise
-    const harVedleggÅVise = Object.values(alleVedlegg ?? {}).some((vedleggListe) => {
-        return vedleggListe.some((vedlegg) => {
-            return vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK;
-        });
-    });
-
-    return harVedleggÅVise;
+    return Object.values(alleVedlegg ?? {})
+        .flatMap((vedleggListe) => vedleggListe)
+        .some((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK);
 };
 
 export const DokumentasjonOppsummering = ({
@@ -41,7 +37,7 @@ export const DokumentasjonOppsummering = ({
         return null;
     }
 
-    const harSendSenereDokument = Object.values(alleVedlegg!)
+    const harSendSenereDokument = Object.values(alleVedlegg)
         .flatMap((vedlegg) => vedlegg)
         .some(
             (v) =>

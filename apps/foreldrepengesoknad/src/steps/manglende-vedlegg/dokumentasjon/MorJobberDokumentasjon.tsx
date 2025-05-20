@@ -62,6 +62,15 @@ export const MorJobberDokumentasjon = ({
           )
         : false;
 
+    const dokumentereMorsArbeidParams =
+        perioder.length > 0 && !bareFarHarRett
+            ? getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer)
+            : undefined;
+
+    const trengerDokumentereMorsArbeidQuery = useQuery({
+        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!, !!dokumentereMorsArbeidParams),
+    });
+
     const renderUttakUploader = () => (
         <UttakUploader
             attachments={attachments}
@@ -89,13 +98,6 @@ export const MorJobberDokumentasjon = ({
     if (bareFarHarRett) {
         return renderUttakUploader();
     }
-
-    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer);
-    const trengerDokumentereMorsArbeidQuery = useQuery({
-        // NOTE: fordi vi sjekker at "dokumentereMorsArbeidParams" finnes med enabled, så tillater vi oss en !-assertion
-        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!),
-        enabled: !!dokumentereMorsArbeidParams,
-    });
 
     if (trengerDokumentereMorsArbeidQuery.isPending) {
         return <Loader className="self-center" size="large" />;
