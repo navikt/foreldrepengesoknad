@@ -1,5 +1,6 @@
 import { Preview } from '@storybook/react';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/intl/nb_NO.json';
@@ -7,8 +8,8 @@ import nnMessages from '../src/intl/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
-    nn: nnMessages,
+    nb: { ...nbMessages, ...formHookMessages.nb },
+    nn: { ...nnMessages, ...formHookMessages.nn },
 });
 
 export const parameters = {
