@@ -187,8 +187,8 @@ describe('<BarnetSteg>', () => {
 
         const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
         const termindatoInput = screen.getByLabelText('Termindato');
-        await userEvent.type(fødselsdatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
-        await userEvent.type(termindatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
+        await userEvent.type(fødselsdatoInput, dayjs().subtract(6, 'month').subtract(1, 'day').format('DD.MM.YYYY'));
+        await userEvent.type(termindatoInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
