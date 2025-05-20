@@ -50,6 +50,7 @@ export const AppContainer = () => {
     setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
         { locale: 'nn', handleInApp: true },
+        { locale: 'en', handleInApp: true },
     ]);
 
     onLanguageSelect((lang) => {
