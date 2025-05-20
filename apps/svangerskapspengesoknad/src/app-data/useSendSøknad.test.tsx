@@ -207,7 +207,7 @@ describe('useSendSøknad', () => {
             },
         } satisfies AvtaltFeriePerArbeidsgiver;
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, 'nb', DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(setKvittering, DEFAULT_ARBEIDSFORHOLD), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
@@ -328,7 +328,7 @@ describe('useSendSøknad', () => {
             [FRILANS_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, 'nb', []), {
+        const { result } = renderHook(() => useSendSøknad(setKvittering, []), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
@@ -455,7 +455,7 @@ describe('useSendSøknad', () => {
             [ARBEIDSGIVER_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, 'nb', DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(setKvittering, DEFAULT_ARBEIDSFORHOLD), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
