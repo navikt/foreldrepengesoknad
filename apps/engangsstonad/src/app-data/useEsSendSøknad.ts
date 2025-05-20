@@ -99,7 +99,11 @@ export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: 
 
                 const jsonResponse = await error.response.json();
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
-                Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                const errorMessage =
+                    jsonResponse?.message && Array.isArray(jsonResponse.message) && jsonResponse.message.length > 0
+                        ? jsonResponse.message[0]
+                        : '-';
+                Sentry.captureMessage(`{FEIL_VED_INNSENDING}${callIdForBruker} - errorMessage: ${errorMessage}`);
                 throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
