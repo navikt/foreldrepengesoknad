@@ -1,7 +1,0 @@
-import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{a as m}from"./index-B-lxVbXh.js";import{F as d,C as l}from"./FpDataContext-DSKr2VRc.js";import{M as c,S as u}from"./useFpNavigator-Brwxf4PD.js";import{A as o}from"./AndreInntektskilderSteg-Bp9PqqDt.js";import"./v4-CtRu48qb.js";import"./index-75N07mRN.js";import"./Uttaksplan-B3Cee6gS.js";import"./dates-iBrNYYBq.js";import"./index-WbI2dTMN.js";import"./iframe-bc4t8dnR.js";import"./VStack-BnVFMHqA.js";import"./index-M7yiXcen.js";import"./index-Bj-N6E0A.js";import"./ErrorSummaryHookForm-BSLurYZK.js";import"./Plus-BoNtU8gs.js";const a=()=>(...t)=>(m("button-click")(...t),Promise.resolve()),j={title:"steps/AndreInntektskilderSteg",component:o,render:({gåTilNesteSide:t=m("button-click"),...p})=>e.jsx(c,{initialEntries:[u.ANDRE_INNTEKTER],children:e.jsx(d,{onDispatch:t,initialState:{[l.ARBEIDSFORHOLD_OG_INNTEKT]:{harJobbetSomFrilans:!1,harJobbetSomSelvstendigNæringsdrivende:!1,harHattAndreInntektskilder:!0}},children:e.jsx(o,{...p})})})},r={args:{mellomlagreSøknadOgNaviger:a(),avbrytSøknad:a(),arbeidsforhold:[]}};var i,n,s;r.parameters={...r.parameters,docs:{...(i=r.parameters)==null?void 0:i.docs,source:{originalSource:`{
-  args: {
-    mellomlagreSøknadOgNaviger: promiseAction(),
-    avbrytSøknad: promiseAction(),
-    arbeidsforhold: []
-  }
-}`,...(s=(n=r.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const T=["Default"];export{r as Default,T as __namedExportsOrder,j as default};
