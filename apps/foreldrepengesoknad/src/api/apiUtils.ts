@@ -35,7 +35,7 @@ import {
 } from '@navikt/fp-common';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { ArbeidsforholdOgInntektFp, Attachment, EgenNæring, Frilans, LocaleNo } from '@navikt/fp-types';
-import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, getDecoratorLanguageCookie, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
@@ -43,8 +43,6 @@ import {
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-uttaksplan';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
-
-import { getLanguageCookie } from '../AppContainer';
 
 export interface AnnenForelderOppgittForInnsending
     extends Omit<
@@ -420,7 +418,7 @@ const cleanSøker = (
 
     const common = {
         rolle: rolle,
-        språkkode: getLanguageCookie('decorator-language') as LocaleNo,
+        språkkode: getDecoratorLanguageCookie('decorator-language') as LocaleNo,
         erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
 

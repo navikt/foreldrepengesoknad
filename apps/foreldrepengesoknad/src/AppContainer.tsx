@@ -15,7 +15,7 @@ import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { utilsMessages } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
@@ -69,26 +69,10 @@ const queryClient = new QueryClient({
     },
 });
 
-export const getLanguageCookie = (cookieName: 'decorator-language') => {
-    const name = cookieName + '=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookies = decodedCookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i];
-        while (cookie.charAt(0) == ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(name) == 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return 'nb';
-};
-
-dayjs.locale(getLanguageCookie('decorator-language'));
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleNo>(getLanguageCookie('decorator-language') as LocaleNo);
+    const [locale, setLocale] = useState<LocaleNo>(getDecoratorLanguageCookie('decorator-language') as LocaleNo);
 
     setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
