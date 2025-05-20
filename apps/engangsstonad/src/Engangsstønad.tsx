@@ -5,7 +5,7 @@ import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
-import { LocaleAll, PersonFrontend } from '@navikt/fp-types';
+import { PersonFrontend } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -22,12 +22,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
     location.reload();
 };
 
-interface Props {
-    locale: LocaleAll;
-    onChangeLocale: (locale: LocaleAll) => void;
-}
-
-export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
+export const Engangsstønad = () => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 
@@ -69,12 +64,7 @@ export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
 
     return (
         <EsDataContext initialState={mellomlagretState}>
-            <EngangsstønadRoutes
-                locale={locale}
-                onChangeLocale={onChangeLocale}
-                personinfo={personinfo.data}
-                mellomlagretData={mellomlagretState}
-            />
+            <EngangsstønadRoutes personinfo={personinfo.data} mellomlagretData={mellomlagretState} />
         </EsDataContext>
     );
 };

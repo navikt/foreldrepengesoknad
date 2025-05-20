@@ -1,7 +1,8 @@
+import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { Provider } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
@@ -11,14 +12,12 @@ import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
 import { Engangsstønad, slettMellomlagringOgLastSidePåNytt } from './Engangsstønad';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
-
-const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: {
@@ -64,16 +63,21 @@ const queryClient = new QueryClient({
     },
 });
 
-dayjs.locale(localeFromSessionStorage);
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
 
-    const changeLocale = useCallback((activeLocale: LocaleAll) => {
-        setLocaleInSessionStorage(activeLocale);
-        setLocale(activeLocale);
-        document.documentElement.setAttribute('lang', activeLocale);
-    }, []);
+    setAvailableLanguages([
+        { locale: 'nb', handleInApp: true },
+        { locale: 'nn', handleInApp: true },
+        { locale: 'en', handleInApp: true },
+    ]);
+
+    onLanguageSelect((lang) => {
+        setLocale(lang.locale as LocaleAll);
+        document.documentElement.setAttribute('lang', lang.locale);
+    });
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -81,7 +85,7 @@ export const AppContainer = () => {
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
                     <Provider locale={getDsProviderLocale(locale)}>
-                        <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
+                        <Engangsstønad />
                     </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
