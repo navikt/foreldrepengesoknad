@@ -14,7 +14,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
+import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
@@ -37,12 +37,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
     location.reload();
 };
 
-interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
-}
-
-export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
+export const Foreldrepengesøknad = () => {
     const intl = useIntl();
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
@@ -94,12 +89,6 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
         ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
         : undefined;
 
-    useEffect(() => {
-        if (mellomlagretInfoQuery.data?.locale && mellomlagretInfoQuery.data.locale !== locale) {
-            onChangeLocale(mellomlagretInfoQuery.data.locale);
-        }
-    }, [mellomlagretInfoQuery.data]);
-
     if (kvittering) {
         if (Environment.INNSYN) {
             redirect(
@@ -133,8 +122,6 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
         <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
-                    locale={locale}
-                    onChangeLocale={onChangeLocale}
                     søkerInfo={søkerinfoQuery.data}
                     foreldrepengerSaker={sakerQuery.data.foreldrepenger}
                     currentRoute={

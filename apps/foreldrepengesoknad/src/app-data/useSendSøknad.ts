@@ -6,7 +6,6 @@ import { Kvittering } from 'types/Kvittering';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -15,7 +14,6 @@ export const useSendSøknad = (
     fødselsnr: string,
     erEndringssøknad: boolean,
     setKvittering: (kvittering: Kvittering) => void,
-    locale: LocaleNo,
 ) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -33,7 +31,6 @@ export const useSendSøknad = (
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
             getFamiliehendelsedato(barn),
-            locale,
             uttaksplanMetadata.endringstidspunkt,
         );
 

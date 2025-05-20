@@ -222,8 +222,6 @@ export const Default: Story = {
         harGodkjentVilkår: false,
         saker: [],
         søkerInfo: { søker: defaultPerson, arbeidsforhold: [] },
-        onChangeLocale: () => undefined,
-        locale: 'nb',
         setErEndringssøknad: action('button-click'),
         setHarGodkjentVilkår: action('button-click'),
         setSøknadGjelderNyttBarn: action('button-click'),
