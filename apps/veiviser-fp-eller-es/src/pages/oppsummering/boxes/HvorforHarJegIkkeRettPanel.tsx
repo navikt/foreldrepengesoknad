@@ -1,5 +1,5 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Props) => {
-    const locale = useIntl().locale;
     const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
@@ -58,7 +57,7 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                 />
                             }
                             headerLevel="3"
@@ -66,8 +65,8 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned, locale),
-                                        minstelønn: formatCurrencyWithKr(minstelønn, locale),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
+                                        minstelønn: formatCurrencyWithKr(minstelønn),
                                         hvorMye: årslønn > minstelønn,
                                     }}
                                 />

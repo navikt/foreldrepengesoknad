@@ -1,5 +1,5 @@
 import { KronerIcon, SackKronerIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
@@ -14,13 +14,12 @@ interface Props {
 }
 
 export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrIcon = false }: Props) => {
-    const locale = useIntl().locale;
     return (
         <Infobox
             header={
                 <FormattedMessage
                     id="HarIkkeRettTilFpInfobox.IkkeRett"
-                    values={{ minÅrslønn: formatCurrencyWithKr(minÅrslønn, locale) }}
+                    values={{ minÅrslønn: formatCurrencyWithKr(minÅrslønn) }}
                 />
             }
             headingLevel="2"
@@ -39,8 +38,8 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
                         id="HarIkkeRettTilFpInfobox.AntattLønn"
                         values={{
                             b: (msg: any) => <b>{msg}</b>,
-                            antattÅrslønn: formatCurrencyWithKr(antattÅrslønn, locale),
-                            minÅrslønn: formatCurrencyWithKr(minÅrslønn, locale),
+                            antattÅrslønn: formatCurrencyWithKr(antattÅrslønn),
+                            minÅrslønn: formatCurrencyWithKr(minÅrslønn),
                         }}
                     />
                 </BodyShort>
