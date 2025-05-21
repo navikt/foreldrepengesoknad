@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { BruktOpplysniungerOmArbeidsforhold } from './BruktOpplysningerOmArbeidsforhold';
+import { BruktOpplysningerOmArbeidsforhold } from './BruktOpplysningerOmArbeidsforhold';
 
 const meta = {
-    title: 'BruktOpplysniungerOmArbeidsforhold',
-    component: BruktOpplysniungerOmArbeidsforhold,
-} satisfies Meta<typeof BruktOpplysniungerOmArbeidsforhold>;
+    title: 'BruktOpplysningerOmArbeidsforhold',
+    component: BruktOpplysningerOmArbeidsforhold,
+} satisfies Meta<typeof BruktOpplysningerOmArbeidsforhold>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
