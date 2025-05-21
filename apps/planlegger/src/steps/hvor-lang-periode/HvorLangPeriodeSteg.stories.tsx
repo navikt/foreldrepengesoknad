@@ -34,7 +34,6 @@ const meta = {
         arbeidssituasjon,
         stønadskontoer,
         gåTilNesteSide = action('button-click'),
-        locale,
     }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
@@ -46,7 +45,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} locale={locale} />
+                    <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -58,7 +57,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereEttBarnKunMorHarRett: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -138,7 +136,6 @@ export const FlereForsørgereToBarn: Story = {
 
 export const AleneforsørgerMorEttBarn: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -173,7 +170,6 @@ export const AleneforsørgerMorEttBarn: Story = {
 
 export const FlereForsørgereKunFarHarRett: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -215,7 +211,6 @@ export const FlereForsørgereKunFarHarRett: Story = {
 };
 export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
@@ -259,7 +254,6 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
 
 export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',
@@ -296,7 +290,6 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
 
 export const AleneforsørgerFarToBarn: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
@@ -325,7 +318,6 @@ export const AleneforsørgerFarToBarn: Story = {
 
 export const FarOgFarBeggeHarRett: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',

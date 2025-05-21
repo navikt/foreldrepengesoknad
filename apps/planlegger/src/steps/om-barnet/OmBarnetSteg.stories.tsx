@@ -18,7 +18,7 @@ type StoryArgs = {
 const meta = {
     title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
-    render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), locale }: StoryArgs) => {
+    render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
                 <PlanleggerDataContext
@@ -27,7 +27,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <OmBarnetSteg locale={locale} />
+                    <OmBarnetSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -39,7 +39,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgere: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -50,7 +49,6 @@ export const FlereForsørgere: Story = {
 
 export const AleneforsørgerMor: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -60,7 +58,6 @@ export const AleneforsørgerMor: Story = {
 
 export const AleneforsørgerFar: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
@@ -69,7 +66,6 @@ export const AleneforsørgerFar: Story = {
 };
 export const FlereForsørgereFarOgFar: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',

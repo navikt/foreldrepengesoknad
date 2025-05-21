@@ -2,16 +2,17 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { encodeToBase64 } from '@navikt/fp-utils';
+import { encodeToBase64, getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 import { ContextDataType, useContextComplete } from './PlanleggerDataContext';
 import { useStepData } from './useStepData';
 
-export const usePlanleggerNavigator = (locale: string) => {
+export const usePlanleggerNavigator = () => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
     const context = useContextComplete();
     const plan = context[ContextDataType.UTTAKSPLAN] || [[]];
+    const language = getDecoratorLanguageCookie('decorator-language');
 
     const contextToEncode = {
         ...context,
@@ -22,7 +23,7 @@ export const usePlanleggerNavigator = (locale: string) => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?language=${locale}&data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
+            navigate(`${path}?language=${language}&data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
         }
     }, [path]);
 

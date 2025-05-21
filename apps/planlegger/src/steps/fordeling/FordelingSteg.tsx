@@ -17,7 +17,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -109,12 +109,11 @@ export const finnFellesperiodeFordelingOptionTekst = (
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
-    locale: LocaleAll;
 }
 
-export const FordelingSteg = ({ stønadskontoer, locale }: Props) => {
+export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const fordeling = useContextGetData(ContextDataType.FORDELING);

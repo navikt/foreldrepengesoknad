@@ -3,27 +3,19 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { LocaleAll } from '@navikt/fp-types';
-import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
-
-import styles from './planleggerForside.module.css';
+import { BlueHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
     children: React.ReactElement | React.ReactElement[];
 }
 
-export const PlanleggerForside = ({ locale, changeLocale, children }: Props) => (
+export const PlanleggerForside = ({ children }: Props) => (
     <Page
         header={
             <>
                 <Show below="md">
                     <BlueHeading>
                         <VStack gap="4" align="center">
-                            <div className={styles.languageToggle}>
-                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div>
                             <IconCircleWrapper color="lightBlue" size="xl">
                                 <CalendarIcon height={44} width={44} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>

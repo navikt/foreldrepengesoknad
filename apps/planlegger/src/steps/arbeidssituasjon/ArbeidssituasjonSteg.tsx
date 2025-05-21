@@ -13,7 +13,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll, Satser } from '@navikt/fp-types';
+import { HvemPlanleggerType, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -24,12 +24,11 @@ import { UførInfoboks } from './info/UførInfoboks';
 
 interface Props {
     satser: Satser;
-    locale: LocaleAll;
 }
 
-export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
+export const ArbeidssituasjonSteg = ({ satser }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
@@ -71,7 +70,7 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>

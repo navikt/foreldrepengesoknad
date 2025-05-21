@@ -49,7 +49,6 @@ const meta = {
         hvemPlanlegger,
         arbeidssituasjon,
         gåTilNesteSide = action('button-click'),
-        locale,
         satser,
     }: StoryArgs) => {
         return (
@@ -62,7 +61,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <HvorMyeSteg locale={locale} satser={satser} />
+                    <HvorMyeSteg satser={satser} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -74,7 +73,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgere: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -94,7 +92,6 @@ export const FlereForsørgere: Story = {
 
 export const AleneforsørgerMor: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,

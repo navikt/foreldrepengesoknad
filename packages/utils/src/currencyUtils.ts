@@ -1,5 +1,9 @@
-export const formatCurrencyWithKr = (value: number | string, locale: string): string => {
+import { getDecoratorLanguageCookie } from './cookieUtils';
+
+export const formatCurrencyWithKr = (value: number | string): string => {
+    const locale = getDecoratorLanguageCookie('decorator-language');
     const formattedValue = Number(value).toLocaleString(locale);
+
     if (locale !== 'en') {
         return `${formattedValue} kr`;
     }

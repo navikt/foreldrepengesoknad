@@ -131,7 +131,7 @@ const meta = {
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                         <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
                             <PlanleggerDataContext initialState={{}}>
-                                <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
+                                <PlanleggerDataFetcher />
                             </PlanleggerDataContext>
                         </ErrorBoundary>
                     </IntlProvider>
