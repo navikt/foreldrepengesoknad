@@ -6,7 +6,6 @@ import { Kvittering } from 'types/Kvittering';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -15,7 +14,6 @@ export const useSendSøknad = (
     fødselsnr: string,
     erEndringssøknad: boolean,
     setKvittering: (kvittering: Kvittering) => void,
-    locale: LocaleNo,
 ) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -33,7 +31,6 @@ export const useSendSøknad = (
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
             getFamiliehendelsedato(barn),
-            locale,
             uttaksplanMetadata.endringstidspunkt,
         );
 
@@ -65,8 +62,8 @@ export const useSendSøknad = (
                 }
 
                 const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {

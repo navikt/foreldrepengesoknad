@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
@@ -97,7 +98,8 @@ export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: 
                 }
 
                 const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {

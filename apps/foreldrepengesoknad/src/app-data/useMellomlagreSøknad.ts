@@ -7,7 +7,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak, Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -15,7 +15,6 @@ import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
-    locale: LocaleNo;
     søkerInfo: Søkerinfo;
     foreldrepengerSaker: FpSak[];
     currentRoute: SøknadRoutes;
@@ -36,7 +35,6 @@ const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 const getDataForMellomlagring = (
-    locale: LocaleNo,
     foreldrepengerSaker: FpSak[],
     søkerInfo: Søkerinfo,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -67,7 +65,6 @@ const getDataForMellomlagring = (
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
         version: MELLOMLAGRET_VERSJON,
-        locale,
         foreldrepengerSaker,
         søkerInfo,
         currentRoute,
@@ -104,7 +101,6 @@ const getDataForMellomlagring = (
 };
 
 export const useMellomlagreSøknad = (
-    locale: LocaleNo,
     foreldrepengerSaker: FpSak[],
     søkerInfo: Søkerinfo,
     erEndringssøknad: boolean,
@@ -128,7 +124,6 @@ export const useMellomlagreSøknad = (
                 navigate(currentRoute);
 
                 const data = getDataForMellomlagring(
-                    locale,
                     foreldrepengerSaker,
                     søkerInfo,
                     getDataFromState,
@@ -151,7 +146,8 @@ export const useMellomlagreSøknad = (
                         }
 
                         const jsonResponse = await error.response.json();
-                        const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                        const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                        Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw Error(FEIL_VED_INNSENDING + callIdForBruker);
                     }
                     if (error instanceof Error) {

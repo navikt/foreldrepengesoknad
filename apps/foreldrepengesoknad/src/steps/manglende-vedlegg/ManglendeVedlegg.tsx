@@ -114,6 +114,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
     const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
     const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
+
     const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
@@ -179,6 +180,19 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors(skjemanummer);
     };
+
+    const kreverIngenDokumentasjon =
+        [
+            morInnlagtPerioder,
+            barnInnlagtPerioder,
+            farForSykPerioder,
+            farInnlagtPerioder,
+            morForSykPerioder,
+            morIntroPerioder,
+            morJobberOgStudererPerioder,
+            morKvalPerioder,
+            morStudererPerioder,
+        ].flat().length === 0;
 
     return (
         <Step
@@ -314,14 +328,16 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                         andreInntektskilder={andreInntektskilder}
                     />
 
-                    <Alert size="small" variant="info">
-                        <Heading level="2" size="small">
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
-                        </Heading>
-                        <BodyLong>
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
-                        </BodyLong>
-                    </Alert>
+                    {!kreverIngenDokumentasjon && (
+                        <Alert size="small" variant="info">
+                            <Heading level="2" size="small">
+                                <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
+                            </Heading>
+                            <BodyLong>
+                                <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
+                            </BodyLong>
+                        </Alert>
+                    )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>

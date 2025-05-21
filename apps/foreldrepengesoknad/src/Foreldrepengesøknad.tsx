@@ -14,7 +14,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleNo, Saker, Søkerinfo } from '@navikt/fp-types';
+import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
@@ -37,12 +37,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
     location.reload();
 };
 
-interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
-}
-
-export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
+export const Foreldrepengesøknad = () => {
     const intl = useIntl();
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
@@ -50,11 +45,13 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     const søkerinfoQuery = useQuery({
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, { timeout: 30000 }).json<Søkerinfo>(),
+        staleTime: Infinity,
     });
 
     const sakerQuery = useQuery({
         queryKey: ['SAKER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+        staleTime: Infinity,
     });
 
     const mellomlagretInfoQuery = useQuery({
@@ -64,6 +61,7 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
             // TODO (TOR) Ta vekk parsing her etter at ny uttaksplan (og rydding av andre Date i context) er gjort
             return storageParser(text) as FpMellomlagretData;
         },
+        staleTime: Infinity,
     });
 
     const [kvittering, setKvittering] = useState<Kvittering>();
@@ -90,12 +88,6 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     const initialState = skalBrukeMellomlagretData
         ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
         : undefined;
-
-    useEffect(() => {
-        if (mellomlagretInfoQuery.data?.locale && mellomlagretInfoQuery.data.locale !== locale) {
-            onChangeLocale(mellomlagretInfoQuery.data.locale);
-        }
-    }, [mellomlagretInfoQuery.data]);
 
     if (kvittering) {
         if (Environment.INNSYN) {
@@ -130,8 +122,6 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
         <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
-                    locale={locale}
-                    onChangeLocale={onChangeLocale}
                     søkerInfo={søkerinfoQuery.data}
                     foreldrepengerSaker={sakerQuery.data.foreldrepenger}
                     currentRoute={

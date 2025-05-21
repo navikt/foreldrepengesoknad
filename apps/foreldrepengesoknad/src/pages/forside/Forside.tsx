@@ -16,8 +16,8 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, Link, VStack } f
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
+import { FpSak, Søkerinfo } from '@navikt/fp-types';
+import { ContentWrapper } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
@@ -30,8 +30,6 @@ type VelkommenFormData = {
 };
 
 interface Props {
-    onChangeLocale: (locale: LocaleNo) => void;
-    locale: LocaleNo;
     saker: FpSak[];
     harGodkjentVilkår: boolean;
     søkerInfo: Søkerinfo;
@@ -42,9 +40,7 @@ interface Props {
 }
 
 export const Forside = ({
-    locale,
     saker,
-    onChangeLocale,
     harGodkjentVilkår,
     søkerInfo,
     setHarGodkjentVilkår,
@@ -152,7 +148,6 @@ export const Forside = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
-                <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggleLanguage={onChangeLocale} />
                 <ContentWrapper>
                     <VStack gap="8">
                         <HStack justify="center">

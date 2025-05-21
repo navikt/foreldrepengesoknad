@@ -211,7 +211,7 @@ describe('useEsSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering, 'nb'), {
+        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
             wrapper: getWrapper(),
         });
 
@@ -322,7 +322,7 @@ describe('useEsSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering, 'nb'), {
+        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
             wrapper: getWrapper(),
         });
 

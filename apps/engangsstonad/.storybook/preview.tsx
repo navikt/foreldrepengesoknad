@@ -2,6 +2,7 @@ import { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import 'styles/globals.css';
 
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
@@ -22,9 +23,27 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
-    en: { ...enMessages, ...uiMessages.en, ...utenlandsoppholdMessages.en, ...oppsummeringMessages.en },
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+        ...formHookMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utenlandsoppholdMessages.nn,
+        ...oppsummeringMessages.nn,
+        ...formHookMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...utenlandsoppholdMessages.en,
+        ...oppsummeringMessages.en,
+        ...formHookMessages.en,
+    },
 });
 
 export const globalTypes = {
