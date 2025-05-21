@@ -74,25 +74,25 @@ export const LeggTilPeriodeModalStep = ({
     const onSubmit = (values: FormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
-        const årsak = values.årsak;
+        const årsakValue = values.årsak;
 
-        if (årsak === UtsettelseÅrsakType.Ferie) {
+        if (årsakValue === UtsettelseÅrsakType.Ferie) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                id: `${fomValue} - ${tomValue} - ${årsakValue}`,
                 readOnly: false,
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: årsak,
+                utsettelseÅrsak: årsakValue,
             });
-        } else if (årsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        } else if (årsakValue === PeriodeHullType.PERIODE_UTEN_UTTAK) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsak}`,
+                id: `${fomValue} - ${tomValue} - ${årsakValue}`,
                 readOnly: false,
                 forelder: Forelder.farMedmor,
-                periodeHullÅrsak: årsak,
+                periodeHullÅrsak: årsakValue,
             });
         } else {
             handleAddPeriode({
