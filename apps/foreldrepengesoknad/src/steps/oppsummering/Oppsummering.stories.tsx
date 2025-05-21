@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -186,6 +187,26 @@ const defaultVedlegg = {
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
 };
 
+const annenForelderKariNordmann = {
+    erAleneOmOmsorg: false,
+    fornavn: 'Kari',
+    etternavn: 'Nordmann',
+    fnr: '02520489226',
+    harRettPåForeldrepengerINorge: true,
+    kanIkkeOppgis: false,
+    erInformertOmSøknaden: true,
+};
+
+const arbeidsforholdMorJobber80Prosent = [
+    {
+        arbeidsgiverId: '1',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+        stillingsprosent: 80,
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+    },
+];
+
 type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
@@ -231,34 +252,43 @@ const meta = {
         vedlegg = defaultVedlegg,
         ...rest
     }) => {
+        const freshQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        });
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                        [ContextDataType.FRILANS]: frilans,
-                        [ContextDataType.EGEN_NÆRING]: egenNæring,
-                        [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.UTTAKSPLAN_METADATA]: {
-                            ønskerJustertUttakVedFødsel: false,
-                            harUttaksplanBlittSlettet: false,
-                            antallUkerIUttaksplan: 1,
-                        },
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
-                        [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                        [ContextDataType.VEDLEGG]: vedlegg,
-                    }}
-                >
-                    <Oppsummering {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={freshQueryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                            [ContextDataType.FRILANS]: frilans,
+                            [ContextDataType.EGEN_NÆRING]: egenNæring,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.UTTAKSPLAN_METADATA]: {
+                                ønskerJustertUttakVedFødsel: false,
+                                harUttaksplanBlittSlettet: false,
+                                antallUkerIUttaksplan: 1,
+                            },
+                            [ContextDataType.OM_BARNET]: barn,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                            [ContextDataType.VEDLEGG]: vedlegg,
+                        }}
+                    >
+                        <Oppsummering {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -816,6 +846,241 @@ export const VisSendInnSenereVedlegg: Story = {
                   )
                 : {}),
         },
+    },
+};
+
+// TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+// TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
+
+export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
+        annenForelder: annenForelderKariNordmann,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.AUTOMATISK,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
+        annenForelder: annenForelderKariNordmann,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.AUTOMATISK,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarSøkerMorMåDokumentereArbeid: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    ...arbeidsforholdMorJobber80Prosent[0],
+                    stillingsprosent: 70,
+                },
+            ],
+        },
+        annenForelder: annenForelderKariNordmann,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
+        annenForelder: annenForelderKariNordmann,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                },
+            ],
+        },
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+    // Ny render-funksjon som overskriver uttaksplanen med samtidig uttak
+    render: (args) => {
+        const freshQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                    staleTime: 0,
+                },
+            },
+        });
+
+        // Ny uttaksplan med samtidig uttak
+        const uttaksplanMedSamtidigUttak = [
+            ...defaultUttaksplan.slice(0, 3), // Behold de første periodene
+            {
+                id: '3',
+                type: 'uttak',
+                forelder: 'MOR',
+                konto: 'FELLESPERIODE',
+                tidsperiode: {
+                    fom: new Date('2022-03-29T23:00:00.000Z'),
+                    tom: new Date('2022-06-06T23:00:00.000Z'),
+                },
+                ønskerSamtidigUttak: true,
+                gradert: false,
+            } as Periode,
+        ];
+
+        return (
+            <QueryClientProvider client={freshQueryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                    <FpDataContext
+                        onDispatch={args.gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: args.arbeidsforholdOgInntekt,
+                            [ContextDataType.FRILANS]: args.frilans,
+                            [ContextDataType.EGEN_NÆRING]: args.egenNæring,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: args.andreInntekter,
+                            [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
+                            [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
+                            [ContextDataType.UTTAKSPLAN_METADATA]: {
+                                ønskerJustertUttakVedFødsel: false,
+                                harUttaksplanBlittSlettet: false,
+                                antallUkerIUttaksplan: 1,
+                            },
+                            [ContextDataType.OM_BARNET]: args.barn || defaultBarn,
+                            [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
+                            [ContextDataType.VEDLEGG]: args.vedlegg,
+                        }}
+                    >
+                        <Oppsummering {...args} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
     },
 };
 

@@ -41,6 +41,20 @@ export const lagSendSenereDokument = (
     );
 };
 
+export const lagAutomatiskDokument = (
+    type: AttachmentType,
+    skjemanummer: Skjemanummer,
+    dokumenterer?: AttachmentMetadata,
+) => {
+    return mapFilTilVedlegg(
+        { name: '', size: '' } as any,
+        type,
+        skjemanummer,
+        InnsendingsType.AUTOMATISK,
+        dokumenterer,
+    );
+};
+
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
     return { ...attachment, dokumenterer: metadata };
 };

@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
@@ -10,7 +9,7 @@ import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
 import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, Heading, Link } from '@navikt/ds-react';
 
 import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
@@ -68,7 +67,6 @@ export const Oppsummering = (props: Props) => {
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
-    const [manglerDokumentasjon, setManglerDokumentasjon] = useState(false);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -203,24 +201,11 @@ export const Oppsummering = (props: Props) => {
                 <DokumentasjonOppsummering
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
                     alleVedlegg={vedlegg}
-                    setManglerDokumentasjon={setManglerDokumentasjon}
                     erSøkerFarEllerMedmor={erSøkerFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
                     uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
                 />
                 <>
-                    {manglerDokumentasjon && (
-                        <Alert variant="info">
-                            <VStack gap="2">
-                                <Heading size="small" level="2">
-                                    <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
-                                </BodyLong>
-                            </VStack>
-                        </Alert>
-                    )}
                     {visInfoboksOmFarskapsportal && (
                         <Alert variant="info">
                             <Heading size="small" level="3">
