@@ -15,7 +15,7 @@ import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import nbMessages from './intl/messages/nb_NO.json';
-import { BruktOpplysniungerOmArbeidsforhold } from './pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold.tsx';
+import { BruktOpplysningerOmArbeidsforhold } from './pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold.tsx';
 import { OversiktRoutes } from './routes/routes.ts';
 
 const queryClient = new QueryClient({
@@ -62,7 +62,7 @@ export const AppContainer = () => {
                             {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
                             <Route
                                 path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                                element={<BruktOpplysniungerOmArbeidsforhold />}
+                                element={<BruktOpplysningerOmArbeidsforhold />}
                             />
                             <Route path="*" element={<Foreldrepengeoversikt />} />
                         </Routes>
