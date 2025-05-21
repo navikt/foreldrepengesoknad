@@ -140,7 +140,7 @@ const showManglendeDokumentasjonSteg = (
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const barn = getData(ContextDataType.OM_BARNET);
-        const uttaksplan = getData(ContextDataType.UTTAKSPLAN) ?? [];
+        const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
         const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
