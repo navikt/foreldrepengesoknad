@@ -8,7 +8,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { Kvittering, LocaleAll, PersonFrontend } from '@navikt/fp-types';
+import { Kvittering, PersonFrontend } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
@@ -32,27 +32,22 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 };
 
 interface Props {
-    locale: LocaleAll;
-    onChangeLocale: (locale: LocaleAll) => void;
     personinfo: PersonFrontend;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 
-export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mellomlagretData }: Props) => {
+export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(locale, personinfo, setErVelkommen);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(setKvittering);
+    const mellomlagreOgNaviger = useEsMellomlagring(personinfo, setErVelkommen);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
             setErVelkommen(true);
-            if (mellomlagretData.locale) {
-                onChangeLocale(mellomlagretData.locale);
-            }
             navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
     }, [mellomlagretData]);
@@ -80,8 +75,6 @@ export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mello
                 path={Path.VELKOMMEN}
                 element={
                     <Velkommen
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
                         startSøknad={setErVelkommen}
                         erVelkommen={erVelkommen}
                         mellomlagreOgNaviger={mellomlagreOgNaviger}

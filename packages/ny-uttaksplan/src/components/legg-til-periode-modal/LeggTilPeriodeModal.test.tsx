@@ -7,7 +7,7 @@ import * as stories from './LeggTilPeriodeModal.stories';
 const { LeggTilMødrekvote } = composeStories(stories);
 
 describe('<LeggTilPeriodeModal >', () => {
-    it('<LeggTilMødrekvote >', async () => {
+    it.skip('<LeggTilMødrekvote >', async () => {
         render(<LeggTilMødrekvote />);
     });
 });

@@ -49,7 +49,6 @@ interface Props {
 
 export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
@@ -109,7 +108,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSide.EsSkalBidra"
-                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
                                     />
                                 </BodyShort>
                             </Infobox>
@@ -148,7 +147,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="OppsummeringSide.SammenlignFpOgEsInfoPart1"
-                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
+                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
                                             />
                                         </BodyShort>
                                         <BodyShort>
@@ -229,7 +228,6 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                         isNumber(arbeidssituasjon.lønnMåned1)
                                                             ? parseInt(arbeidssituasjon.lønnMåned1, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </VStack>
@@ -244,7 +242,6 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                         isNumber(arbeidssituasjon.lønnMåned2)
                                                             ? parseInt(arbeidssituasjon.lønnMåned2, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>
@@ -257,7 +254,6 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                         isNumber(arbeidssituasjon.lønnMåned3)
                                                             ? parseInt(arbeidssituasjon.lønnMåned3, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>

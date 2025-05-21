@@ -7,7 +7,7 @@ import { encodeToBase64 } from '@navikt/fp-utils';
 import { ContextDataType, useContextComplete } from './PlanleggerDataContext';
 import { useStepData } from './useStepData';
 
-export const usePlanleggerNavigator = (locale: string) => {
+export const usePlanleggerNavigator = () => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
     const context = useContextComplete();
@@ -22,7 +22,7 @@ export const usePlanleggerNavigator = (locale: string) => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?language=${locale}&data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
+            navigate(`${path}?data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
         }
     }, [path]);
 

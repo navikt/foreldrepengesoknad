@@ -10,7 +10,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll } from '@navikt/fp-types';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
@@ -33,13 +33,9 @@ const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
     );
 };
 
-interface Props {
-    locale: LocaleAll;
-}
-
-export const HvemPlanleggerSteg = ({ locale }: Props) => {
+export const HvemPlanleggerSteg = () => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);

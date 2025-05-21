@@ -4,24 +4,20 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LocaleAll, PersonFrontend } from '@navikt/fp-types';
+import { PersonFrontend } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 3;
 
-export type EsDataMapAndMetaData = { version: number; locale: LocaleAll; personinfo: PersonFrontend } & ContextDataMap;
+export type EsDataMapAndMetaData = { version: number; personinfo: PersonFrontend } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsMellomlagring = (
-    locale: LocaleAll,
-    personinfo: PersonFrontend,
-    setVelkommen: (erVelkommen: boolean) => void,
-) => {
+export const useEsMellomlagring = (personinfo: PersonFrontend, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -46,7 +42,6 @@ export const useEsMellomlagring = (
                     try {
                         const data = {
                             version: VERSJON_MELLOMLAGRING,
-                            locale,
                             personinfo,
                             ...state,
                         } satisfies EsDataMapAndMetaData;

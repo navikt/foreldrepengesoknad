@@ -19,8 +19,6 @@ export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';
 export { HorizontalLine } from './src/horizontal-line/HorizontalLine';
 export { Umyndig } from './src/umyndig/Umyndig';
-export { LanguageToggle } from './src/language-toggle/LanguageToggle';
-export { LanguageToggle as LanguageToggleNew } from './src/language-toggle-new/LanguageToggle';
 export { IntlProvider } from './src/i18n/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';

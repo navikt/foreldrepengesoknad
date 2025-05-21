@@ -13,8 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         children: <div>Steginnhold</div>,
-        locale: 'nb',
-        changeLocale: () => undefined,
         titleLabel: 'Dette er tittelen på veiviseren',
         minutesLabel: 'Ca 5 min',
         innholdLabel: 'Dette er innhold',

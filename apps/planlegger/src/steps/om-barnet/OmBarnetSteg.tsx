@@ -16,7 +16,6 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -33,13 +32,9 @@ const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
 };
 
-interface Props {
-    locale: LocaleAll;
-}
-
-export const OmBarnetSteg = ({ locale }: Props) => {
+export const OmBarnetSteg = () => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);

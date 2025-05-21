@@ -40,7 +40,7 @@ type StoryArgs = {
 
 type Story = StoryObj<typeof meta>;
 
-const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), satser, locale }: StoryArgs) => {
+const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), satser }: StoryArgs) => {
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
             <PlanleggerDataContext
@@ -55,7 +55,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <ArbeidssituasjonSteg satser={satser} locale={locale} />
+                <ArbeidssituasjonSteg satser={satser} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -70,7 +70,6 @@ export default meta;
 
 export const ArbeidssituasjonMorOgFar: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -82,7 +81,6 @@ export const ArbeidssituasjonMorOgFar: Story = {
 
 export const ArbeidssituasjonAleneforsørger: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -93,7 +91,6 @@ export const ArbeidssituasjonAleneforsørger: Story = {
 
 export const ArbeidssituasjonMorOgMedmor: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Esther Utvikler',
             navnPåMedmor: 'Klara Utvikler',
@@ -105,7 +102,6 @@ export const ArbeidssituasjonMorOgMedmor: Story = {
 
 export const ArbeidssituasjonFarOgFar: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',

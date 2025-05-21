@@ -16,7 +16,7 @@ export const Default: Story = {
     render: () => {
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
-                <HvorMyeForside locale="nb" changeLocale={() => undefined} />
+                <HvorMyeForside />
             </MemoryRouter>
         );
     },

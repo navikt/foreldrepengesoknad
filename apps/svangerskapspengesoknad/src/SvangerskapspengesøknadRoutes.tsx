@@ -9,7 +9,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Kvittering, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
@@ -203,28 +203,23 @@ const renderSøknadRoutes = (
 };
 
 interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
     søkerInfo: Søkerinfo;
     mellomlagretData?: SvpDataMapAndMetaData;
 }
 
-export const SvangerskapspengesøknadRoutes = ({ søkerInfo, locale, onChangeLocale, mellomlagretData }: Props) => {
+export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, locale, søkerInfo.arbeidsforhold);
-    const mellomlagreOgNaviger = useMellomlagreSøknad(locale, søkerInfo, setHarGodkjentVilkår);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, søkerInfo.arbeidsforhold);
+    const mellomlagreOgNaviger = useMellomlagreSøknad(søkerInfo, setHarGodkjentVilkår);
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {
             setHarGodkjentVilkår(true);
-            if (mellomlagretData.locale) {
-                onChangeLocale(mellomlagretData.locale);
-            }
             navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }
     }, [mellomlagretData]);
@@ -254,8 +249,6 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, locale, onChangeLoc
                         mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
                         harGodkjentVilkår={harGodkjentVilkår}
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
                     />
                 }
             />

@@ -10,11 +10,11 @@ import { OmPlanleggerenSteg } from './OmPlanleggerenSteg';
 const meta = {
     title: 'steg/OmPlanleggerenSteg',
     component: OmPlanleggerenSteg,
-    render: ({ gåTilNesteSide = action('button-click'), locale, changeLocale }) => {
+    render: ({ gåTilNesteSide = action('button-click') }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_PLANLEGGEREN]}>
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                    <OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />
+                    <OmPlanleggerenSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -29,8 +29,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        locale: 'nb',
-        changeLocale: () => undefined,
-    },
+    args: {},
 };

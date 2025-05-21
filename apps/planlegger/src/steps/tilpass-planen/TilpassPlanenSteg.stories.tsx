@@ -43,7 +43,6 @@ const meta = {
         omBarnet,
         arbeidssituasjon,
         stønadskontoer,
-        locale,
         uttaksplan,
         originalUttaksplan,
     }) => {
@@ -61,7 +60,7 @@ const meta = {
                         [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
                     }}
                 >
-                    <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />
+                    <TilpassPlanenSteg stønadskontoer={stønadskontoer} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -73,7 +72,6 @@ type Story = StoryObj<typeof meta>;
 
 export const MorOgFarBeggeHarRett: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåFar: 'Espen Utvikler',

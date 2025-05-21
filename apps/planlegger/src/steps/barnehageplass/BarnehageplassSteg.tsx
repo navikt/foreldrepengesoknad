@@ -14,7 +14,6 @@ import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT, links } from '@navikt/fp-constants';
-import { LocaleAll } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -45,13 +44,12 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
 };
 
 interface Props {
-    locale: LocaleAll;
     uttaksdata?: Uttaksdata;
 }
 
-export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
+export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     useScrollBehaviour();

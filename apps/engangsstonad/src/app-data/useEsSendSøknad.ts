@@ -6,7 +6,8 @@ import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { Kvittering } from '@navikt/fp-types';
+import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
@@ -52,7 +53,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering) => void) => {
+export const useEsSendSøknad = (setKvittering: (kvittering: Kvittering) => void) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -68,7 +69,7 @@ export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: 
 
         const søknad = {
             type: 'engangsstønad',
-            språkkode: locale,
+            språkkode: getDecoratorLanguageCookie('decorator-language'),
             barn: mapBarn(omBarnet, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:

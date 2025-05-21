@@ -3,7 +3,7 @@ import ky from 'ky';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleAll, Satser } from '@navikt/fp-types';
+import { Satser } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import { FpEllerEsRouter } from './FpEllerEsRouter';
@@ -14,12 +14,7 @@ const Spinner = () => (
     </div>
 );
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const FpEllerEsVeiviser = ({ locale, changeLocale }: Props) => {
+export const FpEllerEsVeiviser = () => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
@@ -33,5 +28,5 @@ export const FpEllerEsVeiviser = ({ locale, changeLocale }: Props) => {
         return <Spinner />;
     }
 
-    return <FpEllerEsRouter locale={locale} changeLocale={changeLocale} satser={satserData.data} />;
+    return <FpEllerEsRouter satser={satserData.data} />;
 };

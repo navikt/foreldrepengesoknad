@@ -1,3 +1,4 @@
+import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
@@ -14,7 +15,7 @@ import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
 import { Svangerskapspengesøknad, slettMellomlagringOgLastSidePåNytt } from './Svangerskapspengesøknad';
 import nbMessages from './intl/nb_NO.json';
@@ -60,17 +61,25 @@ const queryClient = new QueryClient({
     },
 });
 
-const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
-
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
     nn: allNnMessages,
 };
 
-dayjs.locale(localeFromSessionStorage);
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
+    const [locale, setLocale] = useState<LocaleNo>(getDecoratorLanguageCookie('decorator-language') as LocaleNo);
+
+    setAvailableLanguages([
+        { locale: 'nb', handleInApp: true },
+        { locale: 'nn', handleInApp: true },
+    ]);
+
+    onLanguageSelect((lang) => {
+        setLocale(lang.locale as LocaleNo);
+        document.documentElement.setAttribute('lang', lang.locale);
+    });
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -79,14 +88,7 @@ export const AppContainer = () => {
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
                     <Provider locale={locale === 'nb' ? nb : nn}>
-                        <Svangerskapspengesøknad
-                            locale={locale}
-                            onChangeLocale={(activeLocale: LocaleNo) => {
-                                setLocaleInSessionStorage(activeLocale);
-                                setLocale(activeLocale);
-                                document.documentElement.setAttribute('lang', activeLocale);
-                            }}
-                        />
+                        <Svangerskapspengesøknad />
                     </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>
