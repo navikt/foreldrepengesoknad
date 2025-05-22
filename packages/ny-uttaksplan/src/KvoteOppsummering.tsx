@@ -6,14 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import {
-    Familiehendelse,
-    FpSak,
-    HvemPlanleggerType,
-    KontoBeregningDto,
-    KontoDto,
-    SaksperiodeNy,
-} from '@navikt/fp-types';
+import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
@@ -25,7 +18,6 @@ type Props = {
     forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
-    hvemPlanleggerType?: HvemPlanleggerType;
     navnPåForeldre: NavnPåForeldre;
     brukesIHvilkenApp: 'PLANLEGGER' | 'INNSYN' | 'SØKNAD';
 };
