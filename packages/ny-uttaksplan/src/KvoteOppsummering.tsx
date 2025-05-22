@@ -529,7 +529,7 @@ const FellesKvoter = () => {
                     {formatOppramsing(
                         [
                             intl.formatMessage(
-                                { id: 'kvote.varighet.fellesperiode.deg' },
+                                { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvDeg, intl),
                                     forelder: forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
