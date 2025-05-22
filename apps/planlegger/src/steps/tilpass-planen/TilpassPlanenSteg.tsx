@@ -109,7 +109,7 @@ export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
     };
 
     const navnPåForeldre = {
-        farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
+        farMedmor: getNavnPåSøker2(hvemPlanlegger, intl),
         mor: getNavnPåSøker1(hvemPlanlegger, intl),
     };
 

@@ -465,6 +465,7 @@ const FellesKvoter = () => {
         return null;
     }
 
+    // TODO: her skjer det noe rart når søknad ikke er behandlet
     const dagerBruktAvDeg = summerDagerIPerioder(perioder.filter((p) => p.kontoType === 'FELLESPERIODE'));
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
