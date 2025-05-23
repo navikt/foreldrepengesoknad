@@ -5,5 +5,5 @@ import server from './server.js';
 const port = serverConfig.app.port;
 
 server.listen(port, () => {
-    logger.info(`Starting server at ${port}`);
+    logger.info(`Starter server på ${port}`);
 });

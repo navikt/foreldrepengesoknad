@@ -35,7 +35,7 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                 request.headers['obo-token'] = obo.token;
                 return next();
             } else {
-                logger.error('OBO-exchange failed', obo.error);
+                logger.error('Veksling av OBO-token feilet', obo.error);
                 response.status(403).send();
             }
         },
@@ -51,7 +51,7 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                         proxyRequest.removeHeader('cookie');
                         proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
                     } else {
-                        logger.warning(`Access token var not present in session for scope ${scope}`);
+                        logger.warning(`Access token ligger ikke i sesjon for scope ${scope}`);
                     }
                 },
             },

@@ -12,7 +12,7 @@ export const validerInnkommendeIdportenToken = async (request: Request, response
 
     const validation = await validateIdportenToken(token);
     if (!validation.ok) {
-        logger.error('Invalid token validation', validation);
+        logger.error('Ugyldig IDporten token', validation);
         response.status(403).send();
         return;
     }
