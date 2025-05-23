@@ -13,6 +13,7 @@ import {
 
 import { AttachmentMetadataType } from '@navikt/fp-constants';
 import { Arbeidsforhold, Attachment, EgenNæring, Frilans, LocaleNo } from '@navikt/fp-types';
+import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
@@ -79,7 +80,6 @@ const finnVedlegg = (
 export const getSøknadForInnsending = (
     alleArbeidsforhold: Arbeidsforhold[],
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    locale: LocaleNo,
 ): SøknadDTO => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -92,7 +92,7 @@ export const getSøknadForInnsending = (
     const ferie = hentData(ContextDataType.FERIE);
 
     return {
-        språkkode: locale,
+        språkkode: getDecoratorLanguageCookie('decorator-language') as LocaleNo,
         barn,
         frilans,
         egenNæring,

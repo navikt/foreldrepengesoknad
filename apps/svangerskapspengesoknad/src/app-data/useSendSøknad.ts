@@ -4,7 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Arbeidsforhold, Kvittering, LocaleNo } from '@navikt/fp-types';
+import { Arbeidsforhold, Kvittering } from '@navikt/fp-types';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
@@ -13,11 +13,7 @@ const UKJENT_UUID = 'ukjent uuid';
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useSendSøknad = (
-    setKvittering: (kvittering: Kvittering) => void,
-    locale: LocaleNo,
-    arbeidsforhold: Arbeidsforhold[],
-) => {
+export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, arbeidsforhold: Arbeidsforhold[]) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -26,7 +22,7 @@ export const useSendSøknad = (
     });
 
     const send = async () => {
-        const søknadForInnsending = getSøknadForInnsending(arbeidsforhold, hentData, locale);
+        const søknadForInnsending = getSøknadForInnsending(arbeidsforhold, hentData);
 
         const signal = initAbortSignal();
 

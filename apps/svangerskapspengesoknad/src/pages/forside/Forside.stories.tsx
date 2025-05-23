@@ -36,7 +36,5 @@ export const Default: Story = {
         setHarGodkjentVilkår: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
-        onChangeLocale: action('button-click'),
-        locale: 'nb',
     },
 };

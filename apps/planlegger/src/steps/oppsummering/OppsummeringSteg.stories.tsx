@@ -65,7 +65,6 @@ const meta = {
         arbeidssituasjon,
         stønadskontoer,
         satser,
-        locale,
         hvorMye,
         tilpassPlan = false,
     }) => {
@@ -82,7 +81,7 @@ const meta = {
                         [ContextDataType.TILPASS_PLAN]: tilpassPlan,
                     }}
                 >
-                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
+                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -94,7 +93,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereHundreProsentTermin: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -152,7 +150,6 @@ export const FlereForsørgereHundreProsentTermin: Story = {
 
 export const MorOgFarKunFarHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -196,7 +193,6 @@ export const MorOgFarKunFarHarRett: Story = {
 
 export const FarOgFarFødsel: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -248,7 +244,6 @@ export const FarOgFarFødsel: Story = {
 
 export const FarOgFarAdopsjonKunFar1HarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             type: HvemPlanleggerType.FAR_OG_FAR,
@@ -286,7 +281,6 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -320,7 +314,6 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
 
 export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -365,7 +358,6 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
 };
 export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -402,7 +394,6 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
 
 export const FlereForsørgereHundreProsentAdopsjon: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -436,7 +427,6 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
 
 export const HarIkkeRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -459,7 +449,6 @@ export const HarIkkeRett: Story = {
 
 export const KunMorHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -530,7 +519,6 @@ export const KunMorHarRett: Story = {
 
 export const AleneforsørgerMorErUfør: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -555,7 +543,6 @@ export const AleneforsørgerMorErUfør: Story = {
 };
 export const OppsummeringFarOgFarKunFar2HarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',

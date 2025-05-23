@@ -1,5 +1,5 @@
 import { BankNoteIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
@@ -53,7 +53,6 @@ interface Props {
 }
 
 export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
-    const locale = useIntl().locale;
     const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
@@ -91,7 +90,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(monthlyPayment, locale)}
+                        {formatCurrencyWithKr(monthlyPayment)}
                     </Heading>
                 </div>
                 <div>
@@ -99,7 +98,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(dailyPayment, locale)}
+                        {formatCurrencyWithKr(dailyPayment)}
                     </Heading>
                 </div>
                 <div>
@@ -107,7 +106,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(totalt, locale)}
+                        {formatCurrencyWithKr(totalt)}
                     </Heading>
                     <ReadMore
                         header={

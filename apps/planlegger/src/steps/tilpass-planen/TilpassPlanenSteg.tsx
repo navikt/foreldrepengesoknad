@@ -11,7 +11,6 @@ import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import {
     Dekningsgrad,
-    LocaleAll,
     OppholdÅrsakType,
     RettighetType,
     SaksperiodeNy,
@@ -34,15 +33,14 @@ import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
-    locale: LocaleAll;
     stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-export const TilpassPlanenSteg = ({ locale, stønadskontoer }: Props) => {
+export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
 
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
     const [visningsmodus, setVisningsmodus] = useState<Visningsmodus>('liste');
 

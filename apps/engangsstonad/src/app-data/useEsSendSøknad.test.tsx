@@ -101,7 +101,7 @@ describe('useEsSendSøknad', () => {
             adopsjonAvEktefellesBarn: true,
         };
 
-        const { result } = renderHook(() => useEsSendSøknad('nb', setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
@@ -153,7 +153,7 @@ describe('useEsSendSøknad', () => {
             termindato: '2024-01-01',
         };
 
-        const { result } = renderHook(() => useEsSendSøknad('nb', setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
@@ -197,7 +197,7 @@ describe('useEsSendSøknad', () => {
             termindato: '2024-01-01',
         };
 
-        const { result } = renderHook(() => useEsSendSøknad('nb', setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 

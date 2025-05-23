@@ -17,8 +17,7 @@ import {
 } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { LocaleNo } from '@navikt/fp-types';
-import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
+import { ContentWrapper } from '@navikt/fp-ui';
 
 import styles from './forside.module.css';
 
@@ -26,17 +25,9 @@ interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     harGodkjentVilkår: boolean;
-    onChangeLocale: (locale: LocaleNo) => void;
-    locale: LocaleNo;
 }
 
-export const Forside = ({
-    mellomlagreSøknadOgNaviger,
-    setHarGodkjentVilkår,
-    harGodkjentVilkår,
-    locale,
-    onChangeLocale,
-}: Props) => {
+export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, harGodkjentVilkår }: Props) => {
     const intl = useIntl();
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -59,11 +50,6 @@ export const Forside = ({
     return (
         <ContentWrapper>
             <VStack gap="10">
-                <LanguageToggle
-                    locale={locale}
-                    availableLocales={['nb', 'nn']}
-                    toggleLanguage={(l: LocaleNo) => onChangeLocale(l)}
-                />
                 <VStack gap="8">
                     <Heading size="xlarge" className={styles.tittel}>
                         <FormattedMessage id="forside.tittel" />

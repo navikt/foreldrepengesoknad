@@ -1,7 +1,7 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -22,8 +22,6 @@ interface Props {
 }
 
 export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }: Props) => {
-    const locale = useIntl().locale;
-
     return (
         <Infobox
             header={
@@ -40,7 +38,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale) }}
+                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
                     />
                 </BodyShort>
                 {!erSøker2 && !erFarOgFar && (

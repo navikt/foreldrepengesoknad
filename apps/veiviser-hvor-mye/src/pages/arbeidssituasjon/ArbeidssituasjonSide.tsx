@@ -59,7 +59,6 @@ interface Props {
 
 export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -211,7 +210,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned, locale)
+                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned)
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -221,10 +220,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(
-                                                          parseInt(gjennomsnittslønnPerMåned, 10) * 12,
-                                                          locale,
-                                                      )
+                                                    ? formatCurrencyWithKr(parseInt(gjennomsnittslønnPerMåned, 10) * 12)
                                                     : '-'}
                                             </Heading>
                                         </div>

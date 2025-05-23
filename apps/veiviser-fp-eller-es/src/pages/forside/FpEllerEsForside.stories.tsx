@@ -14,7 +14,7 @@ export const Default: StoryObj = {
     render: () => {
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
-                <FpEllerEsForside locale="nb" changeLocale={() => undefined} />
+                <FpEllerEsForside />
             </MemoryRouter>
         );
     },

@@ -18,7 +18,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, Barn, isFødtBarn } from '@navikt/fp-types';
+import { Attachment, Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { dateToISOString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -150,7 +150,9 @@ const getDokumentereMorsArbeidParams = (
     }
 
     const barnFødselsnummer =
-        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
+        (isFødtBarn(barn) || isAdoptertBarn(barn)) && barn.fnr !== undefined && barn.fnr.length > 0
+            ? barn.fnr[0]
+            : undefined;
 
     return {
         annenPartFødselsnummer,

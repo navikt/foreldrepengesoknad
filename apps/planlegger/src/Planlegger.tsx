@@ -11,7 +11,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 import { Loader } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType, LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
@@ -66,12 +66,7 @@ const getStønadskontoer = async (
     return ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
 };
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
+export const PlanleggerDataFetcher = () => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
@@ -121,17 +116,10 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
         return <Spinner />;
     }
 
-    return (
-        <PlanleggerRouter
-            locale={locale}
-            changeLocale={changeLocale}
-            stønadskontoer={stønadskontoerData.data}
-            satser={satserData.data}
-        />
-    );
+    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={satserData.data} />;
 };
 
-export const PlanleggerDataInit = ({ locale, changeLocale }: Props) => {
+export const PlanleggerDataInit = () => {
     const locations = useLocation();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
@@ -139,7 +127,7 @@ export const PlanleggerDataInit = ({ locale, changeLocale }: Props) => {
 
     return (
         <PlanleggerDataContext initialState={data}>
-            <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
+            <PlanleggerDataFetcher />
         </PlanleggerDataContext>
     );
 };

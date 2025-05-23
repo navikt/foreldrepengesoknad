@@ -73,7 +73,6 @@ interface Props {
 
 export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<FpEllerEsSituasjon>({
@@ -253,7 +252,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {lønnPerMånedNummer ? (
-                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12, locale)
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -265,7 +264,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <BodyShort>
                                         <FormattedMessage
                                             id="SituasjonSide.HvorMyeMåHaTjentDetaljer"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                         />
                                     </BodyShort>
                                 </ReadMore>
@@ -275,7 +274,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     header={
                                         <FormattedMessage
                                             id="SituasjonSide.MåTjeneMinst"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                         />
                                     }
                                     headingLevel="2"
@@ -286,8 +285,8 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12, locale),
-                                                minstelønn: formatCurrencyWithKr(minstelønn, locale),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
+                                                minstelønn: formatCurrencyWithKr(minstelønn),
                                             }}
                                         />
                                     </BodyShort>

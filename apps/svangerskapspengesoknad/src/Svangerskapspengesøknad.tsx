@@ -5,7 +5,7 @@ import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -24,12 +24,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
     location.reload();
 };
 
-interface Props {
-    locale: LocaleNo;
-    onChangeLocale: any;
-}
-
-export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
+export const Svangerskapspengesøknad = () => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
@@ -80,12 +75,7 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
                 <Umyndig appName="svangerskapspengesoknad" />
             ) : (
                 <SvpDataContext initialState={mellomlagretState}>
-                    <SvangerskapspengesøknadRoutes
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
-                        søkerInfo={søkerinfo.data}
-                        mellomlagretData={mellomlagretState}
-                    />
+                    <SvangerskapspengesøknadRoutes søkerInfo={søkerinfo.data} mellomlagretData={mellomlagretState} />
                 </SvpDataContext>
             )}
         </div>

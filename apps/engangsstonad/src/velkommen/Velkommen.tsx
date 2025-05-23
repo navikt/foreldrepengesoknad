@@ -16,18 +16,15 @@ import {
 } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { LocaleAll } from '@navikt/fp-types';
-import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
+import { ContentWrapper } from '@navikt/fp-ui';
 
 export interface Props {
-    onChangeLocale: (locale: LocaleAll) => void;
-    locale: LocaleAll;
     startSøknad: (start: boolean) => void;
     erVelkommen: boolean;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-export const Velkommen = ({ locale, onChangeLocale, startSøknad, erVelkommen, mellomlagreOgNaviger }: Props) => {
+export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: Props) => {
     const intl = useIntl();
 
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -47,11 +44,6 @@ export const Velkommen = ({ locale, onChangeLocale, startSøknad, erVelkommen, m
     return (
         <ContentWrapper>
             <VStack gap="10">
-                <LanguageToggle
-                    locale={locale}
-                    availableLocales={['en', 'nb', 'nn']}
-                    toggleLanguage={(l: LocaleAll) => onChangeLocale(l)}
-                />
                 <Heading size="large">
                     <FormattedMessage id={'Søknad.Pageheading'} />
                 </Heading>

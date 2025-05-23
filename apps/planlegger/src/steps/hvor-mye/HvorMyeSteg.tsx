@@ -14,20 +14,19 @@ import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll, Satser } from '@navikt/fp-types';
+import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { Utbetaling } from './infoboks/Utbetaling';
 
 interface Props {
-    locale: LocaleAll;
     satser: Satser;
 }
 
-export const HvorMyeSteg = ({ locale, satser }: Props) => {
+export const HvorMyeSteg = ({ satser }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvorMye = useContextGetData(ContextDataType.HVOR_MYE);

@@ -6,15 +6,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { LocaleAll } from '@navikt/fp-types';
 import { AndreVeivisereLinkPanel, FrontPage } from '@navikt/fp-ui';
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
+export const HvorMyeForside = () => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -26,8 +20,6 @@ export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
                 goToNextDefaultStep={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
                 icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
-                locale={locale}
-                changeLocale={changeLocale}
             />
             <AndreVeivisereLinkPanel
                 links={[

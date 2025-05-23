@@ -38,8 +38,6 @@ export const Default: Story = {
     args: {
         startSøknad: action('button-click'),
         mellomlagreOgNaviger: promiseAction(),
-        onChangeLocale: action('button-click'),
-        locale: 'nb',
         erVelkommen: false,
     },
 };

@@ -11,7 +11,7 @@ import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/d
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -29,11 +29,10 @@ import styles from './oppsummeringSteg.module.css';
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
     satser: Satser;
-    locale: LocaleAll;
 }
 
-export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => {
-    const navigator = usePlanleggerNavigator(locale);
+export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
+    const navigator = usePlanleggerNavigator();
 
     useScrollBehaviour();
 

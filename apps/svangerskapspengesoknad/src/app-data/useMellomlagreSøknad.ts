@@ -4,7 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Søkerinfo } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
@@ -14,10 +14,9 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo; søkerInfo: Søkerinfo } & ContextDataMap;
+export type SvpDataMapAndMetaData = { version: number; søkerInfo: Søkerinfo } & ContextDataMap;
 
 export const useMellomlagreSøknad = (
-    locale: LocaleNo,
     søkerInfo: Søkerinfo,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
@@ -45,7 +44,6 @@ export const useMellomlagreSøknad = (
                     try {
                         const data = {
                             version: VERSJON_MELLOMLAGRING,
-                            locale,
                             søkerInfo,
                             ...state,
                         } satisfies SvpDataMapAndMetaData;
