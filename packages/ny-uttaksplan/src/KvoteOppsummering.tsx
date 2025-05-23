@@ -466,9 +466,16 @@ const FellesKvoter = () => {
         return null;
     }
 
-    const dagerBruktAvDeg = summerDagerIPerioder(perioder.filter((p) => p.kontoType === 'FELLESPERIODE'));
+    const dagerBruktAvDeg = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder === forelder),
+    );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
+        perioder.filter((p) => {
+            const somOppholdsÅrsak = p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER';
+            const somFellesperiode = p.kontoType === 'FELLESPERIODE'; // Før fars søknad er vedtatt så vil mors fellesperioder vises uten oppholdsårsak
+
+            return (somOppholdsÅrsak || somFellesperiode) && p.forelder !== forelder;
+        }),
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
     const ubrukteDager = fellesKonto.dager - samletBrukteDager;
