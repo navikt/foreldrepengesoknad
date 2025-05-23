@@ -528,7 +528,7 @@ const FellesKvoter = () => {
                                 },
                             ),
                             intl.formatMessage(
-                                { id: 'kvote.varighet.fellesperiode.annenForeldre' },
+                                { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvAnnenPart, intl),
                                     forelder: forelder !== 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
