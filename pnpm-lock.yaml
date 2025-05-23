@@ -224,7 +224,7 @@ importers:
         version: 1.4.5-lts.2
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8(esbuild@0.25.4))
       storybook:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
@@ -1655,7 +1655,7 @@ importers:
         version: 2.0.4(msw@2.8.2(@types/node@22.15.18)(typescript@5.8.3))
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8(esbuild@0.25.4))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.8)
       storybook:
         specifier: 8.6.12
         version: 8.6.12(prettier@3.5.3)
@@ -2197,9 +2197,6 @@ importers:
       '@vercel/ncc':
         specifier: 0.38.3
         version: 0.38.3
-      axios:
-        specifier: ^1.9.0
-        version: 1.9.0
       eslint:
         specifier: 9.26.0
         version: 9.26.0(jiti@2.4.2)
@@ -3578,9 +3575,6 @@ importers:
       '@vercel/ncc':
         specifier: 0.38.3
         version: 0.38.3
-      axios:
-        specifier: ^1.9.0
-        version: 1.9.0
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -4745,6 +4739,9 @@ packages:
       html-react-parser: '>=5.x'
       jsdom: '>=16.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@navikt/oasis@3.8.0':
     resolution: {integrity: sha512-5CDsv3wop9eIw2YNBCJRr0w6PwwkoTiHzZQXn1+5YZnsksCkHJAFsfKSbRle6zgsD+XRBnc/TPOP0nvNly7NWg==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/3.8.0/fc6862d934adfbefa382220614af18160688cd1e}
@@ -11247,6 +11244,7 @@ snapshots:
       html-react-parser: 5.2.5(@types/react@19.1.4)(react@19.1.0)
       js-cookie: 3.0.5
       jsdom: 26.1.0
+    optionalDependencies:
       react: 19.1.0
 
   '@navikt/oasis@3.8.0':

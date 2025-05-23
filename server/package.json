@@ -20,7 +20,6 @@
         "@types/morgan": "^1.9.9",
         "@types/node": "^22.15.18",
         "@vercel/ncc": "0.38.3",
-        "axios": "^1.9.0",
         "morgan": "^1.10.0",
         "prettier": "3.5.3",
         "tsconfig": "workspace:*",
