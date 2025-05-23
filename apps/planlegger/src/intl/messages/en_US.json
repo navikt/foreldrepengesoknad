@@ -74,6 +74,7 @@
     "HvemPlanlegger.DefaultMorNavn": "mother",
     "HvemPlanlegger.DefaultFarNavn": "father",
     "HvemPlanlegger.DefaultMedMorNavn": "co-mother",
+    "HvemPlanlegger.DefaultAnnenForelderNavn": "other parent",
     "HvorLangPeriodeSteg.Tittel": "How long",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel": "80 % or 100 %?",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "You can choose between {uker100} weeks{dager100, select, 0 {} other { + {dager100} {dager100, select, 1 {day} other {days}}}} and {uker80} weeks{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {day} other {days}}}} with parental benefit{beggeHarRett, select, true {, and the choice applies to both} other {}}. If {beggeHarRett, select, true {you} other {one}} choose {uker100} weeks, {beggeHarRett, select, true {you} other {one}} will receive 100% parental benefit, while if {beggeHarRett, select, true {you} other {one}} choose {uker80} weeks{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {day} other {days}}}}, the payment will be reduced to 80%.",

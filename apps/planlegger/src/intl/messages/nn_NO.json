@@ -74,6 +74,7 @@
     "HvemPlanlegger.DefaultMorNavn": "mor",
     "HvemPlanlegger.DefaultFarNavn": "far",
     "HvemPlanlegger.DefaultMedMorNavn": "medmor",
+    "HvemPlanlegger.DefaultAnnenForelderNavn": "annan forelder",
     "HvorLangPeriodeSteg.Tittel": "Kor lenge",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel": "80 % eller 100 %?",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "{beggeHarRett, select, true {De} other {Ein}} kan velje mellom {uker100} veker{dager100, select, 0 {} other { + {dager100} {dager100, select, 1 {dag} other {dagar}}}} og {uker80} veker{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {dag} other {dagar}}}} med foreldrepengar{beggeHarRett, select, true {, og valet gjeld for begge} other {}}. Dersom {beggeHarRett, select, true {de} other {ein}} vel {uker100} veker, får {beggeHarRett, select, true {de} other {ein}} 100 % foreldrepengar, medan dersom {beggeHarRett, select, true {de} other {ein}} vel {uker80} veker{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {dag} other {dagar}}}}, vert utbetalinga redusert til 80 %",

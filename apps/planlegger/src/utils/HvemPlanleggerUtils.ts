@@ -48,8 +48,8 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
-export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR && hvemPlanlegger.navnPåMedmor) {
         return (
             hvemPlanlegger.navnPåMedmor ??
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
@@ -67,7 +67,7 @@ export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
             capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
         );
     }
-    return undefined;
+    return capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' }));
 };
 
 export const getDefaultNavnSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {

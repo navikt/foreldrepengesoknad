@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
@@ -8,7 +9,7 @@ import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Foreldrepengesak } from '../../types/Sak';
 
-export const KvoteOversikt = () => {
+export const KvoteOversikt = ({ navnPåForeldre }: { navnPåForeldre: NavnPåForeldre }) => {
     const gjeldendeSak = useGetSelectedSak();
 
     const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';
@@ -17,10 +18,10 @@ export const KvoteOversikt = () => {
         return null;
     }
 
-    return <KvoterOversiktInner sak={gjeldendeSak} />;
+    return <KvoterOversiktInner sak={gjeldendeSak} navnPåForeldre={navnPåForeldre} />;
 };
 
-const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
+const KvoterOversiktInner = ({ sak, navnPåForeldre }: { sak: Foreldrepengesak; navnPåForeldre: NavnPåForeldre }) => {
     const annenPartsPerioder = useAnnenPartsVedtak(sak).data?.perioder ?? [];
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
@@ -55,6 +56,8 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
 
     return (
         <KvoteOppsummering
+            brukesIHvilkenApp="INNSYN"
+            navnPåForeldre={navnPåForeldre}
             familiehendelse={sak.familiehendelse}
             konto={konto}
             perioder={aktuellePerioder as SaksperiodeNy[]}
