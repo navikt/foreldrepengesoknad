@@ -7,7 +7,7 @@ import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
@@ -46,6 +46,18 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
+
+    const komplettPlan = utledKomplettPlan({
+        familiehendelsedato: familiehendelseDato,
+        erFarEllerMedmor: søkerErFarEllerMedmor,
+        søkersPerioder: relevantePerioder,
+        annenPartsPerioder,
+        gjelderAdopsjon,
+        bareFarHarRett,
+        harAktivitetskravIPeriodeUtenUttak,
+        førsteUttaksdagNesteBarnsSak: undefined,
+        modus: 'innsyn',
+    });
 
     return (
         <VStack gap="10">
@@ -98,7 +110,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             valgtStønadskonto={{} as any}
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
-                        <KvoteOversikt navnPåForeldre={navnPåForeldre} />
+                        <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
                     </>
                 )}
                 {visKalender && (

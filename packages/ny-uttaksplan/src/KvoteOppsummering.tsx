@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
+import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
@@ -19,7 +19,7 @@ type Props = {
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
-    brukesIHvilkenApp: 'PLANLEGGER' | 'INNSYN' | 'SØKNAD';
+    modus: UttaksplanModus;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -34,7 +34,7 @@ export const useKvote = () => {
 
 export const KvoteOppsummering = (props: Props) => {
     return (
-        <KvoteContext.Provider value={props}>
+        <KvoteContext.Provider value={{ ...props }}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
                 <OppsummeringsTittel />
                 <ExpansionCard.Content>
@@ -165,7 +165,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, brukesIHvilkenApp, navnPåForeldre, forelder } = useKvote();
+    const { konto, perioder, familiehendelse, modus, navnPåForeldre, forelder } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -331,7 +331,7 @@ const KvoteTittel = () => {
               )
             : '';
 
-    const visInformasjonOmHvordanEndre = brukesIHvilkenApp === 'INNSYN';
+    const visInformasjonOmHvordanEndre = modus === 'innsyn';
 
     const navnPåAnnenForelder = forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
