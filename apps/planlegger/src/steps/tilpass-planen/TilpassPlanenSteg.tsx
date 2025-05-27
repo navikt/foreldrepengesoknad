@@ -1,33 +1,27 @@
 import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { getFamiliesituasjon, mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import {
-    Dekningsgrad,
-    OppholdÅrsakType,
-    RettighetType,
-    SaksperiodeNy,
-    TilgjengeligeStønadskontoer,
-} from '@navikt/fp-types';
+import { Forelder } from '@navikt/fp-constants';
+import { Dekningsgrad, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { KvoteOppsummering, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
-import { useStepData } from '../../app-data/useStepData';
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
-import { getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
@@ -223,26 +217,28 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                             </HStack>
                             <KvoteOppsummering
                                 navnPåForeldre={navnPåForeldre}
-                                brukesIHvilkenApp="PLANLEGGER"
+                                modus="planlegger"
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
-                                perioder={[
-                                    ...getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor),
-                                    ...getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor).map(
-                                        (p) => {
-                                            // I innsyn så er fellesperioder for annen part gitt uten kontotype og med oppholdÅrsak istedetfor.
-                                            // Derfor trikser vi til periodene i planleggeren til å følge samme format.
-                                            if (p.kontoType === StønadskontoType.Fellesperiode) {
-                                                return {
-                                                    ...p,
-                                                    kontoType: undefined,
-                                                    oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-                                                };
-                                            }
-                                            return p;
-                                        },
+                                perioder={utledKomplettPlan({
+                                    familiehendelsedato,
+                                    erFarEllerMedmor,
+                                    søkersPerioder: getSøkersPerioder(
+                                        erDeltUttak,
+                                        gjeldendeUttaksplan,
+                                        erFarEllerMedmor,
                                     ),
-                                ]}
+                                    annenPartsPerioder: getAnnenpartsPerioder(
+                                        erDeltUttak,
+                                        gjeldendeUttaksplan,
+                                        erFarEllerMedmor,
+                                    ),
+                                    gjelderAdopsjon: familiesituasjon === 'adopsjon',
+                                    bareFarHarRett: bareFarMedmorHarRett,
+                                    harAktivitetskravIPeriodeUtenUttak: false,
+                                    førsteUttaksdagNesteBarnsSak: undefined,
+                                    modus: 'planlegger',
+                                })}
                                 rettighetType={utledRettighetType()}
                                 forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
                             />

@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
-    HvemPlanleggerType,
     MorsAktivitet,
+    NavnPåForeldre,
     OppholdÅrsakType,
     TilgjengeligeStønadskontoerForDekningsgrad,
     UttakArbeidType,
@@ -19,6 +19,11 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+const navnPåForeldre = {
+    mor: 'Sonja',
+    farMedmor: 'Harald',
+} satisfies NavnPåForeldre;
 
 const kontoNårBeggeHarRett = {
     kontoer: [
@@ -51,6 +56,8 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
@@ -59,22 +66,10 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
     },
 };
 
-export const BeggeRettMorogMedmorLedigeDager: Story = {
-    args: {
-        ...BeggeRettMorIngenDagerBrukt.args,
-        hvemPlanleggerType: HvemPlanleggerType.MOR_OG_MEDMOR,
-    },
-};
-
-export const BeggeRettFarOgFarLedigeDager: Story = {
-    args: {
-        ...BeggeRettMorIngenDagerBrukt.args,
-        hvemPlanleggerType: HvemPlanleggerType.FAR_OG_FAR,
-    },
-};
-
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -128,6 +123,8 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -181,6 +178,8 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -227,6 +226,8 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -280,6 +281,8 @@ export const BeggeRettMorLedigeDager: Story = {
 
 export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
         konto: kontoNårBeggeHarRett,
@@ -355,6 +358,8 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
@@ -382,6 +387,8 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
@@ -430,6 +437,8 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -455,6 +464,8 @@ export const EnRettMorAlleDagerBrukt: Story = {
 
 export const EnRettMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -480,6 +491,8 @@ export const EnRettMorLedigeDager: Story = {
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -505,6 +518,8 @@ export const AleneomsorgMorLedigeDager: Story = {
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: {
             kontoer: [
@@ -545,6 +560,8 @@ export const AleneomsorgFarLedigeDager: Story = {
 
 export const AleneomsorgFarForMangeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: {
             kontoer: [

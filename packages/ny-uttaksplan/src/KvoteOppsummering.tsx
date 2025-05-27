@@ -456,16 +456,15 @@ const FellesKvoter = () => {
     if (!fellesKonto) {
         return null;
     }
-
     const dagerBruktAvDeg = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder === forelder),
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => {
             const somOppholdsÅrsak = p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER';
-            const somFellesperiode = p.kontoType === 'FELLESPERIODE'; // Før fars søknad er vedtatt så vil mors fellesperioder vises uten oppholdsårsak
+            // const somFellesperiode = p.kontoType === 'FELLESPERIODE'; // Før fars søknad er vedtatt så vil mors fellesperioder vises uten oppholdsårsak
 
-            return (somOppholdsÅrsak || somFellesperiode) && p.forelder !== forelder;
+            return somOppholdsÅrsak;
         }),
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
