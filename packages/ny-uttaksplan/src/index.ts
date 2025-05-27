@@ -23,6 +23,7 @@ export {
     isPeriodeUtenUttak,
     isUtsettelsesperiodeAnnenPart,
     sorterPerioder,
+    utledKomplettPlan,
 } from './utils/periodeUtils';
 export { UttaksplanNy } from './Uttaksplan';
 export { KvoteOppsummering } from './KvoteOppsummering';

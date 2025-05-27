@@ -4,9 +4,10 @@ import dayjs from 'dayjs';
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
-    HvemPlanleggerType,
     MorsAktivitet,
+    NavnPåForeldre,
     OppholdÅrsakType,
+    PeriodeResultatÅrsak,
     TilgjengeligeStønadskontoerForDekningsgrad,
     UttakArbeidType,
 } from '@navikt/fp-types';
@@ -19,6 +20,11 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+const navnPåForeldre = {
+    mor: 'Sonja',
+    farMedmor: 'Harald',
+} satisfies NavnPåForeldre;
 
 const kontoNårBeggeHarRett = {
     kontoer: [
@@ -51,6 +57,8 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
@@ -59,66 +67,66 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
     },
 };
 
-export const BeggeRettMorogMedmorLedigeDager: Story = {
-    args: {
-        ...BeggeRettMorIngenDagerBrukt.args,
-        hvemPlanleggerType: HvemPlanleggerType.MOR_OG_MEDMOR,
-    },
-};
-
-export const BeggeRettFarOgFarLedigeDager: Story = {
-    args: {
-        ...BeggeRettMorIngenDagerBrukt.args,
-        hvemPlanleggerType: HvemPlanleggerType.FAR_OG_FAR,
-    },
-};
-
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
-                fom: '2024-11-18',
-                tom: '2024-12-06',
+                fom: '2025-05-06',
+                tom: '2025-05-26',
                 kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
+                id: '2025-05-06 - 2025-05-26 - FORELDREPENGER_FØR_FØDSEL',
+                readOnly: true,
             },
             {
-                fom: '2024-12-09',
-                tom: '2025-03-14',
+                fom: '2025-05-27',
+                tom: '2025-09-08',
                 kontoType: StønadskontoType.Mødrekvote,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
+                id: '2025-05-27 - 2025-09-08 - MØDREKVOTE',
+                readOnly: true,
             },
             {
-                fom: '2025-03-24',
-                tom: '2025-05-16',
+                fom: '2025-09-09',
+                tom: '2025-12-29',
                 kontoType: StønadskontoType.Fellesperiode,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
+                id: '2025-09-09 - 2025-12-29 - FELLESPERIODE',
+                readOnly: true,
             },
             {
-                fom: '2025-05-19',
-                tom: '2025-08-31',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                fom: '2025-12-30',
+                tom: '2026-04-13',
+                kontoType: StønadskontoType.Fedrekvote,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
-            },
-            {
-                fom: '2025-07-28',
-                tom: '2025-09-19',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-                flerbarnsdager: false,
-                forelder: Forelder.mor,
-            },
-            {
-                fom: '2025-09-22',
-                tom: '2025-09-26',
-                kontoType: StønadskontoType.Mødrekvote,
-                flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
+                id: '2025-12-30 - 2026-04-13 - FEDREKVOTE',
+                readOnly: true,
             },
         ],
         rettighetType: RettighetType.BEGGE_RETT,
@@ -128,6 +136,8 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -181,6 +191,8 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -227,6 +239,8 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [
@@ -280,6 +294,8 @@ export const BeggeRettMorLedigeDager: Story = {
 
 export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
         konto: kontoNårBeggeHarRett,
@@ -355,6 +371,8 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
@@ -382,6 +400,8 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
@@ -430,6 +450,8 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -455,6 +477,8 @@ export const EnRettMorAlleDagerBrukt: Story = {
 
 export const EnRettMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -480,6 +504,8 @@ export const EnRettMorLedigeDager: Story = {
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -505,6 +531,8 @@ export const AleneomsorgMorLedigeDager: Story = {
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: {
             kontoer: [
@@ -545,6 +573,8 @@ export const AleneomsorgFarLedigeDager: Story = {
 
 export const AleneomsorgFarForMangeDager: Story = {
     args: {
+        navnPåForeldre,
+        modus: 'innsyn',
         visStatusIkoner: true,
         konto: {
             kontoer: [
