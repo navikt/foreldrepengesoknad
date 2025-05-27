@@ -38,7 +38,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
     const søkerErFarEllerMedmor = !sakTilhørerMor;
-    const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
+    const bareFarMedmorHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
     const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
     const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
@@ -53,7 +53,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
         søkersPerioder: relevantePerioder,
         annenPartsPerioder,
         gjelderAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         harAktivitetskravIPeriodeUtenUttak,
         førsteUttaksdagNesteBarnsSak: undefined,
         modus: 'innsyn',
@@ -101,7 +101,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             annenPartsPerioder={annenPartsPerioder}
                             søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            bareFarHarRett={bareFarHarRett}
+                            bareFarMedmorHarRett={bareFarMedmorHarRett}
                             familiesituasjon={familiesituasjon}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
@@ -115,7 +115,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 )}
                 {visKalender && (
                     <UttaksplanKalender
-                        bareFarHarRett={bareFarHarRett}
+                        bareFarMedmorHarRett={bareFarMedmorHarRett}
                         barn={barn}
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
