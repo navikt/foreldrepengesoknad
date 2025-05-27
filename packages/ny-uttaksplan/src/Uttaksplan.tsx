@@ -30,7 +30,7 @@ interface Props {
     søkersPerioder: SaksperiodeNy[];
     annenPartsPerioder?: SaksperiodeNy[];
     gjelderAdopsjon: boolean;
-    bareFarHarRett: boolean;
+    bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
@@ -48,7 +48,7 @@ export const UttaksplanNy = ({
     søkersPerioder,
     annenPartsPerioder,
     gjelderAdopsjon,
-    bareFarHarRett,
+    bareFarMedmorHarRett,
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
     familiesituasjon,
@@ -65,7 +65,7 @@ export const UttaksplanNy = ({
         søkersPerioder,
         annenPartsPerioder,
         gjelderAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         harAktivitetskravIPeriodeUtenUttak,
         førsteUttaksdagNesteBarnsSak,
         modus,
@@ -79,7 +79,7 @@ export const UttaksplanNy = ({
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
         gjelderAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
         annenPartsPlanperioder,

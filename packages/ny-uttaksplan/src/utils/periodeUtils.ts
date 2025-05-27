@@ -723,7 +723,7 @@ type UtledKomplettPlanProps = {
     søkersPerioder: SaksperiodeNy[];
     annenPartsPerioder?: SaksperiodeNy[];
     gjelderAdopsjon: boolean;
-    bareFarHarRett: boolean;
+    bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     modus: UttaksplanModus;
@@ -734,7 +734,7 @@ export const utledKomplettPlan = ({
     søkersPerioder,
     annenPartsPerioder,
     gjelderAdopsjon,
-    bareFarHarRett,
+    bareFarMedmorHarRett,
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
     modus,
@@ -744,7 +744,7 @@ export const utledKomplettPlan = ({
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
     );
@@ -772,7 +772,7 @@ export const utledKomplettPlan = ({
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
     );

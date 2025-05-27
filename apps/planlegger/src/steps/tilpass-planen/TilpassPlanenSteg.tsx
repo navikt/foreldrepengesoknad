@@ -68,7 +68,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
     const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
-    const erAleneforsørger = erAlenesøker(hvemPlanlegger);
+    const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
@@ -79,7 +79,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         if (erDeltUttak) {
             return RettighetType.BEGGE_RETT;
         }
-        if (erAleneforsørger) {
+        if (erAleneOmOmsorg) {
             return RettighetType.ALENEOMSORG;
         }
 
@@ -152,7 +152,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 </Alert>
 
                 <Heading size="medium" spacing level="2">
-                    <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
+                    <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger: erAleneOmOmsorg }} />
                 </Heading>
 
                 <VStack gap="6">
@@ -163,7 +163,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         <>
                             <UttaksplanNy
                                 familiehendelsedato={familiehendelsedato}
-                                bareFarHarRett={bareFarMedmorHarRett}
+                                bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 familiesituasjon={familiesituasjon}
                                 gjelderAdopsjon={familiesituasjon === 'adopsjon'}
@@ -180,7 +180,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 handleOnPlanChange={handleOnPlanChange}
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
-                                erAleneOmOmsorg={erAleneforsørger}
+                                erAleneOmOmsorg={erAleneOmOmsorg}
                             />
                             <HStack gap="4">
                                 <Button
@@ -234,7 +234,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         erFarEllerMedmor,
                                     ),
                                     gjelderAdopsjon: familiesituasjon === 'adopsjon',
-                                    bareFarHarRett: bareFarMedmorHarRett,
+                                    bareFarMedmorHarRett,
                                     harAktivitetskravIPeriodeUtenUttak: false,
                                     førsteUttaksdagNesteBarnsSak: undefined,
                                     modus: 'planlegger',
