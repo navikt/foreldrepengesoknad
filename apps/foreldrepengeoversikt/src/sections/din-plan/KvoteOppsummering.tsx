@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { SaksperiodeNy } from '@navikt/fp-types';
-import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, Planperiode } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Foreldrepengesak } from '../../types/Sak';
 
-export const KvoteOversikt = (props: { navnPåForeldre: NavnPåForeldre; perioder: SaksperiodeNy[] }) => {
+export const KvoteOversikt = (props: { navnPåForeldre: NavnPåForeldre; perioder: Planperiode[] }) => {
     const gjeldendeSak = useGetSelectedSak();
 
     const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';

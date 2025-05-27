@@ -9,11 +9,12 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
+import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
     konto: KontoBeregningDto;
-    perioder: SaksperiodeNy[];
+    perioder: Planperiode[];
     rettighetType: FpSak['rettighetType'];
     forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
