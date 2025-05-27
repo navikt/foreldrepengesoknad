@@ -97,16 +97,17 @@ export const UttaksplanNy = ({
         førsteUttaksdagNesteBarnsSak,
     );
 
-    const builder = Uttaksplanbuilder(
-        komplettPlan,
+    const builder = Uttaksplanbuilder({
+        perioder: komplettPlan,
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
-        gjelderAdopsjon,
+        erAdopsjon: gjelderAdopsjon,
         bareFarHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
-        annenPartsPlanperioder,
-    );
+        opprinneligPlan: annenPartsPlanperioder,
+        erIPlanleggerModus: true,
+    });
 
     const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
         const result = builder.oppdaterPeriode(oppdatertPeriode);

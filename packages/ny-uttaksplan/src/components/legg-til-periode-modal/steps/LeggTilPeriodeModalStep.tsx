@@ -5,6 +5,7 @@ import { VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { getFloatFromString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
@@ -12,6 +13,7 @@ import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
+import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
 
@@ -33,6 +35,8 @@ interface FormValues {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
+    samtidigUttak?: boolean;
+    samtidigUttaksprosent?: string;
 }
 
 export const LeggTilPeriodeModalStep = ({
@@ -103,6 +107,7 @@ export const LeggTilPeriodeModalStep = ({
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+                samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }
 
@@ -122,6 +127,7 @@ export const LeggTilPeriodeModalStep = ({
                             oppholdsårsak={årsak}
                         />
                         <GraderingSpørsmål formMethods={formMethods} />
+                        <SamtidigUttakSpørsmål formMethods={formMethods} />
                     </>
                 ) : null}
                 {isOpphold ? (
