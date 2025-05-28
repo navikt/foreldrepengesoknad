@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 import { AnnenForelder, MorsAktivitet, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 
@@ -7,16 +5,11 @@ const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
-        const reglerFørFørsteOkt2021 = dayjs(new Date()).isBefore(new Date('2021-10-01'), 'day');
-        const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erMorUfør : undefined;
         const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
             ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS
             : undefined;
 
-        return !søkerErFarEllerMedmor ||
-            (annenForelderHarRett === false && annenForelderErUfør === true && !reglerFørFørsteOkt2021)
-            ? false
-            : annenForelderHarRett === false;
+        return søkerErFarEllerMedmor && annenForelderHarRett === false;
     },
 };
 
