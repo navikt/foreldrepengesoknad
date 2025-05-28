@@ -268,6 +268,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                         navnPåForeldre={navnPåForeldre}
                         perioder={morJobberPerioder}
                         situasjon={søkersituasjon.situasjon}
+                        erFarEllerMedmor={erFarEllerMedmor}
                         termindato={termindato}
                         updateAttachments={updateAttachments}
                     />

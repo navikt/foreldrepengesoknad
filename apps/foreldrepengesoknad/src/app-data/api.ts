@@ -25,7 +25,7 @@ export type DokumentereMorsArbeidParams = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
     familiehendelse: string;
-    perioder: Tidsperiode[];
+    perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
 };
 
 export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
