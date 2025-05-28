@@ -12,3 +12,9 @@ cp temp-types/types.gen.ts packages/types/src/apiDtoGenerert.ts
 
 # Step 3: Delete the temp folder
 rm -rf temp-types
+
+# Step 4: Format types
+cd packages/types
+pnpm run prettier
+pnpm run lint:fix
+echo "har formattert"
