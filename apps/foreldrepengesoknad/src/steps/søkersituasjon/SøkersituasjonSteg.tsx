@@ -13,7 +13,7 @@ import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
-    kjønn: 'M' | 'K';
+    kjønn: 'M' | 'K' | 'U';
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
