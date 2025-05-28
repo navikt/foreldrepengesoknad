@@ -17,4 +17,3 @@ rm -rf temp-types
 cd packages/types
 pnpm run prettier
 pnpm run lint:fix
-echo "har formattert"
