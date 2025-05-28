@@ -13,7 +13,7 @@ import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
-import { LocaleNo } from '@navikt/fp-types';
+import { LocaleAll, LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
@@ -69,7 +69,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleNo>(getDecoratorLanguageCookie('decorator-language') as LocaleNo);
+    const initialLocale = getDecoratorLanguageCookie('decorator-language') as LocaleAll;
+    const [locale, setLocale] = useState<LocaleNo>(initialLocale === 'en' ? 'nb' : initialLocale);
 
     setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
