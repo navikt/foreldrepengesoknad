@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Exit on any error
-set -e
-
 # Step 1: Run the command
 pnpm run openapi-ts
+
+if ! pnpm run openapi-ts; then
+  echo "❌ Typegenerering feilet. Sjekk error filen som ble generert."
+  echo "👉 Husk at du må ha autotest kjørende. Dobbeltsjekk at foreldrepengesoknad-api kjører på samme port som gitt i openapi-ts.config.ts"
+  exit 1
+fi
 
 # Step 2: Copy the generated file
 cp temp-types/types.gen.ts packages/types/src/apiDtoGenerert.ts
