@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Step 1: Run the command
-pnpm run openapi-ts
-
 if ! pnpm run openapi-ts; then
   echo "❌ Typegenerering feilet. Sjekk error filen som ble generert."
   echo "👉 Husk at du må ha autotest kjørende. Dobbeltsjekk at foreldrepengesoknad-api kjører på samme port som gitt i openapi-ts.config.ts"
