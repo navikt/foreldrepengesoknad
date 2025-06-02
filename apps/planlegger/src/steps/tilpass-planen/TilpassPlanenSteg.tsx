@@ -250,7 +250,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     {visningsmodus === 'kalender' && (
                         <div className={styles.calendar}>
                             <UttaksplanKalender
-                                bareFarHarRett={bareFarMedmorHarRett}
+                                bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}

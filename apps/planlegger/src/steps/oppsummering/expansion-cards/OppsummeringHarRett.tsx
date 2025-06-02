@@ -268,7 +268,7 @@ export const OppsummeringHarRett = ({
                             </BluePanel>
                         )}
                         <UttaksplanKalender
-                            bareFarHarRett={bareFarMedmorHarRett}
+                            bareFarMedmorHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
                             harAktivitetskravIPeriodeUtenUttak={false}
                             søkersPerioder={tilpassPlan ? søkersPerioder : planforslag.søker1}

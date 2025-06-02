@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { SaksperiodeNy } from '@navikt/fp-types';
 import { KvoteOppsummering, Planperiode } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
@@ -26,7 +25,7 @@ const KvoterOversiktInner = ({
 }: {
     sak: Foreldrepengesak;
     navnPåForeldre: NavnPåForeldre;
-    perioder: SaksperiodeNy[];
+    perioder: Planperiode[];
 }) => {
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
