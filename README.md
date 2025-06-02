@@ -67,6 +67,15 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 3. Kjør `pnpm run dev-api`
 4. Kjør `pnpm run dev`
 
+
+### Autogenere Typescript typer fra backend
+
+Vi autogenerer typer fra backend sin openApi spec. For å synkronisere typene så kjører du:
+```bash
+   ./generate-api-types.sh 
+```
+Du må ha verdikjeden kjørende i autotest.
+
 ### Tester
 
 For å kjøre tester for en app:
