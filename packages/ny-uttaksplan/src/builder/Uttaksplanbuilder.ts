@@ -12,7 +12,9 @@ import {
     slåSammenLikePerioder,
 } from './uttaksplanbuilderUtils';
 
-const getAnnenPartVedSamtidigUttakPlanlegger = (erSamtidigUttak: boolean, nyPeriode: Planperiode) => {
+const getAnnenPartVedSamtidigUttakPlanlegger = (nyPeriode: Planperiode) => {
+    const erSamtidigUttak = nyPeriode.samtidigUttak !== undefined;
+
     if (erSamtidigUttak) {
         const forelder = nyPeriode.forelder;
 
@@ -30,7 +32,7 @@ const getAnnenPartVedSamtidigUttakPlanlegger = (erSamtidigUttak: boolean, nyPeri
 
 const getAnnenPartsUttakPlanlegger = (erIPlanleggerModus: boolean, perioder: Planperiode[], nyPeriode: Planperiode) => {
     const erSamtidigUttak = nyPeriode.samtidigUttak !== undefined;
-    const annenPart = getAnnenPartVedSamtidigUttakPlanlegger(erSamtidigUttak, nyPeriode);
+    const annenPart = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
 
     if (erIPlanleggerModus && erSamtidigUttak && annenPart !== undefined) {
         return perioder.filter((p) => p.forelder === annenPart);
@@ -51,9 +53,11 @@ const leggTilPeriodeOgBuild = (
     førsteUttaksdagNesteBarnsSak: string | undefined,
     erIPlanleggerModus: boolean,
 ) => {
+    const annenPart = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
+
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
-            perioder,
+            perioder: erIPlanleggerModus ? perioder.filter((p) => p.forelder !== annenPart) : perioder,
             nyPeriode,
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,

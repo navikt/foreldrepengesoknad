@@ -392,7 +392,7 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode });
+                res.push({ ...overlappendePeriode, samtidigUttak: 50 });
             }
 
             return res;

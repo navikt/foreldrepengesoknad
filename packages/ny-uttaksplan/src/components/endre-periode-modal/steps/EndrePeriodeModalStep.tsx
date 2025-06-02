@@ -4,12 +4,14 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
+import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
+import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../EndrePeriodeModal';
 
@@ -30,6 +32,8 @@ interface FormValues {
     forelder?: Forelder;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
+    samtidigUttak?: boolean;
+    samtidigUttaksprosent?: string;
 }
 
 export const EndrePeriodeModalStep = ({
@@ -46,12 +50,15 @@ export const EndrePeriodeModalStep = ({
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            fom: modalData.valgtPeriode?.fom,
-            tom: modalData.valgtPeriode?.tom,
-            forelder: modalData.valgtPeriode?.forelder,
-            kontoType: modalData.valgtPeriode?.kontoType,
+            fom: valgtPeriode?.fom,
+            tom: valgtPeriode?.tom,
+            forelder: valgtPeriode?.forelder,
+            kontoType: valgtPeriode?.kontoType,
             skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
             stillingsprosent: graderingsInfo?.stillingsprosent,
+            samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
+            samtidigUttaksprosent:
+                valgtPeriode?.samtidigUttak !== undefined ? valgtPeriode.samtidigUttak.toString() : undefined,
         },
     });
 
@@ -78,6 +85,7 @@ export const EndrePeriodeModalStep = ({
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
             kontoType: values.kontoType,
             gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+            samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
         });
         closeModal();
     };
@@ -93,6 +101,7 @@ export const EndrePeriodeModalStep = ({
                     oppholdsårsak={årsak}
                 />
                 <GraderingSpørsmål formMethods={formMethods} />
+                <SamtidigUttakSpørsmål formMethods={formMethods} />
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={
