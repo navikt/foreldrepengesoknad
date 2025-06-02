@@ -183,8 +183,9 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 fom: '2025-07-28',
                 tom: '2025-09-29',
                 oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                kontoType: StønadskontoType.Fellesperiode,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
             },
             {
                 id: 'does-not-matter',

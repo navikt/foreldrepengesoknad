@@ -34,6 +34,7 @@ export const useKvote = () => {
 };
 
 export const KvoteOppsummering = (props: Props) => {
+    console.log(props.perioder);
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
