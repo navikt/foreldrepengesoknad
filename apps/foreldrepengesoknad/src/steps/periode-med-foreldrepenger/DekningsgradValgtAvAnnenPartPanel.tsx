@@ -18,7 +18,7 @@ type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
     fornavnAnnenForelder: string;
-    kjønnAnnenForelder?: 'M' | 'K';
+    kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 };
