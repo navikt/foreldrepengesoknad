@@ -121,14 +121,12 @@ const EngangsstønadBekreftelse = () => {
                     </BodyShort>
                 </Accordion.Header>
                 <Accordion.Content>
-                    <VStack gap="2">
-                        <BodyLong size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
-                        </BodyLong>
-                        <BodyLong size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
-                        </BodyLong>
-                    </VStack>
+                    <BodyLong size="small" spacing>
+                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
+                    </BodyLong>
+                    <BodyLong size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
+                    </BodyLong>
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
@@ -138,18 +136,16 @@ const EngangsstønadBekreftelse = () => {
                     </BodyShort>
                 </Accordion.Header>
                 <Accordion.Content>
-                    <VStack gap="2">
-                        <BodyLong size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
-                        </BodyLong>
-                        <BodyLong size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
-                            <Link href={links.utbetalingsoversikt}>
-                                <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
-                            </Link>
-                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
-                        </BodyLong>
-                    </VStack>
+                    <BodyLong size="small" spacing>
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
+                    </BodyLong>
+                    <BodyLong size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
+                        <Link href={links.utbetalingsoversikt}>
+                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
+                        </Link>
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
+                    </BodyLong>
                 </Accordion.Content>
             </Accordion.Item>
         </>
