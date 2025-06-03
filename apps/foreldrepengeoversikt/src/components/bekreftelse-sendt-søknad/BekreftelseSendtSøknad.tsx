@@ -1,4 +1,5 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
+import { søkerInfoOptions } from '../../api/api.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
@@ -155,7 +157,9 @@ const EngangsstønadBekreftelse = () => {
 };
 
 const ForeldrepengerBekreftelse = () => {
-    const harMinstEttArbeidsforhold = true;
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
+    const harMinstEttArbeidsforhold = !!søkerInfo?.arbeidsforhold && søkerInfo?.arbeidsforhold.length > 0;
+
     const venterPåInntektsmelding = useVenterPåInntektsmelding();
 
     return (
