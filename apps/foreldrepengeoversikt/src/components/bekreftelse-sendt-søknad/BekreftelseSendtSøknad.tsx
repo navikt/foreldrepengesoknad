@@ -234,7 +234,40 @@ const ForeldrepengerBekreftelse = () => {
 };
 
 const SvangerskapspengerBekreftelse = () => {
-    return <TidligstMuligeSvar />;
+    const venterPåInntektsmelding = useVenterPåInntektsmelding();
+
+    return (
+        <>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <VStack gap="1">
+                        <Detail textColor="subtle" uppercase>
+                            Neste steg
+                        </Detail>
+                        <BodyShort weight="semibold">Arbeidsgiveren din må sende inntektsmelding til Nav</BodyShort>
+                    </VStack>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <BodyLong spacing size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                    </BodyLong>
+                    <BodyLong spacing size="small">
+                        {venterPåInntektsmelding ? undefined : (
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.svp" />
+                        )}
+                    </BodyLong>
+                    <BodyLong size="small">
+                        {venterPåInntektsmelding ? (
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
+                        ) : (
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
+                        )}
+                    </BodyLong>
+                </Accordion.Content>
+            </Accordion.Item>
+            <TidligstMuligeSvar />
+        </>
+    );
 };
 
 const TidligstMuligeSvar = () => {
@@ -291,7 +324,7 @@ const getTidspunktTekst = (mottattDato: string | undefined) => {
 const useVenterPåInntektsmelding = () => {
     const sak = useGetSelectedSak();
 
-    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+    if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
 

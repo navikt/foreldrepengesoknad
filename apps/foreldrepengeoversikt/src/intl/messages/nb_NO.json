@@ -159,7 +159,7 @@
     "BekreftelseSendtSøknad.SendEndringssøknad": "Hvis du vil endre planen din for foreldrepenger, kan du sende en endringssøknad ved å velge endre, tilgjengelig over planen din. Endringene dine vil så bli behandlet av Nav og du vil få et svar med en ny plan.",
     "BekreftelseSendtSøknad.DuFårTidligstSvar": "DU FÅR TIDLIGST SVAR",
     "BekreftelseSendtSøknad.TidligstSvarForklaring": "Du kan tidligst få svar på søknaden din 4 uker før din første dag med {erFp, select, true {foreldrepenger} other {svangerskapspenger}}. For at søknaden kan behandles må arbeidsgiveren din ha sendt inn inntektsmelding. Dette er fordi vi bruker de nyeste opplysningene om inntekten din når vi skal beregne hva du skal få i {erFp, select, true {foreldrepenger} other {svangerskapspenger}}.",
-    "BekreftelseSendtSøknad.FireUkerFør": "Fire uker før din første dag med {erFp, select, true {foreldrepenger} other {svangerskapspenger}}.",
+    "BekreftelseSendtSøknad.FireUkerFør": "Fire uker før din første dag med {erFp, select, true {foreldrepenger} other {svangerskapspenger}}",
     "BekreftelseSendtSøknad.NårDuFårSvar": "Når får du svar på søknaden din?",
     "BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1": "Du kan tidligst få svar på søknaden din når du har levert all nødvendig dokumentasjon i saken. Du vil få varsel fra oss når søknaden er behandlet, og du kan følge saken din her.",
     "BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2": "Når vi har all nødvendig dokumentasjon er forventet saksbehandlingstid 6 uker.",
