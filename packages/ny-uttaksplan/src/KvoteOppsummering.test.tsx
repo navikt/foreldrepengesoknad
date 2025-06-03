@@ -21,7 +21,7 @@ describe('<KvoteOppsummering >', () => {
         expect(screen.getByText('Det er 12 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
         expect(
             screen.getByText(
-                '5 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Sonja og 2 uker til Harald ligger ikke i planen.',
+                '5 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 2 uker til Espen ligger ikke i planen.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('<KvoteOppsummering >', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Harald må sende søknad selv for å bruke sine uker med foreldrepenger.', {
+            screen.getByText('Espen må sende søknad selv for å bruke sine uker med foreldrepenger.', {
                 exact: false,
             }),
         ).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('<KvoteOppsummering >', () => {
         render(<AleneomsorgMorLedigeDager />);
 
         expect(
-            screen.queryByText('Harald må sende søknad selv for å bruke sine uker med foreldrepenger.'),
+            screen.queryByText('Espen må sende søknad selv for å bruke sine uker med foreldrepenger.'),
         ).not.toBeInTheDocument();
         expect(
             screen.getByText(
@@ -56,9 +56,7 @@ describe('<KvoteOppsummering >', () => {
 
         expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                '16 uker av fellesperioden, 18 uker til Sonja og 15 uker til Harald er lagt til i planen.',
-            ),
+            screen.getByText('16 uker av fellesperioden, 18 uker til Helga og 15 uker til Espen er lagt til i planen.'),
         ).toBeInTheDocument();
     });
     it('<EnRettFarAlleDagerBrukt >', async () => {

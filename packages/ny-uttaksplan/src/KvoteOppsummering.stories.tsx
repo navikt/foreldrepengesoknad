@@ -22,8 +22,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const navnPåForeldre = {
-    mor: 'Sonja',
-    farMedmor: 'Harald',
+    mor: 'Helga',
+    farMedmor: 'Espen',
 } satisfies NavnPåForeldre;
 
 const kontoNårBeggeHarRett = {
