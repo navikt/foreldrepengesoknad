@@ -717,7 +717,7 @@ export const getForelderForPeriode = (
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
-type UtledKomplettPlanProps = {
+type UtledKomplettPlanParams = {
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
     søkersPerioder: SaksperiodeNy[];
@@ -738,7 +738,7 @@ export const utledKomplettPlan = ({
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
     modus,
-}: UtledKomplettPlanProps) => {
+}: UtledKomplettPlanParams) => {
     const søkersPlanperioder = finnOgSettInnHull(
         mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
         harAktivitetskravIPeriodeUtenUttak,
