@@ -69,6 +69,11 @@ describe('<KvoteOppsummering >', () => {
         render(<EnRettFarLedigeDager />);
 
         expect(screen.getByText('2 uker ligger ikke i planen.')).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+            ),
+        ).not.toBeInTheDocument();
     });
     it('<AleneomsorgFarForMangeDager >', async () => {
         render(<AleneomsorgFarForMangeDager />);

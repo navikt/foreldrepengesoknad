@@ -64,7 +64,7 @@ const OppsummeringsTittel = () => {
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiehendelse } = useKvote();
+    const { konto, perioder, familiehendelse, modus } = useKvote();
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
@@ -161,7 +161,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
             }
-            beskrivelse={<FormattedMessage id="kvote.beskrivelse.endre.du" />}
+            beskrivelse={modus === 'innsyn' ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
         />
     );
 };

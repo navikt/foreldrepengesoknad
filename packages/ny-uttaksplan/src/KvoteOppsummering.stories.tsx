@@ -450,7 +450,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 export const EnRettFarLedigeDager: Story = {
     args: {
         navnPåForeldre,
-        modus: 'innsyn',
+        modus: 'planlegger',
         visStatusIkoner: true,
         konto: kontoNårBareFarHarRett,
         perioder: [
