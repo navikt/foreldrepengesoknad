@@ -13,7 +13,9 @@ export const links = {
     papirsøknadSvp: 'https://www.nav.no/start/soknad-svangerskapspenger?stegvalg=1',
     personvernerklæring:
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
+    arbeidsforholdMineSider: 'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
     personvernerklæringOm: 'https://www.nav.no/personvernerklaering#om',
+    forelderpengerHvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     plikter: 'https://www.nav.no/endringer',
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     veiviser: 'https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad',
