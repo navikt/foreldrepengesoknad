@@ -36,6 +36,7 @@ export const ForForeldrepenger: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
+        manglendeVedlegg: [],
     },
 };
 
@@ -71,6 +72,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
+        manglendeVedlegg: [],
     },
 };
 
@@ -91,6 +93,7 @@ export const ForEngangsstønad: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
+        manglendeVedlegg: [],
     },
 };
 
@@ -119,6 +122,7 @@ export const ForSvangerskapspenger: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
+        manglendeVedlegg: [],
     },
 };
 
@@ -146,6 +150,7 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
+        manglendeVedlegg: [],
     },
 };
 
