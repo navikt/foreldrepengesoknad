@@ -185,7 +185,7 @@
     "HvorMyeOppsummering.BasertPå": "Based on the monthly income, {erAlenesøker, select, true {you} other {{hvem}}} has reported an income higher than this, but it is not covered by Nav.",
     "BarnehageplassOppsummering.Tittel": "Kindergarten",
     "BarnehageplassOppsummering.KanHaPlass": "You may have the right to a daycare spot on {barnehagestartdato}",
-    "BarnehageplassOppsummering.Beregnet": "Estimated based on <a>the Kindergarten Act</a>. Based on the {antallBarn, select, 1 {child} other {children}} {erAdopsjon, select, true {being taken over the care for} other {{erFødt, select, true {being born} other {is born on due date}}}} {familiehendelsesdato}, and that you apply for kindergarten the year the {antallBarn, select, 1 {child} other {children}} turns 1.",
+    "BarnehageplassOppsummering.Beregnet": "Estimated based on <a>the Kindergarten Act (opens in a new tab)</a>. Based on the {antallBarn, select, 1 {child} other {children}} {erAdopsjon, select, true {being taken over the care for} other {{erFødt, select, true {being born} other {is born on due date}}}} {familiehendelsesdato}, and that you apply for kindergarten the year the {antallBarn, select, 1 {child} other {children}} turns 1.",
     "BarnehageplassOppsummering.ManKanFå": "You can get a daycare spot before this",
     "BarnehageplassOppsummering.Kommune": "Several municipalities have their own rules that allow for a place in kindergarten before the date. You must check your municipality's website.",
     "OversiktSteg.Mor": "mother",
