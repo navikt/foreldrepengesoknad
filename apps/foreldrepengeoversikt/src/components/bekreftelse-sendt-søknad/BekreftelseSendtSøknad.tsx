@@ -7,7 +7,7 @@ import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, 
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
+import { formatDate, formatTime } from '@navikt/fp-utils';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
@@ -18,7 +18,7 @@ interface Props {
     bankkonto: Søkerinfo['søker']['bankkonto'];
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
-    manglendeVedlegg?: Skjemanummer[];
+    manglendeVedlegg: Skjemanummer[];
     saksnummer?: string;
 }
 
@@ -49,12 +49,6 @@ export const BekreftelseSendtSøknad = ({
         : undefined;
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
 
-    // TODO: mistenker denne alltid vil være undefined?
-    // const tidligstBehandlingsDato = relevantNyTidslinjehendelse
-    //     ? relevantNyTidslinjehendelse.tidligstBehandlingsDato
-    //     : undefined;
-    const tidligstBehandlingsDato = undefined;
-
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
@@ -76,7 +70,7 @@ export const BekreftelseSendtSøknad = ({
                 </ul>
             )}
             <Accordion>
-                {manglendeVedlegg && manglendeVedlegg.length > 0 && (
+                {manglendeVedlegg.length > 0 && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -111,48 +105,7 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {ytelse === 'ENGANGSSTØNAD' && (
-                    <>
-                        <Accordion.Item>
-                            <Accordion.Header>
-                                <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.NårDuFårSvar" />
-                                </BodyShort>
-                            </Accordion.Header>
-                            <Accordion.Content>
-                                <VStack gap="2">
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
-                                    </BodyLong>
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
-                                    </BodyLong>
-                                </VStack>
-                            </Accordion.Content>
-                        </Accordion.Item>
-                        <Accordion.Item>
-                            <Accordion.Header>
-                                <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.NårUtbetalesPengene" />
-                                </BodyShort>
-                            </Accordion.Header>
-                            <Accordion.Content>
-                                <VStack gap="2">
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
-                                    </BodyLong>
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
-                                        <Link href={links.utbetalingsoversikt}>
-                                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
-                                        </Link>
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
-                                    </BodyLong>
-                                </VStack>
-                            </Accordion.Content>
-                        </Accordion.Item>
-                    </>
-                )}
+                {ytelse === 'ENGANGSSTØNAD' && <EngangsstønadInstrukser />}
                 {ytelse === 'FORELDREPENGER' && harMinstEttArbeidsforhold && (
                     <Accordion.Item>
                         <Accordion.Header>
@@ -178,14 +131,10 @@ export const BekreftelseSendtSøknad = ({
                                     <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
                                 </Detail>
                                 <BodyShort weight="semibold">
-                                    {tidligstBehandlingsDato &&
-                                        capitalizeFirstLetter(formatDateMedUkedag(tidligstBehandlingsDato))}
-                                    {!tidligstBehandlingsDato && (
-                                        <FormattedMessage
-                                            id="BekreftelseSendtSøknad.FireUkerFør"
-                                            values={{ erFp: ytelse === 'FORELDREPENGER' }}
-                                        />
-                                    )}
+                                    <FormattedMessage
+                                        id="BekreftelseSendtSøknad.FireUkerFør"
+                                        values={{ erFp: ytelse === 'FORELDREPENGER' }}
+                                    />
                                 </BodyShort>
                             </VStack>
                         </Accordion.Header>
@@ -221,5 +170,50 @@ export const BekreftelseSendtSøknad = ({
                 )}
             </Accordion>
         </VStack>
+    );
+};
+
+const EngangsstønadInstrukser = () => {
+    return (
+        <>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <BodyShort weight="semibold">
+                        <FormattedMessage id="BekreftelseSendtSøknad.NårDuFårSvar" />
+                    </BodyShort>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <VStack gap="2">
+                        <BodyLong size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
+                        </BodyLong>
+                        <BodyLong size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
+                        </BodyLong>
+                    </VStack>
+                </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <BodyShort weight="semibold">
+                        <FormattedMessage id="BekreftelseSendtSøknad.NårUtbetalesPengene" />
+                    </BodyShort>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <VStack gap="2">
+                        <BodyLong size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
+                        </BodyLong>
+                        <BodyLong size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
+                            <Link href={links.utbetalingsoversikt}>
+                                <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
+                            </Link>
+                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
+                        </BodyLong>
+                    </VStack>
+                </Accordion.Content>
+            </Accordion.Item>
+        </>
     );
 };
