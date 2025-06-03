@@ -13,6 +13,7 @@ import {
     Periode,
     Situasjon,
     isAnnenForelderOppgittNorsk,
+    isAnnenforelderOppholdtSegIEØS,
     isPeriodeUtenUttakUtsettelse,
 } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -54,7 +55,7 @@ export const MorJobberDokumentasjon = ({
     const annenPartFødselsnummer = isAnnenForelderOppgittNorsk(annenForelder) ? annenForelder.fnr : undefined;
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
 
-    if (annenPartFødselsnummer) {
+    if (annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder)) {
         const bareFarHarRett =
             isAnnenForelderOppgittNorsk(annenForelder) &&
             erFarEllerMedmor &&
@@ -68,7 +69,7 @@ export const MorJobberDokumentasjon = ({
         );
 
         const trengerDokumentereMorsArbeidQuery = useQuery({
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!, !!dokumentereMorsArbeidParams),
+            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams, !!dokumentereMorsArbeidParams),
         });
 
         if (trengerDokumentereMorsArbeidQuery.isPending) {

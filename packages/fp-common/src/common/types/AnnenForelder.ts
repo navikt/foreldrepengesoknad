@@ -33,3 +33,7 @@ export const isAnnenForelderIkkeOppgitt = (annenForelder: AnnenForelder): annenF
 export const isAnnenForelderOppgittNorsk = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
     return isAnnenForelderOppgitt(annenForelder) && !annenForelder.utenlandskFnr;
 };
+
+export const isAnnenforelderOppholdtSegIEØS = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
+    return isAnnenForelderOppgitt(annenForelder) && annenForelder.harOppholdtSegIEØS === true;
+};
