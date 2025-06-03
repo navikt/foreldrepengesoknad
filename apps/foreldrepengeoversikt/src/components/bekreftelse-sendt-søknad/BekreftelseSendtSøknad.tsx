@@ -7,10 +7,13 @@ import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, 
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
-import { formatDate, formatTime } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
+import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
+import { getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils.ts';
+import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
@@ -21,18 +24,6 @@ interface Props {
     manglendeVedlegg: Skjemanummer[];
     saksnummer?: string;
 }
-
-const getTidspunktTekst = (mottattDato: string | undefined) => {
-    if (!mottattDato) {
-        return undefined;
-    }
-    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
-        return `Sendt i dag kl. ${formatTime(mottattDato)}`;
-    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
-        return `Sendt i går kl. ${formatTime(mottattDato)}`;
-    }
-    return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
-};
 
 export const BekreftelseSendtSøknad = ({
     relevantNyTidslinjehendelse,
@@ -50,6 +41,7 @@ export const BekreftelseSendtSøknad = ({
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
 
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
+    const tidligstMuligeSvar = getTidligstMuligeSvar();
 
     return (
         <VStack gap="6" className="p-6 bg-white rounded-large shadow-xsmall">
@@ -131,10 +123,14 @@ export const BekreftelseSendtSøknad = ({
                                     <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
                                 </Detail>
                                 <BodyShort weight="semibold">
-                                    <FormattedMessage
-                                        id="BekreftelseSendtSøknad.FireUkerFør"
-                                        values={{ erFp: ytelse === 'FORELDREPENGER' }}
-                                    />
+                                    {tidligstMuligeSvar ? (
+                                        capitalizeFirstLetter(formatDateMedUkedag(tidligstMuligeSvar))
+                                    ) : (
+                                        <FormattedMessage
+                                            id="BekreftelseSendtSøknad.FireUkerFør"
+                                            values={{ erFp: ytelse === 'FORELDREPENGER' }}
+                                        />
+                                    )}
                                 </BodyShort>
                             </VStack>
                         </Accordion.Header>
@@ -216,4 +212,26 @@ const EngangsstønadInstrukser = () => {
             </Accordion.Item>
         </>
     );
+};
+
+const getTidspunktTekst = (mottattDato: string | undefined) => {
+    if (!mottattDato) {
+        return undefined;
+    }
+    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
+        return `Sendt i dag kl. ${formatTime(mottattDato)}`;
+    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
+        return `Sendt i går kl. ${formatTime(mottattDato)}`;
+    }
+    return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
+};
+
+const getTidligstMuligeSvar = () => {
+    const sak = useGetSelectedSak();
+
+    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+        return undefined;
+    }
+
+    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak)?.toISOString());
 };
