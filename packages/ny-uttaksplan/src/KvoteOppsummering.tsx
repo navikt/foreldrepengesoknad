@@ -458,7 +458,6 @@ const FellesKvoter = () => {
     if (!fellesKonto) {
         return null;
     }
-    console.log(perioder);
     const dagerBruktAvDeg = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder === forelder),
     );
