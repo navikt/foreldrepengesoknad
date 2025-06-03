@@ -19,7 +19,7 @@ export const søkerinfo = {
                 fornavn: 'Magnífico',
                 etternavn: 'Fattigmannskost',
                 kjønn: 'M',
-                fødselsdato: '2022-07-01',
+                fødselsdato: dayjs().subtract(2, 'months').format('YYYY-MM-DD'),
                 annenForelder: {
                     fnr: '03506715317',
                     fornavn: 'Aritmetisk',
@@ -57,7 +57,7 @@ export const søkerinfoUtenArbeidsforhold = {
                 fornavn: 'Magnífico',
                 etternavn: 'Fattigmannskost',
                 kjønn: 'M',
-                fødselsdato: '2022-07-01',
+                fødselsdato: dayjs().subtract(2, 'months').format('YYYY-MM-DD'),
                 annenForelder: {
                     fnr: '03506715317',
                     fornavn: 'Aritmetisk',
