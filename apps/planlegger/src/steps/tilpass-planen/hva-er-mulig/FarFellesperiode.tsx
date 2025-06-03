@@ -6,6 +6,7 @@ import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/H
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -31,7 +32,7 @@ export const FarFellesperiode = ({ hvemPlanlegger }: Props) => {
                     <FormattedMessage
                         id="HvaErMulig.MorIAktivitet"
                         values={{
-                            hvem: finnSøker1Tekst(intl, hvemPlanlegger),
+                            hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
                             erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                         }}
                     />
