@@ -9,13 +9,12 @@ import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 import { Loader } from '@navikt/ds-react';
 
 import {
-    Forelder,
-    MorsAktivitet,
     NavnPåForeldre,
     Periode,
     Situasjon,
-    isAnnenForelderOppgitt,
-    isUttaksperiode,
+    isAnnenForelderOppgittNorsk,
+    isAnnenforelderOppholdtSegIEØS,
+    isPeriodeUtenUttakUtsettelse,
 } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
@@ -33,6 +32,7 @@ interface Props {
     familiehendelsesdato: string;
     termindato: string | undefined;
     situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
 }
 
 export const MorJobberDokumentasjon = ({
@@ -42,36 +42,52 @@ export const MorJobberDokumentasjon = ({
     navnPåForeldre,
     familiehendelsesdato,
     situasjon,
+    erFarEllerMedmor,
     termindato,
 }: Props) => {
+    if (perioder.length === 0) {
+        return null;
+    }
     const intl = useIntl();
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
-    const annenPartFødselsnummer = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-
+    const annenPartFødselsnummer = isAnnenForelderOppgittNorsk(annenForelder) ? annenForelder.fnr : undefined;
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
-    const bareFarHarRett = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepengerINorge === false &&
-          perioder.some(
-              (p) =>
-                  isUttaksperiode(p) &&
-                  p.forelder === Forelder.farMedmor &&
-                  p.morsAktivitetIPerioden === MorsAktivitet.Arbeid,
-          )
-        : false;
 
-    const dokumentereMorsArbeidParams =
-        perioder.length > 0 && !bareFarHarRett
-            ? getDokumentereMorsArbeidParams(perioder, barn, annenPartFødselsnummer)
-            : undefined;
+    if (annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder)) {
+        const bareFarHarRett =
+            isAnnenForelderOppgittNorsk(annenForelder) &&
+            erFarEllerMedmor &&
+            annenForelder.harRettPåForeldrepengerINorge === false;
 
-    const trengerDokumentereMorsArbeidQuery = useQuery({
-        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams!, !!dokumentereMorsArbeidParams),
-    });
+        const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(
+            perioder,
+            barn,
+            bareFarHarRett,
+            annenPartFødselsnummer,
+        );
 
-    const renderUttakUploader = () => (
+        const trengerDokumentereMorsArbeidQuery = useQuery({
+            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams, !!dokumentereMorsArbeidParams),
+        });
+
+        if (trengerDokumentereMorsArbeidQuery.isPending) {
+            return <Loader className="self-center" size="large" />;
+        }
+        const trengerDokumentereMorsArbeid = trengerDokumentereMorsArbeidQuery.data ?? true;
+
+        if (!trengerDokumentereMorsArbeid) {
+            return (
+                <TrengerIkkeMorIArbeidDokumentasjon
+                    perioder={perioder}
+                    updateDokArbeidMorAttachment={updateDokArbeidMorAttachment}
+                />
+            );
+        }
+    }
+
+    return (
         <UttakUploader
             attachments={attachments}
             updateAttachments={updateDokArbeidMorAttachment}
@@ -89,31 +105,6 @@ export const MorJobberDokumentasjon = ({
             attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
         />
     );
-
-    if (perioder.length === 0) {
-        return null;
-    }
-
-    // Når bare far har rett, så er det krav å dokumentere mors arbeid
-    if (bareFarHarRett) {
-        return renderUttakUploader();
-    }
-
-    if (trengerDokumentereMorsArbeidQuery.isPending) {
-        return <Loader className="self-center" size="large" />;
-    }
-    const trengerDokumentereMorsArbeid = trengerDokumentereMorsArbeidQuery.data ?? true;
-
-    if (!trengerDokumentereMorsArbeid) {
-        return (
-            <TrengerIkkeMorIArbeidDokumentasjon
-                perioder={perioder}
-                updateDokArbeidMorAttachment={updateDokArbeidMorAttachment}
-            />
-        );
-    }
-
-    return renderUttakUploader();
 };
 
 const TrengerIkkeMorIArbeidDokumentasjon = ({
@@ -143,12 +134,9 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
 const getDokumentereMorsArbeidParams = (
     uttaksplan: Periode[],
     barn: Barn,
-    annenPartFødselsnummer?: string,
-): DokumentereMorsArbeidParams | undefined => {
-    if (!annenPartFødselsnummer) {
-        return undefined;
-    }
-
+    bareFarHarRett: boolean,
+    annenPartFødselsnummer: string,
+): DokumentereMorsArbeidParams => {
     const barnFødselsnummer =
         (isFødtBarn(barn) || isAdoptertBarn(barn)) && barn.fnr !== undefined && barn.fnr.length > 0
             ? barn.fnr[0]
@@ -161,6 +149,7 @@ const getDokumentereMorsArbeidParams = (
         perioder: uttaksplan.map((p) => ({
             fom: p.tidsperiode.fom.toISOString(),
             tom: p.tidsperiode.tom.toISOString(),
+            periodeType: bareFarHarRett && isPeriodeUtenUttakUtsettelse(p) ? 'UTSETTELSE' : 'UTTAK',
         })),
     };
 };

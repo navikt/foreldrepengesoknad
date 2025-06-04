@@ -185,7 +185,7 @@
     "HvorMyeOppsummering.BasertPå": "Basert på månedsinntekten har {erAlenesøker, select, true {du} other {{hvem}}} oppgitt en inntekt høyere enn dette, men dette dekkes ikke av Nav.",
     "BarnehageplassOppsummering.Tittel": "Barnehageplass",
     "BarnehageplassOppsummering.KanHaPlass": "{erAlenesøker, select, true {Du} other {Dere}} kan ha rett på barnehageplass i {barnehagestartdato}",
-    "BarnehageplassOppsummering.Beregnet": "Beregnet ut fra <a>barnehageloven.</a> Basert på at {antallBarn, select, 1 {barnet} other {barna}} {erAdopsjon, select, true {har overtakelse} other {{erFødt, select, true {ble født} other {blir født på termindato}}}} {familiehendelsesdato}, og at {erAlenesøker, select, true {du} other {dere}} søker om barnehageplass det året {antallBarn, select, 1 {barnet} other {barna}} fyller 1 år.",
+    "BarnehageplassOppsummering.Beregnet": "Beregnet ut fra <a>barnehageloven (åpner i en ny fane)</a>. Basert på at {antallBarn, select, 1 {barnet} other {barna}} {erAdopsjon, select, true {har overtakelse} other {{erFødt, select, true {ble født} other {blir født på termindato}}}} {familiehendelsesdato}, og at {erAlenesøker, select, true {du} other {dere}} søker om barnehageplass det året {antallBarn, select, 1 {barnet} other {barna}} fyller 1 år.",
     "BarnehageplassOppsummering.ManKanFå": "Man kan få barnehageplass før dette",
     "BarnehageplassOppsummering.Kommune": "Flere kommuner har egne regler som gjør at man kan få plass i barnehage før datoen. Det må {erAlenesøker, select, true {du} other {dere}} sjekke opp på {erAlenesøker, select, true {din} other {deres}} kommunes nettsider.",
     "OversiktSteg.Mor": "mor",

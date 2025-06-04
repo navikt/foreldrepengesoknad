@@ -23,6 +23,7 @@ import {
     isValidTidsperiodeString,
 } from '@navikt/fp-utils';
 
+import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 
 export const Periodene = (perioder: Planperiode[]) => ({
@@ -714,4 +715,65 @@ export const getForelderForPeriode = (
     }
 
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+};
+
+type UtledKomplettPlanParams = {
+    familiehendelsedato: string;
+    erFarEllerMedmor: boolean;
+    søkersPerioder: SaksperiodeNy[];
+    annenPartsPerioder?: SaksperiodeNy[];
+    gjelderAdopsjon: boolean;
+    bareFarMedmorHarRett: boolean;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
+    modus: UttaksplanModus;
+};
+export const utledKomplettPlan = ({
+    familiehendelsedato,
+    erFarEllerMedmor,
+    søkersPerioder,
+    annenPartsPerioder,
+    gjelderAdopsjon,
+    bareFarMedmorHarRett,
+    harAktivitetskravIPeriodeUtenUttak,
+    førsteUttaksdagNesteBarnsSak,
+    modus,
+}: UtledKomplettPlanParams) => {
+    const søkersPlanperioder = finnOgSettInnHull(
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+    const annenPartsPlanperioder = annenPartsPerioder
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
+        : undefined;
+
+    const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
+        søkersPlanperioder,
+        familiehendelsedato,
+        førsteUttaksdagNesteBarnsSak,
+        annenPartsPlanperioder,
+    );
+
+    return finnOgSettInnHull(
+        annenPartsPlanperioder
+            ? settInnAnnenPartsUttak(
+                  søkersPlanperioder,
+                  annenPartsPlanperioder,
+                  familiehendelsedato,
+                  førsteUttaksdagNesteBarnsSak,
+                  true,
+              )
+            : planMedLikePerioderSlåttSammen,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
 };

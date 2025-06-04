@@ -187,8 +187,9 @@
     "SøkelenkerPanel.SokEs": "Søk om engangsstønad",
     "HarIkkeSaker.IngenSoknader": "Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger",
     "HarIkkeSaker.ToUker": "Det kan ta opp til to uker før søknaden din er synlig her hvis du har søkt via brev.",
-    "BruktOpplysningerOmArbeidsforhold.tittel": "Nav har brukt opplysninger om arbeidsforholdet ditt",
-    "BruktOpplysningerOmArbeidsforhold.tekst.1": "Den andre forelderen har søkt om foreldrepenger og har oppgitt at du skal være i arbeid.",
-    "BruktOpplysningerOmArbeidsforhold.tekst.2": "Derfor har Nav slått opp arbeidsforholdet ditt i Arbeidsgiver- og arbeidstakerregisteret (Aa-registeret), og bruker opplysningene i behandlingen av saken til den andre forelderen. Opplysningene vil brukes også om det er flere perioder eller søknader.",
-    "BruktOpplysningerOmArbeidsforhold.tekst.3": "Dette har vi gjort etter bestemmelsene i folketrygdloven § 21-4. Du kan lese mer om behandlingsgrunnlaget <a>her (åpner i en ny fane)</a>."
+    "BruktOpplysningerOmArbeidsforhold.tittel": "Nav har hentet opplysninger om arbeidsforholdet ditt",
+    "BruktOpplysningerOmArbeidsforhold.tekst.1": "Den andre forelderen har søkt om foreldrepenger. For at den andre forelderen skal kunne få foreldrepenger i enkelte perioder, forutsetter regelverket at du er i aktivitet, for eksempel i arbeid. I søknaden har den andre forelderen oppgitt at du er i arbeid i en eller flere av disse periodene.",
+    "BruktOpplysningerOmArbeidsforhold.tekst.2": "Nav har derfor hentet informasjon om arbeidsforholdene dine fra Arbeidsgiver- og arbeidstakerregisteret (Aa-registeret). Vi bruker opplysningene når vi behandler søknaden. Vi kan også bruke opplysningene for andre perioder i nye søknader. Du kan selv sjekke hva som er registrert på deg i <a>Aa-registeret (åpner i en ny fane)</a>.",
+    "BruktOpplysningerOmArbeidsforhold.tekst.3": "Dette har vi gjort med hjemmel i folketrygdloven § 21-4. Du kan lese mer <a>om behandling av personvernopplysninger (åpner i en ny fane)</a>.",
+    "BruktOpplysningerOmArbeidsforhold.tekst.4": "Regelverket for aktivitetskrav står i folketrygdloven § 14-13. Vil du vite mer finner du informasjon på <a>nav.no/foreldrepenger (åpner i en ny fane)</a>."
 }
