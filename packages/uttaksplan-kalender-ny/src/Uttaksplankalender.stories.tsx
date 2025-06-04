@@ -88,7 +88,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -116,7 +116,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -150,7 +150,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -222,7 +222,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -244,7 +244,7 @@ export const UtsettelseMorArbeid: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -272,7 +272,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -294,7 +294,7 @@ export const UtsettelseMorFri: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -316,7 +316,7 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -338,7 +338,7 @@ export const UtsettelseMorInstitusjonSøker: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -360,7 +360,7 @@ export const UtsettelseMorNavTiltak: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -382,7 +382,7 @@ export const UtsettelseFarSykdom: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -404,7 +404,7 @@ export const UtsettelseFarHvØvelse: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -432,7 +432,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -472,7 +472,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -512,7 +512,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -534,7 +534,7 @@ export const KortPeriodeMedHelg: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -557,7 +557,7 @@ export const KortPeriodeUtenHelg: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -591,7 +591,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -615,7 +615,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
         },
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -639,7 +639,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
         },
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
+        bareFarMedmorHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };

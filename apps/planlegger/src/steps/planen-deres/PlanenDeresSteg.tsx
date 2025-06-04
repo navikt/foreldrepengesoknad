@@ -251,7 +251,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     <VStack gap="5">
                         <div className={styles.calendar}>
                             <UttaksplanKalender
-                                bareFarHarRett={bareFarMedmorHarRett}
+                                bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={planforslag.søker1}
