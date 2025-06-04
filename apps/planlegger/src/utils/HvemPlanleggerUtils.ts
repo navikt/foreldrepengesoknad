@@ -2,6 +2,7 @@ import { IntlShape } from 'react-intl';
 import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor } from 'types/HvemPlanlegger';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
@@ -115,10 +116,10 @@ export const getTekstForDeSomHarRett = (
     }
 
     if (hvemHarRett === 'kunSøker1HarRett') {
-        return getNavnPåSøker1(hvemPlanlegger, intl);
+        return capitalizeFirstLetter(getNavnPåSøker1(hvemPlanlegger, intl));
     }
     if (hvemHarRett === 'kunSøker2HarRett') {
-        return getNavnPåSøker2(hvemPlanlegger, intl);
+        return capitalizeFirstLetter(getNavnPåSøker2(hvemPlanlegger, intl));
     }
     if (hvemHarRett === 'beggeHarRett') {
         return intl.formatMessage({ id: 'Dere' });
