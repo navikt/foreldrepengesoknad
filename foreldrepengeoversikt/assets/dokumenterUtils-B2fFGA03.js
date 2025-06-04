@@ -1,1 +1,0 @@
-import{d as e}from"./dates-efjv5HSM.js";import{u as a}from"./api-CoS7o7am.js";const u=t=>{const r={};return t.forEach(o=>{const s=e(o.mottatt).format();r[s]?r[s].push(o):r[s]=[o]}),r},m=t=>`${a}/rest/dokument/hent-dokument/${t.journalpostId}/${t.dokumentId}`;export{u as g,m as l};
