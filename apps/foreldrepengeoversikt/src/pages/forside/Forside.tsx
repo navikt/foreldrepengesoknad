@@ -62,6 +62,7 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
                         relevantNyTidslinjehendelse={undefined}
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
+                        manglendeVedlegg={[]}
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     />
                 )}
