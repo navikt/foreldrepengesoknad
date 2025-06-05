@@ -47,7 +47,7 @@
     "ArbeidsforholdOppsummering.egenNæringVarigEndringDato": "Kva var datoen for endringa?",
     "ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring": "Kva var næringsinntekta di etter endringa?",
     "ArbeidsforholdOppsummering.varigEndringBeskrivelse.label": "Kva har endra seg i verksemda eller arbeidssituasjonen din?",
-    "ArbeidsforholdOppsummering.inntektsmelding": "{antall, plural, one {Arbeidsgivaren din} other {Arbeidsgivarane dine}} blir kontakta av Nav for å sende opplysningar om inntekta di. Dette vil skje fire veker før du skal starte permisjonen. Dei vil då få informasjon om periodane du har søkt om.",
+    "ArbeidsforholdOppsummering.inntektsmelding": "{antall, plural, one {Arbeidsgivaren din} other {Arbeidsgivarane dine}} blir kontakta av Nav for å sende opplysningar om inntekta di. Dette vil skje fire veker før du skal starte permisjonen.",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.periode": "Frå {fra} til {til}",
     "EndreSvar": "Endre svar",
