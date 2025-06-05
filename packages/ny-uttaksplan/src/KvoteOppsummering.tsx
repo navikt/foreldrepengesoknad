@@ -6,20 +6,21 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy } from '@navikt/fp-types';
+import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
+import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
     konto: KontoBeregningDto;
-    perioder: SaksperiodeNy[];
+    perioder: Planperiode[];
     rettighetType: FpSak['rettighetType'];
     forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
-    brukesIHvilkenApp: 'PLANLEGGER' | 'INNSYN' | 'SØKNAD';
+    modus: UttaksplanModus;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -33,6 +34,7 @@ export const useKvote = () => {
 };
 
 export const KvoteOppsummering = (props: Props) => {
+    console.log(props.perioder);
     return (
         <KvoteContext.Provider value={props}>
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
@@ -62,7 +64,7 @@ const OppsummeringsTittel = () => {
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiehendelse } = useKvote();
+    const { konto, perioder, familiehendelse, modus } = useKvote();
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
@@ -159,13 +161,13 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
             }
-            beskrivelse={<FormattedMessage id="kvote.beskrivelse.endre.du" />}
+            beskrivelse={modus === 'innsyn' ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
         />
     );
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, brukesIHvilkenApp, navnPåForeldre, forelder } = useKvote();
+    const { konto, perioder, familiehendelse, modus, navnPåForeldre, forelder } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -230,7 +232,7 @@ const KvoteTittel = () => {
                       },
                       {
                           varighet: getVarighetString(ubrukteDagerFar * -1, intl),
-                          navnPåForeldre: navnPåForeldre.farMedmor,
+                          forelder: navnPåForeldre.farMedmor,
                       },
                   )
                 : '';
@@ -331,7 +333,7 @@ const KvoteTittel = () => {
               )
             : '';
 
-    const visInformasjonOmHvordanEndre = brukesIHvilkenApp === 'INNSYN';
+    const visInformasjonOmHvordanEndre = modus === 'innsyn';
 
     const navnPåAnnenForelder = forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
@@ -456,17 +458,11 @@ const FellesKvoter = () => {
     if (!fellesKonto) {
         return null;
     }
-
     const dagerBruktAvDeg = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder === forelder),
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        perioder.filter((p) => {
-            const somOppholdsÅrsak = p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER';
-            const somFellesperiode = p.kontoType === 'FELLESPERIODE'; // Før fars søknad er vedtatt så vil mors fellesperioder vises uten oppholdsårsak
-
-            return (somOppholdsÅrsak || somFellesperiode) && p.forelder !== forelder;
-        }),
+        perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder !== forelder),
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
     const ubrukteDager = fellesKonto.dager - samletBrukteDager;

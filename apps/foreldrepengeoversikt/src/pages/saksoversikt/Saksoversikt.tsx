@@ -130,7 +130,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                        manglendeVedlegg={manglendeVedleggQuery.data}
+                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         saksnummer={params.saksnummer}
                     />
                 )}
@@ -157,7 +157,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                     bankkonto={søkerinfo.søker.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                    manglendeVedlegg={manglendeVedleggQuery.data}
+                    manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                     saksnummer={params.saksnummer}
                 />
             )}

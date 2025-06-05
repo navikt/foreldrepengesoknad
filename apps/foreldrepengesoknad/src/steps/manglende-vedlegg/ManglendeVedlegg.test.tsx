@@ -15,6 +15,7 @@ const {
     Aleneomsorgdokumentasjon,
     FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
     FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
+    BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
@@ -296,7 +297,6 @@ describe('<ManglendeVedlegg>', () => {
         expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
         expect(
             await screen.findByText(
-                // Delt i to for å unngå at linjelengden blir for lang
                 'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
                     'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
                 { exact: false },
@@ -329,6 +329,37 @@ describe('<ManglendeVedlegg>', () => {
             await screen.findByText(
                 'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
                     ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.OPPSUMMERING,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal håndtere automatisk dokumentasjon når bfhr og mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        applyRequestHandlers(BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
+        const screen = render(
+            <BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+        expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                    'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
