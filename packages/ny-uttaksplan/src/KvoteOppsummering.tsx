@@ -232,7 +232,7 @@ const KvoteTittel = () => {
                       },
                       {
                           varighet: getVarighetString(ubrukteDagerFar * -1, intl),
-                          navnPåForeldre: navnPåForeldre.farMedmor,
+                          forelder: navnPåForeldre.farMedmor,
                       },
                   )
                 : '';
