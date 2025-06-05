@@ -53,11 +53,11 @@ const leggTilPeriodeOgBuild = (
     førsteUttaksdagNesteBarnsSak: string | undefined,
     erIPlanleggerModus: boolean,
 ) => {
-    const annenPart = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
+    const annenPartPlanlegger = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
 
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
-            perioder: erIPlanleggerModus ? perioder.filter((p) => p.forelder !== annenPart) : perioder,
+            perioder: erIPlanleggerModus ? perioder.filter((p) => p.forelder !== annenPartPlanlegger) : perioder,
             nyPeriode,
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,
