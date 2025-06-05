@@ -4,12 +4,11 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { aktivitetskravMorUtil, getMorsAktivitet, getMorsAktivitetSkjemanummer } from './morsAktivitetUtils';
 
 describe('Aktivitetskrav ved utsettelse', () => {
-    it('should be required if søkerErFarEllerMedmor and !annenForelderHarRettPåFP && !ufør', () => {
+    it('should be required if søkerErFarEllerMedmor and !annenForelderHarRettPåFP', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
             harRettPåForeldrepengerIEØS: false,
-            erMorUfør: false,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,
@@ -18,11 +17,10 @@ describe('Aktivitetskrav ved utsettelse', () => {
         expect(aktivitetskravIsRequired).toBe(true);
     });
 
-    it('should not be required if !søkerErFarEllerMedmor && erUfør', () => {
+    it('should not be required if !søkerErFarEllerMedmor', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
-            erMorUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             false,
@@ -35,7 +33,6 @@ describe('Aktivitetskrav ved utsettelse', () => {
         const omAnnenForelder: Partial<AnnenForelderOppgitt> = {
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: true,
-            erMorUfør: true,
         };
         const aktivitetskravIsRequired = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
             true,

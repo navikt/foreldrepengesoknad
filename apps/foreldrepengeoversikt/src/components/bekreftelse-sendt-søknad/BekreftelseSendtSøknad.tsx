@@ -1,4 +1,5 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
@@ -9,8 +10,12 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
+import { søkerInfoOptions } from '../../api/api.ts';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
+import { getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils.ts';
+import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
@@ -18,21 +23,9 @@ interface Props {
     bankkonto: Søkerinfo['søker']['bankkonto'];
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
-    manglendeVedlegg?: Skjemanummer[];
+    manglendeVedlegg: Skjemanummer[];
     saksnummer?: string;
 }
-
-const getTidspunktTekst = (mottattDato: string | undefined) => {
-    if (!mottattDato) {
-        return undefined;
-    }
-    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
-        return `Sendt i dag kl. ${formatTime(mottattDato)}`;
-    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
-        return `Sendt i går kl. ${formatTime(mottattDato)}`;
-    }
-    return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
-};
 
 export const BekreftelseSendtSøknad = ({
     relevantNyTidslinjehendelse,
@@ -48,12 +41,6 @@ export const BekreftelseSendtSøknad = ({
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
-
-    // TODO: mistenker denne alltid vil være undefined?
-    // const tidligstBehandlingsDato = relevantNyTidslinjehendelse
-    //     ? relevantNyTidslinjehendelse.tidligstBehandlingsDato
-    //     : undefined;
-    const tidligstBehandlingsDato = undefined;
 
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
@@ -76,7 +63,7 @@ export const BekreftelseSendtSøknad = ({
                 </ul>
             )}
             <Accordion>
-                {manglendeVedlegg && manglendeVedlegg.length > 0 && (
+                {manglendeVedlegg.length > 0 && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -111,49 +98,98 @@ export const BekreftelseSendtSøknad = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                {ytelse === 'ENGANGSSTØNAD' && (
-                    <>
-                        <Accordion.Item>
-                            <Accordion.Header>
+                {ytelse === 'ENGANGSSTØNAD' && <EngangsstønadBekreftelse />}
+                {ytelse === 'FORELDREPENGER' && <ForeldrepengerBekreftelse />}
+                {ytelse === 'SVANGERSKAPSPENGER' && <SvangerskapspengerBekreftelse />}
+                <KontonummerInfo
+                    ytelse={ytelse}
+                    bankkonto={bankkonto}
+                    harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                />
+            </Accordion>
+        </VStack>
+    );
+};
+
+const EngangsstønadBekreftelse = () => {
+    return (
+        <>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <BodyShort weight="semibold">
+                        <FormattedMessage id="BekreftelseSendtSøknad.NårDuFårSvar" />
+                    </BodyShort>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <BodyLong size="small" spacing>
+                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
+                    </BodyLong>
+                    <BodyLong size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
+                    </BodyLong>
+                </Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <BodyShort weight="semibold">
+                        <FormattedMessage id="BekreftelseSendtSøknad.NårUtbetalesPengene" />
+                    </BodyShort>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <BodyLong size="small" spacing>
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
+                    </BodyLong>
+                    <BodyLong size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
+                        <Link href={links.utbetalingsoversikt}>
+                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
+                        </Link>
+                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
+                    </BodyLong>
+                </Accordion.Content>
+            </Accordion.Item>
+        </>
+    );
+};
+
+const ForeldrepengerBekreftelse = () => {
+    const harMinstEttArbeidsforhold = useHarMinstEttArbeidsforhold();
+    const venterPåInntektsmelding = useVenterPåInntektsmelding();
+
+    return (
+        <>
+            {harMinstEttArbeidsforhold && (
+                <>
+                    <Accordion.Item>
+                        <Accordion.Header>
+                            <VStack gap="1">
+                                <Detail textColor="subtle" uppercase>
+                                    Neste steg
+                                </Detail>
                                 <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.NårDuFårSvar" />
+                                    Arbeidsgiveren din må sende inntektsmelding til Nav
                                 </BodyShort>
-                            </Accordion.Header>
-                            <Accordion.Content>
-                                <VStack gap="2">
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
-                                    </BodyLong>
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
-                                    </BodyLong>
-                                </VStack>
-                            </Accordion.Content>
-                        </Accordion.Item>
-                        <Accordion.Item>
-                            <Accordion.Header>
-                                <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.NårUtbetalesPengene" />
-                                </BodyShort>
-                            </Accordion.Header>
-                            <Accordion.Content>
-                                <VStack gap="2">
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
-                                    </BodyLong>
-                                    <BodyLong size="small">
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
-                                        <Link href={links.utbetalingsoversikt}>
-                                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
-                                        </Link>
-                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
-                                    </BodyLong>
-                                </VStack>
-                            </Accordion.Content>
-                        </Accordion.Item>
-                    </>
-                )}
-                {ytelse === 'FORELDREPENGER' && harMinstEttArbeidsforhold && (
+                            </VStack>
+                        </Accordion.Header>
+                        <Accordion.Content>
+                            <BodyLong spacing size="small">
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.flerearbeidsgivere" />
+                            </BodyLong>
+                            <BodyLong spacing size="small">
+                                {venterPåInntektsmelding ? undefined : (
+                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.fp" />
+                                )}
+                            </BodyLong>
+                            <BodyLong size="small">
+                                {venterPåInntektsmelding ? (
+                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
+                                ) : (
+                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
+                                )}
+                            </BodyLong>
+                        </Accordion.Content>
+                    </Accordion.Item>
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -166,60 +202,148 @@ export const BekreftelseSendtSøknad = ({
                             </VStack>
                         </Accordion.Header>
                         <Accordion.Content>
-                            <FormattedMessage id="BekreftelseSendtSøknad.HuskÅInformere" />
+                            <BodyLong size="small">
+                                <FormattedMessage id="BekreftelseSendtSøknad.HuskÅInformere" />
+                            </BodyLong>
                         </Accordion.Content>
                     </Accordion.Item>
-                )}
-                {(ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') && (
-                    <Accordion.Item>
-                        <Accordion.Header>
-                            <VStack gap="1">
-                                <Detail textColor="subtle">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
-                                </Detail>
-                                <BodyShort weight="semibold">
-                                    {tidligstBehandlingsDato &&
-                                        capitalizeFirstLetter(formatDateMedUkedag(tidligstBehandlingsDato))}
-                                    {!tidligstBehandlingsDato && (
-                                        <FormattedMessage
-                                            id="BekreftelseSendtSøknad.FireUkerFør"
-                                            values={{ erFp: ytelse === 'FORELDREPENGER' }}
-                                        />
-                                    )}
-                                </BodyShort>
-                            </VStack>
-                        </Accordion.Header>
-                        <Accordion.Content>
-                            <FormattedMessage
-                                id="BekreftelseSendtSøknad.TidligstSvarForklaring"
-                                values={{ erFp: ytelse === 'FORELDREPENGER' }}
-                            />
-                        </Accordion.Content>
-                    </Accordion.Item>
-                )}
-                <KontonummerInfo
-                    ytelse={ytelse}
-                    bankkonto={bankkonto}
-                    harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                />
-                {ytelse === 'FORELDREPENGER' && (
-                    <Accordion.Item>
-                        <Accordion.Header>
-                            <VStack gap="1">
-                                <Detail textColor="subtle">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.TilSenere" />
-                                </Detail>
-                                <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.HvisDuVilEndre" />
-                                </BodyShort>
-                            </VStack>
-                        </Accordion.Header>
-                        <Accordion.Content>
-                            <FormattedMessage id="BekreftelseSendtSøknad.SendEndringssøknad" />
-                        </Accordion.Content>
-                    </Accordion.Item>
-                )}
-            </Accordion>
-        </VStack>
+                </>
+            )}
+            <TidligstMuligeSvar />
+            <Accordion.Item>
+                <Accordion.Header>
+                    <VStack gap="1">
+                        <Detail textColor="subtle">
+                            <FormattedMessage id="BekreftelseSendtSøknad.TilSenere" />
+                        </Detail>
+                        <BodyShort weight="semibold">
+                            <FormattedMessage id="BekreftelseSendtSøknad.HvisDuVilEndre" />
+                        </BodyShort>
+                    </VStack>
+                </Accordion.Header>
+                <Accordion.Content>
+                    <BodyLong size="small">
+                        <FormattedMessage id="BekreftelseSendtSøknad.SendEndringssøknad" />
+                    </BodyLong>
+                </Accordion.Content>
+            </Accordion.Item>
+        </>
     );
+};
+
+const SvangerskapspengerBekreftelse = () => {
+    const venterPåInntektsmelding = useVenterPåInntektsmelding();
+    const harMinstEttArbeidsforhold = useHarMinstEttArbeidsforhold();
+
+    return (
+        <>
+            {harMinstEttArbeidsforhold && (
+                <Accordion.Item>
+                    <Accordion.Header>
+                        <VStack gap="1">
+                            <Detail textColor="subtle" uppercase>
+                                Neste steg
+                            </Detail>
+                            <BodyShort weight="semibold">Arbeidsgiveren din må sende inntektsmelding til Nav</BodyShort>
+                        </VStack>
+                    </Accordion.Header>
+                    <Accordion.Content>
+                        <BodyLong spacing size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                        </BodyLong>
+                        <BodyLong spacing size="small">
+                            {venterPåInntektsmelding ? undefined : (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.svp" />
+                            )}
+                        </BodyLong>
+                        <BodyLong size="small">
+                            {venterPåInntektsmelding ? (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
+                            ) : (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
+                            )}
+                        </BodyLong>
+                    </Accordion.Content>
+                </Accordion.Item>
+            )}
+            <TidligstMuligeSvar />
+        </>
+    );
+};
+
+const TidligstMuligeSvar = () => {
+    const tidligstMuligeSvar = useGetTidligstMuligeSvar();
+    const sak = useGetSelectedSak();
+
+    if (!sak) {
+        return null;
+    }
+
+    return (
+        <Accordion.Item>
+            <Accordion.Header>
+                <VStack gap="1">
+                    <Detail textColor="subtle">
+                        <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
+                    </Detail>
+                    <BodyShort weight="semibold">
+                        {tidligstMuligeSvar ? (
+                            capitalizeFirstLetter(formatDateMedUkedag(tidligstMuligeSvar))
+                        ) : (
+                            <FormattedMessage
+                                id="BekreftelseSendtSøknad.FireUkerFør"
+                                values={{ erFp: sak.ytelse === 'FORELDREPENGER' }}
+                            />
+                        )}
+                    </BodyShort>
+                </VStack>
+            </Accordion.Header>
+            <Accordion.Content>
+                <BodyLong size="small">
+                    <FormattedMessage
+                        id="BekreftelseSendtSøknad.TidligstSvarForklaring"
+                        values={{ erFp: sak.ytelse === 'FORELDREPENGER' }}
+                    />
+                </BodyLong>
+            </Accordion.Content>
+        </Accordion.Item>
+    );
+};
+
+const getTidspunktTekst = (mottattDato: string | undefined) => {
+    if (!mottattDato) {
+        return undefined;
+    }
+    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
+        return `Sendt i dag kl. ${formatTime(mottattDato)}`;
+    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
+        return `Sendt i går kl. ${formatTime(mottattDato)}`;
+    }
+    return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
+};
+
+const useHarMinstEttArbeidsforhold = () => {
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
+
+    return (søkerInfo?.arbeidsforhold ?? []).length > 0;
+};
+
+const useVenterPåInntektsmelding = () => {
+    const sak = useGetSelectedSak();
+
+    if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
+        return undefined;
+    }
+
+    return sak.åpenBehandling?.tilstand === 'VENT_INNTEKTSMELDING';
+};
+
+const useGetTidligstMuligeSvar = () => {
+    const sak = useGetSelectedSak();
+
+    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+        return undefined;
+    }
+
+    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak)?.toISOString());
 };
