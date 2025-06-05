@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextSaveData } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
+import ky from 'ky';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -19,6 +21,7 @@ import {
 import { links } from '@navikt/fp-constants';
 import { ContentWrapper } from '@navikt/fp-ui';
 
+import { Saker } from '../../../../../packages/types';
 import styles from './forside.module.css';
 
 interface Props {
@@ -108,6 +111,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             </div>
                         </VStack>
                     </Alert>
+                    <EksisterendeSøknad />
                     <ConfirmationPanel
                         label={intl.formatMessage({ id: 'forside.samtykke' })}
                         onChange={() => setIsChecked((state) => !state)}
@@ -146,4 +150,23 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
             </VStack>
         </ContentWrapper>
     );
+};
+
+const EksisterendeSøknad = () => {
+    const sak = useQuery({
+        queryKey: ['SAKER'],
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+        select: (saker) => {
+            const a = saker.svangerskapspenger[0]; // TODO: condition, oppdatert sist?
+            return a;
+        },
+    }).data;
+
+    if (!sak) {
+        return null;
+    }
+
+    console.log(sak);
+
+    return 'Du har allerede en søknad under behandling';
 };

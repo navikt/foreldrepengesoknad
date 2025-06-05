@@ -5,7 +5,7 @@ import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
