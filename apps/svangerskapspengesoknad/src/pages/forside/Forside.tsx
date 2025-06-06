@@ -153,20 +153,23 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
 };
 
 const EksisterendeSøknad = () => {
-    const sak = useQuery({
-        queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
-        select: (saker) => {
-            const a = saker.svangerskapspenger[0]; // TODO: condition, oppdatert sist?
-            return a;
-        },
-    }).data;
+    const harÅpenBehandling =
+        useQuery({
+            queryKey: ['SAKER'],
+            queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+            select: (saker) => {
+                return !!saker.svangerskapspenger.find((sak) => sak.åpenBehandling !== undefined);
+            },
+        }).data ?? false;
 
-    if (!sak) {
+    if (!harÅpenBehandling) {
         return null;
     }
 
-    console.log(sak);
-
-    return 'Du har allerede en søknad under behandling';
+    return (
+        <Alert variant="info">
+            Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til
+            behandling.
+        </Alert>
+    );
 };
