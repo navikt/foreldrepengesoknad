@@ -79,8 +79,13 @@ export const SøknadUtenVedtak: Story = {
                                 },
                                 {
                                     fom: '2025-04-26',
-                                    tom: '2025-07-07',
+                                    tom: '2025-07-04',
                                     type: 'HEL',
+                                },
+                                {
+                                    fom: '2025-07-05',
+                                    tom: '2025-07-07',
+                                    type: 'INGEN',
                                 },
                                 {
                                     fom: '2025-03-15',

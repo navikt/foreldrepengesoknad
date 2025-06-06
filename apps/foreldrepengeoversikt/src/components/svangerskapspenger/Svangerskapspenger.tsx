@@ -84,7 +84,12 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
 
                 const skalViseSomSvp = prosentSvangerskapspengerHvisInnvilget > 0;
-                const skalViseSomJobb = prosentSvangerskapspengerHvisInnvilget <= 0 && prosentJobb > 0;
+                // const skalViseSomJobb = !skalViseSomSvp && prosentJobb >= 0;
+
+                /*
+                 Vi ønsker kun å vise %-svangerskapspenger når det er fattet et vedtak. Prosenten som kan utledes fra søknaden er ikke nødvendigvis reell.
+                 Derfor vil vi vise oppgitt arbeidstidprosent når det er en åpenBehandling
+                */
 
                 return (
                     <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
@@ -98,7 +103,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                         prosentSvangerskapspenger={prosentSvangerskapspengerHvisInnvilget}
                                     />
                                 )}
-                                {skalViseSomJobb && <DuHarArbeid prosentArbeid={prosentJobb} />}
+                                {p.årsak === undefined && <DuHarArbeid prosentArbeid={prosentJobb} />}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
                                 {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
                             </div>
@@ -117,7 +122,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                     <BodyShort>{`${prosentJobb} % jobb`}</BodyShort>
                                 </VStack>
                                 {skalViseSomSvp && <GravidIkon />}
-                                {skalViseSomJobb && <JobbIkon />}
+                                {p.årsak === undefined && <JobbIkon />}
                                 {p.årsak === 'FERIE' && <ParasollIkon />}
                                 {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
                             </div>
