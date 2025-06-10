@@ -39,7 +39,7 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "Du kan finna ut om du er sjølvstendig næringsdrivande i vegvisaren til <a>skatteetaten</a>. Der kan du og finne meir informasjon om kva det tyder å vere sjølvstendig næringsdrivande.",
     "inntektsinformasjon.hattArbeidIUtlandet": "Har du jobba i utlandet dei siste 4 vekene?",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "Du kan ikkje søkje om svangerskapspengar sidan du ikkje har noko arbeidsforhold.",
-    "inntektsinformasjon.alert.ingenArbeidsforhold": "Sidan det ikkje er registrert noko arbeidsforhold på deg, har du dessverre ikkje moglegheit til å søkje om svangerskapspengar.",
+    "inntektsinformasjon.alert.ingenArbeidsforhold": "Sidan det ikkje er registrert nokon arbeidsforhold på deg, eller har opplyst at du er frilansar eller sjølvstendig næringsdrivande, har du dessverre ikkje moglegheit til å sende søknad om svangerskapspengar.",
     "inntektsinformasjon.hattAndreInntektskilder": "Har du hatt andre inntektskilder dei siste 10 månadene?",
     "ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder": "Nokon andre inntektskilder kan virka inn på retten på foreldrepengar",
     "ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder": "Arbeid i utlandet, sluttpakke eller etterlønn og førstegongsteneste er inntektskilder som kan virka inn på foreldrepengane.",

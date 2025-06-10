@@ -39,7 +39,7 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "You can find out if you are self-employed in the guide at the <a>Tax Administration</a>. There you can also find more information about what it means to be self-employed.",
     "inntektsinformasjon.hattArbeidIUtlandet": "Have you worked abroad in the last 4 weeks?",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel":"You cannot apply for pregnancy benefits since you have no employment.",
-    "inntektsinformasjon.alert.ingenArbeidsforhold": "As there is no registered employment for you, you are unfortunately not eligible to apply for maternity benefits.",
+    "inntektsinformasjon.alert.ingenArbeidsforhold": "As there is no registered employment for you, or any information indicating that you are a freelancer or self-employed, you are unfortunately not eligible to apply for maternity benefits.",
     "inntektsinformasjon.hattAndreInntektskilder": "Have you had other sources of income in the last 10 months?",
     "ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder": "Some other sources of income may affect the right to parental allowance",
     "ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder": "Work abroad, severance package or severance pay and military service are sources of income that can affect the parental allowance.",
