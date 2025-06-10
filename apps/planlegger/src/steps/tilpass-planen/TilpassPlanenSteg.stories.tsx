@@ -11,7 +11,7 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './TilpassPlanenSteg';
@@ -56,8 +56,8 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                        [ContextDataType.UTTAKSPLAN]: [uttaksplan as any],
-                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: originalUttaksplan,
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} />
@@ -80,7 +80,7 @@ export const MorOgFarBeggeHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2024-07-01',
+            termindato: '2025-05-09',
             antallBarn: '1',
         },
         fordeling: {
@@ -113,8 +113,60 @@ export const MorOgFarBeggeHarRett: Story = {
                 minsteretter: MINSTERETTER,
             },
         },
-        uttaksplan: [],
-        originalUttaksplan: [],
+        uttaksplan: [
+            [
+                {
+                    forelder: Forelder.mor,
+                    kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                    fom: '2025-04-18',
+                    tom: '2025-05-08',
+                },
+                {
+                    forelder: Forelder.mor,
+                    kontoType: StønadskontoType.Mødrekvote,
+                    fom: '2025-05-09',
+                    tom: '2025-08-21',
+                },
+                {
+                    forelder: Forelder.mor,
+                    kontoType: StønadskontoType.Fellesperiode,
+                    fom: '2025-08-22',
+                    tom: '2025-12-11',
+                },
+                {
+                    forelder: Forelder.farMedmor,
+                    kontoType: StønadskontoType.Fedrekvote,
+                    fom: '2025-12-12',
+                    tom: '2026-03-26',
+                },
+            ],
+        ],
+        originalUttaksplan: [
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                fom: '2025-04-18',
+                tom: '2025-05-08',
+            },
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Mødrekvote,
+                fom: '2025-05-09',
+                tom: '2025-08-21',
+            },
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Fellesperiode,
+                fom: '2025-08-22',
+                tom: '2025-12-11',
+            },
+            {
+                forelder: Forelder.farMedmor,
+                kontoType: StønadskontoType.Fedrekvote,
+                fom: '2025-12-12',
+                tom: '2026-03-26',
+            },
+        ],
     },
 };
 
@@ -142,6 +194,36 @@ export const MorOgFarKunMorHarRett: Story = {
                 minsteretter: MINSTERETTER,
             },
         },
+        uttaksplan: [
+            [
+                {
+                    forelder: Forelder.mor,
+                    kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                    fom: '2025-04-18',
+                    tom: '2025-05-08',
+                },
+                {
+                    forelder: Forelder.mor,
+                    kontoType: StønadskontoType.Foreldrepenger,
+                    fom: '2025-05-09',
+                    tom: '2026-03-26',
+                },
+            ],
+        ],
+        originalUttaksplan: [
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                fom: '2025-04-18',
+                tom: '2025-05-08',
+            },
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Foreldrepenger,
+                fom: '2025-05-09',
+                tom: '2026-03-26',
+            },
+        ],
     },
 };
 
