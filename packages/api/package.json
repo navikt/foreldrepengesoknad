@@ -11,15 +11,15 @@
     },
     "dependencies": {
         "@navikt/fp-types": "workspace:*",
-        "ky": "^1.7.4",
+        "ky": "^1.8.1",
         "react": "^19.1.0",
         "react-dom": "^19.1.0"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.6.3",
-        "@types/react": "^19.1.4",
-        "eslint": "9.26.0",
+        "@types/react": "^19.1.7",
+        "eslint": "9.28.0",
         "tsconfig": "workspace:*",
         "typescript": "^5.8.3"
     },
