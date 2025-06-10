@@ -31,3 +31,31 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
 
     return undefined;
 };
+
+export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: string) => {
+    const samtidiguttaksprosent = getFloatFromString(value);
+
+    if (!hasValue(value) || value.trim() === '') {
+        return intl.formatMessage({ id: 'leggTilPeriodeModal.samtidiguttaksprosent.påkrevd' });
+    }
+
+    if (samtidiguttaksprosent === undefined) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreEtTall',
+        });
+    }
+
+    if (samtidiguttaksprosent <= 0) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreStørreEnn0',
+        });
+    }
+
+    if (samtidiguttaksprosent >= 100) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreMindreEnn100',
+        });
+    }
+
+    return undefined;
+};

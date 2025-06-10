@@ -1,8 +1,10 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
+
+import { prosentValideringSamtidigUttak } from './validators';
 
 interface Props {
     formMethods: any;
@@ -10,6 +12,7 @@ interface Props {
 
 export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
     const samtidigUttakValue = formMethods.watch('samtidigUttak');
+    const intl = useIntl();
 
     return (
         <VStack gap="4">
@@ -26,6 +29,7 @@ export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
                     className="w-xs"
                     label="Hvor mange prosent?"
                     name="samtidigUttaksprosent"
+                    validate={[prosentValideringSamtidigUttak(intl)]}
                     maxLength={5}
                 />
             )}
