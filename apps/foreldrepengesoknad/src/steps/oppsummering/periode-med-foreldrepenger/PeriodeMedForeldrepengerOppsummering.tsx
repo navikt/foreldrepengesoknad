@@ -5,7 +5,7 @@ import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'app
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 import { getVarighetString } from 'utils/dateUtils';
-import { getAntallUker } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -94,7 +94,7 @@ const PeriodeLabel = () => {
             <FormattedMessage
                 id="uttaksplaninfo.49Uker"
                 values={{
-                    varighetString: getVarighetString(getAntallUker(konto) * 5, intl),
+                    varighetString: getVarighetString(getAntallUkerFraStønadskontoer(konto.kontoer) * 5, intl),
                 }}
             />
         );
@@ -104,7 +104,7 @@ const PeriodeLabel = () => {
         <FormattedMessage
             id="uttaksplaninfo.59Uker"
             values={{
-                varighetString: getVarighetString(getAntallUker(konto) * 5, intl),
+                varighetString: getVarighetString(getAntallUkerFraStønadskontoer(konto.kontoer) * 5, intl),
             }}
         />
     );

@@ -31,13 +31,13 @@ import {
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     getNavnPåForeldre,
 } from 'utils/personUtils';
-import { getAntallUker, getAntallUkerMinsterett } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
+import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Button, Loader, VStack } from '@navikt/ds-react';
 
 import {
-    Dekningsgrad,
     Forelder,
     Periode,
     isAnnenForelderOppgitt,
@@ -61,7 +61,6 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
 import { AutomatiskJusteringForm } from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
@@ -472,9 +471,12 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         annenPartVedtakQuery.data,
         eksisterendeSak,
     );
-    const tilgjengeligeStønadskontoerQuery = useQuery(
-        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !kontoRequestIsSuspended),
-    );
+    const tilgjengeligeStønadskontoerQuery = useQuery({
+        ...tilgjengeligeStønadskontoerOptions(stønadskontoParams, !kontoRequestIsSuspended),
+        select: (kontoer) => {
+            return kontoer[dekningsgrad];
+        },
+    });
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
         setSubmitIsClicked(false);
@@ -501,14 +503,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         });
     };
 
-    const valgteStønadskontoer = useMemo(() => {
-        if (tilgjengeligeStønadskontoerQuery.data) {
-            return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                ? tilgjengeligeStønadskontoerQuery.data[100]
-                : tilgjengeligeStønadskontoerQuery.data[80];
-        }
-        return undefined;
-    }, [tilgjengeligeStønadskontoerQuery.data, dekningsgrad]);
+    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
     useEffect(() => {
         if (uttaksplan.length === 0) {
@@ -571,9 +566,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         );
     }
 
-    const minsterettUkerToTette = getAntallUkerMinsterett(
-        tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT].minsteretter.toTette,
-    );
+    const minsterettUkerToTette = getAntallUkerMinsterett(tilgjengeligeStønadskontoerQuery.data.minsteretter.toTette);
 
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
@@ -598,7 +591,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             setPerioderSomSkalSendesInn([]);
         }
     };
-    const antallUkerIUttaksplan = getAntallUker(valgteStønadskontoer!);
+    const antallUkerIUttaksplan = getAntallUkerFraStønadskontoer(valgteStønadskontoer!.kontoer);
 
     return (
         <UttaksplanFormComponents.FormikWrapper
