@@ -176,11 +176,12 @@ export const Oppsummering = (props: Props) => {
                     andreInntektskilder={andreInntektskilder}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER)}
                 />
-                <PeriodeMedForeldrepengerOppsummering
-                    dekningsgrad={dekningsgrad}
-                    annenForelder={annenForelder}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
-                />
+                {!erEndringssøknad && (
+                    <PeriodeMedForeldrepengerOppsummering
+                        onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
+                    />
+                )}
+
                 <UttaksplanOppsummering
                     perioder={uttaksplan}
                     navnPåForeldre={navnPåForeldre}
