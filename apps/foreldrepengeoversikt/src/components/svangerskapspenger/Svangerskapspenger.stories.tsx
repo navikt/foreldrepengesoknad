@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 

@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
