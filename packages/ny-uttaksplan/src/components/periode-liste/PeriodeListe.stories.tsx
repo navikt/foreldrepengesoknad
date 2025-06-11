@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
 
 import { Forelder } from '@navikt/fp-common';

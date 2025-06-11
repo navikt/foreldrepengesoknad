@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { PeriodeResultatÅrsak, SaksperiodeNy, UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';

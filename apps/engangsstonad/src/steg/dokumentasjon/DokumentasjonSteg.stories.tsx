@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { HttpResponse, http } from 'msw';

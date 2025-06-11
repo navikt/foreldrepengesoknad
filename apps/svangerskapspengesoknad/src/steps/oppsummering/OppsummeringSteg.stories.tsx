@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
