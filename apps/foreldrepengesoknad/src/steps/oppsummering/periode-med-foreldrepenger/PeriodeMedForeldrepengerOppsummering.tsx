@@ -19,11 +19,6 @@ interface Props {
 
 export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) => {
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-
-    if (!dekningsgrad || !annenForelder) {
-        return null;
-    }
 
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
