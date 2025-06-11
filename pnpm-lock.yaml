@@ -401,6 +401,9 @@ importers:
       compression:
         specifier: ^1.8.0
         version: 1.8.0
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       eslint:
         specifier: 9.28.0
         version: 9.28.0(jiti@2.4.2)
