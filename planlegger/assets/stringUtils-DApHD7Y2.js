@@ -1,1 +1,0 @@
-const n=t=>t.charAt(0).toUpperCase()+t.slice(1),r=t=>{const e=t.charAt(t.length-1).toLowerCase();return e==="s"||e==="x"||e==="z"},a=(t,e)=>e!=="nb"?t:r(t)?`${t}'`:`${t}s`,s=/[\p{Cf}\p{Zs}]/gu,c=t=>t===""?null:t.replace(s," "),i=(t,e)=>new Intl.ListFormat(e.locale,{style:"long",type:"conjunction"}).format(t);export{n as c,i as f,a as g,c as r};

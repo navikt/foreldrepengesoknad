@@ -1,1 +1,0 @@
-import{R as o,r as n}from"./index-D4lIrffr.js";let s=0;function r(t){const[e,a]=n.useState(t),c=t||e;return n.useEffect(()=>{e==null&&(s+=1,a(`aksel-icon-${s}`))},[e]),c}const u=o.useId;function d(t){var e;return u!==void 0?u().replace(/(:)/g,""):(e=r(t))!==null&&e!==void 0?e:""}export{d as u};
