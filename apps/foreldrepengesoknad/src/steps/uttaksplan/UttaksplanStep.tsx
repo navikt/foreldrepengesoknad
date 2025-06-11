@@ -591,7 +591,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             setPerioderSomSkalSendesInn([]);
         }
     };
-    const antallUkerIUttaksplan = getAntallUkerFraStønadskontoer(valgteStønadskontoer!.kontoer);
+    const antallUkerIUttaksplan = getAntallUkerFraStønadskontoer(valgteStønadskontoer?.kontoer ?? []);
 
     return (
         <UttaksplanFormComponents.FormikWrapper
