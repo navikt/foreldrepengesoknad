@@ -19,9 +19,9 @@ import {
 } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Saker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 
-import { Saker } from '../../../../../packages/types';
 import styles from './forside.module.css';
 
 interface Props {
