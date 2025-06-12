@@ -1,12 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
-import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter, getStønadskontoParams } from 'api/getStønadskontoParams';
+import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import {
-    annenPartVedtakOptions,
-    nesteSakAnnenPartVedtakOptions,
-    tilgjengeligeStønadskontoerOptions,
-} from 'appData/api';
+import { annenPartVedtakOptions, nesteSakAnnenPartVedtakOptions } from 'appData/api';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -459,20 +456,10 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         farMedmorErAleneOmOmsorg,
         rolle,
     );
-    const kontoRequestIsSuspended =
-        (eksisterendeSakAnnenPartRequestIsSuspended ? false : annenPartVedtakQuery.isPending) ||
-        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartVedtakQuery.isPending);
 
-    const stønadskontoParams = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartVedtakQuery.data,
-        eksisterendeSak,
-    );
+    const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskontoerQuery = useQuery({
-        ...tilgjengeligeStønadskontoerOptions(stønadskontoParams, !kontoRequestIsSuspended),
+        ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
         },
