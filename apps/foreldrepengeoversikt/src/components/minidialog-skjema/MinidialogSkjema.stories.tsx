@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
+import { action } from 'storybook/actions';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 

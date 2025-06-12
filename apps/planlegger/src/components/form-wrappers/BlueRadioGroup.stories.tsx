@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useForm } from 'react-hook-form';
 
 import { Radio } from '@navikt/ds-react';

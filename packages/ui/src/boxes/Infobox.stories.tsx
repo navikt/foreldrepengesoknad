@@ -1,5 +1,5 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Infobox } from './Infobox';
 
