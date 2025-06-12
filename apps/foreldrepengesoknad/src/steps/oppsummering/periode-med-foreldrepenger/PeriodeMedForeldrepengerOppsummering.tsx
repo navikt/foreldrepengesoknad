@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getStønadskontoParams } from 'api/getStønadskontoParams';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 import { getVarighetString } from 'utils/dateUtils';
 import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
@@ -54,27 +52,11 @@ export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) 
 
 const PeriodeLabel = () => {
     const intl = useIntl();
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-
-    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    const annenPartVedtakQuery = useQuery(annenPartVedtakOptions(annenPartVedtakParams, true));
-
-    const stønadskontoParams = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartVedtakQuery.data,
-        eksisterendeSak,
-    );
+    const kontoerOptions = useStønadsKontoerOptions();
     const konto = useQuery({
-        ...tilgjengeligeStønadskontoerOptions(stønadskontoParams, true),
+        ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
         },

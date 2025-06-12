@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
-    getStønadskontoParams,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskontoParams';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
+import { annenPartVedtakOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import {
     getAnnenPartVedtakParam,
@@ -17,7 +17,6 @@ import {
 } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import { getDekningsgradFromString } from 'utils/getDekningsgradFromString';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -51,7 +50,6 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
@@ -66,43 +64,29 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     const deltUttak = getIsDeltUttak(annenForelder);
 
     const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    const annenPartsVedtakQuery = useQuery(
-        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
-    );
-
-    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartsVedtakQuery.isPending;
-
-    const stønadskontoParams = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtakQuery.data,
-        eksisterendeSak,
-    );
-    const tilgjengeligeStønadskontoerQuery = useQuery(
-        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !suspendStønadskontoApiRequests),
-    );
-
-    const eksisterendeVedtakAnnenPart = useMemo(
-        () =>
-            mapAnnenPartsEksisterendeSakFromDTO(
-                annenPartsVedtakQuery.data,
+    const annenPartsVedtakQuery = useQuery({
+        ...annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
+        select: (data) => {
+            return mapAnnenPartsEksisterendeSakFromDTO(
+                data,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
-            ),
-        [annenPartsVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
-    );
+            );
+        },
+    });
+    const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    const minsterett = tilgjengeligeStønadskontoerQuery.data
-        ? tilgjengeligeStønadskontoerQuery.data[dekningsgrad].minsteretter
-        : undefined;
+    const kontoerOptions = useStønadsKontoerOptions();
+    const valgtStønadskonto = useQuery({
+        ...kontoerOptions,
+        select: (kontoer) => {
+            return kontoer[dekningsgrad];
+        },
+    }).data;
 
-    const valgtStønadskonto = tilgjengeligeStønadskontoerQuery.data
-        ? tilgjengeligeStønadskontoerQuery.data[getDekningsgradFromString(dekningsgrad)]
-        : undefined;
+    const minsterett = valgtStønadskonto?.minsteretter;
 
     const fordelingScenario =
         valgtStønadskonto && minsterett
@@ -184,7 +168,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
                     goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                     goToNextDefaultStep={navigator.goToNextDefaultStep}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                ></FordelingForm>
+                />
             </VStack>
         </Step>
     );
