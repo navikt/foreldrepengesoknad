@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
@@ -61,10 +61,6 @@ describe('<Forside>', () => {
         );
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-
-        screen.logTestingPlaygroundURL();
-        await waitFor(() => {
-            expect(screen.getByText('Du har en søknad til behandling')).toBeInTheDocument();
-        });
+        expect(await screen.findByText(/Du har en søknad til behandling/)).toBeInTheDocument();
     });
 });
