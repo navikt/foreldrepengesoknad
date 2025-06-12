@@ -50,6 +50,7 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
         enabled,
+        staleTime: Infinity,
     });
 
 export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams, enabled: boolean) =>

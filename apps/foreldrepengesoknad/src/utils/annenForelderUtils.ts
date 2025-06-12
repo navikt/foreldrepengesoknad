@@ -22,10 +22,10 @@ export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn
     };
 };
 
-export const shouldSuspendAnnenPartVedtakApiRequest = (annenForelder: AnnenForelder) => {
+export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {
     const annenPartFnr =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
-    return annenPartFnr !== undefined && annenPartFnr !== '' ? false : true;
+    return annenPartFnr !== undefined && annenPartFnr !== '';
 };
 
 export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
