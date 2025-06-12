@@ -46,7 +46,6 @@ const SØKERSITUASJON = {
 const BARNET = {
     antallBarn: 1,
     fødselsdatoer: ['2024-01-01'],
-    erBarnetFødt: true,
     type: BarnType.FØDT,
 } as Barn;
 
@@ -221,92 +220,71 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad`,
+            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
                 },
                 json: {
-                    type: 'foreldrepenger',
-                    erEndringssøknad: false,
-                    saksnummer: '1',
-                    uttaksplan: [],
-                    harGodkjentVilkår: true,
-                    informasjonOmUtenlandsopphold: {
-                        iNorgeNeste12Mnd: false,
-                        iNorgeSiste12Mnd: false,
-                        senereOpphold: [
-                            {
-                                land: 'SE',
-                                tidsperiode: {
-                                    fom: '2025-01-01',
-                                    tom: '2025-10-01',
-                                },
-                            },
-                        ],
-                        tidligereOpphold: [
-                            {
-                                land: 'SE',
-                                tidsperiode: {
-                                    fom: '2023-01-01',
-                                    tom: '2023-10-01',
-                                },
-                            },
-                        ],
-                    },
-                    søker: {
-                        andreInntekterSiste10Mnd: [
-                            {
-                                fom: '2023-01-01',
-                                pågående: false,
-                                tidsperiode: {
-                                    fom: '2023-01-01',
-                                    pågående: false,
-                                    tom: '2024-01-01',
-                                },
-                                tom: '2024-01-01',
-                                type: 'ETTERLØNN_SLUTTPAKKE',
-                            },
-                        ],
-                        erAleneOmOmsorg: undefined,
-                        frilansInformasjon: {
-                            jobberFremdelesSomFrilans: true,
-                            oppstart: '2024-01-01',
+                    rolle: 'MOR',
+                    språkkode: 'NB',
+                    andreInntekterSiste10Mnd: [
+                        {
+                            fom: '2023-01-01',
+                            tom: '2024-01-01',
+                            type: 'ETTERLØNN_SLUTTPAKKE',
                         },
-                        rolle: 'MOR',
-                        selvstendigNæringsdrivendeInformasjon: [
-                            {
-                                ...EGEN_NÆRING,
-                                næringstyper: [EGEN_NÆRING.næringstype],
-                                tidsperiode: {
-                                    fom: EGEN_NÆRING.fom,
-                                    tom: EGEN_NÆRING.tom,
-                                },
-                                tom: EGEN_NÆRING.tom,
-                                hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
-                                endringAvNæringsinntektInformasjon: {
-                                    dato: '2024-01-01',
-                                    forklaring: 'Beskrivelse av endring',
-                                    næringsinntektEtterEndring: 10000,
-                                },
-                            },
-                        ],
-                        språkkode: 'nb',
+                    ],
+                    frilans: {
+                        jobberFremdelesSomFrilans: true,
+                        oppstart: '2024-01-01',
+                    },
+                    egenNæring: {
+                        ...EGEN_NÆRING,
+                        næringstype: EGEN_NÆRING.næringstype,
+                        fom: EGEN_NÆRING.fom,
+                        tom: EGEN_NÆRING.tom,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                        varigEndringDato: '2024-01-01',
+                        varigEndringBeskrivelse: 'Beskrivelse av endring',
+                        varigEndringInntektEtterEndring: 10000,
                     },
                     annenForelder: {
-                        ...ANNEN_FORELDER,
-                        harAnnenForelderOppholdtSegIEØS: undefined,
-                        harMorUføretrygd: undefined,
-                        harRettPåForeldrepenger: undefined,
+                        type: 'norsk',
+                        fnr: ANNEN_FORELDER.fnr,
+                        fornavn: ANNEN_FORELDER.fornavn,
+                        etternavn: ANNEN_FORELDER.etternavn,
+                        rettigheter: {
+                            erInformertOmSøknaden: false,
+                            harRettPåForeldrepenger: false,
+                            erAleneOmOmsorg: undefined,
+                            harAnnenForelderOppholdtSegIEØS: undefined,
+                            harAnnenForelderTilsvarendeRettEØS: undefined,
+                            harMorUføretrygd: undefined,
+                        },
                     },
                     barn: {
+                        type: 'fødsel',
                         antallBarn: 1,
-                        fødselsdatoer: ['2024-01-01'],
-                        erBarnetFødt: true,
+                        fødselsdato: '2024-01-01',
                     },
+                    utenlandsopphold: [
+                        {
+                            landkode: 'SE',
+                            fom: '2023-01-01',
+                            tom: '2023-10-01',
+                        },
+                        {
+                            landkode: 'SE',
+                            fom: '2025-01-01',
+                            tom: '2025-10-01',
+                        },
+                    ],
                     dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-                    situasjon: SØKERSITUASJON.situasjon,
-                    ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
+                    uttaksplan: {
+                        ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
+                        uttaksperioder: [],
+                    },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 },
             }),
@@ -332,71 +310,46 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/endre`,
+            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
                 },
                 json: {
-                    type: 'foreldrepenger',
-                    erEndringssøknad: true,
                     saksnummer: '1',
-                    uttaksplan: [
-                        expect.objectContaining({
-                            erArbeidstaker: false,
-                            forelder: 'FAR_MEDMOR',
-                            type: 'utsettelse',
-                            årsak: 'FRI',
-                        }),
-                    ],
-                    søker: {
-                        andreInntekterSiste10Mnd: [
-                            {
-                                fom: '2023-01-01',
-                                pågående: false,
-                                tidsperiode: {
-                                    fom: '2023-01-01',
-                                    pågående: false,
-                                    tom: '2024-01-01',
-                                },
-                                tom: '2024-01-01',
-                                type: 'ETTERLØNN_SLUTTPAKKE',
-                            },
-                        ],
-                        erAleneOmOmsorg: undefined,
-                        frilansInformasjon: FRILANS,
-                        rolle: 'MOR',
-                        selvstendigNæringsdrivendeInformasjon: [
-                            {
-                                ...EGEN_NÆRING,
-                                næringstyper: [EGEN_NÆRING.næringstype],
-                                tidsperiode: {
-                                    fom: EGEN_NÆRING.fom,
-                                    tom: EGEN_NÆRING.tom,
-                                },
-                                tom: EGEN_NÆRING.tom,
-                                hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
-                                endringAvNæringsinntektInformasjon: {
-                                    dato: '2024-01-01',
-                                    forklaring: 'Beskrivelse av endring',
-                                    næringsinntektEtterEndring: 10000,
-                                },
-                            },
-                        ],
-                        språkkode: 'nb',
-                    },
+                    rolle: 'MOR',
+                    språkkode: 'NB',
                     annenForelder: {
-                        ...ANNEN_FORELDER,
-                        harAnnenForelderTilsvarendeRettEØS: undefined,
-                        harMorUføretrygd: undefined,
-                        harRettPåForeldrepenger: undefined,
+                        type: 'norsk',
+                        fnr: ANNEN_FORELDER.fnr,
+                        fornavn: ANNEN_FORELDER.fornavn,
+                        etternavn: ANNEN_FORELDER.etternavn,
+                        rettigheter: {
+                            erInformertOmSøknaden: false,
+                            harRettPåForeldrepenger: false,
+                            erAleneOmOmsorg: undefined,
+                            harAnnenForelderOppholdtSegIEØS: undefined,
+                            harAnnenForelderTilsvarendeRettEØS: undefined,
+                            harMorUføretrygd: undefined,
+                        },
                     },
                     barn: {
-                        ...BARNET,
+                        type: 'fødsel',
+                        antallBarn: 1,
+                        fødselsdato: '2024-01-01',
                     },
-                    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-                    situasjon: SØKERSITUASJON.situasjon,
-                    ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
+                    uttaksplan: {
+                        ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
+                        uttaksperioder: [
+                            expect.objectContaining({
+                                erArbeidstaker: false,
+                                type: 'utsettelse',
+                                årsak: 'FRI',
+                                fom: '2024-01-02', // Endringsstidspunkt
+                                tom: '2024-01-02', // Endringsstidspunkt
+                            }),
+                        ],
+                    },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 },
             }),
