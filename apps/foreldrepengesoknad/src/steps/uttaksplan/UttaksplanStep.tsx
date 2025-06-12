@@ -485,9 +485,9 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
     useEffect(() => {
-        if (uttaksplan.length === 0) {
+        if (uttaksplan.length === 0 && valgteStønadskontoer) {
             const uttaksplanForslag = lagUttaksplanForslag(
-                valgteStønadskontoer!,
+                valgteStønadskontoer,
                 eksisterendeVedtakAnnenPart?.uttaksplan,
                 søkersituasjon,
                 barn,
@@ -501,7 +501,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             setHarPlanForslagIFørstegangssøknad(true);
             mellomlagreSøknadOgNaviger();
         }
-    }, []);
+    }, [valgteStønadskontoer]);
 
     useEffect(() => {
         if (!eksisterendeSak && !erEndringssøknad && eksisterendeVedtakAnnenPart !== undefined) {

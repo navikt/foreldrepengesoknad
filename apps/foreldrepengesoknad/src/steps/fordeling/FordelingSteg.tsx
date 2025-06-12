@@ -153,7 +153,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
                     navnMor={navnMor}
                     deltUttak={deltUttak}
                     fordelingScenario={fordelingScenario}
-                ></FordelingOversikt>
+                />
                 {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
                 <FordelingForm
                     erDeltUttak={deltUttak}
