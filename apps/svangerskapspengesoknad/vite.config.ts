@@ -29,6 +29,7 @@ export default defineConfig({
             appData: path.resolve(__dirname, './src/app-data'),
             types: path.resolve(__dirname, './src/types/'),
             utils: path.resolve(__dirname, './src/utils/'),
+            storybookData: path.resolve(__dirname, '.storybook/storybook-data'),
         },
     },
     base: '/svangerskapspenger/soknad',

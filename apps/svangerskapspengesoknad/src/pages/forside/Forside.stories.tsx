@@ -1,7 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
+import { ingenSaker, saker } from 'storybookData/saker/saker';
+
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { Forside } from './Forside';
 
@@ -15,10 +19,18 @@ const promiseAction =
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof Forside>;
-
+console.log(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`);
 const meta = {
     title: 'pages/Forside',
     component: Forside,
+    decorators: [withQueryClient],
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(ingenSaker)),
+            ],
+        },
+    },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
             <SvpDataContext onDispatch={gåTilNesteSide}>
@@ -36,5 +48,18 @@ export const Default: Story = {
         setHarGodkjentVilkår: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
+    },
+};
+
+export const MedEksisterendeSøknad: Story = {
+    args: {
+        setHarGodkjentVilkår: action('button-click'),
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        harGodkjentVilkår: false,
+    },
+    parameters: {
+        msw: {
+            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+        },
     },
 };

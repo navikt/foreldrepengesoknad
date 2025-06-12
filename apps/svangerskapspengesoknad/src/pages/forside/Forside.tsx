@@ -169,8 +169,6 @@ const EksisterendeSøknad = () => {
     return (
         <Alert variant="warning">
             <FormattedMessage id="forside.eksisterendeSøknad" />
-            Du har en søknad til behandling. Ønsker du å sende inn en ny søknad erstatter du søknaden som ligger til
-            behandling.
         </Alert>
     );
 };
