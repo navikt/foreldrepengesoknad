@@ -913,9 +913,17 @@ export type KontoBeregningDto = {
 };
 
 export type KontoDto = {
-    konto: KontoType;
+    konto: KontoTypeUttak;
     dager: number;
 };
+
+export type KontoTypeUttak =
+    | 'MØDREKVOTE'
+    | 'FEDREKVOTE'
+    | 'FELLESPERIODE'
+    | 'FORELDREPENGER'
+    | 'FORELDREPENGER_FØR_FØDSEL'
+    | 'AKTIVITETSFRI_KVOTE';
 
 export type Minsteretter = {
     farRundtFødsel: number;
@@ -970,6 +978,8 @@ export type Arbeidsgiver = {
 
 export type ArbeidsgiverType = 'PRIVAT' | 'ORGANISASJON';
 
+export type BrukerRolleSak = 'MOR' | 'FAR_MEDMOR';
+
 export type DekningsgradSak = 'ÅTTI' | 'HUNDRE';
 
 export type Gradering = {
@@ -977,19 +987,48 @@ export type Gradering = {
     aktivitet: Aktivitet;
 };
 
-export type OppholdÅrsak =
-    | 'MØDREKVOTE_ANNEN_FORELDER'
-    | 'FEDREKVOTE_ANNEN_FORELDER'
-    | 'FELLESPERIODE_ANNEN_FORELDER'
-    | 'FORELDREPENGER_ANNEN_FORELDER';
-
 export type OverføringÅrsak =
     | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
     | 'SYKDOM_ANNEN_FORELDER'
     | 'IKKE_RETT_ANNEN_FORELDER'
     | 'ALENEOMSORG';
 
-export type UtsettelseÅrsak =
+export type UttakOppholdÅrsak =
+    | 'MØDREKVOTE_ANNEN_FORELDER'
+    | 'FEDREKVOTE_ANNEN_FORELDER'
+    | 'FELLESPERIODE_ANNEN_FORELDER'
+    | 'FORELDREPENGER_ANNEN_FORELDER';
+
+export type UttakPeriode = {
+    fom: string;
+    tom: string;
+    kontoType?: KontoType;
+    resultat?: UttakPeriodeResultat;
+    utsettelseÅrsak?: UttakUtsettelseÅrsak;
+    oppholdÅrsak?: UttakOppholdÅrsak;
+    overføringÅrsak?: OverføringÅrsak;
+    gradering?: Gradering;
+    morsAktivitet?: MorsAktivitet;
+    samtidigUttak?: number;
+    flerbarnsdager?: boolean;
+    forelder?: BrukerRolleSak;
+};
+
+export type UttakPeriodeResultat = {
+    innvilget?: boolean;
+    trekkerMinsterett?: boolean;
+    trekkerDager?: boolean;
+    årsak?: UttakPeriodeResultatÅrsak;
+};
+
+export type UttakPeriodeResultatÅrsak =
+    | 'ANNET'
+    | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
+    | 'AVSLAG_FRATREKK_PLEIEPENGER'
+    | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
+    | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
+
+export type UttakUtsettelseÅrsak =
     | 'HV_ØVELSE'
     | 'ARBEID'
     | 'LOVBESTEMT_FERIE'
@@ -998,35 +1037,6 @@ export type UtsettelseÅrsak =
     | 'BARN_INNLAGT'
     | 'NAV_TILTAK'
     | 'FRI';
-
-export type UttakPeriode = {
-    fom: string;
-    tom: string;
-    kontoType?: KontoType;
-    resultat?: UttakPeriodeResultat;
-    utsettelseÅrsak?: UtsettelseÅrsak;
-    oppholdÅrsak?: OppholdÅrsak;
-    overføringÅrsak?: OverføringÅrsak;
-    gradering?: Gradering;
-    morsAktivitet?: MorsAktivitet;
-    samtidigUttak?: number;
-    flerbarnsdager?: boolean;
-    forelder?: BrukerRolle;
-};
-
-export type UttakPeriodeResultat = {
-    innvilget?: boolean;
-    trekkerMinsterett?: boolean;
-    trekkerDager?: boolean;
-    årsak?: Årsak;
-};
-
-export type Årsak =
-    | 'ANNET'
-    | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
-    | 'AVSLAG_FRATREKK_PLEIEPENGER'
-    | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
-    | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
 
 export type AktivMellomlagringDto = {
     engangsstonad: boolean;
@@ -1168,7 +1178,7 @@ export type FpSak = {
     barn?: Person[];
     dekningsgrad?: DekningsgradSak;
     oppdatertTidspunkt: string;
-    forelder?: BrukerRolle;
+    forelder?: BrukerRolleSak;
 };
 
 export type FpVedtak = {
@@ -1185,9 +1195,11 @@ export type OppholdKilde = 'SAKSBEHANDLER' | 'INNTEKTSMELDING' | 'SØKNAD';
 export type OppholdPeriode = {
     fom: string;
     tom: string;
-    årsak: Årsak;
+    årsak: OppholdÅrsak;
     oppholdKilde: OppholdKilde;
 };
+
+export type OppholdÅrsak = 'SYKEPENGER' | 'FERIE';
 
 export type PeriodeResultat = {
     resultatType?: ResultatType;
