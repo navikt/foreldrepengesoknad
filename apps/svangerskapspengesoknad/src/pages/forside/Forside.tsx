@@ -158,11 +158,13 @@ const EksisterendeSøknad = () => {
             queryKey: ['SAKER'],
             queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
             select: (saker) => {
-                return !!saker.svangerskapspenger.find((sak) => sak.åpenBehandling !== undefined);
+                console.log(saker);
+                return saker.svangerskapspenger.some((sak) => sak.åpenBehandling !== undefined);
             },
         }).data ?? false;
 
     if (!harÅpenBehandling) {
+        console.log('asd12');
         return null;
     }
 

@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { ingenSaker, saker } from 'storybookData/saker/saker';
 
@@ -19,23 +20,18 @@ const promiseAction =
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof Forside>;
-console.log(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`);
+
 const meta = {
     title: 'pages/Forside',
     component: Forside,
     decorators: [withQueryClient],
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(ingenSaker)),
-            ],
-        },
-    },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
-            <SvpDataContext onDispatch={gåTilNesteSide}>
-                <Forside {...rest} />
-            </SvpDataContext>
+            <MemoryRouter>
+                <SvpDataContext onDispatch={gåTilNesteSide}>
+                    <Forside {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -49,6 +45,13 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
     },
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(ingenSaker)),
+            ],
+        },
+    },
 };
 
 export const MedEksisterendeSøknad: Story = {
@@ -59,7 +62,12 @@ export const MedEksisterendeSøknad: Story = {
     },
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [
+                http.get(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`,
+                    () => console.log('asd') || HttpResponse.json(saker),
+                ),
+            ],
         },
     },
 };

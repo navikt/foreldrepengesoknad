@@ -1,12 +1,13 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './Forside.stories';
 
-const { Default } = composeStories(stories);
+const { Default, MedEksisterendeSøknad } = composeStories(stories);
 
 describe('<Forside>', () => {
     it('skal ikke kunne gå videre uten å ha godkjent vilkår', async () => {
@@ -43,5 +44,27 @@ describe('<Forside>', () => {
         });
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
+    });
+
+    it('skal vise info om åpenbehandling', async () => {
+        const setHarGodkjentVilkår = vi.fn();
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        applyRequestHandlers(MedEksisterendeSøknad.parameters.msw);
+
+        render(
+            <MedEksisterendeSøknad
+                setHarGodkjentVilkår={setHarGodkjentVilkår}
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+
+        screen.logTestingPlaygroundURL();
+        await waitFor(() => {
+            expect(screen.getByText('Du har en søknad til behandling')).toBeInTheDocument();
+        });
     });
 });
