@@ -1,12 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
-import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -35,12 +33,9 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    const annenPartVedtakQuery = useQuery(
-        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
-    );
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartVedtakQuery = useQuery(annenPartVedtakOptions);
 
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskontoerQuery = useQuery(kontoerOptions);

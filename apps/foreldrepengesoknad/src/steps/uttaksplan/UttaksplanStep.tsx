@@ -1,15 +1,15 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
-import { useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions, nesteSakAnnenPartVedtakOptions } from 'appData/api';
+import { nesteSakAnnenPartVedtakOptions } from 'appData/api';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
 import { InfoOmNesteBarn } from 'steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
@@ -177,28 +177,20 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
-    const annenPartVedtakQuery = useQuery(
-        annenPartVedtakOptions(
-            {
-                annenPartFødselsnummer: annenForelderFnr,
-                barnFødselsnummer: barnFnr,
-                familiehendelse: familiehendelsesdato,
-            },
-            !eksisterendeSakAnnenPartRequestIsSuspended,
-        ),
-    );
-
-    const eksisterendeVedtakAnnenPart = useMemo(
-        () =>
-            mapAnnenPartsEksisterendeSakFromDTO(
-                annenPartVedtakQuery.data,
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartVedtakQuery = useQuery({
+        ...annenPartVedtakOptions,
+        select: (data) => {
+            return mapAnnenPartsEksisterendeSakFromDTO(
+                data,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
-            ),
-        [annenPartVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
-    );
+            );
+        },
+    });
+    const eksisterendeVedtakAnnenPart = annenPartVedtakQuery.data;
 
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);

@@ -3,18 +3,13 @@ import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskontoParams';
-import { useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import {
-    getAnnenPartVedtakParam,
-    getIsDeltUttak,
-    shouldSuspendAnnenPartVedtakApiRequest,
-} from 'utils/annenForelderUtils';
+import { getIsDeltUttak, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -63,9 +58,9 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartsVedtakQuery = useQuery({
-        ...annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
+        ...annenPartVedtakOptions,
         select: (data) => {
             return mapAnnenPartsEksisterendeSakFromDTO(
                 data,
