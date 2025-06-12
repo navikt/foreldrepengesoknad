@@ -35,14 +35,14 @@ export const useSendSøknad = (
         );
 
         //TODO (TOR) Denne må håndterast i uttaksplan-steget
-        if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
+        if (cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 
         const abortSignal = initAbortSignal();
 
         try {
-            const url = cleanedSøknad.erEndringssøknad ? '/rest/soknad/endre' : '/rest/soknad';
+            const url = erEndringssøknad ? '/rest/soknad/foreldrepenger/endre' : '/rest/soknad/foreldrepenger';
             const response = await ky.post(`${import.meta.env.BASE_URL}${url}`, {
                 json: cleanedSøknad,
                 signal: abortSignal,

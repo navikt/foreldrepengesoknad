@@ -1,3 +1,5 @@
+import { CountryCode } from '@navikt/fp-types';
+
 interface Common {
     kanIkkeOppgis: boolean;
 }
@@ -7,7 +9,7 @@ export interface AnnenForelderOppgitt extends Common {
     etternavn: string;
     fnr: string;
     utenlandskFnr?: boolean;
-    bostedsland?: string;
+    bostedsland?: CountryCode;
     harRettPåForeldrepengerINorge?: boolean;
     harOppholdtSegIEØS?: boolean;
     harRettPåForeldrepengerIEØS?: boolean;
