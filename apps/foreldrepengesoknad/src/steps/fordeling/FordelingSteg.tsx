@@ -9,7 +9,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { getIsDeltUttak, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
+import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -50,7 +50,6 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
@@ -132,7 +131,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
-    if (!valgtStønadskonto || (annenPartsVedtakQuery.isPending && !suspendAnnenPartVedtakApiRequest)) {
+    if (!valgtStønadskonto || annenPartsVedtakQuery.isPending) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader size="2xlarge" />
