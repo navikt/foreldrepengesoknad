@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
-import { getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
+import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -32,7 +32,8 @@ export const useStønadsKontoerOptions = () => {
 export const useAnnenPartVedtakOptions = () => {
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
 
     const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    return annenPartVedtakOptions(annenPartVedtakParams, true); // TODO
+    return annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest);
 };
