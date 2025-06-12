@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { ingenSaker, saker } from 'storybookData/saker/saker';
 
@@ -27,11 +26,9 @@ const meta = {
     decorators: [withQueryClient],
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
-            <MemoryRouter>
-                <SvpDataContext onDispatch={gåTilNesteSide}>
-                    <Forside {...rest} />
-                </SvpDataContext>
-            </MemoryRouter>
+            <SvpDataContext onDispatch={gåTilNesteSide}>
+                <Forside {...rest} />
+            </SvpDataContext>
         );
     },
 } satisfies Meta<StoryArgs>;
