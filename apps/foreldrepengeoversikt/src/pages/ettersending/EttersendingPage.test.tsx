@@ -1,8 +1,9 @@
 import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 import { describe, expect } from 'vitest';
+
+import { mswTest } from '@navikt/fp-utils-test';
 
 import * as stories from './EttersendingPage.stories';
 
@@ -17,8 +18,8 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('<EttersendingPage>', () => {
-    it('skal laste opp dokument uten feil', async () => {
-        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+    mswTest('skal laste opp dokument uten feil', async ({ setHandlers }) => {
+        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         const utils = render(<SkalIkkeFeileOpplasting />);
 
         expect(
@@ -41,8 +42,8 @@ describe('<EttersendingPage>', () => {
         expect(screen.queryByText('Ops noe gikk galt prøv igjen')).not.toBeInTheDocument();
     });
 
-    it.skip('skal få feil ved opplasting av dokument', async () => {
-        await applyRequestHandlers(SkalFeileOpplasting.parameters.msw);
+    mswTest.skip('skal få feil ved opplasting av dokument', async ({ setHandlers }) => {
+        setHandlers(SkalFeileOpplasting.parameters.msw);
         const utils = render(<SkalFeileOpplasting />);
 
         expect(
@@ -65,8 +66,8 @@ describe('<EttersendingPage>', () => {
         expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
     });
 
-    it('skal få ES-relevante dokumentvalg', async () => {
-        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+    mswTest('skal få ES-relevante dokumentvalg', async ({ setHandlers }) => {
+        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         const utils = render(<SkalIkkeFeileOpplasting />);
 
         expect(
@@ -88,8 +89,8 @@ describe('<EttersendingPage>', () => {
         expect(optionsTextContent).toContain('Dokumentasjon på inntekt');
     });
 
-    it('skal sortere annet dokument nederst', async () => {
-        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+    mswTest('skal sortere annet dokument nederst', async ({ setHandlers }) => {
+        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         const utils = render(<SkalIkkeFeileOpplasting />);
 
         expect(

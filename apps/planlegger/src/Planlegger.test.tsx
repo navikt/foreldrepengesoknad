@@ -2,18 +2,18 @@ import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswTest } from '@navikt/fp-utils-test';
 
 import * as stories from './Planlegger.stories';
 
 const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
 
 describe('<Planlegger>', () => {
-    it.skip('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
+    mswTest.skip('skal gå rett til oppsummering når ingen av foreldrene har rett', async ({ setHandlers }) => {
         // TODO Fiks test
-        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
         const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
@@ -74,54 +74,57 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
     });
 
-    it.skip('skal gå rett til oppsummering når barnet er født for mer enn tre år siden', async () => {
-        // TODO Fiks test
-        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
-        const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+    mswTest.skip(
+        'skal gå rett til oppsummering når barnet er født for mer enn tre år siden',
+        async ({ setHandlers }) => {
+            // TODO Fiks test
+            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
-        expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Start'));
+            expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
-        expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor og far'));
-        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
-        await userEvent.type(morNavn, 'Helga');
-        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
-        await userEvent.type(farNavn, 'Espen');
-        await userEvent.click(screen.getByText('Neste'));
+            expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
+            expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Mor og far'));
+            const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
+            await userEvent.type(morNavn, 'Helga');
+            const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
+            await userEvent.type(farNavn, 'Espen');
+            await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Fødsel'));
-        await userEvent.click(screen.getByText('Ett'));
-        await userEvent.click(screen.getByText('Ja'));
-        const fødselsdato = utils.getByLabelText('Når ble barnet født?');
-        await userEvent.type(fødselsdato, dayjs().subtract(20, 'years').format(DDMMYYYY_DATE_FORMAT));
-        fireEvent.blur(fødselsdato);
-        const termindato = utils.getByLabelText('Når var termindato?');
-        await userEvent.type(termindato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
-        fireEvent.blur(termindato);
-        await userEvent.click(screen.getByText('Neste'));
+            expect(screen.getAllByText('Barnet')).toHaveLength(2);
+            expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Fødsel'));
+            await userEvent.click(screen.getByText('Ett'));
+            await userEvent.click(screen.getByText('Ja'));
+            const fødselsdato = utils.getByLabelText('Når ble barnet født?');
+            await userEvent.type(fødselsdato, dayjs().subtract(20, 'years').format(DDMMYYYY_DATE_FORMAT));
+            fireEvent.blur(fødselsdato);
+            const termindato = utils.getByLabelText('Når var termindato?');
+            await userEvent.type(termindato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+            fireEvent.blur(termindato);
+            await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
+            expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+            expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Forrige'));
+            expect(screen.getAllByText('Barnet')).toHaveLength(2);
+            expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
-        expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Forrige'));
+            expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
+            expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
-    });
+            expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
+        },
+    );
 
     //TODO (TOR) Fiks denne som kun feilar på github
-    it.skip('skal ikke vise fordelingssteget når far og far og barnet er født', async () => {
-        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+    mswTest.skip('skal ikke vise fordelingssteget når far og far og barnet er født', async ({ setHandlers }) => {
+        setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
         const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
@@ -211,9 +214,9 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
     });
 
-    it.skip('skal ikke vise barnehageplass-steget når adopsjon', async () => {
+    mswTest.skip('skal ikke vise barnehageplass-steget når adopsjon', async ({ setHandlers }) => {
         // TODO Fiks test
-        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
         const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();

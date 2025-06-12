@@ -2,18 +2,18 @@ import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswTest } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
 
 const { VisAppKvinneMedArbeid } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    it.skip('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
+    mswTest.skip('skal gå raskeste vei gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
         // TODO Fiks test
-        await applyRequestHandlers(VisAppKvinneMedArbeid.parameters.msw);
+        setHandlers(VisAppKvinneMedArbeid.parameters.msw);
         const utils = render(<VisAppKvinneMedArbeid />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();

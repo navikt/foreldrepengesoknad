@@ -1,19 +1,19 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { mswTest } from '@navikt/fp-utils-test';
 
 import * as stories from './MinidialogSkjema.stories';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 
 describe('<MinidialogSkjema>', () => {
-    it('skal velge at en ikke ønsker å uttale seg og så sende inn', async () => {
+    mswTest('skal velge at en ikke ønsker å uttale seg og så sende inn', async ({ setHandlers }) => {
         const send = vi.fn();
 
-        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         render(<SkalIkkeFeileOpplasting onSubmit={send} />);
 
         expect(
@@ -48,10 +48,10 @@ describe('<MinidialogSkjema>', () => {
         });
     });
 
-    it('skal velge at en ønsker å uttale seg og så sende inn', async () => {
+    mswTest('skal velge at en ønsker å uttale seg og så sende inn', async ({ setHandlers }) => {
         const send = vi.fn();
 
-        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         render(<SkalIkkeFeileOpplasting onSubmit={send} />);
 
         expect(

@@ -48,13 +48,51 @@ export default defineConfig({
     },
     test: {
         globals: true,
-        environment: 'jsdom',
-        setupFiles: './vitest/setupTests.ts',
         coverage: {
             include: ['src/**/*'],
             exclude: [],
         },
-        maxConcurrency: 10,
         testTimeout: 10000,
+        maxConcurrency: 10,
+        deps: {
+            inline: ['@navikt/ds-react'],
+        },
+        projects: [
+            {
+                extends: true,
+                test: {
+                    name: 'jsdom',
+                    environment: 'jsdom',
+                    css: false,
+                    setupFiles: path.resolve(__dirname, './vitest/setupTests.ts'),
+                    env: {
+                        TEST_MODE: 'jsdom-mode',
+                    },
+                },
+            },
+            {
+                extends: true,
+                test: {
+                    name: 'browser',
+                    exclude: [
+                        '**/intl.test.ts',
+                        '**/node_modules/**',
+                        '**/dist/**',
+                        '**/.{idea,git,cache,output,temp}/**',
+                        '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+                    ],
+                    setupFiles: path.resolve(__dirname, './vitest/setupBrowserTests.ts'),
+                    browser: {
+                        enabled: true,
+                        provider: 'playwright',
+                        instances: [{ browser: 'chromium' }],
+                    },
+                    env: {
+                        TEST_MODE: 'browser-mode',
+                        BASE_URL: 'https://foreldrepengesoknad-api.ekstern.dev.nav.no',
+                    },
+                },
+            },
+        ],
     },
 });
