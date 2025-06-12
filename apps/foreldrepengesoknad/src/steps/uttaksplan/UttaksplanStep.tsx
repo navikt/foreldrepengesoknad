@@ -235,7 +235,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         !annenForelderFnrNesteSak ||
         (førsteBarnFraNesteSakFnr === undefined && familieHendelseDatoNesteSak === undefined) ||
-        (!eksisterendeSakAnnenPartRequestIsSuspended && annenPartVedtakQuery.isPending);
+        (!eksisterendeSakAnnenPartRequestIsSuspended && annenPartVedtakQuery.isLoading);
 
     const nesteSakAnnenPartVedtakQuery = useQuery(
         nesteSakAnnenPartVedtakOptions(

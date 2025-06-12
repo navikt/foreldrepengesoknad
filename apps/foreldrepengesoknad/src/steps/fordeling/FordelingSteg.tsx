@@ -131,7 +131,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
-    if (!valgtStønadskonto || annenPartsVedtakQuery.isPending) {
+    if (!valgtStønadskonto || annenPartsVedtakQuery.isLoading) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader size="2xlarge" />
