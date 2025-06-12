@@ -1,7 +1,7 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import { ComponentProps } from 'react';
+import { action } from 'storybook/actions';
 
 import { Forside } from './Forside';
 
