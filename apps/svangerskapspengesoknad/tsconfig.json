@@ -6,7 +6,8 @@
         "paths": {
             "appData/*": ["app-data/*"],
             "types/*": ["types/*"],
-            "utils/*": ["utils/*"]
+            "utils/*": ["utils/*"],
+            "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },

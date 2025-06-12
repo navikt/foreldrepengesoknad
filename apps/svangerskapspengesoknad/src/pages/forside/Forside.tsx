@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextSaveData } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
+import ky from 'ky';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -17,6 +19,7 @@ import {
 } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Saker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 
 import styles from './forside.module.css';
@@ -108,6 +111,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             </div>
                         </VStack>
                     </Alert>
+                    <EksisterendeSøknad />
                     <ConfirmationPanel
                         label={intl.formatMessage({ id: 'forside.samtykke' })}
                         onChange={() => setIsChecked((state) => !state)}
@@ -145,5 +149,26 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                 </VStack>
             </VStack>
         </ContentWrapper>
+    );
+};
+
+const EksisterendeSøknad = () => {
+    const harÅpenBehandling =
+        useQuery({
+            queryKey: ['SAKER'],
+            queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+            select: (saker) => {
+                return saker.svangerskapspenger.some((sak) => sak.åpenBehandling !== undefined);
+            },
+        }).data ?? false;
+
+    if (!harÅpenBehandling) {
+        return null;
+    }
+
+    return (
+        <Alert variant="warning">
+            <FormattedMessage id="forside.eksisterendeSøknad" />
+        </Alert>
     );
 };
