@@ -255,8 +255,8 @@ describe('useEsSendSøknad', () => {
                         fornavn: ANNEN_FORELDER.fornavn,
                         etternavn: ANNEN_FORELDER.etternavn,
                         rettigheter: {
-                            erInformertOmSøknaden: false,
                             harRettPåForeldrepenger: false,
+                            erInformertOmSøknaden: undefined,
                             erAleneOmOmsorg: undefined,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
@@ -325,8 +325,8 @@ describe('useEsSendSøknad', () => {
                         fornavn: ANNEN_FORELDER.fornavn,
                         etternavn: ANNEN_FORELDER.etternavn,
                         rettigheter: {
-                            erInformertOmSøknaden: false,
                             harRettPåForeldrepenger: false,
+                            erInformertOmSøknaden: undefined,
                             erAleneOmOmsorg: undefined,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
