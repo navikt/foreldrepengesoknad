@@ -315,11 +315,13 @@ export const cleanAnnenforelder = (
         etternavn: oppgitt.etternavn,
         rettigheter: {
             harRettPåForeldrepenger: !!oppgitt.harRettPåForeldrepengerINorge,
-            erInformertOmSøknaden: !!oppgitt.erInformertOmSøknaden,
+            erInformertOmSøknaden: oppgitt.harRettPåForeldrepengerINorge ? true : !!oppgitt.erInformertOmSøknaden, // Bevarer gammel oppførsel
             erAleneOmOmsorg: oppgitt.erAleneOmOmsorg,
             harMorUføretrygd: oppgitt.erMorUfør,
             harAnnenForelderOppholdtSegIEØS: oppgitt.harOppholdtSegIEØS,
-            harAnnenForelderTilsvarendeRettEØS: oppgitt.harRettPåForeldrepengerIEØS,
+            harAnnenForelderTilsvarendeRettEØS: oppgitt.harRettPåForeldrepengerINorge
+                ? undefined // Bevarer gammel oppførsel
+                : oppgitt.harRettPåForeldrepengerIEØS,
         },
     };
     return oppgitt.utenlandskFnr

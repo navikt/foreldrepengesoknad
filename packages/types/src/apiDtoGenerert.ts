@@ -262,6 +262,25 @@ export type Kvittering = {
     pdf?: string;
 };
 
+export type AnnenInntektDto = {
+    type: AnnenOpptjeningType;
+    fom: string;
+    tom?: string;
+    land?: CountryCode;
+    arbeidsgiverNavn?: string;
+};
+
+export type AnnenOpptjeningType =
+    | 'ETTERLØNN_SLUTTPAKKE'
+    | 'ETTERLØNN_ARBEIDSGIVER'
+    | 'JOBB_I_UTLANDET'
+    | 'LØNN_UNDER_UTDANNING'
+    | 'MILITÆR_ELLER_SIVILTJENESTE'
+    | 'SLUTTPAKKE'
+    | 'VENTELØNN_VARTPENGER'
+    | 'VENTELØNN'
+    | 'VARTPENGER';
+
 export type AvtaltFerieDto = {
     arbeidsforhold: FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto;
     fom: string;
@@ -597,7 +616,7 @@ export type SvangerskapspengesøknadDto = {
     språkkode: Målform;
     frilans?: FrilansDto;
     egenNæring?: NæringDto;
-    andreInntekterSiste10Mnd?: Utlandet[];
+    andreInntekterSiste10Mnd?: AnnenInntektDto[];
     utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
     tilretteleggingsbehov: TilretteleggingbehovDto[];
     avtaltFerie: AvtaltFerieDto[];
@@ -624,15 +643,6 @@ export type UtenlandsoppholdsperiodeDto = {
     fomAfterTom?: boolean;
 };
 
-export type Utlandet = AnnenInntektDto & {
-    type: 'JOBB_I_UTLANDET';
-} & {
-    land: CountryCode;
-    arbeidsgiverNavn: string;
-    fom: string;
-    tom?: string;
-};
-
 export type AdopsjonDto = BarnDto & {
     type: 'adopsjon';
 } & {
@@ -648,29 +658,6 @@ export type AnnenForelderDto = {
     type: string;
 };
 
-export type AnnenInntektDto = {
-    type: string;
-};
-
-export type AnnenOpptjeningType =
-    | 'ETTERLØNN_SLUTTPAKKE'
-    | 'ETTERLØNN_ARBEIDSGIVER'
-    | 'JOBB_I_UTLANDET'
-    | 'LØNN_UNDER_UTDANNING'
-    | 'MILITÆR_ELLER_SIVILTJENESTE'
-    | 'SLUTTPAKKE'
-    | 'VENTELØNN_VARTPENGER'
-    | 'VENTELØNN'
-    | 'VARTPENGER';
-
-export type Annet = AnnenInntektDto & {
-    type: 'ETTERLØNN_SLUTTPAKKE' | 'MILITÆR_ELLER_SIVILTJENESTE';
-} & {
-    type: AnnenOpptjeningType;
-    fom: string;
-    tom?: string;
-};
-
 export type BarnDto = {
     type: string;
 };
@@ -683,7 +670,7 @@ export type ForeldrepengesøknadDto = {
     språkkode?: Målform;
     frilans?: FrilansDto;
     egenNæring?: NæringDto;
-    andreInntekterSiste10Mnd?: Array<Annet | Utlandet>;
+    andreInntekterSiste10Mnd?: AnnenInntektDto[];
     barn: AdopsjonDto | FødselDto | OmsorgsovertakelseDto | TerminDto;
     annenForelder?: NorskForelderDto | UtenlandskForelderDto;
     dekningsgrad: Dekningsgrad;
