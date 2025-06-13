@@ -9,7 +9,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
 import { InfoOmNesteBarn } from 'steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
@@ -180,17 +180,23 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartVedtakQuery = useQuery({
         ...annenPartVedtakOptions,
-        select: (data) => {
-            return mapAnnenPartsEksisterendeSakFromDTO(
-                data,
+    });
+
+    /**
+     * Det er viktig at denne mappingen gjøres med memo.
+     * Siden "eksisterendeVedtakAnnenPart" brukes som condition for flere useEffecter vil det bli nytt objekt hver render som skaper infinite loop.
+     */
+    const eksisterendeVedtakAnnenPart = useMemo(
+        () =>
+            mapAnnenPartsEksisterendeSakFromDTO(
+                annenPartVedtakQuery.data,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
-            );
-        },
-    });
-    const eksisterendeVedtakAnnenPart = annenPartVedtakQuery.data;
+            ),
+        [annenPartVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
+    );
 
     const goToPreviousStep = () => {
         setGåTilbakeIsOpen(false);
