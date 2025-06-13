@@ -109,7 +109,10 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato);
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
-        expect(Object.hasOwn(cleanedSøknad.annenForelder!, 'erForSyk')).toBe(false);
+        if (!cleanedSøknad.annenForelder) {
+            throw new Error('Annen forelder finnes ikke i cleanedSøknad');
+        }
+        expect(Object.hasOwn(cleanedSøknad.annenForelder, 'erForSyk')).toBe(false);
     });
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
@@ -122,7 +125,10 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
-        expect(Object.hasOwn(cleanedSøknadUtenUførInfo.annenForelder!, 'erUfør')).toBe(false);
+        if (!cleanedSøknadUtenUførInfo.annenForelder) {
+            throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
+        }
+        expect(Object.hasOwn(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
     });
 
     it('skal fjerne info om erMorForSyk fra periodene men ikke endre resten av uttaksplanen', () => {
@@ -189,8 +195,9 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 //Periode 1:
 const fraDato_1 = '2022-01-25';
 const tilDato_1 = '2022-01-28';
-const periode_1: Partial<UttaksplanPeriode> = {
+const periode_1: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_1,
     tom: tilDato_1,
 };
@@ -198,8 +205,9 @@ const periode_1: Partial<UttaksplanPeriode> = {
 //Periode 2:
 const fraDato_2 = '2022-01-31';
 const tilDato_2 = '2022-02-07';
-const periode_2: Partial<UttaksplanPeriode> = {
+const periode_2: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_2,
     tom: tilDato_2,
 };
@@ -207,8 +215,9 @@ const periode_2: Partial<UttaksplanPeriode> = {
 //Periode 3: (1 dag)
 const fraDato_3 = '2022-02-11';
 const tilDato_3 = '2022-02-11';
-const periode_3: Partial<UttaksplanPeriode> = {
+const periode_3: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_3,
     tom: tilDato_3,
 };
@@ -216,8 +225,9 @@ const periode_3: Partial<UttaksplanPeriode> = {
 //Periode 4:
 const fraDato_4 = '2022-02-14';
 const tilDato_4 = '2022-02-24';
-const periode_4: Partial<UttaksplanPeriode> = {
+const periode_4: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_4,
     tom: tilDato_4,
 };
@@ -225,8 +235,9 @@ const periode_4: Partial<UttaksplanPeriode> = {
 //Periode 5: 28.02, 1 dag, ikke skuddår
 const fraDato_5 = '2022-02-28';
 const tilDato_5 = '2022-02-28';
-const periode_5: Partial<UttaksplanPeriode> = {
+const periode_5: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_5,
     tom: tilDato_5,
 };
@@ -234,8 +245,9 @@ const periode_5: Partial<UttaksplanPeriode> = {
 //Periode 6: 1.03, ikke skuddår
 const fraDato_6 = '2022-03-01';
 const tilDato_6 = '2022-03-07';
-const periode_6: Partial<UttaksplanPeriode> = {
+const periode_6: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_6,
     tom: tilDato_6,
 };
@@ -243,8 +255,9 @@ const periode_6: Partial<UttaksplanPeriode> = {
 //Periode 7: 1.03 i et skuddår
 const fraDato_7 = '2024-03-01';
 const tilDato_7 = '2024-03-07';
-const periode_7: Partial<UttaksplanPeriode> = {
+const periode_7: UttaksplanPeriode = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     fom: fraDato_7,
     tom: tilDato_7,
 };
@@ -263,10 +276,10 @@ const getUttaksplanUtenPeriode = (removePeriode: UttaksplanPeriode): UttaksplanP
     return uttaksplanMedAllePerioder.filter((periode) => periode !== removePeriode);
 };
 
-const uttaksplanUtenPeriode_1 = getUttaksplanUtenPeriode(periode_1 as UttaksplanPeriode);
-const uttaksplanUtenPeriode_2 = getUttaksplanUtenPeriode(periode_2 as UttaksplanPeriode);
-const uttaksplanUtenPeriode_3 = getUttaksplanUtenPeriode(periode_3 as UttaksplanPeriode);
-const uttaksplanUtenPeriode_5 = getUttaksplanUtenPeriode(periode_5 as UttaksplanPeriode);
+const uttaksplanUtenPeriode_1 = getUttaksplanUtenPeriode(periode_1);
+const uttaksplanUtenPeriode_2 = getUttaksplanUtenPeriode(periode_2);
+const uttaksplanUtenPeriode_3 = getUttaksplanUtenPeriode(periode_3);
+const uttaksplanUtenPeriode_5 = getUttaksplanUtenPeriode(periode_5);
 
 describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     it('inserts correct fri utsettelsesperiode that ends on a Friday', () => {

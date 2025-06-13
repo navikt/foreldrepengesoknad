@@ -755,7 +755,7 @@ export type Overføringsårsak =
 
 export type Rettigheter = {
     harRettPåForeldrepenger: boolean;
-    erInformertOmSøknaden: boolean;
+    erInformertOmSøknaden?: boolean;
     erAleneOmOmsorg?: boolean;
     harMorUføretrygd?: boolean;
     harAnnenForelderOppholdtSegIEØS?: boolean;
