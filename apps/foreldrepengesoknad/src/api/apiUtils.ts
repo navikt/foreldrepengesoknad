@@ -44,7 +44,13 @@ import {
     UttaksplanDto,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksdagen, dateToISOString, getDecoratorLanguageCookie, isValidTidsperiode } from '@navikt/fp-utils';
+import {
+    Uttaksdagen,
+    dateToISOString,
+    getDecoratorLanguageCookie,
+    isValidTidsperiode,
+    omitOne,
+} from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -112,24 +118,25 @@ const skalPeriodeSendesInn = (periode: Periode) => {
 
 const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
     if (isUfødtBarn(barn)) {
-        const { type, ...barnRest } = barn;
         return {
-            ...barnRest,
             type: 'termin',
+            antallBarn: barn.antallBarn,
+            termindato: barn.termindato,
+            terminbekreftelseDato: barn.terminbekreftelsedato,
         };
     }
 
     if (isFødtBarn(barn)) {
-        const { type, fnr, fødselsdatoer, ...barnRest } = barn;
         return {
-            ...barnRest,
             type: 'fødsel',
+            antallBarn: barn.antallBarn,
             fødselsdato: barn.fødselsdatoer[0],
+            termindato: barn.termindato,
         };
     }
 
     if (isAdoptertBarn(barn)) {
-        const { type, ...barnRest } = barn;
+        const barnRest = omitOne(barn, 'type');
         return {
             ...barnRest,
             type: 'adopsjon',
@@ -190,8 +197,8 @@ const getPeriodeForInnsending = (periode: any): OverføringsPeriodeDto | Opphold
     const { tidsperiode, ...periodeRest } = periode;
     return {
         ...periodeRest,
-        fom: dateToISOString(periode.tidsperiode.fom),
-        tom: dateToISOString(periode.tidsperiode.tom),
+        fom: dateToISOString(tidsperiode.fom),
+        tom: dateToISOString(tidsperiode.tom),
     };
 };
 

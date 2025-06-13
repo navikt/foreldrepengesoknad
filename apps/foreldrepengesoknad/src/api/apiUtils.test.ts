@@ -12,7 +12,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, FødselDto, UttaksPeriodeDto } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 
 import {
     UttaksplanPeriode,
@@ -142,8 +142,10 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(1);
-        const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0] as UttaksPeriodeDto;
-
+        const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0];
+        if (uttaksperiodeInnsending.type !== 'uttak') {
+            throw new Error('type er ikke uttak');
+        }
         expect(Object.hasOwn(uttaksperiodeInnsending, 'erMorForSyk')).toBe(false);
         expect(uttaksperiodeInnsending.type).toBe(Periodetype.Uttak);
         expect(uttaksperiodeInnsending.fom).toBe(dateToISOString(periodeUttak.tidsperiode.fom));
@@ -164,7 +166,10 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     });
 
     it('skal fjerne datoForAleneomsorg, type og fnr fra født barn objektet og beholde fødsel og termindato', () => {
-        const barn = cleanedSøknad.barn as FødselDto;
+        const barn = cleanedSøknad.barn;
+        if (barn.type !== 'fødsel') {
+            throw new Error('type er ikke fødsel');
+        }
         expect(Object.hasOwn(barn, 'datoForAleneomsorg')).toBe(false);
         expect(Object.hasOwn(barn, 'fnr')).toBe(false);
         expect(barn.type).toEqual('fødsel');
