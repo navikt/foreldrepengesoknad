@@ -2,20 +2,21 @@ import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
+import { mswTest } from './mswTest';
 
 const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
 
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
 
 describe('<AppContainer>', () => {
-    it.skip('skal gå gjennom applikasjonen og så tilbake', async () => {
+    mswTest.skip('skal gå gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
         // TODO Fiks test
-        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+
         const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();

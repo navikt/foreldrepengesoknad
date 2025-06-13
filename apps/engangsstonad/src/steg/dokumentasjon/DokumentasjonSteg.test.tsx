@@ -4,21 +4,21 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './DokumentasjonSteg.stories';
 
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
-    it.skip('skal laste opp terminbekreftelse', async () => {
+    mswTest.skip('skal laste opp terminbekreftelse', async ({ setHandlers }) => {
         // TODO Fiks test
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
-        await applyRequestHandlers(Terminbekreftelse.parameters.msw);
+        setHandlers(Terminbekreftelse.parameters.msw);
         const utils = render(
             <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
@@ -76,12 +76,12 @@ describe('<DokumentasjonSteg>', () => {
         expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
-    it.skip('skal laste opp adopsjonsbekreftelse', async () => {
+    mswTest.skip('skal laste opp adopsjonsbekreftelse', async ({ setHandlers }) => {
         // TODO Fiks test
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
-        await applyRequestHandlers(Adopsjonsbekreftelse.parameters.msw);
+        setHandlers(Adopsjonsbekreftelse.parameters.msw);
         render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
