@@ -1,6 +1,5 @@
 import {
     Arbeidsform,
-    ArbeidsgiverInfoType,
     AvslåttPeriode,
     Dekningsgrad,
     FamiliehendelseType,
@@ -147,7 +146,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         arbeidstidprosent: 80,
                         aktivitet: {
                             type: UttakArbeidType.ORDINÆRT_ARBEID,
-                            arbeidsgiver: { id: '50089', type: ArbeidsgiverInfoType.ORGANISASJON },
+                            arbeidsgiver: { id: '50089', type: 'ORGANISASJON' },
                         },
                     },
                 },

@@ -108,7 +108,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringBeskrivelse: 'Beskrivelse av varig endring',
                         varigEndringDato: '2021-01-01',
-                        varigEndringInntektEtterEndring: '10000',
+                        varigEndringInntektEtterEndring: 10000,
                     }}
                     onVilEndreSvar={() => {}}
                 />

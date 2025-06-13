@@ -1,3 +1,5 @@
+import { CountryCode } from './apiDtoGenerert';
+
 export const EGEN_NÆRING_ID = 'nearing';
 
 export enum Næringstype {
@@ -16,11 +18,11 @@ export type EgenNæring = {
     navnPåNæringen?: string;
     organisasjonsnummer?: string;
     registrertINorge: boolean;
-    registrertILand?: string;
+    registrertILand?: CountryCode;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: string;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     varigEndringDato?: string;
-    varigEndringInntektEtterEndring?: string;
+    varigEndringInntektEtterEndring?: number;
     varigEndringBeskrivelse?: string;
 };

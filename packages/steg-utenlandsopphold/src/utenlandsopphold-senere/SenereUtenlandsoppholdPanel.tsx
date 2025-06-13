@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { CountryCode, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
 import { SenereUtenlandsoppholdPeriode } from './SenereUtenlandsoppholdPeriode';
@@ -15,11 +15,11 @@ type FormType = {
     utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
 };
 
-const DEFAULT_PERIODE = {
+const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
     fom: '',
     tom: '',
-    landkode: '',
-} satisfies UtenlandsoppholdPeriode;
+    landkode: '' as CountryCode,
+};
 
 interface Props<TYPE> {
     senereUtenlandsopphold: UtenlandsoppholdPeriode[];

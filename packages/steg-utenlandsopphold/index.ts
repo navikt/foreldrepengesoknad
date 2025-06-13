@@ -11,4 +11,3 @@ export const utenlandsoppholdMessages = {
 export { UtenlandsoppholdPanel } from './src/utenlandsopphold/UtenlandsoppholdPanel';
 export { SenereUtenlandsoppholdPanel } from './src/utenlandsopphold-senere/SenereUtenlandsoppholdPanel';
 export { TidligereUtenlandsoppholdPanel } from './src/utenlandsopphold-tidligere/TidligereUtenlandsoppholdPanel';
-export { mapUtenlandsOppholdForInnsending } from './src/utils';
