@@ -85,6 +85,7 @@ export default defineConfig({
                     },
                     env: {
                         TEST_MODE: 'browser-mode',
+                        BASE_URL: 'https://test.nav.no',
                     },
                 },
             },

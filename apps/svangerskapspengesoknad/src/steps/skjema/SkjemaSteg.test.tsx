@@ -4,8 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 
-import { mswTest } from '@navikt/fp-utils-test';
-
+import { mswTest } from '../../mswTest';
 import * as stories from './SkjemaSteg.stories';
 
 const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans, KanMaxHaToVedlegg } =

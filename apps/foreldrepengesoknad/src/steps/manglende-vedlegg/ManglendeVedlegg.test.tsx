@@ -5,8 +5,8 @@ import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { mswTest } from '@navikt/fp-utils-test';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './ManglendeVedlegg.stories';
 
 const {

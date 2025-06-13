@@ -75,6 +75,7 @@ export default defineConfig({
                 test: {
                     name: 'browser',
                     exclude: [
+                        '**/useSendSøknad.test.tsx',
                         '**/intl.test.ts',
                         '**/node_modules/**',
                         '**/dist/**',
@@ -89,7 +90,7 @@ export default defineConfig({
                     },
                     env: {
                         TEST_MODE: 'browser-mode',
-                        BASE_URL: 'https://foreldrepengesoknad-api.ekstern.dev.nav.no',
+                        BASE_URL: 'https://test.nav.no',
                     },
                 },
             },

@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswTest } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
+import { mswTest } from './mswTest';
 
 const { VisAppKvinneMedArbeid } = composeStories(stories);
 

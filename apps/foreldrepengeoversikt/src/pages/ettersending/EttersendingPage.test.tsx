@@ -3,8 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect } from 'vitest';
 
-import { mswTest } from '@navikt/fp-utils-test';
-
+import { mswTest } from '../../mswTest';
 import * as stories from './EttersendingPage.stories';
 
 const { SkalIkkeFeileOpplasting, SkalFeileOpplasting } = composeStories(stories);

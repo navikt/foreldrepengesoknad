@@ -1,8 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
-import { mswTest } from '@navikt/fp-utils-test';
-
+import { mswTest } from '../../mswTest';
 import * as stories from './InntektsmeldingPage.stories';
 
 const {

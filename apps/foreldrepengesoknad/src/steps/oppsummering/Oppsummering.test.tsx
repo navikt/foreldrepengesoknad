@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswTest } from '@navikt/fp-utils-test';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './Oppsummering.stories';
 
 const {

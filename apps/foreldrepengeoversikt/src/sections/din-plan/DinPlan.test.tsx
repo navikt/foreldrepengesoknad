@@ -2,8 +2,7 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { mswTest } from '@navikt/fp-utils-test';
-
+import { mswTest } from '../../mswTest';
 import * as stories from './DinPlan.stories';
 
 const { Default, FarSøker } = composeStories(stories);

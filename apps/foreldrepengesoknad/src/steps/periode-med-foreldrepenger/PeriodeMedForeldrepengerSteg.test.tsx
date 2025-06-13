@@ -6,8 +6,8 @@ import { SøknadRoutes } from 'appData/routes';
 import MockDate from 'mockdate';
 
 import { Dekningsgrad } from '@navikt/fp-types';
-import { mswTest } from '@navikt/fp-utils-test';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
 const {

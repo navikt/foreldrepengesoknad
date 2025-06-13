@@ -6,8 +6,8 @@ import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswTest } from '@navikt/fp-utils-test';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './DokumentasjonSteg.stories';
 
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);

@@ -2,9 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { mswTest } from '@navikt/fp-utils-test';
-
 import * as stories from './AppContainer.stories';
+import { mswTest } from './mswTest';
 
 const { FpEllerEsVeiviserMockaStønadskontoerOgSatser } = composeStories(stories);
 

@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { mswTest } from '@navikt/fp-utils-test';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
