@@ -13,7 +13,6 @@ import {
     getEldsteRegistrerteBarn,
     getErDatoInnenEnDagFraAnnenDato,
 } from 'utils/dateUtils';
-import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
@@ -158,12 +157,12 @@ const OmBarnetStegInner = ({
     };
 
     const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet),
-        [arbeidsforhold, omBarnet],
+        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
+        [arbeidsforhold, omBarnet, termindato],
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
-        defaultValues: { ...defaultValues, termindato },
+        defaultValues: { ...defaultValues },
     });
 
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
