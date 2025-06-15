@@ -28,12 +28,11 @@ export type DokumentereMorsArbeidParams = {
     perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
 };
 
-export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
+export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
-        enabled,
     });
 
 export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>

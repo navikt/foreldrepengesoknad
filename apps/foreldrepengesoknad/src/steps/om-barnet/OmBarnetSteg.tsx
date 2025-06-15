@@ -82,13 +82,9 @@ type Props = {
 };
 
 export const OmBarnetSteg = (props: Props) => {
-    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
-    const barn = useContextGetData(ContextDataType.OM_BARNET);
-
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const terminDatoQuery = useQuery({
         ...annenPartVedtakOptions,
-        enabled: !!annenForelder && !!barn,
         select: (vedtak) => vedtak.termindato,
     });
 
