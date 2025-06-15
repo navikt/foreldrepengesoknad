@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -11,6 +13,7 @@ import {
     getEldsteRegistrerteBarn,
     getErDatoInnenEnDagFraAnnenDato,
 } from 'utils/dateUtils';
+import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
@@ -79,7 +82,31 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const OmBarnetSteg = (props: Props) => {
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const terminDatoQuery = useQuery({
+        ...annenPartVedtakOptions,
+        enabled: !!annenForelder && !!barn,
+        select: (vedtak) => vedtak.termindato,
+    });
+
+    if (terminDatoQuery.isLoading) {
+        return 'Laster';
+    }
+
+    return <OmBarnetStegInner {...props} termindato={terminDatoQuery.data} />;
+};
+
+const OmBarnetStegInner = ({
+    søkerInfo,
+    søknadGjelderNyttBarn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    termindato,
+}: Props & { termindato?: string }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -136,7 +163,7 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
-        defaultValues,
+        defaultValues: { ...defaultValues, termindato },
     });
 
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
