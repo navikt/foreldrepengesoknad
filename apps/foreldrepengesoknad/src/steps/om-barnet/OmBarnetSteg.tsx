@@ -15,7 +15,7 @@ import {
 } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { VStack } from '@navikt/ds-react';
+import { Loader, VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -93,7 +93,11 @@ export const OmBarnetSteg = (props: Props) => {
     });
 
     if (terminDatoQuery.isLoading) {
-        return 'Laster';
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader size="2xlarge" />
+            </div>
+        );
     }
 
     return <OmBarnetStegInner {...props} termindato={terminDatoQuery.data} />;
