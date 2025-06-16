@@ -4,10 +4,30 @@
     break-inside: avoid;
 }
 
+.weeknr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--a-gray-400);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    cursor: default;
+}
+
 @media (max-width: 630px) {
     .box {
         padding-top: 2px;
         width: 120px;
+    }
+    .weeknr {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        cursor: default;
     }
 }
 
