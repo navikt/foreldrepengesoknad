@@ -1,0 +1,1 @@
+import{u as a}from"./useQuery-Bx3zZXaq.js";import{h as t}from"./api-C2huO7jD.js";import{g as m,m as o}from"./sakerUtils-C58szazY.js";import{b as n}from"./chunk-NL6KNZEE-BcrTknNP.js";const f=()=>{const r=n(),e=a({...t(),select:o}).data;if(e)return m(e).find(s=>s.saksnummer===r.saksnummer)};export{f as u};
