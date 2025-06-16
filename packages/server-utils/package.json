@@ -13,7 +13,8 @@
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "3.2.3",
         "@navikt/vite-mode": "0.13.5",
-        "express": "5.1.0"
+        "express": "5.1.0",
+        "ky": "1.7.5"
     },
     "devDependencies": {
         "@types/express": "5.0.3",
