@@ -8,8 +8,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--a-gray-400);
-    font-size: 14px;
+    color: var(--a-text-subtle);
+    font-size: 12px;
     font-style: normal;
     font-weight: 600;
     cursor: default;
