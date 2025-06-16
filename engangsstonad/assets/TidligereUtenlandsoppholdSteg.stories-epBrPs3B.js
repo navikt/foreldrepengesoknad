@@ -1,0 +1,5 @@
+import{j as o}from"./iframe-GeBb8rp7.js";import{M as c,P as m,E as d,C as p}from"./useEsNavigator-Dy4GbfxY.js";import{T as r}from"./TidligereUtenlandsoppholdSteg-BsmUpe_b.js";const{action:i}=__STORYBOOK_MODULE_ACTIONS__,g=()=>(...t)=>(i("button-click")(...t),Promise.resolve()),u={harBoddUtenforNorgeSiste12Mnd:!0,skalBoUtenforNorgeNeste12Mnd:!1},N={title:"steg/TidligereUtenlandsoppholdSteg",component:r,render:({gåTilNesteSide:t=i("button-click"),mellomlagreOgNaviger:l})=>o.jsx(c,{initialEntries:[m.TIDLIGERE_UTENLANDSOPPHOLD],children:o.jsx(d,{onDispatch:t,initialState:{[p.UTENLANDSOPPHOLD]:u},children:o.jsx(r,{mellomlagreOgNaviger:l})})})},e={args:{mellomlagreOgNaviger:g()}};var s,a,n;e.parameters={...e.parameters,docs:{...(s=e.parameters)==null?void 0:s.docs,source:{originalSource:`{
+  args: {
+    mellomlagreOgNaviger: promiseAction()
+  }
+}`,...(n=(a=e.parameters)==null?void 0:a.docs)==null?void 0:n.source}}};const f=["Default"];export{e as Default,f as __namedExportsOrder,N as default};
