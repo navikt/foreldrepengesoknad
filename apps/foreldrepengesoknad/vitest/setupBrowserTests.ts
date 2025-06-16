@@ -14,5 +14,3 @@ beforeAll(annotations.beforeAll);
 dayjs.extend(isSameOrAfter);
 
 expect.extend(matchers);
-
-window.scrollTo = () => undefined;

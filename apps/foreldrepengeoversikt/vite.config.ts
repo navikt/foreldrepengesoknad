@@ -57,6 +57,7 @@ export default defineConfig({
                     setupFiles: path.resolve(__dirname, './vitest/setupTests.ts'),
                     env: {
                         TEST_MODE: 'jsdom-mode',
+                        BASE_URL: 'https://test.com',
                     },
                 },
             },
