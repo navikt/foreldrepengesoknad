@@ -2,266 +2,6 @@
 
 export type YtelseMellomlagringType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTONAD';
 
-export type AnnenInntektDtoOld = {
-    type?: string;
-    land?: string;
-    arbeidsgiverNavn?: string;
-    tidsperiode?: ÅpenPeriodeDtoOld;
-    erNærVennEllerFamilieMedArbeisdgiver?: boolean;
-};
-
-export type AnnenforelderDtoOld = {
-    kanIkkeOppgis?: boolean;
-    fornavn?: string;
-    etternavn?: string;
-    fnr?: string;
-    bostedsland?: string;
-    utenlandskFnr?: boolean;
-    harRettPåForeldrepenger?: boolean;
-    erInformertOmSøknaden?: boolean;
-    harMorUføretrygd?: boolean;
-    harAnnenForelderOppholdtSegIEØS?: boolean;
-    harAnnenForelderTilsvarendeRettEØS?: boolean;
-};
-
-export type ArbeidsforholdDto = {
-    type: string;
-};
-
-export type BarnDtoOld = {
-    fødselsdatoer?: string[];
-    antallBarn?: number;
-    termindato?: string;
-    terminbekreftelseDato?: string;
-    adopsjonsdato?: string;
-    ankomstdato?: string;
-    adopsjonAvEktefellesBarn?: boolean;
-    søkerAdopsjonAlene?: boolean;
-    foreldreansvarsdato?: string;
-};
-
-export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR' | 'IKKE_RELEVANT';
-
-export type DekningsgradOld = '80' | '100';
-
-export type DokumentType =
-    | 'I000001'
-    | 'I000002'
-    | 'I000003'
-    | 'I000004'
-    | 'I000005'
-    | 'I000006'
-    | 'I000050'
-    | 'I000027'
-    | 'I500027'
-    | 'I000114'
-    | 'I000119'
-    | 'I000067'
-    | 'I000007'
-    | 'I000023'
-    | 'I000026'
-    | 'I000032'
-    | 'I000036'
-    | 'I000037'
-    | 'I000038'
-    | 'I000039'
-    | 'I000041'
-    | 'I000042'
-    | 'I000043'
-    | 'I000044'
-    | 'I000045'
-    | 'I000047'
-    | 'I000049'
-    | 'I000051'
-    | 'I000060'
-    | 'I000061'
-    | 'I000062'
-    | 'I000063'
-    | 'I000064'
-    | 'I000065'
-    | 'I000066'
-    | 'I000107'
-    | 'I000108'
-    | 'I000109'
-    | 'I000110'
-    | 'I000111'
-    | 'I000112'
-    | 'I000116'
-    | 'I000117'
-    | 'I000118'
-    | 'I000120'
-    | 'I000121'
-    | 'I000122'
-    | 'I000123'
-    | 'I000124'
-    | 'I000130'
-    | 'I000131'
-    | 'I000132'
-    | 'I000133'
-    | 'I000140'
-    | 'I000141'
-    | 'I000143'
-    | 'I000144'
-    | 'I000145'
-    | 'I000146'
-    | 'I500001'
-    | 'I500002'
-    | 'I500003'
-    | 'I500004'
-    | 'I500005'
-    | 'I500006'
-    | 'I500050';
-
-export type Dokumenterer = {
-    type: DokumentererType;
-    arbeidsforhold?: FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto;
-    perioder?: ÅpenPeriodeDtoOld[];
-};
-
-export type DokumentererType = 'BARN' | 'OPPTJENING' | 'UTTAK' | 'TILRETTELEGGING';
-
-export type ForeldrepengesøknadDtoOld = SøknadDtoOld & {
-    type: 'ForeldrepengesøknadDtoOLD';
-} & {
-    mottattdato?: string;
-    situasjon: SituasjonOld;
-    søker: SøkerDtoOld;
-    barn: BarnDtoOld;
-    annenForelder: AnnenforelderDtoOld;
-    dekningsgrad: DekningsgradOld;
-    tilleggsopplysninger?: string;
-    informasjonOmUtenlandsopphold: UtenlandsoppholdDtoOld;
-    uttaksplan?: UttaksplanPeriodeDtoOld[];
-    ønskerJustertUttakVedFødsel?: boolean;
-    vedlegg?: VedleggDto[];
-};
-
-export type FrilansInformasjonDtoOld = {
-    oppstart?: string;
-    jobberFremdelesSomFrilans?: boolean;
-};
-
-export type FrilanserDto = ArbeidsforholdDto & {
-    type: 'FrilanserDto';
-};
-
-export type KontoType = 'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
-
-export type Målform = 'NB' | 'NN' | 'EN' | 'E';
-
-export type NæringDtoOld = {
-    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
-    hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
-    registrertINorge?: boolean;
-    stillingsprosent?: number;
-    næringsinntekt?: number;
-    næringstyper?: Virksomhetstype[];
-    registrertILand?: string;
-    oppstartsdato?: string;
-    endringAvNæringsinntektInformasjon?: NæringsinntektInformasjonDtoOld;
-    navnPåNæringen?: string;
-    organisasjonsnummer?: string;
-    tidsperiode?: ÅpenPeriodeDtoOld;
-    regnskapsfører?: TilknyttetPersonDtoOld;
-    revisor?: TilknyttetPersonDtoOld;
-};
-
-export type NæringsinntektInformasjonDtoOld = {
-    dato?: string;
-    næringsinntektEtterEndring?: number;
-    forklaring?: string;
-};
-
-export type PrivatArbeidsgiverDto = ArbeidsforholdDto & {
-    type: 'PrivatArbeidsgiverDto';
-} & {
-    id: string;
-};
-
-export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
-    type: 'SelvstendigNæringsdrivendeDto';
-};
-
-export type SituasjonOld = 'FØDSEL' | 'ADOPSJON' | 'OMSORGSOVERTAKELSE';
-
-export type SøkerDtoOld = {
-    rolle?: BrukerRolle;
-    språkkode?: Målform;
-    erAleneOmOmsorg?: boolean;
-    frilansInformasjon?: FrilansInformasjonDtoOld;
-    selvstendigNæringsdrivendeInformasjon?: NæringDtoOld[];
-    andreInntekterSiste10Mnd?: AnnenInntektDtoOld[];
-};
-
-export type SøknadDtoOld = {
-    type: string;
-};
-
-export type TilknyttetPersonDtoOld = {
-    navn?: string;
-    telefonnummer?: string;
-    erNærVennEllerFamilie?: boolean;
-};
-
-export type UtenlandsoppholdDtoOld = {
-    tidligereOpphold?: UtenlandsoppholdPeriodeDtoOld[];
-    senereOpphold?: UtenlandsoppholdPeriodeDtoOld[];
-};
-
-export type UtenlandsoppholdPeriodeDtoOld = {
-    land?: string;
-    tidsperiode?: ÅpenPeriodeDtoOld;
-};
-
-export type UttakType = 'UTTAK' | 'UTSETTELSE' | 'OPPHOLD' | 'OVERFØRING' | 'PERIODEUTENUTTAK';
-
-export type UttaksplanPeriodeDtoOld = {
-    type: UttakType;
-    tidsperiode?: ÅpenPeriodeDtoOld;
-    konto?: KontoType;
-    morsAktivitetIPerioden?: string;
-    årsak?: string;
-    samtidigUttakProsent?: number;
-    stillingsprosent?: number;
-    erArbeidstaker?: boolean;
-    erFrilanser?: boolean;
-    erSelvstendig?: boolean;
-    gradert?: boolean;
-    ønskerFlerbarnsdager?: boolean;
-    ønskerSamtidigUttak?: boolean;
-    justeresVedFødsel?: boolean;
-    orgnumre?: string[];
-};
-
-export type VedleggDto = {
-    uuid?: string;
-    skjemanummer: DokumentType;
-    innsendingsType?: VedleggInnsendingType;
-    beskrivelse?: string;
-    dokumenterer?: Dokumenterer;
-};
-
-export type VedleggInnsendingType = 'LASTET_OPP' | 'SEND_SENERE' | 'AUTOMATISK';
-
-export type VirksomhetDto = ArbeidsforholdDto & {
-    type: 'VirksomhetDto';
-} & {
-    id: string;
-};
-
-export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
-
-export type ÅpenPeriodeDtoOld = {
-    fom: string;
-    tom?: string;
-};
-
-export type Kvittering = {
-    mottattDato?: string;
-    saksNr?: string;
-    pdf?: string;
-};
-
 export type AnnenInntektDto = {
     type: AnnenOpptjeningType;
     fom: string;
@@ -281,6 +21,10 @@ export type AnnenOpptjeningType =
     | 'VENTELØNN'
     | 'VARTPENGER';
 
+export type ArbeidsforholdDto = {
+    type: string;
+};
+
 export type AvtaltFerieDto = {
     arbeidsforhold: FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto;
     fom: string;
@@ -292,6 +36,8 @@ export type BarnSvpDto = {
     termindato: string;
     fødselsdato?: string;
 };
+
+export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR' | 'IKKE_RELEVANT';
 
 export type CountryCode =
     | 'UNDEFINED'
@@ -574,9 +320,89 @@ export type Del = TilretteleggingDto & {
     stillingsprosent: number;
 };
 
+export type DokumentType =
+    | 'I000001'
+    | 'I000002'
+    | 'I000003'
+    | 'I000004'
+    | 'I000005'
+    | 'I000006'
+    | 'I000050'
+    | 'I000027'
+    | 'I500027'
+    | 'I000114'
+    | 'I000119'
+    | 'I000067'
+    | 'I000007'
+    | 'I000023'
+    | 'I000026'
+    | 'I000032'
+    | 'I000036'
+    | 'I000037'
+    | 'I000038'
+    | 'I000039'
+    | 'I000041'
+    | 'I000042'
+    | 'I000043'
+    | 'I000044'
+    | 'I000045'
+    | 'I000047'
+    | 'I000049'
+    | 'I000051'
+    | 'I000060'
+    | 'I000061'
+    | 'I000062'
+    | 'I000063'
+    | 'I000064'
+    | 'I000065'
+    | 'I000066'
+    | 'I000107'
+    | 'I000108'
+    | 'I000109'
+    | 'I000110'
+    | 'I000111'
+    | 'I000112'
+    | 'I000116'
+    | 'I000117'
+    | 'I000118'
+    | 'I000120'
+    | 'I000121'
+    | 'I000122'
+    | 'I000123'
+    | 'I000124'
+    | 'I000130'
+    | 'I000131'
+    | 'I000132'
+    | 'I000133'
+    | 'I000140'
+    | 'I000141'
+    | 'I000143'
+    | 'I000144'
+    | 'I000145'
+    | 'I000146'
+    | 'I500001'
+    | 'I500002'
+    | 'I500003'
+    | 'I500004'
+    | 'I500005'
+    | 'I500006'
+    | 'I500050';
+
+export type Dokumenterer = {
+    type: DokumentererType;
+    arbeidsforhold?: FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto;
+    perioder?: ÅpenPeriodeDto[];
+};
+
+export type DokumentererType = 'BARN' | 'OPPTJENING' | 'UTTAK' | 'TILRETTELEGGING';
+
 export type FrilansDto = {
     jobberFremdelesSomFrilans?: boolean;
     oppstart: string;
+};
+
+export type FrilanserDto = ArbeidsforholdDto & {
+    type: 'FrilanserDto';
 };
 
 export type Hel = TilretteleggingDto & {
@@ -590,6 +416,8 @@ export type Ingen = TilretteleggingDto & {
 } & {
     fom: string;
 };
+
+export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 
 export type NæringDto = {
     fom: string;
@@ -607,6 +435,16 @@ export type NæringDto = {
     varigEndringInntektEtterEndring?: number;
     varigEndringBeskrivelse?: string;
     varigEndringGyldig?: boolean;
+};
+
+export type PrivatArbeidsgiverDto = ArbeidsforholdDto & {
+    type: 'PrivatArbeidsgiverDto';
+} & {
+    id: string;
+};
+
+export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
+    type: 'SelvstendigNæringsdrivendeDto';
 };
 
 export type SvangerskapspengesøknadDto = {
@@ -641,6 +479,35 @@ export type UtenlandsoppholdsperiodeDto = {
     tom: string;
     landkode: CountryCode;
     fomAfterTom?: boolean;
+};
+
+export type VedleggDto = {
+    uuid?: string;
+    skjemanummer: DokumentType;
+    innsendingsType?: VedleggInnsendingType;
+    beskrivelse?: string;
+    dokumenterer?: Dokumenterer;
+};
+
+export type VedleggInnsendingType = 'LASTET_OPP' | 'SEND_SENERE' | 'AUTOMATISK';
+
+export type VirksomhetDto = ArbeidsforholdDto & {
+    type: 'VirksomhetDto';
+} & {
+    id: string;
+};
+
+export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
+
+export type ÅpenPeriodeDto = {
+    fom: string;
+    tom?: string;
+};
+
+export type Kvittering = {
+    mottattDato?: string;
+    saksNr?: string;
+    pdf?: string;
 };
 
 export type AdopsjonDto = BarnDto & {
@@ -694,6 +561,8 @@ export type GraderingDto = {
     erSelvstendig?: boolean;
     orgnumre?: string[];
 };
+
+export type KontoType = 'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
 
 export type MorsAktivitet =
     | 'ARBEID'
@@ -859,25 +728,6 @@ export type EngangsstønadDto = {
     vedlegg?: VedleggDto[];
 };
 
-export type EndringssøknadDtoOld = {
-    type: string;
-};
-
-export type EndringssøknadForeldrepengerDtoOld = EndringssøknadDtoOld & {
-    type: 'EndringssøknadForeldrepengerDtoOLD';
-} & {
-    mottattdato?: string;
-    situasjon: SituasjonOld;
-    saksnummer: string;
-    søker: SøkerDtoOld;
-    barn: BarnDtoOld;
-    annenForelder: AnnenforelderDtoOld;
-    tilleggsopplysninger?: string;
-    ønskerJustertUttakVedFødsel?: boolean;
-    uttaksplan?: UttaksplanPeriodeDtoOld[];
-    vedlegg?: VedleggDto[];
-};
-
 export type Brukerrolle = 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
 
 export type KontoBeregningGrunnlagDto = {
@@ -974,17 +824,17 @@ export type Gradering = {
     aktivitet: Aktivitet;
 };
 
-export type OverføringÅrsak =
-    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
-    | 'SYKDOM_ANNEN_FORELDER'
-    | 'IKKE_RETT_ANNEN_FORELDER'
-    | 'ALENEOMSORG';
-
 export type UttakOppholdÅrsak =
     | 'MØDREKVOTE_ANNEN_FORELDER'
     | 'FEDREKVOTE_ANNEN_FORELDER'
     | 'FELLESPERIODE_ANNEN_FORELDER'
     | 'FORELDREPENGER_ANNEN_FORELDER';
+
+export type UttakOverføringÅrsak =
+    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
+    | 'SYKDOM_ANNEN_FORELDER'
+    | 'IKKE_RETT_ANNEN_FORELDER'
+    | 'ALENEOMSORG';
 
 export type UttakPeriode = {
     fom: string;
@@ -993,7 +843,7 @@ export type UttakPeriode = {
     resultat?: UttakPeriodeResultat;
     utsettelseÅrsak?: UttakUtsettelseÅrsak;
     oppholdÅrsak?: UttakOppholdÅrsak;
-    overføringÅrsak?: OverføringÅrsak;
+    overføringÅrsak?: UttakOverføringÅrsak;
     gradering?: Gradering;
     morsAktivitet?: MorsAktivitet;
     samtidigUttak?: number;
@@ -1411,22 +1261,6 @@ export type LagreVedleggResponses = {
 
 export type LagreVedleggResponse = LagreVedleggResponses[keyof LagreVedleggResponses];
 
-export type SendInnData = {
-    body: ForeldrepengesøknadDtoOld;
-    path?: never;
-    query?: never;
-    url: '/rest/soknad';
-};
-
-export type SendInnResponses = {
-    /**
-     * OK
-     */
-    200: Kvittering;
-};
-
-export type SendInnResponse = SendInnResponses[keyof SendInnResponses];
-
 export type SendInnForeldrepengesøknadData = {
     body: SvangerskapspengesøknadDto;
     path?: never;
@@ -1461,21 +1295,22 @@ export type SendInnForeldrepengesøknad1Responses = {
 export type SendInnForeldrepengesøknad1Response =
     SendInnForeldrepengesøknad1Responses[keyof SendInnForeldrepengesøknad1Responses];
 
-export type EndreData = {
+export type SendInnEndringssøknadForeldrepengerData = {
     body: EndringssøknadForeldrepengerDto;
     path?: never;
     query?: never;
     url: '/rest/soknad/foreldrepenger/endre';
 };
 
-export type EndreResponses = {
+export type SendInnEndringssøknadForeldrepengerResponses = {
     /**
      * OK
      */
     200: Kvittering;
 };
 
-export type EndreResponse = EndreResponses[keyof EndreResponses];
+export type SendInnEndringssøknadForeldrepengerResponse =
+    SendInnEndringssøknadForeldrepengerResponses[keyof SendInnEndringssøknadForeldrepengerResponses];
 
 export type EttersendData = {
     body: EttersendelseDto;
@@ -1524,22 +1359,6 @@ export type SendInnEngangsstønadResponses = {
 };
 
 export type SendInnEngangsstønadResponse = SendInnEngangsstønadResponses[keyof SendInnEngangsstønadResponses];
-
-export type Endre1Data = {
-    body: EndringssøknadForeldrepengerDtoOld;
-    path?: never;
-    query?: never;
-    url: '/rest/soknad/endre';
-};
-
-export type Endre1Responses = {
-    /**
-     * OK
-     */
-    200: Kvittering;
-};
-
-export type Endre1Response = Endre1Responses[keyof Endre1Responses];
 
 export type BeregnData = {
     body: KontoBeregningGrunnlagDto;
