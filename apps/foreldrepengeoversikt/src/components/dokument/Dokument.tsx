@@ -2,7 +2,7 @@ import { FileIcon } from '@navikt/aksel-icons';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto, DokumentKategori } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
 import { lagUrl } from '../../utils/dokumenterUtils';
@@ -24,7 +24,7 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentDto['type'] }) {
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentKategori }) {
     const text = (() => {
         switch (dokumentType) {
             case 'UTGÅENDE_DOKUMENT':
