@@ -1,14 +1,14 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './Saksoversikt.stories';
 
 const { Engangsstønad, Foreldrepenger, Svangerskapspenger } = composeStories(stories);
 
 describe('<Saksoversikt>', () => {
-    it('skal vise hvor mye engangsstønad en har rett på', async () => {
-        await applyRequestHandlers(Engangsstønad.parameters.msw);
+    mswTest('skal vise hvor mye engangsstønad en har rett på', async ({ setHandlers }) => {
+        setHandlers(Engangsstønad.parameters.msw);
         render(<Engangsstønad />);
 
         expect(await screen.findByText('Dette har du søkt om')).toBeInTheDocument();
@@ -18,14 +18,14 @@ describe('<Saksoversikt>', () => {
         expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
     });
 
-    it('skal kun vise Endre plan lenke for foreldrepenger', async () => {
-        await applyRequestHandlers(Foreldrepenger.parameters.msw);
+    mswTest('skal kun vise Endre plan lenke for foreldrepenger', async ({ setHandlers }) => {
+        setHandlers(Foreldrepenger.parameters.msw);
         render(<Foreldrepenger />);
         expect(await screen.findByText('Endre planen din')).toBeInTheDocument();
     });
 
-    it('skal IKKE vise Endre plan lenke for svangerskapspenger', async () => {
-        await applyRequestHandlers(Svangerskapspenger.parameters.msw);
+    mswTest('skal IKKE vise Endre plan lenke for svangerskapspenger', async ({ setHandlers }) => {
+        setHandlers(Svangerskapspenger.parameters.msw);
         render(<Svangerskapspenger />);
 
         // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
@@ -36,8 +36,8 @@ describe('<Saksoversikt>', () => {
         expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
     });
 
-    it('skal IKKE vise Endre plan lenke for engangsstønad', async () => {
-        await applyRequestHandlers(Engangsstønad.parameters.msw);
+    mswTest('skal IKKE vise Endre plan lenke for engangsstønad', async ({ setHandlers }) => {
+        setHandlers(Engangsstønad.parameters.msw);
         render(<Engangsstønad />);
 
         // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
