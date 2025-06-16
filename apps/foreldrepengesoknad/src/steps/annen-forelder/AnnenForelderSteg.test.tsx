@@ -123,6 +123,7 @@ describe('<AnnenForelderSteg>', () => {
                 fnr: '12038517080',
                 fornavn: 'LEALAUS',
                 harOppholdtSegIEØS: false,
+                harRettPåForeldrepengerINorge: false,
                 kanIkkeOppgis: false,
             },
             key: ContextDataType.ANNEN_FORELDER,
