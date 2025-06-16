@@ -162,7 +162,7 @@ const OmBarnetStegInner = ({
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
-        defaultValues: defaultValues,
+        defaultValues,
     });
 
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
