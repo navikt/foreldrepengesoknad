@@ -319,11 +319,7 @@ export const cleanAnnenforelder = (
             erAleneOmOmsorg: oppgitt.erAleneOmOmsorg,
             harMorUføretrygd: oppgitt.erMorUfør,
             harAnnenForelderOppholdtSegIEØS: oppgitt.harOppholdtSegIEØS,
-            harAnnenForelderTilsvarendeRettEØS:
-                // Bevarer logikken fra steget og gammel oppførsel her siden harRettPåForeldrepengerIEØS defaulter til false mange plasser
-                oppgitt.harRettPåForeldrepengerINorge !== false || oppgitt.harOppholdtSegIEØS !== true
-                    ? undefined
-                    : oppgitt.harRettPåForeldrepengerIEØS,
+            harAnnenForelderTilsvarendeRettEØS: oppgitt.harRettPåForeldrepengerIEØS,
         },
     };
     return oppgitt.utenlandskFnr
