@@ -26,6 +26,7 @@
         "@tailwindcss/vite": "^4.1.8",
         "dayjs": "^1.11.12",
         "intl-messageformat": "^10.7.16",
+        "ky": "1.7.5",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-hook-form": "7.57.0",
