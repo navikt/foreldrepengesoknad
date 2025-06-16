@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -28,11 +26,6 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
-
-    // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
-    // Dette trengs ikke før i OmBarnet. Men om vi kan henter det her slipper vi loading.
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
-    useQuery(annenPartVedtakOptions);
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon

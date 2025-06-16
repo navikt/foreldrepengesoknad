@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
@@ -293,6 +295,11 @@ export const ForeldrepengesøknadRoutes = ({
     );
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+
+    // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
+    // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
         if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
