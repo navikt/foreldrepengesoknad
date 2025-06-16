@@ -5,7 +5,9 @@ import { VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { getFloatFromString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
@@ -47,6 +49,7 @@ export const EndrePeriodeModalStep = ({
 }: Props) => {
     const { valgtPeriode, årsak } = modalData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
+    const perioder = notEmpty(useContextGetData(UttaksplanContextDataType.UTTAKSPLAN));
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -100,8 +103,8 @@ export const EndrePeriodeModalStep = ({
                     gjelderAdopsjon={gjelderAdopsjon}
                     oppholdsårsak={årsak}
                 />
+                <SamtidigUttakSpørsmål formMethods={formMethods} perioder={perioder} />
                 <GraderingSpørsmål formMethods={formMethods} />
-                <SamtidigUttakSpørsmål formMethods={formMethods} />
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={

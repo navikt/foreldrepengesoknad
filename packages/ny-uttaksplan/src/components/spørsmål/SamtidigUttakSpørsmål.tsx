@@ -4,14 +4,19 @@ import { Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 
-import { prosentValideringSamtidigUttak } from './validators';
+import { Planperiode } from '../../types/Planperiode';
+import { valideringSamtidigUttak } from './validators';
 
 interface Props {
     formMethods: any;
+    perioder: Planperiode[];
 }
 
-export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
+export const SamtidigUttakSpørsmål = ({ formMethods, perioder }: Props) => {
     const samtidigUttakValue = formMethods.watch('samtidigUttak');
+    const fomValue = formMethods.watch('fom');
+    const tomValue = formMethods.watch('tom');
+
     const intl = useIntl();
 
     return (
@@ -29,7 +34,7 @@ export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
                     className="w-xs"
                     label="Hvor mange prosent?"
                     name="samtidigUttaksprosent"
-                    validate={[prosentValideringSamtidigUttak(intl)]}
+                    validate={[valideringSamtidigUttak(intl, fomValue, tomValue, perioder)]}
                     maxLength={5}
                 />
             )}
