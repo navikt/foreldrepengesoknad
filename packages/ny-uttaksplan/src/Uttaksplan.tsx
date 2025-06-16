@@ -21,6 +21,7 @@ import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from './utils/periodeUtils';
+import { validerUttaksplan } from './validering/validerUttaksplan';
 
 interface Props {
     familiehendelsedato: string;
@@ -132,6 +133,10 @@ export const UttaksplanNy = ({
         });
         handleOnPlanChange(saksPerioder);
     };
+
+    const valideringsResultat = validerUttaksplan({ perioder: komplettPlan });
+
+    console.log(valideringsResultat);
 
     const closeModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
