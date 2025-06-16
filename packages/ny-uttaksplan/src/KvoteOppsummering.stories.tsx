@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';

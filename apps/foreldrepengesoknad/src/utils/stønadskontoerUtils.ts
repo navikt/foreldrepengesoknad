@@ -86,10 +86,6 @@ export const getUttakAnnenPartStønadskontoNavn = (
     return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
 
-export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
-    return Object.values(stønadskontoer.kontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
-};
-
 export const getAntallUkerFraStønadskontoer = (stønadskontoer: Stønadskonto[]): number => {
     return Object.values(stønadskontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
 };

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
-import { getAntallUker, getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -163,7 +163,10 @@ export const DekningsgradForm = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.49Uker"
                                 values={{
-                                    varighetString: getVarighetString(getAntallUker(stønadskonto100) * 5, intl),
+                                    varighetString: getVarighetString(
+                                        getAntallUkerFraStønadskontoer(stønadskonto100.kontoer) * 5,
+                                        intl,
+                                    ),
                                 }}
                             />
                         </Radio>
@@ -180,7 +183,10 @@ export const DekningsgradForm = ({
                             <FormattedMessage
                                 id="uttaksplaninfo.59Uker"
                                 values={{
-                                    varighetString: getVarighetString(getAntallUker(stønadskonto80) * 5, intl),
+                                    varighetString: getVarighetString(
+                                        getAntallUkerFraStønadskontoer(stønadskonto80.kontoer) * 5,
+                                        intl,
+                                    ),
                                 }}
                             />
                         </Radio>

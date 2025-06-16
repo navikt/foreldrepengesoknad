@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { IntlShape } from 'react-intl';
 
 import { Periode, Periodetype, Situasjon } from '@navikt/fp-common';

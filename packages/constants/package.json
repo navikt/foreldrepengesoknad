@@ -14,7 +14,7 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
-        "eslint": "9.26.0",
+        "eslint": "9.28.0",
         "tsconfig": "workspace:*",
         "typescript": "^5.8.3"
     },

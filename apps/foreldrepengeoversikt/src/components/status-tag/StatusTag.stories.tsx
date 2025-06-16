@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { saker } from 'storybookData/saker/saker';
 
 import { StatusTag } from './StatusTag';
