@@ -36,8 +36,8 @@ export default [
         rules: {
             ...vitest.configs.recommended.rules,
             'max-len': [ERROR, 160],
-            'no-console': WARNING,
-            'no-debugger': WARNING,
+            'no-console': ERROR,
+            'no-debugger': ERROR,
             'react/prop-types': OFF,
             'jsx-a11y/no-autofocus': OFF,
             'react/react-in-jsx-scope': OFF,
