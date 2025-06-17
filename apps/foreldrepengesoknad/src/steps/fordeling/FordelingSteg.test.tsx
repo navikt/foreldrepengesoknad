@@ -1192,7 +1192,6 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    //TODO (TOR) Her er det noko rare greier som skjer. Denne testen gjer at ein annan test feilar
     mswTest(
         'skal vise riktig informasjon til mor med delt uttak som søker på fødsel av tvillinger',
         async ({ setHandlers }) => {

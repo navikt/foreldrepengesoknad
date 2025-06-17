@@ -60,7 +60,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} as TilgjengeligeStønadskontoer;
+} satisfies TilgjengeligeStønadskontoer;
 
 const SATSER = {
     engangstønad: [

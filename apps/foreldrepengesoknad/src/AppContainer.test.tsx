@@ -19,7 +19,8 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Et annet barn'));
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
         await userEvent.click(screen.getByText('Start søknaden'));
-        expect(await screen.findAllByText('Din situasjon')).toHaveLength(2);
+
+        await waitFor(() => expect(screen.getAllByText('Din situasjon')).toHaveLength(2));
         expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
         await userEvent.click(screen.getByText('Neste steg'));
