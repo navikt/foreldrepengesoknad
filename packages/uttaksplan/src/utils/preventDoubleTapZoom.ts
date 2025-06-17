@@ -8,8 +8,7 @@ let lastTapAt = 0;
 let lastClientX = 0;
 let lastClientY = 0;
 
-// eslint-disable-next-line import/no-default-export
-export default function preventDoubleTapZoom(event: React.TouchEvent<any>) {
+export const preventDoubleTapZoom = (event: React.TouchEvent<HTMLButtonElement>) => {
     // Exit early if this involves more than one finger (e.g. pinch to zoom)
     if (event.touches.length > 1) {
         return;
@@ -23,9 +22,11 @@ export default function preventDoubleTapZoom(event: React.TouchEvent<any>) {
     if (xDiff < minZoomTouchDelta && yDiff < minZoomTouchDelta && event.touches.length === 1 && timeDiff < delay) {
         event.preventDefault();
         // Trigger a fake click for the tap we just prevented
-        (event.target as any).click();
+        if (event.target instanceof HTMLButtonElement) {
+            event.target.click();
+        }
     }
     lastClientX = clientX;
     lastClientY = clientY;
     lastTapAt = tapAt;
-}
+};
