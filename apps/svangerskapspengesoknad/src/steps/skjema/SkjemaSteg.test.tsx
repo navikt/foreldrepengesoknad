@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
@@ -11,8 +11,7 @@ const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrila
     composeStories(stories);
 
 describe('<SkjemaSteg>', () => {
-    mswTest.skip('skal vise feilmelding når en ikke har lastet opp minst ett vedlegg', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal vise feilmelding når en ikke har lastet opp minst ett vedlegg', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -34,9 +33,7 @@ describe('<SkjemaSteg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -103,8 +100,7 @@ describe('<SkjemaSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    mswTest.skip('skal vise kunne laste opp maks 2 (40 i prod) vedlegg', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal vise kunne laste opp maks 2 (40 i prod) vedlegg', async ({ setHandlers }) => {
         setHandlers(KanMaxHaToVedlegg.parameters.msw);
         render(<KanMaxHaToVedlegg />);
 
@@ -112,9 +108,7 @@ describe('<SkjemaSteg>', () => {
 
         const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file1, length: 1, 0: file1 } },
-        });
+        await userEvent.upload(fileInput, file1);
 
         await userEvent.click(screen.getByText('Neste steg'));
 

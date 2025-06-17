@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -64,7 +64,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    mswTest.skip('skal laste opp vedlegg for terminbekreftelse', async ({ setHandlers }) => {
+    mswTest('skal laste opp vedlegg for terminbekreftelse', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -80,9 +80,7 @@ describe('<ManglendeVedlegg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -155,7 +153,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    mswTest.skip('skal laste opp vedlegg for omsorgsovertakelse', async ({ setHandlers }) => {
+    mswTest('skal laste opp vedlegg for omsorgsovertakelse', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -171,9 +169,7 @@ describe('<ManglendeVedlegg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -247,7 +243,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    mswTest.skip('skal laste opp vedlegg for aleneomsorg', async ({ setHandlers }) => {
+    mswTest('skal laste opp vedlegg for aleneomsorg', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -263,9 +259,7 @@ describe('<ManglendeVedlegg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
