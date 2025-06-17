@@ -13,8 +13,7 @@ import * as stories from './DokumentasjonSteg.stories';
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
-    mswTest.skip('skal laste opp terminbekreftelse', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal laste opp terminbekreftelse', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
@@ -42,11 +41,11 @@ describe('<DokumentasjonSteg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
+
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT),
@@ -76,8 +75,7 @@ describe('<DokumentasjonSteg>', () => {
         expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
-    mswTest.skip('skal laste opp adopsjonsbekreftelse', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal laste opp adopsjonsbekreftelse', async ({ setHandlers }) => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
@@ -96,9 +94,7 @@ describe('<DokumentasjonSteg>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+        await userEvent.upload(fileInput, file);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
