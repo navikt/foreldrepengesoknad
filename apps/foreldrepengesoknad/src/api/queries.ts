@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
@@ -30,9 +30,12 @@ export const useStønadsKontoerOptions = () => {
 };
 
 export const useAnnenPartVedtakOptions = () => {
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    return annenPartVedtakOptions(annenPartVedtakParams, annenForelderHarNorskFnr(annenForelder));
+    const enabled = !!annenForelder && !!barn && annenForelderHarNorskFnr(annenForelder);
+    return queryOptions({
+        ...annenPartVedtakOptions(enabled ? getAnnenPartVedtakParam(annenForelder, barn) : undefined),
+        enabled,
+    });
 };
