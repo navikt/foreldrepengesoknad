@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 import { StønadskontoType } from '@navikt/fp-common';
 import {
@@ -20,6 +21,8 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './periodeUtils';
+
+dayjs.extend(isSameOrBefore);
 
 export const Periodene = (perioder: Planperiode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),

@@ -10,5 +10,3 @@ const annotations = setProjectAnnotations(globalStorybookConfig);
 beforeAll(annotations.beforeAll);
 
 expect.extend(matchers);
-
-window.scrollTo = () => undefined;

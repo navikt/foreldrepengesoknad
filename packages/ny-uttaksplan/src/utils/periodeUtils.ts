@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import isoWeekday from 'dayjs/plugin/isoWeek';
 import isEqual from 'lodash/isEqual';
 import { IntlShape } from 'react-intl';
 
@@ -25,6 +26,8 @@ import {
 
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+
+dayjs.extend(isoWeekday);
 
 export const Periodene = (perioder: Planperiode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
