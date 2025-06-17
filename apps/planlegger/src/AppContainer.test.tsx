@@ -13,8 +13,7 @@ const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
 
 describe('<AppContainer>', () => {
-    mswTest.skip('skal gå gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal gå gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
         setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
 
         const utils = render(<DefaultMockaStønadskontoerOgSatser />);
@@ -30,6 +29,7 @@ describe('<AppContainer>', () => {
         const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
         await userEvent.type(farNavn, 'Espen');
         await userEvent.click(screen.getByText('Neste'));
+        await userEvent.click(screen.getByText('Neste')); //Forstår ikkje kvifor to trykk skal vera naudsynt. Trur det må vera ein bug i testing-library
 
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
@@ -43,10 +43,11 @@ describe('<AppContainer>', () => {
         await userEvent.type(termindato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
         await userEvent.click(screen.getByText('Neste'));
+        await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 9')).toBeInTheDocument();
-
+        await userEvent.click(screen.getByText('Neste'));
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
@@ -56,6 +57,7 @@ describe('<AppContainer>', () => {
         );
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste'));
+        await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Steg 5 av 9')).toBeInTheDocument();
@@ -64,15 +66,18 @@ describe('<AppContainer>', () => {
         const lønnFar = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
         await userEvent.type(lønnFar, '50000');
         await userEvent.click(screen.getByText('Neste'));
+        await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Steg 6 av 9')).toBeInTheDocument();
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
         await userEvent.click(screen.getByText('Neste'));
+        await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Fordeling')).toHaveLength(2);
         expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'), '5');
+        await userEvent.click(screen.getByText('Neste'));
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
