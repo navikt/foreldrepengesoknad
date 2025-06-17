@@ -17,15 +17,15 @@
     "devDependencies": {
         "@navikt/fp-server-utils": "workspace:*",
         "@types/express": "5.0.3",
-        "@types/morgan": "^1.9.10",
-        "@types/node": "^22.15.18",
+        "@types/morgan": "1.9.10",
+        "@types/node": "22.15.18",
         "@vercel/ncc": "0.38.3",
-        "axios": "^1.9.0",
-        "morgan": "^1.10.0",
+        "axios": "1.9.0",
+        "morgan": "1.10.0",
         "prettier": "3.5.3",
         "tsconfig": "workspace:*",
         "typescript": "5.8.3",
-        "winston": "^3.17.0"
+        "winston": "3.17.0"
     },
     "packageManager": "pnpm@9.1.4"
 }
