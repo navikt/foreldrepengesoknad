@@ -86,7 +86,7 @@ const FRILANS = {
 const INGEN_FERIE = [] satisfies AvtaltFerieDto[];
 
 const EGEN_NÆRING = {
-    næringstype: Næringstype.FISKER,
+    næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,

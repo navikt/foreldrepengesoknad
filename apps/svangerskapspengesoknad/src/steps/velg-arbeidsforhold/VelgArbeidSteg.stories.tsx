@@ -145,7 +145,7 @@ export const MedNæringsvalg: Story = {
             tom: '2024-10-01',
             pågående: false,
             registrertINorge: true,
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
         },
     },
 };
