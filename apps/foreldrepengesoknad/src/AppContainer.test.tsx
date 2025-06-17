@@ -2,18 +2,18 @@ import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
+import { mswTest } from './mswTest';
 
 const { SøkerErMann } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    it.skip('skal gå raskeste vei gjennom applikasjonen som far', async () => {
+    mswTest.skip('skal gå raskeste vei gjennom applikasjonen som far', async ({ setHandlers }) => {
         // TODO Fiks test
-        await applyRequestHandlers(SøkerErMann.parameters.msw);
+        setHandlers(SøkerErMann.parameters.msw);
         const utils = render(<SøkerErMann />);
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
