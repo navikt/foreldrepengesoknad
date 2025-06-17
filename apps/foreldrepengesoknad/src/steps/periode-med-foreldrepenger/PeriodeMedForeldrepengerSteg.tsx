@@ -1,12 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { getStønadskontoParams } from 'api/getStønadskontoParams';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
-import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -35,27 +33,12 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-    const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    const annenPartVedtakQuery = useQuery(
-        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
-    );
-    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartVedtakQuery.isPending;
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartVedtakQuery = useQuery(annenPartVedtakOptions);
 
-    const stønadskontoParams = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartVedtakQuery.data,
-        eksisterendeSak,
-    );
-    const tilgjengeligeStønadskontoerQuery = useQuery(
-        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !suspendStønadskontoApiRequests),
-    );
+    const kontoerOptions = useStønadsKontoerOptions();
+    const tilgjengeligeStønadskontoerQuery = useQuery(kontoerOptions);
 
     const visAnnenPartsValg = annenPartVedtakQuery.data && annenPartVedtakQuery.data.perioder.length > 0;
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtakQuery.data;

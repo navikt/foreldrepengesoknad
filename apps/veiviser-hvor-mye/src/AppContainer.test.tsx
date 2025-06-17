@@ -1,18 +1,18 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import * as stories from './AppContainer.stories';
+import { mswTest } from './mswTest';
 
 const { HvorMyeVeiviserMockaStønadskontoerOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    it('Hvor Mye veiviser: skal gå gjennom app og så tilbake', async () => {
-        await applyRequestHandlers(HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters.msw);
+    mswTest('Hvor Mye veiviser: skal gå gjennom app og så tilbake', async ({ setHandlers }) => {
+        setHandlers(HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters.msw);
         const utils = render(<HvorMyeVeiviserMockaStønadskontoerOgSatser />);
 
         expect(await screen.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).toHaveLength(2);

@@ -321,7 +321,7 @@ interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erFarEllerMedmor: boolean;
-    bareFarHarRett: boolean;
+    bareFarMedmorHarRett: boolean;
     barn: Barn;
     navnAnnenPart: string;
     førsteUttaksdagNesteBarnsSak?: string;
@@ -334,7 +334,7 @@ export const UttaksplanKalender = ({
     annenPartsPerioder,
     harAktivitetskravIPeriodeUtenUttak,
     erFarEllerMedmor,
-    bareFarHarRett,
+    bareFarMedmorHarRett,
     barn,
     navnAnnenPart,
     førsteUttaksdagNesteBarnsSak,
@@ -359,7 +359,7 @@ export const UttaksplanKalender = ({
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
-        bareFarHarRett,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
     )

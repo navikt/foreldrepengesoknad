@@ -16,12 +16,11 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
-import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
+import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from './utils/periodeUtils';
 
 interface Props {
     familiehendelsedato: string;
@@ -31,7 +30,7 @@ interface Props {
     søkersPerioder: SaksperiodeNy[];
     annenPartsPerioder?: SaksperiodeNy[];
     gjelderAdopsjon: boolean;
-    bareFarHarRett: boolean;
+    bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
@@ -49,7 +48,7 @@ export const UttaksplanNy = ({
     søkersPerioder,
     annenPartsPerioder,
     gjelderAdopsjon,
-    bareFarHarRett,
+    bareFarMedmorHarRett,
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
     familiesituasjon,
@@ -59,50 +58,28 @@ export const UttaksplanNy = ({
     erAleneOmOmsorg,
 }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
-        harAktivitetskravIPeriodeUtenUttak,
+
+    const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
-        gjelderAdopsjon,
-        bareFarHarRett,
         erFarEllerMedmor,
+        søkersPerioder,
+        annenPartsPerioder,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        harAktivitetskravIPeriodeUtenUttak,
         førsteUttaksdagNesteBarnsSak,
-    );
+        modus,
+    });
+
     const annenPartsPlanperioder = annenPartsPerioder
         ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
         : undefined;
-
-    const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
-        søkersPlanperioder,
-        familiehendelsedato,
-        førsteUttaksdagNesteBarnsSak,
-        annenPartsPlanperioder,
-    );
-
-    const komplettPlan = finnOgSettInnHull(
-        annenPartsPlanperioder
-            ? settInnAnnenPartsUttak(
-                  søkersPlanperioder,
-                  annenPartsPlanperioder,
-                  familiehendelsedato,
-                  førsteUttaksdagNesteBarnsSak,
-                  true,
-              )
-            : planMedLikePerioderSlåttSammen,
-        harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsedato,
-        gjelderAdopsjon,
-        bareFarHarRett,
-        erFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak,
-    );
-
     const builder = Uttaksplanbuilder({
         perioder: komplettPlan,
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
-        erAdopsjon: gjelderAdopsjon,
-        bareFarHarRett,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
         opprinneligPlan: annenPartsPlanperioder,

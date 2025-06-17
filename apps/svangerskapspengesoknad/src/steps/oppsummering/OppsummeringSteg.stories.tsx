@@ -1,10 +1,10 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
@@ -224,7 +224,7 @@ const meta = {
                             organisasjonsnummer: '12132323',
                             hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                             varigEndringDato: '2024-01-01',
-                            varigEndringInntektEtterEndring: '500000',
+                            varigEndringInntektEtterEndring: 500000,
                         },
                     }}
                 >

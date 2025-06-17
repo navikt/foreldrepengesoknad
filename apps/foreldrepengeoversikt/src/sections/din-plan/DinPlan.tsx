@@ -7,7 +7,7 @@ import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
@@ -38,7 +38,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
     const søkerErFarEllerMedmor = !sakTilhørerMor;
-    const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
+    const bareFarMedmorHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
     const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
     const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
@@ -46,6 +46,18 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
+
+    const komplettPlan = utledKomplettPlan({
+        familiehendelsedato: familiehendelseDato,
+        erFarEllerMedmor: søkerErFarEllerMedmor,
+        søkersPerioder: relevantePerioder,
+        annenPartsPerioder,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        harAktivitetskravIPeriodeUtenUttak,
+        førsteUttaksdagNesteBarnsSak: undefined,
+        modus: 'innsyn',
+    });
 
     return (
         <VStack gap="10">
@@ -89,7 +101,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             annenPartsPerioder={annenPartsPerioder}
                             søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            bareFarHarRett={bareFarHarRett}
+                            bareFarMedmorHarRett={bareFarMedmorHarRett}
                             familiesituasjon={familiesituasjon}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
@@ -98,12 +110,12 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             valgtStønadskonto={{} as any}
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
-                        <KvoteOversikt />
+                        <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
                     </>
                 )}
                 {visKalender && (
                     <UttaksplanKalender
-                        bareFarHarRett={bareFarHarRett}
+                        bareFarMedmorHarRett={bareFarMedmorHarRett}
                         barn={barn}
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}

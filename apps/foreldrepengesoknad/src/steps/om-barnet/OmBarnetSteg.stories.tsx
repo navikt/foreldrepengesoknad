@@ -1,12 +1,15 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
+import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 
-import { Barn, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
@@ -73,11 +76,13 @@ type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
+    annenForelder?: AnnenForelder;
 } & ComponentProps<typeof OmBarnetSteg>;
 
 const meta = {
     title: 'steps/OmBarnetSteg',
     component: OmBarnetSteg,
+    decorators: [withQueryClient],
     render: ({
         søkersituasjon = {
             situasjon: 'fødsel',
@@ -85,6 +90,7 @@ const meta = {
         },
         barn,
         gåTilNesteSide = action('button-click'),
+        annenForelder = { kanIkkeOppgis: true },
         ...rest
     }) => {
         return (
@@ -94,6 +100,7 @@ const meta = {
                     initialState={{
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
                     }}
                 >
                     <OmBarnetSteg {...rest} />
@@ -298,5 +305,58 @@ export const SøknadPåUregistrertBarnSomErFødt: Story = {
             type: BarnType.FØDT,
         },
         søkerInfo: { ...defaultSøkerinfo, søker: { ...defaultSøkerinfo.søker, barn: [] } },
+    },
+};
+
+export const FarFødselMorHarVedtak: Story = {
+    args: {
+        ...MorFødsel.args,
+        søknadGjelderNyttBarn: false,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'mor',
+        },
+        barn: {
+            antallBarn: 1,
+            fnr: ['19522278338'],
+            fødselsdatoer: ['2022-08-17'],
+            type: BarnType.FØDT,
+        },
+        annenForelder: {
+            fnr: '27438445248',
+            fornavn: 'Eline',
+            etternavn: 'Ilder',
+            kanIkkeOppgis: false,
+        },
+        søkerInfo: {
+            ...defaultSøkerinfo,
+            søker: {
+                ...defaultSøkerinfo.søker,
+                barn: [
+                    {
+                        fnr: '19522278338',
+                        fornavn: 'Ole',
+                        etternavn: 'Duck',
+                        kjønn: 'M',
+                        fødselsdato: '2022-08-17',
+                        annenForelder: {
+                            fnr: '27438445248',
+                            fornavn: 'Eline',
+                            etternavn: 'Ilder',
+                            fødselsdato: '1993-06-13',
+                        },
+                    },
+                ],
+            },
+        },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+            ],
+        },
     },
 };

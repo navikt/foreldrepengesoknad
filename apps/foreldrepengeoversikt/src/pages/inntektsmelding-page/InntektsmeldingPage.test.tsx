@@ -1,7 +1,7 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './InntektsmeldingPage.stories';
 
 const {
@@ -14,8 +14,8 @@ const {
 } = composeStories(stories);
 
 describe('<InntektsmeldingPage>', () => {
-    it('Uten Refusjon', async () => {
-        applyRequestHandlers(UtenRefusjon.parameters.msw);
+    mswTest('Uten Refusjon', async ({ setHandlers }) => {
+        setHandlers(UtenRefusjon.parameters.msw);
         render(<UtenRefusjon />);
 
         expect(await screen.findByText('Din inntekt rapportert av Laksinor')).toBeInTheDocument();
@@ -25,8 +25,8 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Med Refusjon', async () => {
-        applyRequestHandlers(MedRefusjon.parameters.msw);
+    mswTest('Med Refusjon', async ({ setHandlers }) => {
+        setHandlers(MedRefusjon.parameters.msw);
         render(<MedRefusjon />);
 
         expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
@@ -35,8 +35,8 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Delvis Refusjon', async () => {
-        applyRequestHandlers(DelvisRefusjon.parameters.msw);
+    mswTest('Delvis Refusjon', async ({ setHandlers }) => {
+        setHandlers(DelvisRefusjon.parameters.msw);
         render(<DelvisRefusjon />);
 
         expect(await screen.findByText('Hvordan utbetales svangerskapspengene?')).toBeInTheDocument();
@@ -45,8 +45,8 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Flere refusjonsperioder', async () => {
-        applyRequestHandlers(Refusjonsperioder.parameters.msw);
+    mswTest('Flere refusjonsperioder', async ({ setHandlers }) => {
+        setHandlers(Refusjonsperioder.parameters.msw);
         render(<Refusjonsperioder />);
 
         expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
@@ -68,8 +68,8 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('En bortfalt naturalytelse', async () => {
-        applyRequestHandlers(EnBortfaltNaturalytelse.parameters.msw);
+    mswTest('En bortfalt naturalytelse', async ({ setHandlers }) => {
+        setHandlers(EnBortfaltNaturalytelse.parameters.msw);
         render(<EnBortfaltNaturalytelse />);
 
         expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
@@ -78,8 +78,8 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Flere bortfalte naturalytelser', async () => {
-        applyRequestHandlers(FlereBortfalteNaturalytelser.parameters.msw);
+    mswTest('Flere bortfalte naturalytelser', async ({ setHandlers }) => {
+        setHandlers(FlereBortfalteNaturalytelser.parameters.msw);
         render(<FlereBortfalteNaturalytelser />);
 
         expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();

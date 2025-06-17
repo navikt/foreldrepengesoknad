@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
-import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { KvoteOppsummering, Planperiode } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
-import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Foreldrepengesak } from '../../types/Sak';
 
-export const KvoteOversikt = () => {
+export const KvoteOversikt = (props: { navnPåForeldre: NavnPåForeldre; perioder: Planperiode[] }) => {
     const gjeldendeSak = useGetSelectedSak();
 
     const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';
@@ -17,11 +16,17 @@ export const KvoteOversikt = () => {
         return null;
     }
 
-    return <KvoterOversiktInner sak={gjeldendeSak} />;
+    return <KvoterOversiktInner sak={gjeldendeSak} {...props} />;
 };
 
-const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
-    const annenPartsPerioder = useAnnenPartsVedtak(sak).data?.perioder ?? [];
+const KvoterOversiktInner = ({
+    sak,
+    ...props
+}: {
+    sak: Foreldrepengesak;
+    navnPåForeldre: NavnPåForeldre;
+    perioder: Planperiode[];
+}) => {
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
             brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
@@ -39,25 +44,13 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
     if (!konto) {
         return null;
     }
-    const søkersPerioder = sak.gjeldendeVedtak?.perioder;
-    const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
-
-    const perioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
-    const aktuellePerioder = [...perioder, ...annenPartsPerioder].filter((p) => {
-        const erBehandlet = !!p.resultat;
-        if (!erBehandlet) {
-            // Hvis den ikke er behandlet skal perioden vises
-            return true;
-        }
-        // Hvis behandlet skal vi kunne vise innvilget perioder
-        return p.resultat?.innvilget;
-    });
 
     return (
         <KvoteOppsummering
+            {...props}
+            modus="innsyn"
             familiehendelse={sak.familiehendelse}
             konto={konto}
-            perioder={aktuellePerioder as SaksperiodeNy[]}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
             visStatusIkoner={false}

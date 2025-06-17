@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString, getVis1Juli2024Info } from 'utils/dateUtils';
-import { getAntallUker } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
@@ -18,7 +18,7 @@ type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
     fornavnAnnenForelder: string;
-    kjønnAnnenForelder?: 'M' | 'K';
+    kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 };
@@ -46,7 +46,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
         return goToNextDefaultStep();
     };
 
-    const uker = getAntallUker(valgtStønadskonto);
+    const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
     return (
         <VStack gap="10">

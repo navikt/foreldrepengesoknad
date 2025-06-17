@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './OmBarnetSteg.stories';
 
 vi.mock('utils/hooks/useSaveLoadedRoute', () => {
@@ -21,6 +22,7 @@ const {
     RegistrertBarnFødselFar,
     RegistrertBarnFødselMor,
     RegistrertBarnTrillingerDerEnErDød,
+    FarFødselMorHarVedtak,
 } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
@@ -623,5 +625,27 @@ describe('<OmBarnetSteg>', () => {
         render(<RegistrertBarnTrillingerDerEnErDød />);
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
         expect(screen.getByText('Trillinger født 01. mars 2023 og 02. mars 2023')).toBeInTheDocument();
+    });
+
+    mswTest('Termindato skal være preutfylt med dato fra mors vedtak', async ({ setHandlers }) => {
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
+        const gåTilNesteSide = vi.fn();
+        setHandlers(FarFødselMorHarVedtak.parameters.msw);
+        render(<FarFødselMorHarVedtak gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 1,
+                fnr: ['19522278338'],
+                fødselsdatoer: ['2022-08-17'],
+                termindato: '2022-08-17',
+                type: 'født',
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
     });
 });

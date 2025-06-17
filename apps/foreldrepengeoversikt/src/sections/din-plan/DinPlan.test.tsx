@@ -1,15 +1,15 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './DinPlan.stories';
 
 const { Default, FarSøker } = composeStories(stories);
 
 describe('<Default>', () => {
-    it('Skal vise liste med fire perioder', async () => {
-        await applyRequestHandlers(Default.parameters.msw);
+    mswTest('Skal vise liste med fire perioder', async ({ setHandlers }) => {
+        setHandlers(Default.parameters.msw);
         render(<Default />);
 
         expect(await screen.findByText('Liste')).toBeInTheDocument();
@@ -34,8 +34,8 @@ describe('<Default>', () => {
         expect(within(allButtons[4]).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
     });
 
-    it('Skal bytte til kalender', async () => {
-        await applyRequestHandlers(Default.parameters.msw);
+    mswTest('Skal bytte til kalender', async ({ setHandlers }) => {
+        setHandlers(Default.parameters.msw);
         render(<Default />);
 
         expect(await screen.findByText('Liste')).toBeInTheDocument();
@@ -48,8 +48,8 @@ describe('<Default>', () => {
         expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
     });
 
-    it('Skal sjekke at fars kalender er korrekt', async () => {
-        await applyRequestHandlers(FarSøker.parameters.msw);
+    mswTest('Skal sjekke at fars kalender er korrekt', async ({ setHandlers }) => {
+        setHandlers(FarSøker.parameters.msw);
         render(<FarSøker />);
 
         expect(await screen.findByText('Liste')).toBeInTheDocument();

@@ -2,7 +2,7 @@ import { getToken, requestTokenxOboToken } from '@navikt/oasis';
 import { NextFunction, Request, Response, Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { serverConfig } from '@navikt/fp-server-utils';
+import { logger, serverConfig } from '@navikt/fp-server-utils';
 
 type ProxyOptions = {
     ingoingUrl: string;
@@ -35,14 +35,14 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                 request.headers['obo-token'] = obo.token;
                 return next();
             } else {
-                console.log('OBO-exchange failed', obo.error);
+                logger.error('Veksling av OBO-token feilet', obo.error);
                 response.status(403).send();
             }
         },
         createProxyMiddleware({
             target: outgoingUrl,
             changeOrigin: true,
-            logger: console,
+            logger: logger,
             on: {
                 proxyReq: (proxyRequest, request) => {
                     const obo = request.headers['obo-token'];
@@ -51,7 +51,7 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                         proxyRequest.removeHeader('cookie');
                         proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
                     } else {
-                        console.log(`Access token var not present in session for scope ${scope}`);
+                        logger.warning(`Access token ligger ikke i sesjon for scope ${scope}`);
                     }
                 },
             },

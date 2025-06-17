@@ -13,6 +13,7 @@ import { IntlShape } from 'react-intl';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
 import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 type GetFargeProps = {
     erPeriodeUtenUttak: boolean;
@@ -175,7 +176,9 @@ export const getTekst = ({
 
     return intl.formatMessage(
         { id: 'uttaksplan.periodeListeHeader.HarForeldrepenger' },
-        { navn: erEgenPeriode ? navnPåForelder : navnPåAnnenForelder },
+        {
+            navn: erEgenPeriode ? capitalizeFirstLetter(navnPåForelder) : capitalizeFirstLetter(navnPåAnnenForelder),
+        },
     );
 };
 

@@ -3,6 +3,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
+import storybook from 'eslint-plugin-storybook';
 import vitest from 'eslint-plugin-vitest';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -26,6 +27,7 @@ export default [
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
+    ...storybook.configs['flat/recommended'],
     pluginReact.configs.flat.recommended,
     jsxA11y.flatConfigs.recommended,
     importPlugin.flatConfigs.recommended,

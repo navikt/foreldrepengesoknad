@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import CheckmarkIkon from '../../common/checkmark-ikon/CheckmarkIkon';
 import Personkort from './Personkort';

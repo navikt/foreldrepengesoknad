@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { ComponentProps } from 'react';
 

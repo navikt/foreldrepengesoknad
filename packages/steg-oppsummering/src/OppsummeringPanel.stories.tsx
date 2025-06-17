@@ -1,5 +1,5 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 import { Næringstype } from '@navikt/fp-types';
 
@@ -108,7 +108,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringBeskrivelse: 'Beskrivelse av varig endring',
                         varigEndringDato: '2021-01-01',
-                        varigEndringInntektEtterEndring: '10000',
+                        varigEndringInntektEtterEndring: 10000,
                     }}
                     onVilEndreSvar={() => {}}
                 />

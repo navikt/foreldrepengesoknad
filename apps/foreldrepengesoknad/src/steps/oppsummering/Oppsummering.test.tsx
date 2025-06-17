@@ -1,15 +1,15 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { mswTest } from '../../mswTest';
 import * as stories from './Oppsummering.stories';
 
 const {
@@ -400,165 +400,179 @@ describe('<Oppsummering>', () => {
 
     // TODO: De gjenværende må det oppdateres slik at testene gjennomføres uavhengig av rekkefølge, msw-handler virker ikke å resettes som de skal.
 
-    it('Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%', async () => {
-        await applyRequestHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
-        render(<FarSøkerMorMåDokumentereArbeid />);
+    mswTest(
+        'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%',
+        async ({ setHandlers }) => {
+            setHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
+            render(<FarSøkerMorMåDokumentereArbeid />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
 
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                'Kari Nordmann, 02520489226',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                    'Kari Nordmann, 02520489226',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
 
-        expect(screen.getByText('Dokumentasjon på at mor er i arbeid (mangler)')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
-                    ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
-            ),
-        ).toBeInTheDocument();
-    });
+            expect(screen.getByText('Dokumentasjon på at mor er i arbeid (mangler)')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                        ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                ),
+            ).toBeInTheDocument();
+        },
+    );
 
-    it('Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden', async () => {
-        await applyRequestHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
-        render(<FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon />);
+    mswTest(
+        'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden',
+        async ({ setHandlers }) => {
+            setHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
+            render(<FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
 
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                'Kari Nordmann, 02520489226',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                    'Kari Nordmann, 02520489226',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
 
-        expect(screen.getByText('Dine perioder med foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
-        expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
-        expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
-    });
+            expect(screen.getByText('Dine perioder med foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
+            expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
+            expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
+        },
+    );
 
-    it('Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer', async () => {
-        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
+    mswTest(
+        'Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer',
+        async ({ setHandlers }) => {
+            setHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
 
-        render(<FarSøkerMorMåIkkeDokumentereArbeid />);
+            render(<FarSøkerMorMåIkkeDokumentereArbeid />);
 
-        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
 
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                'Kari Nordmann, 02520489226',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                    'Kari Nordmann, 02520489226',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
 
-        expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
-                    ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
-            ),
-        ).not.toBeInTheDocument();
-    });
+            expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                        ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                ),
+            ).not.toBeInTheDocument();
+        },
+    );
 
-    it('Far er hovedsøker - Skal vise krav om dokumentasjon for utdanning men ikke for arbeid', async () => {
-        await applyRequestHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
-        render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
+    mswTest(
+        'Far er hovedsøker - Skal vise krav om dokumentasjon for utdanning men ikke for arbeid',
+        async ({ setHandlers }) => {
+            setHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
+            render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
 
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                'Kari Nordmann, 02520489226',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-        expect(screen.queryByText('Dokumentasjon på at mor er i arbeid')).not.toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.',
-            ),
-        ).not.toBeInTheDocument();
-        expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
-        expect(screen.getByText('Dokumentasjon på at mor studerer (mangler)')).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
+                    'Kari Nordmann, 02520489226',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
+                ).getByText('Ja'),
+            ).toBeInTheDocument();
+            expect(screen.queryByText('Dokumentasjon på at mor er i arbeid')).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    'Du må legge ved bekreftelse fra Kari sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.',
+                ),
+            ).not.toBeInTheDocument();
+            expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
+            expect(screen.getByText('Dokumentasjon på at mor studerer (mangler)')).toBeInTheDocument();
 
-        expect(
-            screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. Bekreftelsen må vise', {
-                exact: false,
-            }),
-        ).toBeInTheDocument();
+            expect(
+                screen.getByText('Du må legge ved bekreftelse på at Kari er fulltidsstudent. Bekreftelsen må vise', {
+                    exact: false,
+                }),
+            ).toBeInTheDocument();
 
-        expect(screen.getByText('navn og fødselsnummer')).toBeInTheDocument();
-        expect(screen.getByText('studiested, fag eller studieprogram')).toBeInTheDocument();
-        expect(screen.getByText('oppstart og varighet av studiet')).toBeInTheDocument();
-        expect(
-            screen.getByText('har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen'),
-        ).toBeInTheDocument();
-    });
+            expect(screen.getByText('navn og fødselsnummer')).toBeInTheDocument();
+            expect(screen.getByText('studiested, fag eller studieprogram')).toBeInTheDocument();
+            expect(screen.getByText('oppstart og varighet av studiet')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen',
+                ),
+            ).toBeInTheDocument();
+        },
+    );
 });

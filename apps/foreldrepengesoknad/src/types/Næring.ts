@@ -27,7 +27,3 @@ export interface EndringAvNæringsinntektInformasjon {
     næringsinntektEtterEndring: number;
     forklaring: string;
 }
-
-export interface EndringAvNæringsinntektInformasjonInnsending extends Omit<EndringAvNæringsinntektInformasjon, 'dato'> {
-    dato: string;
-}

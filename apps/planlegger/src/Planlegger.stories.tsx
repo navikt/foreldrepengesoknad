@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';

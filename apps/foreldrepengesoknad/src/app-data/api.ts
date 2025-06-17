@@ -25,15 +25,14 @@ export type DokumentereMorsArbeidParams = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
     familiehendelse: string;
-    perioder: Tidsperiode[];
+    perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
 };
 
-export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
+export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
-        enabled,
     });
 
 export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
@@ -50,6 +49,7 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
         enabled,
+        staleTime: Infinity,
     });
 
 export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams, enabled: boolean) =>

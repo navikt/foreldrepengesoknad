@@ -1,11 +1,11 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 
@@ -19,6 +19,7 @@ import {
     Periodetype,
     SivilstandType,
     StønadskontoType,
+    UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonFrontend, Situasjon, Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -467,6 +468,63 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                 http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
                     return HttpResponse.json(true);
                 }),
+            ],
+        },
+    },
+};
+
+export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                id: '0700701673-1838-30857-30810-219862607326',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Foreldrepenger,
+                tidsperiode: {
+                    fom: new Date('2025-01-01'),
+                    tom: new Date('2025-02-01'),
+                },
+                type: Periodetype.Uttak,
+                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                erArbeidstaker: false,
+                gradert: false,
+                orgnumre: [],
+                ønskerSamtidigUttak: false,
+            },
+            {
+                id: '0700701673-1838-30857-30810-219862607326',
+                forelder: Forelder.farMedmor,
+                tidsperiode: {
+                    fom: new Date('2026-01-01'),
+                    tom: new Date('2026-02-01'),
+                },
+                type: Periodetype.Utsettelse,
+                årsak: UtsettelseÅrsakType.Fri,
+                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                erArbeidstaker: false,
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
             ],
         },
     },
