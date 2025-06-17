@@ -100,7 +100,7 @@ describe('personUtils', () => {
         expect(kjønn).toBe(false);
     });
 
-    it.skip('skal returnere navn på foreldre der far er søker', () => {
+    it('skal returnere navn på foreldre der far er søker', () => {
         const person = {
             fornavn: 'Espen',
         } as PersonFrontend;
@@ -116,7 +116,7 @@ describe('personUtils', () => {
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it.skip('skal returnere navn på foreldre der mor er søker', () => {
+    it('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
             fornavn: 'Olga',
         } as PersonFrontend;
