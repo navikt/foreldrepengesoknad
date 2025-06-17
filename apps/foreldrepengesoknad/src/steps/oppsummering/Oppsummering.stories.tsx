@@ -23,7 +23,7 @@ import {
 import {
     ArbeidsforholdOgInntektFp,
     Frilans,
-    NæringDto,
+    NæringFormValues,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,
@@ -217,7 +217,7 @@ type StoryArgs = {
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
-    egenNæring?: NæringDto;
+    egenNæring?: NæringFormValues;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
@@ -559,7 +559,7 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
             pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
             organisasjonsnummer: '123',
             næringsinntekt: 1000000,
             registrertINorge: true,
@@ -587,7 +587,7 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
             pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
             registrertILand: 'SE',
             registrertINorge: false,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,

@@ -6,7 +6,7 @@ import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     Frilans,
-    NæringDto,
+    NæringFormValues,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -148,7 +148,7 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
 
 interface SelvstendigNæringsdrivendeOppsummeringProps {
     readonly onVilEndreSvar: () => void;
-    readonly egenNæring?: NæringDto;
+    readonly egenNæring?: NæringFormValues;
 }
 
 export const SelvstendigNæringsdrivendeOppsummering = ({

@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, NæringDto } from '@navikt/fp-types';
+import { Arbeidsforhold, NæringFormValues } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -26,7 +26,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
-    const onSubmit = (values: NæringDto) => {
+    const onSubmit = (values: NæringFormValues) => {
         oppdaterEgenNæring(values);
 
         if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {

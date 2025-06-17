@@ -19,7 +19,7 @@ import {
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { Dekningsgrad, Næringstype, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { Dekningsgrad, NæringFormValues, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -77,7 +77,7 @@ const FRILANS = {
 };
 
 const EGEN_NÆRING = {
-    næringstype: Næringstype.FISKER,
+    næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
@@ -88,7 +88,7 @@ const EGEN_NÆRING = {
     varigEndringDato: '2024-01-01',
     varigEndringInntektEtterEndring: 10000,
     varigEndringBeskrivelse: 'Beskrivelse av endring',
-};
+} satisfies NæringFormValues;
 
 const ANDRE_INNTEKTSKILDER = [
     {

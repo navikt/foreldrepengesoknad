@@ -8,7 +8,7 @@ import {
     ArbeidsforholdOgInntektSvp,
     Attachment,
     Frilans,
-    NæringDto,
+    NæringFormValues,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -41,7 +41,7 @@ export type ContextDataMap = {
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektSvp;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
-    [ContextDataType.EGEN_NÆRING]?: NæringDto;
+    [ContextDataType.EGEN_NÆRING]?: NæringFormValues;
     [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: string[];
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;

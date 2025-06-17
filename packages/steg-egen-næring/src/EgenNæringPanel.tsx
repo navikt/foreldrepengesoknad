@@ -15,7 +15,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, NæringDto } from '@navikt/fp-types';
+import { AppName, NæringFormValues } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
@@ -64,9 +64,9 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 };
 
 interface Props<TYPE> {
-    egenNæring?: NæringDto;
-    saveOnNext: (formValues: NæringDto) => void;
-    saveOnPrevious: (formValues: NæringDto | undefined) => void;
+    egenNæring?: NæringFormValues;
+    saveOnNext: (formValues: NæringFormValues) => void;
+    saveOnPrevious: (formValues: NæringFormValues | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -88,7 +88,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<NæringDto>({
+    const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
         defaultValues: egenNæring,
     });
@@ -350,7 +350,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         </>
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
-                    <StepButtonsHookForm<NæringDto>
+                    <StepButtonsHookForm<NæringFormValues>
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />

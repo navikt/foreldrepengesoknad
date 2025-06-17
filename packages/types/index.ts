@@ -16,6 +16,7 @@ export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export { EGEN_NÆRING_ID } from './src/EgenNæring';
 export type { UttaksplanModus } from './src/UttaksplanModus';
 export type { Frilans } from './src/Frilans';
+export type { NæringFormValues } from './src/NæringFormValues';
 export { FRILANS_ID } from './src/Frilans';
 export type {
     ArbeidsforholdOgInntekt,

@@ -10,7 +10,7 @@ import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
     Frilans,
-    NæringDto,
+    NæringFormValues,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -45,7 +45,7 @@ export type ContextDataMap = {
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektFp;
-    [ContextDataType.EGEN_NÆRING]?: NæringDto;
+    [ContextDataType.EGEN_NÆRING]?: NæringFormValues;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
