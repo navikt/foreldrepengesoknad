@@ -9,7 +9,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
-import { Næringstype } from 'types/Næring';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
@@ -25,6 +24,7 @@ import {
     ArbeidsforholdOgInntektFp,
     EgenNæring,
     Frilans,
+    Næringstype,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,
