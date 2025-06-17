@@ -45,6 +45,7 @@ export default [
             'import/no-duplicates': ERROR,
             'import/no-unresolved': OFF,
             'import/named': OFF,
+            'vitest/no-disabled-tests': ERROR,
             '@typescript-eslint/no-restricted-types': [
                 'error',
                 {
