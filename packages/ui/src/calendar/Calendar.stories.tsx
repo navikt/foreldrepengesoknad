@@ -76,6 +76,7 @@ export const VisAlertVedDatoklikk: Story = {
 };
 
 export const MedValgAvPerioder: Story = {
+    args: Default.args,
     render: () => {
         const allePerioder = [
             {
