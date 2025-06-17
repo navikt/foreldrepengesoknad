@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, Næringstype } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektSvp, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
 
@@ -76,7 +76,7 @@ type StoryArgs = {
     tilrettelegginger?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
     valgteArbeidsforhold?: string[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektSvp;
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     frilans?: Frilans;
 } & ComponentProps<typeof VelgArbeidSteg>;
 

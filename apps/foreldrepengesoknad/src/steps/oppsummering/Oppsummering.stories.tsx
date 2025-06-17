@@ -22,9 +22,8 @@ import {
 } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
-    EgenNæring,
     Frilans,
-    Næringstype,
+    NæringDto,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,
@@ -218,7 +217,7 @@ type StoryArgs = {
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;

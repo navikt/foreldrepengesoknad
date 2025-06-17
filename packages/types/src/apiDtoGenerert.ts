@@ -421,12 +421,12 @@ export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 
 export type NæringDto = {
     fom: string;
-    tom?: string;
-    næringstype?: Virksomhetstype;
+    tom: string;
+    næringstype: Virksomhetstype;
     navnPåNæringen?: string;
     organisasjonsnummer?: string;
     næringsinntekt?: number;
-    registrertINorge?: boolean;
+    registrertINorge: boolean;
     registrertILand?: CountryCode;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
     oppstartsdato?: string;

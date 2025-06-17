@@ -17,7 +17,7 @@ import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
+import { Arbeidsforhold, Frilans, NæringDto } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
@@ -53,7 +53,7 @@ interface Props {
     kanHaSVPFremTilTreUkerFørTermin: boolean;
     behovForTilretteleggingFom: string;
     arbeidsforhold: Arbeidsforhold[];
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     frilans?: Frilans;
 }
 

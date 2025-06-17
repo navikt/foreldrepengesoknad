@@ -5,9 +5,8 @@ import { Alert, FormSummary } from '@navikt/ds-react';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
-    EgenNæring,
     Frilans,
-    Næringstype,
+    NæringDto,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -149,7 +148,7 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
 
 interface SelvstendigNæringsdrivendeOppsummeringProps {
     readonly onVilEndreSvar: () => void;
-    readonly egenNæring?: EgenNæring;
+    readonly egenNæring?: NæringDto;
 }
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
@@ -178,15 +177,15 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     <FormSummary.Value>
                         {(() => {
                             switch (egenNæring?.næringstype) {
-                                case Næringstype.FISKER:
+                                case 'FISKE':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
-                                case Næringstype.DAGMAMMA:
+                                case 'DAGMAMMA':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
-                                case Næringstype.JORDBRUK:
+                                case 'JORDBRUK_SKOGBRUK':
                                     return (
                                         <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
                                     );
-                                case Næringstype.ANNET:
+                                case 'ANNEN':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
                                 default:
                                     return null;

@@ -19,9 +19,9 @@ import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
     EGEN_NÆRING_ID,
-    EgenNæring,
     FRILANS_ID,
     Frilans,
+    NæringDto,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -251,7 +251,7 @@ export const getArbeidsgiverStillingerForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: Arbeidsforhold[],
-    egenNæring?: EgenNæring,
+    egenNæring?: NæringDto,
     frilans?: Frilans,
 ): Stilling[] => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {
@@ -284,7 +284,7 @@ export const getPeriodeForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: Arbeidsforhold[],
-    egenNæring?: EgenNæring,
+    egenNæring?: NæringDto,
     frilans?: Frilans,
 ): { fom: string; tom?: string } => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {

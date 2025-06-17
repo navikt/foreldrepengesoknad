@@ -6,9 +6,9 @@ import {
     Arbeidsforhold,
     ArbeidsforholdOgInntektSvp,
     EGEN_NÆRING_ID,
-    EgenNæring,
     FRILANS_ID,
     Frilans,
+    NæringDto,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
@@ -25,7 +25,7 @@ export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?:
     return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
-const getNæringTilretteleggingOption = (næring: EgenNæring): VelgArbeidsforholdOptions => ({
+const getNæringTilretteleggingOption = (næring: NæringDto): VelgArbeidsforholdOptions => ({
     id: EGEN_NÆRING_ID,
     arbeidsforholdType: Arbeidsforholdstype.SELVSTENDIG,
     arbeidsforholdNavn: næring.navnPåNæringen!,
@@ -58,7 +58,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     termindato: string,
     intl: IntlShape,
     frilans?: Frilans,
-    egenNæring?: EgenNæring,
+    egenNæring?: NæringDto,
 ): VelgArbeidsforholdOptions[] => {
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(arbeidsforhold, termindato, intl);
     const næringValg =

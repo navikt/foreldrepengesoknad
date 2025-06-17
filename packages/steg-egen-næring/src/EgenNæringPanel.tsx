@@ -15,7 +15,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, EgenNæring, Næringstype } from '@navikt/fp-types';
+import { AppName, NæringDto } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
@@ -64,9 +64,9 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 };
 
 interface Props<TYPE> {
-    egenNæring?: EgenNæring;
-    saveOnNext: (formValues: EgenNæring) => void;
-    saveOnPrevious: (formValues: EgenNæring | undefined) => void;
+    egenNæring?: NæringDto;
+    saveOnNext: (formValues: NæringDto) => void;
+    saveOnPrevious: (formValues: NæringDto | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -88,7 +88,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<EgenNæring>({
+    const formMethods = useForm<NæringDto>({
         shouldUnregister: true,
         defaultValues: egenNæring,
     });
@@ -105,9 +105,7 @@ export const EgenNæringPanel = <TYPE extends string>({
     const yrkesaktivSiste3År = formMethods.watch('harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene');
 
     const navnPåNæringLabel =
-        næringsType === Næringstype.FISKER
-            ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
-            : navnPåNæringSpm;
+        næringsType === 'FISKE' ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : navnPåNæringSpm;
 
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
 
@@ -127,16 +125,16 @@ export const EgenNæringPanel = <TYPE extends string>({
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
                     >
-                        <Radio value={Næringstype.DAGMAMMA}>
+                        <Radio value="DAGMAMMA">
                             <FormattedMessage id="egenNæring.næringstype.dagmamma" />
                         </Radio>
-                        <Radio value={Næringstype.FISKER}>
+                        <Radio value="FISKE">
                             <FormattedMessage id="egenNæring.næringstype.fiske" />
                         </Radio>
-                        <Radio value={Næringstype.JORDBRUK}>
+                        <Radio value="JORDBRUK_SKOGBRUK">
                             <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />
                         </Radio>
-                        <Radio value={Næringstype.ANNET}>
+                        <Radio value="ANNEN">
                             <FormattedMessage id="egenNæring.næringstype.annen" />
                         </Radio>
                     </RhfRadioGroup>
@@ -144,7 +142,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         name="navnPåNæringen"
                         label={navnPåNæringLabel}
                         validate={[
-                            validateEgenNæringNavn(intl, næringsType === Næringstype.FISKER),
+                            validateEgenNæringNavn(intl, næringsType === 'FISKE'),
                             hasLegalChars((ugyldigeTegn: string) =>
                                 intl.formatMessage(
                                     { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
@@ -188,7 +186,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         </Radio>
                     </RhfRadioGroup>
                     <OrgnummerEllerLand
-                        orgNummerErValgfritt={næringsType === Næringstype.FISKER}
+                        orgNummerErValgfritt={næringsType === 'FISKE'}
                         registrertINorge={registrertINorge}
                     />
                     <RhfDatepicker
@@ -352,7 +350,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         </>
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
-                    <StepButtonsHookForm<EgenNæring>
+                    <StepButtonsHookForm<NæringDto>
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />
