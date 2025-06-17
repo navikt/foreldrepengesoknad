@@ -16,7 +16,7 @@ import {
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EGEN_NÆRING_ID, FRILANS_ID, Næringstype, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { Attachment, EGEN_NÆRING_ID, FRILANS_ID, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
