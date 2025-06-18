@@ -148,8 +148,8 @@ export const getStønadskontoParams = ({
         rettighetstype: finnRettighetstype(
             getFarHarRettINorge(erFarMedmor, annenForelder),
             getMorHarRettINorge(erFarMedmor, annenForelder),
-            morErAleneOmOmsorg || false,
-            farMedmorErAleneOmOmsorg || false,
+            morErAleneOmOmsorg,
+            farMedmorErAleneOmOmsorg,
             annenForelderHarRettIEØS || false,
         ),
         brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
