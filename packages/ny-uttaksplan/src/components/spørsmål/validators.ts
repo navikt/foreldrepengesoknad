@@ -2,13 +2,11 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../types/Planperiode';
-import { Periodene } from '../../utils/Periodene';
-
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-export const prosentValideringGradering = (intl: IntlShape) => (value: string) => {
+export const prosentValideringGradering = (intl: IntlShape, samtidiguttaksprosentValue: string) => (value: string) => {
     const stillingsprosent = getFloatFromString(value);
+    const samtidiguttaksprosent = getFloatFromString(samtidiguttaksprosentValue);
 
     if (!hasValue(value) || value.trim() === '') {
         return intl.formatMessage({ id: 'leggTilPeriodeModal.stillingsprosent.påkrevd' });
@@ -32,36 +30,42 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
         });
     }
 
+    if (samtidiguttaksprosent !== undefined && stillingsprosent + samtidiguttaksprosent > 100) {
+        return 'Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt';
+    }
+
     return undefined;
 };
 
-export const valideringSamtidigUttak =
-    (intl: IntlShape, fom: string, tom: string, perioder: Planperiode[]) => (value: string) => {
-        const samtidiguttaksprosent = getFloatFromString(value);
-        const test = Periodene(perioder).finnOverlappendePerioder({ fom, tom } as Planperiode);
-        console.log(test);
+export const valideringSamtidigUttak = (intl: IntlShape, stillingsprosentValue: string) => (value: string) => {
+    const samtidiguttaksprosent = getFloatFromString(value);
+    const stillingsprosent = getFloatFromString(stillingsprosentValue);
 
-        if (!hasValue(value) || value.trim() === '') {
-            return intl.formatMessage({ id: 'leggTilPeriodeModal.samtidiguttaksprosent.påkrevd' });
-        }
+    if (!hasValue(value) || value.trim() === '') {
+        return intl.formatMessage({ id: 'leggTilPeriodeModal.samtidiguttaksprosent.påkrevd' });
+    }
 
-        if (samtidiguttaksprosent === undefined) {
-            return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreEtTall',
-            });
-        }
+    if (samtidiguttaksprosent === undefined) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreEtTall',
+        });
+    }
 
-        if (samtidiguttaksprosent <= 0) {
-            return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreStørreEnn0',
-            });
-        }
+    if (samtidiguttaksprosent <= 0) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreStørreEnn0',
+        });
+    }
 
-        if (samtidiguttaksprosent >= 100) {
-            return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreMindreEnn100',
-            });
-        }
+    if (samtidiguttaksprosent > 100) {
+        return intl.formatMessage({
+            id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreMindreEnn100',
+        });
+    }
 
-        return undefined;
-    };
+    if (stillingsprosent !== undefined && stillingsprosent + samtidiguttaksprosent > 100) {
+        return 'Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt';
+    }
+
+    return undefined;
+};

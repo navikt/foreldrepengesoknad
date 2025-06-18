@@ -15,6 +15,7 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
     const intl = useIntl();
 
     const graderingValue = formMethods.watch('skalDuJobbe');
+    const samtidigUttaksprosentValue = formMethods.watch('samtidigUttaksprosent');
 
     return (
         <VStack gap="4">
@@ -35,7 +36,7 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
                     className="w-xs"
                     label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
                     name="stillingsprosent"
-                    validate={[prosentValideringGradering(intl)]}
+                    validate={[prosentValideringGradering(intl, samtidigUttaksprosentValue)]}
                     maxLength={5}
                 />
             )}

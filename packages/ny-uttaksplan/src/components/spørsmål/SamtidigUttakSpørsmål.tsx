@@ -12,10 +12,9 @@ interface Props {
     perioder: Planperiode[];
 }
 
-export const SamtidigUttakSpørsmål = ({ formMethods, perioder }: Props) => {
+export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
     const samtidigUttakValue = formMethods.watch('samtidigUttak');
-    const fomValue = formMethods.watch('fom');
-    const tomValue = formMethods.watch('tom');
+    const stillingsprosentValue = formMethods.watch('stillingsprosent');
 
     const intl = useIntl();
 
@@ -34,7 +33,7 @@ export const SamtidigUttakSpørsmål = ({ formMethods, perioder }: Props) => {
                     className="w-xs"
                     label="Hvor mange prosent?"
                     name="samtidigUttaksprosent"
-                    validate={[valideringSamtidigUttak(intl, fomValue, tomValue, perioder)]}
+                    validate={[valideringSamtidigUttak(intl, stillingsprosentValue)]}
                     maxLength={5}
                 />
             )}
