@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect } from 'vitest';
 
@@ -32,16 +32,14 @@ describe('<EttersendingPage>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp dokumenter');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+        await userEvent.upload(fileInput, file);
 
         expect(await screen.findByText('Lastet opp (1) - Annet dokument')).toBeInTheDocument();
         expect(screen.getByText('hello.png')).toBeInTheDocument();
         expect(screen.queryByText('Ops noe gikk galt prøv igjen')).not.toBeInTheDocument();
     });
 
-    mswTest.skip('skal få feil ved opplasting av dokument', async ({ setHandlers }) => {
+    mswTest('skal få feil ved opplasting av dokument', async ({ setHandlers }) => {
         setHandlers(SkalFeileOpplasting.parameters.msw);
         const utils = render(<SkalFeileOpplasting />);
 
@@ -56,9 +54,7 @@ describe('<EttersendingPage>', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp dokumenter');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+        await userEvent.upload(fileInput, file);
 
         expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
         expect(screen.getByText('hello.png')).toBeInTheDocument();

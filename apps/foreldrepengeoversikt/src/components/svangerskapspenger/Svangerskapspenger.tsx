@@ -346,6 +346,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
         // failsafe under utvikling
         if (++i > 500) {
+            // eslint-disable-next-line no-console
             console.error('lagKronologiskeSvpPerioder er tilsynelatende stuck i en evig loop');
             break;
         }

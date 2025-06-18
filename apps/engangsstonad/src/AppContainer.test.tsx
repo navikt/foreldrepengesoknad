@@ -11,8 +11,7 @@ import { mswTest } from './mswTest';
 const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    mswTest.skip('skal gå raskeste vei gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal gå raskeste vei gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
         setHandlers(SøkerErKvinne.parameters.msw);
         const utils = render(<SøkerErKvinne />);
 
@@ -37,22 +36,7 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Ett barn'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Steg 3 av 5')).toBeInTheDocument();
-        expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
-        const terminbekreftelseDokument = utils.getByLabelText('Når fikk du terminbekreftelsen?');
-        await userEvent.type(terminbekreftelseDokument, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
-        fireEvent.blur(terminbekreftelseDokument);
-
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
-        fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
-
-        await userEvent.click(screen.getByText('Neste steg'));
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(await screen.findByText('Steg 4 av 5')).toBeInTheDocument();
+        expect(await screen.findByText('Steg 3 av 4')).toBeInTheDocument();
         expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
@@ -69,9 +53,6 @@ describe('<AppContainer>', () => {
 
         await userEvent.click(screen.getByText('Forrige steg'));
         expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2);
-
-        await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
         expect(screen.getAllByText('Barnet')).toHaveLength(2);

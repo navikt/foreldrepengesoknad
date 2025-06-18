@@ -63,6 +63,7 @@ export const Forside = ({
     const onSubmit = (values: VelkommenFormData) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
+            // eslint-disable-next-line no-console
             console.error(
                 'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
                 values.harForståttRettigheterOgPlikter,

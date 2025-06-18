@@ -11,8 +11,7 @@ import { mswTest } from './mswTest';
 const { VisAppKvinneMedArbeid } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    mswTest.skip('skal gå raskeste vei gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
-        // TODO Fiks test
+    mswTest('skal gå raskeste vei gjennom applikasjonen og så tilbake', async ({ setHandlers }) => {
         setHandlers(VisAppKvinneMedArbeid.parameters.msw);
         const utils = render(<VisAppKvinneMedArbeid />);
 
@@ -53,9 +52,7 @@ describe('<AppContainer>', () => {
         expect(await screen.findAllByText('Last opp skjema')).toHaveLength(2);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+        await userEvent.upload(fileInput, file);
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Steg 6 av 8')).toBeInTheDocument();
