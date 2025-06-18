@@ -95,6 +95,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                 : annenForelder,
     });
 
+    // TODO: denne kan være undefined. Som er misvisende siden typen sier Boolean. Stammer trolig fra at AnnenForelderDto puttes rått inn i state?
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
     return (
