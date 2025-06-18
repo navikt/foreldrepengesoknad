@@ -17,14 +17,14 @@ export const useStønadsKontoerOptions = () => {
     const annenPartOptions = useAnnenPartVedtakOptions();
     const annenPartVedtakQuery = useQuery(annenPartOptions);
 
-    const stønadskontoParams = getStønadskontoParams(
+    const stønadskontoParams = getStønadskontoParams({
         barn,
         annenForelder,
         søkersituasjon,
         barnFraNesteSak,
-        annenPartVedtakQuery.data,
+        annenPartsVedtak: annenPartVedtakQuery.data,
         eksisterendeSak,
-    );
+    });
 
     return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
 };

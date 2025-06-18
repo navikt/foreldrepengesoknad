@@ -36,10 +36,20 @@ export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
                 .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
                 .json<AnnenPartSak | ''>();
             if (vedtakEllerTomStrengForIngenVedtak === '') {
-                return;
+                return null;
             }
 
             return vedtakEllerTomStrengForIngenVedtak;
+        },
+        /**
+         * Denne selected ser snodig ut. Men poenget er at QueryCachen liker ikke at data er undefined.
+         * Derfor lagres den som null i cache. Men i bruk i koden ønsker vi ikke deale med både null og undefined.
+         */
+        select: (vedtak) => {
+            if (vedtak === null) {
+                return undefined;
+            }
+            return vedtak;
         },
     });
 

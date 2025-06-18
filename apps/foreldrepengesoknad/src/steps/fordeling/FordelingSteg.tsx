@@ -62,7 +62,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
         ...annenPartVedtakOptions,
         select: (data) => {
             return mapAnnenPartsEksisterendeSakFromDTO(
-                data,
+                data ? data : undefined,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,

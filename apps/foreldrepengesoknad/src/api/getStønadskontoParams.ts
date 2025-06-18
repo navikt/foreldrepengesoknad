@@ -89,14 +89,21 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-export const getStønadskontoParams = (
-    barn: Barn,
-    annenForelder: AnnenForelder,
-    søkersituasjon: SøkersituasjonFp,
-    barnFraNesteSak?: BarnFraNesteSak,
-    annenPartsVedtak?: AnnenPartSak,
-    eksisterendeSak?: EksisterendeSak,
-) => {
+export const getStønadskontoParams = ({
+    barn,
+    annenForelder,
+    søkersituasjon,
+    barnFraNesteSak,
+    annenPartsVedtak,
+    eksisterendeSak,
+}: {
+    barn: Barn;
+    annenForelder: AnnenForelder;
+    søkersituasjon: SøkersituasjonFp;
+    barnFraNesteSak?: BarnFraNesteSak;
+    annenPartsVedtak: AnnenPartSak | undefined;
+    eksisterendeSak?: EksisterendeSak;
+}) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
