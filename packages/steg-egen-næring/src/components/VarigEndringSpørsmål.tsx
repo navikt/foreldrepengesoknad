@@ -25,7 +25,7 @@ const TEXT_INPUT_MAX_LENGTH = 1000;
 
 interface Props {
     egenNæringFom: string;
-    egenNæringTom: string;
+    egenNæringTom?: string;
     varigEndring: boolean | undefined;
     appOrigin: AppName;
 }
@@ -62,7 +62,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                 header={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' })}
             >
                 <BodyShort>
-                    <FormattedMessage id="egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info"></FormattedMessage>
+                    <FormattedMessage id="egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info" />
                 </BodyShort>
             </ReadMore>
             {varigEndring && (
