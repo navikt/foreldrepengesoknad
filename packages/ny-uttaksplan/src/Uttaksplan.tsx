@@ -143,6 +143,7 @@ export const UttaksplanNy = ({
 
     console.log(valideringsResultat);
     console.log(valideringsResultat.avvik);
+    console.log('lengde', valideringsResultat.resultat.length);
 
     const closeModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
@@ -202,13 +203,12 @@ export const UttaksplanNy = ({
                     />
                 ) : null}
             </UttaksplanDataContext>
-            <Block visible={valideringsResultat.resultat.length > 0} padBottom="l">
+            <Block visible={valideringsResultat.harFeil} padBottom="l">
                 <VeilederInfo
                     messages={uttaksplanVeilederInfo}
                     ariaTittel={intl.formatMessage({ id: 'uttaksplan.regelAvvik.ariaTittel' })}
                 />
             </Block>
-            {/* {valideringsResultat.harFeil && <span>formated {valideringsResultat.avvik[0].info.intlKey}</span>} */}
         </>
     );
 };

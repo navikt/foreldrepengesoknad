@@ -152,5 +152,6 @@
     "KontotypeSpørsmål.velgKontotype": "Select account type",
     "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
     "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?",
-    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit"
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit",
+    "uttaksplan.regelAvvik.ariaTittel": "Details about the plan"
 }

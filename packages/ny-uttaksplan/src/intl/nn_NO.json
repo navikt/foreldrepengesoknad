@@ -150,5 +150,6 @@
     "KontotypeSpørsmål.velgKontotype": "Vel kontotype",
     "KontotypeSpørsmål.hvemGjelder": "Kven gjeld fellesperioden?",
     "GraderingSpørsmål.HvorMangeProsent": "Kor mange prosent skal du jobbe?",
-    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar"
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar",
+    "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen"
 }
