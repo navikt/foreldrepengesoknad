@@ -43,21 +43,19 @@ export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
         },
     });
 
-export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, enabled: boolean) =>
+export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
-        enabled,
         staleTime: Infinity,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams, enabled: boolean) =>
+export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
         queryFn: () =>
             ky
                 .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`, { json: data })
                 .json<boolean>(),
-        enabled,
     });

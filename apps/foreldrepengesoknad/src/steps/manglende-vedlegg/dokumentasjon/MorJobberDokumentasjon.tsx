@@ -69,7 +69,8 @@ export const MorJobberDokumentasjon = ({
         );
 
         const trengerDokumentereMorsArbeidQuery = useQuery({
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams, !!dokumentereMorsArbeidParams),
+            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
+            enabled: !!dokumentereMorsArbeidParams,
         });
 
         if (trengerDokumentereMorsArbeidQuery.isPending) {

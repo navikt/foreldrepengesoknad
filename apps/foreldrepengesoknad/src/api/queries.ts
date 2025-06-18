@@ -26,7 +26,7 @@ export const useStønadsKontoerOptions = () => {
         eksisterendeSak,
     );
 
-    return tilgjengeligeStønadskontoerOptions(stønadskontoParams, true);
+    return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
 };
 
 export const useAnnenPartVedtakOptions = () => {
