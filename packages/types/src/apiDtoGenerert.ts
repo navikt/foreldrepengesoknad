@@ -421,7 +421,7 @@ export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 
 export type NæringDto = {
     fom: string;
-    tom: string;
+    tom?: string;
     næringstype: Virksomhetstype;
     navnPåNæringen?: string;
     organisasjonsnummer?: string;
