@@ -31,16 +31,16 @@ export type DokumentereMorsArbeidParams = {
 export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
-        queryFn: () =>
-            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
-    });
+        queryFn: async () => {
+            const vedtakEllerTomStrengForIngenVedtak = await ky
+                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
+                .json<AnnenPartSak | ''>();
+            if (vedtakEllerTomStrengForIngenVedtak === '') {
+                return;
+            }
 
-export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
-    queryOptions({
-        queryKey: ['NESTE_SAK_ANNEN_PART_VEDTAK', data],
-        queryFn: () =>
-            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
-        enabled,
+            return vedtakEllerTomStrengForIngenVedtak;
+        },
     });
 
 export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, enabled: boolean) =>

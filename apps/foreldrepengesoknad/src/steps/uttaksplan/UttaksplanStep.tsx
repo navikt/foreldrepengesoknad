@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { nesteSakAnnenPartVedtakOptions } from 'appData/api';
+import { annenPartVedtakOptions } from 'appData/api';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -177,9 +177,9 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartVedtakOptionsWrapped = useAnnenPartVedtakOptions();
     const annenPartVedtakQuery = useQuery({
-        ...annenPartVedtakOptions,
+        ...annenPartVedtakOptionsWrapped,
     });
 
     /**
@@ -243,16 +243,14 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         (førsteBarnFraNesteSakFnr === undefined && familieHendelseDatoNesteSak === undefined) ||
         (!eksisterendeSakAnnenPartRequestIsSuspended && annenPartVedtakQuery.isLoading);
 
-    const nesteSakAnnenPartVedtakQuery = useQuery(
-        nesteSakAnnenPartVedtakOptions(
-            {
-                annenPartFødselsnummer: annenForelderFnrNesteSak,
-                barnFødselsnummer: førsteBarnFraNesteSakFnr,
-                familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
-            },
-            !nesteBarnsSakAnnenPartRequestIsSuspended,
-        ),
-    );
+    const nesteSakAnnenPartVedtakQuery = useQuery({
+        ...annenPartVedtakOptions({
+            annenPartFødselsnummer: annenForelderFnrNesteSak,
+            barnFødselsnummer: førsteBarnFraNesteSakFnr,
+            familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
+        }),
+        enabled: !nesteBarnsSakAnnenPartRequestIsSuspended,
+    });
 
     const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartVedtakQuery.data);
 
