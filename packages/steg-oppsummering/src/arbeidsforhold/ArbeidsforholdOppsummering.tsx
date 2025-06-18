@@ -237,7 +237,7 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     </FormSummary.Value>
                 </FormSummary.Answer>
 
-                {!egenNæring.pågående && (
+                {!egenNæring.pågående && egenNæring.tom && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
