@@ -228,7 +228,7 @@ importers:
         version: 1.4.5-lts.2
       mustache-loader:
         specifier: 1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.9)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.99.9(esbuild@0.25.5))
       playwright:
         specifier: 1.52.0
         version: 1.52.0
@@ -3119,6 +3119,12 @@ importers:
       eslint:
         specifier: 9.28.0
         version: 9.28.0(jiti@2.4.2)
+      msw:
+        specifier: 2.10.2
+        version: 2.10.2(@types/node@24.0.0)(typescript@5.8.3)
+      msw-storybook-addon:
+        specifier: 2.0.5
+        version: 2.0.5(msw@2.10.2(@types/node@24.0.0)(typescript@5.8.3))
       storybook:
         specifier: 9.0.8
         version: 9.0.8(@testing-library/dom@10.4.0)(prettier@3.5.3)
@@ -13658,7 +13664,7 @@ snapshots:
       '@typescript-eslint/utils': 7.18.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.4.5)
       eslint: 9.28.0(jiti@2.4.2)
     optionalDependencies:
-      vitest: 3.2.3(@types/node@24.0.0)(@vitest/browser@3.2.3)(jiti@2.4.2)(jsdom@26.1.0)(less@4.3.0)(lightningcss@1.30.1)(msw@2.10.2(@types/node@24.0.0)(typescript@5.8.3))(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)
+      vitest: 3.2.3(@types/node@22.15.18)(@vitest/browser@3.2.3)(jiti@2.4.2)(jsdom@26.1.0)(less@4.3.0)(lightningcss@1.30.1)(msw@2.10.2(@types/node@22.15.18)(typescript@5.8.3))(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -15142,6 +15148,13 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
+  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.99.9(esbuild@0.25.5)):
+    dependencies:
+      hogan.js: 3.0.2
+      html-minifier: 3.5.21
+      loader-utils: 1.4.2
+      webpack: 5.99.9(esbuild@0.25.5)
+
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.99.9):
     dependencies:
       hogan.js: 3.0.2
@@ -16470,6 +16483,17 @@ snapshots:
     dependencies:
       rimraf: 2.6.3
 
+  terser-webpack-plugin@5.3.14(esbuild@0.25.5)(webpack@5.99.9(esbuild@0.25.5)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 4.3.2
+      serialize-javascript: 6.0.2
+      terser: 5.42.0
+      webpack: 5.99.9(esbuild@0.25.5)
+    optionalDependencies:
+      esbuild: 0.25.5
+
   terser-webpack-plugin@5.3.14(webpack@5.99.9):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -16993,6 +17017,37 @@ snapshots:
       schema-utils: 4.3.2
       tapable: 2.2.2
       terser-webpack-plugin: 5.3.14(webpack@5.99.9)
+      watchpack: 2.4.4
+      webpack-sources: 3.3.2
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+
+  webpack@5.99.9(esbuild@0.25.5):
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.8
+      '@types/json-schema': 7.0.15
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.15.0
+      browserslist: 4.25.0
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.18.1
+      es-module-lexer: 1.7.0
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 4.3.2
+      tapable: 2.2.2
+      terser-webpack-plugin: 5.3.14(esbuild@0.25.5)(webpack@5.99.9(esbuild@0.25.5))
       watchpack: 2.4.4
       webpack-sources: 3.3.2
     transitivePeerDependencies:

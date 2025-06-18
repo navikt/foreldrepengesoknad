@@ -7,16 +7,16 @@ import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
-import { mswTest } from '../../mswTest';
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
 describe('<SenereUtenlandsoppholdSteg>', () => {
-    mswTest(
+    it(
         'skal fylle ut fremtidig utenlandsopphold og gå videre til inntektsinformasjon',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -56,12 +56,12 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -79,12 +79,12 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -111,6 +111,6 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        },
+        }),
     );
 });
