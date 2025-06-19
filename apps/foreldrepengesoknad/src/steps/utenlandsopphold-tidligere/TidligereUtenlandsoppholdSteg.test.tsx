@@ -7,16 +7,16 @@ import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
-import { mswTest } from '../../mswTest';
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
 describe('<TidligereUtenlandsoppholdSteg>', () => {
-    mswTest(
+    it(
         'skal fylle ut tidligere utenlandsopphold og gå videre til inntektsinformasjon når en ikke har fremtidige utenlandsopphold',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -56,12 +56,12 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'skal fylle ut tidligere utenlandsopphold og gå videre til senere utenlandsopphold når en har indikert at en har dette',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -107,26 +107,29 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        },
+        }),
     );
 
-    mswTest('skal lagre route når en går til forrige steg', async ({ setHandlers }) => {
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+    it(
+        'skal lagre route når en går til forrige steg',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        setHandlers(Default.parameters.msw);
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+            setHandlers(Default.parameters.msw);
+            render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
-        await userEvent.click(screen.getByText('Forrige steg'));
+            expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
+            await userEvent.click(screen.getByText('Forrige steg'));
 
-        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.UTENLANDSOPPHOLD,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: SøknadRoutes.UTENLANDSOPPHOLD,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
 });
