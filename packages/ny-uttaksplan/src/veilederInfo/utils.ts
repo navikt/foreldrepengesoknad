@@ -1,8 +1,8 @@
 import { IntlShape } from 'react-intl';
 
 import { RegelAvvik } from '../types/regelTypes';
-import { intlHasKey } from '../utils/intlUtils';
-import { trimRelaterteRegelAvvik } from '../validering/utils/utils';
+import { getRegelIntlValues } from '../validering/utils/regelUtils';
+import { intlHasKey, trimRelaterteRegelAvvik } from '../validering/utils/utils';
 import { VeilederMessage } from './types';
 
 const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): VeilederMessage => {

@@ -153,5 +153,6 @@
     "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
     "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?",
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit",
-    "uttaksplan.regelAvvik.ariaTittel": "Details about the plan"
+    "uttaksplan.regelAvvik.ariaTittel": "Details about the plan",
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder": "For å kome vidare i søknaden må du leggje til ein periode med foreldrepengar eller ei utsetjing"
 }

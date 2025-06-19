@@ -151,5 +151,6 @@
     "KontotypeSpørsmål.hvemGjelder": "Kven gjeld fellesperioden?",
     "GraderingSpørsmål.HvorMangeProsent": "Kor mange prosent skal du jobbe?",
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar",
-    "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen"
+    "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen",
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder": "For å kome vidare i søknaden må du leggje til ein periode med foreldrepengar eller ei utsetjing"
 }

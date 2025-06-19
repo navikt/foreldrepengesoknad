@@ -1,4 +1,5 @@
 import { uniqBy } from 'lodash';
+import { IntlShape } from 'react-intl';
 
 import { RegelAvvik } from '../../types/regelTypes';
 import { guid } from '../../utils/guid';
@@ -27,4 +28,9 @@ export const trimRelaterteRegelAvvik = (avvik: RegelAvvik[], grupperAvvik: boole
               return a.regel.slåsSammenVedOppsummering ? a.regel.key : guid();
           })
         : avvik.filter(overstyresAvFilter).filter(overstyrerAndreFilter);
+};
+
+export const intlHasKey = (intl: IntlShape, key: string) => {
+    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+    return intl.messages[key] !== undefined;
 };
