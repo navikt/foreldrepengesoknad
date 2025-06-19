@@ -4,8 +4,6 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
@@ -52,10 +50,7 @@ export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNavig
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={save}

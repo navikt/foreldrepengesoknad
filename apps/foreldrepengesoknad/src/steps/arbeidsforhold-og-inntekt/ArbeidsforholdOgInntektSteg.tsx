@@ -6,8 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { Heading } from '@navikt/ds-react';
-
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Arbeidsforhold, ArbeidsforholdOgInntekt, isArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
@@ -72,10 +70,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}

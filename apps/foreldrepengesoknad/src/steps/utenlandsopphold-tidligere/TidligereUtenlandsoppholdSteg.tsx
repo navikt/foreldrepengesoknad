@@ -4,8 +4,6 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
@@ -39,10 +37,7 @@ export const TidligereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøkn
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <TidligereUtenlandsoppholdPanel
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={save}

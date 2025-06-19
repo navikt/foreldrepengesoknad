@@ -20,7 +20,7 @@ import { Loader, VStack } from '@navikt/ds-react';
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { ContentWrapper, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -174,37 +174,34 @@ const OmBarnetStegInner = ({
     );
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
-                        <ValgteRegistrerteBarn
-                            valgteRegistrerteBarn={valgteRegistrerteBarn}
-                            skalInkludereTermindato={skalInkludereTermindato}
-                        />
-                    )}
-                    {søkersituasjon.situasjon === 'fødsel' && (
-                        <FødselPanel
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                            søkersituasjon={søkersituasjon}
-                            arbeidsforhold={arbeidsforhold}
-                        />
-                    )}
-                    {søkersituasjon.situasjon === 'adopsjon' && (
-                        <AdopsjonPanel
-                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                        />
-                    )}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
+                            <ValgteRegistrerteBarn
+                                valgteRegistrerteBarn={valgteRegistrerteBarn}
+                                skalInkludereTermindato={skalInkludereTermindato}
+                            />
+                        )}
+                        {søkersituasjon.situasjon === 'fødsel' && (
+                            <FødselPanel
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                                søkersituasjon={søkersituasjon}
+                                arbeidsforhold={arbeidsforhold}
+                            />
+                        )}
+                        {søkersituasjon.situasjon === 'adopsjon' && (
+                            <AdopsjonPanel
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                            />
+                        )}
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </ContentWrapper>
     );
 };

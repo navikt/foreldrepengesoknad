@@ -20,7 +20,7 @@ import { Loader, VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { ContentWrapper, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -140,30 +140,27 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     }
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <VStack gap="5">
-                <FordelingOversikt
-                    kontoer={valgtStønadskonto}
-                    navnFarMedmor={navnFarMedmor}
-                    navnMor={navnMor}
-                    deltUttak={deltUttak}
-                    fordelingScenario={fordelingScenario}
-                />
-                {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
-                <FordelingForm
-                    erDeltUttak={deltUttak}
-                    navnPåForeldre={navnPåForeldre}
-                    dagerMedFellesperiode={dagerMedFellesperiode}
-                    goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                    goToNextDefaultStep={navigator.goToNextDefaultStep}
-                    førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                />
-            </VStack>
-        </Step>
+        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+                <VStack gap="5">
+                    <FordelingOversikt
+                        kontoer={valgtStønadskonto}
+                        navnFarMedmor={navnFarMedmor}
+                        navnMor={navnMor}
+                        deltUttak={deltUttak}
+                        fordelingScenario={fordelingScenario}
+                    />
+                    {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
+                    <FordelingForm
+                        erDeltUttak={deltUttak}
+                        navnPåForeldre={navnPåForeldre}
+                        dagerMedFellesperiode={dagerMedFellesperiode}
+                        goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                        goToNextDefaultStep={navigator.goToNextDefaultStep}
+                        førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                    />
+                </VStack>
+            </Step>
+        </ContentWrapper>
     );
 };

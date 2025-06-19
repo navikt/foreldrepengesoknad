@@ -45,7 +45,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { ContentWrapper, Step } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -591,111 +591,112 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                 });
 
                 return (
-                    <Step
-                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-                        onCancel={avbrytSøknad}
-                        onContinueLater={navigator.fortsettSøknadSenere}
-                        steps={stepConfig}
-                        noFieldsRequired
-                    >
-                        {startStønadsperiodeNyttBarn && (
-                            <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
-                        )}
-                        <VStack gap="2">
-                            <Uttaksplan
-                                foreldreSituasjon={foreldreSituasjon}
-                                forelderVedAleneomsorg={forelderVedAleneomsorg}
-                                erDeltUttak={erDeltUttak}
-                                uttaksplan={uttaksplan}
-                                familiehendelsesdato={familiehendelsesdato}
-                                handleOnPlanChange={handleOnPlanChange}
-                                stønadskontoer={valgteStønadskontoer!}
-                                navnPåForeldre={navnPåForeldre}
-                                annenForelder={annenForelder}
-                                arbeidsforhold={getAktiveArbeidsforhold(
-                                    søkerInfo.arbeidsforhold,
-                                    erAdopsjon,
-                                    erFarEllerMedmor,
-                                    familiehendelsesdato,
-                                )}
-                                erEndringssøknad={erEndringssøknad}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                erFlerbarnssøknad={erFlerbarnssøknad}
-                                erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                                harMidlertidigOmsorg={harMidlertidigOmsorg}
-                                situasjon={situasjon}
-                                erMorUfør={erMorUfør}
-                                morHarRett={morHarRett}
-                                søkersituasjon={søkersituasjon}
-                                dekningsgrad={dekningsgrad}
-                                antallBarn={antallBarn}
-                                setUttaksplanErGyldig={setUttaksplanErGyldig}
-                                eksisterendeSak={eksisterendeSak}
-                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                                harKomplettUttaksplan={harKomplettUttaksplan}
-                                opprinneligPlan={
-                                    uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
-                                }
-                                handleSlettUttaksplan={handleSlettUttaksplan}
-                                handleResetUttaksplan={handleResetUttaksplan}
-                                termindato={termindato ? dayjs(termindato).toDate() : undefined}
-                                barn={barn}
-                                visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                                barnFraNesteSak={barnFraNesteSak}
-                                familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
-                                førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
-                                minsterettUkerToTette={minsterettUkerToTette}
-                            />
-                            {visAutomatiskJusteringForm && (
-                                <AutomatiskJusteringForm
-                                    termindato={termindato ? dayjs(termindato).toDate() : undefined!}
-                                    perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
-                                    antallBarn={barn.antallBarn}
-                                    visibility={visibility}
+                    <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+                        <Step
+                            onCancel={avbrytSøknad}
+                            onContinueLater={navigator.fortsettSøknadSenere}
+                            steps={stepConfig}
+                            noFieldsRequired
+                        >
+                            {startStønadsperiodeNyttBarn && (
+                                <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
+                            )}
+                            <VStack gap="2">
+                                <Uttaksplan
+                                    foreldreSituasjon={foreldreSituasjon}
+                                    forelderVedAleneomsorg={forelderVedAleneomsorg}
+                                    erDeltUttak={erDeltUttak}
+                                    uttaksplan={uttaksplan}
+                                    familiehendelsesdato={familiehendelsesdato}
+                                    handleOnPlanChange={handleOnPlanChange}
+                                    stønadskontoer={valgteStønadskontoer!}
+                                    navnPåForeldre={navnPåForeldre}
+                                    annenForelder={annenForelder}
+                                    arbeidsforhold={getAktiveArbeidsforhold(
+                                        søkerInfo.arbeidsforhold,
+                                        erAdopsjon,
+                                        erFarEllerMedmor,
+                                        familiehendelsesdato,
+                                    )}
+                                    erEndringssøknad={erEndringssøknad}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    erFlerbarnssøknad={erFlerbarnssøknad}
+                                    erAleneOmOmsorg={søkerErAleneOmOmsorg}
+                                    harMidlertidigOmsorg={harMidlertidigOmsorg}
+                                    situasjon={situasjon}
+                                    erMorUfør={erMorUfør}
+                                    morHarRett={morHarRett}
+                                    søkersituasjon={søkersituasjon}
+                                    dekningsgrad={dekningsgrad}
+                                    antallBarn={antallBarn}
+                                    setUttaksplanErGyldig={setUttaksplanErGyldig}
+                                    eksisterendeSak={eksisterendeSak}
+                                    perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                    harKomplettUttaksplan={harKomplettUttaksplan}
+                                    opprinneligPlan={
+                                        uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
+                                    }
+                                    handleSlettUttaksplan={handleSlettUttaksplan}
+                                    handleResetUttaksplan={handleResetUttaksplan}
+                                    termindato={termindato ? dayjs(termindato).toDate() : undefined}
+                                    barn={barn}
+                                    visAutomatiskJusteringForm={visAutomatiskJusteringForm}
+                                    barnFraNesteSak={barnFraNesteSak}
+                                    familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
+                                    førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
+                                    minsterettUkerToTette={minsterettUkerToTette}
                                 />
-                            )}
-                            <VilDuGåTilbakeModal
-                                isOpen={gåTilbakeIsOpen}
-                                setIsOpen={setGåTilbakeIsOpen}
-                                goToPreviousStep={goToPreviousStep}
-                            />
-                            {!uttaksplanErGyldig && submitIsClicked && (
-                                <Alert variant="error">
-                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
-                                </Alert>
-                            )}
-                            {erTomEndringssøknad && submitIsClicked && (
-                                <Alert variant="error">
-                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
-                                </Alert>
-                            )}
-                            <StepButtonWrapper>
-                                {!erEndringssøknad && (
-                                    <Button
-                                        variant="secondary"
-                                        onClick={
-                                            harPlanBlittEndret
-                                                ? (event) => {
-                                                      event.preventDefault();
-                                                      setGåTilbakeIsOpen(true);
-                                                  }
-                                                : goToPreviousStep
-                                        }
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                {visAutomatiskJusteringForm && (
+                                    <AutomatiskJusteringForm
+                                        termindato={termindato ? dayjs(termindato).toDate() : undefined!}
+                                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                                        antallBarn={barn.antallBarn}
+                                        visibility={visibility}
+                                    />
                                 )}
-                                <Button
-                                    type="submit"
-                                    onClick={clickHandler}
-                                    disabled={isSubmitting}
-                                    loading={isSubmitting}
-                                >
-                                    <FormattedMessage id="søknad.gåVidere" />
-                                </Button>
-                            </StepButtonWrapper>
-                        </VStack>
-                    </Step>
+                                <VilDuGåTilbakeModal
+                                    isOpen={gåTilbakeIsOpen}
+                                    setIsOpen={setGåTilbakeIsOpen}
+                                    goToPreviousStep={goToPreviousStep}
+                                />
+                                {!uttaksplanErGyldig && submitIsClicked && (
+                                    <Alert variant="error">
+                                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
+                                    </Alert>
+                                )}
+                                {erTomEndringssøknad && submitIsClicked && (
+                                    <Alert variant="error">
+                                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
+                                    </Alert>
+                                )}
+                                <StepButtonWrapper>
+                                    {!erEndringssøknad && (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={
+                                                harPlanBlittEndret
+                                                    ? (event) => {
+                                                          event.preventDefault();
+                                                          setGåTilbakeIsOpen(true);
+                                                      }
+                                                    : goToPreviousStep
+                                            }
+                                        >
+                                            <FormattedMessage id="backlink.label" />
+                                        </Button>
+                                    )}
+                                    <Button
+                                        type="submit"
+                                        onClick={clickHandler}
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                    >
+                                        <FormattedMessage id="søknad.gåVidere" />
+                                    </Button>
+                                </StepButtonWrapper>
+                            </VStack>
+                        </Step>
+                    </ContentWrapper>
                 );
             }}
         />
