@@ -30,7 +30,6 @@
         "classnames": "2.5.1",
         "dayjs": "1.11.12",
         "intl-messageformat": "10.7.16",
-        "ky": "1.7.5",
         "react": "19.1.0",
         "react-aria-menubutton": "7.0.3",
         "react-dom": "19.1.0",

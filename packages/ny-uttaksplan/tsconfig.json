@@ -1,5 +1,5 @@
 {
-    "extends": "@navikt/fp-config-typescript/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "moduleResolution": "bundler",
         "baseUrl": "src",

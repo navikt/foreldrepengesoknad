@@ -12,8 +12,7 @@
         "@navikt/nav-dekoratoren-moduler": "3.2.3",
         "@navikt/oasis": "3.8.0",
         "express": "5.1.0",
-        "http-proxy-middleware": "3.0.5",
-        "ky": "1.7.5"
+        "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",

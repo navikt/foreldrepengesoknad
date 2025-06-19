@@ -28,7 +28,6 @@
         "@types/react": "19.1.7",
         "@types/react-dom": "19.1.6",
         "dayjs": "1.11.12",
-        "ky": "1.7.5",
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "react-hook-form": "7.57.0",
