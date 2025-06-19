@@ -1,4 +1,4 @@
 {
-    "extends": "./tsconfig.json",
+    "extends": "@navikt/fp-config-typescript.json",
     "compilerOptions": {}
 }
