@@ -12,7 +12,7 @@ import { Box, HStack, Loader } from '@navikt/ds-react';
 
 import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { ContentWrapper, IconCircleWrapper, Step } from '@navikt/fp-ui';
+import { IconCircleWrapper, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DekningsgradForm } from './DekningsgradForm';
@@ -52,7 +52,7 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     }
 
     return (
-        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
                 {tilgjengeligeStønadskontoerQuery.data && (
                     <>
@@ -99,6 +99,6 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                     </>
                 )}
             </Step>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

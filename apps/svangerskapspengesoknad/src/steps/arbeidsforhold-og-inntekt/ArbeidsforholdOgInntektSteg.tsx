@@ -16,7 +16,7 @@ import {
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 const getNextRoute = (
@@ -86,7 +86,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     };
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
@@ -98,6 +98,6 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 onStepChange={navigator.goToStep}
                 appOrigin="svangerskapspengesoknad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

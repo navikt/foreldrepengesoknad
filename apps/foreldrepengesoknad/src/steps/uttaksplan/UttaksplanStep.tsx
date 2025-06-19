@@ -45,7 +45,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -591,7 +591,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                 });
 
                 return (
-                    <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+                    <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
                         <Step
                             onCancel={avbrytSøknad}
                             onContinueLater={navigator.fortsettSøknadSenere}
@@ -696,7 +696,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                 </StepButtonWrapper>
                             </VStack>
                         </Step>
-                    </ContentWrapper>
+                    </SkjemaRotLayout>
                 );
             }}
         />

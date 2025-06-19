@@ -8,7 +8,7 @@ import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
-import { ContentWrapper, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
@@ -45,7 +45,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     };
 
     return (
-        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
@@ -90,6 +90,6 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
                     </VStack>
                 </RhfForm>
             </Step>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

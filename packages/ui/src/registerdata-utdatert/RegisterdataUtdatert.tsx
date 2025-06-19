@@ -5,7 +5,7 @@ import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 
-import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
     slettMellomlagringOgLastSidePåNytt: () => void;
@@ -20,7 +20,7 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
     });
 
     return (
-        <ContentWrapper
+        <SkjemaRotLayout
             pageTitle={
                 <>
                     {appName === 'engangsstonad' && <FormattedMessage id="RegisterdataUtdatert.Engangsstønad" />}
@@ -48,6 +48,6 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                     </Button>
                 </div>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -16,7 +16,7 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -55,7 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     );
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}
@@ -129,6 +129,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     }
                 />
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -9,7 +9,7 @@ import { Heading } from '@navikt/ds-react';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -44,7 +44,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     };
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout>
             <Heading size="large">
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
@@ -58,6 +58,6 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
                 stepConfig={stepConfig}
                 onStepChange={navigator.goToStep}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -17,7 +17,7 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@nav
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpSak, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
@@ -147,7 +147,7 @@ export const Forside = ({
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="8">
                     <GuidePanel poster>
@@ -198,6 +198,6 @@ export const Forside = ({
                     <DinePersonopplysningerModal />
                 </VStack>
             </RhfForm>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

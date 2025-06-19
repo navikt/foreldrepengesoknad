@@ -15,7 +15,7 @@ import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -195,7 +195,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         ].flat().length === 0;
 
     return (
-        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step
                 onCancel={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
@@ -343,6 +343,6 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                     </VStack>
                 </RhfForm>
             </Step>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

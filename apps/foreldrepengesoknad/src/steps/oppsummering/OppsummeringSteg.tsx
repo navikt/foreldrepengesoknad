@@ -21,7 +21,7 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { PersonFrontend, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -128,7 +128,7 @@ export const OppsummeringSteg = (props: Props) => {
     );
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}
@@ -229,6 +229,6 @@ export const OppsummeringSteg = (props: Props) => {
                     )}
                 </>
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

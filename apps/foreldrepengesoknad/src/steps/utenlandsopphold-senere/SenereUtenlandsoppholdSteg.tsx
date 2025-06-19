@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
@@ -32,7 +32,7 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
     };
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={save}
@@ -42,6 +42,6 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

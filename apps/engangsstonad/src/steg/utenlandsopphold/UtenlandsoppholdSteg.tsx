@@ -8,7 +8,7 @@ import { Heading } from '@navikt/ds-react';
 
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
@@ -45,7 +45,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout>
             <Heading size="large">
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
@@ -60,6 +60,6 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
                 stepConfig={stepConfig}
                 stønadstype="Engangsstønad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

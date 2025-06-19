@@ -20,7 +20,7 @@ import { Loader, VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
-import { ContentWrapper, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -140,7 +140,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     }
 
     return (
-        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
                 <VStack gap="5">
                     <FordelingOversikt
@@ -161,6 +161,6 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
                     />
                 </VStack>
             </Step>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

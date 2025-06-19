@@ -20,7 +20,7 @@ import {
 
 import { links } from '@navikt/fp-constants';
 import { Saker } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import styles from './forside.module.css';
 
@@ -51,7 +51,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     };
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout>
             <VStack gap="10">
                 <VStack gap="8">
                     <Heading size="xlarge" className={styles.tittel}>
@@ -148,7 +148,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     </HStack>
                 </VStack>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };
 

@@ -20,7 +20,7 @@ import { Loader, VStack } from '@navikt/ds-react';
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -174,7 +174,7 @@ const OmBarnetStegInner = ({
     );
 
     return (
-        <ContentWrapper pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
@@ -202,6 +202,6 @@ const OmBarnetStegInner = ({
                     </VStack>
                 </RhfForm>
             </Step>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

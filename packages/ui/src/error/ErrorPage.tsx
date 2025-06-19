@@ -5,7 +5,7 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } f
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
 
-import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
     appName: AppName;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
-    <ContentWrapper
+    <SkjemaRotLayout
         pageTitle={
             <>
                 {appName === 'engangsstonad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
@@ -53,5 +53,5 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
                 </VStack>
             </Box>
         </VStack>
-    </ContentWrapper>
+    </SkjemaRotLayout>
 );

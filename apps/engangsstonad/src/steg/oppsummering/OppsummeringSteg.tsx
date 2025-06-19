@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { BoIUtlandetOppsummering, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
@@ -28,7 +28,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout>
             <Heading size="large">
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
@@ -52,6 +52,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
                 />
                 <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

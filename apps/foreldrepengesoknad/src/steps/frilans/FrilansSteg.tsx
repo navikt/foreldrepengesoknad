@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -42,7 +42,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     };
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <FrilansPanel
                 frilans={frilans}
                 saveOnNext={onSubmit}
@@ -52,6 +52,6 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

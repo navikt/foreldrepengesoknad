@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { Arbeidsforhold, EgenNæring } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -39,7 +39,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     };
 
     return (
-        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
                 saveOnNext={onSubmit}
@@ -50,6 +50,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
                 stepConfig={stepConfig}
                 appOrigin="foreldrepengesoknad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -8,7 +8,7 @@ import { Heading } from '@navikt/ds-react';
 
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -31,7 +31,7 @@ export const TidligereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) =
     };
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout>
             <Heading size="large">
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
@@ -45,6 +45,6 @@ export const TidligereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) =
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
-import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 const defaultRetryCallback = async () => {
     window.location.href = window.location.origin;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const SimpleErrorPage = ({ retryCallback }: Props) => (
-    <ContentWrapper pageTitle="">
+    <SkjemaRotLayout pageTitle="">
         <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
             <VStack gap="16">
                 <VStack gap="6">
@@ -33,5 +33,5 @@ export const SimpleErrorPage = ({ retryCallback }: Props) => (
                 </Button>
             </VStack>
         </Box>
-    </ContentWrapper>
+    </SkjemaRotLayout>
 );
