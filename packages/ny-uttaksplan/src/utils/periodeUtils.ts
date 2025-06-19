@@ -341,10 +341,8 @@ export const getOppholdskontoNavn = (
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
-        ? //@ts-ignore Bør ikkje ha dynamiske testId'ar
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
-        : //@ts-ignore Bør ikkje ha dynamiske testId'ar
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+        ? intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
+        : intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
 export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsakType) => {
