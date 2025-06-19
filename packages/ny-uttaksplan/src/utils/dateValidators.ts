@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
@@ -13,35 +14,35 @@ import {
     isWeekday,
 } from '@navikt/fp-validation';
 
+import { LeggTilPeriodeModalStepFormValues } from '../components/legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface FomValidatorProps {
-    intl: IntlShape;
     familiehendelsedato: string;
-    kontoType: StønadskontoType | undefined;
-    tomValue: string | undefined;
     erBarnetFødt: boolean;
     minDate: string;
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
-    skalDuJobbe: boolean | undefined;
-    forelder?: Forelder;
 }
 
 export const getFomValidators = ({
-    intl,
     familiehendelsedato,
-    kontoType,
-    tomValue,
     erBarnetFødt,
     minDate,
     maxDate,
     årsak,
     gjelderAdopsjon,
-    skalDuJobbe,
-    forelder,
 }: FomValidatorProps) => {
+    const intl = useIntl();
+    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues>();
+
+    const tomValue = watch('tom');
+    const skalDuJobbe = watch('skalDuJobbe');
+    const samtidigUttak = watch('samtidigUttak');
+    const forelder = watch('forelder');
+    const kontoType = watch('kontoType');
+
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
@@ -53,11 +54,11 @@ export const getFomValidators = ({
     const seksUkerEtterFamiliehendelse = UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
+    const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
         case StønadskontoType.AktivitetsfriKvote:
         case StønadskontoType.Mødrekvote:
-        case StønadskontoType.Fedrekvote:
         case StønadskontoType.Foreldrepenger:
             validators.push(
                 isAfterOrSame(
@@ -67,6 +68,27 @@ export const getFomValidators = ({
                     UttaksdagenString(familiehendelsedato).denneEllerForrige(),
                 ),
             );
+            break;
+        case StønadskontoType.Fedrekvote:
+            if (samtidigUttak) {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                        minDateSamtidigUttak,
+                    ),
+                );
+            } else {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                        UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                    ),
+                );
+            }
             break;
         case StønadskontoType.ForeldrepengerFørFødsel:
             validators.push(
@@ -151,12 +173,7 @@ export const getFomValidators = ({
         ) {
             validators.push((date) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
-                    const feilmelding =
-                        kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor
-                            ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
-                            : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
-
-                    return feilmelding;
+                    return 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
                 } else {
                     return null;
                 }
@@ -164,36 +181,47 @@ export const getFomValidators = ({
         }
     }
 
+    if (samtidigUttak) {
+        validators.push(
+            isAfterOrSame(
+                intl.formatMessage(
+                    { id: 'endreTidsPeriodeModal.minDato' },
+                    { minDate: formatDateMedUkedag(minDateSamtidigUttak) },
+                ),
+                minDateSamtidigUttak,
+            ),
+        );
+    }
+
     return validators;
 };
 
 interface TomValidatorProps {
-    intl: IntlShape;
     familiehendelsedato: string;
-    kontoType: StønadskontoType | undefined;
-    fomValue: string | undefined;
     erBarnetFødt: boolean;
     minDate: string;
     maxDate: string;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
-    skalDuJobbe: boolean | undefined;
-    forelder?: Forelder;
 }
 
 export const getTomValidators = ({
-    intl,
     familiehendelsedato,
-    kontoType,
-    fomValue,
     erBarnetFødt,
     minDate,
     maxDate,
     årsak,
     gjelderAdopsjon,
-    skalDuJobbe,
-    forelder,
 }: TomValidatorProps) => {
+    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues>();
+    const intl = useIntl();
+
+    const fomValue = watch('fom');
+    const skalDuJobbe = watch('skalDuJobbe');
+    const samtidigUttak = watch('samtidigUttak');
+    const forelder = watch('forelder');
+    const kontoType = watch('kontoType');
+
     const validators = [
         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
@@ -204,11 +232,11 @@ export const getTomValidators = ({
     const seksUkerEtterFamiliehendelse = UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
+    const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
         case StønadskontoType.AktivitetsfriKvote:
         case StønadskontoType.Mødrekvote:
-        case StønadskontoType.Fedrekvote:
         case StønadskontoType.Foreldrepenger:
             validators.push(
                 isAfterOrSame(
@@ -218,6 +246,27 @@ export const getTomValidators = ({
                     UttaksdagenString(familiehendelsedato).denneEllerForrige(),
                 ),
             );
+            break;
+        case StønadskontoType.Fedrekvote:
+            if (samtidigUttak) {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                        minDateSamtidigUttak,
+                    ),
+                );
+            } else {
+                validators.push(
+                    isAfterOrSame(
+                        erBarnetFødt
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
+                        UttaksdagenString(familiehendelsedato).denneEllerForrige(),
+                    ),
+                );
+            }
             break;
         case StønadskontoType.ForeldrepengerFørFødsel:
             validators.push(
@@ -313,6 +362,18 @@ export const getTomValidators = ({
                 }
             });
         }
+    }
+
+    if (samtidigUttak) {
+        validators.push(
+            isAfterOrSame(
+                intl.formatMessage(
+                    { id: 'endreTidsPeriodeModal.minDato' },
+                    { minDate: formatDateMedUkedag(minDateSamtidigUttak) },
+                ),
+                minDateSamtidigUttak,
+            ),
+        );
     }
 
     return validators;

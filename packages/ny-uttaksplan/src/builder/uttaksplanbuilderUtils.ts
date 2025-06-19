@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { Tidsperiode } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -346,6 +347,14 @@ export const finnOgSettInnHull = (
     return result;
 };
 
+const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
+    if (p.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+        return overlappendePeriode.samtidigUttak ?? 100;
+    }
+
+    return 100;
+};
+
 export const settInnAnnenPartsUttak = (
     perioder: Planperiode[],
     annenPartsUttak: Planperiode[],
@@ -392,7 +401,10 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode, samtidigUttak: 100 });
+                res.push({
+                    ...overlappendePeriode,
+                    samtidigUttak: beregnSamtidiguttaksprosent(p, overlappendePeriode),
+                });
             }
 
             return res;

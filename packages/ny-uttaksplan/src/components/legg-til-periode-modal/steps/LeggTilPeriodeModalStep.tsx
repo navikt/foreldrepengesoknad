@@ -29,7 +29,7 @@ interface Props {
     isOpphold: boolean;
 }
 
-interface FormValues {
+export interface LeggTilPeriodeModalStepFormValues {
     kontoType?: StønadskontoType;
     forelder: Forelder;
     fom: string;
@@ -53,7 +53,7 @@ export const LeggTilPeriodeModalStep = ({
     const { forelder, kontoType, fom, tom, årsak } = modalData;
     const perioder = notEmpty(useContextGetData(UttaksplanContextDataType.UTTAKSPLAN));
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<LeggTilPeriodeModalStepFormValues>({
         defaultValues: {
             forelder: forelder,
             kontoType: kontoType,
@@ -78,7 +78,7 @@ export const LeggTilPeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = (values: LeggTilPeriodeModalStepFormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
         const årsakValue = values.årsak;
@@ -124,7 +124,6 @@ export const LeggTilPeriodeModalStep = ({
                     <>
                         <KontotypeSpørsmål formMethods={formMethods} />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}
@@ -137,7 +136,6 @@ export const LeggTilPeriodeModalStep = ({
                     <>
                         <OppholdsÅrsakSpørsmål />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}

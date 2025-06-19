@@ -98,7 +98,6 @@ export const EndrePeriodeModalStep = ({
             <VStack gap="4">
                 <KontotypeSpørsmål formMethods={formMethods} />
                 <TidsperiodeSpørsmål
-                    formMethods={formMethods}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                     oppholdsårsak={årsak}
