@@ -8,4 +8,7 @@ setProjectAnnotations(globalStorybookConfig);
 
 expect.extend(matchers);
 
-window.scrollTo = () => undefined;
+// @ts-expect-error
+if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+    window.scrollTo = () => undefined;
+}
