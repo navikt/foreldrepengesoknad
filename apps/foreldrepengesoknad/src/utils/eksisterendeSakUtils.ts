@@ -158,7 +158,6 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 ): EksisterendeSak | undefined => {
     if (
         eksisterendeSakAnnenPart === undefined ||
-        eksisterendeSakAnnenPart === null ||
         //@ts-expect-error Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
         eksisterendeSakAnnenPart === ''
     ) {

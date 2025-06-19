@@ -31,33 +31,41 @@ export type DokumentereMorsArbeidParams = {
 export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
-        queryFn: () =>
-            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
+        queryFn: async () => {
+            const vedtakEllerTomStrengForIngenVedtak = await ky
+                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
+                .json<AnnenPartSak | ''>();
+            if (vedtakEllerTomStrengForIngenVedtak === '') {
+                return null;
+            }
+
+            return vedtakEllerTomStrengForIngenVedtak;
+        },
+        /**
+         * Denne selected ser snodig ut. Men poenget er at QueryCachen liker ikke at data er undefined.
+         * Derfor lagres den som null i cache. Men i bruk i koden ønsker vi ikke deale med både null og undefined.
+         */
+        select: (vedtak) => {
+            if (vedtak === null) {
+                return undefined;
+            }
+            return vedtak;
+        },
     });
 
-export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boolean) =>
-    queryOptions({
-        queryKey: ['NESTE_SAK_ANNEN_PART_VEDTAK', data],
-        queryFn: () =>
-            ky.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data }).json<AnnenPartSak>(),
-        enabled,
-    });
-
-export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, enabled: boolean) =>
+export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () =>
             ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
-        enabled,
         staleTime: Infinity,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams, enabled: boolean) =>
+export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
         queryFn: () =>
             ky
                 .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`, { json: data })
                 .json<boolean>(),
-        enabled,
     });

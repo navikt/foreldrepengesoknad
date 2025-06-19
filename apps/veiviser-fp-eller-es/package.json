@@ -78,8 +78,6 @@
         "eslint": "9.28.0",
         "fast-glob": "3.3.3",
         "http-proxy-middleware": "3.0.5",
-        "msw": "2.10.2",
-        "msw-storybook-addon": "2.0.5",
         "mustache-loader": "1.4.3",
         "playwright": "1.52.0",
         "prettier": "3.5.3",
