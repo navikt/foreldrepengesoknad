@@ -13,7 +13,7 @@ const meta = {
     component: FileUploader,
     render: (props) => {
         return (
-            <ContentWrapper>
+            <ContentWrapper pageTitle="FileUploader">
                 <FileUploader {...props} />
             </ContentWrapper>
         );

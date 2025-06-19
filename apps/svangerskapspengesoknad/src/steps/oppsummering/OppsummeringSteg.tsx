@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
-import { FormSummary, Heading } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import {
     ArbeidsforholdOppsummering,
@@ -55,10 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     );
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}

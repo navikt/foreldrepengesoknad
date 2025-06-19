@@ -20,15 +20,18 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
     });
 
     return (
-        <ContentWrapper>
-            <VStack gap="10">
-                <Heading size="large" level="2">
+        <ContentWrapper
+            pageTitle={
+                <>
                     {appName === 'engangsstonad' && <FormattedMessage id="RegisterdataUtdatert.Engangsstønad" />}
                     {appName === 'foreldrepengesoknad' && <FormattedMessage id="RegisterdataUtdatert.Foreldrepenger" />}
                     {appName === 'svangerskapspengesoknad' && (
                         <FormattedMessage id="RegisterdataUtdatert.Svangerskapspenger" />
                     )}
-                </Heading>
+                </>
+            }
+        >
+            <VStack gap="10">
                 <Alert variant="warning">
                     <VStack gap="4">
                         <Heading size="small" level="3">

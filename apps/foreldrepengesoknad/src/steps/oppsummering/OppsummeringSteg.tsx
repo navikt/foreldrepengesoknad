@@ -61,7 +61,7 @@ export interface Props {
     avbrytSøknad: () => void;
 }
 
-export const Oppsummering = (props: Props) => {
+export const OppsummeringSteg = (props: Props) => {
     const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
     const intl = useIntl();
 
@@ -128,10 +128,7 @@ export const Oppsummering = (props: Props) => {
     );
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <ContentWrapper pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}

@@ -33,11 +33,8 @@ export const Umyndig = ({ appName }: Props) => {
     useDocumentTitle(titleText);
 
     return (
-        <ContentWrapper>
+        <ContentWrapper pageTitle={titleText}>
             <VStack gap="10">
-                <Heading level="2" size="xlarge">
-                    {titleText}
-                </Heading>
                 <GuidePanel poster>
                     <VStack gap="8">
                         <Heading level="3" size="small">

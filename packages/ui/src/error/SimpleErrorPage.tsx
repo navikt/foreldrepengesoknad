@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const SimpleErrorPage = ({ retryCallback }: Props) => (
-    <ContentWrapper>
+    <ContentWrapper pageTitle="">
         <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
             <VStack gap="16">
                 <VStack gap="6">

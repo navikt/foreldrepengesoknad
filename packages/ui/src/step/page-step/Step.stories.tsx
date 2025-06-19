@@ -12,7 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        bannerTitle: 'Tittel',
         steps: [
             { id: 'test', label: 'Om Barnet', isSelected: false },
             { id: 'test2', label: 'Annet', isSelected: true },
