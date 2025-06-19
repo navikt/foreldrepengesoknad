@@ -41,7 +41,8 @@
     },
     "devDependencies": {
         "@navikt/ds-tailwind": "7.22.0",
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-config-eslint": "workspace:*",
+        "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-links": "9.0.8",
@@ -62,7 +63,6 @@
         "storybook": "9.0.8",
         "storybook-react-intl": "4.0.4",
         "tailwindcss": "4.1.8",
-        "tsconfig": "workspace:*",
         "vite": "6.3.5",
         "vitest": "3.2.3"
     }

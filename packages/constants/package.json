@@ -14,9 +14,9 @@
         "ky": "1.7.5"
     },
     "devDependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-config-eslint": "workspace:*",
+        "@navikt/fp-config-typescript": "workspace:*",
         "eslint": "9.28.0",
-        "tsconfig": "workspace:*",
         "typescript": "5.8.3"
     },
     "packageManager": "pnpm@9.1.4"

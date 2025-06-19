@@ -37,7 +37,7 @@
         "typescript": "5.8.3"
     },
     "devDependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@originjs/vite-plugin-commonjs": "1.0.3",
