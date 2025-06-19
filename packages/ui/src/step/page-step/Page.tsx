@@ -1,29 +1,30 @@
-import React, { useEffect } from 'react';
-import { useIntl } from 'react-intl';
+import React from 'react';
 
-import styles from './page.module.css';
+import { Page as AkselPage, Heading } from '@navikt/ds-react';
 
 interface PageProps {
-    className?: string;
-    id?: string;
-    ariaLabel?: string;
-    topContentRenderer?: () => React.ReactElement<any>;
+    bannerTitle?: string;
     children: React.ReactNode;
 }
 
-export const Page = ({ ariaLabel, id = 'pageMainContent', className, topContentRenderer, children }: PageProps) => {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    const intl = useIntl();
-
-    const ariaLabelToUse = ariaLabel ? intl.formatMessage({ id: 'Page.DefaultMainRoleLabel' }) : undefined;
+export const Page = ({ bannerTitle, children }: PageProps) => {
+    // useEffect(() => {
+    //     window.scrollTo(0, 0);
+    // }, []);
+    // TODO: burde vi ha dette? Og hvis så har vel routeren en implementasjon for det?
 
     return (
-        <main aria-label={ariaLabelToUse} id={id}>
-            {topContentRenderer?.()}
-            <div className={`${styles.page} ${className}`}>{children}</div>
-        </main>
+        <AkselPage>
+            <AkselPage.Block as="main" id="pageMainContent" width="text" gutters>
+                {bannerTitle && (
+                    <AkselPage.Block>
+                        <Heading size="large" level="1" spacing>
+                            {bannerTitle}
+                        </Heading>
+                    </AkselPage.Block>
+                )}
+                <AkselPage.Block>{children}</AkselPage.Block>
+            </AkselPage.Block>
+        </AkselPage>
     );
 };

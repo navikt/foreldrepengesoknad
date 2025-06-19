@@ -5,9 +5,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
 import { Page } from './Page';
-import { StepBanner } from './StepBanner';
 import { StepFooter } from './step-footer/StepFooter';
-import styles from './step.module.css';
 
 interface StepProps<TYPE> {
     bannerTitle?: string;
@@ -17,8 +15,6 @@ interface StepProps<TYPE> {
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
     cancelOrContinueLaterAriaLabel?: string;
-    pageAriaLabel?: string;
-    infoMessage?: React.ReactNode;
     hideHeader?: boolean;
     someFieldsOptional?: boolean;
     noFieldsRequired?: boolean;
@@ -32,8 +28,6 @@ export const Step = <TYPE extends string>({
     onStepChange,
     cancelOrContinueLaterAriaLabel,
     children,
-    pageAriaLabel,
-    infoMessage,
     hideHeader,
     someFieldsOptional = false,
     noFieldsRequired = false,
@@ -46,12 +40,7 @@ export const Step = <TYPE extends string>({
     const title = steps[currentStepIndex].label;
 
     return (
-        <Page
-            className={styles.step}
-            ariaLabel={pageAriaLabel}
-            topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
-        >
-            {infoMessage !== undefined && <div className={styles.infoMessage}>{infoMessage}</div>}
+        <Page bannerTitle={bannerTitle}>
             <VStack gap="6">
                 <div role="presentation">
                     <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
