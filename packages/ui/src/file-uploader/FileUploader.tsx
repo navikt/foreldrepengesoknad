@@ -47,7 +47,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
         // TODO Burde få ut feilmelding frå backend og vise denne
         attachment.pending = false;
 
-        // @ts-ignore TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
+        // @ts-expect-error TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
         if (error?.response?.status === 408) {
             attachment.error = FileUploadError.TIMEOUT;
         } else {

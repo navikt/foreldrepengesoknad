@@ -78,6 +78,7 @@ export default [
             '@typescript-eslint/no-unused-vars': [ERROR],
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
+            '@typescript-eslint/ban-ts-comment': ERROR,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [
@@ -90,7 +91,6 @@ export default [
 
             // TODO (TOR) Ignorert inntil videre grunnet kost/nytte
             '@typescript-eslint/no-explicit-any': OFF,
-            '@typescript-eslint/ban-ts-comment': OFF,
         },
     },
     {

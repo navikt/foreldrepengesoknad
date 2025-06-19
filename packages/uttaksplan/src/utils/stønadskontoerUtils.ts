@@ -81,6 +81,7 @@ export const getStønadskontoNavn = (
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
         }
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
