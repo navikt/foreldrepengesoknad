@@ -2,14 +2,8 @@ import { IntlShape } from 'react-intl';
 import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import {
-    Arbeidsforhold,
-    ArbeidsforholdOgInntektSvp,
-    EGEN_NÆRING_ID,
-    FRILANS_ID,
-    Frilans,
-    NæringFormValues,
-} from '@navikt/fp-types';
+import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, FRILANS_ID, Frilans } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 type VelgArbeidsforholdOptions = {

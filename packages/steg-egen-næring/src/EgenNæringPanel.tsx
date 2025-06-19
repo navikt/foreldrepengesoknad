@@ -15,7 +15,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, NæringFormValues } from '@navikt/fp-types';
+import { AppName, NæringDto } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
@@ -74,6 +74,14 @@ interface Props<TYPE> {
     stepConfig: Array<ProgressStep<TYPE>>;
     appOrigin: AppName;
 }
+
+export const EGEN_NÆRING_ID = 'naering';
+
+/**
+ * Helst ville vi brukt NæringDto direkte, men i skjema er det nyttig å ha en ekstra "pågående" sjekkboks.
+ * I Dto til backend er pågående det samme som at tom ikke er satt
+ */
+export type NæringFormValues = NæringDto & { pågående: boolean };
 
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,

@@ -12,7 +12,8 @@ import {
 } from 'utils/tilretteleggingUtils';
 
 import { AttachmentMetadataType } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, Frilans, LocaleNo, NæringFormValues } from '@navikt/fp-types';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, Attachment, Frilans, LocaleNo } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

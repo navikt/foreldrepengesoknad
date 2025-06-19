@@ -4,11 +4,11 @@ import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektSvp,
     Attachment,
     Frilans,
-    NæringFormValues,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';

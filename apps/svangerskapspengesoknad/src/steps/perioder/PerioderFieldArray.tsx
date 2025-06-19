@@ -17,7 +17,8 @@ import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, Frilans, NæringFormValues } from '@navikt/fp-types';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 

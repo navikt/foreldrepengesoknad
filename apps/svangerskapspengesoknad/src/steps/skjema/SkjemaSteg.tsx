@@ -13,7 +13,8 @@ import { Link, VStack } from '@navikt/ds-react';
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

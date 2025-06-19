@@ -2,13 +2,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, FormSummary } from '@navikt/ds-react';
 
-import {
-    Arbeidsforhold,
-    ArbeidsforholdOgInntekt,
-    Frilans,
-    NæringFormValues,
-    isArbeidsforholdOgInntektFp,
-} from '@navikt/fp-types';
+import type { NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, ArbeidsforholdOgInntekt, Frilans, isArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { JaNeiTekst } from '../OppsummeringPanel';
@@ -146,10 +141,10 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
     );
 };
 
-interface SelvstendigNæringsdrivendeOppsummeringProps {
-    readonly onVilEndreSvar: () => void;
-    readonly egenNæring?: NæringFormValues;
-}
+type SelvstendigNæringsdrivendeOppsummeringProps = {
+    onVilEndreSvar: () => void;
+    egenNæring?: NæringFormValues;
+};
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,

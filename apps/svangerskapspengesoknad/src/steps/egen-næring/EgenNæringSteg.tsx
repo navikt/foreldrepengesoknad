@@ -7,8 +7,8 @@ import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'ut
 
 import { Heading } from '@navikt/ds-react';
 
-import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, NæringFormValues } from '@navikt/fp-types';
+import { EgenNæringPanel, NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

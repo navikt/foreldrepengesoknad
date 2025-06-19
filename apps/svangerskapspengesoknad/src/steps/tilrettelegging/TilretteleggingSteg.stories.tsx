@@ -7,7 +7,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, FRILANS_ID, Frilans, NæringFormValues } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { FRILANS_ID, Frilans } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 

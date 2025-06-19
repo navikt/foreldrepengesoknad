@@ -8,4 +8,5 @@ export const egenNæringMessages = {
     en: enMessages,
 };
 
-export { EgenNæringPanel } from './src/EgenNæringPanel';
+export type { NæringFormValues } from './src/EgenNæringPanel';
+export { EgenNæringPanel, EGEN_NÆRING_ID } from './src/EgenNæringPanel';

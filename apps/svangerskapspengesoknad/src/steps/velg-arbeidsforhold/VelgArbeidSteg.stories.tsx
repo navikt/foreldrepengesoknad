@@ -6,7 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { ArbeidsforholdOgInntektSvp, Frilans, NæringFormValues } from '@navikt/fp-types';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { ArbeidsforholdOgInntektSvp, Frilans } from '@navikt/fp-types';
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
 

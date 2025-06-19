@@ -14,14 +14,13 @@ import {
 } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT, TIDENES_MORGEN } from '@navikt/fp-constants';
+import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
-    EGEN_NÆRING_ID,
     FRILANS_ID,
     Frilans,
-    NæringFormValues,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

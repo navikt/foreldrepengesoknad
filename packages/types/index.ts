@@ -15,8 +15,6 @@ export type { PlanForslag } from './src/PlanForslag';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { UttaksplanModus } from './src/UttaksplanModus';
 export type { Frilans } from './src/Frilans';
-export type { NæringFormValues } from './src/NæringFormValues';
-export { EGEN_NÆRING_ID } from './src/NæringFormValues';
 
 export { FRILANS_ID } from './src/Frilans';
 export type {
