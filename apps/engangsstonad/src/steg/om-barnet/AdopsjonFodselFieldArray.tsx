@@ -52,6 +52,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                 <RhfDatepicker
                     key={field.id}
                     name={`fødselsdatoer.${index}.dato`}
+                    control={control}
                     minDate={dayjs().subtract(15, 'year').toDate()}
                     maxDate={dayjs().toDate()}
                     useStrategyAbsolute

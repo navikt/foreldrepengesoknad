@@ -124,6 +124,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="næringstype"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
                     >
@@ -142,6 +143,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     </RhfRadioGroup>
                     <RhfTextField
                         name="navnPåNæringen"
+                        control={formMethods.control}
                         label={navnPåNæringLabel}
                         validate={[
                             validateEgenNæringNavn(intl, næringsType === Næringstype.FISKER),
@@ -168,6 +170,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     />
                     <RhfRadioGroup
                         name="registrertINorge"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.erNæringenRegistrertINorge' },
                             {
@@ -193,6 +196,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     />
                     <RhfDatepicker
                         name="fom"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.fom' },
                             {
@@ -238,6 +242,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     {pågående === false && (
                         <RhfDatepicker
                             name="tom"
+                            control={formMethods.control}
                             label={intl.formatMessage(
                                 { id: 'egenNæring.næring.tom' },
                                 {
@@ -284,6 +289,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         <>
                             <RhfTextField
                                 name="næringsinntekt"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
                                 description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
                                 validate={[
@@ -317,6 +323,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             </ReadMore>
                             <RhfRadioGroup
                                 name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
                                 validate={[
                                     isRequired(
@@ -336,6 +343,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             {yrkesaktivSiste3År === true && (
                                 <RhfDatepicker
                                     name="oppstartsdato"
+                                    control={formMethods.control}
                                     label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
                                     validate={[
                                         isRequired(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.påkrevd' })),

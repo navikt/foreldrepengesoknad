@@ -235,6 +235,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <VStack gap="2">
                                         <RhfNumericField
                                             name="lønnPerMåned"
+                                            control={formMethods.control}
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[

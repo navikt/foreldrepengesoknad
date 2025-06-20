@@ -177,6 +177,7 @@ export const Forside = ({
                         </Alert>
                         <RhfConfirmationPanel
                             name="harForståttRettigheterOgPlikter"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'velkommen.samtykke' })}
                             validate={[
                                 (value: boolean) =>

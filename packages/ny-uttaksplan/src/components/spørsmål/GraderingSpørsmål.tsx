@@ -32,9 +32,10 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
             </RhfRadioGroup>
             {graderingValue && (
                 <RhfNumericField
+                    name="stillingsprosent"
+                    control={formMethods.control}
                     className="w-xs"
                     label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
-                    name="stillingsprosent"
                     validate={[prosentValideringGradering(intl)]}
                     maxLength={5}
                 />

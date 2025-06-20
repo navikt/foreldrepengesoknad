@@ -25,9 +25,9 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
                 <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
             </Heading>
             <RhfRadioGroup
+                name="kontoType"
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
-                name="kontoType"
             >
                 {valgtStønadskonto.kontoer.map((konto) => {
                     return (
