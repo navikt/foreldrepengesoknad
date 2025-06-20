@@ -108,11 +108,17 @@ export const getOppholdskontoNavn = (
     erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
-    return erMor
-        ? // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
-        : // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+    if (erMor) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+        return intl.formatMessage(
+            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
+            { foreldernavn: navn },
+        );
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
 export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
