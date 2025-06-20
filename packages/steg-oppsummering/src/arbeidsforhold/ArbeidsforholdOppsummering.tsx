@@ -2,8 +2,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, FormSummary } from '@navikt/ds-react';
 
-import type { NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, ArbeidsforholdOgInntekt, Frilans, isArbeidsforholdOgInntektFp } from '@navikt/fp-types';
+import {
+    Arbeidsforhold,
+    ArbeidsforholdOgInntekt,
+    Frilans,
+    NæringDto,
+    isArbeidsforholdOgInntektFp,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { JaNeiTekst } from '../OppsummeringPanel';
@@ -143,7 +148,7 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
 
 type SelvstendigNæringsdrivendeOppsummeringProps = {
     onVilEndreSvar: () => void;
-    egenNæring?: NæringFormValues;
+    egenNæring?: NæringDto;
 };
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
@@ -153,6 +158,10 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
     if (!egenNæring) {
         return null;
     }
+
+    // Pågående ligger i formet, men vi utleder det heller fra tom.
+    // Dette fordi type NæringFormValues ligger i en annen pakke, og vi ønsker ikke at pakker avhenger av andre pakker.
+    const pågående = !egenNæring.tom;
 
     return (
         <FormSummary>
@@ -228,11 +237,11 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <JaNeiTekst ja={egenNæring.pågående} />
+                        <JaNeiTekst ja={pågående} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
 
-                {!egenNæring.pågående && egenNæring.tom && (
+                {!pågående && egenNæring.tom && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
