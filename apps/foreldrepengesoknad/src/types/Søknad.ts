@@ -2,11 +2,11 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
     Frilans,
-    NæringFormValues,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';

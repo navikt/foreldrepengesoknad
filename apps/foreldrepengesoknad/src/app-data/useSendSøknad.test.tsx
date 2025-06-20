@@ -19,7 +19,8 @@ import {
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { Dekningsgrad, NæringFormValues, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { Dekningsgrad, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';

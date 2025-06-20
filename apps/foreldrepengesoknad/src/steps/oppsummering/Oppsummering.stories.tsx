@@ -20,10 +20,10 @@ import {
     SivilstandType,
     Skjemanummer,
 } from '@navikt/fp-constants';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektFp,
     Frilans,
-    NæringFormValues,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,

@@ -6,11 +6,11 @@ import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
     Frilans,
-    NæringFormValues,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
