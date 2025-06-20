@@ -97,29 +97,33 @@ export const HvemPlanleggerSteg = () => {
                                 <VStack gap="10">
                                     {erMorDelAvSøknadenGittType(type) && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             name="navnPåMor"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {erFarDelAvSøknadenGittType(type) && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåFar"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === HvemPlanleggerType.MOR_OG_MEDMOR && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             name="navnPåMedmor"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === HvemPlanleggerType.FAR_OG_FAR && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåMedfar"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}

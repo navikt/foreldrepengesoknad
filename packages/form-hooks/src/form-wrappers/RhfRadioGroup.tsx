@@ -1,12 +1,11 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { RadioGroup } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     description?: string | ReactNode;
     label?: string | ReactNode;
     validate?: Array<(value: string | number | boolean) => any>;
@@ -14,23 +13,26 @@ interface Props {
     children: ReactElement[];
     className?: string;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-}
+} & UseControllerProps<T>;
 
-export const RhfRadioGroup = ({
+export const RhfRadioGroup = <T extends FieldValues>({
     label,
     description,
-    name,
     validate = [],
     onChange,
     children,
     className,
     customErrorFormatter,
-}: Props) => {
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: getValidationRules(validate),
         },

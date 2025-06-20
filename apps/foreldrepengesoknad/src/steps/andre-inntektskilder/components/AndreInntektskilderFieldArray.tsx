@@ -35,6 +35,7 @@ export const AndreInntektskilderFieldArray = () => {
                     <VStack gap="10" key={field.id}>
                         <RhfRadioGroup
                             name={`andreInntektskilder.${index}.type`}
+                            control={control}
                             label={<FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'AndreInntektskilderStep.Validering.OppgiType' })),
