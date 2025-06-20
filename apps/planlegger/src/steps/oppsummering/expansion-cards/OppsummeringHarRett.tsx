@@ -257,7 +257,7 @@ export const OppsummeringHarRett = ({
                                                 dager2:
                                                     getAntallUkerOgDager(valgtStønadskonto).dager -
                                                     antallUkerOgDagerAktivitetsfriKvote.dager,
-                                                hvem: fornavnSøker1,
+                                                hvem: fornavnSøker2,
                                                 prosent: hvorLangPeriode.dekningsgrad,
                                                 antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
                                                 dager: getAntallUkerOgDager(valgtStønadskonto).dager,
