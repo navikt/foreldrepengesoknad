@@ -14,13 +14,14 @@ import {
 } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT, TIDENES_MORGEN } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
     FRILANS_ID,
     Frilans,
+    NæringDto,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -250,7 +251,7 @@ export const getArbeidsgiverStillingerForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: Arbeidsforhold[],
-    egenNæring?: NæringFormValues,
+    egenNæring?: NæringDto,
     frilans?: Frilans,
 ): Stilling[] => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {
@@ -283,7 +284,7 @@ export const getPeriodeForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: Arbeidsforhold[],
-    egenNæring?: NæringFormValues,
+    egenNæring?: NæringDto,
     frilans?: Frilans,
 ): { fom: string; tom?: string } => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {

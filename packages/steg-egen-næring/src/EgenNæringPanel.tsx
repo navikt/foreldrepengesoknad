@@ -3,7 +3,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
@@ -64,9 +64,9 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 };
 
 interface Props<TYPE> {
-    egenNæring?: NæringFormValues;
-    saveOnNext: (formValues: NæringFormValues) => void;
-    saveOnPrevious: (formValues: NæringFormValues | undefined) => void;
+    egenNæring?: NæringDto;
+    saveOnNext: (formValues: NæringDto) => void;
+    saveOnPrevious: (formValues: NæringDto | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -81,7 +81,7 @@ export const EGEN_NÆRING_ID = 'naering';
  * Helst ville vi brukt NæringDto direkte, men i skjema er det nyttig å ha en ekstra "pågående" sjekkboks.
  * I Dto til backend er pågående det samme som at tom ikke er satt
  */
-export type NæringFormValues = NæringDto & { pågående: boolean };
+type NæringFormValues = NæringDto & { pågående: boolean };
 
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
@@ -98,7 +98,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
-        defaultValues: egenNæring,
+        defaultValues: { ...egenNæring, pågående: !!egenNæring?.tom },
     });
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
@@ -117,6 +117,11 @@ export const EgenNæringPanel = <TYPE extends string>({
 
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
 
+    const onSubmit = (values: NæringFormValues) => {
+        const valuesUtenPågående = omit(values, ['pågående']);
+        saveOnNext(valuesUtenPågående);
+    };
+
     return (
         <Step
             onCancel={cancelApplication}
@@ -125,7 +130,7 @@ export const EgenNæringPanel = <TYPE extends string>({
             onStepChange={onStepChange}
             someFieldsOptional
         >
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup

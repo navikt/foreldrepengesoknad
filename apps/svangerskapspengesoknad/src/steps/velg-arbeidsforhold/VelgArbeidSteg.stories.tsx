@@ -6,8 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { ArbeidsforholdOgInntektSvp, Frilans } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektSvp, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
 
@@ -77,7 +76,7 @@ type StoryArgs = {
     tilrettelegginger?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
     valgteArbeidsforhold?: string[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektSvp;
-    egenNæring?: NæringFormValues;
+    egenNæring?: NæringDto;
     frilans?: Frilans;
 } & ComponentProps<typeof VelgArbeidSteg>;
 
@@ -144,7 +143,6 @@ export const MedNæringsvalg: Story = {
         egenNæring: {
             fom: '2024-01-01',
             tom: '2024-10-01',
-            pågående: false,
             registrertINorge: true,
             næringstype: 'FISKE',
         },

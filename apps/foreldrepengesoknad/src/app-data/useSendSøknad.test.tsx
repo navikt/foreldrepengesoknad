@@ -19,8 +19,7 @@ import {
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { Dekningsgrad, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { Dekningsgrad, NæringDto, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -82,14 +81,13 @@ const EGEN_NÆRING = {
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
-    pågående: false,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     varigEndringDato: '2024-01-01',
     varigEndringInntektEtterEndring: 10000,
     varigEndringBeskrivelse: 'Beskrivelse av endring',
-} satisfies NæringFormValues;
+} satisfies NæringDto;
 
 const ANDRE_INNTEKTSKILDER = [
     {

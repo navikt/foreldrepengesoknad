@@ -12,8 +12,7 @@ import {
 } from 'utils/tilretteleggingUtils';
 
 import { AttachmentMetadataType } from '@navikt/fp-constants';
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, Attachment, Frilans, LocaleNo } from '@navikt/fp-types';
+import { Arbeidsforhold, Attachment, Frilans, LocaleNo, NæringDto } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -24,7 +23,7 @@ const finnTilretteleggingsbehov = (
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
     tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
-    egenNæring?: NæringFormValues,
+    egenNæring?: NæringDto,
     frilans?: Frilans,
 ): TilretteleggingDTO[] => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);

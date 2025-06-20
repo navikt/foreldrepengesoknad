@@ -6,11 +6,11 @@ import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
     Frilans,
+    NæringDto,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -45,7 +45,7 @@ export type ContextDataMap = {
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektFp;
-    [ContextDataType.EGEN_NÆRING]?: NæringFormValues;
+    [ContextDataType.EGEN_NÆRING]?: NæringDto;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;

@@ -219,7 +219,6 @@ const meta = {
                             fom: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
                             tom: '',
                             næringstype: 'FISKE',
-                            pågående: true,
                             registrertINorge: true,
                             næringsinntekt: 700000,
                             organisasjonsnummer: '12132323',

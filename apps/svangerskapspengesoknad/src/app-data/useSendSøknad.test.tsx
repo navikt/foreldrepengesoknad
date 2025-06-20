@@ -16,8 +16,8 @@ import {
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { Attachment, FRILANS_ID, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -91,10 +91,9 @@ const EGEN_NÆRING = {
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
-    pågående: false,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
-} satisfies NæringFormValues;
+} satisfies NæringDto;
 
 const VEDLEGG = {
     id: '1',

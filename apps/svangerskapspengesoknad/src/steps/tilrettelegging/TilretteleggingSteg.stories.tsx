@@ -7,8 +7,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, NæringFormValues } from '@navikt/fp-steg-egen-naering';
-import { FRILANS_ID, Frilans } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 
@@ -44,7 +44,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     frilans?: Frilans;
-    egenNæring?: NæringFormValues;
+    egenNæring?: NæringDto;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
 } & ComponentProps<typeof TilretteleggingSteg>;
@@ -140,7 +140,6 @@ export const SelvstendigNæring: Story = {
         egenNæring: {
             fom: '2024-01-01',
             tom: '2024-10-01',
-            pågående: false,
             registrertINorge: true,
             næringstype: 'FISKE',
         },

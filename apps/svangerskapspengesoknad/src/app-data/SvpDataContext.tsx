@@ -4,11 +4,11 @@ import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektSvp,
     Attachment,
     Frilans,
+    NæringDto,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -41,7 +41,7 @@ export type ContextDataMap = {
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektSvp;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
-    [ContextDataType.EGEN_NÆRING]?: NæringFormValues;
+    [ContextDataType.EGEN_NÆRING]?: NæringDto;
     [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: string[];
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;

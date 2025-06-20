@@ -20,10 +20,10 @@ import {
     SivilstandType,
     Skjemanummer,
 } from '@navikt/fp-constants';
-import { NæringFormValues } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektFp,
     Frilans,
+    NæringDto,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,
@@ -217,7 +217,7 @@ type StoryArgs = {
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
-    egenNæring?: NæringFormValues;
+    egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
@@ -556,7 +556,6 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         },
         egenNæring: {
             navnPåNæringen: 'Fiske',
-            pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
             næringstype: 'FISKE',
@@ -584,7 +583,6 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         },
         egenNæring: {
             navnPåNæringen: 'Fiske',
-            pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
             næringstype: 'FISKE',
