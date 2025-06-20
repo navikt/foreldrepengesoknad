@@ -96,9 +96,11 @@ export const EgenNæringPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
+    const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
+
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
-        defaultValues: { ...egenNæring, pågående: !egenNæring?.tom },
+        defaultValues: { ...egenNæring, pågående: egenNæringDefaultValue },
     });
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
