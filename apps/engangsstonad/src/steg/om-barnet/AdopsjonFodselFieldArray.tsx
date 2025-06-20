@@ -58,7 +58,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
-                            : // @ts-ignore Bør ikkje bruka dynamiske tekstId'ar
+                            : // @ts-expect-error Bør ikkje bruka dynamiske tekstId'ar
                               intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
                     }
                     validate={[
