@@ -59,7 +59,6 @@ describe('<EgenNæringSteg>', () => {
                 næringsinntekt: '1000',
                 næringstype: 'JORDBRUK_SKOGBRUK',
                 organisasjonsnummer: '997519485',
-                pågående: true,
                 registrertINorge: true,
                 fom: '2023-04-30',
             },
