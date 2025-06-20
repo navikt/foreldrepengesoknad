@@ -96,6 +96,10 @@ export const EgenNæringPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
+    /**
+     * Poenget her er at når egenNæring ikke er oppgit har man et helt blankt skjema. Da vil vi "pågående" skal være undefined for å tvinge et valg.
+     * Hvis egenNæring finnes har bruker gjort et valg, og da vil vi velge false/true for radioknappen
+     */
     const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
 
     const formMethods = useForm<NæringFormValues>({
