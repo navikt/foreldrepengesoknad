@@ -98,7 +98,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
-        defaultValues: { ...egenNæring, pågående: !!egenNæring?.tom },
+        defaultValues: { ...egenNæring, pågående: !egenNæring?.tom },
     });
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
