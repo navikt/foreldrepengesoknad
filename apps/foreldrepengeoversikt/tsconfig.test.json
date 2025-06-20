@@ -1,4 +1,0 @@
-{
-    "extends": "@navikt/fp-config-typescript.json",
-    "compilerOptions": {}
-}

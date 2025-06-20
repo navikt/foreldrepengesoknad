@@ -83,7 +83,7 @@ export const AndreInntektskilderFieldArray = () => {
                     icon={<PlusIcon aria-hidden />}
                     type="button"
                     variant="secondary"
-                    // @ts-ignore
+                    //@ts-expect-error fiks
                     onClick={() => append({})}
                     size="small"
                 >

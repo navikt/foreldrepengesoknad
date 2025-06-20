@@ -1749,11 +1749,7 @@ importers:
         specifier: 8.34.0
         version: 8.34.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.4.5)
 
-  packages/config-typescript:
-    dependencies:
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
+  packages/config-typescript: {}
 
   packages/config-vite:
     dependencies:
@@ -1781,9 +1777,6 @@ importers:
       dayjs:
         specifier: 1.11.12
         version: 1.11.12
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1830,9 +1823,6 @@ importers:
       dayjs:
         specifier: 1.11.12
         version: 1.11.12
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -1972,9 +1962,6 @@ importers:
       intl:
         specifier: 1.2.5
         version: 1.2.5
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -2069,9 +2056,6 @@ importers:
       amplitude-js:
         specifier: 8.21.9
         version: 8.21.9
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2139,9 +2123,6 @@ importers:
       dayjs:
         specifier: 1.11.10
         version: 1.11.10
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -2242,9 +2223,6 @@ importers:
       express:
         specifier: 5.1.0
         version: 5.1.0
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
@@ -2333,9 +2311,6 @@ importers:
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2463,9 +2438,6 @@ importers:
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2584,9 +2556,6 @@ importers:
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2708,9 +2677,6 @@ importers:
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2835,9 +2801,6 @@ importers:
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -2932,9 +2895,6 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2978,9 +2938,6 @@ importers:
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3090,9 +3047,6 @@ importers:
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3163,9 +3117,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.80.6
         version: 5.80.6(@tanstack/react-query@5.80.6(react@19.1.0))(react@19.1.0)
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3278,9 +3229,6 @@ importers:
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -3423,9 +3371,6 @@ importers:
       dayjs:
         specifier: 1.11.12
         version: 1.11.12
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3538,9 +3483,6 @@ importers:
       dayjs:
         specifier: 1.11.12
         version: 1.11.12
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3638,9 +3580,6 @@ importers:
       dayjs:
         specifier: 1.11.12
         version: 1.11.12
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3681,9 +3620,6 @@ importers:
       http-proxy-middleware:
         specifier: 3.0.5
         version: 3.0.5
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
@@ -3727,9 +3663,6 @@ importers:
       http-proxy-middleware:
         specifier: 3.0.5
         version: 3.0.5
-      ky:
-        specifier: 1.7.5
-        version: 1.7.5
     devDependencies:
       '@navikt/fp-config-typescript':
         specifier: workspace:*

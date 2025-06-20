@@ -11,8 +11,7 @@
     },
     "dependencies": {
         "@navikt/fp-types": "workspace:*",
-        "amplitude-js": "8.21.9",
-        "ky": "1.7.5"
+        "amplitude-js": "8.21.9"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",

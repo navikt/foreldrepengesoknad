@@ -1,5 +1,5 @@
 {
-    "extends": "@navikt/fp-config-typescript/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "moduleResolution": "bundler",
         "baseUrl": "src",
@@ -11,10 +11,5 @@
         "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]
     },
     "include": ["src"],
-    "exclude": ["node_modules"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "exclude": ["node_modules"]
 }
