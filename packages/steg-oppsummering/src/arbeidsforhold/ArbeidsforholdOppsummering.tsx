@@ -5,9 +5,8 @@ import { Alert, FormSummary } from '@navikt/ds-react';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
-    EgenNæring,
     Frilans,
-    Næringstype,
+    NæringDto,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -147,10 +146,10 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
     );
 };
 
-interface SelvstendigNæringsdrivendeOppsummeringProps {
-    readonly onVilEndreSvar: () => void;
-    readonly egenNæring?: EgenNæring;
-}
+type SelvstendigNæringsdrivendeOppsummeringProps = {
+    onVilEndreSvar: () => void;
+    egenNæring?: NæringDto;
+};
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
@@ -159,6 +158,10 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
     if (!egenNæring) {
         return null;
     }
+
+    // Pågående ligger i formet, men vi utleder det heller fra tom.
+    // Dette fordi type NæringFormValues ligger i en annen pakke, og vi ønsker ikke at pakker avhenger av andre pakker.
+    const pågående = !egenNæring.tom;
 
     return (
         <FormSummary>
@@ -178,15 +181,15 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     <FormSummary.Value>
                         {(() => {
                             switch (egenNæring?.næringstype) {
-                                case Næringstype.FISKER:
+                                case 'FISKE':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
-                                case Næringstype.DAGMAMMA:
+                                case 'DAGMAMMA':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
-                                case Næringstype.JORDBRUK:
+                                case 'JORDBRUK_SKOGBRUK':
                                     return (
                                         <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
                                     );
-                                case Næringstype.ANNET:
+                                case 'ANNEN':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
                                 default:
                                     return null;
@@ -234,11 +237,11 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <JaNeiTekst ja={egenNæring.pågående} />
+                        <JaNeiTekst ja={pågående} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
 
-                {!egenNæring.pågående && (
+                {!pågående && egenNæring.tom && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
