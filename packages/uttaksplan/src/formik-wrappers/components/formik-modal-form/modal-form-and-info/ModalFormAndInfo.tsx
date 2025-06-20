@@ -42,7 +42,6 @@ type Props<DataType> = ModalFormAndInfoProps<DataType> & PrivateProps<DataType>;
 
 const bem = planBemUtils('formikModalForm').child('modal');
 
-// eslint-disable-next-line @typescript-eslint/no-restricted-types
 function ModalFormAndInfo<DataType>({
     data,
     labels,
