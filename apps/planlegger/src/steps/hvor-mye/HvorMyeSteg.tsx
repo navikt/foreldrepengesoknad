@@ -74,22 +74,12 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                 <RhfTextField
                                     label={
                                         hvemHarRett === 'kunSøker2HarRett' ? (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker2,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker2 }} />
                                         ) : (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker1,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
                                         )
                                     }
-                                    name="lønnSøker1"
+                                    name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
