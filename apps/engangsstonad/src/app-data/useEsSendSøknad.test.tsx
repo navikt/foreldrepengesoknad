@@ -91,7 +91,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const omBarnetAdopsjon = {
@@ -144,7 +144,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const omBarnetErFødt = {
@@ -188,7 +188,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const omBarnetVenterPåFødsel = {

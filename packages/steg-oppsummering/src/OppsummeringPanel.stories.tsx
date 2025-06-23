@@ -9,12 +9,10 @@ import {
 } from './arbeidsforhold/ArbeidsforholdOppsummering';
 import { BoIUtlandetOppsummering } from './utenlandsopphold/BoIUtlandetOppsummering';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const meta = {
     component: OppsummeringPanel,

@@ -47,7 +47,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const lønnSøker1 = formMethods.watch('lønnSøker1');
     const lønnSøker2 = formMethods.watch('lønnSøker2');
 
-    const erValidLønn = (verdi: any): boolean => {
+    const erValidLønn = (verdi: number | undefined): boolean => {
         if (!verdi) return false;
         const strVerdi = String(verdi);
         return strVerdi.length >= 3 && /^\d+$/.test(strVerdi);
@@ -142,7 +142,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     <FormattedMessage
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link href={links.hvorMye} target="_blank" rel="noreferrer" inlineText>
                                                     {msg}
                                                 </Link>

@@ -117,7 +117,7 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: Søknadsinfo
                 intlKey: infoTekstKey,
                 renderAsHtml: true,
                 values: {
-                    a: () => (msg: any) => (
+                    a: () => (msg: string) => (
                         <Link href={links.graderingInfo} rel="noreferrer" target="_blank">
                             {msg}
                         </Link>

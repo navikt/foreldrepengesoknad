@@ -158,7 +158,7 @@ export const Forside = ({
                                 <FormattedMessage
                                     id="velkommen.guidepanel.del2"
                                     values={{
-                                        a: (msg: any) => (
+                                        a: (msg) => (
                                             <Link rel="noopener noreferrer" href={links.foreldrepenger}>
                                                 {msg}
                                             </Link>

@@ -96,12 +96,10 @@ const søkerInfoMann = {
     fødselsdato: '1972-06-07',
 } as PersonFrontend;
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;

@@ -50,7 +50,7 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                     values={{
                                         engangsstønad: formatCurrency(engangsstønad),
-                                        b: (msg: any) => <b>{msg}</b>,
+                                        b: (msg) => <b>{msg}</b>,
                                     }}
                                 />
                             </BodyShort>

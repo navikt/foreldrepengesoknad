@@ -36,7 +36,7 @@ import { NæringFormValues } from './types/NæringFormValues';
 
 dayjs.extend(minMax);
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
 const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: Date) => {
     let min = otherMinDate;
     if (fom && hasValue(fom)) {
