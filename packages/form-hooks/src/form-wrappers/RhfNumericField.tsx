@@ -3,13 +3,13 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { TextField } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
-    validate?: Array<(value: string) => any> | Array<(value: number) => any>;
+    validate?: Array<(value: string | number) => ValidationReturnType>;
     description?: string;
-    onChange?: (value: any) => void;
+    onChange?: (value: string) => void;
     autoFocus?: boolean;
     maxLength?: number;
     className?: string;
