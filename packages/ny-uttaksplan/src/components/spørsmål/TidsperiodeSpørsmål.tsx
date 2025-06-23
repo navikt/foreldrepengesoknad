@@ -12,7 +12,7 @@ import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalStepFormValues } from '../legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
+import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 
 type Props = {
     valgtPeriode?: Planperiode;
@@ -25,7 +25,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
-    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
 
     const fomValue = watch('fom');
     const kontoType = watch('kontoType');
@@ -58,11 +58,12 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
             </Heading>
             <HStack gap="4">
                 <RhfDatepicker
+                    name="fom"
+                    control={control}
                     showMonthAndYearDropdowns
                     minDate={minDate}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
-                    name="fom"
                     disableWeekends={true}
                     validate={getFomValidators({
                         familiehendelsedato,
@@ -74,6 +75,8 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                     })}
                 />
                 <RhfDatepicker
+                    name="tom"
+                    control={control}
                     validate={getTomValidators({
                         familiehendelsedato,
                         erBarnetFødt,
@@ -83,7 +86,6 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                         gjelderAdopsjon,
                     })}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
-                    name="tom"
                     disableWeekends={true}
                     minDate={fomValue}
                     maxDate={maxDate}

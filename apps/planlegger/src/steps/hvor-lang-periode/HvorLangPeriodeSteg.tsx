@@ -143,7 +143,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                             <FormattedMessage
                                                 id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
                                                 values={{
-                                                    a: (msg: any) => (
+                                                    a: (msg) => (
                                                         <Link
                                                             inlineText
                                                             href={links.godkjentAktivitet}
@@ -160,10 +160,11 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                 </Infobox>
                             )}
                         <BlueRadioGroup
+                            name="dekningsgrad"
+                            control={formMethods.control}
                             label={
                                 <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
-                            name="dekningsgrad"
                             validate={[
                                 isRequired(
                                     intl.formatMessage(

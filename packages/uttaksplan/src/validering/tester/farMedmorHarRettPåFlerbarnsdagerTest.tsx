@@ -46,7 +46,7 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
             values: {
                 antallUker: flerbarnsUker,
                 antallUkerÅTaUtFlerbarnsdager: antallUkerPåÅTaUtDager,
-                a: () => (msg: any) => (
+                a: () => (msg: string) => (
                     <Link href={links.aktivitetsfriUttakInfo} rel="noreferrer" target="_blank">
                         {msg}
                     </Link>

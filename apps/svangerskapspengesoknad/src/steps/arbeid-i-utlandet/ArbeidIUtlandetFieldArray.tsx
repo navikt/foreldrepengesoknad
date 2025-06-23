@@ -51,13 +51,14 @@ export const ArbeidIUtlandetFieldArray = () => {
                     <HStack justify="space-between">
                         <RhfSelect
                             name={`arbeidIUtlandet.${index}.land`}
+                            control={formMethods.control}
                             style={{ width: 'var(--app-text-input-width)' }}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetLand.påkrevd' })),
                             ]}
                         >
-                            {createCountryOptions().map((o: Record<string, any>) => (
+                            {createCountryOptions().map((o) => (
                                 <option key={o[0]} value={o[0]}>
                                     {o[1]}
                                 </option>
@@ -76,6 +77,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     </HStack>
                     <RhfTextField
                         name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
+                        control={formMethods.control}
                         style={{ width: 'var(--app-text-input-width)' }}
                         label={navnPåArbeidsgiverLabel}
                         validate={[
@@ -97,6 +99,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     />
                     <RhfDatepicker
                         name={`arbeidIUtlandet.${index}.fom`}
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
@@ -119,6 +122,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     />
                     <RhfRadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
+                        control={formMethods.control}
                         label={<FormattedMessage id="ArbeidIUtlandetFieldArray.næring.pågående" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetPågående.påkrevd' })),
@@ -130,6 +134,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     {alleArbeidIUtlandet![index].pågående === false && (
                         <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
                             description={intl.formatMessage({
                                 id: 'ArbeidIUtlandetFieldArray.arbeid.tom.description',

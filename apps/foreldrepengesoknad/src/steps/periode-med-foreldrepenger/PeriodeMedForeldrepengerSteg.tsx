@@ -35,13 +35,13 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
-    const annenPartVedtakQuery = useQuery(annenPartVedtakOptions);
+    const annenPartVedtak = useQuery(annenPartVedtakOptions).data;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskontoerQuery = useQuery(kontoerOptions);
 
-    const visAnnenPartsValg = annenPartVedtakQuery.data && annenPartVedtakQuery.data.perioder.length > 0;
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtakQuery.data;
+    const visAnnenPartsValg = annenPartVedtak && annenPartVedtak.perioder.length > 0;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
 
     if (tilgjengeligeStønadskontoerQuery.isPending) {
         return (
@@ -77,13 +77,13 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                             fornavnAnnenForelder={annenForelder.fornavn}
                             kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                             dekningsgrad={
-                                annenPartVedtakQuery.data.dekningsgrad === 'HUNDRE'
+                                annenPartVedtak.dekningsgrad === 'HUNDRE'
                                     ? Dekningsgrad.HUNDRE_PROSENT
                                     : Dekningsgrad.ÅTTI_PROSENT
                             }
                             valgtStønadskonto={
                                 tilgjengeligeStønadskontoerQuery.data[
-                                    annenPartVedtakQuery.data.dekningsgrad === 'HUNDRE'
+                                    annenPartVedtak.dekningsgrad === 'HUNDRE'
                                         ? Dekningsgrad.HUNDRE_PROSENT
                                         : Dekningsgrad.ÅTTI_PROSENT
                                 ]

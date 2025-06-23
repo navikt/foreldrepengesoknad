@@ -76,6 +76,7 @@ export const OmBarnetSteg = () => {
                         </Heading>
                         <BlueRadioGroup
                             name="erFødsel"
+                            control={formMethods.control}
                             label={<FormattedMessage id="OmBarnetSteg.HvaGjelder" values={{ erAlenesøker }} />}
                             validate={[
                                 isRequired(
@@ -120,7 +121,7 @@ export const OmBarnetSteg = () => {
                                     <FormattedMessage
                                         id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link href={links.foreldrepengerFarOgFar} target="_blank" inlineText>
                                                     {msg}
                                                 </Link>
@@ -133,6 +134,7 @@ export const OmBarnetSteg = () => {
                         {erFødsel !== undefined && (
                             <BlueRadioGroup
                                 name="antallBarn"
+                                control={formMethods.control}
                                 label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
                                 shouldFadeIn
                                 validate={[

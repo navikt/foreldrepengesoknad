@@ -9,7 +9,6 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const OFF = 0;
-const WARNING = 1;
 const ERROR = 2;
 
 export default [
@@ -36,8 +35,8 @@ export default [
         rules: {
             ...vitest.configs.recommended.rules,
             'max-len': [ERROR, 160],
-            'no-console': WARNING,
-            'no-debugger': WARNING,
+            'no-console': ERROR,
+            'no-debugger': ERROR,
             'react/prop-types': OFF,
             'jsx-a11y/no-autofocus': OFF,
             'react/react-in-jsx-scope': OFF,
@@ -45,6 +44,7 @@ export default [
             'import/no-duplicates': ERROR,
             'import/no-unresolved': OFF,
             'import/named': OFF,
+            'vitest/no-disabled-tests': ERROR,
             '@typescript-eslint/no-restricted-types': [
                 'error',
                 {
@@ -78,6 +78,7 @@ export default [
             '@typescript-eslint/no-unused-vars': [ERROR],
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
+            '@typescript-eslint/ban-ts-comment': ERROR,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [
@@ -90,7 +91,6 @@ export default [
 
             // TODO (TOR) Ignorert inntil videre grunnet kost/nytte
             '@typescript-eslint/no-explicit-any': OFF,
-            '@typescript-eslint/ban-ts-comment': OFF,
         },
     },
     {

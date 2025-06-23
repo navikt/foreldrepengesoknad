@@ -15,8 +15,8 @@ const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
-// TODO Fjern any her utan å måtte dra inn axios i denne pakka
-type SaveAttachment = (attachment: Attachment) => Promise<any>;
+// TODO typen som blir returnert er ikkje komplett. Ikkje dra inn ky-avhengighet her
+type SaveAttachment = (attachment: Attachment) => Promise<{ headers: { location: string | null }; data: string }>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -47,7 +47,7 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
         // TODO Burde få ut feilmelding frå backend og vise denne
         attachment.pending = false;
 
-        // @ts-ignore TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
+        // @ts-expect-error TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
         if (error?.response?.status === 408) {
             attachment.error = FileUploadError.TIMEOUT;
         } else {

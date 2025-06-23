@@ -86,6 +86,7 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
                     <ErrorSummaryHookForm />
                     <RhfCheckboxGroup
                         name="arbeidMedTilrettelegging"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
                     >

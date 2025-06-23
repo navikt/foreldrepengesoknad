@@ -7,16 +7,15 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const VALGT_TILRETTELEGGING_ID = '990322244';
 const ANNEN_TILRETTELEGGING_ID = '975326209';
@@ -43,7 +42,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     frilans?: Frilans;
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
 } & ComponentProps<typeof TilretteleggingSteg>;
@@ -139,9 +138,8 @@ export const SelvstendigNæring: Story = {
         egenNæring: {
             fom: '2024-01-01',
             tom: '2024-10-01',
-            pågående: false,
             registrertINorge: true,
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
         },
     },
 };

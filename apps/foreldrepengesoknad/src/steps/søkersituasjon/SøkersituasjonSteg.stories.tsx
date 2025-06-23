@@ -9,12 +9,10 @@ import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import { SøkersituasjonSteg } from './SøkersituasjonSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;

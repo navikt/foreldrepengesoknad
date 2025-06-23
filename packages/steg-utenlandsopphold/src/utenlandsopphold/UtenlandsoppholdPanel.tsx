@@ -52,6 +52,7 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="harBoddUtenforNorgeSiste12Mnd"
+                        control={formMethods.control}
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Siste12Måneder.IsRequired' })),
@@ -66,6 +67,7 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                     </RhfRadioGroup>
                     <RhfRadioGroup
                         name="skalBoUtenforNorgeNeste12Mnd"
+                        control={formMethods.control}
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Neste12Måneder.Spørsmål" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Neste12Måneder.IsRequired' })),

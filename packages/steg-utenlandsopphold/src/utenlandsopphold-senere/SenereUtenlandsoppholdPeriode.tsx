@@ -28,6 +28,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
     const intl = useIntl();
 
     const {
+        control,
         watch,
         trigger,
         formState: { isSubmitted },
@@ -47,6 +48,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
         <VStack gap="5" align="start">
             <RhfSelect
                 name={`utenlandsoppholdNeste12Mnd.${index}.landkode`}
+                control={control}
                 label={
                     <FormattedMessage
                         id={'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI'}
@@ -60,7 +62,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                     ),
                 ]}
             >
-                {createCountryOptions().map((o: Record<string, any>) => (
+                {createCountryOptions().map((o) => (
                     <option key={o[0]} value={o[0]}>
                         {o[1]}
                     </option>
@@ -68,6 +70,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
             </RhfSelect>
             <RhfDatepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
+                control={control}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
                 minDate={minDateFom}
                 maxDate={maxDateFom}
@@ -106,6 +109,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
             />
             <RhfDatepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
+                control={control}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
                 minDate={minDateTom}
                 maxDate={maxDateTom}

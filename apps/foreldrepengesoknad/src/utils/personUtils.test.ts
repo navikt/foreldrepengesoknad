@@ -1,7 +1,10 @@
+import { createIntl, createIntlCache } from 'react-intl';
+
 import { AnnenForelder } from '@navikt/fp-common';
 import { PersonFrontend } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
+import messages from '../intl/nb_NO.json';
 import {
     formaterNavn,
     getErSøkerFarEllerMedmor,
@@ -9,6 +12,20 @@ import {
     getMorErAleneOmOmsorg,
     getNavnPåForeldre,
 } from './personUtils';
+
+const cache = createIntlCache();
+
+const getIntlMock = () => {
+    return createIntl(
+        {
+            locale: 'nb',
+            defaultLocale: 'nb',
+            //@ts-expect-error fiks
+            messages,
+        },
+        cache,
+    );
+};
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
@@ -100,7 +117,7 @@ describe('personUtils', () => {
         expect(kjønn).toBe(false);
     });
 
-    it.skip('skal returnere navn på foreldre der far er søker', () => {
+    it('skal returnere navn på foreldre der far er søker', () => {
         const person = {
             fornavn: 'Espen',
         } as PersonFrontend;
@@ -110,13 +127,13 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it.skip('skal returnere navn på foreldre der mor er søker', () => {
+    it('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
             fornavn: 'Olga',
         } as PersonFrontend;
@@ -126,7 +143,7 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = false;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');

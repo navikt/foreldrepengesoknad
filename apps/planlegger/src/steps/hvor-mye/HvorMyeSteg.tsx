@@ -47,7 +47,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const lønnSøker1 = formMethods.watch('lønnSøker1');
     const lønnSøker2 = formMethods.watch('lønnSøker2');
 
-    const erValidLønn = (verdi: any): boolean => {
+    const erValidLønn = (verdi: number | undefined): boolean => {
         if (!verdi) return false;
         const strVerdi = String(verdi);
         return strVerdi.length >= 3 && /^\d+$/.test(strVerdi);
@@ -72,24 +72,15 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                         <VStack gap="2">
                             <BluePanel isDarkBlue={true}>
                                 <RhfTextField
+                                    name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
+                                    control={formMethods.control}
                                     label={
                                         hvemHarRett === 'kunSøker2HarRett' ? (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker2,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker2 }} />
                                         ) : (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker1,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
                                         )
                                     }
-                                    name="lønnSøker1"
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
@@ -110,13 +101,14 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                             <VStack gap="2">
                                 <BluePanel isDarkBlue={true}>
                                     <RhfTextField
+                                        name="lønnSøker2"
+                                        control={formMethods.control}
                                         label={
                                             <FormattedMessage
                                                 id="HvorMyeSteg.Lønn"
                                                 values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
                                             />
                                         }
-                                        name="lønnSøker2"
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
                                         ]}
@@ -150,7 +142,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     <FormattedMessage
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link href={links.hvorMye} target="_blank" rel="noreferrer" inlineText>
                                                     {msg}
                                                 </Link>

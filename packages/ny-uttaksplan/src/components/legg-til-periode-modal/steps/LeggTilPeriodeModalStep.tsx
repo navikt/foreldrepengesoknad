@@ -16,6 +16,7 @@ import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsm
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
+import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
 
 interface Props {
     modalData: ModalData;
@@ -25,18 +26,6 @@ interface Props {
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     isOpphold: boolean;
-}
-
-export interface LeggTilPeriodeModalStepFormValues {
-    kontoType?: StønadskontoType;
-    forelder: Forelder;
-    fom: string;
-    tom: string;
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    skalDuJobbe: boolean;
-    stillingsprosent?: string;
-    samtidigUttak?: boolean;
-    samtidigUttaksprosent?: string;
 }
 
 export const LeggTilPeriodeModalStep = ({
@@ -50,7 +39,7 @@ export const LeggTilPeriodeModalStep = ({
 }: Props) => {
     const { forelder, kontoType, fom, tom, årsak } = modalData;
 
-    const formMethods = useForm<LeggTilPeriodeModalStepFormValues>({
+    const formMethods = useForm<LeggTilPeriodeModalFormValues>({
         defaultValues: {
             forelder: forelder,
             kontoType: kontoType,
@@ -75,7 +64,7 @@ export const LeggTilPeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: LeggTilPeriodeModalStepFormValues) => {
+    const onSubmit = (values: LeggTilPeriodeModalFormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
         const årsakValue = values.årsak;

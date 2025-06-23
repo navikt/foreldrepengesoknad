@@ -85,7 +85,7 @@ export const OmBarnetSteg = (props: Props) => {
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const terminDatoQuery = useQuery({
         ...annenPartVedtakOptions,
-        select: (vedtak) => vedtak.termindato,
+        select: (vedtak) => vedtak?.termindato,
     });
 
     if (terminDatoQuery.isLoading) {

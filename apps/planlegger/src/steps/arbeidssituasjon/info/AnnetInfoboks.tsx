@@ -46,7 +46,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                         <FormattedMessage
                             id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link inlineText href={links.veiviser} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
@@ -61,7 +61,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link inlineText href={links.foreldrepengerOpptjening} target="_blank" rel="noreferrer">
                                     {msg}
                                 </Link>

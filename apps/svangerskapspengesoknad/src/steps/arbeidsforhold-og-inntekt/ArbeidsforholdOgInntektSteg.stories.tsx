@@ -61,12 +61,10 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ];
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;

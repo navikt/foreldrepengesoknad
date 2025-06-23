@@ -6,127 +6,131 @@ import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
-import { mswTest } from '../../mswTest';
 import * as stories from './DokumentasjonSteg.stories';
 
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
-    mswTest.skip('skal laste opp terminbekreftelse', async ({ setHandlers }) => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreOgNaviger = vi.fn();
+    it(
+        'skal laste opp terminbekreftelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreOgNaviger = vi.fn();
 
-        setHandlers(Terminbekreftelse.parameters.msw);
-        const utils = render(
-            <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
-        );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+            setHandlers(Adopsjonsbekreftelse.parameters.msw);
+            const utils = render(
+                <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+            );
+            expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
-        expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
+            expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
+            expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi terminbekreftelse dato')).toHaveLength(2);
+            expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+            expect(screen.getAllByText('Du må oppgi terminbekreftelse dato')).toHaveLength(2);
 
-        const terminbekreftelse = utils.getByLabelText('Når fikk du terminbekreftelsen?');
-        await userEvent.type(terminbekreftelse, dayjs().format(DDMMYYYY_DATE_FORMAT));
-        fireEvent.blur(terminbekreftelse);
+            const terminbekreftelse = utils.getByLabelText('Når fikk du terminbekreftelsen?');
+            await userEvent.type(terminbekreftelse, dayjs().format(DDMMYYYY_DATE_FORMAT));
+            fireEvent.blur(terminbekreftelse);
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getByText('Du må laste opp bekreftelse på termindato')).toBeInTheDocument();
+            expect(screen.getByText('Du må laste opp bekreftelse på termindato')).toBeInTheDocument();
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file, length: 1, 0: file } },
-        });
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
 
-        await userEvent.click(screen.getByText('Neste steg'));
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT),
-                vedlegg: [
-                    expect.objectContaining({
-                        filename: 'hello.png',
-                        filesize: 5,
-                        pending: false,
-                        skjemanummer: 'I000141',
-                        type: 'terminbekreftelse',
-                        uploaded: true,
-                        url: 'test.com',
-                        uuid: 'uuid-test',
-                    }),
-                ],
-            },
-            key: ContextDataType.DOKUMENTASJON,
-            type: 'update',
-        });
+            await userEvent.upload(fileInput, file);
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: Path.UTENLANDSOPPHOLD,
-            key: ContextDataType.CURRENT_PATH,
-            type: 'update',
-        });
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
-    });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT),
+                    vedlegg: [
+                        expect.objectContaining({
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: 'I000141',
+                            type: 'terminbekreftelse',
+                            uploaded: true,
+                            url: 'test.com',
+                            uuid: 'uuid-test',
+                        }),
+                    ],
+                },
+                key: ContextDataType.DOKUMENTASJON,
+                type: 'update',
+            });
 
-    mswTest.skip('skal laste opp adopsjonsbekreftelse', async ({ setHandlers }) => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreOgNaviger = vi.fn();
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: Path.UTENLANDSOPPHOLD,
+                key: ContextDataType.CURRENT_PATH,
+                type: 'update',
+            });
 
-        setHandlers(Adopsjonsbekreftelse.parameters.msw);
-        render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+            expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
+        }),
+    );
 
-        expect(screen.getAllByText('Bekreft adopsjon')).toHaveLength(2);
-        expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
+    it(
+        'skal laste opp adopsjonsbekreftelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreOgNaviger = vi.fn();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            setHandlers(Adopsjonsbekreftelse.parameters.msw);
+            render(
+                <Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+            );
+            expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            expect(screen.getAllByText('Bekreft adopsjon')).toHaveLength(2);
+            expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
-        expect(screen.getByText('Du må laste opp bekreftelse på adopsjon')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            expect(screen.getByText('Du må laste opp bekreftelse på adopsjon')).toBeInTheDocument();
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                vedlegg: [
-                    expect.objectContaining({
-                        filename: 'hello.png',
-                        filesize: 5,
-                        pending: false,
-                        skjemanummer: 'I000042',
-                        type: 'omsorgsovertakelse',
-                        uploaded: true,
-                        url: 'test.com',
-                        uuid: 'uuid-test',
-                    }),
-                ],
-            },
-            key: 'DOKUMENTASJON',
-            type: 'update',
-        });
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
+            await userEvent.upload(fileInput, file);
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: Path.UTENLANDSOPPHOLD,
-            key: ContextDataType.CURRENT_PATH,
-            type: 'update',
-        });
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
-    });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    vedlegg: [
+                        expect.objectContaining({
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: 'I000042',
+                            type: 'omsorgsovertakelse',
+                            uploaded: true,
+                            url: 'test.com',
+                            uuid: 'uuid-test',
+                        }),
+                    ],
+                },
+                key: 'DOKUMENTASJON',
+                type: 'update',
+            });
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: Path.UTENLANDSOPPHOLD,
+                key: ContextDataType.CURRENT_PATH,
+                type: 'update',
+            });
+
+            expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
+        }),
+    );
 });

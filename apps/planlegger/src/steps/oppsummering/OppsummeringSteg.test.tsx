@@ -12,6 +12,7 @@ const {
     FarOgFarAdopsjonKunFar1HarRett,
     HarIkkeRett,
     OppsummeringFarOgFarKunFar2HarRett,
+    MorOgFarKunFarHarRett,
 } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
@@ -49,7 +50,7 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it.skip('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
+    it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
         render(<FlereForsørgereHundreProsentAdopsjon />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -57,31 +58,31 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
         expect(
-            screen.getByText('Barnet skal adopteres med omsorgsovertakelse 10. okt. 2022 og ble født 10. juli 2022.'),
+            screen.getByText('Barnet skal adopteres med omsorgsovertakelse 10. okt. 2024 og ble født 10. juli 2024.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Esther har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Esther har jobbet 6 av de siste 10 månedene, og har tjent mer enn 62 014 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde og fordeling')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Dere valgte 100 % foreldrepenger i 46 uker og fordeler fellesperioden med 5 uker til Klara og 11 uker til Esther.',
+                'Dere valgte 100 % foreldrepenger i 49 uker og fordeler fellesperioden med 5 uker til Klara og 11 uker til Esther.',
             ),
         ).toBeInTheDocument();
     });
 
-    it.skip('skal vise en periode ved fødsel far og far', async () => {
+    it('skal vise en periode ved fødsel far og far', async () => {
         render(<FarOgFarFødsel />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Dere valgte 100 % i 40 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
-        expect(screen.getByText(/25. nov. 2024 – 10. okt. 2025/)).toBeInTheDocument();
+        expect(screen.getByText(/25. nov. 2024 – 07. mars 2025/)).toBeInTheDocument();
     });
 
     it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
@@ -187,5 +188,16 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.queryByText('Barnehageplass')).not.toBeInTheDocument();
+    });
+    it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
+        render(<MorOgFarKunFarHarRett />);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(
+            screen.getByText(
+                'Espen vil få rundt 46 kr per dag hvis dere velger 100 % foreldrepenger eller 37 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Klare vil få rundt')).not.toBeInTheDocument();
     });
 });

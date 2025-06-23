@@ -93,7 +93,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     <FormattedMessage id="FpEllerEsForside.FpErstatte" />{' '}
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom"
-                                        values={{ b: (msg: any) => <b>{msg}</b> }}
+                                        values={{ b: (msg) => <b>{msg}</b> }}
                                     />
                                 </BodyShort>
                             </VStack>
@@ -108,7 +108,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                         id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                         values={{
                                             engangsstønad: formatCurrency(engangsstønad),
-                                            b: (msg: any) => <b>{msg}</b>,
+                                            b: (msg) => <b>{msg}</b>,
                                         }}
                                     />
                                 </BodyShort>

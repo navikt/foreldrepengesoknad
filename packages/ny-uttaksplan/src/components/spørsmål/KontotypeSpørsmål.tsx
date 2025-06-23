@@ -10,11 +10,11 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalStepFormValues } from '../legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
+import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 
 export const KontotypeSpørsmål = () => {
     const intl = useIntl();
-    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
 
     const kontoTypeValue = watch('kontoType');
@@ -25,9 +25,10 @@ export const KontotypeSpørsmål = () => {
                 <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
             </Heading>
             <RhfRadioGroup
+                name="kontoType"
+                control={control}
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
-                name="kontoType"
             >
                 {valgtStønadskonto.kontoer.map((konto) => {
                     return (
@@ -39,9 +40,10 @@ export const KontotypeSpørsmål = () => {
             </RhfRadioGroup>
             {kontoTypeValue === StønadskontoType.Fellesperiode && (
                 <RhfRadioGroup
+                    name="forelder"
+                    control={control}
                     validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
                     label={intl.formatMessage({ id: 'KontotypeSpørsmål.hvemGjelder' })}
-                    name="forelder"
                 >
                     <Radio value={Forelder.mor}>
                         <FormattedMessage id="uttaksplan.mor" />

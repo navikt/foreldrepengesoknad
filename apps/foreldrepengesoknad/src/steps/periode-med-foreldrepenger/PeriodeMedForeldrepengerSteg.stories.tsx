@@ -16,12 +16,10 @@ import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
 const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
 const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const STØNADSKONTO_100 = {
     kontoer: [
@@ -407,7 +405,7 @@ export const MorSøkerFodselDerFarHarRettIEOS: Story = {
             fødselsdatoer: ['2022-06-14'],
             termindato: '2022-08-14',
             antallBarn: 1,
-            // @ts-ignore FIX
+            //@ts-expect-error fiks
             adopsjonsdato: undefined,
             adoptertIUtlandet: undefined,
             type: BarnType.FØDT,

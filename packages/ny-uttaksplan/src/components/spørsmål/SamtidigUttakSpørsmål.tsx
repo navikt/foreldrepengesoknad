@@ -6,11 +6,11 @@ import { Radio, VStack } from '@navikt/ds-react';
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalStepFormValues } from '../legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
+import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 import { valideringSamtidigUttak } from './validators';
 
 export const SamtidigUttakSpørsmål = () => {
-    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
 
     const samtidigUttakValue = watch('samtidigUttak');
     const stillingsprosentValue = watch('stillingsprosent');
@@ -19,7 +19,7 @@ export const SamtidigUttakSpørsmål = () => {
 
     return (
         <VStack gap="4">
-            <RhfRadioGroup name="samtidigUttak" label="Skal du ha samtidig uttak?">
+            <RhfRadioGroup control={control} name="samtidigUttak" label="Skal du ha samtidig uttak?">
                 <Radio value={true}>
                     <FormattedMessage id="uttaksplan.ja" />
                 </Radio>
@@ -29,6 +29,7 @@ export const SamtidigUttakSpørsmål = () => {
             </RhfRadioGroup>
             {samtidigUttakValue && (
                 <RhfNumericField
+                    control={control}
                     className="w-xs"
                     label="Hvor mange prosent?"
                     name="samtidigUttaksprosent"
