@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { Alert, BodyLong, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
@@ -100,15 +100,19 @@ export const DokumentasjonOppsummering = ({
                                                     (vedlegg) =>
                                                         vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE,
                                                 )
-                                                .map((vedlegg) => (
-                                                    <Link
-                                                        key={vedlegg.id}
-                                                        href={vedlegg.url ?? undefined}
-                                                        target="_blank"
-                                                    >
-                                                        {vedlegg.filename}
-                                                    </Link>
-                                                ))}
+                                                .map((vedlegg) => {
+                                                    return vedlegg.url ? (
+                                                        <Link
+                                                            key={vedlegg.id}
+                                                            href={vedlegg.url ?? undefined}
+                                                            target="_blank"
+                                                        >
+                                                            {vedlegg.filename}
+                                                        </Link>
+                                                    ) : (
+                                                        <BodyShort key={vedlegg.id}>{vedlegg.filename}</BodyShort>
+                                                    );
+                                                })}
                                         </VStack>
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
