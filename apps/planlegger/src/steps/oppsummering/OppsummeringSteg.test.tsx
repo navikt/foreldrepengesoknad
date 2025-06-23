@@ -189,7 +189,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.queryByText('Barnehageplass')).not.toBeInTheDocument();
     });
-    it('skal kun vise fars vise fars uttak i hvor mye-steget, der det er mor og far og kun far rett til foreldrepenger', async () => {
+    it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
