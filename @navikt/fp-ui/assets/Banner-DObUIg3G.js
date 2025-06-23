@@ -1,1 +1,0 @@
-import{j as n}from"./iframe-DbQU8keU.js";const r="_banner_prkdl_1",a={banner:r},s=({children:e})=>n.jsx("div",{className:a.banner,children:e});s.__docgenInfo={description:"",methods:[],displayName:"Banner",props:{children:{required:!0,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""}}};export{s as B};
