@@ -15,10 +15,7 @@ export const IkkeKvinne = () => {
     });
 
     return (
-        <SkjemaRotLayout>
-            <Heading level="1" size="xlarge">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <VStack gap="10">
                 <GuidePanel poster>
                     <VStack gap="4">

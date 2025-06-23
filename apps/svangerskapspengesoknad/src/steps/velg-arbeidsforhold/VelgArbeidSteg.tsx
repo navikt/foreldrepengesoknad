@@ -10,7 +10,7 @@ import { Checkbox, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { FlereArbeidsforholdGuidePanel } from './FlereArbeidsforholdGuidePanel';
@@ -74,32 +74,35 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
     const visInfo = arbeidMedTilrettelegging && arbeidMedTilrettelegging.length > 1;
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <RhfCheckboxGroup
-                        name="arbeidMedTilrettelegging"
-                        control={formMethods.control}
-                        label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
-                        validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
-                    >
-                        {arbeidsforholdOptions.map((option) => (
-                            <Checkbox key={option.id} value={option.id}>
-                                {getOptionNavn(option.arbeidsforholdType, intl, option.arbeidsforholdNavn)}
-                            </Checkbox>
-                        ))}
-                    </RhfCheckboxGroup>
-                    {visInfo && <FlereArbeidsforholdGuidePanel />}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step
+                onCancel={avbrytSøknad}
+                steps={stepConfig}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToStep}
+            >
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        <RhfCheckboxGroup
+                            name="arbeidMedTilrettelegging"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' })),
+                            ]}
+                        >
+                            {arbeidsforholdOptions.map((option) => (
+                                <Checkbox key={option.id} value={option.id}>
+                                    {getOptionNavn(option.arbeidsforholdType, intl, option.arbeidsforholdNavn)}
+                                </Checkbox>
+                            ))}
+                        </RhfCheckboxGroup>
+                        {visInfo && <FlereArbeidsforholdGuidePanel />}
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

@@ -5,24 +5,11 @@ import ky from 'ky';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import {
-    Alert,
-    BodyShort,
-    Button,
-    ConfirmationPanel,
-    GuidePanel,
-    HStack,
-    Heading,
-    Link,
-    List,
-    VStack,
-} from '@navikt/ds-react';
+import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Saker } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-
-import styles from './forside.module.css';
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -51,102 +38,97 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     };
 
     return (
-        <SkjemaRotLayout>
-            <VStack gap="10">
-                <VStack gap="8">
-                    <Heading size="xlarge" className={styles.tittel}>
-                        <FormattedMessage id="forside.tittel" />
-                    </Heading>
-                    <GuidePanel poster>
-                        <BodyShort size="medium">
-                            <FormattedMessage id="forside.guidepanel" />
-                        </BodyShort>
-                        <List>
-                            <List.Item>
-                                <FormattedMessage id="forside.guidepanel.punkt1" />
-                            </List.Item>
-                            <List.Item>
-                                <FormattedMessage id="forside.guidepanel.punkt2" />
-                            </List.Item>
-                            <List.Item>
-                                <FormattedMessage id="forside.guidepanel.punkt3" />
-                            </List.Item>
-                        </List>
-                        <FormattedMessage
-                            id="forside.guidepanel.lesMer"
-                            values={{
-                                a: (msg: any) => (
-                                    <Link rel="noopener noreferrer" href={links.svangerskapspenger}>
-                                        {msg}
-                                    </Link>
-                                ),
-                            }}
-                        />
-                    </GuidePanel>
-                    <Alert variant="info">
-                        <VStack gap="4">
-                            <div>
-                                <FormattedMessage
-                                    id="forside.tilrettelegging.info.del1"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link rel="noopener noreferrer" href={links.tilretteleggingsskjema}>
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <FormattedMessage
-                                    id="forside.tilrettelegging.info.del2"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </div>
-                        </VStack>
-                    </Alert>
-                    <EksisterendeSøknad />
-                    <ConfirmationPanel
-                        label={intl.formatMessage({ id: 'forside.samtykke' })}
-                        onChange={() => setIsChecked((state) => !state)}
-                        checked={isChecked}
-                        error={
-                            isError &&
-                            !isChecked &&
-                            intl.formatMessage({ id: 'forside.valideringsfeil.harForståttRettigheterOgPlikter' })
-                        }
-                    >
-                        <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
-                        <List>
-                            <List.Item>
-                                <FormattedMessage id="forside.samtykkeIntro.punkt1" />
-                            </List.Item>
-                            <List.Item>
-                                <FormattedMessage
-                                    id="forside.samtykkeIntro.punkt2"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </List.Item>
-                        </List>
-                    </ConfirmationPanel>
-                    <HStack justify="center">
-                        <Button type="button" onClick={bekreft}>
-                            <FormattedMessage id="forside.begynnMedSøknad" />
-                        </Button>
-                    </HStack>
-                </VStack>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="forside.tittel" />}>
+            <VStack gap="8">
+                <GuidePanel poster>
+                    <BodyShort size="medium">
+                        <FormattedMessage id="forside.guidepanel" />
+                    </BodyShort>
+                    <List>
+                        <List.Item>
+                            <FormattedMessage id="forside.guidepanel.punkt1" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="forside.guidepanel.punkt2" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="forside.guidepanel.punkt3" />
+                        </List.Item>
+                    </List>
+                    <FormattedMessage
+                        id="forside.guidepanel.lesMer"
+                        values={{
+                            a: (msg: any) => (
+                                <Link rel="noopener noreferrer" href={links.svangerskapspenger}>
+                                    {msg}
+                                </Link>
+                            ),
+                        }}
+                    />
+                </GuidePanel>
+                <Alert variant="info">
+                    <VStack gap="4">
+                        <div>
+                            <FormattedMessage
+                                id="forside.tilrettelegging.info.del1"
+                                values={{
+                                    a: (msg: any) => (
+                                        <Link rel="noopener noreferrer" href={links.tilretteleggingsskjema}>
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <FormattedMessage
+                                id="forside.tilrettelegging.info.del2"
+                                values={{
+                                    a: (msg: any) => (
+                                        <Link rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </div>
+                    </VStack>
+                </Alert>
+                <EksisterendeSøknad />
+                <ConfirmationPanel
+                    label={intl.formatMessage({ id: 'forside.samtykke' })}
+                    onChange={() => setIsChecked((state) => !state)}
+                    checked={isChecked}
+                    error={
+                        isError &&
+                        !isChecked &&
+                        intl.formatMessage({ id: 'forside.valideringsfeil.harForståttRettigheterOgPlikter' })
+                    }
+                >
+                    <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
+                    <List>
+                        <List.Item>
+                            <FormattedMessage id="forside.samtykkeIntro.punkt1" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage
+                                id="forside.samtykkeIntro.punkt2"
+                                values={{
+                                    a: (msg: any) => (
+                                        <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </List.Item>
+                    </List>
+                </ConfirmationPanel>
+                <HStack justify="center">
+                    <Button type="button" onClick={bekreft}>
+                        <FormattedMessage id="forside.begynnMedSøknad" />
+                    </Button>
+                </HStack>
             </VStack>
         </SkjemaRotLayout>
     );
