@@ -4,8 +4,6 @@ import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -45,10 +43,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <SkjemaRotLayout>
-            <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="Søknad.Pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={lagre}

@@ -9,7 +9,6 @@ import {
     ExpansionCard,
     GuidePanel,
     HStack,
-    Heading,
     Link,
     List,
     VStack,
@@ -42,11 +41,8 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
     };
 
     return (
-        <SkjemaRotLayout>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id={'Søknad.Pageheading'} />}>
             <VStack gap="10">
-                <Heading size="large">
-                    <FormattedMessage id={'Søknad.Pageheading'} />
-                </Heading>
                 <GuidePanel poster>
                     <VStack gap="5">
                         <BodyShort>

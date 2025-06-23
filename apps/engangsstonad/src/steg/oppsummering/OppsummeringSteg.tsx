@@ -2,9 +2,7 @@ import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { FormattedMessage } from 'react-intl';
-
-import { Heading } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
 
 import { BoIUtlandetOppsummering, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -21,6 +19,7 @@ export interface Props {
 export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
+    const intl = useIntl();
 
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
@@ -28,10 +27,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     return (
-        <SkjemaRotLayout>
-            <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
             <OppsummeringPanel
                 appName="Engangsstønad"
                 stepConfig={stepConfig}

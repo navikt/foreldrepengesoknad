@@ -4,8 +4,6 @@ import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -31,10 +29,7 @@ export const TidligereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) =
     };
 
     return (
-        <SkjemaRotLayout>
-            <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="Søknad.Pageheading" />}>
             <TidligereUtenlandsoppholdPanel
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={lagre}

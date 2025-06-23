@@ -1,9 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { FormattedMessage } from 'react-intl';
-
-import { Heading } from '@navikt/ds-react';
+import { useIntl } from 'react-intl';
 
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -16,6 +14,7 @@ type Props = {
 export const SenereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
+    const intl = useIntl();
 
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -26,10 +25,7 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <SkjemaRotLayout>
-            <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={lagre}
