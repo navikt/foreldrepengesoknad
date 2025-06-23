@@ -12,6 +12,7 @@ const {
     FarOgFarAdopsjonKunFar1HarRett,
     HarIkkeRett,
     OppsummeringFarOgFarKunFar2HarRett,
+    MorOgFarKunFarHarRett,
 } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
@@ -187,5 +188,16 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.queryByText('Barnehageplass')).not.toBeInTheDocument();
+    });
+    it('skal kun vise fars vise fars uttak i hvor mye-steget, der det er mor og far og kun far rett til foreldrepenger', async () => {
+        render(<MorOgFarKunFarHarRett />);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(
+            screen.getByText(
+                'Espen vil få rundt 46 kr per dag hvis dere velger 100 % foreldrepenger eller 37 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Klare vil få rundt')).not.toBeInTheDocument();
     });
 });
