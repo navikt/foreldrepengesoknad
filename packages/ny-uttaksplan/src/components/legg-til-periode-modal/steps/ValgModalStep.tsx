@@ -50,6 +50,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                 <VStack gap="4">
                     <RhfRadioGroup
                         name="hvaVilDuGjøre"
+                        control={formMethods.control}
                         validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
                     >
                         <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>

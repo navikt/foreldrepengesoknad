@@ -82,13 +82,14 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
                         </Heading>
                         {(erAlenesøker || erFarOgFar) && (
                             <BlueRadioGroup
+                                name="status"
+                                control={formMethods.control}
                                 label={
                                     <FormattedMessage
                                         id="Arbeidssituasjon.Forelder"
                                         values={{ fornavnSøker1, minsteInntekt }}
                                     />
                                 }
-                                name="status"
                                 validate={[
                                     isRequired(
                                         intl.formatMessage(
@@ -111,13 +112,14 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
                         )}
                         {!erAlenesøker && !erFarOgFar && (
                             <BlueRadioGroup
+                                name="status"
+                                control={formMethods.control}
                                 label={
                                     <FormattedMessage
                                         id="ArbeidssituasjonSteg.HvaGjelder"
                                         values={{ erAlenesøker, navn: fornavnSøker1 }}
                                     />
                                 }
-                                name="status"
                                 validate={[
                                     isRequired(
                                         intl.formatMessage(
@@ -164,6 +166,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
                             <>
                                 <BlueRadioGroup
                                     name="jobberAnnenPart"
+                                    control={formMethods.control}
                                     label={
                                         <FormattedMessage
                                             id="Arbeidssituasjon.AndreForelder"

@@ -85,6 +85,7 @@ export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
             {fields.map((field, index) => (
                 <RhfDatepicker
                     key={field.id}
+                    control={control}
                     name={`fødselsdatoer.${index}.dato`}
                     minDate={dayjs(adopsjonsdato).subtract(15, 'years').toDate()}
                     maxDate={adopsjonsdato && isBeforeToday(adopsjonsdato) ? dayjs(adopsjonsdato).toDate() : dayjs()}

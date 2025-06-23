@@ -127,6 +127,7 @@ export const DekningsgradForm = ({
                 <VStack gap="4">
                     <RhfRadioGroup
                         name="dekningsgrad"
+                        control={formMethods.control}
                         description={
                             erDeltUttak ? (
                                 getDekningsgradInformasjonDeltUttak(barn)

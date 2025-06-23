@@ -59,6 +59,6 @@ export const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
-    //@ts-ignore Fiks dynamisk id
+    //@ts-expect-error Fiks dynamisk id
     return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
 };

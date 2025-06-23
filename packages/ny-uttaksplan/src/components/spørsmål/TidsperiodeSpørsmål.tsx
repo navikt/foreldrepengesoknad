@@ -64,11 +64,12 @@ export const TidsperiodeSpørsmål = ({
             </Heading>
             <HStack gap="4">
                 <RhfDatepicker
+                    name="fom"
+                    control={formMethods.control}
                     showMonthAndYearDropdowns
                     minDate={minDate}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
-                    name="fom"
                     disableWeekends={true}
                     validate={getFomValidators({
                         intl,
@@ -85,6 +86,8 @@ export const TidsperiodeSpørsmål = ({
                     })}
                 />
                 <RhfDatepicker
+                    name="tom"
+                    control={formMethods.control}
                     validate={getTomValidators({
                         intl,
                         familiehendelsedato,
@@ -99,7 +102,6 @@ export const TidsperiodeSpørsmål = ({
                         forelder,
                     })}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
-                    name="tom"
                     disableWeekends={true}
                     minDate={fomValue}
                     maxDate={maxDate}

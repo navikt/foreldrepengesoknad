@@ -50,6 +50,7 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <RhfRadioGroup
                     name="periodeId"
+                    control={formMethods.control}
                     validate={[
                         (value) => {
                             if (!value) {

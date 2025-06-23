@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import isoWeekday from 'dayjs/plugin/isoWeek';
 import isEqual from 'lodash/isEqual';
 import { IntlShape } from 'react-intl';
 
@@ -25,6 +26,8 @@ import {
 
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+
+dayjs.extend(isoWeekday);
 
 export const Periodene = (perioder: Planperiode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -337,11 +340,19 @@ export const getOppholdskontoNavn = (
     erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
-    return erMor
-        ? //@ts-ignore Bør ikkje ha dynamiske testId'ar
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
-        : //@ts-ignore Bør ikkje ha dynamiske testId'ar
-          intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+
+    if (erMor) {
+        return intl.formatMessage(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore Bør ikkje ha dynamiske testId'ar
+            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
+            { foreldernavn: navn },
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore Bør ikkje ha dynamiske testId'ar
+    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
 export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsakType) => {

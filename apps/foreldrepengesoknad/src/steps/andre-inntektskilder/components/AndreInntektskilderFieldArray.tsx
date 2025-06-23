@@ -1,7 +1,7 @@
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AnnenInntektType } from 'types/AndreInntektskilder';
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
@@ -9,17 +9,14 @@ import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
+import { AndreInntekterFormValues } from '../types/AndreInntekterFormValues';
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel';
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel';
 
-export type FormValues = {
-    andreInntektskilder: AndreInntektskilder[];
-};
-
 export const AndreInntektskilderFieldArray = () => {
     const intl = useIntl();
-    const { control, watch } = useFormContext<FormValues>();
+    const { control, watch } = useFormContext<AndreInntekterFormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'andreInntektskilder',
@@ -35,6 +32,7 @@ export const AndreInntektskilderFieldArray = () => {
                     <VStack gap="10" key={field.id}>
                         <RhfRadioGroup
                             name={`andreInntektskilder.${index}.type`}
+                            control={control}
                             label={<FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'AndreInntektskilderStep.Validering.OppgiType' })),
@@ -83,7 +81,7 @@ export const AndreInntektskilderFieldArray = () => {
                     icon={<PlusIcon aria-hidden />}
                     type="button"
                     variant="secondary"
-                    // @ts-ignore
+                    //@ts-expect-error fiks
                     onClick={() => append({})}
                     size="small"
                 >

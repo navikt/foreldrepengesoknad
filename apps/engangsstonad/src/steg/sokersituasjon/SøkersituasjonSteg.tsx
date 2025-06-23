@@ -50,6 +50,7 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="situasjon"
+                        control={formMethods.control}
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[
                             isRequired(

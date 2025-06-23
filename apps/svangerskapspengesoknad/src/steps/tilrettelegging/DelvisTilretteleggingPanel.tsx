@@ -72,6 +72,7 @@ export const DelvisTilretteleggingPanel = ({
         <>
             <RhfRadioGroup
                 name="delvisTilretteleggingPeriodeType"
+                control={formMethods.control}
                 label={intl.formatMessage({ id: 'tilrettelegging.tilretteleggingPeriodetype.label' })}
                 description={
                     harSkjema ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' }) : ''
@@ -91,6 +92,7 @@ export const DelvisTilretteleggingPanel = ({
                 <div>
                     <RhfTextField
                         name="enPeriodeMedTilretteleggingStillingsprosent"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'tilrettelegging.stillingsprosent.label' })}
                         description={
                             harSkjema
@@ -129,6 +131,7 @@ export const DelvisTilretteleggingPanel = ({
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
+                    control={formMethods.control}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
                     })}
@@ -166,6 +169,7 @@ export const DelvisTilretteleggingPanel = ({
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
                 <RhfRadioGroup
                     name="enPeriodeMedTilretteleggingTomType"
+                    control={formMethods.control}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis',
                     })}
@@ -197,6 +201,7 @@ export const DelvisTilretteleggingPanel = ({
                 enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
                     <RhfDatepicker
                         name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
+                        control={formMethods.control}
                         label={intl.formatMessage({
                             id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',
                         })}

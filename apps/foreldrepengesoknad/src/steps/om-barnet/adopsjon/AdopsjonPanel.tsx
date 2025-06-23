@@ -35,6 +35,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
         <>
             <RhfRadioGroup
                 name="adopsjonAvEktefellesBarn"
+                control={formMethods.control}
                 label={intl.formatMessage({ id: 'omBarnet.adopsjonGjelder' })}
                 validate={[
                     isRequired(
@@ -50,6 +51,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
             <VStack gap="4">
                 <RhfDatepicker
                     name="adopsjonsdato"
+                    control={formMethods.control}
                     label={
                         adopsjonAvEktefellesBarn
                             ? intl.formatMessage({ id: 'omBarnet.adopsjonsdato.stebarn' })
@@ -77,6 +79,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                 <>
                     <RhfRadioGroup
                         name="antallBarn"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'omBarnet.antallBarn.adopsjon.født' })}
                         validate={[
                             isRequired(
@@ -97,7 +100,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         </Radio>
                     </RhfRadioGroup>
                     {antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" label="Antall barn">
+                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
@@ -118,6 +121,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                 <>
                     <RhfRadioGroup
                         name="adoptertIUtlandet"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'omBarnet.adopteresFraUtlandet' })}
                         validate={[
                             isRequired(
@@ -133,6 +137,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                     {adoptertIUtlandet === true && (
                         <RhfDatepicker
                             name="ankomstdato"
+                            control={formMethods.control}
                             minDate={fødselsdatoer ? dayjs(fødselsdatoer[0].dato).toDate() : undefined}
                             maxDate={dayjs().add(6, 'months').toDate()}
                             label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}

@@ -56,6 +56,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="situasjon"
+                        control={formMethods.control}
                         label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
                         validate={[
                             isRequired(
@@ -73,6 +74,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
                     {kjønn === 'K' && (
                         <RhfRadioGroup
                             name="rolle"
+                            control={formMethods.control}
                             label={<FormattedMessage id="søkersituasjon.text.rolle" />}
                             validate={[
                                 isRequired(

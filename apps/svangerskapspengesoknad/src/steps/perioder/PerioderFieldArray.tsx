@@ -17,7 +17,7 @@ import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
+import { Arbeidsforhold, Frilans, NæringDto } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
@@ -53,7 +53,7 @@ interface Props {
     kanHaSVPFremTilTreUkerFørTermin: boolean;
     behovForTilretteleggingFom: string;
     arbeidsforhold: Arbeidsforhold[];
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     frilans?: Frilans;
 }
 
@@ -148,6 +148,7 @@ export const PerioderFieldArray = ({
                         </VStack>
                         <RhfDatepicker
                             name={`varierendePerioder.${index}.fom`}
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'perioder.varierende.fom.label' })}
                             minDate={behovForTilretteleggingFom}
                             maxDate={maxDato}
@@ -180,6 +181,7 @@ export const PerioderFieldArray = ({
                         />
                         <RhfRadioGroup
                             name={`varierendePerioder.${index}.tomType`}
+                            control={formMethods.control}
                             label={<FormattedMessage id="perioder.varierende.tomType.label" />}
                             validate={[
                                 isRequired(
@@ -209,6 +211,7 @@ export const PerioderFieldArray = ({
                         {alleVarierendePerioder[index].tomType === TilOgMedDatoType.VALGFRI_DATO && (
                             <RhfDatepicker
                                 name={`varierendePerioder.${index}.tom`}
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'perioder.varierende.tom.label' })}
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'valideringsfeil.periode.tom.påkrevd' })),
@@ -235,6 +238,7 @@ export const PerioderFieldArray = ({
                         <div>
                             <RhfTextField
                                 name={`varierendePerioder.${index}.stillingsprosent`}
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'perioder.varierende.stillingsprosent.label' })}
                                 style={{ maxWidth: '450px' }}
                                 description={intl.formatMessage({

@@ -65,11 +65,11 @@ router.delete('/rest/storage/foreldrepenger', (_req, res) => {
     return res.sendStatus(200);
 });
 
-router.post('/rest/soknad', (_req, res) => {
+router.post('/rest/soknad/foreldrepenger', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
-router.post('/rest/soknad/endre', (_req, res) => {
+router.post('/rest/soknad/foreldrepenger/endre', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 

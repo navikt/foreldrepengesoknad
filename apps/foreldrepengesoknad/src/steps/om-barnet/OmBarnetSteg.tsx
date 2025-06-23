@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -13,7 +15,7 @@ import {
 } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { VStack } from '@navikt/ds-react';
+import { Loader, VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -79,7 +81,31 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const OmBarnetSteg = (props: Props) => {
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const terminDatoQuery = useQuery({
+        ...annenPartVedtakOptions,
+        select: (vedtak) => vedtak?.termindato,
+    });
+
+    if (terminDatoQuery.isLoading) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader size="2xlarge" />
+            </div>
+        );
+    }
+
+    return <OmBarnetStegInner {...props} termindato={terminDatoQuery.data} />;
+};
+
+const OmBarnetStegInner = ({
+    søkerInfo,
+    søknadGjelderNyttBarn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    termindato,
+}: Props & { termindato?: string }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -131,8 +157,8 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
     };
 
     const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet),
-        [arbeidsforhold, omBarnet],
+        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
+        [arbeidsforhold, omBarnet, termindato],
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,

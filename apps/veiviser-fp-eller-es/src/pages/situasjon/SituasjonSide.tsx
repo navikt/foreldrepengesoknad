@@ -107,8 +107,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="6" style={{ flex: 1 }}>
                     <BlueRadioGroup
-                        label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         onChange={resetFieldsAndScroll('situasjon')}
                     >
                         <Radio value={Situasjon.MOR} autoFocus>
@@ -124,8 +125,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {situasjon && (
                         <VStack gap="4">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 name="erIArbeid"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 onChange={resetFieldsAndScroll('erIArbeid')}
                             >
                                 <Radio value={true} autoFocus>
@@ -165,8 +167,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {erIArbeid === false && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 onChange={resetFieldsAndScroll('harHattAndreInntekter')}
                             >
                                 <Radio value={true} autoFocus>
@@ -199,8 +202,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {(erIArbeid || harHattAndreInntekter) && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 onChange={resetFieldsAndScroll('harHattInntekt')}
                             >
                                 <Radio value={true} autoFocus>
@@ -235,6 +239,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <VStack gap="2">
                                         <RhfNumericField
                                             name="lønnPerMåned"
+                                            control={formMethods.control}
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[
@@ -298,8 +303,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 onChange={resetFieldsAndScroll('borDuINorge')}
                             >
                                 <Radio value={true}>
@@ -316,8 +322,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {borDuINorge === false && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.JobberDuINorge" />}
                                 name="jobberDuINorge"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.JobberDuINorge" />}
                                 onChange={scrollToBottom}
                             >
                                 <Radio value={true}>

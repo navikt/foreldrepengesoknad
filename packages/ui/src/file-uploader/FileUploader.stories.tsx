@@ -86,7 +86,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
             },
         ],
-        //@ts-ignore
+        //@ts-expect-error fiks
         skjemanummerTextMap: {
             [Skjemanummer.TERMINBEKREFTELSE]: 'Terminbekreftelse',
             [Skjemanummer.DOK_AV_ALENEOMSORG]: 'Aleneomsorg',

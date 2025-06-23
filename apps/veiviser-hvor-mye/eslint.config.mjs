@@ -1,3 +1,3 @@
-import commonConfig from '@navikt/eslint-config-fp-selvbetjening';
+import commonConfig from '@navikt/fp-config-eslint';
 
 export default commonConfig;

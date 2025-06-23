@@ -45,8 +45,9 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
                     <RhfDatepicker
-                        label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         name="overtakelsesdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         minDate={dayjs().subtract(6, 'month').toDate()}
                         validate={[
                             isRequired(
@@ -71,8 +72,9 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         ]}
                     />
                     <RhfDatepicker
-                        label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         name="fødselsdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         minDate={dayjs().subtract(15, 'years').toDate()}
                         maxDate={dayjs().toDate()}
                         validate={[

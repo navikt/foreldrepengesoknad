@@ -26,7 +26,7 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     return (
         <VStack gap="10">
-            {hvorMye.lønnSøker1 && (
+            {(hvorMye.lønnSøker1 !== undefined || hvorMye.lønnSøker2 !== undefined) && (
                 <ExpansionCard
                     aria-label=""
                     onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')}
@@ -44,8 +44,10 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
                         <VStack gap="2">
-                            <HvorMyePanel satser={satser} fornavn={fornavnSøker1} lønnSøker={hvorMye.lønnSøker1} />
-                            {hvorMye?.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && fornavnSøker2 && (
+                            {hvorMye.lønnSøker1 !== undefined && fornavnSøker1 && (
+                                <HvorMyePanel satser={satser} fornavn={fornavnSøker1} lønnSøker={hvorMye.lønnSøker1} />
+                            )}
+                            {hvorMye.lønnSøker2 !== undefined && fornavnSøker2 && (
                                 <HvorMyePanel satser={satser} fornavn={fornavnSøker2} lønnSøker={hvorMye.lønnSøker2} />
                             )}
                         </VStack>

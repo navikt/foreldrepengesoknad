@@ -1,5 +1,6 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
@@ -9,6 +10,8 @@ import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
+import { AndreInntekterFormValues } from '../types/AndreInntekterFormValues';
+
 interface Props {
     index: number;
     inntektskilde: AndreInntektskilder;
@@ -16,6 +19,8 @@ interface Props {
 
 export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
+
+    const { control } = useFormContext<AndreInntekterFormValues>();
 
     if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
         throw Error('Inntektskilde ikke av type MILITÆRTJENESTE');
@@ -25,6 +30,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
         <VStack gap="10">
             <RhfRadioGroup
                 name={`andreInntektskilder.${index}.pågående`}
+                control={control}
                 label={<FormattedMessage id="FørstegangstjenestePanel.IFørstegangstjenesteNå" />}
                 validate={[
                     isRequired(
@@ -42,6 +48,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
             <HStack gap="6">
                 <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
+                    control={control}
                     label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Fom' })}
                     maxDate={dayjs()}
                     validate={[
@@ -59,6 +66,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                 {inntektskilde.pågående === false && (
                     <RhfDatepicker
                         name={`andreInntektskilder.${index}.tom`}
+                        control={control}
                         label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Tom' })}
                         maxDate={dayjs()}
                         validate={[

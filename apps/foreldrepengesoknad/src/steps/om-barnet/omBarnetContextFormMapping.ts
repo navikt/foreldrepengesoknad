@@ -140,6 +140,7 @@ export const getOmBarnetInitialValues = (
     arbeidsforhold: Arbeidsforhold[],
     søkersituasjon: SøkersituasjonFp,
     barn?: Barn,
+    termindatoFraVedtak?: string,
 ): BarnetFormValues => {
     if (!barn) {
         return { fødselsdatoer: [{ dato: undefined }] };
@@ -155,7 +156,7 @@ export const getOmBarnetInitialValues = (
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
                 dato: f,
             })),
-            termindato: barn.termindato,
+            termindato: termindatoFraVedtak || barn.termindato,
         };
     }
 
@@ -164,7 +165,7 @@ export const getOmBarnetInitialValues = (
             arbeidsforhold,
             søkersituasjon.situasjon === 'adopsjon',
             isFarEllerMedmor(søkersituasjon.rolle),
-            barn.termindato,
+            termindatoFraVedtak || barn.termindato,
         );
         if (aktiveArbeidsforhold.length === 0) {
             return {
@@ -172,7 +173,7 @@ export const getOmBarnetInitialValues = (
                 antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
                 antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
                 terminbekreftelsedato: barn.terminbekreftelsedato,
-                termindato: barn.termindato,
+                termindato: termindatoFraVedtak || barn.termindato,
             };
         }
 
@@ -180,7 +181,7 @@ export const getOmBarnetInitialValues = (
             erBarnetFødt: false,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            termindato: barn.termindato,
+            termindato: termindatoFraVedtak || barn.termindato,
         };
     }
 

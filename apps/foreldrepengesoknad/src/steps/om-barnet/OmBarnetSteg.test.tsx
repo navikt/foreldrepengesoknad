@@ -6,6 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './OmBarnetSteg.stories';
 
@@ -21,6 +22,7 @@ const {
     RegistrertBarnFødselFar,
     RegistrertBarnFødselMor,
     RegistrertBarnTrillingerDerEnErDød,
+    FarFødselMorHarVedtak,
 } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
@@ -624,4 +626,29 @@ describe('<OmBarnetSteg>', () => {
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
         expect(screen.getByText('Trillinger født 01. mars 2023 og 02. mars 2023')).toBeInTheDocument();
     });
+
+    it(
+        'Termindato skal være preutfylt med dato fra mors vedtak',
+        mswWrapper(async ({ setHandlers }) => {
+            const mockTodayDate = new Date('2022-08-05');
+            vi.setSystemTime(mockTodayDate);
+            const gåTilNesteSide = vi.fn();
+            setHandlers(FarFødselMorHarVedtak.parameters.msw);
+            render(<FarFødselMorHarVedtak gåTilNesteSide={gåTilNesteSide} />);
+
+            expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Neste steg'));
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    antallBarn: 1,
+                    fnr: ['19522278338'],
+                    fødselsdatoer: ['2022-08-17'],
+                    termindato: '2022-08-17',
+                    type: 'født',
+                },
+                key: ContextDataType.OM_BARNET,
+                type: 'update',
+            });
+        }),
+    );
 });

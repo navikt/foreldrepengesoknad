@@ -12,11 +12,13 @@ const createFieldErrorIntlKey = (
 
 const getFieldErrorHandler =
     (intl: IntlShape, keySeparator: string, errorPrefix?: string): FieldErrorHandler<ValidationError> =>
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Fiksar ikkje sidan denne pakka snart blir fjerna
     (error: ValidationError, fieldName: string) => {
         return isIntlErrorObject(error)
             ? intl.formatMessage(
                   {
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                       id: error.keepKeyUnaltered
                           ? error.key
@@ -24,7 +26,8 @@ const getFieldErrorHandler =
                   },
                   error.values,
               )
-            : // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+            : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
               intl.formatMessage({ id: createFieldErrorIntlKey(error, fieldName, keySeparator, errorPrefix) });
     };
 

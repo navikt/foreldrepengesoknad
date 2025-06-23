@@ -3,7 +3,8 @@ import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtil
 
 import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({

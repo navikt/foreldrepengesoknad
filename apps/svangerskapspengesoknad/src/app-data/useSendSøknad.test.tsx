@@ -16,7 +16,8 @@ import {
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EGEN_NÆRING_ID, FRILANS_ID, Næringstype } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -63,14 +64,14 @@ const BARNET = {
     termindato: '2024-11-02',
 };
 
-const TIDLIGERE_UTENLANDSOPPHOLD = [
+const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
         landkode: 'SE',
     },
 ];
-const SENERE_UTENLANDSOPPHOLD = [
+const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
@@ -86,14 +87,13 @@ const FRILANS = {
 const INGEN_FERIE = [] satisfies AvtaltFerieDto[];
 
 const EGEN_NÆRING = {
-    næringstype: Næringstype.FISKER,
+    næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
-    pågående: false,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
-};
+} satisfies NæringDto;
 
 const VEDLEGG = {
     id: '1',

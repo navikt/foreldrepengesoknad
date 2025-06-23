@@ -407,7 +407,7 @@ export const MorSøkerFodselDerFarHarRettIEOS: Story = {
             fødselsdatoer: ['2022-06-14'],
             termindato: '2022-08-14',
             antallBarn: 1,
-            // @ts-ignore FIX
+            //@ts-expect-error fiks
             adopsjonsdato: undefined,
             adoptertIUtlandet: undefined,
             type: BarnType.FØDT,

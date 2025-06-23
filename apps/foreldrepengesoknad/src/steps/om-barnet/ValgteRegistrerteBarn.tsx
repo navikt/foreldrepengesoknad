@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     formaterFødselsdatoerPåBarn,
@@ -15,6 +16,8 @@ import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { BarnFrontend } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
+import { BarnetFormValues } from './OmBarnetFormValues';
+
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
@@ -25,6 +28,8 @@ interface Props {
 
 export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTermindato }: Props) => {
     const intl = useIntl();
+
+    const { control } = useFormContext<BarnetFormValues>();
 
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
     const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterRegistrerteBarnEtterEldstOgNavn);
@@ -63,6 +68,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
             {skalInkludereTermindato && (
                 <RhfDatepicker
                     name="termindato"
+                    control={control}
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}
                     minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}

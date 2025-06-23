@@ -91,8 +91,9 @@ export const SlettPeriodeModal = ({
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                     <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                         <RhfCheckboxGroup
-                            validate={[isRequired('Du må velge en periode du vil slette')]}
                             name="perioder"
+                            control={formMethods.control}
+                            validate={[isRequired('Du må velge en periode du vil slette')]}
                             label="Perioder"
                         >
                             {perioder.map((p) => {

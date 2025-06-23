@@ -52,13 +52,14 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                 <RhfDatepicker
                     key={field.id}
                     name={`fødselsdatoer.${index}.dato`}
+                    control={control}
                     minDate={dayjs().subtract(15, 'year').toDate()}
                     maxDate={dayjs().toDate()}
                     useStrategyAbsolute
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
-                            : // @ts-ignore Bør ikkje bruka dynamiske tekstId'ar
+                            : // @ts-expect-error Bør ikkje bruka dynamiske tekstId'ar
                               intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
                     }
                     validate={[

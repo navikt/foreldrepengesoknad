@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { Textarea } from '@navikt/ds-react';
 
@@ -7,23 +7,34 @@ import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
 import { getError, getValidationRules } from './formUtils';
 
-interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     label: string | ReactNode;
     maxLength?: number;
     minLength?: number;
     validate?: Array<(value: string) => any>;
     className?: string;
     description?: string;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfTextarea = ({ name, label, maxLength, minLength, validate = [], className, description }: Props) => {
+export const RhfTextarea = <T extends FieldValues>({
+    label,
+    maxLength,
+    minLength,
+    validate = [],
+    className,
+    description,
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
 
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },

@@ -45,11 +45,13 @@ const renderAlert = (message: VeilederMessage, skjulMeldingIkon: boolean, stil: 
         <>
             {message.titleIntlKey !== undefined && (
                 <Label as="div">
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                     <FormattedMessage id={message.titleIntlKey} />
                 </Label>
             )}
-            {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
+            {/*eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/*@ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
             <FormattedMessage id={message.contentIntlKey} values={message.values} />
         </>
     );
@@ -75,6 +77,7 @@ const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps>
                 renderAlert(message, skjulMeldingIkon, stil)
             ) : (
                 <div className="veilederMelding__padding">
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                     <FormattedMessage id={message.contentIntlKey} values={message.values} />
                 </div>

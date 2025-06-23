@@ -28,6 +28,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const intl = useIntl();
 
     const {
+        control,
         watch,
         trigger,
         formState: { isSubmitted },
@@ -50,6 +51,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
         <VStack gap="5" align="start">
             <RhfSelect
                 name={`utenlandsoppholdSiste12Mnd.${index}.landkode`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI" />}
                 validate={[
                     isRequired(
@@ -67,6 +69,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
             </RhfSelect>
             <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
                 minDate={minDateFom}
                 maxDate={maxDateFom}
@@ -106,6 +109,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
             />
             <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
                 minDate={minDateTom}
                 maxDate={maxDateTom}

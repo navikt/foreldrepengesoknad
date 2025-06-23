@@ -106,6 +106,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                     <VStack gap="4">
                         <RhfRadioGroup
                             name="skalHaFerie"
+                            control={formMethods.control}
                             onChange={(checked) => {
                                 if (checked) {
                                     formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);

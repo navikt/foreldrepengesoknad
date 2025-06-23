@@ -43,8 +43,9 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
                     <RhfDatepicker
-                        label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         maxDate={dayjs().toDate()}
                         useStrategyAbsolute
                         validate={[
@@ -60,8 +61,9 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         onChange={scrollToBottom}
                     />
                     <RhfDatepicker
-                        label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         name="termindato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Termindato.Required' })),

@@ -7,7 +7,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektSvp, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { ArbeidsforholdOgInntektSvp, Attachment, FRILANS_ID } from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
 

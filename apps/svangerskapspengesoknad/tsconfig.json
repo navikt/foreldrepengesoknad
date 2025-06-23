@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "jsx": "react-jsx",
         "baseUrl": "./src",
@@ -13,10 +13,5 @@
     },
 
     "include": ["src/**/*", "./@types"],
-    "exclude": ["node_modules", "build", "src/build", "dist", "**.js"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "exclude": ["node_modules", "build", "src/build", "dist", "**.js"]
 }

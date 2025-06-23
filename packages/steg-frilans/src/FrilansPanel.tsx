@@ -54,6 +54,7 @@ export const FrilansPanel = <TYPE extends string>({
                     <ErrorSummaryHookForm />
                     <RhfDatepicker
                         name="oppstart"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'FrilansPanel.Oppstart' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd' })),
@@ -70,6 +71,7 @@ export const FrilansPanel = <TYPE extends string>({
                     />
                     <RhfRadioGroup
                         name="jobberFremdelesSomFrilans"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'FrilansPanel.JobberFremdelesSomFrilans' })}
                         validate={[
                             isRequired(

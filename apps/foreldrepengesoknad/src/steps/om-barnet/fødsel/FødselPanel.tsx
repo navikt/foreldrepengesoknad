@@ -54,6 +54,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                     <div>
                         <RhfRadioGroup
                             name="erBarnetFødt"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'omBarnet.erBarnetFødt' })}
                             validate={[
                                 isRequired(
@@ -79,6 +80,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                     </div>
                     <RhfRadioGroup
                         name="antallBarn"
+                        control={formMethods.control}
                         label={finnAntallBarnLabel(intl, søkerErFarMedmor, erBarnetFødt)}
                         validate={[isRequired(finnAntallBarnIsRequired(intl, søkerErFarMedmor, erBarnetFødt))]}
                     >
@@ -93,7 +95,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                         </Radio>
                     </RhfRadioGroup>
                     {antallBarn !== undefined && antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" label="Antall barn">
+                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>

@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "paths": {
             "stories/*": ["./storybook/stories/*"]
@@ -11,10 +11,5 @@
         "esModuleInterop": true
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "exclude": ["node_modules"]
 }

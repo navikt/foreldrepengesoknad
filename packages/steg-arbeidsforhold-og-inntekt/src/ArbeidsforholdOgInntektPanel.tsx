@@ -98,6 +98,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     <VStack gap="1">
                         <RhfRadioGroup
                             name="harJobbetSomFrilans"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' }, { erSvp })}
                             validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
                             description={
@@ -119,6 +120,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     <VStack gap="1">
                         <RhfRadioGroup
                             name="harJobbetSomSelvstendigNæringsdrivende"
+                            control={formMethods.control}
                             label={intl.formatMessage(
                                 {
                                     id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
@@ -150,6 +152,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <VStack gap="1">
                             <RhfRadioGroup
                                 name="harHattArbeidIUtlandet"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
                                 validate={[
                                     isRequired(
@@ -174,6 +177,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <VStack gap="1">
                             <RhfRadioGroup
                                 name="harHattAndreInntektskilder"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
                                 validate={[
                                     isRequired(

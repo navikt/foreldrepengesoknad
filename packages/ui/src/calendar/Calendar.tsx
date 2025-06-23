@@ -1,10 +1,12 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import React from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
+import { formatDateIso } from '@navikt/fp-utils';
 
 import { Day, DayType } from './Day';
 import { Month } from './Month';
@@ -18,11 +20,10 @@ export type Period = {
     tom: string;
     color: PeriodeColor;
     srText?: string;
+    isSelected?: boolean;
 };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
-    const date = dayjs().year(year).month(month).date(day);
-
+const findDayColor = (date: Dayjs, periods: Period[]) => {
     const fomFirstPeriod = periods[0].fom;
     const tomLastPeriod = periods[periods.length - 1].tom;
 
@@ -69,8 +70,7 @@ const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
     );
 };
 
-const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
-    const date = dayjs().year(year).month(month).date(day);
+const findDayType = (date: Dayjs, day: number, periods: Period[]) => {
     const firstDay = isFirstDay(date, day, periods);
     const lastDay = isLastDay(date, day, periods);
 
@@ -112,9 +112,18 @@ const findMonths = (firstDate: string, lastDate: string): Array<{ month: number;
 interface Props {
     periods: Period[];
     useSmallerWidth?: boolean;
+    showWeekNumbers?: boolean;
+    dateTooltipCallback?: (date: string) => React.ReactElement | string;
+    dateClickCallback?: (date: string) => void;
 }
 
-export const Calendar = ({ periods, useSmallerWidth = false }: Props) => {
+export const Calendar = ({
+    periods,
+    useSmallerWidth = false,
+    showWeekNumbers = true,
+    dateTooltipCallback,
+    dateClickCallback,
+}: Props) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
@@ -142,16 +151,35 @@ export const Calendar = ({ periods, useSmallerWidth = false }: Props) => {
                         month={monthData.month}
                         showYear={index > 0 && months[index - 1].year !== monthData.year}
                         headerLevel={useSmallerWidth ? '5' : '4'}
+                        showWeekNumbers={showWeekNumbers}
                     >
                         {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
-                            (day) => (
-                                <Day
-                                    key={monthData.year + monthData.month + day}
-                                    day={day + 1}
-                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
-                                />
-                            ),
+                            (day) => {
+                                const date = dayjs()
+                                    .year(monthData.year)
+                                    .month(monthData.month)
+                                    .date(day + 1);
+                                const isoDate = formatDateIso(date);
+
+                                return (
+                                    <Day
+                                        key={monthData.year + monthData.month + day}
+                                        day={day + 1}
+                                        periodeColor={findDayColor(date, periods)}
+                                        dayType={findDayType(date, day + 1, periods)}
+                                        isSelected={
+                                            periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'))
+                                                ?.isSelected || false
+                                        }
+                                        dateTooltipCallback={
+                                            dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
+                                        }
+                                        dateClickCallback={
+                                            dateClickCallback ? () => dateClickCallback(isoDate) : undefined
+                                        }
+                                    />
+                                );
+                            },
                         )}
                     </Month>
                 ))}

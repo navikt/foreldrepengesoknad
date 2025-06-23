@@ -9,7 +9,7 @@ export const harUttaksperiodeStønadskonto: RegelTest = (grunnlag: Søknadsinfo)
     return {
         passerer: uttaksperioderUtenStønadskonto.length === 0,
         info: uttaksperioderUtenStønadskonto.map((periode) => ({
-            // @ts-ignore FIX! Konto er eigentleg optional her.
+            // @ts-expect-error FIX! Konto er eigentleg optional her.
             periodeId: periode.id,
         })),
     };

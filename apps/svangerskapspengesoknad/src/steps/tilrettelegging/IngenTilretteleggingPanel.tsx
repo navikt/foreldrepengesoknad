@@ -65,6 +65,7 @@ export const IngenTilretteleggingPanel = ({
         <>
             <RhfDatepicker
                 name="enPeriodeMedTilretteleggingFom"
+                control={formMethods.control}
                 label={intl.formatMessage({
                     id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen',
                 })}
@@ -98,6 +99,7 @@ export const IngenTilretteleggingPanel = ({
             />
             <RhfRadioGroup
                 name="enPeriodeMedTilretteleggingTomType"
+                control={formMethods.control}
                 label={intl.formatMessage({
                     id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen',
                 })}
@@ -127,6 +129,7 @@ export const IngenTilretteleggingPanel = ({
             {enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
+                    control={formMethods.control}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen',
                     })}

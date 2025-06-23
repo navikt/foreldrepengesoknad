@@ -103,6 +103,7 @@ interface Props {
 export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
+        control,
         watch,
         trigger,
         formState: { isSubmitted },
@@ -139,6 +140,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                     <HStack gap="5" align="start">
                         <RhfTextField
                             className={styles.textInput}
+                            control={control}
                             name="antallUkerFellesperiodeTilSøker"
                             label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                             validate={[
@@ -155,6 +157,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                         {!harHeleUkerTilFordeling && (
                             <RhfTextField
                                 className={styles.textInput}
+                                control={control}
                                 name="antallDagerFellesperiodeTilSøker"
                                 label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
                                 validate={[

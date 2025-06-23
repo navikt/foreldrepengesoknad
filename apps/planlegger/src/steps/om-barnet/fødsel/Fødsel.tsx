@@ -27,8 +27,9 @@ export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBa
     return (
         <VStack gap="8">
             <BlueRadioGroup
-                label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 name="erBarnetFødt"
+                control={formMethods.control}
+                label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 shouldFadeIn
                 validate={[
                     isRequired(

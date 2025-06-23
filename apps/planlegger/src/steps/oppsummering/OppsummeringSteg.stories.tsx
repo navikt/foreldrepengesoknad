@@ -157,7 +157,7 @@ export const MorOgFarKunFarHarRett: Story = {
             type: HvemPlanleggerType.MOR_OG_FAR,
         },
         hvorMye: {
-            lønnSøker1: 1000,
+            lønnSøker2: 1000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

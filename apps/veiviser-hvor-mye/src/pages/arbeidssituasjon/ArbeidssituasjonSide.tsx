@@ -100,14 +100,17 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                         </BodyShort>
                         <RhfCheckbox
                             name="erArbeidstakerEllerFrilanser"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
                         />
                         <RhfCheckbox
                             name="harUtbetalingFraNav"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
                         />
                         <RhfCheckbox
                             name="erSelvstendigNæringsdrivende"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
                         />
                     </BluePanel>
@@ -171,6 +174,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                         <VStack gap="4">
                                             <RhfTextField
                                                 name="lønnMåned1"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
@@ -183,6 +187,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             />
                                             <RhfTextField
                                                 name="lønnMåned2"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
@@ -195,6 +200,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             />
                                             <RhfTextField
                                                 name="lønnMåned3"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 className={styles.widthTextInput}
                                                 validate={[

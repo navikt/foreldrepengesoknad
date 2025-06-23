@@ -72,24 +72,15 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                         <VStack gap="2">
                             <BluePanel isDarkBlue={true}>
                                 <RhfTextField
+                                    name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
+                                    control={formMethods.control}
                                     label={
                                         hvemHarRett === 'kunSøker2HarRett' ? (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker2,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker2 }} />
                                         ) : (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker1,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
                                         )
                                     }
-                                    name="lønnSøker1"
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
@@ -110,13 +101,14 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                             <VStack gap="2">
                                 <BluePanel isDarkBlue={true}>
                                     <RhfTextField
+                                        name="lønnSøker2"
+                                        control={formMethods.control}
                                         label={
                                             <FormattedMessage
                                                 id="HvorMyeSteg.Lønn"
                                                 values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
                                             />
                                         }
-                                        name="lønnSøker2"
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
                                         ]}

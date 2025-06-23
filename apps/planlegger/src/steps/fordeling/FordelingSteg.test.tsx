@@ -12,7 +12,6 @@ const { FlereForsørgereEttBarn } = composeStories(stories);
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
-        // @ts-ignore
         ...actual,
         useNavigate: vi.fn(),
     };

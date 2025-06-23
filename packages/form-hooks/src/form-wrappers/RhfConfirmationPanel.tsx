@@ -1,24 +1,32 @@
 import { ReactNode, useMemo } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { ConfirmationPanel } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-export interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     label: string | ReactNode;
     validate?: Array<(value: boolean) => any>;
     children: React.ReactElement;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfConfirmationPanel = ({ name, label, validate = [], children }: Props) => {
+export const RhfConfirmationPanel = <T extends FieldValues>({
+    label,
+    validate = [],
+    children,
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
 
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },
@@ -29,6 +37,7 @@ export const RhfConfirmationPanel = ({ name, label, validate = [], children }: P
             ref={field.ref}
             label={label}
             onChange={(evt) => field.onChange(evt)}
+            // @ts-expect-error Fiksar ikkje denne da heile komponenten er depricated og bør byttast ut
             checked={field.value ?? ''}
             error={getError(errors, name)}
         >

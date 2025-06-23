@@ -10,6 +10,11 @@
     font-weight: 600;
     line-height: 13px;
     letter-spacing: 0.06px;
+    cursor: default;
+}
+
+.cursor {
+    cursor: pointer;
 }
 
 .blueDay {
@@ -17,10 +22,26 @@
     print-color-adjust: exact;
 }
 
+.blueDaySelected {
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
 .lightblueDay {
     background-color: var(--a-data-surface-1-subtle) !important;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.lightblueDaySelected {
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
     print-color-adjust: exact;
 }
 
@@ -44,6 +65,14 @@
     print-color-adjust: exact;
 }
 
+.lightgreenSelected {
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
 .lightgreenDay.firstDay {
     border-left: 2px solid var(--a-green-300);
 }
@@ -59,6 +88,14 @@
 
 .greenDay {
     background-color: var(--a-green-300) !important;
+    print-color-adjust: exact;
+}
+
+.greenDaySelected {
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
     print-color-adjust: exact;
 }
 
@@ -81,6 +118,30 @@
     ) !important;
     border-top: 2px solid var(--a-green-300);
     border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
+.greenStripedDaySelected {
+    background: linear-gradient(
+        45deg,
+        var(--a-green-200) 0%,
+        var(--a-green-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-green-200) 30%,
+        var(--a-green-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-green-200) 60%,
+        var(--a-green-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-green-200) 90%
+    ) !important;
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
     print-color-adjust: exact;
 }
 
@@ -119,6 +180,30 @@
     print-color-adjust: exact;
 }
 
+.blueStripedDaySelected {
+    background: linear-gradient(
+        45deg,
+        var(--a-blue-200) 0%,
+        var(--a-blue-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-blue-200) 30%,
+        var(--a-blue-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-blue-200) 60%,
+        var(--a-blue-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-blue-200) 90%
+    ) !important;
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
 .blueStripedDay.firstDay {
     border-left: 2px solid var(--a-blue-300);
 }
@@ -135,6 +220,7 @@
 .grayDay {
     background-color: var(--a-gray-200);
     print-color-adjust: exact;
+    cursor: default;
 }
 
 .blackDay {
@@ -143,9 +229,25 @@
     print-color-adjust: exact;
 }
 
+.blackDaySelected {
+    border-top: 2px solid var(--a-gray-800);
+    border-bottom: 2px solid var(--a-gray-800);
+    border-left: 1px solid var(--a-gray-800);
+    border-right: 1px solid var(--a-gray-800);
+    print-color-adjust: exact;
+}
+
 .blueOutlineDay {
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.blueOutlineSelected {
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
     print-color-adjust: exact;
 }
 
@@ -165,6 +267,14 @@
 .greenOutlineDay {
     border-top: 2px solid var(--a-green-300);
     border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
+.greenOutlineDaySelected {
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
     print-color-adjust: exact;
 }
 
@@ -195,6 +305,22 @@
     print-color-adjust: exact;
 }
 
+.lightgreenBlueDaySelected {
+    background: linear-gradient(
+        to top,
+        var(--a-blue-300),
+        var(--a-blue-300) 50%,
+        var(--a-green-100) 50%,
+        var(--a-green-100) 75%,
+        var(--a-green-100) 100%
+    ) !important;
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
 .lightgreenBlueDay.firstDay {
     border-left: 2px solid var(--a-blue-300);
 }
@@ -221,6 +347,21 @@
     print-color-adjust: exact;
 }
 
+.lightblueGreenDaySelected {
+    background: linear-gradient(
+        to top,
+        var(--a-green-300),
+        var(--a-green-300) 50%,
+        var(--a-data-surface-1-subtle) 50%,
+        var(--a-data-surface-1-subtle) 100%
+    ) !important;
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
 .lightblueGreenDay.firstDay {
     border-left: 2px solid var(--a-green-300);
 }
@@ -237,6 +378,7 @@
 .none {
     padding-left: 2px;
     padding-right: 2px;
+    cursor: default;
 }
 
 .pinkDay {
@@ -256,6 +398,14 @@
 
 .purpleDay {
     background-color: var(--a-purple-200) !important;
+    print-color-adjust: exact;
+}
+
+.purpleDaySelected {
+    border-top: 2px solid var(--a-purple-200);
+    border-bottom: 2px solid var(--a-purple-200);
+    border-left: 1px solid var(--a-purple-200);
+    border-right: 1px solid var(--a-purple-200);
     print-color-adjust: exact;
 }
 

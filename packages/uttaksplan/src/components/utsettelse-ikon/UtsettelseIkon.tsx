@@ -34,6 +34,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
         <IconBox color={getUtsettelseFarge(forelder)}>
             <UttaksplanIkon
                 ikon={getIkonForÅrsak(årsak)}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                 title={intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${årsak ?? 'ukjent'}` })}
             />

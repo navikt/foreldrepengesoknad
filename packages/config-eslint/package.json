@@ -1,5 +1,5 @@
 {
-    "name": "@navikt/eslint-config-fp-selvbetjening",
+    "name": "@navikt/fp-config-eslint",
     "main": "eslint.config.mjs",
     "type": "module",
     "version": "1.0.0",

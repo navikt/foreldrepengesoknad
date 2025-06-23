@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
-import { Næringstype } from '@navikt/fp-types';
-
 import { OppsummeringPanel } from './OppsummeringPanel';
 import {
     ArbeidsforholdOppsummering,
@@ -98,17 +96,16 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={{
                         navnPåNæringen: 'Fiske',
-                        pågående: false,
                         fom: '2018-01-01',
                         tom: '2021-01-01',
-                        næringstype: Næringstype.FISKER,
+                        næringstype: 'FISKE',
                         registrertILand: 'SE',
                         registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringBeskrivelse: 'Beskrivelse av varig endring',
                         varigEndringDato: '2021-01-01',
-                        varigEndringInntektEtterEndring: '10000',
+                        varigEndringInntektEtterEndring: 10000,
                     }}
                     onVilEndreSvar={() => {}}
                 />
