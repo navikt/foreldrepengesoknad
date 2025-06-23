@@ -45,7 +45,8 @@ type Props<T extends FieldValues> = {
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
     useStrategyAbsolute?: boolean;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfDatepicker = <T extends FieldValues>({
     label,

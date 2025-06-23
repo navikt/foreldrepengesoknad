@@ -23,11 +23,7 @@ import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
-
-type VelkommenFormData = {
-    harForståttRettigheterOgPlikter: boolean;
-    valgteBarn: string | undefined;
-};
+import { ForsideFormValues } from './types/ForsideFormValues';
 
 interface Props {
     saker: FpSak[];
@@ -60,7 +56,7 @@ export const Forside = ({
         [saker, søkerInfo.søker.barn],
     );
 
-    const onSubmit = (values: VelkommenFormData) => {
+    const onSubmit = (values: ForsideFormValues) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
             // eslint-disable-next-line no-console
@@ -133,7 +129,7 @@ export const Forside = ({
         return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
     };
 
-    const formMethods = useForm<VelkommenFormData>({
+    const formMethods = useForm<ForsideFormValues>({
         defaultValues: {
             harForståttRettigheterOgPlikter: harGodkjentVilkår,
         },

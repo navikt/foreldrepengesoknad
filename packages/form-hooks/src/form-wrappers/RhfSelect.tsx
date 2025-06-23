@@ -15,7 +15,8 @@ type Props<T extends FieldValues> = {
     style?: CSSProperties;
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfSelect = <T extends FieldValues>({
     label,

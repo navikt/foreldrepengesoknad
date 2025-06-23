@@ -32,6 +32,7 @@ import {
 
 import { OrgnummerEllerLand } from './components/OrgnummerEllerLand';
 import { VarigEndringSpørsmål } from './components/VarigEndringSpørsmål';
+import { NæringFormValues } from './types/NæringFormValues';
 
 dayjs.extend(minMax);
 
@@ -76,12 +77,6 @@ interface Props<TYPE> {
 }
 
 export const EGEN_NÆRING_ID = 'naering';
-
-/**
- * Helst ville vi brukt NæringDto direkte, men i skjema er det nyttig å ha en ekstra "pågående" sjekkboks.
- * I Dto til backend er pågående det samme som at tom ikke er satt
- */
-type NæringFormValues = NæringDto & { pågående: boolean };
 
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
@@ -238,6 +233,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 
                     <RhfRadioGroup
                         name="pågående"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.pågående' },
                             {

@@ -11,7 +11,8 @@ type Props<T extends FieldValues> = {
     options: string[];
     description?: ReactNode;
     className?: string;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfCombobox = <T extends FieldValues>({
     label,

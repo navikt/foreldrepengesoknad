@@ -19,8 +19,9 @@ type Props<T extends FieldValues> = {
     shouldReplaceInvisibleChars?: boolean;
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
+    control: UseControllerProps<T>['control'];
 } & DsTextFieldProps &
-    UseControllerProps<T>;
+    Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfTextField = <T extends FieldValues>({
     label,
