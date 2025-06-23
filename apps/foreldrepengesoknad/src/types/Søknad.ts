@@ -5,8 +5,8 @@ import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
-    EgenNæring,
     Frilans,
+    NæringDto,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -18,7 +18,7 @@ export interface Søknad {
     barn: Barn;
     annenForelder: AnnenForelder;
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
-    egenNæring: EgenNæring;
+    egenNæring: NæringDto;
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
     utenlandsopphold: Utenlandsopphold;

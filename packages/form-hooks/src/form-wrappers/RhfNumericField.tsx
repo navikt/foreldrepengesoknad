@@ -1,41 +1,42 @@
 import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { TextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     label: string | ReactNode;
     validate?: Array<(value: string) => any> | Array<(value: number) => any>;
     description?: string;
     onChange?: (value: any) => void;
     autoFocus?: boolean;
     maxLength?: number;
-    disabled?: boolean;
     className?: string;
     style?: CSSProperties;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfNumericField = ({
-    name,
+export const RhfNumericField = <T extends FieldValues>({
     label,
     validate = [],
     onChange,
     description,
     autoFocus,
     maxLength,
-    disabled,
     className,
     style,
-}: Props) => {
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control, disabled } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
 
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },

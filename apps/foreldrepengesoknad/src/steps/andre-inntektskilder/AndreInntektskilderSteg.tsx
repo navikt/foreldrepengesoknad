@@ -10,7 +10,8 @@ import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-f
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 
-import { AndreInntektskilderFieldArray, FormValues } from './components/AndreInntektskilderFieldArray';
+import { AndreInntektskilderFieldArray } from './components/AndreInntektskilderFieldArray';
+import { AndreInntekterFormValues } from './types/AndreInntekterFormValues';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -27,12 +28,12 @@ export const AndreInntektskilderSteg = ({ arbeidsforhold, mellomlagreSøknadOgNa
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const oppdaterAndreInntektskilder = useContextSaveData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<AndreInntekterFormValues>({
         defaultValues: { andreInntektskilder: andreInntektskilder || [{}] },
         shouldUnregister: true,
     });
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = (values: AndreInntekterFormValues) => {
         oppdaterAndreInntektskilder(values.andreInntektskilder);
         return navigator.goToNextDefaultStep();
     };

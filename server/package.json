@@ -12,10 +12,10 @@
         "@navikt/nav-dekoratoren-moduler": "3.2.3",
         "@navikt/oasis": "3.8.0",
         "express": "5.1.0",
-        "http-proxy-middleware": "3.0.5",
-        "ky": "1.7.5"
+        "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {
+        "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-server-utils": "workspace:*",
         "@types/express": "5.0.3",
         "@types/morgan": "1.9.10",
@@ -23,7 +23,6 @@
         "@vercel/ncc": "0.38.3",
         "morgan": "1.10.0",
         "prettier": "3.5.3",
-        "tsconfig": "workspace:*",
         "typescript": "5.8.3",
         "winston": "3.17.0"
     },

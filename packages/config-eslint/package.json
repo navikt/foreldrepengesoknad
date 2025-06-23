@@ -1,5 +1,5 @@
 {
-    "name": "@navikt/eslint-config-fp-selvbetjening",
+    "name": "@navikt/fp-config-eslint",
     "main": "eslint.config.mjs",
     "type": "module",
     "version": "1.0.0",
@@ -13,7 +13,6 @@
         "eslint-plugin-storybook": "9.0.8",
         "eslint-plugin-vitest": "0.5.4",
         "globals": "16.2.0",
-        "ky": "1.7.5",
         "typescript-eslint": "8.34.0"
     },
     "peerDependencies": {

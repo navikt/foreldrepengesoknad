@@ -11,5 +11,8 @@ beforeAll(annotations.beforeAll);
 
 expect.extend(matchers);
 
-window.scrollTo = () => undefined;
-window.HTMLElement.prototype.scrollIntoView = function () {};
+// @ts-expect-error greit her
+if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+    window.scrollTo = () => undefined;
+    window.HTMLElement.prototype.scrollIntoView = function () {};
+}

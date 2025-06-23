@@ -11,16 +11,15 @@
     },
     "dependencies": {
         "@navikt/fp-types": "workspace:*",
-        "amplitude-js": "8.21.9",
-        "ky": "1.7.5"
+        "amplitude-js": "8.21.9"
     },
     "devDependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@navikt/fp-config-eslint": "workspace:*",
+        "@navikt/fp-config-typescript": "workspace:*",
         "@types/amplitude-js": "8.16.5",
         "@types/node": "22.15.18",
         "@types/react": "19.1.7",
         "eslint": "9.28.0",
-        "tsconfig": "workspace:*",
         "typescript": "5.8.3"
     },
     "packageManager": "pnpm@9.1.4"

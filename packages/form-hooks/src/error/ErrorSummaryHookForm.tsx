@@ -52,7 +52,7 @@ export const ErrorSummaryHookForm = () => {
     // TODO Denne er ikkje optimal
     const mappedErrors = Object.values(flattenAndUniqueErrors).map((error) => ({
         message: error?.message?.toString(),
-        //@ts-ignore TODO Burde nok heller bruka setFocus her
+        //@ts-expect-error TODO Burde nok heller bruka setFocus her
         focus: error?.ref?.focus,
     }));
 

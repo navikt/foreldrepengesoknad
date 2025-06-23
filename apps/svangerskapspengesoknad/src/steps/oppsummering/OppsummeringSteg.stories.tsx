@@ -9,7 +9,8 @@ import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søkerinfo } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { FRILANS_ID, Søkerinfo } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -217,8 +218,7 @@ const meta = {
                             navnPåNæringen: 'Skitt fiske',
                             fom: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
                             tom: '',
-                            næringstype: Næringstype.FISKER,
-                            pågående: true,
+                            næringstype: 'FISKE',
                             registrertINorge: true,
                             næringsinntekt: 700000,
                             organisasjonsnummer: '12132323',

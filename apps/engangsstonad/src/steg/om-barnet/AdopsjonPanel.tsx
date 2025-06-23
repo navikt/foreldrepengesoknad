@@ -22,7 +22,7 @@ interface Props {
 export const AdopsjonPanel = ({ kjønn }: Props) => {
     const intl = useIntl();
 
-    const { watch } = useFormContext<FormValues>();
+    const { watch, control } = useFormContext<FormValues>();
 
     const { adopsjonAvEktefellesBarn, adopsjonsdato, antallBarn, antallBarnDropDown } = watch();
 
@@ -30,6 +30,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
         <>
             <RhfRadioGroup
                 name="adopsjonAvEktefellesBarn"
+                control={control}
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.Stebarnsadopsjon" />}
                 validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Required' }))]}
             >
@@ -42,6 +43,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
             </RhfRadioGroup>
             <RhfDatepicker
                 name="adopsjonsdato"
+                control={control}
                 label={
                     adopsjonAvEktefellesBarn
                         ? intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Stebarnsadopsjondato' })
@@ -66,6 +68,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
             />
             <RhfRadioGroup
                 name="antallBarn"
+                control={control}
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert" />}
                 description={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert.Beskrivelse" />}
                 validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Antallbarn.Required' }))]}
@@ -83,6 +86,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
             {antallBarn && antallBarn >= 3 && (
                 <RhfSelect
                     name="antallBarnDropDown"
+                    control={control}
                     label={<FormattedMessage id="AdopsjonPanel.AntallBarn.Omsorgsovertakelse" />}
                     validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Antallbarndropdown.Required' }))]}
                 >
@@ -103,6 +107,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
             {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
                 <RhfRadioGroup
                     name="søkerAdopsjonAlene"
+                    control={control}
                     label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AdoptererDuAlene" />}
                     validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.AdoptererDuAlene.Required' }))]}
                 >

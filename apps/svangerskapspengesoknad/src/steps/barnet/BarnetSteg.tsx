@@ -95,6 +95,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                     <div>
                         <RhfRadioGroup
                             name="erBarnetFødt"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'barnet.erBarnetFødt' })}
                             validate={[
                                 isRequired(
@@ -129,6 +130,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                     {erBarnetFødt && (
                         <RhfDatepicker
                             name="fødselsdato"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'barnet.fødselsdato' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.barnet.fødselsdato.duMåOppgi' })),
@@ -154,6 +156,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                     <div>
                         <RhfDatepicker
                             name="termindato"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'barnet.termindato' })}
                             minDate={minDatoTermin}
                             maxDate={niMånederFremITid(new Date())}

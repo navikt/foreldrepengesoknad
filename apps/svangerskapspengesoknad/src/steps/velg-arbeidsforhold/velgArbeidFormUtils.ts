@@ -2,14 +2,8 @@ import { IntlShape } from 'react-intl';
 import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import {
-    Arbeidsforhold,
-    ArbeidsforholdOgInntektSvp,
-    EGEN_NÆRING_ID,
-    EgenNæring,
-    FRILANS_ID,
-    Frilans,
-} from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 type VelgArbeidsforholdOptions = {
@@ -25,7 +19,7 @@ export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?:
     return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
-const getNæringTilretteleggingOption = (næring: EgenNæring): VelgArbeidsforholdOptions => ({
+const getNæringTilretteleggingOption = (næring: NæringDto): VelgArbeidsforholdOptions => ({
     id: EGEN_NÆRING_ID,
     arbeidsforholdType: Arbeidsforholdstype.SELVSTENDIG,
     arbeidsforholdNavn: næring.navnPåNæringen!,
@@ -58,7 +52,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     termindato: string,
     intl: IntlShape,
     frilans?: Frilans,
-    egenNæring?: EgenNæring,
+    egenNæring?: NæringDto,
 ): VelgArbeidsforholdOptions[] => {
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(arbeidsforhold, termindato, intl);
     const næringValg =

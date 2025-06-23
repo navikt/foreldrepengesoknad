@@ -41,6 +41,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
             {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
                 <RhfCheckbox
                     name="kanIkkeOppgis"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })}
                 />
             )}
@@ -48,6 +49,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                 <>
                     <RhfTextField
                         name="fornavn"
+                        control={formMethods.control}
                         label={<FormattedMessage id="annenForelder.spørsmål.fornavn" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
@@ -57,6 +59,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                     />
                     <RhfTextField
                         name="etternavn"
+                        control={formMethods.control}
                         label={<FormattedMessage id="annenForelder.spørsmål.etternavn" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
@@ -71,6 +74,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                     <div>
                         <RhfTextField
                             name="fnr"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fnrPåkrevd' })),
@@ -85,12 +89,14 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                         />
                         <RhfCheckbox
                             name="utenlandskFnr"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>
                     {utenlandskFnr && (
                         <RhfSelect
                             name="bostedsland"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.bostedsland' })}
                             validate={[
                                 isRequired(
