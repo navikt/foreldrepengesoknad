@@ -11,7 +11,8 @@ type Props<T extends FieldValues> = {
     validate?: Array<(value: string | number) => any>;
     onChange?: (value: any) => void;
     children: ReactElement[];
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfCheckboxGroup = <T extends FieldValues>({
     label,

@@ -89,6 +89,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                         />
                         <RhfCheckbox
                             name="utenlandskFnr"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>

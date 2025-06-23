@@ -20,6 +20,7 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
         <VStack gap="4">
             <RhfRadioGroup
                 name="skalDuJobbe"
+                control={formMethods.control}
                 label={intl.formatMessage({ id: 'uttaksplan.graderingSpørsmål.heading' })}
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.skalDuJobbe.påkrevd' }))]}
             >

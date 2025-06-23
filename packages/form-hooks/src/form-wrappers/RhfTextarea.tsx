@@ -14,7 +14,8 @@ type Props<T extends FieldValues> = {
     validate?: Array<(value: string) => any>;
     className?: string;
     description?: string;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfTextarea = <T extends FieldValues>({
     label,

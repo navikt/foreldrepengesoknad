@@ -9,7 +9,8 @@ type Props<T extends FieldValues> = {
     label: string | ReactNode;
     validate?: Array<(value: boolean) => any>;
     children: React.ReactElement;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfConfirmationPanel = <T extends FieldValues>({
     label,

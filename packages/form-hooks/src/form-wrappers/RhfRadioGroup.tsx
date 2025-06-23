@@ -13,7 +13,8 @@ type Props<T extends FieldValues> = {
     children: ReactElement[];
     className?: string;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfRadioGroup = <T extends FieldValues>({
     label,
