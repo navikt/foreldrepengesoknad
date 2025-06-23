@@ -30,9 +30,13 @@ const getAnnenPartVedSamtidigUttakPlanlegger = (nyPeriode: Planperiode) => {
     return undefined;
 };
 
-const getAnnenPartsUttakPlanlegger = (erIPlanleggerModus: boolean, perioder: Planperiode[], nyPeriode: Planperiode) => {
+const getAnnenPartsUttakPlanlegger = (
+    erIPlanleggerModus: boolean,
+    perioder: Planperiode[],
+    nyPeriode: Planperiode,
+    annenPart: Forelder | undefined,
+) => {
     const erSamtidigUttak = nyPeriode.samtidigUttak !== undefined;
-    const annenPart = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
 
     if (erIPlanleggerModus && erSamtidigUttak && annenPart !== undefined) {
         return perioder.filter((p) => p.forelder === annenPart);
@@ -71,7 +75,12 @@ const leggTilPeriodeOgBuild = (
     );
 
     if (annenPartsUttak) {
-        const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(erIPlanleggerModus, perioder, nyPeriode);
+        const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(
+            erIPlanleggerModus,
+            perioder,
+            nyPeriode,
+            annenPartPlanlegger,
+        );
 
         nyePerioder = settInnAnnenPartsUttak(
             nyePerioder,
@@ -101,8 +110,17 @@ const oppdaterPeriodeOgBuild = (
     erFarEllerMedmor: boolean,
     annenPartsUttak: Planperiode[] | undefined,
     førsteUttaksdagNesteBarnsSak: string | undefined,
+    erIPlanleggerModus: boolean,
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
+    const annenPartPlanlegger = getAnnenPartVedSamtidigUttakPlanlegger(endretPeriode);
+
+    const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(
+        erIPlanleggerModus,
+        perioder,
+        endretPeriode,
+        annenPartPlanlegger,
+    );
 
     let oppdatertePerioder = fjernUnødvendigeHull(
         oppdaterPeriode({
@@ -114,7 +132,7 @@ const oppdaterPeriodeOgBuild = (
             erAdopsjon,
             bareFarHarRett,
             erFarEllerMedmor,
-            annenPartsUttak,
+            annenPartsUttak: erIPlanleggerModus ? annenPartsUttakPlanlegger : annenPartsUttak,
             førsteUttaksdagNesteBarnsSak,
         }),
     );
@@ -307,6 +325,7 @@ export const Uttaksplanbuilder = ({
                 erFarEllerMedmor,
                 annenPartsUttak,
                 førsteUttaksdagNesteBarnsSak,
+                erIPlanleggerModus,
             ),
         oppdaterPerioder: (oppdatertePerioder: Planperiode[]) => {
             let resultat: Planperiode[] = [];
@@ -322,6 +341,7 @@ export const Uttaksplanbuilder = ({
                         erFarEllerMedmor,
                         annenPartsUttak,
                         førsteUttaksdagNesteBarnsSak,
+                        erIPlanleggerModus,
                     );
                 } else {
                     const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);

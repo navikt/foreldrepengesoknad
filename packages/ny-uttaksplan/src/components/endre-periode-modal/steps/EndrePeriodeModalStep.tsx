@@ -5,9 +5,7 @@ import { VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
@@ -27,7 +25,7 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-interface FormValues {
+export interface EndrePeriodeModalStepFormValues {
     fom: string | undefined;
     tom: string | undefined;
     kontoType: StønadskontoType;
@@ -49,9 +47,8 @@ export const EndrePeriodeModalStep = ({
 }: Props) => {
     const { valgtPeriode, årsak } = modalData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
-    const perioder = notEmpty(useContextGetData(UttaksplanContextDataType.UTTAKSPLAN));
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<EndrePeriodeModalStepFormValues>({
         defaultValues: {
             fom: valgtPeriode?.fom,
             tom: valgtPeriode?.tom,
@@ -80,7 +77,7 @@ export const EndrePeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = (values: EndrePeriodeModalStepFormValues) => {
         handleUpdatePeriode({
             ...valgtPeriode!,
             fom: values.fom ?? valgtPeriode!.fom,
@@ -96,14 +93,14 @@ export const EndrePeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="4">
-                <KontotypeSpørsmål formMethods={formMethods} />
+                <KontotypeSpørsmål />
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                     oppholdsårsak={årsak}
                 />
-                <SamtidigUttakSpørsmål formMethods={formMethods} perioder={perioder} />
-                <GraderingSpørsmål formMethods={formMethods} />
+                <SamtidigUttakSpørsmål />
+                <GraderingSpørsmål />
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={

@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
@@ -8,16 +9,15 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
+import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { LeggTilPeriodeModalStepFormValues } from '../legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
 
-interface Props {
-    formMethods: any;
-}
-
-export const KontotypeSpørsmål = ({ formMethods }: Props) => {
+export const KontotypeSpørsmål = () => {
     const intl = useIntl();
+    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues | EndrePeriodeModalStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
 
-    const kontoTypeValue = formMethods.watch('kontoType');
+    const kontoTypeValue = watch('kontoType');
 
     return (
         <VStack gap="4">

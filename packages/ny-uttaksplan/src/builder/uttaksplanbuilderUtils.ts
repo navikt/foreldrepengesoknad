@@ -348,7 +348,7 @@ export const finnOgSettInnHull = (
 };
 
 const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
-    if (p.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (p.kontoType === StønadskontoType.ForeldrepengerFørFødsel || p.kontoType === StønadskontoType.Mødrekvote) {
         return overlappendePeriode.samtidigUttak ?? 100;
     }
 

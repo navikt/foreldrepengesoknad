@@ -1,20 +1,19 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 
-import { Planperiode } from '../../types/Planperiode';
+import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { LeggTilPeriodeModalStepFormValues } from '../legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
 import { valideringSamtidigUttak } from './validators';
 
-interface Props {
-    formMethods: any;
-    perioder: Planperiode[];
-}
+export const SamtidigUttakSpørsmål = () => {
+    const { watch } = useFormContext<LeggTilPeriodeModalStepFormValues | EndrePeriodeModalStepFormValues>();
 
-export const SamtidigUttakSpørsmål = ({ formMethods }: Props) => {
-    const samtidigUttakValue = formMethods.watch('samtidigUttak');
-    const stillingsprosentValue = formMethods.watch('stillingsprosent');
+    const samtidigUttakValue = watch('samtidigUttak');
+    const stillingsprosentValue = watch('stillingsprosent');
 
     const intl = useIntl();
 

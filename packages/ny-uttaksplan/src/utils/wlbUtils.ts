@@ -45,7 +45,7 @@ export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdat
 };
 
 const starterTidsperiodeEtter2UkerFørFødsel = (
-    tidsperiode: any,
+    tidsperiode: Tidsperiode,
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {

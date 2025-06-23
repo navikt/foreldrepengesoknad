@@ -31,7 +31,9 @@ export type UttaksplanContextDataMap = {
 
 const defaultInitialState = {} as UttaksplanContextDataMap;
 
-export type Action = { type: 'update'; key: UttaksplanContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: UttaksplanContextDataType; data: UttaksplanContextDataMap[keyof UttaksplanContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const UttaksplanStateContext = createContext<UttaksplanContextDataMap>(defaultInitialState);
