@@ -64,6 +64,7 @@ export const HvemPlanleggerSteg = () => {
                         </BodyShort>
                         <BlueRadioGroup
                             name="type"
+                            control={formMethods.control}
                             label={intl.formatMessage({
                                 id: 'HvemPlanleggerSteg.HvemPlanlegger',
                             })}

@@ -20,13 +20,21 @@ const meta = {
     render: () => {
         const formMethods = useForm({
             defaultValues: {
+                radio: undefined,
                 radiopre: true,
+                testSelectField: undefined,
                 testSelectFieldpre: 'value3',
+                datepickerField: undefined,
                 datepickerFieldPre: '2022-10-22',
+                check: undefined,
                 checkpre: true,
+                textfield: undefined,
                 textfieldpre: 'Har en tekst',
+                textarea: undefined,
                 textareapre: 'Har en tekst',
+                checkpanel: undefined,
                 checkpanelpre: ['test1', 'test2'],
+                combobox: undefined,
                 comboboxPre: 'Tekst 1',
                 dateRangepickerFieldFromPre: '2024-08-01',
                 dateRangepickerFieldToPre: '2024-09-22',
@@ -39,39 +47,61 @@ const meta = {
             <RhfForm formMethods={formMethods}>
                 <HStack justify="space-between">
                     <VStack gap="7" align="start">
-                        <RhfCheckbox name="check" label="Dette er en checkbox" />
-                        <RhfCheckbox name="checkpre" label="Dette er en checkbox som er valgt" />
-                        <RhfCheckboxGroup name="checkpanel" label="Dette er en gruppe med checkboxes">
+                        <RhfCheckbox name="check" control={formMethods.control} label="Dette er en checkbox" />
+                        <RhfCheckbox
+                            name="checkpre"
+                            control={formMethods.control}
+                            label="Dette er en checkbox som er valgt"
+                        />
+                        <RhfCheckboxGroup
+                            name="checkpanel"
+                            control={formMethods.control}
+                            label="Dette er en gruppe med checkboxes"
+                        >
                             <DsCheckbox value="test1">test1</DsCheckbox>
                             <DsCheckbox value="test2">test2</DsCheckbox>
                         </RhfCheckboxGroup>
                         <RhfCheckboxGroup
                             name="checkpanelpre"
+                            control={formMethods.control}
                             label="Dette er en gruppe med checkboxes som er preutfyllt"
                         >
                             <DsCheckbox value="test1">test1</DsCheckbox>
                             <DsCheckbox value="test2">test2</DsCheckbox>
                         </RhfCheckboxGroup>
-                        <RhfTextField name="textfield" label="Dette er et tekstfelt" />
+                        <RhfTextField name="textfield" control={formMethods.control} label="Dette er et tekstfelt" />
                         <RhfTextField
                             name="textfieldpre"
+                            control={formMethods.control}
                             label="Dette er et tekstfelt med preutfyllt verdi"
                             description="Beskrivelse"
                         />
-                        <RhfTextarea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
-                        <RhfTextarea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
+                        <RhfTextarea
+                            name="textarea"
+                            control={formMethods.control}
+                            label="Dette er et tekstarea"
+                            description="beskrivelse"
+                        />
+                        <RhfTextarea
+                            name="textareapre"
+                            control={formMethods.control}
+                            label="Dette er et tekstarea som er preutfyllt"
+                        />
                         <RhfCombobox
-                            label="Dette er en combobox"
                             name="combobox"
+                            control={formMethods.control}
+                            label="Dette er en combobox"
                             options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
                         />
                         <RhfCombobox
-                            label="Dette er en combobox der verdi er valgt"
                             name="comboboxPre"
+                            control={formMethods.control}
+                            label="Dette er en combobox der verdi er valgt"
                             options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
                         />
                         <RhfRadioGroup
                             name="radio"
+                            control={formMethods.control}
                             description="Dette er en mer utfyllende tekst"
                             label="Dette er en radioknapp"
                         >
@@ -80,6 +110,7 @@ const meta = {
                         </RhfRadioGroup>
                         <RhfRadioGroup
                             name="radiopre"
+                            control={formMethods.control}
                             description="Dette er en radioknapp med preutfyllt verdi - beskrivelse"
                             label="Dette er en radioknapp med preutfyllt verdi"
                         >
@@ -87,8 +118,9 @@ const meta = {
                             <Radio value={false}>False</Radio>
                         </RhfRadioGroup>
                         <RhfSelect
-                            label="Dette er en dropdown"
                             name="testSelectField"
+                            control={formMethods.control}
+                            label="Dette er en dropdown"
                             description="Dette er en nærmere beskrivelse"
                         >
                             <option value="value1" key="1">
@@ -98,7 +130,11 @@ const meta = {
                                 Test 2
                             </option>
                         </RhfSelect>
-                        <RhfSelect label="Dette er en dropdown der verdi er valgt" name="testSelectFieldpre">
+                        <RhfSelect
+                            name="testSelectFieldpre"
+                            control={formMethods.control}
+                            label="Dette er en dropdown der verdi er valgt"
+                        >
                             <option value="value3" key="1">
                                 Test 3
                             </option>
@@ -107,14 +143,19 @@ const meta = {
                             </option>
                         </RhfSelect>
                         <RhfDatepicker
-                            label="Dette er en datepicker"
                             name="datepickerField"
+                            control={formMethods.control}
+                            label="Dette er en datepicker"
                             description="Dette er en mer utfyllende tekst"
                             maxDate={dayjs().add(10, 'day').toDate()}
                             minDate={dayjs().subtract(10, 'day').toDate()}
                             showMonthAndYearDropdowns
                         />
-                        <RhfDatepicker label="Dette er en datepicker der verdi er valgt" name="datepickerFieldPre" />
+                        <RhfDatepicker
+                            name="datepickerFieldPre"
+                            control={formMethods.control}
+                            label="Dette er en datepicker der verdi er valgt"
+                        />
                         <div>
                             <Heading size="small">dateRangepicker</Heading>
                             <RhfDateRangepicker

@@ -160,10 +160,11 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                 </Infobox>
                             )}
                         <BlueRadioGroup
+                            name="dekningsgrad"
+                            control={formMethods.control}
                             label={
                                 <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
-                            name="dekningsgrad"
                             validate={[
                                 isRequired(
                                     intl.formatMessage(

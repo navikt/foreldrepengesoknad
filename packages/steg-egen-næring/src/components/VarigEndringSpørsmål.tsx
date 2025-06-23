@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
@@ -20,6 +21,8 @@ import {
     isValidNumberForm,
 } from '@navikt/fp-validation';
 
+import { NæringFormValues } from '../types/NæringFormValues';
+
 const TEXT_INPUT_MIN_LENGTH = 10;
 const TEXT_INPUT_MAX_LENGTH = 1000;
 
@@ -33,10 +36,13 @@ interface Props {
 export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, appOrigin }: Props) => {
     const intl = useIntl();
 
+    const { control } = useFormContext<NæringFormValues>();
+
     return (
         <>
             <RhfRadioGroup
                 name="hattVarigEndringAvNæringsinntektSiste4Kalenderår"
+                control={control}
                 label={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene' })}
                 validate={[
                     isRequired(
@@ -69,6 +75,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                 <>
                     <RhfDatepicker
                         name="varigEndringDato"
+                        control={control}
                         label={intl.formatMessage({ id: 'egenNæring.egenNæringVarigEndringDato' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.varigEndringDato.påkrevd' })),
@@ -94,6 +101,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                     />
                     <RhfTextField
                         name="varigEndringInntektEtterEndring"
+                        control={control}
                         label={intl.formatMessage({ id: 'egenNæring.egenNæringVarigEndringInntektEtterEndring' })}
                         description={intl.formatMessage({
                             id: 'egenNæring.egenNæringVarigEndringInntektEtterEndring.description',
@@ -112,6 +120,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                     />
                     <RhfTextarea
                         name="varigEndringBeskrivelse"
+                        control={control}
                         label={intl.formatMessage({ id: 'egenNæring.varigEndringBeskrivelse.label' })}
                         validate={[
                             isRequired(

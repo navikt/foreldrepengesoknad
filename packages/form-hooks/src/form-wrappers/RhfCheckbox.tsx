@@ -10,7 +10,8 @@ type Props<T extends FieldValues> = {
     validate?: Array<(value: string) => any>;
     onChange?: (isChecked: boolean) => void;
     className?: string;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfCheckbox = <T extends FieldValues>({
     label,

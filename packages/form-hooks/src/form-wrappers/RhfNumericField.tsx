@@ -14,7 +14,8 @@ type Props<T extends FieldValues> = {
     maxLength?: number;
     className?: string;
     style?: CSSProperties;
-} & UseControllerProps<T>;
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfNumericField = <T extends FieldValues>({
     label,
