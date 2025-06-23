@@ -76,12 +76,10 @@ const DEFAULT_SØKERINFO = {
     },
 } satisfies Søkerinfo;
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -139,7 +137,7 @@ const meta = {
                             [ARBEIDSFORHOLD_ID]: [
                                 {
                                     id: 'V134300149934973076055420920289127108',
-                                    file: {} as any,
+                                    file: {} as File,
                                     filename: 'vedlegg – Kopi (7).png',
                                     filesize: 7477,
                                     uploaded: true,

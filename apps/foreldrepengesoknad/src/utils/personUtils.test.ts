@@ -1,3 +1,5 @@
+import { createIntl, createIntlCache } from 'react-intl';
+
 import { AnnenForelder } from '@navikt/fp-common';
 import { PersonFrontend } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
@@ -9,6 +11,20 @@ import {
     getMorErAleneOmOmsorg,
     getNavnPåForeldre,
 } from './personUtils';
+
+const cache = createIntlCache();
+
+const getIntlMock = () => {
+    return createIntl(
+        {
+            locale: 'nb',
+            defaultLocale: 'nb',
+            //@ts-expect-error fiks
+            messages,
+        },
+        cache,
+    );
+};
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
@@ -110,7 +126,7 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');
@@ -126,7 +142,7 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const erFarEllerMedmor = false;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');

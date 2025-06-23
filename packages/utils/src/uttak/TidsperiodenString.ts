@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Tidsperiode } from '@navikt/fp-types';
+import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-types';
 
 import { dateStringIsSameOrAfter, dateStringIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
 import { UttaksdagenString } from './UttaksdagenString';
@@ -37,7 +37,10 @@ const overlapperTidsperioder = (t1: Tidsperiode, t2: Tidsperiode) => {
     );
 };
 
-const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: string) => {
+const erTidsperiodeInnenforFørsteSeksUker = (
+    tidsperiode: Tidsperiode | TidsperiodeDate,
+    familiehendelsesdato: string,
+) => {
     const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
     const førsteUttaksdagEtterSeksUker = UttaksdagenString(førsteUttaksdagFamiliehendelsesdato).leggTil(
         ANTALL_UTTAKSDAGER_SEKS_UKER,
@@ -53,7 +56,7 @@ function inneholderTidsperiodeDato(tidsperiode: Tidsperiode, dato: string): bool
     return dayjs(dato).isBetween(tidsperiode.fom, tidsperiode.tom, 'days', '[]');
 }
 
-export function isValidTidsperiodeString(tidsperiode: any): tidsperiode is Tidsperiode {
+export function isValidTidsperiodeString(tidsperiode: Tidsperiode | TidsperiodeDate): tidsperiode is Tidsperiode {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&
@@ -175,7 +178,7 @@ function tidsperiodeToStringKort(tidsperiode: Tidsperiode, intl: IntlShape) {
     );
 }
 
-const erTidsperiodeFomEllerEtterDato = (tidsperiode: Tidsperiode, dato: string): boolean => {
+const erTidsperiodeFomEllerEtterDato = (tidsperiode: Tidsperiode | TidsperiodeDate, dato: string): boolean => {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&

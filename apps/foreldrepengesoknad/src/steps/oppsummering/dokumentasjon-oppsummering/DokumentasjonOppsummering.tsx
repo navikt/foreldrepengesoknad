@@ -101,7 +101,11 @@ export const DokumentasjonOppsummering = ({
                                                         vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE,
                                                 )
                                                 .map((vedlegg) => (
-                                                    <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                                    <Link
+                                                        key={vedlegg.id}
+                                                        href={vedlegg.url ?? undefined}
+                                                        target="_blank"
+                                                    >
                                                         {vedlegg.filename}
                                                     </Link>
                                                 ))}

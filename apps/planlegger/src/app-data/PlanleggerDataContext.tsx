@@ -34,7 +34,9 @@ export type ContextDataMap = {
 
 const defaultInitialState = {} as ContextDataMap;
 
-export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const PlanleggerStateContext = createContext<ContextDataMap>(defaultInitialState);
