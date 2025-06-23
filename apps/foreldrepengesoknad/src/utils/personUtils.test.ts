@@ -4,6 +4,7 @@ import { AnnenForelder } from '@navikt/fp-common';
 import { PersonFrontend } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
+import messages from '../intl/nb_NO.json';
 import {
     formaterNavn,
     getErSøkerFarEllerMedmor,
