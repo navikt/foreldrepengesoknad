@@ -8,7 +8,7 @@ export const SkjemaRotLayout = ({ children, pageTitle }: { children: React.React
             <Page.Block as="main" id="pageMainContent" width="text" gutters>
                 {pageTitle && (
                     <Page.Block>
-                        <Heading size="large" level="1" spacing>
+                        <Heading size="large" level="1" className="mb-8">
                             {pageTitle}
                         </Heading>
                     </Page.Block>
