@@ -1,0 +1,5 @@
+import{j as e,V as r,W as d,X as c,Y as m}from"./iframe-GIdhbm7h.js";import{S as p}from"./Information-DtdWnIMs.js";const n=({text:i})=>e.jsxs(r,{"aria-label":"",children:[e.jsx(r.Header,{children:e.jsxs(d,{gap:"10",align:"center",children:[e.jsx(c,{size:"xl",color:"green",children:e.jsx(p,{height:25,width:25,"aria-hidden":!0})}),e.jsx(r.Title,{size:"medium",children:e.jsx(m,{id:"HvorforSpørNAVOmDette.Info.Tittel"})})]})}),e.jsx(r.Content,{children:i})]});n.__docgenInfo={description:"",methods:[],displayName:"HvorforSpørNAVOmDette",props:{text:{required:!0,tsType:{name:"string"},description:""}}};const f={title:"components/HvorforSpørNAVOmDette",component:n},t={args:{text:"Dette er en tekst"}};var s,o,a;t.parameters={...t.parameters,docs:{...(s=t.parameters)==null?void 0:s.docs,source:{originalSource:`{
+  args: {
+    text: 'Dette er en tekst'
+  }
+}`,...(a=(o=t.parameters)==null?void 0:o.docs)==null?void 0:a.source}}};const g=["Default"];export{t as Default,g as __namedExportsOrder,f as default};
