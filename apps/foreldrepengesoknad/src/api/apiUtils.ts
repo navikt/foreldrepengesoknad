@@ -309,13 +309,22 @@ export const cleanAnnenforelder = (
     }
 
     const oppgitt = annenForelder as AnnenForelderOppgitt;
+
+    const harRettPåForeldrepenger = !!oppgitt.harRettPåForeldrepengerINorge;
+    /*
+     Hvis bruker har svart på spørsmålet om annenForelder er informert så bruker vi det.
+     Men i tilfelle endringssøknad så finnes ikke dette spørsmålet eksplisitt (det finnes implisitt i en checkbox for å kunne sende).
+     I de tilfellene sier vi ja hvis annen forelder har ret i Norge.
+    */
+    const erInformertOmSøknaden = oppgitt.erInformertOmSøknaden ?? harRettPåForeldrepenger;
+
     const baseData = {
         fnr: oppgitt.fnr,
         fornavn: oppgitt.fornavn,
         etternavn: oppgitt.etternavn,
         rettigheter: {
-            harRettPåForeldrepenger: !!oppgitt.harRettPåForeldrepengerINorge,
-            erInformertOmSøknaden: oppgitt.erInformertOmSøknaden,
+            harRettPåForeldrepenger,
+            erInformertOmSøknaden,
             erAleneOmOmsorg: oppgitt.erAleneOmOmsorg,
             harMorUføretrygd: oppgitt.erMorUfør,
             harAnnenForelderOppholdtSegIEØS: oppgitt.harOppholdtSegIEØS,
