@@ -195,7 +195,7 @@ const getWrapper =
 
 vi.mock('ky');
 
-describe('useEsSendSøknad', () => {
+describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
     });
