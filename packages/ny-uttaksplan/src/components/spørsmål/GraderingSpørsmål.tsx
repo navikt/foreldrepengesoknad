@@ -37,6 +37,7 @@ export const GraderingSpørsmål = ({ formMethods }: Props) => {
                     control={formMethods.control}
                     className="w-xs"
                     label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
+                    // @ts-expect-error Andreas fiksar
                     validate={[prosentValideringGradering(intl)]}
                     maxLength={5}
                 />

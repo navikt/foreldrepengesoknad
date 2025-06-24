@@ -102,11 +102,7 @@ export const DokumentasjonOppsummering = ({
                                                 )
                                                 .map((vedlegg) => {
                                                     return vedlegg.url ? (
-                                                        <Link
-                                                            key={vedlegg.id}
-                                                            href={vedlegg.url ?? undefined}
-                                                            target="_blank"
-                                                        >
+                                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
                                                             {vedlegg.filename}
                                                         </Link>
                                                     ) : (
