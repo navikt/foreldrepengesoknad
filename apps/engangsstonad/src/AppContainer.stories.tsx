@@ -2,8 +2,12 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
+import { expect, fireEvent, within } from 'storybook/test';
+
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { AppContainer } from './AppContainer';
 
@@ -66,6 +70,56 @@ export const SøkerErKvinne: Story = {
                 ),
             ]),
         },
+    },
+    play: async ({ canvasElement, userEvent }) => {
+        const canvas = within(canvasElement);
+        expect(await canvas.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        await userEvent.click(canvas.getByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(canvas.getByText('Start søknaden'));
+
+        expect(await canvas.findAllByText('Din situasjon')).toHaveLength(2);
+        expect(canvas.getByText('Steg 1 av 4')).toBeInTheDocument();
+        await userEvent.click(canvas.getByText('Fødsel'));
+        await userEvent.click(canvas.getByText('Neste steg'));
+
+        expect(await canvas.findByText('Steg 2 av 4')).toBeInTheDocument();
+        expect(canvas.getAllByText('Barnet')).toHaveLength(2);
+        await userEvent.click(canvas.getByText('Ja'));
+        const fødselsdato = canvas.getByLabelText('Fødselsdato');
+        await userEvent.type(fødselsdato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        await fireEvent.blur(fødselsdato);
+        const termindato = canvas.getByLabelText('Termindato');
+        await userEvent.type(termindato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        await fireEvent.blur(termindato);
+        await userEvent.click(canvas.getByText('Ett barn'));
+        await userEvent.click(canvas.getByText('Neste steg'));
+
+        expect(await canvas.findByText('Steg 3 av 4')).toBeInTheDocument();
+        expect(canvas.getAllByText('Bo i utlandet')).toHaveLength(2);
+
+        await userEvent.click(canvas.getByText('Jeg har bodd i Norge'));
+        await userEvent.click(canvas.getByText('Jeg skal bo i Norge'));
+        await userEvent.click(canvas.getByText('Neste steg'));
+
+        expect(await canvas.findByText('Søknaden gjelder')).toBeInTheDocument();
+        expect(canvas.getAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(
+            canvas.getByText(
+                'De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.',
+            ),
+        );
+
+        await userEvent.click(canvas.getByText('Forrige steg'));
+        expect(canvas.getAllByText('Bo i utlandet')).toHaveLength(2);
+
+        await userEvent.click(canvas.getByText('Forrige steg'));
+        expect(canvas.getAllByText('Barnet')).toHaveLength(2);
+
+        await userEvent.click(canvas.getByText('Forrige steg'));
+        expect(canvas.getAllByText('Din situasjon')).toHaveLength(2);
+
+        await userEvent.click(canvas.getByText('Forrige steg'));
+        expect(canvas.getByText('Ja, jeg har forstått mine plikter.')).toBeInTheDocument();
     },
 };
 
