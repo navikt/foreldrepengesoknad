@@ -35,7 +35,7 @@ const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
     );
 };
 
-const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
+const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: TidsperiodeDate, familiehendelsesdato: Date) => {
     const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
         ANTALL_UTTAKSDAGER_SEKS_UKER,
@@ -51,7 +51,7 @@ function inneholderTidsperiodeDato(tidsperiode: TidsperiodeDate, dato: Date): bo
     return dayjs(dato).isBetween(tidsperiode.fom, tidsperiode.tom, 'days', '[]');
 }
 
-export function isValidTidsperiode(tidsperiode: any): tidsperiode is TidsperiodeDate {
+export function isValidTidsperiode(tidsperiode: TidsperiodeDate): tidsperiode is TidsperiodeDate {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&

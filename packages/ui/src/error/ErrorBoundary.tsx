@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { Component, ReactElement } from 'react';
+import { Component, ErrorInfo, ReactElement } from 'react';
 
 import { AppName } from '@navikt/fp-types';
 
@@ -15,19 +15,19 @@ interface Props {
 interface State {
     eventId: string | null;
     hasError: boolean;
-    errorInfo: any;
+    errorInfo: ErrorInfo | null;
     errorMessage: string | undefined;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
         this.state = { eventId: null, hasError: false, errorInfo: null, errorMessage: undefined };
     }
 
-    componentDidCatch(error: Error | null, errorInfo: any) {
-        Sentry.withScope((scope: any) => {
-            scope.setExtras(errorInfo);
+    componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
+        Sentry.withScope((scope) => {
+            scope.setExtra('errorInfo', errorInfo);
             const eventId = Sentry.captureException(error);
             this.setState({ eventId, errorInfo });
         });
@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<Props, State> {
             if (errorMessage && retryCallback) {
                 return <ErrorPage appName={appName} errorMessage={errorMessage} retryCallback={retryCallback} />;
             }
-            return <div>{errorMessage ?? errorInfo}</div>;
+            return <div>{errorMessage ?? errorInfo?.componentStack}</div>;
         }
         return this.props.children;
     }

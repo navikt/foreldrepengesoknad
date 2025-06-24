@@ -3,11 +3,11 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { Checkbox, ErrorMessage } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
-    validate?: Array<(value: string) => any>;
+    validate?: Array<(value: string) => ValidationReturnType>;
     onChange?: (isChecked: boolean) => void;
     className?: string;
     control: UseControllerProps<T>['control'];

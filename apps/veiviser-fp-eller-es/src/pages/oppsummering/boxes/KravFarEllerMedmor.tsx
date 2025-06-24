@@ -27,7 +27,7 @@ export const KravFarEllerMedmor = () => {
                             <FormattedMessage
                                 id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
                                 values={{
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link
                                             href="https://lovdata.no/dokument/NL/lov/1981-04-08-7"
                                             target="_blank"

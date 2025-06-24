@@ -11,12 +11,10 @@ import { BarnFrontend, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-type
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultSøker = {
     fnr: '19047815714',

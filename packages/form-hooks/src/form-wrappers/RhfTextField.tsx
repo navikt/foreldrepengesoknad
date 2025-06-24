@@ -5,13 +5,13 @@ import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react'
 
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label?: string | ReactNode;
-    validate?: Array<(value: string) => any> | Array<(value: number) => any>;
+    validate?: Array<(value: string) => ValidationReturnType>;
     description?: string;
-    onChange?: (value: any) => void;
+    onChange?: (value: string | null) => void;
     autoFocus?: boolean;
     type?: 'email' | 'password' | 'tel' | 'text' | 'url';
     className?: string;

@@ -7,12 +7,10 @@ import { action } from 'storybook/actions';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,

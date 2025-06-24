@@ -174,7 +174,7 @@ export const OppsummeringHarRett = ({
                                                         year: 'numeric',
                                                     },
                                                 ),
-                                                b: (msg: any) => <b>{msg}</b>,
+                                                b: (msg) => <b>{msg}</b>,
                                             }}
                                         />
                                     </BodyLong>
@@ -235,7 +235,7 @@ export const OppsummeringHarRett = ({
                                                         year: 'numeric',
                                                     },
                                                 ),
-                                                b: (msg: any) => <b>{msg}</b>,
+                                                b: (msg) => <b>{msg}</b>,
                                             }}
                                         />
                                     </BodyShort>

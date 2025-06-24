@@ -47,7 +47,7 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 <FormattedMessage id="FpEllerEsForside.FpErstatte" />{' '}
                                 <FormattedMessage
                                     id="OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom"
-                                    values={{ b: (msg: any) => <b>{msg}</b> }}
+                                    values={{ b: (msg) => <b>{msg}</b> }}
                                 />
                             </BodyShort>
                         </VStack>

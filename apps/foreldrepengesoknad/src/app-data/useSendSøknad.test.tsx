@@ -195,7 +195,7 @@ const getWrapper =
 
 vi.mock('ky');
 
-describe('useEsSendSøknad', () => {
+describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
     });
@@ -205,7 +205,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
@@ -295,7 +295,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;

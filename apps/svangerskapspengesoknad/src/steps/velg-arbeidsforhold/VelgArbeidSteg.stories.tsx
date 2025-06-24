@@ -10,12 +10,10 @@ import { ArbeidsforholdOgInntektSvp, Frilans, NæringDto } from '@navikt/fp-type
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {

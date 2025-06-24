@@ -13,12 +13,10 @@ import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultSøkerinfo = {
     søker: {

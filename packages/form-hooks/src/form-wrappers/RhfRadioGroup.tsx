@@ -3,12 +3,12 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { RadioGroup } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     description?: string | ReactNode;
     label?: string | ReactNode;
-    validate?: Array<(value: string | number | boolean) => any>;
+    validate?: Array<(value: string | number | boolean) => ValidationReturnType>;
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
     className?: string;
@@ -54,10 +54,11 @@ export const RhfRadioGroup = <T extends FieldValues>({
             }}
             className={className}
         >
-            {children.map((child: any, index) => {
+            {children.map((child, index) => {
                 //TODO Vurder å heller lage ein wrapper til children
                 //Denne map'en legg til ref for å kunna setta fokus ved feil
                 if (index === 0) {
+                    // @ts-expect-error fiks
                     return React.cloneElement(child, { key: child.key, ref: field.ref });
                 }
                 return child;

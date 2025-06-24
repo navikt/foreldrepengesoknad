@@ -46,6 +46,7 @@ export const Default: Story = {
                 uploaded: true,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                url: null,
             },
             {
                 id: '2',
@@ -56,6 +57,7 @@ export const Default: Story = {
                 uploaded: false,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                url: null,
             },
         ],
     },
@@ -74,6 +76,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: true,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                url: null,
             },
             {
                 id: '2',
@@ -84,6 +87,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: false,
                 type: AttachmentType.ALENEOMSORG,
                 skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                url: null,
             },
         ],
         //@ts-expect-error fiks

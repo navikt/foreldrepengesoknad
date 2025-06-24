@@ -27,7 +27,7 @@ export const HvemKanDriveMedEgenNæring = () => {
                     <FormattedMessage
                         id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link href={links.næringsdrivendeInfoBoks} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>

@@ -131,7 +131,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
-    const onSubmit = (e: FormEvent<any>) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
 
         mutate({

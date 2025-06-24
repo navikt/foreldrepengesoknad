@@ -69,7 +69,7 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                                     id="HvorMyeOppsummering.NAVDekker"
                                     values={{
                                         maksInntekt: formatCurrencyWithKr(annualMax),
-                                        a: (msg: any) => (
+                                        a: (msg) => (
                                             <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer">
                                                 {msg}
                                             </Link>

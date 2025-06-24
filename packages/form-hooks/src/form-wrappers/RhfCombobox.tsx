@@ -3,11 +3,11 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
-    validate?: Array<(value: string) => any>;
+    validate?: Array<(value: string) => ValidationReturnType>;
     options: string[];
     description?: ReactNode;
     className?: string;

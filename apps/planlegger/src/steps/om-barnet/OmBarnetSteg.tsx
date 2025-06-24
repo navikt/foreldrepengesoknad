@@ -121,7 +121,7 @@ export const OmBarnetSteg = () => {
                                     <FormattedMessage
                                         id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link href={links.foreldrepengerFarOgFar} target="_blank" inlineText>
                                                     {msg}
                                                 </Link>

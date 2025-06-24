@@ -71,7 +71,7 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link inlineText href={links.godkjentAktivitet} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>

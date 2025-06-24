@@ -143,7 +143,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                             <FormattedMessage
                                                 id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
                                                 values={{
-                                                    a: (msg: any) => (
+                                                    a: (msg) => (
                                                         <Link
                                                             inlineText
                                                             href={links.godkjentAktivitet}

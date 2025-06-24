@@ -345,7 +345,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <FormattedMessage
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
-                                                a: (msg: any) => (
+                                                a: (msg) => (
                                                     <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </Link>

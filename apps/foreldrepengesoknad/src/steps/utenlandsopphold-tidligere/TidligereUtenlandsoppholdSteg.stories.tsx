@@ -10,12 +10,10 @@ import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { TidligereUtenlandsoppholdSteg } from './TidligereUtenlandsoppholdSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultUtenlandsopphold = {
     skalBoUtenforNorgeNeste12Mnd: false,

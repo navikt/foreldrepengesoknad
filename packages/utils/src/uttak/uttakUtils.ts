@@ -1,7 +1,14 @@
 import dayjs from 'dayjs';
 
 import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
-import { Oppholdsperiode, Periode, isAvslåttPeriode, isUttaksperiode } from '@navikt/fp-types';
+import {
+    Oppholdsperiode,
+    Periode,
+    Tidsperiode,
+    TidsperiodeDate,
+    isAvslåttPeriode,
+    isUttaksperiode,
+} from '@navikt/fp-types';
 import { isUttakAnnenPart } from '@navikt/fp-types/src/Periode';
 
 import { Uttaksdagen } from './Uttaksdagen';
@@ -15,7 +22,10 @@ export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): 
     ).forrige();
 };
 
-export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
+export const slutterTidsperiodeInnen6UkerEtterFødsel = (
+    tidsperiode: TidsperiodeDate | Tidsperiode,
+    familiehendelsesdato: Date,
+): boolean => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     return dayjs(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
 };

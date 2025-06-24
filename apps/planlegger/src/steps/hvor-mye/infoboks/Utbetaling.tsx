@@ -77,7 +77,7 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                                     id="HvorMyeSteg.NAVDekker"
                                     values={{
                                         grunnbeløpet: formatCurrencyWithKr(grunnbeløpet * 6),
-                                        a: (msg: any) => (
+                                        a: (msg) => (
                                             <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer" inlineText>
                                                 {msg}
                                             </Link>

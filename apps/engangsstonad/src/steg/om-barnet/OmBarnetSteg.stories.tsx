@@ -9,12 +9,10 @@ import { Situasjon } from '@navikt/fp-types';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     søkersituasjon: Situasjon;

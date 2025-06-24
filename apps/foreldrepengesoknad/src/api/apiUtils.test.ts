@@ -16,6 +16,7 @@ import { ArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 
 import {
     UttaksplanPeriode,
+    cleanEndringssøknad,
     cleanSøknad,
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
@@ -129,6 +130,22 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
         }
         expect(Object.hasOwn(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
+    });
+
+    it('skal sende at annenforelder er informert for endringssøknad', () => {
+        const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: true };
+        const data = getStateMock(annenForelder, barnMock, []);
+        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato);
+        expect(cleanedSøknadMedRett.annenForelder).toBeDefined();
+        expect(cleanedSøknadMedRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
+    });
+
+    it('skal sende undefined for om annenforelder er informert hvis annen part ikke har rett', () => {
+        const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: false };
+        const data = getStateMock(annenForelder, barnMock, []);
+        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato);
+        expect(cleanedSøknadUtenRett.annenForelder).toBeDefined();
+        expect(cleanedSøknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
     });
 
     it('skal fjerne info om erMorForSyk fra periodene men ikke endre resten av uttaksplanen', () => {

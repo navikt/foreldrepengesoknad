@@ -37,7 +37,7 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
                     <FormattedMessage
                         id="HarIkkeRettTilFpInfobox.AntattLønn"
                         values={{
-                            b: (msg: any) => <b>{msg}</b>,
+                            b: (msg) => <b>{msg}</b>,
                             antattÅrslønn: formatCurrencyWithKr(antattÅrslønn),
                             minÅrslønn: formatCurrencyWithKr(minÅrslønn),
                         }}

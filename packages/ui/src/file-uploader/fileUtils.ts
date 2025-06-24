@@ -30,6 +30,7 @@ export const mapFileToAttachment = (
             pending: false,
             type,
             skjemanummer,
+            url: null,
         },
         fileObject,
     };

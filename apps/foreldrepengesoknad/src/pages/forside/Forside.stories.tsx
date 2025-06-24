@@ -9,12 +9,10 @@ import { BarnFrontend, FpSak, FpÅpenBehandling, PersonFrontend, Søkerinfo } fr
 
 import { Forside } from './Forside';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultPerson = {
     fnr: '19047815714',

@@ -30,7 +30,7 @@ export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbei
 
     const fortsettSøknadSenere = () => {
         loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
-        (window as any).location = 'https://nav.no';
+        window.location.href = 'https://nav.no';
     };
 
     return {

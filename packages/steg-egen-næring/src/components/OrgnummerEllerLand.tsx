@@ -58,8 +58,8 @@ export const OrgnummerEllerLand = ({ orgNummerErValgfritt, registrertINorge }: P
                     ]}
                 >
                     {createCountryOptions()
-                        .filter((country: Record<string, any>) => country[0] !== 'NO')
-                        .map((o: Record<string, any>) => (
+                        .filter((country) => country[0] !== 'NO')
+                        .map((o) => (
                             <option key={o[0]} value={o[0]}>
                                 {o[1]}
                             </option>

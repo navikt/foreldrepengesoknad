@@ -12,12 +12,10 @@ import { FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const VALGT_TILRETTELEGGING_ID = '990322244';
 const ANNEN_TILRETTELEGGING_ID = '975326209';

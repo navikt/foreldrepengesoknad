@@ -33,7 +33,7 @@ export const DinePersonopplysningerModal = () => {
                                 <FormattedMessage
                                     id="velkommen.dinePersonopplysninger.behandling.html"
                                     values={{
-                                        a: (msg: any) => (
+                                        a: (msg) => (
                                             <Link
                                                 href="https://www.nav.no/foreldrepenger"
                                                 rel="noreferrer"
@@ -146,7 +146,7 @@ export const DinePersonopplysningerModal = () => {
                                     <FormattedMessage
                                         id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.html"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link
                                                     target="_blank"
                                                     rel="noreferrer"

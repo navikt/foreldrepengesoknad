@@ -67,7 +67,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                         isValidDate(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato.Gyldig' })),
                         (fødselsdato) => {
                             return !fødselsdato || !adopsjonsdato
-                                ? undefined
+                                ? null
                                 : isBeforeTodayOrToday(
                                       intl.formatMessage({
                                           id: 'AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere',

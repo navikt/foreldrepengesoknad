@@ -8,7 +8,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -35,8 +35,8 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
 type Props<T extends FieldValues> = {
     label?: string | ReactNode;
     description?: string;
-    validate?: Array<(value: string) => any>;
-    onChange?: (value: any) => void;
+    validate?: Array<(value: string) => ValidationReturnType>;
+    onChange?: (value: string) => void;
     minDate?: Date | Dayjs | string;
     maxDate?: Date | Dayjs | string;
     defaultMonth?: Date | Dayjs | string;

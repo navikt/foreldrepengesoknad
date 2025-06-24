@@ -7,12 +7,10 @@ import { action } from 'storybook/actions';
 
 import { ArbeidIUtlandetSteg } from './ArbeidIUtlandetSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {

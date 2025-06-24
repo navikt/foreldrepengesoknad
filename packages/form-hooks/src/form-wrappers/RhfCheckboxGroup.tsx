@@ -3,13 +3,13 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { CheckboxGroup } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
     description?: string;
-    validate?: Array<(value: string | number) => any>;
-    onChange?: (value: any) => void;
+    validate?: Array<(value: string | number) => ValidationReturnType>;
+    onChange?: (value: string[]) => void;
     children: ReactElement[];
     control: UseControllerProps<T>['control'];
 } & Omit<UseControllerProps<T>, 'control'>;
@@ -37,7 +37,7 @@ export const RhfCheckboxGroup = <T extends FieldValues>({
     });
 
     const onChangeFn = useCallback(
-        (value: any[]) => {
+        (value: string[]) => {
             if (onChange) {
                 onChange(value);
             }

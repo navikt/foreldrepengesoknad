@@ -1,23 +1,27 @@
 import * as Sentry from '@sentry/browser';
-import { Component } from 'react';
+import { Component, ErrorInfo } from 'react';
+
+type Props = {
+    children: React.ReactNode;
+};
 
 interface State {
     error: Error | null;
     hasError: boolean;
 }
 
-export class ErrorBoundary extends Component<any, State> {
-    constructor(props: unknown) {
+export class ErrorBoundary extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = { hasError: false, error: null };
     }
 
-    componentDidCatch(error: Error | null, errorInfo: any): void {
+    componentDidCatch(error: Error | null, errorInfo: ErrorInfo): void {
         if (error && error.message !== 'window.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
             Sentry.withScope((scope) => {
-                scope.setExtras(errorInfo);
+                scope.setExtra('errorInfo', errorInfo);
                 Sentry.captureException(error);
             });
         }

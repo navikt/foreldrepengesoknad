@@ -83,7 +83,7 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
-                                                a: (msg: any) => (
+                                                a: (msg) => (
                                                     <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </Link>

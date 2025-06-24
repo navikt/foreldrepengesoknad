@@ -131,7 +131,7 @@ export const ValgtDekningsgradInfoboks = ({
                                 dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
-                                b: (msg: any) => <b>{msg}</b>,
+                                b: (msg) => <b>{msg}</b>,
                                 hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}
@@ -145,12 +145,12 @@ export const ValgtDekningsgradInfoboks = ({
                                 dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link inlineText href={links.godkjentAktivitet} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),
-                                b: (msg: any) => <b>{msg}</b>,
+                                b: (msg) => <b>{msg}</b>,
                                 hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}

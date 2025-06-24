@@ -13,12 +13,10 @@ import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const barnetDefault = {
     erBarnetFødt: true,
@@ -100,11 +98,12 @@ export const AdopsjonAvEktefellesBarn: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                    url: null,
                 },
             ],
         },
@@ -127,11 +126,12 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                    url: null,
                 },
             ],
         },
@@ -154,11 +154,12 @@ export const BarnetErIkkeFodt: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.TERMINBEKREFTELSE,
                     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                    url: null,
                 },
             ],
         },

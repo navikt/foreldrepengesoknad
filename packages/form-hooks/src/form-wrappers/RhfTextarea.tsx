@@ -5,13 +5,13 @@ import { Textarea } from '@navikt/ds-react';
 
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
     maxLength?: number;
     minLength?: number;
-    validate?: Array<(value: string) => any>;
+    validate?: Array<(value: string) => ValidationReturnType>;
     className?: string;
     description?: string;
     control: UseControllerProps<T>['control'];

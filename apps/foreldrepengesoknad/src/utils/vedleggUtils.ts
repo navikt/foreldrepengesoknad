@@ -22,6 +22,7 @@ export const mapFilTilVedlegg = (
     skjemanummer,
     innsendingsType,
     dokumenterer,
+    url: null,
 });
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
@@ -32,13 +33,7 @@ export const lagSendSenereDokument = (
     skjemanummer: Skjemanummer,
     dokumenterer?: AttachmentMetadata,
 ) => {
-    return mapFilTilVedlegg(
-        { name: '', size: '' } as any,
-        type,
-        skjemanummer,
-        InnsendingsType.SEND_SENERE,
-        dokumenterer,
-    );
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.SEND_SENERE, dokumenterer);
 };
 
 export const lagAutomatiskDokument = (
@@ -46,13 +41,7 @@ export const lagAutomatiskDokument = (
     skjemanummer: Skjemanummer,
     dokumenterer?: AttachmentMetadata,
 ) => {
-    return mapFilTilVedlegg(
-        { name: '', size: '' } as any,
-        type,
-        skjemanummer,
-        InnsendingsType.AUTOMATISK,
-        dokumenterer,
-    );
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.AUTOMATISK, dokumenterer);
 };
 
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
