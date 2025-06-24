@@ -36,7 +36,7 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
                     <FormattedMessage
                         id="Arbeidssituasjon.Ufør.Infoboks.LesMer"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link inlineText href={links.hvorLenge} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>

@@ -94,7 +94,7 @@ export const MinidialogSkjema = ({
         enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
     });
 
-    const handleSubmit = (e: FormEvent<any>) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
         const feilmelding = brukerØnskerÅUttaleSeg

@@ -51,7 +51,9 @@ export type ContextDataMap = {
 
 const defaultInitialState = {} satisfies ContextDataMap;
 
-export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const SvpStateContext = createContext<ContextDataMap>(defaultInitialState);

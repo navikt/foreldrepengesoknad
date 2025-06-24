@@ -85,12 +85,10 @@ const DEFAULT_BARN = {
     fødselsdato: '2024-02-18',
 };
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     tilrettelegging: IngenTilrettelegging | DelvisTilrettelegging;

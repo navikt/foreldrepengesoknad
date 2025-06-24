@@ -217,7 +217,7 @@ export const OppsummeringSteg = (props: Props) => {
                                 id="oppsummering.tekstOmFarskapsportal.far"
                                 values={{
                                     hvem: søkersituasjon.rolle,
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link href={links.farskapsportal} rel="noreferrer" target="_blank">
                                             {msg}
                                         </Link>

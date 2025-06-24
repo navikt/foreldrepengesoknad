@@ -368,7 +368,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                     <FormattedMessage
                                         id="tilrettelegging.expansion.tekst"
                                         values={{
-                                            em: (msg: any) => <em>{msg}</em>,
+                                            em: (msg) => <em>{msg}</em>,
                                         }}
                                     />
                                 </BodyLong>

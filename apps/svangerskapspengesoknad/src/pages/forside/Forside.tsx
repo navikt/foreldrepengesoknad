@@ -58,7 +58,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     <FormattedMessage
                         id="forside.guidepanel.lesMer"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link rel="noopener noreferrer" href={links.svangerskapspenger}>
                                     {msg}
                                 </Link>
@@ -72,7 +72,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             <FormattedMessage
                                 id="forside.tilrettelegging.info.del1"
                                 values={{
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link rel="noopener noreferrer" href={links.tilretteleggingsskjema}>
                                             {msg}
                                         </Link>
@@ -84,7 +84,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             <FormattedMessage
                                 id="forside.tilrettelegging.info.del2"
                                 values={{
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
                                             {msg}
                                         </Link>
@@ -114,7 +114,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             <FormattedMessage
                                 id="forside.samtykkeIntro.punkt2"
                                 values={{
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
                                             {msg}
                                         </Link>

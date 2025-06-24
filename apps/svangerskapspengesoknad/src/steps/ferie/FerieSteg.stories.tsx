@@ -63,12 +63,10 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;

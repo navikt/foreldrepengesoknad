@@ -328,7 +328,6 @@
     "valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid": "Dato på terminbekreftelse kan ikkje vere frem i tid",
     "valideringsfeil.omBarnet.terminbekreftelseDato.terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke": "Terminbekreftelsen må ha blitt utstedet frå og med 22. svangerskapsuke",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\".",
-    "valideringsfeil.inputfelt.required": "{inputFeltLabel} må fyllast ut",
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje oppgi ditt eige fødselsnummer",
     "valideringsfeil.fødselsnummer.underSeksten": "Feil i fødselsnummer. Den andre forelderen må vera over seksten år gammal",

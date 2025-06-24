@@ -15,8 +15,8 @@ const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
-// TODO Fjern any her utan å måtte dra inn axios i denne pakka
-type SaveAttachment = (attachment: Attachment) => Promise<any>;
+// TODO typen som blir returnert er ikkje komplett. Ikkje dra inn ky-avhengighet her
+type SaveAttachment = (attachment: Attachment) => Promise<{ headers: { location: string | null }; data: string }>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));

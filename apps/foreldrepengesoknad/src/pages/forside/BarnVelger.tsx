@@ -37,7 +37,7 @@ const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
                     values={{
                         antallBarnTekst: getTekstForAntallBarn(barn.antallBarn, intl),
                         termin: dayjs(barn.termindato!).format(DDMMMMYYY_DATE_FORMAT),
-                        b: (chunks: any) => <b>{chunks}</b>,
+                        b: (chunks) => <b>{chunks}</b>,
                     }}
                 />
             </Radio>
@@ -134,7 +134,7 @@ export const BarnVelger = ({ selectableBarn }: Props) => {
                     <FormattedMessage
                         id="omBarnet.gjelderAnnetBarn"
                         values={{
-                            b: (chunks: any) => <b>{chunks}</b>,
+                            b: (chunks) => <b>{chunks}</b>,
                         }}
                     />
                 </Radio>,

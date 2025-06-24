@@ -139,7 +139,7 @@ export const SkjemaSteg = ({
                                         <FormattedMessage
                                             id={'skjema.vedlegg.description.arbeidsgiver'}
                                             values={{
-                                                a: (msg: any) => (
+                                                a: (msg) => (
                                                     <Link
                                                         rel="noopener noreferrer"
                                                         href={links.arbeidstilsynetSkjema}

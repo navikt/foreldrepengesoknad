@@ -428,7 +428,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const ref = useRef<FormikValues>(null);
-    const clickHandler = async (values: any) => {
+    const clickHandler = async (values: FormikValues) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
             setIsSubmitting(true);
