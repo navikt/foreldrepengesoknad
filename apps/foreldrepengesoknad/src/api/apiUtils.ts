@@ -316,7 +316,12 @@ export const cleanAnnenforelder = (
      Men i tilfelle endringssøknad så finnes ikke dette spørsmålet eksplisitt (det finnes implisitt i en checkbox for å kunne sende).
      I de tilfellene sier vi ja hvis annen forelder har rett i Norge.
     */
-    const erInformertOmSøknaden = (oppgitt.erInformertOmSøknaden ?? harRettPåForeldrepenger) ? true : undefined;
+    const erInformertOmSøknaden = (() => {
+        if (oppgitt.erInformertOmSøknaden === undefined) {
+            return harRettPåForeldrepenger ? true : undefined;
+        }
+        return oppgitt.erInformertOmSøknaden;
+    })();
 
     const baseData = {
         fnr: oppgitt.fnr,
