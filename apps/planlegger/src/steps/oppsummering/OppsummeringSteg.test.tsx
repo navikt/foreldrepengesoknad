@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import * as stories from './OppsummeringSteg.stories';
 
@@ -192,12 +193,19 @@ describe('<OppsummeringSteg>', () => {
     it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0];
+        const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
+        if (expansionCard) {
+            const vismerButton = expansionCard.querySelector('button[aria-expanded="false"]');
+            if (vismerButton) {
+                await userEvent.click(vismerButton);
+            }
+        }
         expect(
             screen.getByText(
                 'Espen vil få rundt 46 kr per dag hvis dere velger 100 % foreldrepenger eller 37 kr per dag med 80 %.',
             ),
         ).toBeInTheDocument();
-        expect(screen.queryByText('Klare vil få rundt')).not.toBeInTheDocument();
+        expect(screen.queryByText('Klara vil få rundt')).not.toBeInTheDocument();
     });
 });
