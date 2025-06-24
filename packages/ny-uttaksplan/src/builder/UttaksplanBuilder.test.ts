@@ -176,9 +176,15 @@ describe('Uttaksplanbuilder tester', () => {
             readOnly: false,
         };
 
-        const result = Uttaksplanbuilder(perioder, '2022-05-02', false, false, false, false, undefined).leggTilPeriode(
-            nyPeriode,
-        );
+        const result = Uttaksplanbuilder({
+            perioder,
+            familiehendelsedato: '2022-05-02',
+            harAktivitetskravIPeriodeUtenUttak: false,
+            gjelderAdopsjon: false,
+            bareFarMedmorHarRett: false,
+            erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
+        }).leggTilPeriode(nyPeriode);
         expect(result.length).toBe(4);
         expect(result[2]).toEqual(nyPeriode);
 
@@ -191,9 +197,15 @@ describe('Uttaksplanbuilder tester', () => {
             utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
         };
 
-        const result2 = Uttaksplanbuilder(result, '2022-05-02', false, false, false, false, undefined).leggTilPeriode(
-            nyPeriode2,
-        );
+        const result2 = Uttaksplanbuilder({
+            perioder: result,
+            familiehendelsedato: '2022-05-02',
+            harAktivitetskravIPeriodeUtenUttak: false,
+            gjelderAdopsjon: false,
+            bareFarMedmorHarRett: false,
+            erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
+        }).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(6);
         expect(result2[2]).toEqual(nyPeriode2);
@@ -210,15 +222,15 @@ describe('Uttaksplanbuilder tester', () => {
             kontoType: StønadskontoType.Mødrekvote,
             readOnly: false,
         };
-        const result = Uttaksplanbuilder(
-            perioderMedToPerioderFørFødsel,
-            '2022-01-06',
-            false,
-            false,
-            false,
-            false,
-            undefined,
-        ).leggTilPeriode(nyPeriodeISluttenAvPlanen);
+        const result = Uttaksplanbuilder({
+            perioder: perioderMedToPerioderFørFødsel,
+            familiehendelsedato: '2022-01-06',
+            harAktivitetskravIPeriodeUtenUttak: false,
+            gjelderAdopsjon: false,
+            bareFarMedmorHarRett: false,
+            erFarEllerMedmor: false,
+            førsteUttaksdagNesteBarnsSak: undefined,
+        }).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
         expect(result[0]).toEqual(perioderMedToPerioderFørFødsel[0]);
@@ -246,16 +258,15 @@ describe('Uttaksplanbuilder tester', () => {
                 utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
                 readOnly: false,
             };
-            const result = Uttaksplanbuilder(
-                perioderMedAnnenPartsUttakOgUtsettelserISlutten,
-                '2021-09-04',
-                false,
-                false,
-                false,
-                false,
-                undefined,
-                perioderMedAnnenPartsUttakOgUtsettelserISlutten,
-            ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
+            const result = Uttaksplanbuilder({
+                perioder: perioderMedAnnenPartsUttakOgUtsettelserISlutten,
+                familiehendelsedato: '2021-09-04',
+                harAktivitetskravIPeriodeUtenUttak: false,
+                gjelderAdopsjon: false,
+                bareFarMedmorHarRett: false,
+                erFarEllerMedmor: false,
+                førsteUttaksdagNesteBarnsSak: undefined,
+            }).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 
             expect(result.length).toEqual(11);
             perioderMedAnnenPartsUttakOgUtsettelserISlutten.forEach((p, index) => {
