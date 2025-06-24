@@ -314,9 +314,9 @@ export const cleanAnnenforelder = (
     /*
      Hvis bruker har svart på spørsmålet om annenForelder er informert så bruker vi det.
      Men i tilfelle endringssøknad så finnes ikke dette spørsmålet eksplisitt (det finnes implisitt i en checkbox for å kunne sende).
-     I de tilfellene sier vi ja hvis annen forelder har ret i Norge.
+     I de tilfellene sier vi ja hvis annen forelder har rett i Norge.
     */
-    const erInformertOmSøknaden = oppgitt.erInformertOmSøknaden ?? harRettPåForeldrepenger;
+    const erInformertOmSøknaden = (oppgitt.erInformertOmSøknaden ?? harRettPåForeldrepenger) ? true : undefined;
 
     const baseData = {
         fnr: oppgitt.fnr,
