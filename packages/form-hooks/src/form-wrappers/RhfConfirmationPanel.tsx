@@ -3,11 +3,11 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { ConfirmationPanel } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
     label: string | ReactNode;
-    validate?: Array<(value: boolean) => any>;
+    validate?: Array<(value: boolean) => ValidationReturnType>;
     children: React.ReactElement;
     control: UseControllerProps<T>['control'];
 } & Omit<UseControllerProps<T>, 'control'>;
