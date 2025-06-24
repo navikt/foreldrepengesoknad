@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
@@ -36,10 +38,13 @@ interface Props {
 export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Props) => {
     const intl = useIntl();
 
+    const { control } = useFormContext<Dokumentasjon>();
+
     return (
         <>
             <RhfDatepicker
-                name={`terminbekreftelsedato`}
+                name="terminbekreftelsedato"
+                control={control}
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
                 minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
                 maxDate={dayjs().toDate()}

@@ -9,7 +9,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
-import { Næringstype } from 'types/Næring';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
@@ -23,8 +22,8 @@ import {
 } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
-    EgenNæring,
     Frilans,
+    NæringDto,
     PersonFrontend,
     Sivilstand,
     Søkerinfo,
@@ -35,12 +34,10 @@ import {
 
 import { Oppsummering } from './Oppsummering';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultSøkerinfoMor = {
     søker: {
@@ -218,7 +215,7 @@ type StoryArgs = {
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
@@ -557,10 +554,9 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         },
         egenNæring: {
             navnPåNæringen: 'Fiske',
-            pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
             organisasjonsnummer: '123',
             næringsinntekt: 1000000,
             registrertINorge: true,
@@ -585,10 +581,9 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         },
         egenNæring: {
             navnPåNæringen: 'Fiske',
-            pågående: false,
             fom: '2018-01-01',
             tom: '2021-01-01',
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
             registrertILand: 'SE',
             registrertINorge: false,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,

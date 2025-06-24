@@ -3,7 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect } from 'vitest';
 
-import { mswTest } from '../../mswTest';
+import { mswWrapper } from '@navikt/fp-utils-test';
+
 import * as stories from './EttersendingPage.stories';
 
 const { SkalIkkeFeileOpplasting, SkalFeileOpplasting } = composeStories(stories);
@@ -17,90 +18,102 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('<EttersendingPage>', () => {
-    mswTest('skal laste opp dokument uten feil', async ({ setHandlers }) => {
-        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
-        const utils = render(<SkalIkkeFeileOpplasting />);
+    it(
+        'skal laste opp dokument uten feil',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+            const utils = render(<SkalIkkeFeileOpplasting />);
 
-        expect(
-            await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
-            ),
-        ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                        'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+                ),
+            ).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
+            await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp dokumenter');
-        await userEvent.upload(fileInput, file);
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Last opp dokumenter');
+            await userEvent.upload(fileInput, file);
 
-        expect(await screen.findByText('Lastet opp (1) - Annet dokument')).toBeInTheDocument();
-        expect(screen.getByText('hello.png')).toBeInTheDocument();
-        expect(screen.queryByText('Ops noe gikk galt prøv igjen')).not.toBeInTheDocument();
-    });
+            expect(await screen.findByText('Lastet opp (1) - Annet dokument')).toBeInTheDocument();
+            expect(screen.getByText('hello.png')).toBeInTheDocument();
+            expect(screen.queryByText('Ops noe gikk galt prøv igjen')).not.toBeInTheDocument();
+        }),
+    );
 
-    mswTest('skal få feil ved opplasting av dokument', async ({ setHandlers }) => {
-        setHandlers(SkalFeileOpplasting.parameters.msw);
-        const utils = render(<SkalFeileOpplasting />);
+    it(
+        'skal få feil ved opplasting av dokument',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SkalFeileOpplasting.parameters.msw);
+            const utils = render(<SkalFeileOpplasting />);
 
-        expect(
-            await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
-            ),
-        ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                        'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+                ),
+            ).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
+            await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp dokumenter');
-        await userEvent.upload(fileInput, file);
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Last opp dokumenter');
+            await userEvent.upload(fileInput, file);
 
-        expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
-        expect(screen.getByText('hello.png')).toBeInTheDocument();
-        expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
-    });
+            expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
+            expect(screen.getByText('hello.png')).toBeInTheDocument();
+            expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
+        }),
+    );
 
-    mswTest('skal få ES-relevante dokumentvalg', async ({ setHandlers }) => {
-        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
-        const utils = render(<SkalIkkeFeileOpplasting />);
+    it(
+        'skal få ES-relevante dokumentvalg',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+            const utils = render(<SkalIkkeFeileOpplasting />);
 
-        expect(
-            await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
-            ),
-        ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                        'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+                ),
+            ).toBeInTheDocument();
 
-        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
-        const optionsTextContent = within(select)
-            .getAllByRole('option')
-            .map((o) => o.textContent);
+            const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+            const optionsTextContent = within(select)
+                .getAllByRole('option')
+                .map((o) => o.textContent);
 
-        // ikke uttømmende
-        expect(optionsTextContent).toContain('Dokumentasjon på oppholdstillatelse');
-        expect(optionsTextContent).toContain('Dokumentasjon på reiser til og fra Norge');
-        expect(optionsTextContent).toContain('Dokumentasjon på oppfølging i svangerskapet');
-        expect(optionsTextContent).toContain('Dokumentasjon på inntekt');
-    });
+            // ikke uttømmende
+            expect(optionsTextContent).toContain('Dokumentasjon på oppholdstillatelse');
+            expect(optionsTextContent).toContain('Dokumentasjon på reiser til og fra Norge');
+            expect(optionsTextContent).toContain('Dokumentasjon på oppfølging i svangerskapet');
+            expect(optionsTextContent).toContain('Dokumentasjon på inntekt');
+        }),
+    );
 
-    mswTest('skal sortere annet dokument nederst', async ({ setHandlers }) => {
-        setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
-        const utils = render(<SkalIkkeFeileOpplasting />);
+    it(
+        'skal sortere annet dokument nederst',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
+            const utils = render(<SkalIkkeFeileOpplasting />);
 
-        expect(
-            await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
-            ),
-        ).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                        'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
+                ),
+            ).toBeInTheDocument();
 
-        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
-        const optionsTextContent = within(select)
-            .getAllByRole('option')
-            .map((o) => o.textContent);
-        expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
-    });
+            const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+            const optionsTextContent = within(select)
+                .getAllByRole('option')
+                .map((o) => o.textContent);
+            expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
+        }),
+    );
 
     it('skal filtrere bort irrelevante dokumenttyper basert på verdier i queryparam', async () => {
         const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141,I000063" />);

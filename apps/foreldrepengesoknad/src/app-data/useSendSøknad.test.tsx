@@ -19,7 +19,7 @@ import {
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { Dekningsgrad, Næringstype, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { Dekningsgrad, NæringDto, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -77,18 +77,17 @@ const FRILANS = {
 };
 
 const EGEN_NÆRING = {
-    næringstype: Næringstype.FISKER,
+    næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
-    pågående: false,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     varigEndringDato: '2024-01-01',
     varigEndringInntektEtterEndring: 10000,
     varigEndringBeskrivelse: 'Beskrivelse av endring',
-};
+} satisfies NæringDto;
 
 const ANDRE_INNTEKTSKILDER = [
     {
@@ -196,7 +195,7 @@ const getWrapper =
 
 vi.mock('ky');
 
-describe('useEsSendSøknad', () => {
+describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
     });
@@ -206,7 +205,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
@@ -296,7 +295,7 @@ describe('useEsSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;

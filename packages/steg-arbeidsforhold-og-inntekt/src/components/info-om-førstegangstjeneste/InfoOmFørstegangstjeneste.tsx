@@ -21,12 +21,12 @@ export const InfoOmFørstegangstjeneste = () => {
                         <FormattedMessage
                             id="inntektsinformasjon.infoOmFørstegangstjeneste.content.del2"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link href={links.papirsøknadSvp} target="_blank" rel="noreferrer">
                                         {msg}
                                     </Link>
                                 ),
-                                b: (msg: any) => (
+                                b: (msg) => (
                                     <Link href={links.arbeidstilsynetSkjema} target="_blank" rel="noreferrer">
                                         {msg}
                                     </Link>

@@ -16,7 +16,8 @@ import {
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EGEN_NÆRING_ID, FRILANS_ID, Næringstype, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -86,14 +87,13 @@ const FRILANS = {
 const INGEN_FERIE = [] satisfies AvtaltFerieDto[];
 
 const EGEN_NÆRING = {
-    næringstype: Næringstype.FISKER,
+    næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
     næringsinntekt: 100000,
-    pågående: false,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
-};
+} satisfies NæringDto;
 
 const VEDLEGG = {
     id: '1',
@@ -165,7 +165,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const tilrettelegginger = {
@@ -301,7 +301,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const tilrettelegginger = {
@@ -416,7 +416,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
-        } as ResponsePromise<any>);
+        } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
         const tilrettelegginger = {

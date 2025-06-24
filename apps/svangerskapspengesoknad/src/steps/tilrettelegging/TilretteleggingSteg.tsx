@@ -199,6 +199,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                     )}
                     <RhfDatepicker
                         name="behovForTilretteleggingFom"
+                        control={formMethods.control}
                         label={getLabel(erFlereTilrettelegginger, typeArbeidsforhold, intl, true, navnArbeidsgiver)}
                         description={
                             harSkjema
@@ -228,6 +229,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                         <>
                             <RhfTextarea
                                 name="risikofaktorer"
+                                control={formMethods.control}
                                 label={risikofaktorerLabel}
                                 validate={[
                                     validateRisikofaktorer(intl, typeArbeidsforhold),
@@ -246,6 +248,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                             <div>
                                 <RhfTextarea
                                     name="tilretteleggingstiltak"
+                                    control={formMethods.control}
                                     label={labelTiltak}
                                     validate={[
                                         validateTilretteleggingstiltak(intl),
@@ -281,6 +284,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                     <div>
                         <RhfRadioGroup
                             name="type"
+                            control={formMethods.control}
                             label={getLabel(
                                 erFlereTilrettelegginger,
                                 typeArbeidsforhold,
@@ -353,7 +357,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                 <FormattedMessage
                                     id="tilrettelegging.expansion.tekst"
                                     values={{
-                                        em: (msg: any) => <em>{msg}</em>,
+                                        em: (msg) => <em>{msg}</em>,
                                     }}
                                 />
                             </BodyLong>

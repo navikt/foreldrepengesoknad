@@ -1,8 +1,9 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { DayOfWeek } from 'react-day-picker';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OppstartValg } from 'types/Fordeling';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
@@ -102,9 +103,12 @@ export const OppstartDatoInput = ({ oppstartValg }: Props) => {
         familiehendelsesdato,
     );
 
+    const { control } = useFormContext<Fordeling>();
+
     return (
         <RhfDatepicker
             name="oppstartDato"
+            control={control}
             label={
                 oppstartValg === OppstartValg.ANNEN_DATO ? (
                     <FormattedMessage id="fordeling.oppstartDato.input" />

@@ -64,6 +64,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                 <VStack gap="2">
                     <RhfDatepicker
                         name="termindato"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'omBarnet.termindato.termin' })}
                         minDate={date21DaysAgo}
                         maxDate={attenUkerTreDager}
@@ -107,6 +108,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
             {søknadGjelderEtNyttBarn && aktiveArbeidsforhold.length === 0 && kanSøkePåTermin && (
                 <RhfDatepicker
                     name="terminbekreftelsedato"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
                     minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').startOf('day').toDate()}

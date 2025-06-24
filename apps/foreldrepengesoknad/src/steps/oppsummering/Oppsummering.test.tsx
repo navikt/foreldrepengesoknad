@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswWrapper } from '@navikt/fp-utils-test';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { mswTest } from '../../mswTest';
 import * as stories from './Oppsummering.stories';
 
 const {
@@ -400,9 +400,9 @@ describe('<Oppsummering>', () => {
 
     // TODO: De gjenværende må det oppdateres slik at testene gjennomføres uavhengig av rekkefølge, msw-handler virker ikke å resettes som de skal.
 
-    mswTest(
+    it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             setHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
             render(<FarSøkerMorMåDokumentereArbeid />);
 
@@ -438,12 +438,12 @@ describe('<Oppsummering>', () => {
                         ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
                 ),
             ).toBeInTheDocument();
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             setHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
             render(<FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon />);
 
@@ -476,12 +476,12 @@ describe('<Oppsummering>', () => {
             expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             setHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
 
             render(<FarSøkerMorMåIkkeDokumentereArbeid />);
@@ -517,12 +517,12 @@ describe('<Oppsummering>', () => {
                         ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
                 ),
             ).not.toBeInTheDocument();
-        },
+        }),
     );
 
-    mswTest(
+    it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for utdanning men ikke for arbeid',
-        async ({ setHandlers }) => {
+        mswWrapper(async ({ setHandlers }) => {
             setHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
             render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
 
@@ -573,6 +573,6 @@ describe('<Oppsummering>', () => {
                     'har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen',
                 ),
             ).toBeInTheDocument();
-        },
+        }),
     );
 });

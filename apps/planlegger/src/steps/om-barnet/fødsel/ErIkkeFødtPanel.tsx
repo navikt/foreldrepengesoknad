@@ -58,8 +58,9 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
         <VStack gap="5">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <RhfDatepicker
-                    label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
+                    control={formMethods.control}
+                    label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(1, 'year').toDate()}
                     useStrategyAbsolute

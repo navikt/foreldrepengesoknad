@@ -21,8 +21,11 @@ export const isValidDecimal =
 
 export const hasMinValue =
     (i18nText: string, length: number) =>
-    (number: number): FormValidationResult =>
-        number >= length ? null : i18nText;
+    (number: number | string): FormValidationResult => {
+        const numericValue = typeof number === 'string' ? Number(number) : number;
+        return numericValue >= length ? null : i18nText;
+    };
+
 export const hasMaxValue =
     (i18nText: string, length: number) =>
     (number: number): FormValidationResult =>

@@ -1,9 +1,10 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { FormSummary, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({
@@ -36,11 +37,15 @@ export function DokumentasjonOppsummering({
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <VStack>
-                                {tilretteleggingerVedlegg[tilretteleggingId].map((vedlegg) => (
-                                    <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
-                                        {vedlegg.filename}
-                                    </Link>
-                                ))}
+                                {tilretteleggingerVedlegg[tilretteleggingId].map((vedlegg) => {
+                                    return vedlegg.url ? (
+                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                            {vedlegg.filename}
+                                        </Link>
+                                    ) : (
+                                        <BodyShort key={vedlegg.id}>{vedlegg.filename}</BodyShort>
+                                    );
+                                })}
                             </VStack>
                         </FormSummary.Value>
                     </FormSummary.Answer>

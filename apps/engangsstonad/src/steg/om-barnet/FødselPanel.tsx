@@ -22,7 +22,7 @@ export type FormValues = {
 export const FødselPanel = () => {
     const intl = useIntl();
 
-    const { watch } = useFormContext<FormValues>();
+    const { watch, control } = useFormContext<FormValues>();
 
     const erBarnetFødt = watch('erBarnetFødt');
     const antallBarn = watch('antallBarn');
@@ -32,6 +32,7 @@ export const FødselPanel = () => {
         <>
             <RhfRadioGroup
                 name="erBarnetFødt"
+                control={control}
                 label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
                 validate={[isRequired(intl.formatMessage({ id: 'FødselPanel.Spørsmål.ErBarnetFødt.Required' }))]}
             >
@@ -44,6 +45,7 @@ export const FødselPanel = () => {
             </RhfRadioGroup>
             <RhfDatepicker
                 name="termindato"
+                control={control}
                 label={<FormattedMessage id="FødselPanel.Termindato" />}
                 description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
                 minDate={dayjs(fødselsdato).subtract(3, 'week').toDate()}
@@ -63,6 +65,7 @@ export const FødselPanel = () => {
             {erBarnetFødt && (
                 <RhfDatepicker
                     name="fødselsdato"
+                    control={control}
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
                     minDate={dayjs().subtract(6, 'month').toDate()}
                     maxDate={dayjs().toDate()}
@@ -80,6 +83,7 @@ export const FødselPanel = () => {
             )}
             <RhfRadioGroup
                 name="antallBarn"
+                control={control}
                 label={
                     erBarnetFødt
                         ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født' })
@@ -107,6 +111,7 @@ export const FødselPanel = () => {
             {antallBarn >= 3 && (
                 <RhfSelect
                     name="antallBarnDropDown"
+                    control={control}
                     label={
                         erBarnetFødt
                             ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født' })

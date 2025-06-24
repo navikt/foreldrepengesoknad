@@ -2,15 +2,17 @@ import { IntlShape } from 'react-intl';
 
 import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
+//TODO (TOR) Ser ut som funksjonane i denne fila har duplikatar i foreldrepengesoknad. Flytt ut i felles-pakke
+
 export type SkjemaelementFeil = string | undefined;
 
-export const getIllegalChars = (value: any): string => {
+const getIllegalChars = (value: string): string => {
     const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
     const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
     return Array.from(ugyldigStringSet).join('');
 };
 
-export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: IntlShape): string => {
+const getIllegalCharsErrorMessage = (value: string, feltNavn: string, intl: IntlShape): string => {
     const ugyldigeTegn = getIllegalChars(value).replace(/\t/g, 'Tabulatortegn');
     return intl.formatMessage(
         { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
@@ -21,9 +23,9 @@ export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: 
     );
 };
 
-export const validateTextHasLegalChars = (value: any): boolean => textRegex.test(value);
+const validateTextHasLegalChars = (value: string): boolean => textRegex.test(value);
 
-export const validateTextInputField = (value: any, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
+const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
     if (!validateTextHasLegalChars(value)) {
         return getIllegalCharsErrorMessage(value, feltNavn, intl);
     }

@@ -185,6 +185,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                         <BluePanel isDarkBlue={fordeling === undefined}>
                             <RhfSelect
                                 name="antallDagerSøker1"
+                                control={formMethods.control}
                                 label={
                                     <FormattedMessage
                                         id="FordelingSteg.FordelingTittel"

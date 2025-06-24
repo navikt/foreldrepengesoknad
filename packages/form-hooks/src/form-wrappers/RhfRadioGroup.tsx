@@ -1,36 +1,39 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { RadioGroup } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
-interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     description?: string | ReactNode;
     label?: string | ReactNode;
-    validate?: Array<(value: string | number | boolean) => any>;
+    validate?: Array<(value: string | number | boolean) => ValidationReturnType>;
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
     className?: string;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfRadioGroup = ({
+export const RhfRadioGroup = <T extends FieldValues>({
     label,
     description,
-    name,
     validate = [],
     onChange,
     children,
     className,
     customErrorFormatter,
-}: Props) => {
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: getValidationRules(validate),
         },
@@ -51,10 +54,11 @@ export const RhfRadioGroup = ({
             }}
             className={className}
         >
-            {children.map((child: any, index) => {
+            {children.map((child, index) => {
                 //TODO Vurder å heller lage ein wrapper til children
                 //Denne map'en legg til ref for å kunna setta fokus ved feil
                 if (index === 0) {
+                    // @ts-expect-error fiks
                     return React.cloneElement(child, { key: child.key, ref: field.ref });
                 }
                 return child;

@@ -56,8 +56,8 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                        [ContextDataType.UTTAKSPLAN]: [uttaksplan as any],
-                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: [originalUttaksplan as any],
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: originalUttaksplan,
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} />
@@ -113,7 +113,7 @@ export const MorOgFarBeggeHarRett: Story = {
                 minsteretter: MINSTERETTER,
             },
         },
-        uttaksplan: [],
+        uttaksplan: [[]],
         originalUttaksplan: [],
     },
 };

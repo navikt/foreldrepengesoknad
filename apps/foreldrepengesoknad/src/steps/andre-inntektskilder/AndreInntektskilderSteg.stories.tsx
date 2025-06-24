@@ -7,12 +7,10 @@ import { action } from 'storybook/actions';
 
 import { AndreInntektskilderSteg } from './AndreInntektskilderSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;

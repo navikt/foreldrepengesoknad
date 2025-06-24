@@ -44,6 +44,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
             <div>
                 <RhfRadioGroup
                     name="erAleneOmOmsorg"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg' })}
                     validate={[
                         isRequired(
@@ -79,6 +80,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
             {formValues.erAleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
                 <RhfDatepicker
                     name="datoForAleneomsorg"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
                     minDate={dayjs(familiehendelsedato).toDate()}
                     validate={[
@@ -108,6 +110,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                 <div>
                     <RhfRadioGroup
                         name="harRettPåForeldrepengerINorge"
+                        control={formMethods.control}
                         label={intl.formatMessage({
                             id: 'annenForelder.harRettPåForeldrepengerINorge',
                         })}
@@ -147,6 +150,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                 <div>
                     <RhfRadioGroup
                         name="harOppholdtSegIEØS"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'annenForelder.harOppholdtSegIEØS' })}
                         validate={[
                             isRequired(
@@ -172,6 +176,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                 <div>
                     <RhfRadioGroup
                         name="harRettPåForeldrepengerIEØS"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'annenForelder.harRettPåForeldrepengerIEØS' })}
                         validate={[
                             isRequired(
@@ -206,6 +211,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                 <>
                     <RhfRadioGroup
                         name="erInformertOmSøknaden"
+                        control={formMethods.control}
                         label={intl.formatMessage({
                             id: 'annenForelder.spørsmål.erAnnenForelderInformert',
                         })}
@@ -241,6 +247,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     <div>
                         <RhfRadioGroup
                             name="erMorUfør"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.erMorUfør' })}
                             validate={[
                                 isRequired(

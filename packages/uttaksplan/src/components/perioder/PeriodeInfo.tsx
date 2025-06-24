@@ -22,9 +22,11 @@ export interface Props {
 
 const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, foreldernavn: string, erMor: boolean) => {
     return erMor
-        ? // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
           intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
-        : // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+        : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
           intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
 };
 

@@ -5,7 +5,7 @@ import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
-import { EGEN_NÆRING_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 
 import * as stories from './EgenNæringSteg.stories';
 
@@ -59,7 +59,6 @@ describe('<EgenNæringSteg>', () => {
                 næringsinntekt: '1000',
                 næringstype: 'JORDBRUK_SKOGBRUK',
                 organisasjonsnummer: '997519485',
-                pågående: true,
                 registrertINorge: true,
                 fom: '2023-04-30',
             },

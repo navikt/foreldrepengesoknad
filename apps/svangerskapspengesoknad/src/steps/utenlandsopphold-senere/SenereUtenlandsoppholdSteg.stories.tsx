@@ -9,12 +9,10 @@ import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,

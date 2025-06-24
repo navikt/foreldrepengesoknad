@@ -1,27 +1,36 @@
 import { ReactNode, useCallback, useMemo } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
-export interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     label: string | ReactNode;
-    validate?: Array<(value: string) => any>;
+    validate?: Array<(value: string) => ValidationReturnType>;
     options: string[];
     description?: ReactNode;
-    disabled?: boolean;
     className?: string;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfCombobox = ({ name, label, validate = [], description, disabled, className, options }: Props) => {
+export const RhfCombobox = <T extends FieldValues>({
+    label,
+    validate = [],
+    description,
+    className,
+    options,
+    ...controllerProps
+}: Props<T>) => {
+    const { name, control, disabled } = controllerProps;
+
     const {
         formState: { errors },
     } = useFormContext();
 
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },
