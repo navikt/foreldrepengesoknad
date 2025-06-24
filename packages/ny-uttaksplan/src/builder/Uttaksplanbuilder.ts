@@ -12,33 +12,21 @@ import {
     slåSammenLikePerioder,
 } from './uttaksplanbuilderUtils';
 
-const getAnnenPartVedSamtidigUttakPlanlegger = (nyPeriode: Planperiode) => {
-    const erSamtidigUttak = nyPeriode.samtidigUttak !== undefined;
+const getAnnenPartPlanlegger = (nyPeriode: Planperiode) => {
+    const forelder = nyPeriode.forelder;
 
-    if (erSamtidigUttak) {
-        const forelder = nyPeriode.forelder;
-
-        if (forelder === Forelder.farMedmor) {
-            return Forelder.mor;
-        }
-
-        if (forelder === Forelder.mor) {
-            return Forelder.farMedmor;
-        }
+    if (forelder === Forelder.farMedmor) {
+        return Forelder.mor;
     }
-
-    return undefined;
+    return Forelder.farMedmor;
 };
 
 const getAnnenPartsUttakPlanlegger = (
     erIPlanleggerModus: boolean,
     perioder: Planperiode[],
-    nyPeriode: Planperiode,
     annenPart: Forelder | undefined,
 ) => {
-    const erSamtidigUttak = nyPeriode.samtidigUttak !== undefined;
-
-    if (erIPlanleggerModus && erSamtidigUttak && annenPart !== undefined) {
+    if (erIPlanleggerModus && annenPart !== undefined) {
         return perioder.filter((p) => p.forelder === annenPart);
     }
 
@@ -57,7 +45,7 @@ const leggTilPeriodeOgBuild = (
     førsteUttaksdagNesteBarnsSak: string | undefined,
     erIPlanleggerModus: boolean,
 ) => {
-    const annenPartPlanlegger = getAnnenPartVedSamtidigUttakPlanlegger(nyPeriode);
+    const annenPartPlanlegger = getAnnenPartPlanlegger(nyPeriode);
 
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
@@ -78,7 +66,6 @@ const leggTilPeriodeOgBuild = (
         const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(
             erIPlanleggerModus,
             perioder,
-            nyPeriode,
             annenPartPlanlegger,
         );
 
@@ -113,18 +100,13 @@ const oppdaterPeriodeOgBuild = (
     erIPlanleggerModus: boolean,
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
-    const annenPartPlanlegger = getAnnenPartVedSamtidigUttakPlanlegger(endretPeriode);
+    const annenPartPlanlegger = getAnnenPartPlanlegger(endretPeriode);
 
-    const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(
-        erIPlanleggerModus,
-        perioder,
-        endretPeriode,
-        annenPartPlanlegger,
-    );
+    const annenPartsUttakPlanlegger = getAnnenPartsUttakPlanlegger(erIPlanleggerModus, perioder, annenPartPlanlegger);
 
     let oppdatertePerioder = fjernUnødvendigeHull(
         oppdaterPeriode({
-            perioder,
+            perioder: erIPlanleggerModus ? perioder.filter((p) => p.forelder !== annenPartPlanlegger) : perioder,
             endretPeriode,
             originalPeriode,
             familiehendelsesdato,
@@ -149,7 +131,7 @@ const oppdaterPeriodeOgBuild = (
         );
         oppdatertePerioder = settInnAnnenPartsUttak(
             oppdatertePerioder,
-            annenPartsUttak,
+            annenPartsUttakPlanlegger ?? annenPartsUttak,
             familiehendelsesdato,
             førsteUttaksdagNesteBarnsSak,
         );

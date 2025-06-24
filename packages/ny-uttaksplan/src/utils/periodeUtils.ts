@@ -19,7 +19,6 @@ import {
     TidsperiodenString,
     UttaksdagenString,
     capitalizeFirstLetter,
-    formatDateIso,
     getNavnGenitivEierform,
     isValidTidsperiodeString,
 } from '@navikt/fp-utils';
@@ -459,20 +458,20 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
         if (index === 0) {
             oppsplittetPeriode.push({
                 ...periode,
-                fom: formatDateIso(datoWrapper.dato),
+                fom: datoWrapper.dato,
                 tom: undefined!,
             });
             return;
         }
 
-        oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
-            ? formatDateIso(UttaksdagenString(datoWrapper.dato).forrige())
-            : formatDateIso(datoWrapper.dato);
+        const oppPeriode = oppsplittetPeriode[index - 1];
+        oppPeriode.tom = datoWrapper.erFom ? UttaksdagenString(datoWrapper.dato).forrige() : datoWrapper.dato;
+        oppPeriode.id = `${oppPeriode.fom} - ${oppPeriode.tom} - ${oppPeriode.kontoType}`;
 
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
-                fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : UttaksdagenString(datoWrapper.dato).neste()),
+                fom: datoWrapper.erFom ? datoWrapper.dato : UttaksdagenString(datoWrapper.dato).neste(),
                 tom: undefined!,
             });
         }
