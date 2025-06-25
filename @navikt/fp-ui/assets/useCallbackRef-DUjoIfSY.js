@@ -1,0 +1,1 @@
+import{r as t}from"./iframe-Da7wuCG9.js";function n(u,a=[]){const r=t.useRef(u);return t.useEffect(()=>{r.current=u}),t.useCallback((...c)=>{var e;return(e=r.current)===null||e===void 0?void 0:e.call(r,...c)},a)}export{n as u};

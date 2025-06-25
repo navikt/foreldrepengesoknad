@@ -1,0 +1,7 @@
+import{j as r}from"./iframe-BFTWslWH.js";import{S as c,c as p,C as t}from"./routes-CGjaG-DJ.js";import{A as a}from"./ArbeidIUtlandetSteg-DHqluF2h.js";import{M as S}from"./useSvpNavigator-dS4qP0JC.js";import"./ArbeidIUtlandet-BK3pFOD4.js";import"./validationUtils-BND1iEf3.js";const{action:d}=__STORYBOOK_MODULE_ACTIONS__,o=()=>()=>(d("button-click")(),Promise.resolve()),g=[{id:"0132715641-23932-19917-03900-809964087910",arbeidsgiverId:"995090910",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Re Kommune",fom:"2018-06-01T00:00:00.000Z",stillingsprosent:0}],f={title:"steps/ArbeidIUtlandetSteg",component:a,render:({gåTilNesteSide:m=d("button-click"),...l})=>r.jsx(S,{initialEntries:[c.ARBEID_I_UTLANDET],children:r.jsx(p,{onDispatch:m,initialState:{[t.ARBEIDSFORHOLD_OG_INNTEKT]:{harHattArbeidIUtlandet:!0,harJobbetSomFrilans:!1,harJobbetSomSelvstendigNæringsdrivende:!1},[t.OM_BARNET]:{erBarnetFødt:!1,termindato:"2024-02-18",fødselsdato:"2024-02-18"}},children:r.jsx(a,{...l})})})},e={args:{arbeidsforhold:g,mellomlagreSøknadOgNaviger:o(),avbrytSøknad:o()}};var s,n,i;e.parameters={...e.parameters,docs:{...(s=e.parameters)==null?void 0:s.docs,source:{originalSource:`{
+  args: {
+    arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction()
+  }
+}`,...(i=(n=e.parameters)==null?void 0:n.docs)==null?void 0:i.source}}};const E=["Default"];export{e as Default,E as __namedExportsOrder,f as default};
