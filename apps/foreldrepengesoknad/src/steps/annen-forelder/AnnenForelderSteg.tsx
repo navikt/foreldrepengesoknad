@@ -11,7 +11,7 @@ import { VStack } from '@navikt/ds-react';
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { PersonFrontend, Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -98,29 +98,26 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {skalOppgiPersonalia && (
-                        <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
-                    )}
-                    {!skalOppgiPersonalia && (
-                        <RegistrertePersonalia
-                            person={annenForelderFraRegistrertBarn}
-                            fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
-                            visEtternavn
-                        />
-                    )}
-                    {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {skalOppgiPersonalia && (
+                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
+                        )}
+                        {!skalOppgiPersonalia && (
+                            <RegistrertePersonalia
+                                person={annenForelderFraRegistrertBarn}
+                                fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
+                                visEtternavn
+                            />
+                        )}
+                        {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

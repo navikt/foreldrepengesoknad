@@ -3,11 +3,9 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -33,10 +31,7 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbryt
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={save}
@@ -47,6 +42,6 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbryt
                 stepConfig={stepConfig}
                 onStepChange={navigator.goToStep}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

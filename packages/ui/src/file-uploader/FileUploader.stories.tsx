@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 import { FileUploader } from './FileUploader';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
@@ -13,9 +13,9 @@ const meta = {
     component: FileUploader,
     render: (props) => {
         return (
-            <ContentWrapper>
+            <SkjemaRotLayout pageTitle="FileUploader">
                 <FileUploader {...props} />
-            </ContentWrapper>
+            </SkjemaRotLayout>
         );
     },
 } satisfies Meta<typeof FileUploader>;

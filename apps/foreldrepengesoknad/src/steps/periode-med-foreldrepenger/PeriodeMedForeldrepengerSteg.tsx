@@ -12,7 +12,7 @@ import { Box, HStack, Loader } from '@navikt/ds-react';
 
 import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { IconCircleWrapper, Step } from '@navikt/fp-ui';
+import { IconCircleWrapper, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DekningsgradForm } from './DekningsgradForm';
@@ -52,56 +52,53 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     }
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            {tilgjengeligeStønadskontoerQuery.data && (
-                <>
-                    {vis1Juli2024Info && (
-                        <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
-                            <HStack justify="space-between" align="start">
-                                <InfoOmUtvidet80ProsentPeriode />
-                                <IconCircleWrapper color="lightBlue" size="medium">
-                                    <CalendarIcon height={24} width={24} />
-                                </IconCircleWrapper>
-                            </HStack>
-                        </Box>
-                    )}
-                    {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
-                        <DekningsgradValgtAvAnnenPartPanel
-                            goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                            goToNextDefaultStep={navigator.goToNextDefaultStep}
-                            fornavnAnnenForelder={annenForelder.fornavn}
-                            kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
-                            dekningsgrad={
-                                annenPartVedtak.dekningsgrad === 'HUNDRE'
-                                    ? Dekningsgrad.HUNDRE_PROSENT
-                                    : Dekningsgrad.ÅTTI_PROSENT
-                            }
-                            valgtStønadskonto={
-                                tilgjengeligeStønadskontoerQuery.data[
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+                {tilgjengeligeStønadskontoerQuery.data && (
+                    <>
+                        {vis1Juli2024Info && (
+                            <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
+                                <HStack justify="space-between" align="start">
+                                    <InfoOmUtvidet80ProsentPeriode />
+                                    <IconCircleWrapper color="lightBlue" size="medium">
+                                        <CalendarIcon height={24} width={24} />
+                                    </IconCircleWrapper>
+                                </HStack>
+                            </Box>
+                        )}
+                        {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
+                            <DekningsgradValgtAvAnnenPartPanel
+                                goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                                goToNextDefaultStep={navigator.goToNextDefaultStep}
+                                fornavnAnnenForelder={annenForelder.fornavn}
+                                kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
+                                dekningsgrad={
                                     annenPartVedtak.dekningsgrad === 'HUNDRE'
                                         ? Dekningsgrad.HUNDRE_PROSENT
                                         : Dekningsgrad.ÅTTI_PROSENT
-                                ]
-                            }
-                        />
-                    )}
-                    {!visAnnenPartsValg && (
-                        <DekningsgradForm
-                            goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                            goToNextDefaultStep={navigator.goToNextDefaultStep}
-                            barn={barn}
-                            søkersituasjon={søkersituasjon}
-                            stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}
-                            stønadskonto80={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.ÅTTI_PROSENT]}
-                        />
-                    )}
-                </>
-            )}
-        </Step>
+                                }
+                                valgtStønadskonto={
+                                    tilgjengeligeStønadskontoerQuery.data[
+                                        annenPartVedtak.dekningsgrad === 'HUNDRE'
+                                            ? Dekningsgrad.HUNDRE_PROSENT
+                                            : Dekningsgrad.ÅTTI_PROSENT
+                                    ]
+                                }
+                            />
+                        )}
+                        {!visAnnenPartsValg && (
+                            <DekningsgradForm
+                                goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                                goToNextDefaultStep={navigator.goToNextDefaultStep}
+                                barn={barn}
+                                søkersituasjon={søkersituasjon}
+                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}
+                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.ÅTTI_PROSENT]}
+                            />
+                        )}
+                    </>
+                )}
+            </Step>
+        </SkjemaRotLayout>
     );
 };

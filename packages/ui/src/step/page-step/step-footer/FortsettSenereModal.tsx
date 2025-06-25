@@ -22,20 +22,20 @@ export const FortsettSenereModal = ({ isOpen, setIsOpen, onFortsettSenere }: Pro
             </Modal.Header>
             <Modal.Body>
                 <BodyLong>{intl.formatMessage({ id: 'FortsettSenereModal.Info' })}</BodyLong>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={() => {
-                            if (onFortsettSenere) {
-                                onFortsettSenere();
-                            }
-                            setIsOpen(false);
-                        }}
-                    >
-                        {intl.formatMessage({ id: 'FortsettSenereModal.Ok' })}
-                    </Button>
-                </Modal.Footer>
             </Modal.Body>
+            <Modal.Footer>
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        if (onFortsettSenere) {
+                            onFortsettSenere();
+                        }
+                        setIsOpen(false);
+                    }}
+                >
+                    {intl.formatMessage({ id: 'FortsettSenereModal.Ok' })}
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

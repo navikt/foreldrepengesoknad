@@ -11,7 +11,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
-import { ScanDocumentInfo, Step } from '@navikt/fp-ui';
+import { ScanDocumentInfo, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AdopsjonDokPanel } from './AdopsjonDokPanel';
@@ -60,35 +60,39 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            onCancel={navigator.avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
-            steps={stepConfig}
-            noFieldsRequired
-        >
-            <RhfForm formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {erBarnetAdoptert && (
-                        <AdopsjonDokPanel attachments={dokumentasjon?.vedlegg} updateAttachments={updateAttachments} />
-                    )}
-                    {harTermindato && (
-                        <TerminDokPanel
-                            attachments={dokumentasjon?.vedlegg}
-                            updateAttachments={updateAttachments}
-                            omBarnet={omBarnet}
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
+            <Step
+                onCancel={navigator.avbrytSøknad}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToNextStep}
+                steps={stepConfig}
+                noFieldsRequired
+            >
+                <RhfForm formMethods={formMethods} onSubmit={lagre}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {erBarnetAdoptert && (
+                            <AdopsjonDokPanel
+                                attachments={dokumentasjon?.vedlegg}
+                                updateAttachments={updateAttachments}
+                            />
+                        )}
+                        {harTermindato && (
+                            <TerminDokPanel
+                                attachments={dokumentasjon?.vedlegg}
+                                updateAttachments={updateAttachments}
+                                omBarnet={omBarnet}
+                            />
+                        )}
+                        <ScanDocumentInfo />
+                        <StepButtonsHookForm<Dokumentasjon>
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={oppdaterDokumentasjon}
+                            isDisabledAndLoading={avventerVedlegg}
                         />
-                    )}
-                    <ScanDocumentInfo />
-                    <StepButtonsHookForm<Dokumentasjon>
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={oppdaterDokumentasjon}
-                        isDisabledAndLoading={avventerVedlegg}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };
