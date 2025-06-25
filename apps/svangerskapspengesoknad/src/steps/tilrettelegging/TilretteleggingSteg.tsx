@@ -35,7 +35,7 @@ import {
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
@@ -184,188 +184,200 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
     const type = formMethods.watch('type');
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {erFlereTilrettelegginger && (
-                        <Bedriftsbanner arbeidsforholdType={typeArbeidsforhold} arbeidsforholdNavn={navnArbeidsgiver} />
-                    )}
-                    <RhfDatepicker
-                        name="behovForTilretteleggingFom"
-                        control={formMethods.control}
-                        label={getLabel(erFlereTilrettelegginger, typeArbeidsforhold, intl, true, navnArbeidsgiver)}
-                        description={
-                            harSkjema
-                                ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidFom.description' })
-                                : ''
-                        }
-                        minDate={minDatoBehovFom}
-                        maxDate={maxDatoBehovFom}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.mangler' })),
-                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato' })),
-                            validateBehovForTilretteleggingFom(
-                                intl,
-                                sisteDagForSvangerskapspenger,
-                                barnet.termindato,
-                                navnArbeidsgiver || '',
-                                periode.fom,
-                                periode.tom,
-                                kanHaSVPFremTilTreUkerFørTermin,
-                                typeArbeidsforhold === Arbeidsforholdstype.FRILANSER,
-                            ),
-                        ]}
-                        defaultMonth={minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined}
-                    />
-                    {(typeArbeidsforhold === Arbeidsforholdstype.FRILANSER ||
-                        typeArbeidsforhold === Arbeidsforholdstype.SELVSTENDIG) && (
-                        <>
-                            <RhfTextarea
-                                name="risikofaktorer"
-                                control={formMethods.control}
-                                label={risikofaktorerLabel}
-                                validate={[
-                                    validateRisikofaktorer(intl, typeArbeidsforhold),
-                                    hasLegalChars((ugyldigeTegn: string) =>
-                                        intl.formatMessage(
-                                            { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
-                                            {
-                                                feltNavn: risikofaktorerLabel,
-                                                ugyldigeTegn: ugyldigeTegn,
-                                            },
-                                        ),
-                                    ),
-                                ]}
-                                description={intl.formatMessage({ id: 'skjema.risikofaktorer.description' })}
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step
+                onCancel={avbrytSøknad}
+                steps={stepConfig}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToStep}
+            >
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {erFlereTilrettelegginger && (
+                            <Bedriftsbanner
+                                arbeidsforholdType={typeArbeidsforhold}
+                                arbeidsforholdNavn={navnArbeidsgiver}
                             />
-                            <div>
+                        )}
+                        <RhfDatepicker
+                            name="behovForTilretteleggingFom"
+                            control={formMethods.control}
+                            label={getLabel(erFlereTilrettelegginger, typeArbeidsforhold, intl, true, navnArbeidsgiver)}
+                            description={
+                                harSkjema
+                                    ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidFom.description' })
+                                    : ''
+                            }
+                            minDate={minDatoBehovFom}
+                            maxDate={maxDatoBehovFom}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.mangler' })),
+                                isValidDate(
+                                    intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.gyldigDato' }),
+                                ),
+                                validateBehovForTilretteleggingFom(
+                                    intl,
+                                    sisteDagForSvangerskapspenger,
+                                    barnet.termindato,
+                                    navnArbeidsgiver || '',
+                                    periode.fom,
+                                    periode.tom,
+                                    kanHaSVPFremTilTreUkerFørTermin,
+                                    typeArbeidsforhold === Arbeidsforholdstype.FRILANSER,
+                                ),
+                            ]}
+                            defaultMonth={
+                                minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined
+                            }
+                        />
+                        {(typeArbeidsforhold === Arbeidsforholdstype.FRILANSER ||
+                            typeArbeidsforhold === Arbeidsforholdstype.SELVSTENDIG) && (
+                            <>
                                 <RhfTextarea
-                                    name="tilretteleggingstiltak"
+                                    name="risikofaktorer"
                                     control={formMethods.control}
-                                    label={labelTiltak}
+                                    label={risikofaktorerLabel}
                                     validate={[
-                                        validateTilretteleggingstiltak(intl),
+                                        validateRisikofaktorer(intl, typeArbeidsforhold),
                                         hasLegalChars((ugyldigeTegn: string) =>
                                             intl.formatMessage(
                                                 { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
                                                 {
-                                                    feltNavn: labelTiltak,
+                                                    feltNavn: risikofaktorerLabel,
                                                     ugyldigeTegn: ugyldigeTegn,
                                                 },
                                             ),
                                         ),
                                     ]}
+                                    description={intl.formatMessage({ id: 'skjema.risikofaktorer.description' })}
                                 />
-                                <ReadMore
-                                    size="small"
-                                    header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
-                                    onOpenChange={(open) =>
-                                        loggAmplitudeEvent({
-                                            origin: 'svangerskapspengesoknad',
-                                            eventName: open ? 'readmore åpnet' : 'readmore lukket',
-                                            eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
-                                        })
-                                    }
-                                >
-                                    <BodyShort>
-                                        <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
-                                    </BodyShort>
-                                </ReadMore>
-                            </div>
-                        </>
-                    )}
-                    <div>
-                        <RhfRadioGroup
-                            name="type"
-                            control={formMethods.control}
-                            label={getLabel(
-                                erFlereTilrettelegginger,
-                                typeArbeidsforhold,
-                                intl,
-                                false,
-                                navnArbeidsgiver,
-                            )}
-                            description={
-                                harSkjema
-                                    ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' })
-                                    : ''
-                            }
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidType.mangler' }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={Tilretteleggingstype.DELVIS}>
-                                <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.delvis" />
-                            </Radio>
-                            <Radio value={Tilretteleggingstype.INGEN}>
-                                <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.ingen" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <ReadMore
-                            header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
-                            onOpenChange={(open) =>
-                                loggAmplitudeEvent({
-                                    origin: 'svangerskapspengesoknad',
-                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
-                                    eventData: {
-                                        tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
-                                    },
-                                })
-                            }
-                        >
-                            <BodyShort>
-                                <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>
-                            </BodyShort>
-                        </ReadMore>
-                    </div>
-                    {type === Tilretteleggingstype.INGEN && (
-                        <IngenTilretteleggingPanel
-                            barnet={barnet}
-                            arbeidsforholdType={typeArbeidsforhold}
-                            startdatoArbeid={periode.fom}
-                            sluttdatoArbeid={periode.tom}
-                            arbeidsforholdNavn={navnArbeidsgiver}
-                        />
-                    )}
-                    {type === Tilretteleggingstype.DELVIS && (
-                        <DelvisTilretteleggingPanel
-                            barnet={barnet}
-                            arbeidsforholdType={typeArbeidsforhold}
-                            startdatoArbeid={periode.fom}
-                            sluttdatoArbeid={periode.tom}
-                            stillinger={stillinger}
-                            arbeidsforholdNavn={navnArbeidsgiver}
-                        />
-                    )}
-                    <ExpansionCard size="small" aria-label="">
-                        <ExpansionCard.Header>
-                            <ExpansionCard.Title size="small" as="h3">
-                                <FormattedMessage id="tilrettelegging.expansion.tittel" />
-                            </ExpansionCard.Title>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="tilrettelegging.expansion.tekst"
-                                    values={{
-                                        em: (msg) => <em>{msg}</em>,
-                                    }}
-                                />
-                            </BodyLong>
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                                <div>
+                                    <RhfTextarea
+                                        name="tilretteleggingstiltak"
+                                        control={formMethods.control}
+                                        label={labelTiltak}
+                                        validate={[
+                                            validateTilretteleggingstiltak(intl),
+                                            hasLegalChars((ugyldigeTegn: string) =>
+                                                intl.formatMessage(
+                                                    { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                                    {
+                                                        feltNavn: labelTiltak,
+                                                        ugyldigeTegn: ugyldigeTegn,
+                                                    },
+                                                ),
+                                            ),
+                                        ]}
+                                    />
+                                    <ReadMore
+                                        size="small"
+                                        header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
+                                        onOpenChange={(open) =>
+                                            loggAmplitudeEvent({
+                                                origin: 'svangerskapspengesoknad',
+                                                eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                                eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
+                                            })
+                                        }
+                                    >
+                                        <BodyShort>
+                                            <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
+                                        </BodyShort>
+                                    </ReadMore>
+                                </div>
+                            </>
+                        )}
+                        <div>
+                            <RhfRadioGroup
+                                name="type"
+                                control={formMethods.control}
+                                label={getLabel(
+                                    erFlereTilrettelegginger,
+                                    typeArbeidsforhold,
+                                    intl,
+                                    false,
+                                    navnArbeidsgiver,
+                                )}
+                                description={
+                                    harSkjema
+                                        ? intl.formatMessage({
+                                              id: 'tilrettelegging.tilrettelagtArbeidType.description',
+                                          })
+                                        : ''
+                                }
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidType.mangler' }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={Tilretteleggingstype.DELVIS}>
+                                    <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.delvis" />
+                                </Radio>
+                                <Radio value={Tilretteleggingstype.INGEN}>
+                                    <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.ingen" />
+                                </Radio>
+                            </RhfRadioGroup>
+                            <ReadMore
+                                header={intl.formatMessage({
+                                    id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
+                                })}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: 'svangerskapspengesoknad',
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: {
+                                            tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
+                                        },
+                                    })
+                                }
+                            >
+                                <BodyShort>
+                                    <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>
+                                </BodyShort>
+                            </ReadMore>
+                        </div>
+                        {type === Tilretteleggingstype.INGEN && (
+                            <IngenTilretteleggingPanel
+                                barnet={barnet}
+                                arbeidsforholdType={typeArbeidsforhold}
+                                startdatoArbeid={periode.fom}
+                                sluttdatoArbeid={periode.tom}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        {type === Tilretteleggingstype.DELVIS && (
+                            <DelvisTilretteleggingPanel
+                                barnet={barnet}
+                                arbeidsforholdType={typeArbeidsforhold}
+                                startdatoArbeid={periode.fom}
+                                sluttdatoArbeid={periode.tom}
+                                stillinger={stillinger}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        <ExpansionCard size="small" aria-label="">
+                            <ExpansionCard.Header>
+                                <ExpansionCard.Title size="small" as="h3">
+                                    <FormattedMessage id="tilrettelegging.expansion.tittel" />
+                                </ExpansionCard.Title>
+                            </ExpansionCard.Header>
+                            <ExpansionCard.Content>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="tilrettelegging.expansion.tekst"
+                                        values={{
+                                            em: (msg) => <em>{msg}</em>,
+                                        }}
+                                    />
+                                </BodyLong>
+                            </ExpansionCard.Content>
+                        </ExpansionCard>
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

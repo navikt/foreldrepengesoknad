@@ -7,7 +7,7 @@ import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
     appName: AppName;
@@ -33,11 +33,8 @@ export const Umyndig = ({ appName }: Props) => {
     useDocumentTitle(titleText);
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout pageTitle={titleText}>
             <VStack gap="10">
-                <Heading level="2" size="xlarge">
-                    {titleText}
-                </Heading>
                 <GuidePanel poster>
                     <VStack gap="8">
                         <Heading level="3" size="small">
@@ -52,6 +49,6 @@ export const Umyndig = ({ appName }: Props) => {
                     </Button>
                 </HStack>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

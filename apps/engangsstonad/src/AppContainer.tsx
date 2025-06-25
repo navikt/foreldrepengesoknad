@@ -2,7 +2,8 @@ import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Provider } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
@@ -78,6 +79,11 @@ export const AppContainer = () => {
         setLocale(lang.locale as LocaleAll);
         document.documentElement.setAttribute('lang', lang.locale);
     });
+    const { pathname } = useLocation();
+    // Scroll til toppen når man endrer side.
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>

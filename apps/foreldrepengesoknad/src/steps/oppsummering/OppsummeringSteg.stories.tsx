@@ -32,7 +32,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import { Oppsummering } from './Oppsummering';
+import { OppsummeringSteg } from './OppsummeringSteg';
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -219,11 +219,11 @@ type StoryArgs = {
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof Oppsummering>;
+} & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
     title: 'steps/Oppsummering',
-    component: Oppsummering,
+    component: OppsummeringSteg,
     parameters: {
         msw: {
             handlers: [
@@ -282,7 +282,7 @@ const meta = {
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
-                        <Oppsummering {...rest} />
+                        <OppsummeringSteg {...rest} />
                     </FpDataContext>
                 </MemoryRouter>
             </QueryClientProvider>
@@ -1071,7 +1071,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >
-                        <Oppsummering {...args} />
+                        <OppsummeringSteg {...args} />
                     </FpDataContext>
                 </MemoryRouter>
             </QueryClientProvider>

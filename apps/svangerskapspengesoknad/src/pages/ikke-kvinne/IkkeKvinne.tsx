@@ -5,7 +5,7 @@ import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 export const IkkeKvinne = () => {
     loggAmplitudeEvent({
@@ -15,10 +15,7 @@ export const IkkeKvinne = () => {
     });
 
     return (
-        <ContentWrapper>
-            <Heading level="1" size="xlarge">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <VStack gap="10">
                 <GuidePanel poster>
                     <VStack gap="4">
@@ -35,6 +32,6 @@ export const IkkeKvinne = () => {
                     </Button>
                 </HStack>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

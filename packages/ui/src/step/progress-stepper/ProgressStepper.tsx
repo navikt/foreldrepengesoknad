@@ -32,7 +32,7 @@ export const ProgressStepper = <TYPE extends string>({
     return (
         <VStack gap="4">
             {!hideHeader && (
-                <Heading tabIndex={-1} size="medium" level="2">
+                <Heading size="large" level="2">
                     {steps[currentStepIndex].label}
                 </Heading>
             )}

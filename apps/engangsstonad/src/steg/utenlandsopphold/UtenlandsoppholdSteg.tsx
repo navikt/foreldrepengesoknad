@@ -4,11 +4,9 @@ import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
@@ -45,10 +43,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="Søknad.Pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="Søknad.Pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={lagre}
@@ -60,6 +55,6 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
                 stepConfig={stepConfig}
                 stønadstype="Engangsstønad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

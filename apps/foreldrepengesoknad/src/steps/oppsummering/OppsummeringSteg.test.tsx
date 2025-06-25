@@ -10,7 +10,7 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 import { notEmpty } from '@navikt/fp-validation';
 
-import * as stories from './Oppsummering.stories';
+import * as stories from './OppsummeringSteg.stories';
 
 const {
     Default,

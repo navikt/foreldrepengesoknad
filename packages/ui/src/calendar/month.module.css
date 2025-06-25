@@ -21,17 +21,28 @@
         width: 120px;
     }
     .weeknr {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-size: 10px;
-        font-style: normal;
-        font-weight: 600;
-        cursor: default;
+    }
+}
+
+@media (max-width: 480px) {
+    .box {
+        padding-top: 2px;
+        width: 170px;
+    }
+    .weeknr {
+        font-size: 10px;
     }
 }
 
 @media (max-width: 400px) {
+    .box {
+        padding-top: 2px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 300px) {
     .box {
         padding-top: 2px;
         width: 95px;

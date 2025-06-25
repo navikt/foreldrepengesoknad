@@ -9,14 +9,13 @@ import {
     ExpansionCard,
     GuidePanel,
     HStack,
-    Heading,
     Link,
     List,
     VStack,
 } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 export interface Props {
     startSøknad: (start: boolean) => void;
@@ -42,11 +41,8 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
     };
 
     return (
-        <ContentWrapper>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id={'Søknad.Pageheading'} />}>
             <VStack gap="10">
-                <Heading size="large">
-                    <FormattedMessage id={'Søknad.Pageheading'} />
-                </Heading>
                 <GuidePanel poster>
                     <VStack gap="5">
                         <BodyShort>
@@ -146,6 +142,6 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                     </Button>
                 </HStack>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };
