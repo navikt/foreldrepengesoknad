@@ -15,7 +15,7 @@ import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
-import { FileUploader, Step } from '@navikt/fp-ui';
+import { FileUploader, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -112,56 +112,60 @@ export const SkjemaSteg = ({
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, arbeidsforhold);
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-            noFieldsRequired
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
-                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
-                    )}
-                    <VStack gap="4">
-                        <FileUploader
-                            label={finnFileUploaderLabel(intl, tilretteleggingId)}
-                            description={
-                                tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
-                                    <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
-                                ) : (
-                                    <FormattedMessage
-                                        id={'skjema.vedlegg.description.arbeidsgiver'}
-                                        values={{
-                                            a: (msg) => (
-                                                <Link
-                                                    rel="noopener noreferrer"
-                                                    href={links.arbeidstilsynetSkjema}
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
-                                )
-                            }
-                            attachmentType={AttachmentType.TILRETTELEGGING}
-                            skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
-                            existingAttachments={defaultValues?.vedlegg}
-                            updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step
+                onCancel={avbrytSøknad}
+                steps={stepConfig}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToStep}
+                noFieldsRequired
+            >
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
+                            <Bedriftsbanner
+                                arbeidsforholdType={typeArbeidsgiver}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        <VStack gap="4">
+                            <FileUploader
+                                label={finnFileUploaderLabel(intl, tilretteleggingId)}
+                                description={
+                                    tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
+                                        <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
+                                    ) : (
+                                        <FormattedMessage
+                                            id={'skjema.vedlegg.description.arbeidsgiver'}
+                                            values={{
+                                                a: (msg) => (
+                                                    <Link
+                                                        rel="noopener noreferrer"
+                                                        href={links.arbeidstilsynetSkjema}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                            }}
+                                        />
+                                    )
+                                }
+                                attachmentType={AttachmentType.TILRETTELEGGING}
+                                skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
+                                existingAttachments={defaultValues?.vedlegg}
+                                updateAttachments={updateAttachments}
+                                saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
+                            />
+                        </VStack>
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            isDisabledAndLoading={avventerVedlegg}
                         />
                     </VStack>
-                    <StepButtonsHookForm
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        isDisabledAndLoading={avventerVedlegg}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

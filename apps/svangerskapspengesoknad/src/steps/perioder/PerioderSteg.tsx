@@ -17,7 +17,7 @@ import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -82,43 +82,47 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
     });
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
-                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
-                    )}
-                    <div>
-                        <Heading size="small">
-                            <FormattedMessage id="perioder.varierende.heading"></FormattedMessage>
-                        </Heading>
-                        <BodyShort>
-                            {kanHaSVPFremTilTreUkerFørTermin ? (
-                                <FormattedMessage id="perioder.varierende.description.termin" />
-                            ) : (
-                                <FormattedMessage id="perioder.varierende.description.fødsel" />
-                            )}
-                        </BodyShort>
-                    </div>
-                    <PerioderFieldArray
-                        valgtTilretteleggingId={valgtTilretteleggingId}
-                        barn={barnet}
-                        kanHaSVPFremTilTreUkerFørTermin={kanHaSVPFremTilTreUkerFørTermin}
-                        arbeidsforhold={arbeidsforhold}
-                        egenNæring={egenNæring}
-                        frilans={frilans}
-                        behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
-                    />
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step
+                onCancel={avbrytSøknad}
+                steps={stepConfig}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToStep}
+            >
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
+                            <Bedriftsbanner
+                                arbeidsforholdType={typeArbeidsgiver}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        <div>
+                            <Heading size="small">
+                                <FormattedMessage id="perioder.varierende.heading"></FormattedMessage>
+                            </Heading>
+                            <BodyShort>
+                                {kanHaSVPFremTilTreUkerFørTermin ? (
+                                    <FormattedMessage id="perioder.varierende.description.termin" />
+                                ) : (
+                                    <FormattedMessage id="perioder.varierende.description.fødsel" />
+                                )}
+                            </BodyShort>
+                        </div>
+                        <PerioderFieldArray
+                            valgtTilretteleggingId={valgtTilretteleggingId}
+                            barn={barnet}
+                            kanHaSVPFremTilTreUkerFørTermin={kanHaSVPFremTilTreUkerFørTermin}
+                            arbeidsforhold={arbeidsforhold}
+                            egenNæring={egenNæring}
+                            frilans={frilans}
+                            behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
+                        />
+                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

@@ -8,7 +8,7 @@ export const uiMessages = {
     en: enMessages,
 };
 
-export { ContentWrapper } from './src/content-wrapper/ContentWrapper';
+export { SkjemaRotLayout } from './src/skjema-rotlayout/SkjemaRotLayout';
 export { ErrorBoundary } from './src/error/ErrorBoundary';
 export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
