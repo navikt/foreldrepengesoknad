@@ -153,5 +153,7 @@
     "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?",
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepenger",
     "uttaksplan.regelAvvik.ariaTittel": "Detaljer om planen",
-    "uttaksplan.validering.feil.planenInneholderIngenPerioder": "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse"
+    "uttaksplan.validering.feil.planenInneholderIngenPerioder": "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Planen din kan ikke slutte med at den andre forelderen skal være hjemme.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Planen din kan ikke starte med at den andre forelderen skal være hjemme."
 }

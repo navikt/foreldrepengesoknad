@@ -5,7 +5,7 @@ export interface Søknadsinfo {
     // søkersituasjon: Søkersituasjon;
     // arbeidsforhold: Arbeidsforhold[];
     // dekningsgrad: Dekningsgrad;
-    // erEndringssøknad: boolean;
+    erEndringssøknad: boolean;
     // antallBarn: number;
     // annenForelder: AnnenForelder;
     // navnPåForeldre: NavnPåForeldre;
