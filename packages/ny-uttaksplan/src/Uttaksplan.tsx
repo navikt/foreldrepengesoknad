@@ -91,7 +91,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -103,7 +102,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -115,7 +113,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -127,7 +124,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });

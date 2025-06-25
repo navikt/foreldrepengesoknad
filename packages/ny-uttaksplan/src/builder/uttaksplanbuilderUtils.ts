@@ -19,7 +19,6 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
@@ -207,16 +206,20 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
 };
 
-export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
-    fom: tidsperiode.fom,
-    tom: tidsperiode.tom,
-    periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
-    readOnly: false,
-});
+export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => {
+    const id = `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`;
+    console.log(id);
+    return {
+        id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
+        fom: tidsperiode.fom,
+        tom: tidsperiode.tom,
+        periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
+        readOnly: false,
+    };
+};
 
 export const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
@@ -371,6 +374,9 @@ export const settInnAnnenPartsUttak = (
     }
 
     const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(perioder, annenPartsUttak);
+
+    console.log(normaliserteEgnePerioder);
+    console.log(normaliserteAnnenPartsPerioder);
 
     const result = normaliserteEgnePerioder.reduce((res, p) => {
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
