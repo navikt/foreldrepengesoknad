@@ -1,15 +1,17 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AnnenForelderSteg.stories';
 
-const { AnnenForelderFraOppgittBarn, SkalOppgiPersonalia, ForFar, MorUfødtBarn } = composeStories(stories);
+const { AnnenForelderFraOppgittBarn, SkalOppgiPersonalia, ForFar, MorUfødtBarn, FarFødtBarnMorHarVedtak } =
+    composeStories(stories);
 
 describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
@@ -486,4 +488,20 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
     });
+
+    it(
+        'skal ikke spørre om annenpart har rett hvis annenpart har vedtak',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FarFødtBarnMorHarVedtak.parameters.msw);
+            render(<FarFødtBarnMorHarVedtak />);
+
+            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+            screen.logTestingPlaygroundURL();
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+                ).not.toBeInTheDocument();
+            });
+        }),
+    );
 });
