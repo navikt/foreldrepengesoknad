@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -48,6 +50,13 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.søker);
 
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartHarVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => !!vedtak,
+        }).data ?? false;
+
     const oppgittFnrErUlikRegistrertBarn =
         annenForelder !== undefined &&
         isAnnenForelderOppgitt(annenForelder) &&
@@ -69,8 +78,13 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             : values.etternavn;
         const fnr = skalIkkeOppgiPersonaliaOgHarFraRegBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
 
+        // Hvis annenPartHarVedtak så har parten rett til foreldrepenger. I det tilfellet vises ikke det valget og verdien er undefined.
+        // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
+        const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
+
         oppdaterAnnenForeldre({
             ...values,
+            harRettPåForeldrepengerINorge,
             kanIkkeOppgis: false,
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
