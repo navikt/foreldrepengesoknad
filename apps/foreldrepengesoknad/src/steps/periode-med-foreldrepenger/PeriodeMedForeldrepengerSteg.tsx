@@ -53,7 +53,7 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+            <Step steps={stepConfig}>
                 {tilgjengeligeStønadskontoerQuery.data && (
                     <>
                         {vis1Juli2024Info && (
@@ -90,6 +90,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                             <DekningsgradForm
                                 goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                                 goToNextDefaultStep={navigator.goToNextDefaultStep}
+                                onAvsluttOgSlett={avbrytSøknad}
+                                onFortsettSenere={navigator.fortsettSøknadSenere}
                                 barn={barn}
                                 søkersituasjon={søkersituasjon}
                                 stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}

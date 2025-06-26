@@ -1,11 +1,15 @@
 import { ArrowLeftIcon, ArrowRightIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { Button } from '@navikt/ds-react';
+import { Button, HGrid } from '@navikt/ds-react';
+
+import { StepFooter } from './page-step/step-footer/StepFooter';
 
 interface Props {
     goToPreviousStep: () => void;
     nextButtonOnClick?: () => void;
+    onFortsettSenere?: () => void;
+    onAvsluttOgSlett?: () => void;
     isDisabledAndLoading?: boolean;
     isDisabled?: boolean;
     isLoading?: boolean;
@@ -18,6 +22,8 @@ interface Props {
 export const StepButtons = ({
     goToPreviousStep,
     nextButtonOnClick,
+    onFortsettSenere,
+    onAvsluttOgSlett,
     isDisabledAndLoading = false,
     isDisabled = false,
     isLoading = false,
@@ -27,7 +33,7 @@ export const StepButtons = ({
     isJumpToEndButton = false,
 }: Props) => {
     return (
-        <>
+        <HGrid gap={{ xs: '4', sm: '8 4' }} columns={{ xs: 1, sm: 2 }} width={{ sm: 'fit-content' }}>
             <Button
                 type="button"
                 variant="secondary"
@@ -67,6 +73,7 @@ export const StepButtons = ({
             ) : (
                 <div />
             )}
-        </>
+            <StepFooter onFortsettSenere={onFortsettSenere} onAvsluttOgSlett={onAvsluttOgSlett} />
+        </HGrid>
     );
 };

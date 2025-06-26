@@ -63,9 +63,9 @@ describe('<Arbeid som frilanser>', () => {
     });
 
     it('skal avslutte søknad', async () => {
-        const cancelApplication = vi.fn();
+        const onAvsluttOgSlett = vi.fn();
 
-        render(<Default cancelApplication={cancelApplication} />);
+        render(<Default onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 

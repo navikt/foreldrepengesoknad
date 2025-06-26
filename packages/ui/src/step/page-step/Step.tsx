@@ -8,8 +8,6 @@ import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepp
 interface StepProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
     children: React.ReactNode;
-    onCancel?: () => void;
-    onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
     hideHeader?: boolean;
     someFieldsOptional?: boolean;

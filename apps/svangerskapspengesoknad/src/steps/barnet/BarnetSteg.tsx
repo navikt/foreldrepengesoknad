@@ -83,12 +83,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step
-                onCancel={avbrytSøknad}
-                steps={stepConfig}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToStep}
-            >
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
@@ -213,7 +208,11 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                 </BodyShort>
                             </ReadMore>
                         </div>
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        />
                     </VStack>
                 </RhfForm>
             </Step>

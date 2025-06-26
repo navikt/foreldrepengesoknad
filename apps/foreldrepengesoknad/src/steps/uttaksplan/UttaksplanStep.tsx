@@ -593,8 +593,8 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                 return (
                     <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
                         <Step
-                            onCancel={avbrytSøknad}
-                            onContinueLater={navigator.fortsettSøknadSenere}
+                            // onAvsluttOgSlett={avbrytSøknad}
+                            // onFortsettSenere={navigator.fortsettSøknadSenere}
                             steps={stepConfig}
                             noFieldsRequired
                         >
@@ -669,6 +669,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                         <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                     </Alert>
                                 )}
+                                {/*// TODO: bruk samme*/}
                                 <StepButtonWrapper>
                                     {!erEndringssøknad && (
                                         <Button

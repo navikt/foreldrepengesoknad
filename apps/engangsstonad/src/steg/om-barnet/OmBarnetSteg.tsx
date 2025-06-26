@@ -75,18 +75,15 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
-            <Step
-                onCancel={navigator.avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
-                steps={stepConfig}
-            >
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
                         {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
                         {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
                         <StepButtonsHookForm<FormValues>
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             saveDataOnPreviousClick={mapOgLagreOmBarnet}
                         />
