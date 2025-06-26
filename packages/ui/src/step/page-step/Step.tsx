@@ -54,12 +54,7 @@ export const Step = <TYPE extends string>({
                 <VStack gap="4">
                     {children}
                     {(onCancel || onContinueLater) && (
-                        <div
-                            role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
-                            aria-label={cancelOrContinueLaterAriaLabel}
-                        >
-                            <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
-                        </div>
+                        <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
                     )}
                 </VStack>
             </section>
