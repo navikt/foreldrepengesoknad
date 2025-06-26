@@ -1,11 +1,11 @@
+import { FloppydiskIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Button } from '@navikt/ds-react';
+import { Box, Button, HGrid } from '@navikt/ds-react';
 
 import { AvsluttModal } from './AvsluttModal';
 import { FortsettSenereModal } from './FortsettSenereModal';
-import styles from './stepFooter.module.css';
 
 interface Props {
     onAvsluttOgSlett?: () => void;
@@ -18,19 +18,62 @@ export const StepFooter = ({ onAvsluttOgSlett, onFortsettSenere }: Props) => {
     const intl = useIntl();
 
     return (
-        <div className={styles.stepFooter}>
+        <HGrid gap={{ xs: '4', sm: '8 4' }} columns={{ xs: 1, sm: 2 }} width={{ sm: 'fit-content' }}>
             <AvsluttModal isOpen={avsluttIsOpen} setIsOpen={setAvsluttIsOpen} onAvsluttOgSlett={onAvsluttOgSlett} />
             <FortsettSenereModal
                 isOpen={fortsettSenereIsOpen}
                 setIsOpen={setFortsettSenereIsOpen}
                 onFortsettSenere={onFortsettSenere}
             />
-            <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+            <Box asChild marginBlock={{ xs: '4 0', sm: '0' }} onClick={() => setFortsettSenereIsOpen(true)}>
+                <Button variant="tertiary" icon={<FloppydiskIcon aria-hidden />} iconPosition="left">
+                    {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
+                </Button>
+            </Box>
+            <Button
+                variant="tertiary"
+                icon={<TrashIcon aria-hidden />}
+                iconPosition="left"
+                onClick={() => setAvsluttIsOpen(true)}
+            >
                 {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
             </Button>
-            <Button variant="tertiary" onClick={() => setFortsettSenereIsOpen(true)}>
-                {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
-            </Button>
-        </div>
+        </HGrid>
     );
 };
+
+// const a = () => (
+//     <VStack gap="4">
+//         <HGrid
+//             gap={{ xs: "4", sm: "8 4" }}
+//             columns={{ xs: 1, sm: 2 }}
+//             width={{ sm: "fit-content" }}
+//         >
+//             <Button
+//                 variant="secondary"
+//                 icon={<ArrowLeftIcon aria-hidden />}
+//                 iconPosition="left"
+//             >
+//                 Forrige steg
+//             </Button>
+//             <Button
+//                 variant="primary"
+//                 icon={<PaperplaneIcon aria-hidden />}
+//                 iconPosition="right"
+//             >
+//                 Send søknad
+//             </Button>
+//
+//
+//
+//             <Button
+//                 variant="tertiary"
+//                 icon={<TrashIcon aria-hidden />}
+//                 iconPosition="left"
+//             >
+//                 Slett søknaden
+//             </Button>
+//         </HGrid>
+//     </VStack>
+// </VStack>
+// )
