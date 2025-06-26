@@ -12,7 +12,6 @@ interface StepProps<TYPE> {
     onCancel?: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
-    cancelOrContinueLaterAriaLabel?: string;
     hideHeader?: boolean;
     someFieldsOptional?: boolean;
     noFieldsRequired?: boolean;
@@ -23,7 +22,6 @@ export const Step = <TYPE extends string>({
     onCancel,
     onContinueLater,
     onStepChange,
-    cancelOrContinueLaterAriaLabel,
     children,
     hideHeader,
     someFieldsOptional = false,
