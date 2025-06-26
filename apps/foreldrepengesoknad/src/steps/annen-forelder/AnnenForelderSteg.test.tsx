@@ -496,7 +496,6 @@ describe('<AnnenForelderSteg>', () => {
             render(<FarFødtBarnMorHarVedtak />);
 
             expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
-            screen.logTestingPlaygroundURL();
             await waitFor(() => {
                 expect(
                     screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
