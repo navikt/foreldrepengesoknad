@@ -31,7 +31,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const annenPartHarVedtak =
         useQuery({
             ...annenPartVedtakOptions,
-            select: (vedtak) => (vedtak?.perioder.length ?? 0) > 0,
+            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
         }).data ?? false;
 
     const formValues = formMethods.watch();
