@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
-import { StepButtons } from '@navikt/fp-ui';
+import { StepButtons, StepFooter } from '@navikt/fp-ui';
+import { HGrid } from '@navikt/ds-react';
 
 interface Props<DATA_TYPE extends FieldValues> {
     goToPreviousStep: () => void;
@@ -31,11 +32,14 @@ export const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     }, [dirtyFields, getValues, goToPreviousStep, saveDataOnPreviousClick]);
 
     return (
-        <StepButtons
-            goToPreviousStep={onBackButtonClick}
-            nextButtonOnClick={nextButtonOnClick}
-            isDisabledAndLoading={isDisabledAndLoading || isSubmitting}
-            useSimplifiedTexts={useSimplifiedTexts}
-        />
+        <HGrid gap={{ xs: '4', sm: '8 4' }} columns={{ xs: 1, sm: 2 }} width={{ sm: 'fit-content' }}>
+            <StepButtons
+                goToPreviousStep={onBackButtonClick}
+                nextButtonOnClick={nextButtonOnClick}
+                isDisabledAndLoading={isDisabledAndLoading || isSubmitting}
+                useSimplifiedTexts={useSimplifiedTexts}
+            />
+            <StepFooter onFortsettSenere={() => {}} onAvsluttOgSlett={() => {}} />
+        </HGrid>
     );
 };

@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
 
 interface Props {
-    onAvsluttOgSlett?: () => void;
+    onAvsluttOgSlett: () => void;
 }
 
 export const AvsluttModal = ({ onAvsluttOgSlett }: Props) => {

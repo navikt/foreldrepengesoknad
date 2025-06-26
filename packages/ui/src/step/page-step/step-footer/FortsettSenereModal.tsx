@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { BodyLong, Box, Button, Heading, Modal } from '@navikt/ds-react';
 
 interface Props {
-    onFortsettSenere?: () => void;
+    onFortsettSenere: () => void;
 }
 
 export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
@@ -29,9 +29,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
                     <Button
                         variant="primary"
                         onClick={() => {
-                            if (onFortsettSenere) {
-                                onFortsettSenere();
-                            }
+                            onFortsettSenere();
                             setIsOpen(false);
                         }}
                     >

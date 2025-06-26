@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
-import { StepFooter } from './step-footer/StepFooter';
 
 interface StepProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
@@ -19,8 +18,6 @@ interface StepProps<TYPE> {
 
 export const Step = <TYPE extends string>({
     steps,
-    onCancel,
-    onContinueLater,
     onStepChange,
     children,
     hideHeader,
@@ -49,12 +46,7 @@ export const Step = <TYPE extends string>({
                 </BodyShort>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
-                <VStack gap="4">
-                    {children}
-                    {(onCancel || onContinueLater) && (
-                        <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
-                    )}
-                </VStack>
+                <VStack gap="4">{children}</VStack>
             </section>
         </VStack>
     );

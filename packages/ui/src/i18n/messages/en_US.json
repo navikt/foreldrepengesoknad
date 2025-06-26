@@ -41,7 +41,7 @@
     "ScanDocumentInfo.Liste.Punkt5": "Upload and add the images to your electronic application.",
     "ScanDocumentInfo.Del2": "If you have a scanner, you can scan documents.",
     "ScanDocumentInfo.Link": "More information about sending attachments at nav.no.",
-    "StepFooter.Avslutt": "Quit",
+    "StepFooter.Avslutt": "Delete application",
     "StepFooter.ContinueLater": "Continue later",
     "AvsluttModal.Tittel": "Continue later",
     "AvsluttModal.Info": "The application is saved and you can complete it later, or choose to delete it. The application is saved for 24 hours.",

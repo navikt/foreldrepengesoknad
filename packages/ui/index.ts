@@ -21,6 +21,7 @@ export { HorizontalLine } from './src/horizontal-line/HorizontalLine';
 export { Umyndig } from './src/umyndig/Umyndig';
 export { IntlProvider } from './src/i18n/IntlProvider';
 export { Step } from './src/step/page-step/Step';
+export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
 export { Calendar } from './src/calendar/Calendar';
 export type { Period } from './src/calendar/Calendar';

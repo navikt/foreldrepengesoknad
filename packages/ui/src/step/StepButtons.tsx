@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     goToPreviousStep: () => void;
@@ -27,7 +27,7 @@ export const StepButtons = ({
     isJumpToEndButton = false,
 }: Props) => {
     return (
-        <HStack gap={{ xs: '4', sm: '8 4' }} width={{ sm: 'fit-content' }}>
+        <>
             <Button
                 type="button"
                 variant="secondary"
@@ -41,7 +41,7 @@ export const StepButtons = ({
                     <FormattedMessage id="StepButtons.Forrige" />
                 )}
             </Button>
-            {isNextButtonVisible && (
+            {isNextButtonVisible ? (
                 <Button
                     icon={isSendButton ? <PaperplaneIcon aria-hidden /> : <ArrowRightIcon aria-hidden />}
                     iconPosition="right"
@@ -64,7 +64,9 @@ export const StepButtons = ({
                         <FormattedMessage id={'StepButtons.GåTilOppsummeringSimple'} />
                     )}
                 </Button>
+            ) : (
+                <div />
             )}
-        </HStack>
+        </>
     );
 };
