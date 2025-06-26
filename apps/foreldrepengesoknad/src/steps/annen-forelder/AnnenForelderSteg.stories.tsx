@@ -6,6 +6,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
+import avslåttAnnenPartVedtak from 'storybookData/annenPartVedtak/avslåttAnnenPartVedtak.json';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
@@ -302,6 +303,22 @@ export const FarFødtBarnMorHarVedtak: Story = {
             handlers: [
                 http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
                     HttpResponse.json(annenPartVedtak),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarFødtBarnMorHarAvslåttVedtak: Story = {
+    args: {
+        ...AnnenForelderFraOppgittBarn.args,
+        annenForelder: { ...defaultSøker.barn[0].annenForelder, kanIkkeOppgis: false },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(avslåttAnnenPartVedtak),
                 ),
             ],
         },

@@ -10,8 +10,14 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AnnenForelderSteg.stories';
 
-const { AnnenForelderFraOppgittBarn, SkalOppgiPersonalia, ForFar, MorUfødtBarn, FarFødtBarnMorHarVedtak } =
-    composeStories(stories);
+const {
+    AnnenForelderFraOppgittBarn,
+    SkalOppgiPersonalia,
+    ForFar,
+    MorUfødtBarn,
+    FarFødtBarnMorHarVedtak,
+    FarFødtBarnMorHarAvslåttVedtak,
+} = composeStories(stories);
 
 describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
@@ -501,6 +507,18 @@ describe('<AnnenForelderSteg>', () => {
                     screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
                 ).not.toBeInTheDocument();
             });
+        }),
+    );
+    it(
+        'skal spørre om annenpart har rett hvis annenpart har avslått vedtak',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FarFødtBarnMorHarAvslåttVedtak.parameters.msw);
+            render(<FarFødtBarnMorHarAvslåttVedtak />);
+
+            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+            expect(
+                await screen.findByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+            ).toBeInTheDocument();
         }),
     );
 });

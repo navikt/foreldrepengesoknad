@@ -54,7 +54,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
     const annenPartHarVedtak =
         useQuery({
             ...annenPartVedtakOptions,
-            select: (vedtak) => !!vedtak,
+            select: (vedtak) => (vedtak?.perioder.length ?? 0) > 0,
         }).data ?? false;
 
     const oppgittFnrErUlikRegistrertBarn =
