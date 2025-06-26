@@ -1,4 +1,4 @@
-import { PaperplaneIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ArrowRightIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack } from '@navikt/ds-react';
@@ -27,12 +27,13 @@ export const StepButtons = ({
     isJumpToEndButton = false,
 }: Props) => {
     return (
-        <HStack gap="2">
+        <HStack gap={{ xs: '4', sm: '8 4' }} width={{ sm: 'fit-content' }}>
             <Button
                 type="button"
                 variant="secondary"
                 onClick={goToPreviousStep}
-                style={{ flex: 1, maxWidth: isSendButton ? 'fit-content' : undefined }}
+                icon={<ArrowLeftIcon aria-hidden />}
+                iconPosition="left"
             >
                 {useSimplifiedTexts ? (
                     <FormattedMessage id="StepButtons.ForrigeSimple" />
@@ -42,13 +43,12 @@ export const StepButtons = ({
             </Button>
             {isNextButtonVisible && (
                 <Button
-                    icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
+                    icon={isSendButton ? <PaperplaneIcon aria-hidden /> : <ArrowRightIcon aria-hidden />}
                     iconPosition="right"
                     type={nextButtonOnClick ? 'button' : 'submit'}
                     onClick={nextButtonOnClick}
                     disabled={isDisabled || isDisabledAndLoading}
                     loading={isLoading || isDisabledAndLoading}
-                    style={{ flex: 1 }}
                 >
                     {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
                     {!isSendButton && !useSimplifiedTexts && !isJumpToEndButton && (
