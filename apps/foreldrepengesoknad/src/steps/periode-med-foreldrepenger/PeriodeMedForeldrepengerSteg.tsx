@@ -68,6 +68,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                         )}
                         {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                             <DekningsgradValgtAvAnnenPartPanel
+                                onAvsluttOgSlett={avbrytSøknad}
+                                onFortsettSenere={navigator.fortsettSøknadSenere}
                                 goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                                 goToNextDefaultStep={navigator.goToNextDefaultStep}
                                 fornavnAnnenForelder={annenForelder.fornavn}
