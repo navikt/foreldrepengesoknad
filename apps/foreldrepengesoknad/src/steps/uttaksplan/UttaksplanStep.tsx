@@ -32,7 +32,7 @@ import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
 import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, Button, Loader, VStack } from '@navikt/ds-react';
+import { Alert, Button, HGrid, Loader, VStack } from '@navikt/ds-react';
 
 import {
     Forelder,
@@ -45,7 +45,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -64,7 +64,6 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import { StepButtonWrapper } from './components/StepButtonWrapper';
 import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
@@ -669,9 +668,15 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                         <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                     </Alert>
                                 )}
-                                {/*// TODO: bruk samme*/}
-                                <StepButtonWrapper>
-                                    {!erEndringssøknad && (
+                                {/*Siden knappene her har mye unik logikk gjør vi en liten duplisering av "StepButtons" istedenfor å innføre knotete logikk*/}
+                                <HGrid
+                                    gap={{ xs: '4', sm: '8 4' }}
+                                    columns={{ xs: 1, sm: 2 }}
+                                    width={{ sm: 'fit-content' }}
+                                >
+                                    {erEndringssøknad ? (
+                                        <div />
+                                    ) : (
                                         <Button
                                             variant="secondary"
                                             onClick={
@@ -694,7 +699,11 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     >
                                         <FormattedMessage id="søknad.gåVidere" />
                                     </Button>
-                                </StepButtonWrapper>
+                                    <StepFooter
+                                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                                        onAvsluttOgSlett={avbrytSøknad}
+                                    />
+                                </HGrid>
                             </VStack>
                         </Step>
                     </SkjemaRotLayout>
