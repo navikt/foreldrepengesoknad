@@ -26,15 +26,16 @@ export const AvsluttModal = ({ onAvsluttOgSlett }: Props) => {
                     <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.Info' })}</BodyLong>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={onAvsluttOgSlett}>
+                    <Button type="button" variant="primary" onClick={onAvsluttOgSlett}>
                         {intl.formatMessage({ id: 'AvsluttModal.Delete' })}
                     </Button>
-                    <Button variant="tertiary" onClick={() => setIsOpen(false)}>
+                    <Button type="button" variant="tertiary" onClick={() => setIsOpen(false)}>
                         {intl.formatMessage({ id: 'AvsluttModal.Cancel' })}
                     </Button>
                 </Modal.Footer>
             </Modal>
             <Button
+                type="button"
                 variant="tertiary"
                 icon={<TrashIcon aria-hidden />}
                 iconPosition="left"

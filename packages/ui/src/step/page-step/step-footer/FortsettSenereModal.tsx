@@ -27,6 +27,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
+                        type="button"
                         variant="primary"
                         onClick={() => {
                             onFortsettSenere();
@@ -38,7 +39,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
                 </Modal.Footer>
             </Modal>
             <Box asChild marginBlock={{ xs: '4 0', sm: '0' }} onClick={() => setIsOpen(true)}>
-                <Button variant="tertiary" icon={<FloppydiskIcon aria-hidden />} iconPosition="left">
+                <Button variant="tertiary" icon={<FloppydiskIcon aria-hidden />} iconPosition="left" type="button">
                     {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
                 </Button>
             </Box>
