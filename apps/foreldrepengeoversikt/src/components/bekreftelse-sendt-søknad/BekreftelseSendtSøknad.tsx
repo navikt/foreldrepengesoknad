@@ -155,10 +155,15 @@ const EngangsstønadBekreftelse = () => {
 const ForeldrepengerBekreftelse = () => {
     const harMinstEttArbeidsforhold = useHarMinstEttArbeidsforhold();
     const venterPåInntektsmelding = useVenterPåInntektsmelding();
+    const behandlingTilstand = useÅpenBehandlingTilstand();
 
+    const visInformasjonOmInntektsmelding =
+        harMinstEttArbeidsforhold &&
+        (behandlingTilstand === 'VENT_INNTEKTSMELDING' || behandlingTilstand === 'VENT_TIDLIG_SØKNAD');
+    console.log(harMinstEttArbeidsforhold, behandlingTilstand);
     return (
         <>
-            {harMinstEttArbeidsforhold && (
+            {visInformasjonOmInntektsmelding && (
                 <>
                     <Accordion.Item>
                         <Accordion.Header>
@@ -249,7 +254,7 @@ const SvangerskapspengerBekreftelse = () => {
                     </Accordion.Header>
                     <Accordion.Content>
                         <BodyLong spacing size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />
                         </BodyLong>
                         <BodyLong spacing size="small">
                             {venterPåInntektsmelding ? undefined : (
@@ -326,6 +331,16 @@ const useHarMinstEttArbeidsforhold = () => {
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     return (søkerInfo?.arbeidsforhold ?? []).length > 0;
+};
+
+const useÅpenBehandlingTilstand = () => {
+    const sak = useGetSelectedSak();
+
+    if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
+        return undefined;
+    }
+
+    return sak.åpenBehandling?.tilstand;
 };
 
 const useVenterPåInntektsmelding = () => {
