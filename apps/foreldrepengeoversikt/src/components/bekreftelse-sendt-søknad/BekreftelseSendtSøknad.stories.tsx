@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { saker, sakerTidligFPSøknad } from 'storybookData/saker/saker';
+import { endringFPSøknad, saker, sakerTidligFPSøknad } from 'storybookData/saker/saker';
 import { søkerinfo, søkerinfoUtenArbeidsforhold } from 'storybookData/sokerinfo/sokerinfo';
 
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -71,6 +71,18 @@ export const ForForeldrepengerForTidligSøknad: Story = {
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
                     HttpResponse.json(sakerTidligFPSøknad),
                 ),
+            ],
+        },
+    },
+};
+
+export const ForForeldrepengerEndringsøknad: Story = {
+    args: ForForeldrepenger.args,
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(endringFPSøknad)),
             ],
         },
     },

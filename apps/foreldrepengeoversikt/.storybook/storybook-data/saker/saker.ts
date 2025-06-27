@@ -266,3 +266,38 @@ export const sakerTidligFPSøknad = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker;
+
+export const endringFPSøknad = {
+    foreldrepenger: [
+        {
+            oppdatertTidspunkt: '2024-02-28T21:19:08.911',
+            saksnummer: '352011079',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: RettighetType.BEGGE_RETT,
+            annenPart: {
+                fnr: '03506715317',
+            },
+            forelder: Forelder.mor,
+            familiehendelse: {
+                fødselsdato: '2023-01-10',
+                termindato: '2023-01-10',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: saker.foreldrepenger[0].gjeldendeVedtak,
+            åpenBehandling: {
+                søknadsperioder: [],
+                tilstand: 'UNDER_BEHANDLING',
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker;
