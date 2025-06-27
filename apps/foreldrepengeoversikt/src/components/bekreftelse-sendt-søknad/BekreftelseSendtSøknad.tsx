@@ -154,60 +154,62 @@ const EngangsstønadBekreftelse = () => {
 
 const ForeldrepengerBekreftelse = () => {
     const harMinstEttArbeidsforhold = useHarMinstEttArbeidsforhold();
-    const venterPåInntektsmelding = useVenterPåInntektsmelding();
+    const behandlingTilstand = useÅpenBehandlingTilstand();
+
+    const visInformasjonOmInntektsmelding =
+        harMinstEttArbeidsforhold &&
+        (behandlingTilstand === 'VENT_INNTEKTSMELDING' || behandlingTilstand === 'VENT_TIDLIG_SØKNAD');
 
     return (
         <>
+            {visInformasjonOmInntektsmelding && (
+                <Accordion.Item>
+                    <Accordion.Header>
+                        <VStack gap="1">
+                            <Detail textColor="subtle" uppercase>
+                                Neste steg
+                            </Detail>
+                            <BodyShort weight="semibold">Arbeidsgiveren din må sende inntektsmelding til Nav</BodyShort>
+                        </VStack>
+                    </Accordion.Header>
+                    <Accordion.Content>
+                        <BodyLong spacing size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.flerearbeidsgivere" />
+                        </BodyLong>
+                        {behandlingTilstand === 'VENT_TIDLIG_SØKNAD' && (
+                            <BodyLong spacing size="small">
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.fp" />
+                            </BodyLong>
+                        )}
+                        <BodyLong size="small">
+                            {behandlingTilstand === 'VENT_TIDLIG_SØKNAD' ? (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
+                            ) : (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
+                            )}
+                        </BodyLong>
+                    </Accordion.Content>
+                </Accordion.Item>
+            )}
             {harMinstEttArbeidsforhold && (
-                <>
-                    <Accordion.Item>
-                        <Accordion.Header>
-                            <VStack gap="1">
-                                <Detail textColor="subtle" uppercase>
-                                    Neste steg
-                                </Detail>
-                                <BodyShort weight="semibold">
-                                    Arbeidsgiveren din må sende inntektsmelding til Nav
-                                </BodyShort>
-                            </VStack>
-                        </Accordion.Header>
-                        <Accordion.Content>
-                            <BodyLong spacing size="small">
-                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
-                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.flerearbeidsgivere" />
-                            </BodyLong>
-                            <BodyLong spacing size="small">
-                                {venterPåInntektsmelding ? undefined : (
-                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.fp" />
-                                )}
-                            </BodyLong>
-                            <BodyLong size="small">
-                                {venterPåInntektsmelding ? (
-                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
-                                ) : (
-                                    <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
-                                )}
-                            </BodyLong>
-                        </Accordion.Content>
-                    </Accordion.Item>
-                    <Accordion.Item>
-                        <Accordion.Header>
-                            <VStack gap="1">
-                                <Detail textColor="subtle">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
-                                </Detail>
-                                <BodyShort weight="semibold">
-                                    <FormattedMessage id="BekreftelseSendtSøknad.SelvInformere" />
-                                </BodyShort>
-                            </VStack>
-                        </Accordion.Header>
-                        <Accordion.Content>
-                            <BodyLong size="small">
-                                <FormattedMessage id="BekreftelseSendtSøknad.HuskÅInformere" />
-                            </BodyLong>
-                        </Accordion.Content>
-                    </Accordion.Item>
-                </>
+                <Accordion.Item>
+                    <Accordion.Header>
+                        <VStack gap="1">
+                            <Detail textColor="subtle">
+                                <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
+                            </Detail>
+                            <BodyShort weight="semibold">
+                                <FormattedMessage id="BekreftelseSendtSøknad.SelvInformere" />
+                            </BodyShort>
+                        </VStack>
+                    </Accordion.Header>
+                    <Accordion.Content>
+                        <BodyLong size="small">
+                            <FormattedMessage id="BekreftelseSendtSøknad.HuskÅInformere" />
+                        </BodyLong>
+                    </Accordion.Content>
+                </Accordion.Item>
             )}
             <TidligstMuligeSvar />
             <Accordion.Item>
@@ -232,12 +234,15 @@ const ForeldrepengerBekreftelse = () => {
 };
 
 const SvangerskapspengerBekreftelse = () => {
-    const venterPåInntektsmelding = useVenterPåInntektsmelding();
     const harMinstEttArbeidsforhold = useHarMinstEttArbeidsforhold();
+    const behandlingTilstand = useÅpenBehandlingTilstand();
 
+    const visInformasjonOmInntektsmelding =
+        harMinstEttArbeidsforhold &&
+        (behandlingTilstand === 'VENT_INNTEKTSMELDING' || behandlingTilstand === 'VENT_TIDLIG_SØKNAD');
     return (
         <>
-            {harMinstEttArbeidsforhold && (
+            {visInformasjonOmInntektsmelding && (
                 <Accordion.Item>
                     <Accordion.Header>
                         <VStack gap="1">
@@ -249,18 +254,18 @@ const SvangerskapspengerBekreftelse = () => {
                     </Accordion.Header>
                     <Accordion.Content>
                         <BodyLong spacing size="small">
-                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />{' '}
+                            <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.info" />
                         </BodyLong>
-                        <BodyLong spacing size="small">
-                            {venterPåInntektsmelding ? undefined : (
+                        {behandlingTilstand === 'VENT_TIDLIG_SØKNAD' && (
+                            <BodyLong spacing size="small">
                                 <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.svp" />
-                            )}
-                        </BodyLong>
+                            </BodyLong>
+                        )}
                         <BodyLong size="small">
-                            {venterPåInntektsmelding ? (
-                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
-                            ) : (
+                            {behandlingTilstand === 'VENT_TIDLIG_SØKNAD' ? (
                                 <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.tidlig.varsel" />
+                            ) : (
+                                <FormattedMessage id="BekreftelseSendtSøknad.VenterPåInntektsmelding.varsel" />
                             )}
                         </BodyLong>
                     </Accordion.Content>
@@ -328,14 +333,14 @@ const useHarMinstEttArbeidsforhold = () => {
     return (søkerInfo?.arbeidsforhold ?? []).length > 0;
 };
 
-const useVenterPåInntektsmelding = () => {
+const useÅpenBehandlingTilstand = () => {
     const sak = useGetSelectedSak();
 
     if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
 
-    return sak.åpenBehandling?.tilstand === 'VENT_INNTEKTSMELDING';
+    return sak.åpenBehandling?.tilstand;
 };
 
 const useGetTidligstMuligeSvar = () => {
