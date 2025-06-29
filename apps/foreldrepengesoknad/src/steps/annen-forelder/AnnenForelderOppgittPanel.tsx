@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -25,6 +27,12 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const formMethods = useFormContext<AnnenForelderFormData>();
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartHarVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+        }).data ?? false;
 
     const formValues = formMethods.watch();
     if (!erAnnenForelderOppgitt(formValues)) {
@@ -98,7 +106,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     ]}
                 />
             )}
-            {formValues.erAleneOmOmsorg !== true && (
+            {formValues.erAleneOmOmsorg !== true && !annenPartHarVedtak && (
                 <div>
                     <RhfRadioGroup
                         name="harRettPåForeldrepengerINorge"
