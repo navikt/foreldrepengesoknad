@@ -42,7 +42,7 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
 
     const inneholderFerie =
-        uttaksplan.find((p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) !== undefined;
+        uttaksplan.some((p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) !== undefined;
     const inneholderTapteDager = uttaksplan.some(
         (p) => p.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER,
     );
