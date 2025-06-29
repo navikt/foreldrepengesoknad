@@ -133,9 +133,9 @@ export const OppsummeringSteg = (props: Props) => {
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={avbrytSøknad}
+                onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 {!erEndringssøknad && (

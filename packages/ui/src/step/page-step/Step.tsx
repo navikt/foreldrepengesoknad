@@ -4,15 +4,11 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
-import { StepFooter } from './step-footer/StepFooter';
 
 interface StepProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
     children: React.ReactNode;
-    onCancel?: () => void;
-    onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
-    cancelOrContinueLaterAriaLabel?: string;
     hideHeader?: boolean;
     someFieldsOptional?: boolean;
     noFieldsRequired?: boolean;
@@ -20,10 +16,7 @@ interface StepProps<TYPE> {
 
 export const Step = <TYPE extends string>({
     steps,
-    onCancel,
-    onContinueLater,
     onStepChange,
-    cancelOrContinueLaterAriaLabel,
     children,
     hideHeader,
     someFieldsOptional = false,
@@ -51,17 +44,7 @@ export const Step = <TYPE extends string>({
                 </BodyShort>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
-                <VStack gap="4">
-                    {children}
-                    {(onCancel || onContinueLater) && (
-                        <div
-                            role={cancelOrContinueLaterAriaLabel ? 'complementary' : undefined}
-                            aria-label={cancelOrContinueLaterAriaLabel}
-                        >
-                            <StepFooter onFortsettSenere={onContinueLater} onAvsluttOgSlett={onCancel} />
-                        </div>
-                    )}
-                </VStack>
+                <VStack gap="4">{children}</VStack>
             </section>
         </VStack>
     );

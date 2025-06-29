@@ -8,7 +8,7 @@ const meta = {
     args: {
         saveOnNext: action('saveOnNext'),
         saveOnPrevious: action('saveOnPrevious'),
-        cancelApplication: action('cancelApplication'),
+        onAvsluttOgSlett: action('onAvsluttOgSlett'),
         goToPreviousStep: action('goToPreviousStep'),
         onStepChange: action('onStepChange'),
     },

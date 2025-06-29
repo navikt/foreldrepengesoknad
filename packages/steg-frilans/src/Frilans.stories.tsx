@@ -14,7 +14,7 @@ export const Default: Story = {
     args: {
         saveOnNext: action('button-click'),
         saveOnPrevious: action('button-click'),
-        cancelApplication: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [

@@ -32,9 +32,9 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
                 appName="Engangsstønad"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={navigator.avbrytSøknad}
+                onAvsluttOgSlett={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToNextStep}
             >
                 <OmBarnetOppsummering

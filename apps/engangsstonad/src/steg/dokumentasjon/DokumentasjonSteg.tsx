@@ -61,13 +61,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
-            <Step
-                onCancel={navigator.avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
-                steps={stepConfig}
-                noFieldsRequired
-            >
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
@@ -86,6 +80,8 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                         )}
                         <ScanDocumentInfo />
                         <StepButtonsHookForm<Dokumentasjon>
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             saveDataOnPreviousClick={oppdaterDokumentasjon}
                             isDisabledAndLoading={avventerVedlegg}

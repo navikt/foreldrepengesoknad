@@ -60,6 +60,8 @@ const getRadioBeskrivelse = (
 type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
+    onAvsluttOgSlett?: () => void;
+    onFortsettSenere?: () => void;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
     stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -90,6 +92,8 @@ export const DekningsgradForm = ({
     søkersituasjon,
     stønadskonto100,
     stønadskonto80,
+    onAvsluttOgSlett,
+    onFortsettSenere,
 }: Props) => {
     const intl = useIntl();
 
@@ -274,7 +278,11 @@ export const DekningsgradForm = ({
                         </BodyShort>
                     </Infobox>
                 )}
-                <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
+                <StepButtonsHookForm
+                    goToPreviousStep={goToPreviousDefaultStep}
+                    onFortsettSenere={onFortsettSenere}
+                    onAvsluttOgSlett={onAvsluttOgSlett}
+                />
             </VStack>
         </RhfForm>
     );

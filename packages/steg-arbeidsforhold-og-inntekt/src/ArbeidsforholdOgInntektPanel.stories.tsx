@@ -41,7 +41,7 @@ export const ForSvangerskapspenger: Story = {
     args: {
         aktiveArbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         saveOnNext: action('button-click'),
-        cancelApplication: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [

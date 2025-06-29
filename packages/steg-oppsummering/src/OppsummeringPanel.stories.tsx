@@ -25,8 +25,8 @@ export const HarBoddIUtlandetOgFødt: Story = {
     args: {
         appName: 'Engangsstønad',
         sendSøknad: promiseAction(),
-        cancelApplication: action('button-click'),
-        onContinueLater: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
+        onFortsettSenere: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [
@@ -68,8 +68,8 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
     args: {
         appName: 'Foreldrepenger',
         sendSøknad: promiseAction(),
-        cancelApplication: action('button-click'),
-        onContinueLater: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
+        onFortsettSenere: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [

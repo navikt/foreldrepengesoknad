@@ -48,8 +48,8 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={lagre}
                 saveOnPrevious={oppdaterUtenlandsopphold}
-                cancelApplication={navigator.avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={navigator.avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onStepChange={navigator.goToNextStep}
                 stepConfig={stepConfig}

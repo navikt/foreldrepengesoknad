@@ -196,12 +196,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step
-                onCancel={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                steps={stepConfig}
-                noFieldsRequired
-            >
+            <Step steps={stepConfig} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="10">
                         <MorInnlagtDokumentasjon
@@ -339,7 +334,11 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                                 </BodyLong>
                             </Alert>
                         )}
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
                     </VStack>
                 </RhfForm>
             </Step>

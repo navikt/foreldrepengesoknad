@@ -63,9 +63,9 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
     });
 
     it('skal avslutte søknad', async () => {
-        const cancelApplication = vi.fn();
+        const onAvsluttOgSlett = vi.fn();
 
-        render(<ForSvangerskapspenger cancelApplication={cancelApplication} />);
+        render(<ForSvangerskapspenger onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 

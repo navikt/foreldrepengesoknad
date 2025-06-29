@@ -113,13 +113,7 @@ export const SkjemaSteg = ({
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step
-                onCancel={avbrytSøknad}
-                steps={stepConfig}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToStep}
-                noFieldsRequired
-            >
+            <Step steps={stepConfig} onStepChange={navigator.goToStep} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
@@ -160,6 +154,8 @@ export const SkjemaSteg = ({
                             />
                         </VStack>
                         <StepButtonsHookForm
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             isDisabledAndLoading={avventerVedlegg}
                         />

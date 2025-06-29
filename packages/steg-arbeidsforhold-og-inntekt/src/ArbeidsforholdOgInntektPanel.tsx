@@ -22,8 +22,8 @@ interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: Arbeidsforhold[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -34,8 +34,8 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
     saveOnNext,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -58,12 +58,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const erSvp = appOrigin === 'svangerskapspengesoknad';
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            steps={stepConfig}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm
                 formMethods={formMethods}
                 onSubmit={(values) => {
@@ -218,6 +213,8 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     </VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
+                        onFortsettSenere={onFortsettSenere}
+                        onAvsluttOgSlett={onAvsluttOgSlett}
                         isNextButtonVisible={!erSvp || (erSvp && !kanIkkeSøke)}
                         isDisabledAndLoading={isSubmitting}
                         goToPreviousStep={goToPreviousStep}

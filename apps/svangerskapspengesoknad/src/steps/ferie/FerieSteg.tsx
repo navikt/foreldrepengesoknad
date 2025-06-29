@@ -94,12 +94,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step
-                onCancel={avbrytSøknad}
-                steps={stepConfig}
-                onStepChange={navigator.goToStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
-            >
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
@@ -133,7 +128,11 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                             </ReadMore>
                         </VStack>
                         <FeriePerioder />
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
                     </VStack>
                 </RhfForm>
             </Step>
