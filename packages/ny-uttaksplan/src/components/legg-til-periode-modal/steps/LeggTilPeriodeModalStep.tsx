@@ -5,6 +5,7 @@ import { VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { getFloatFromString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
@@ -12,6 +13,7 @@ import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
+import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
 import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
@@ -94,6 +96,7 @@ export const LeggTilPeriodeModalStep = ({
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+                samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }
 
@@ -105,21 +108,20 @@ export const LeggTilPeriodeModalStep = ({
             <VStack gap="4">
                 {isOpphold === false ? (
                     <>
-                        <KontotypeSpørsmål formMethods={formMethods} />
+                        <KontotypeSpørsmål />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}
                         />
-                        <GraderingSpørsmål formMethods={formMethods} />
+                        <SamtidigUttakSpørsmål />
+                        <GraderingSpørsmål />
                     </>
                 ) : null}
                 {isOpphold ? (
                     <>
                         <OppholdsÅrsakSpørsmål />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}
