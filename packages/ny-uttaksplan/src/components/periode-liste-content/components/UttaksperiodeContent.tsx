@@ -83,6 +83,26 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
     }
 };
 
+const getTekstForArbeidOgSamtidigUttak = (
+    periode: Planperiode,
+    erFarEllerMedmor: boolean,
+    navnPåForeldre: NavnPåForeldre,
+) => {
+    if ((periode.gradering !== undefined && periode.samtidigUttak !== undefined) || periode.gradering !== undefined) {
+        return <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>;
+    }
+
+    if (periode.samtidigUttak !== undefined) {
+        return (
+            <BodyShort>
+                {getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre)}
+            </BodyShort>
+        );
+    }
+
+    return undefined;
+};
+
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
@@ -114,19 +134,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     {periode.morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
-                    {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                    )}
-                    {periode.samtidigUttak !== undefined && (
-                        <BodyShort>
-                            {getSamtidigUttakTekst(
-                                periode.samtidigUttak,
-                                periode.forelder!,
-                                erFarEllerMedmor,
-                                navnPåForeldre,
-                            )}
-                        </BodyShort>
-                    )}
+                    {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
                 </div>
             </div>
         </div>
