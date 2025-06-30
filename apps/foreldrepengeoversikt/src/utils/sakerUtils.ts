@@ -30,7 +30,7 @@ export function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0]
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
         return ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom);
-    } else if (sak.åpenBehandling?.søknadsperioder) {
+    } else if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
         return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
     }
     return undefined;
