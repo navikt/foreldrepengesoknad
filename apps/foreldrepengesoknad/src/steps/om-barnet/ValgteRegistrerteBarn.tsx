@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -36,6 +38,13 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0].fødselsdato;
 
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const harTerminDatoFraVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => !!vedtak?.termindato,
+        }).data ?? false;
+
     return (
         <>
             <VStack gap="2">
@@ -69,6 +78,9 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                 <RhfDatepicker
                     name="termindato"
                     control={control}
+                    description={
+                        harTerminDatoFraVedtak ? intl.formatMessage({ id: 'omBarnet.termindato.født.beskrivelse' }) : ''
+                    }
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}
                     minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}

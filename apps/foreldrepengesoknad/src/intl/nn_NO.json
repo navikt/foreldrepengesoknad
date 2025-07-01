@@ -133,6 +133,7 @@
     "omBarnet.termindato.erForTidligTilÅSøkePåTermin.heading": "Du er for tidlig ute",
     "omBarnet.termindato.erForTidligTilÅSøkePåTermin.innhold": "Du kan søke om foreldrepengar tidligst i 22. svangerskapsuke. Du er dessverre for tidlig ute, og får ikkje søkt før senere.",
     "omBarnet.termindato.født": "Kva var termindatoen?",
+    "omBarnet.termindato.født.beskrivelse": "Termindato er henta frå søknaden til den andre forelderen",
     "omBarnet.termindato.termin": "Når er termindatoen?",
     "omBarnet.termindato.åpneLabel": "Kva viss barnet blir født før eller etter termin?",
     "omBarnet.opplaste.bekreftelse": "Seinare i søknaden vil du bli bedt om å lasta opp ei stadfesting på datoen du overtok omsorga og adopsjonsbevilling om du har mottatt dette.",
