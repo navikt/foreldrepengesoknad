@@ -15,12 +15,12 @@ import {
 } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { Loader, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -89,11 +89,7 @@ export const OmBarnetSteg = (props: Props) => {
     });
 
     if (terminDatoQuery.isLoading) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     return <OmBarnetStegInner {...props} termindato={terminDatoQuery.data} />;

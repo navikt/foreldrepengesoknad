@@ -2,19 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import ky from 'ky';
 
-import { Loader } from '@navikt/ds-react';
-
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { SimpleErrorPage } from '@navikt/fp-ui';
+import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 
 import { HvorMyeRouter } from './HvorMyeRouter';
-
-const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
 
 const STØNADSKONTO_PARAMS = {
     rettighetstype: 'BEGGE_RETT',
