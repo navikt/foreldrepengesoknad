@@ -10,7 +10,7 @@
             "utils/*": ["utils/*"],
             "api/*": ["api/*"],
             "types/*": ["types/*"],
-            "storybookData/*": [".storybook/testData/*"]
+            "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
