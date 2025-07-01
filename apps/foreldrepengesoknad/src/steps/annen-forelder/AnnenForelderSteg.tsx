@@ -89,7 +89,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
-            harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
+            harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : undefined,
         });
 
         return navigator.goToNextDefaultStep();
