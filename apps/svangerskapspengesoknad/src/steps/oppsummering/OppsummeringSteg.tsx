@@ -60,9 +60,9 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={avbrytSøknad}
+                onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToStep}
             >
                 <FormSummary>

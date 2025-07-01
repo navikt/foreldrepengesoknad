@@ -22,6 +22,8 @@ type Props = {
     førsteDagEtterAnnenForelder: Date | undefined;
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
+    onAvsluttOgSlett?: () => void;
+    onFortsettSenere?: () => void;
 };
 
 export const FordelingForm = ({
@@ -31,6 +33,8 @@ export const FordelingForm = ({
     førsteDagEtterAnnenForelder,
     goToPreviousDefaultStep,
     goToNextDefaultStep,
+    onAvsluttOgSlett,
+    onFortsettSenere,
 }: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -93,7 +97,11 @@ export const FordelingForm = ({
                     oppstartsvalg={oppstartsValgOptions}
                 />
 
-                <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
+                <StepButtonsHookForm
+                    goToPreviousStep={goToPreviousDefaultStep}
+                    onAvsluttOgSlett={onAvsluttOgSlett}
+                    onFortsettSenere={onFortsettSenere}
+                />
             </VStack>
         </RhfForm>
     );

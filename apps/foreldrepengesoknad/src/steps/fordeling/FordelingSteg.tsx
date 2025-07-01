@@ -141,7 +141,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step onCancel={avbrytSøknad} onContinueLater={navigator.fortsettSøknadSenere} steps={stepConfig}>
+            <Step steps={stepConfig}>
                 <VStack gap="5">
                     <FordelingOversikt
                         kontoer={valgtStønadskonto}
@@ -157,6 +157,8 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
                         dagerMedFellesperiode={dagerMedFellesperiode}
                         goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                         goToNextDefaultStep={navigator.goToNextDefaultStep}
+                        onAvsluttOgSlett={avbrytSøknad}
+                        onFortsettSenere={navigator.fortsettSøknadSenere}
                         førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
                     />
                 </VStack>
