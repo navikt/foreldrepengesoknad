@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
@@ -679,6 +680,8 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     ) : (
                                         <Button
                                             variant="secondary"
+                                            icon={<ArrowLeftIcon aria-hidden />}
+                                            iconPosition="left"
                                             onClick={
                                                 harPlanBlittEndret
                                                     ? (event) => {
@@ -692,6 +695,8 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                         </Button>
                                     )}
                                     <Button
+                                        icon={<ArrowRightIcon aria-hidden />}
+                                        iconPosition="right"
                                         type="submit"
                                         onClick={clickHandler}
                                         disabled={isSubmitting}
