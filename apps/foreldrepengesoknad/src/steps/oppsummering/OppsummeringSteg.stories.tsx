@@ -7,6 +7,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -229,6 +230,10 @@ const meta = {
             handlers: [
                 http.post(
                     `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
                     () => new HttpResponse(null, { status: 200 }),
                 ),
             ],
@@ -458,6 +463,23 @@ export const FarMedMorSomHarRettINorge: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
+        },
+    },
+};
+
+export const FarMedMorSomHarVedtak: Story = {
+    args: FarMedMorSomHarRettINorge.args,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+            ],
         },
     },
 };
