@@ -26,22 +26,13 @@ export type Adopsjon = {
 export type OmBarnet = Fødsel | Adopsjon;
 
 export const erAdopsjon = (omBarnet: OmBarnet): omBarnet is Adopsjon => {
-    if ((omBarnet as Adopsjon).adopsjonsdato) {
-        return true;
-    }
-    return false;
+    return 'adopsjonsdato' in omBarnet;
 };
 
 export const harBarnetTermindato = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
-    if ((omBarnet as BarnetErIkkeFødt).termindato) {
-        return true;
-    }
-    return false;
+    return 'termindato' in omBarnet;
 };
 
 export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
-    if ((omBarnet as BarnetErFødt).erBarnetFødt === true) {
-        return true;
-    }
-    return false;
+    return 'fødselsdato' in omBarnet;
 };
