@@ -39,9 +39,13 @@ const getSamtidigUttakTekst = (
         ? forelderIPerioden === Forelder.farMedmor
         : forelderIPerioden === Forelder.mor;
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     return periodenGjelderSøker ? (
-        <FormattedMessage id="uttaksplan.periodeListeContent.samtidigUttak" values={{ samtidiguttaksProsent }} />
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak"
+            values={{ samtidiguttaksProsent, navnPåHovedforelderIPerioden }}
+        />
     ) : (
         <FormattedMessage
             id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"

@@ -59,7 +59,7 @@
     "uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder": "Overføring av {stønadskontoNavn} fordi {navnPåAnnenForelder} har mistet rett på foreldrepengar",
     "uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder": "Overføring av {stønadskontoNavn} fordi {navnPåAnnenForelder} er innlagt på helseinstitusjon",
     "uttaksplan.periodeListeContent.arbeid": "Du skal jobbe {arbeidstidprosent} % og ha {uttaksprosent} % foreldrepengar",
-    "uttaksplan.periodeListeContent.samtidigUttak": "Du skal ha {samtidiguttaksProsent} % foreldrepengar",
+    "uttaksplan.periodeListeContent.samtidigUttak": "{navnPåHovedforelderIPerioden} skal ha {samtidiguttaksProsent} % foreldrepengar",
     "uttaksplan.periodeListeContent.samtidigUttak.annenForelder": "{navnPåAnnenForelderIPerioden} skal ha {samtidiguttaksProsent} % foreldrepengar",
     "uttaksplan.periodeListeContent.skalIkkeJobbe": "Skal ikkje jobbe i denne perioden",
     "uttaksplan.periodeListeContent.periodeUtenUttak": "Skal ikkje ha foreldrepengar",
