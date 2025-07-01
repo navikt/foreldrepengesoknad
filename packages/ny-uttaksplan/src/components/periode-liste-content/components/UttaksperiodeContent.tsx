@@ -6,7 +6,7 @@ import { BodyShort } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
 import { MorsAktivitet } from '@navikt/fp-types';
-import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
+import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
@@ -44,12 +44,18 @@ const getSamtidigUttakTekst = (
     return periodenGjelderSøker ? (
         <FormattedMessage
             id="uttaksplan.periodeListeContent.samtidigUttak"
-            values={{ samtidiguttaksProsent, navnPåHovedforelderIPerioden }}
+            values={{
+                samtidiguttaksProsent,
+                navnPåHovedforelderIPerioden: capitalizeFirstLetter(navnPåHovedforelderIPerioden),
+            }}
         />
     ) : (
         <FormattedMessage
             id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
-            values={{ navnPåAnnenForelderIPerioden, samtidiguttaksProsent }}
+            values={{
+                navnPåAnnenForelderIPerioden: capitalizeFirstLetter(navnPåAnnenForelderIPerioden),
+                samtidiguttaksProsent,
+            }}
         />
     );
 };
