@@ -1,4 +1,4 @@
-import { AnnenPartSak } from 'packages/types';
+import { AnnenPartSak } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
     termindato: '2022-08-17',
