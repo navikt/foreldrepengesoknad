@@ -31,7 +31,7 @@ export const annenPartVedtak = {
     dekningsgrad: 'HUNDRE',
 } satisfies AnnenPartSak;
 
-export const avslåttVedtak = {
+export const avslåttAnnenPartVedtak = {
     termindato: '2022-08-17',
     antallBarn: 1,
     perioder: [

@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering/kvittering';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 import { stønadskontoer } from 'storybookData/stønadskontoer/stønadskontoer';
 
 import { Søkerinfo } from '@navikt/fp-types';
