@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering/kvittering';
 import saker from 'storybookData/saker/saker.json';
-import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
+import { stønadskontoer } from 'storybookData/stønadskontoer/stønadskontoer';
 
 import { Søkerinfo } from '@navikt/fp-types';
 
