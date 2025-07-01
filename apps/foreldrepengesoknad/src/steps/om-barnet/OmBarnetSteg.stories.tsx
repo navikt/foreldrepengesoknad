@@ -5,7 +5,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';

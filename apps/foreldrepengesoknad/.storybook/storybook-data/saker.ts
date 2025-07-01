@@ -1,4 +1,4 @@
-import { Saker } from '@navikt/fp-types';
+import { Saker } from 'packages/types';
 
 export const saker = {
     foreldrepenger: [

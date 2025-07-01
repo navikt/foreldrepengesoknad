@@ -5,7 +5,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
+import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';

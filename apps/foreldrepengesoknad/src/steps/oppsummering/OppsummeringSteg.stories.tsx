@@ -7,7 +7,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 import { VedleggDataType } from 'types/VedleggDataType';
