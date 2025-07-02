@@ -8,11 +8,11 @@ import { useIntl } from 'react-intl';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
-import { Box, HStack, Loader } from '@navikt/ds-react';
+import { Box, HStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { IconCircleWrapper, SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { IconCircleWrapper, SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DekningsgradForm } from './DekningsgradForm';
@@ -44,11 +44,7 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
 
     if (tilgjengeligeStønadskontoerQuery.isPending) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     return (

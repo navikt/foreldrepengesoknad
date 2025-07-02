@@ -33,7 +33,7 @@ import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
 import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, Button, HGrid, Loader, VStack } from '@navikt/ds-react';
+import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
     Forelder,
@@ -46,7 +46,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step, StepFooter } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -542,11 +542,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         (annenPartVedtakQuery.isPending && !eksisterendeSakAnnenPartRequestIsSuspended) ||
         (nesteSakAnnenPartVedtakQuery.isPending && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     const minsterettUkerToTette = getAntallUkerMinsterett(tilgjengeligeStønadskontoerQuery.data.minsteretter.toTette);
