@@ -34,5 +34,5 @@ export const harBarnetTermindato = (omBarnet: OmBarnet): omBarnet is BarnetErIkk
 };
 
 export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
-    return 'fødselsdato' in omBarnet;
+    return 'erBarnetFødt' in omBarnet && omBarnet.erBarnetFødt;
 };
