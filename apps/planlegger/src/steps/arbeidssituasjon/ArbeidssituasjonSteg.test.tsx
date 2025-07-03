@@ -2,13 +2,17 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
-// import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 
-const { ArbeidssituasjonMorOgFar, ArbeidssituasjonFarOgFar, ArbeidssituasjonAleneforsørger } = composeStories(stories);
+const {
+    ArbeidssituasjonMorOgFar,
+    ArbeidssituasjonFarOgFar,
+    ArbeidssituasjonAleneforsørger,
+    ArbeidssituasjonMorOgMedmorUtenNavn,
+} = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -194,5 +198,18 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
+    });
+
+    it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ArbeidssituasjonMorOgMedmorUtenNavn gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Ingen av disse'));
+
+        expect(screen.getByText('Har medmor jobbet 6 av de siste 10 månedene', { exact: false })).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+        expect(screen.getByText('Medmor vil ha rett til foreldrepenger')).toBeInTheDocument();
     });
 });
