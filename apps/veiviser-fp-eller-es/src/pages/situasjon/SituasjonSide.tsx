@@ -82,8 +82,6 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
         mode: 'onBlur',
     });
 
-    console.log(formMethods.getFieldState('lønnPerMåned'));
-
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
         formMethods.watch();
 
@@ -94,7 +92,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
-    const lønnPerMånedNummer = formatValue(lønnPerMåned);
+    const lønnPerMånedNummer = formatValue(lønnPerMåned) ?? 0;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -245,12 +243,17 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <RhfNumericField
                                             name="lønnPerMåned"
                                             control={formMethods.control}
-                                            onChange={scrollToBottom}
+                                            onChange={(beløp) => {
+                                                scrollToBottom();
+                                                const skalSkjule6GMelding =
+                                                    (formatValue(beløp) ?? 0) * 12 >= minstelønn;
+                                                if (skalSkjule6GMelding) {
+                                                    setVisUnder6GMelding(false);
+                                                }
+                                            }}
                                             onBlur={(beløp) => {
-                                                console.log(beløp);
                                                 const skalViseUnder6Melding =
                                                     (formatValue(beløp) ?? 0) * 12 < minstelønn;
-                                                console.log(formatValue(beløp));
                                                 setVisUnder6GMelding(skalViseUnder6Melding);
                                             }}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
