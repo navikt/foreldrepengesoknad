@@ -121,7 +121,6 @@
     "valideringsfeil.tomType.påkrevd.ingen.tilFødsel": "Du må oppgi om du skal slutte å jobbe frem til fødselsdato eller frem til en annen dato.",
     "valideringsfeil.periode.tomType.påkrevd.termin": "Du må oppgi om perioden varer frem til tre uker før termin eller en annen dato.",
     "valideringsfeil.periode.tomType.påkrevd.fødsel": "Du må oppgi om perioden varer frem til fødselsdato eller en annen dato.",
-    "valideringsfeil.periode.tomType.etterSluttDatoArbeid": "Du kan ikke oppgi at perioden slutter tre uker før termin da dette er etter at du {slutteTekst} å jobbe i {navn}.",
     "valideringsfeil.periode.overlapper": "Perioden overlapper med perioden {fom} - {tom}.",
     "valideringsfeil.periode.stillingsprosent.nySøknad": "Du må sende ny søknad hvis du skal jobbe redusert etter perioden som starter {fom}, der du har oppgitt at du er tilbake i full stilling.",
     "valideringsfeil.periode.ikkeSammenhengende": "Perioden må begynne dagen etter forrige periode. Velg en annen fra og med dato eller juster forrige periode slik at periodene er sammenhengende.",
