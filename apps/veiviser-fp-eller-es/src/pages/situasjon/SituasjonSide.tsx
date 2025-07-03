@@ -79,7 +79,6 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const formMethods = useForm<FpEllerEsSituasjon>({
         defaultValues: fpEllerEsSituasjon,
-        mode: 'onBlur',
     });
 
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
