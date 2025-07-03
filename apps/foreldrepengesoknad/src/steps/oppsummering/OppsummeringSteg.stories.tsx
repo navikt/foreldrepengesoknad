@@ -7,6 +7,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -32,7 +33,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import { Oppsummering } from './Oppsummering';
+import { OppsummeringSteg } from './OppsummeringSteg';
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -219,16 +220,20 @@ type StoryArgs = {
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof Oppsummering>;
+} & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
     title: 'steps/Oppsummering',
-    component: Oppsummering,
+    component: OppsummeringSteg,
     parameters: {
         msw: {
             handlers: [
                 http.post(
                     `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
                     () => new HttpResponse(null, { status: 200 }),
                 ),
             ],
@@ -282,7 +287,7 @@ const meta = {
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
-                        <Oppsummering {...rest} />
+                        <OppsummeringSteg {...rest} />
                     </FpDataContext>
                 </MemoryRouter>
             </QueryClientProvider>
@@ -458,6 +463,23 @@ export const FarMedMorSomHarRettINorge: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
+        },
+    },
+};
+
+export const FarMedMorSomHarVedtak: Story = {
+    args: FarMedMorSomHarRettINorge.args,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+            ],
         },
     },
 };
@@ -1071,7 +1093,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >
-                        <Oppsummering {...args} />
+                        <OppsummeringSteg {...args} />
                     </FpDataContext>
                 </MemoryRouter>
             </QueryClientProvider>

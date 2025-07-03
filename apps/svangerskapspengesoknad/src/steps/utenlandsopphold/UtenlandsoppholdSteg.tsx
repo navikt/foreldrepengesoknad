@@ -4,11 +4,9 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
@@ -53,21 +51,18 @@ export const UtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøkna
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 stønadstype="Svangerskapspenger"
                 onStepChange={navigator.goToStep}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

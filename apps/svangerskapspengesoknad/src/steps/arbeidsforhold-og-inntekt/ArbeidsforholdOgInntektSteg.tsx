@@ -7,8 +7,6 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
-import { Heading } from '@navikt/ds-react';
-
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
@@ -18,7 +16,7 @@ import {
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 const getNextRoute = (
@@ -88,21 +86,18 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 onStepChange={navigator.goToStep}
                 appOrigin="svangerskapspengesoknad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

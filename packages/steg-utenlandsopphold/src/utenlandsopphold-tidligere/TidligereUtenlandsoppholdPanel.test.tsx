@@ -158,9 +158,9 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
     });
 
     it('skal avslutte søknad', async () => {
-        const cancelApplication = vi.fn();
+        const onAvsluttOgSlett = vi.fn();
 
-        render(<Default cancelApplication={cancelApplication} />);
+        render(<Default onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 

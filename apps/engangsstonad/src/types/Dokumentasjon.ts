@@ -11,8 +11,5 @@ export type TerminDokumentasjon = {
 export type Dokumentasjon = TerminDokumentasjon | Vedlegg;
 
 export const erTerminDokumentasjon = (dokumentasjon: Dokumentasjon): dokumentasjon is TerminDokumentasjon => {
-    if ((dokumentasjon as TerminDokumentasjon).terminbekreftelsedato) {
-        return true;
-    }
-    return false;
+    return 'terminbekreftelsedato' in dokumentasjon;
 };

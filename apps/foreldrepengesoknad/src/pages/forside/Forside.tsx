@@ -12,12 +12,12 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from 'utils/eksisterendeSakUtils';
 
-import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpSak, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
@@ -143,65 +143,58 @@ export const Forside = ({
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
     return (
-        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
-                <ContentWrapper>
-                    <VStack gap="8">
-                        <HStack justify="center">
-                            <Heading size="xlarge">
-                                <FormattedMessage id="velkommen.tittel" />
-                            </Heading>
-                        </HStack>
-                        <GuidePanel poster>
-                            <VStack gap="2">
-                                <FormattedMessage id="velkommen.guidepanel.del1" />
-                                <FormattedMessage
-                                    id="velkommen.guidepanel.del2"
-                                    values={{
-                                        a: (msg) => (
-                                            <Link rel="noopener noreferrer" href={links.foreldrepenger}>
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </VStack>
-                        </GuidePanel>
-                        <BarnVelger selectableBarn={selectableBarn} />
-                        <Alert variant="info">
-                            <FormattedMessage id="velkommen.lagring.info" />
-                        </Alert>
-                        <RhfConfirmationPanel
-                            name="harForståttRettigheterOgPlikter"
-                            control={formMethods.control}
-                            label={intl.formatMessage({ id: 'velkommen.samtykke' })}
-                            validate={[
-                                (value: boolean) =>
-                                    value !== true
-                                        ? intl.formatMessage({
-                                              id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
-                                          })
-                                        : null,
-                            ]}
-                        >
-                            <VStack gap="5">
-                                <HStack gap="1">
-                                    <BodyShort>
-                                        <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                                    </BodyShort>
-                                    <DinePlikter />
-                                </HStack>
-                            </VStack>
-                        </RhfConfirmationPanel>
-                        <HStack justify="center">
-                            <Button type="submit" variant="primary">
-                                {knapptekst}
-                            </Button>
-                        </HStack>
-                        <DinePersonopplysningerModal />
-                    </VStack>
-                </ContentWrapper>
-            </VStack>
-        </RhfForm>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="8">
+                    <GuidePanel poster>
+                        <VStack gap="2">
+                            <FormattedMessage id="velkommen.guidepanel.del1" />
+                            <FormattedMessage
+                                id="velkommen.guidepanel.del2"
+                                values={{
+                                    a: (msg) => (
+                                        <Link rel="noopener noreferrer" href={links.foreldrepenger}>
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </VStack>
+                    </GuidePanel>
+                    <BarnVelger selectableBarn={selectableBarn} />
+                    <Alert variant="info">
+                        <FormattedMessage id="velkommen.lagring.info" />
+                    </Alert>
+                    <RhfConfirmationPanel
+                        name="harForståttRettigheterOgPlikter"
+                        control={formMethods.control}
+                        label={intl.formatMessage({ id: 'velkommen.samtykke' })}
+                        validate={[
+                            (value: boolean) =>
+                                value !== true
+                                    ? intl.formatMessage({
+                                          id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
+                                      })
+                                    : null,
+                        ]}
+                    >
+                        <VStack gap="5">
+                            <HStack gap="1">
+                                <BodyShort>
+                                    <FormattedMessage id="velkommen.samtykkeIntro.del1" />
+                                </BodyShort>
+                                <DinePlikter />
+                            </HStack>
+                        </VStack>
+                    </RhfConfirmationPanel>
+                    <HStack justify="center">
+                        <Button type="submit" variant="primary">
+                            {knapptekst}
+                        </Button>
+                    </HStack>
+                    <DinePersonopplysningerModal />
+                </VStack>
+            </RhfForm>
+        </SkjemaRotLayout>
     );
 };

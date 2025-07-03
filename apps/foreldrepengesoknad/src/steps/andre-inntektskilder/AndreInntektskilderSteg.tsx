@@ -8,7 +8,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 
 import { AndreInntektskilderFieldArray } from './components/AndreInntektskilderFieldArray';
 import { AndreInntekterFormValues } from './types/AndreInntekterFormValues';
@@ -39,19 +39,20 @@ export const AndreInntektskilderSteg = ({ arbeidsforhold, mellomlagreSøknadOgNa
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <AndreInntektskilderFieldArray />
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        <AndreInntektskilderFieldArray />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

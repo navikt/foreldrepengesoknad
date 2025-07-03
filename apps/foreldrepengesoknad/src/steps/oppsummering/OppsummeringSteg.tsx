@@ -21,7 +21,7 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { PersonFrontend, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -61,7 +61,7 @@ export interface Props {
     avbrytSøknad: () => void;
 }
 
-export const Oppsummering = (props: Props) => {
+export const OppsummeringSteg = (props: Props) => {
     const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
     const intl = useIntl();
 
@@ -128,17 +128,14 @@ export const Oppsummering = (props: Props) => {
     );
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={avbrytSøknad}
+                onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 {!erEndringssøknad && (
@@ -232,6 +229,6 @@ export const Oppsummering = (props: Props) => {
                     )}
                 </>
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

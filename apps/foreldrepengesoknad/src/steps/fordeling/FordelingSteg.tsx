@@ -16,11 +16,11 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 
-import { Loader, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -132,38 +132,33 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
     if (!valgtStønadskonto || annenPartsVedtakQuery.isLoading) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <VStack gap="5">
-                <FordelingOversikt
-                    kontoer={valgtStønadskonto}
-                    navnFarMedmor={navnFarMedmor}
-                    navnMor={navnMor}
-                    deltUttak={deltUttak}
-                    fordelingScenario={fordelingScenario}
-                />
-                {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
-                <FordelingForm
-                    erDeltUttak={deltUttak}
-                    navnPåForeldre={navnPåForeldre}
-                    dagerMedFellesperiode={dagerMedFellesperiode}
-                    goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                    goToNextDefaultStep={navigator.goToNextDefaultStep}
-                    førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                />
-            </VStack>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <VStack gap="5">
+                    <FordelingOversikt
+                        kontoer={valgtStønadskonto}
+                        navnFarMedmor={navnFarMedmor}
+                        navnMor={navnMor}
+                        deltUttak={deltUttak}
+                        fordelingScenario={fordelingScenario}
+                    />
+                    {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
+                    <FordelingForm
+                        erDeltUttak={deltUttak}
+                        navnPåForeldre={navnPåForeldre}
+                        dagerMedFellesperiode={dagerMedFellesperiode}
+                        goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                        goToNextDefaultStep={navigator.goToNextDefaultStep}
+                        onAvsluttOgSlett={avbrytSøknad}
+                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                        førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                    />
+                </VStack>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

@@ -5,11 +5,9 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
-import { Heading } from '@navikt/ds-react';
-
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { Arbeidsforhold, NæringDto } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -42,21 +40,18 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 appOrigin="svangerskapspengesoknad"
                 onStepChange={navigator.goToStep}
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

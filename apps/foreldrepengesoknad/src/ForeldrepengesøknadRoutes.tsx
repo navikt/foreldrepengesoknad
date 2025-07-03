@@ -16,7 +16,7 @@ import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { FrilansSteg } from 'steps/frilans/FrilansSteg';
 import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
-import { Oppsummering } from 'steps/oppsummering/Oppsummering';
+import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
 import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
@@ -74,7 +74,7 @@ const renderSøknadRoutes = (
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
-                        <Oppsummering
+                        <OppsummeringSteg
                             erEndringssøknad={erEndringssøknad}
                             søkerInfo={søkerInfo}
                             sendSøknad={sendSøknad}
@@ -237,7 +237,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.OPPSUMMERING}
                 element={
-                    <Oppsummering
+                    <OppsummeringSteg
                         erEndringssøknad={erEndringssøknad}
                         søkerInfo={søkerInfo}
                         sendSøknad={sendSøknad}

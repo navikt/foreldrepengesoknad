@@ -68,8 +68,8 @@ interface Props<TYPE> {
     egenNæring?: NæringDto;
     saveOnNext: (formValues: NæringDto) => void;
     saveOnPrevious: (formValues: NæringDto | undefined) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -82,8 +82,8 @@ export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
     saveOnNext,
     saveOnPrevious,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -124,13 +124,7 @@ export const EgenNæringPanel = <TYPE extends string>({
     };
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            steps={stepConfig}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-            someFieldsOptional
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
@@ -374,6 +368,8 @@ export const EgenNæringPanel = <TYPE extends string>({
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
                     <StepButtonsHookForm<NæringFormValues>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />

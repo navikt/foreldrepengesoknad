@@ -21,7 +21,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { HorizontalLine, Step } from '@navikt/fp-ui';
+import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -93,48 +93,50 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onStepChange={navigator.goToStep}
-            onContinueLater={navigator.fortsettSøknadSenere}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <VStack gap="4">
-                        <RhfRadioGroup
-                            name="skalHaFerie"
-                            control={formMethods.control}
-                            onChange={(checked) => {
-                                if (checked) {
-                                    formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);
-                                } else {
-                                    formMethods.setValue('feriePerioder', []);
-                                }
-                            }}
-                            label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
-                            validate={[isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' }))]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
-                            <BodyShort>
-                                <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
-                            </BodyShort>
-                        </ReadMore>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        <VStack gap="4">
+                            <RhfRadioGroup
+                                name="skalHaFerie"
+                                control={formMethods.control}
+                                onChange={(checked) => {
+                                    if (checked) {
+                                        formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);
+                                    } else {
+                                        formMethods.setValue('feriePerioder', []);
+                                    }
+                                }}
+                                label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
+                                validate={[
+                                    isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' })),
+                                ]}
+                            >
+                                <Radio value={true}>
+                                    <FormattedMessage id="ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="nei" />
+                                </Radio>
+                            </RhfRadioGroup>
+                            <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
+                                <BodyShort>
+                                    <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
+                                </BodyShort>
+                            </ReadMore>
+                        </VStack>
+                        <FeriePerioder />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
                     </VStack>
-                    <FeriePerioder />
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 }
 

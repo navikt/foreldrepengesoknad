@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -11,7 +13,7 @@ import { VStack } from '@navikt/ds-react';
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { PersonFrontend, Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -48,6 +50,13 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.søker);
 
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartHarVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+        }).data ?? false;
+
     const oppgittFnrErUlikRegistrertBarn =
         annenForelder !== undefined &&
         isAnnenForelderOppgitt(annenForelder) &&
@@ -69,8 +78,13 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             : values.etternavn;
         const fnr = skalIkkeOppgiPersonaliaOgHarFraRegBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
 
+        // Hvis annenPartHarVedtak så har parten rett til foreldrepenger. I det tilfellet vises ikke det valget og verdien er undefined.
+        // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
+        const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
+
         oppdaterAnnenForeldre({
             ...values,
+            harRettPåForeldrepengerINorge,
             kanIkkeOppgis: false,
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
@@ -95,32 +109,34 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                 : annenForelder,
     });
 
+    // TODO: denne kan være undefined. Som er misvisende siden typen sier Boolean. Stammer trolig fra at AnnenForelderDto puttes rått inn i state?
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {skalOppgiPersonalia && (
-                        <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
-                    )}
-                    {!skalOppgiPersonalia && (
-                        <RegistrertePersonalia
-                            person={annenForelderFraRegistrertBarn}
-                            fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
-                            visEtternavn
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {skalOppgiPersonalia && (
+                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
+                        )}
+                        {!skalOppgiPersonalia && (
+                            <RegistrertePersonalia
+                                person={annenForelderFraRegistrertBarn}
+                                fødselsnummerForVisning={annenForelderFraRegistrertBarn.fnr}
+                                visEtternavn
+                            />
+                        )}
+                        {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
                         />
-                    )}
-                    {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

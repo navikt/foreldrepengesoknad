@@ -7,10 +7,8 @@ import { useSendSøknad } from 'appData/useSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { Loader } from '@navikt/ds-react';
-
 import { Kvittering, Søkerinfo } from '@navikt/fp-types';
-import { ErrorPage } from '@navikt/fp-ui';
+import { ErrorPage, Spinner } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
 import { Forside } from './pages/forside/Forside';
@@ -28,12 +26,6 @@ import { SenereUtenlandsoppholdSteg } from './steps/utenlandsopphold-senere/Sene
 import { TidligereUtenlandsoppholdSteg } from './steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from './steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { VelgArbeidSteg } from './steps/velg-arbeidsforhold/VelgArbeidSteg';
-
-export const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
 
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return (

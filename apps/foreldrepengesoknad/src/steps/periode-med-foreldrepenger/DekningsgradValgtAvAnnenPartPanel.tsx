@@ -17,6 +17,8 @@ import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
+    onAvsluttOgSlett?: () => void;
+    onFortsettSenere?: () => void;
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
@@ -30,6 +32,8 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     kjønnAnnenForelder,
     dekningsgrad,
     valgtStønadskonto,
+    onFortsettSenere,
+    onAvsluttOgSlett,
 }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -87,6 +91,8 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
                 )}
             </Infobox>
             <StepButtons
+                onFortsettSenere={onFortsettSenere}
+                onAvsluttOgSlett={onAvsluttOgSlett}
                 isDisabledAndLoading={isSubmitting}
                 nextButtonOnClick={lagre}
                 goToPreviousStep={goToPreviousDefaultStep}

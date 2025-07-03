@@ -12,20 +12,12 @@ import { useIntl } from 'react-intl';
 import { Kvittering } from 'types/Kvittering';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
-import { Loader } from '@navikt/ds-react';
-
 import { Saker, Søkerinfo } from '@navikt/fp-types';
-import { ErrorBoundary, RegisterdataUtdatert } from '@navikt/fp-ui';
+import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
-
-const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {

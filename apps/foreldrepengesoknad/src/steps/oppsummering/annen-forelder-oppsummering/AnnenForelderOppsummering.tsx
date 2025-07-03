@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -14,6 +16,13 @@ interface Props {
 
 export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEndreSvar }: Props) => {
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
+
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartHarVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+        }).data ?? false;
 
     return (
         <FormSummary>
@@ -63,7 +72,7 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                                 <FormSummary.Value>{formatDate(annenForelder.datoForAleneomsorg)}</FormSummary.Value>
                             </FormSummary.Answer>
                         )}
-                        {!annenForelder.erAleneOmOmsorg && (
+                        {!annenPartHarVedtak && !annenForelder.erAleneOmOmsorg && (
                             <FormSummary.Answer>
                                 <FormSummary.Label>
                                     <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge" />

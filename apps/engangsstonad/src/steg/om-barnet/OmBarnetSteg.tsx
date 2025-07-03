@@ -10,7 +10,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { PersonFrontend, Søkersituasjon } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -74,24 +74,22 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
     });
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            onCancel={navigator.avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
-                    {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
-                    <StepButtonsHookForm<FormValues>
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={mapOgLagreOmBarnet}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="10">
+                        <ErrorSummaryHookForm />
+                        {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
+                        {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
+                        <StepButtonsHookForm<FormValues>
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={mapOgLagreOmBarnet}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

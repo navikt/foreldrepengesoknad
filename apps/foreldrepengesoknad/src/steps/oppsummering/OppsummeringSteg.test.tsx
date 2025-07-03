@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -10,7 +10,7 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 import { notEmpty } from '@navikt/fp-validation';
 
-import * as stories from './Oppsummering.stories';
+import * as stories from './OppsummeringSteg.stories';
 
 const {
     Default,
@@ -20,6 +20,7 @@ const {
     FarMedMorSomHarRettINorge,
     MorMedAdoptertBarn,
     MorMedUtenlandsopphold,
+    FarMedMorSomHarVedtak,
     MorMedArbeidsforholdOgAndreInntekter,
     MorMedAleneOmsorg,
     FarMedAleneOmsorg,
@@ -286,6 +287,21 @@ describe('<Oppsummering>', () => {
             ).getByText('Ja'),
         ).toBeInTheDocument();
     });
+
+    it(
+        'Skal ikke vise spørsmål om annen forelder har rett hvis de har innvilget perioder fra vedtak',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FarMedMorSomHarVedtak.parameters.msw);
+            render(<FarMedMorSomHarVedtak />);
+
+            expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+                ).not.toBeInTheDocument();
+            });
+        }),
+    );
 
     it('Skal vise informasjon om at mor har hatt opphold men ikke rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);

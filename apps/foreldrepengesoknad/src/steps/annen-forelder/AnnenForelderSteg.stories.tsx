@@ -1,13 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
 import { BarnFrontend, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
 
@@ -49,6 +52,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/AnnenForelderSteg',
     component: AnnenForelderSteg,
+    decorators: [withQueryClient],
     render: ({
         søkersituasjon = {
             situasjon: 'fødsel',
@@ -284,6 +288,38 @@ export const FarGiftUfødtBarn: Story = {
                 sivilstand: { type: SivilstandType.GIFT },
             },
             arbeidsforhold: [],
+        },
+    },
+};
+
+export const FarFødtBarnMorHarVedtak: Story = {
+    args: {
+        ...AnnenForelderFraOppgittBarn.args,
+        annenForelder: { ...defaultSøker.barn[0].annenForelder, kanIkkeOppgis: false },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarFødtBarnMorHarAvslåttVedtak: Story = {
+    args: {
+        ...AnnenForelderFraOppgittBarn.args,
+        annenForelder: { ...defaultSøker.barn[0].annenForelder, kanIkkeOppgis: false },
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(avslåttAnnenPartVedtak),
+                ),
+            ],
         },
     },
 };

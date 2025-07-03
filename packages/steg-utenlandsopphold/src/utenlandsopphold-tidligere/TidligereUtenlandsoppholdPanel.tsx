@@ -26,8 +26,8 @@ interface Props<TYPE> {
     saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
     saveOnPrevious: (data: UtenlandsoppholdPeriode[]) => void;
     onStepChange?: (id: TYPE) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
 }
@@ -36,8 +36,8 @@ export const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
     tidligereUtenlandsopphold,
     saveOnNext,
     saveOnPrevious,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -64,12 +64,7 @@ export const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
     );
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            onContinueLater={onContinueLater}
-            steps={stepConfig}
-            onStepChange={onStepChange}
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdSiste12Mnd)}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
@@ -91,6 +86,8 @@ export const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
                         </Button>
                     </VStack>
                     <StepButtonsHookForm<FormType>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={(values) => saveOnPrevious(values.utenlandsoppholdSiste12Mnd)}
                     />

@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
-import { FormSummary, Heading } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import {
     ArbeidsforholdOppsummering,
@@ -16,7 +16,7 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -55,17 +55,14 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     );
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={avbrytSøknad}
+                onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToStep}
             >
                 <FormSummary>
@@ -132,6 +129,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     }
                 />
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

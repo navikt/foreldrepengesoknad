@@ -1,6 +1,7 @@
 import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
+import { useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -73,6 +74,7 @@ interface Props {
 
 export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
+    const [visUnder6GMelding, setVisUnder6GMelding] = useState(false);
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<FpEllerEsSituasjon>({
@@ -89,7 +91,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
-    const lønnPerMånedNummer = formatValue(lønnPerMåned);
+    const lønnPerMånedNummer = formatValue(lønnPerMåned) ?? 0;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -240,7 +242,19 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <RhfNumericField
                                             name="lønnPerMåned"
                                             control={formMethods.control}
-                                            onChange={scrollToBottom}
+                                            onChange={(beløp) => {
+                                                scrollToBottom();
+                                                const skalSkjule6GMelding =
+                                                    (formatValue(beløp) ?? 0) * 12 >= minstelønn;
+                                                if (skalSkjule6GMelding) {
+                                                    setVisUnder6GMelding(false);
+                                                }
+                                            }}
+                                            onBlur={(beløp) => {
+                                                const skalViseUnder6Melding =
+                                                    (formatValue(beløp) ?? 0) * 12 < minstelønn;
+                                                setVisUnder6GMelding(skalViseUnder6Melding);
+                                            }}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[
                                                 isValidNumberForm(
@@ -274,7 +288,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     </BodyShort>
                                 </ReadMore>
                             </VStack>
-                            {lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 < minstelønn && (
+                            {visUnder6GMelding && (
                                 <Infobox
                                     header={
                                         <FormattedMessage

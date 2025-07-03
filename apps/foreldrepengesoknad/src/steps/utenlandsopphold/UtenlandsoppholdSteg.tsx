@@ -4,11 +4,9 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
-
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 const utledNesteSide = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
@@ -52,20 +50,17 @@ export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNavig
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 stønadstype="Foreldrepenger"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

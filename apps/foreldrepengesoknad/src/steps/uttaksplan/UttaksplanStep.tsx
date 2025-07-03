@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
@@ -32,7 +33,7 @@ import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
 import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, Button, Loader, VStack } from '@navikt/ds-react';
+import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
     Forelder,
@@ -45,7 +46,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -64,7 +65,6 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import { StepButtonWrapper } from './components/StepButtonWrapper';
 import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
@@ -542,11 +542,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         (annenPartVedtakQuery.isPending && !eksisterendeSakAnnenPartRequestIsSuspended) ||
         (nesteSakAnnenPartVedtakQuery.isPending && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     const minsterettUkerToTette = getAntallUkerMinsterett(tilgjengeligeStønadskontoerQuery.data.minsteretter.toTette);
@@ -591,111 +587,127 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                 });
 
                 return (
-                    <Step
-                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-                        onCancel={avbrytSøknad}
-                        onContinueLater={navigator.fortsettSøknadSenere}
-                        steps={stepConfig}
-                        noFieldsRequired
-                    >
-                        {startStønadsperiodeNyttBarn && (
-                            <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
-                        )}
-                        <VStack gap="2">
-                            <Uttaksplan
-                                foreldreSituasjon={foreldreSituasjon}
-                                forelderVedAleneomsorg={forelderVedAleneomsorg}
-                                erDeltUttak={erDeltUttak}
-                                uttaksplan={uttaksplan}
-                                familiehendelsesdato={familiehendelsesdato}
-                                handleOnPlanChange={handleOnPlanChange}
-                                stønadskontoer={valgteStønadskontoer!}
-                                navnPåForeldre={navnPåForeldre}
-                                annenForelder={annenForelder}
-                                arbeidsforhold={getAktiveArbeidsforhold(
-                                    søkerInfo.arbeidsforhold,
-                                    erAdopsjon,
-                                    erFarEllerMedmor,
-                                    familiehendelsesdato,
-                                )}
-                                erEndringssøknad={erEndringssøknad}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                erFlerbarnssøknad={erFlerbarnssøknad}
-                                erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                                harMidlertidigOmsorg={harMidlertidigOmsorg}
-                                situasjon={situasjon}
-                                erMorUfør={erMorUfør}
-                                morHarRett={morHarRett}
-                                søkersituasjon={søkersituasjon}
-                                dekningsgrad={dekningsgrad}
-                                antallBarn={antallBarn}
-                                setUttaksplanErGyldig={setUttaksplanErGyldig}
-                                eksisterendeSak={eksisterendeSak}
-                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                                harKomplettUttaksplan={harKomplettUttaksplan}
-                                opprinneligPlan={
-                                    uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
-                                }
-                                handleSlettUttaksplan={handleSlettUttaksplan}
-                                handleResetUttaksplan={handleResetUttaksplan}
-                                termindato={termindato ? dayjs(termindato).toDate() : undefined}
-                                barn={barn}
-                                visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                                barnFraNesteSak={barnFraNesteSak}
-                                familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
-                                førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
-                                minsterettUkerToTette={minsterettUkerToTette}
-                            />
-                            {visAutomatiskJusteringForm && (
-                                <AutomatiskJusteringForm
-                                    termindato={termindato ? dayjs(termindato).toDate() : undefined!}
-                                    perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
-                                    antallBarn={barn.antallBarn}
-                                    visibility={visibility}
+                    <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+                        <Step
+                            // onAvsluttOgSlett={avbrytSøknad}
+                            // onFortsettSenere={navigator.fortsettSøknadSenere}
+                            steps={stepConfig}
+                            noFieldsRequired
+                        >
+                            {startStønadsperiodeNyttBarn && (
+                                <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
+                            )}
+                            <VStack gap="2">
+                                <Uttaksplan
+                                    foreldreSituasjon={foreldreSituasjon}
+                                    forelderVedAleneomsorg={forelderVedAleneomsorg}
+                                    erDeltUttak={erDeltUttak}
+                                    uttaksplan={uttaksplan}
+                                    familiehendelsesdato={familiehendelsesdato}
+                                    handleOnPlanChange={handleOnPlanChange}
+                                    stønadskontoer={valgteStønadskontoer!}
+                                    navnPåForeldre={navnPåForeldre}
+                                    annenForelder={annenForelder}
+                                    arbeidsforhold={getAktiveArbeidsforhold(
+                                        søkerInfo.arbeidsforhold,
+                                        erAdopsjon,
+                                        erFarEllerMedmor,
+                                        familiehendelsesdato,
+                                    )}
+                                    erEndringssøknad={erEndringssøknad}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    erFlerbarnssøknad={erFlerbarnssøknad}
+                                    erAleneOmOmsorg={søkerErAleneOmOmsorg}
+                                    harMidlertidigOmsorg={harMidlertidigOmsorg}
+                                    situasjon={situasjon}
+                                    erMorUfør={erMorUfør}
+                                    morHarRett={morHarRett}
+                                    søkersituasjon={søkersituasjon}
+                                    dekningsgrad={dekningsgrad}
+                                    antallBarn={antallBarn}
+                                    setUttaksplanErGyldig={setUttaksplanErGyldig}
+                                    eksisterendeSak={eksisterendeSak}
+                                    perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                    harKomplettUttaksplan={harKomplettUttaksplan}
+                                    opprinneligPlan={
+                                        uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
+                                    }
+                                    handleSlettUttaksplan={handleSlettUttaksplan}
+                                    handleResetUttaksplan={handleResetUttaksplan}
+                                    termindato={termindato ? dayjs(termindato).toDate() : undefined}
+                                    barn={barn}
+                                    visAutomatiskJusteringForm={visAutomatiskJusteringForm}
+                                    barnFraNesteSak={barnFraNesteSak}
+                                    familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
+                                    førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
+                                    minsterettUkerToTette={minsterettUkerToTette}
                                 />
-                            )}
-                            <VilDuGåTilbakeModal
-                                isOpen={gåTilbakeIsOpen}
-                                setIsOpen={setGåTilbakeIsOpen}
-                                goToPreviousStep={goToPreviousStep}
-                            />
-                            {!uttaksplanErGyldig && submitIsClicked && (
-                                <Alert variant="error">
-                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
-                                </Alert>
-                            )}
-                            {erTomEndringssøknad && submitIsClicked && (
-                                <Alert variant="error">
-                                    <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
-                                </Alert>
-                            )}
-                            <StepButtonWrapper>
-                                {!erEndringssøknad && (
-                                    <Button
-                                        variant="secondary"
-                                        onClick={
-                                            harPlanBlittEndret
-                                                ? (event) => {
-                                                      event.preventDefault();
-                                                      setGåTilbakeIsOpen(true);
-                                                  }
-                                                : goToPreviousStep
-                                        }
-                                    >
-                                        <FormattedMessage id="backlink.label" />
-                                    </Button>
+                                {visAutomatiskJusteringForm && (
+                                    <AutomatiskJusteringForm
+                                        termindato={termindato ? dayjs(termindato).toDate() : undefined!}
+                                        perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
+                                        antallBarn={barn.antallBarn}
+                                        visibility={visibility}
+                                    />
                                 )}
-                                <Button
-                                    type="submit"
-                                    onClick={clickHandler}
-                                    disabled={isSubmitting}
-                                    loading={isSubmitting}
+                                <VilDuGåTilbakeModal
+                                    isOpen={gåTilbakeIsOpen}
+                                    setIsOpen={setGåTilbakeIsOpen}
+                                    goToPreviousStep={goToPreviousStep}
+                                />
+                                {!uttaksplanErGyldig && submitIsClicked && (
+                                    <Alert variant="error">
+                                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
+                                    </Alert>
+                                )}
+                                {erTomEndringssøknad && submitIsClicked && (
+                                    <Alert variant="error">
+                                        <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
+                                    </Alert>
+                                )}
+                                {/*Siden knappene her har mye unik logikk gjør vi en liten duplisering av "StepButtons" istedenfor å innføre knotete logikk*/}
+                                <HGrid
+                                    gap={{ xs: '4', sm: '8 4' }}
+                                    columns={{ xs: 1, sm: 2 }}
+                                    width={{ sm: 'fit-content' }}
                                 >
-                                    <FormattedMessage id="søknad.gåVidere" />
-                                </Button>
-                            </StepButtonWrapper>
-                        </VStack>
-                    </Step>
+                                    {erEndringssøknad ? (
+                                        <div />
+                                    ) : (
+                                        <Button
+                                            variant="secondary"
+                                            icon={<ArrowLeftIcon aria-hidden />}
+                                            iconPosition="left"
+                                            onClick={
+                                                harPlanBlittEndret
+                                                    ? (event) => {
+                                                          event.preventDefault();
+                                                          setGåTilbakeIsOpen(true);
+                                                      }
+                                                    : goToPreviousStep
+                                            }
+                                        >
+                                            <FormattedMessage id="backlink.label" />
+                                        </Button>
+                                    )}
+                                    <Button
+                                        icon={<ArrowRightIcon aria-hidden />}
+                                        iconPosition="right"
+                                        type="submit"
+                                        onClick={clickHandler}
+                                        disabled={isSubmitting}
+                                        loading={isSubmitting}
+                                    >
+                                        <FormattedMessage id="søknad.gåVidere" />
+                                    </Button>
+                                    <StepFooter
+                                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                                        onAvsluttOgSlett={avbrytSøknad}
+                                    />
+                                </HGrid>
+                            </VStack>
+                        </Step>
+                    </SkjemaRotLayout>
                 );
             }}
         />

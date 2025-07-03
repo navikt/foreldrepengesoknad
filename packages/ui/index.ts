@@ -8,7 +8,7 @@ export const uiMessages = {
     en: enMessages,
 };
 
-export { ContentWrapper } from './src/content-wrapper/ContentWrapper';
+export { SkjemaRotLayout } from './src/skjema-rotlayout/SkjemaRotLayout';
 export { ErrorBoundary } from './src/error/ErrorBoundary';
 export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
@@ -21,6 +21,7 @@ export { HorizontalLine } from './src/horizontal-line/HorizontalLine';
 export { Umyndig } from './src/umyndig/Umyndig';
 export { IntlProvider } from './src/i18n/IntlProvider';
 export { Step } from './src/step/page-step/Step';
+export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
 export { Calendar } from './src/calendar/Calendar';
 export type { Period } from './src/calendar/Calendar';
@@ -36,3 +37,4 @@ export { VeiviserPage } from './src/veivisere/VeiviserPage';
 export { AndreVeivisereLinkPanel } from './src/veivisere/andre-veivisere/AndreVeivisereLinkPanel';
 export { FrontPage } from './src/veivisere/frontpage/FrontPage';
 export { RegisterdataUtdatert } from './src/registerdata-utdatert/RegisterdataUtdatert';
+export { Spinner } from './src/loaders/Spinner';
