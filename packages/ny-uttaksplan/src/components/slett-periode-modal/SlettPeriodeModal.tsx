@@ -72,6 +72,7 @@ export const SlettPeriodeModal = ({
 
             handleDeletePerioder(slettedePerioder);
         }
+        closeModal();
     };
 
     return (
