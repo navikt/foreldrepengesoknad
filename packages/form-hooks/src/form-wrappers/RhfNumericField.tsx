@@ -10,6 +10,7 @@ type Props<T extends FieldValues> = {
     validate?: Array<(value: string) => ValidationReturnType>;
     description?: string;
     onChange?: (value: string) => void;
+    onBlur?: (value: string) => void;
     autoFocus?: boolean;
     maxLength?: number;
     className?: string;
@@ -23,6 +24,7 @@ export const RhfNumericField = <T extends FieldValues>({
     onChange,
     description,
     autoFocus,
+    onBlur,
     maxLength,
     className,
     style,
@@ -63,6 +65,7 @@ export const RhfNumericField = <T extends FieldValues>({
             error={getError(errors, name)}
             autoFocus={autoFocus}
             autoComplete="off"
+            onBlur={(event) => onBlur?.(event.currentTarget.value)}
             maxLength={maxLength}
             disabled={disabled}
             className={className}
