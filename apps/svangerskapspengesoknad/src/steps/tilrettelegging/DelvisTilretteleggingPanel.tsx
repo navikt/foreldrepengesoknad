@@ -177,10 +177,6 @@ export const DelvisTilretteleggingPanel = ({
                         validerTilretteleggingTomType(
                             intl,
                             Tilretteleggingstype.DELVIS,
-                            behovForTilretteleggingFom,
-                            sisteDagForSvangerskapspenger,
-                            arbeidsforholdNavn || '',
-                            sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
                     ]}
