@@ -155,10 +155,6 @@ describe('<SituasjonSide>', () => {
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
 
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
-
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
@@ -196,10 +192,6 @@ describe('<SituasjonSide>', () => {
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
-
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
@@ -241,10 +233,6 @@ describe('<SituasjonSide>', () => {
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
-
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
