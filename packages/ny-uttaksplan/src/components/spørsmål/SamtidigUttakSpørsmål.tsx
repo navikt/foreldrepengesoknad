@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { isRequired } from '@navikt/fp-validation';
 
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
 import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
@@ -19,7 +20,12 @@ export const SamtidigUttakSpørsmål = () => {
 
     return (
         <VStack gap="4">
-            <RhfRadioGroup control={control} name="samtidigUttak" label="Skal du ha samtidig uttak?">
+            <RhfRadioGroup
+                control={control}
+                name="samtidigUttak"
+                label="Skal du ha samtidig uttak?"
+                validate={[isRequired('Du må fylle ut')]}
+            >
                 <Radio value={true}>
                     <FormattedMessage id="uttaksplan.ja" />
                 </Radio>
