@@ -6,7 +6,9 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
@@ -38,6 +40,7 @@ export const LeggTilPeriodeModalStep = ({
     isOpphold,
 }: Props) => {
     const { forelder, kontoType, fom, tom, årsak } = modalData;
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
     const formMethods = useForm<LeggTilPeriodeModalFormValues>({
         defaultValues: {
@@ -114,7 +117,7 @@ export const LeggTilPeriodeModalStep = ({
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}
                         />
-                        <SamtidigUttakSpørsmål />
+                        {!erAleneOmOmsorg && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />
                     </>
                 ) : null}
