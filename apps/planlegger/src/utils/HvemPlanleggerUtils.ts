@@ -43,7 +43,7 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
 };
 
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR && hvemPlanlegger.navnPåMedmor) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {

@@ -89,11 +89,11 @@ export const ArbeidssituasjonAleneforsørger: Story = {
     },
 };
 
-export const ArbeidssituasjonMorOgMedmor: Story = {
+export const ArbeidssituasjonMorOgMedmorUtenNavn: Story = {
     args: {
         hvemPlanlegger: {
             navnPåMor: 'Esther Utvikler',
-            navnPåMedmor: 'Klara Utvikler',
+            navnPåMedmor: undefined,
             type: HvemPlanleggerType.MOR_OG_MEDMOR,
         },
         satser: DEFAULT_SATSER,
