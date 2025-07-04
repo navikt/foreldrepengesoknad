@@ -150,26 +150,6 @@ export const validatePeriodeTom =
         return undefined;
     };
 
-export const validatePeriodeTomType =
-    (intl: IntlShape, sisteDagForSvangerskapspenger: string, arbeidNavn: string, sluttDatoArbeid: string | undefined) =>
-    (value: string | number | boolean) => {
-        if (
-            sluttDatoArbeid &&
-            value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&
-            dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
-        ) {
-            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
-            return intl.formatMessage(
-                { id: 'valideringsfeil.periode.tomType.etterSluttDatoArbeid' },
-                {
-                    navn: arbeidNavn,
-                    slutteTekst,
-                },
-            );
-        }
-        return undefined;
-    };
-
 export const validateAtPeriodeIkkeOverlapper = (
     fom: string | undefined,
     tom: string | undefined,
