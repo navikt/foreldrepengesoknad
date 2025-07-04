@@ -201,9 +201,7 @@ describe('<ArbeidssituasjonSteg>', () => {
     });
 
     it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
-        const gåTilNesteSide = vi.fn();
-
-        render(<ArbeidssituasjonMorOgMedmorUtenNavn gåTilNesteSide={gåTilNesteSide} />);
+        render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
 
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
         await userEvent.click(screen.getByText('Ingen av disse'));
