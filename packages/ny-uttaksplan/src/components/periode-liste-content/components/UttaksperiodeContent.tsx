@@ -6,7 +6,7 @@ import { BodyShort } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
 import { MorsAktivitet } from '@navikt/fp-types';
-import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
+import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
@@ -39,13 +39,23 @@ const getSamtidigUttakTekst = (
         ? forelderIPerioden === Forelder.farMedmor
         : forelderIPerioden === Forelder.mor;
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     return periodenGjelderSøker ? (
-        <FormattedMessage id="uttaksplan.periodeListeContent.samtidigUttak" values={{ samtidiguttaksProsent }} />
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak"
+            values={{
+                samtidiguttaksProsent,
+                navnPåHovedforelderIPerioden: capitalizeFirstLetter(navnPåHovedforelderIPerioden),
+            }}
+        />
     ) : (
         <FormattedMessage
             id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
-            values={{ navnPåAnnenForelderIPerioden, samtidiguttaksProsent }}
+            values={{
+                navnPåAnnenForelderIPerioden: capitalizeFirstLetter(navnPåAnnenForelderIPerioden),
+                samtidiguttaksProsent,
+            }}
         />
     );
 };
@@ -83,6 +93,26 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
     }
 };
 
+const getTekstForArbeidOgSamtidigUttak = (
+    periode: Planperiode,
+    erFarEllerMedmor: boolean,
+    navnPåForeldre: NavnPåForeldre,
+) => {
+    if ((periode.gradering !== undefined && periode.samtidigUttak !== undefined) || periode.gradering !== undefined) {
+        return <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>;
+    }
+
+    if (periode.samtidigUttak !== undefined) {
+        return (
+            <BodyShort>
+                {getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre)}
+            </BodyShort>
+        );
+    }
+
+    return undefined;
+};
+
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
@@ -114,19 +144,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     {periode.morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
-                    {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                    )}
-                    {periode.samtidigUttak !== undefined && (
-                        <BodyShort>
-                            {getSamtidigUttakTekst(
-                                periode.samtidigUttak,
-                                periode.forelder!,
-                                erFarEllerMedmor,
-                                navnPåForeldre,
-                            )}
-                        </BodyShort>
-                    )}
+                    {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
                 </div>
             </div>
         </div>
