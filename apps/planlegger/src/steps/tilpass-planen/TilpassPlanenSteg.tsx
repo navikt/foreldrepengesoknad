@@ -51,7 +51,9 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         'Uttaksplan ikke oppgitt',
     );
 
-    const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(0);
+    // uttaksplan lagrer hver state av planen i et array. Når denne siden laster vil vi starte på den siste endringen.
+    const initiellUttaksplanIndex = uttaksplan.length - 1;
+    const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(initiellUttaksplanIndex);
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
