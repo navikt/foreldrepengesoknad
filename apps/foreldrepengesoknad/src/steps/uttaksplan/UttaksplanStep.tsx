@@ -588,12 +588,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
                 return (
                     <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-                        <Step
-                            // onAvsluttOgSlett={avbrytSøknad}
-                            // onFortsettSenere={navigator.fortsettSøknadSenere}
-                            steps={stepConfig}
-                            noFieldsRequired
-                        >
+                        <Step steps={stepConfig} noFieldsRequired>
                             {startStønadsperiodeNyttBarn && (
                                 <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                             )}
