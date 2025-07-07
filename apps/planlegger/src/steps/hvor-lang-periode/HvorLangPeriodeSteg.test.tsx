@@ -27,6 +27,9 @@ vi.mock('react-router-dom', async () => {
 const useNavigateMock = vi.mocked(useNavigate);
 
 describe('<HvorLangPeriodeSteg>', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
     it('skal sjekke at siste dag med foreldrepenger blir vist korrekt ved valg av dekningsgrader', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
@@ -87,6 +90,25 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
+        expect(
+            screen.getByText(
+                'Denne datoen gjelder om dere har foreldrepenger sammenhengende fra tre uker før fødselen.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født, farOgFar', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        render(<FarOgFarBeggeHarRett gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(
             screen.getByText(
                 'Denne datoen gjelder om dere har foreldrepenger sammenhengende fra tre uker før fødselen.',
