@@ -43,10 +43,12 @@ export const ValgtDekningsgradInfoboks = ({
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);
 
+    const erAlenesøkerValue = erAlenesøker(hvemPlanlegger);
+
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const kunEnPartSkalHa =
-        erAlenesøker(hvemPlanlegger) || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
+        erAlenesøkerValue || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
     const familiehendelsedato = intl.formatDate(getFamiliehendelsedato(barnet), {
         day: '2-digit',
@@ -104,6 +106,7 @@ export const ValgtDekningsgradInfoboks = ({
                             erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                             dato: familiehendelsedato,
                             kunEnPartSkalHa,
+                            erAlenesøkerValue,
                         }}
                     />
                 )}

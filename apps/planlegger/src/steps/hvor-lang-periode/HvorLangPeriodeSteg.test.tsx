@@ -62,6 +62,24 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.FORDELING));
     });
 
+    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+        const gåTilNesteSide = vi.fn();
+
+        render(<FlereForsørgereEttBarnKunMorHarRett gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
+
+        expect(
+            screen.getByText(
+                'Denne datoen gjelder om dere har foreldrepenger sammenhengende fra tre uker før fødselen.',
+            ),
+        ).toBeInTheDocument();
+    });
+
     it('skal gå til oversikt ved far og far og begge foreldre har rett', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
