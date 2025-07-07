@@ -67,7 +67,21 @@ describe('<HvorLangPeriodeSteg>', () => {
         useNavigateMock.mockReturnValue(navigateMock);
         const gåTilNesteSide = vi.fn();
 
-        render(<FlereForsørgereEttBarnKunMorHarRett gåTilNesteSide={gåTilNesteSide} />);
+        const originalArgs = FlereForsørgereEttBarnKunMorHarRett.args;
+
+        render(
+            <FlereForsørgereEttBarnKunMorHarRett
+                {...originalArgs}
+                omBarnet={{
+                    ...originalArgs.omBarnet,
+                    erBarnetFødt: true,
+                    fødselsdato: '2024-01-15',
+                    erFødsel: true,
+                    antallBarn: '1',
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
 
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
 
