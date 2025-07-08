@@ -4,7 +4,13 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker,
+    erFarOgFar,
+    erMorDelAvSøknaden,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+} from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
@@ -103,8 +109,7 @@ export const ValgtDekningsgradInfoboks = ({
                         id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
                         values={{
                             antallBarn,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            dato: familiehendelsedato,
+                            erFarOgFar: erFarOgFar(hvemPlanlegger),
                             kunEnPartSkalHa,
                             erAlenesøkerValue,
                         }}

@@ -97,22 +97,31 @@ describe('<HvorLangPeriodeSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født, farOgFar', async () => {
+    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født, farOgFar - fødsel.', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
-
         const gåTilNesteSide = vi.fn();
 
-        render(<FarOgFarBeggeHarRett gåTilNesteSide={gåTilNesteSide} />);
+        const originalArgs = FarOgFarBeggeHarRett.args;
 
+        render(
+            <FarOgFarBeggeHarRett
+                {...originalArgs}
+                omBarnet={{
+                    ...originalArgs.omBarnet,
+                    erBarnetFødt: true,
+                    fødselsdato: '2024-01-15',
+                    erFødsel: true,
+                    antallBarn: '1',
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
-        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(
-            screen.getByText(
-                'Denne datoen gjelder om dere har foreldrepenger sammenhengende fra tre uker før fødselen.',
-            ),
+            screen.getByText('Denne datoen gjelder om dere har foreldrepenger sammenhengende fra fødsel.'),
         ).toBeInTheDocument();
     });
 
