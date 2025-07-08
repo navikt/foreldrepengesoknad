@@ -2,7 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
@@ -45,15 +45,27 @@ export const FordelingsdetaljerPanel = ({
             <VStack gap="2">
                 <BodyShort>
                     {erFødsel && (
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
-                            values={{
-                                erFødt,
-                                dato: dato,
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                erFlereBarn: antallBarn !== '1',
-                            }}
-                        />
+                        <>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                                    values={{
+                                        erFødt,
+                                        dato: dato,
+                                        erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                        erFlereBarn: antallBarn !== '1',
+                                    }}
+                                />
+                            </BodyShort>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2"
+                                    values={{
+                                        erAlenesøker: erAlenesøker(hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                        </>
                     )}
                     {!erFødsel && (
                         <FormattedMessage
