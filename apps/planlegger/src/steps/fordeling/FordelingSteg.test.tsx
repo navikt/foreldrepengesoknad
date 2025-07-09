@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { prettyDOM, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
@@ -189,9 +189,6 @@ describe('<FordelingSteg>', () => {
             '80',
         );
         expect(screen.getByText('Perioden deres')).toBeInTheDocument();
-        console.log('\n=== PRETTY DOM ===');
-        console.log(prettyDOM(document.body, Infinity));
-
         expect(
             screen.getByText(
                 'Dette er regnet ut fra dere overtok omsorgen den 8. juli 2024 og dere tar permisjon sammenhengende fra overtakelsen.',

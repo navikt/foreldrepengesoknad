@@ -1,12 +1,11 @@
 import { composeStories } from '@storybook/react-vite';
-import { prettyDOM, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 
-import { BarnetErAdoptert } from '../../types/Barnet';
 import * as stories from './HvorLangPeriodeSteg.stories';
 
 const {
