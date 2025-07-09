@@ -45,7 +45,6 @@ export const ValgtDekningsgradInfoboks = ({
     antallUkerOgDager,
 }: Props) => {
     const intl = useIntl();
-    const overtagelsesdato = barnet.overtakelsesdato;
     const antallBarn = barnet.antallBarn;
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);

@@ -29,9 +29,6 @@ vi.mock('react-router-dom', async () => {
 const useNavigateMock = vi.mocked(useNavigate);
 
 describe('<HvorLangPeriodeSteg>', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    });
     it('skal sjekke at siste dag med foreldrepenger blir vist korrekt ved valg av dekningsgrader', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
