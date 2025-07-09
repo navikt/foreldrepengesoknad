@@ -1,4 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -44,7 +45,7 @@ export const ValgtDekningsgradInfoboks = ({
     antallUkerOgDager,
 }: Props) => {
     const intl = useIntl();
-
+    const overtagelsesdato = barnet.overtakelsesdato;
     const antallBarn = barnet.antallBarn;
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);
@@ -101,6 +102,7 @@ export const ValgtDekningsgradInfoboks = ({
                             antallBarn,
                             kunEnPartSkalHa,
                             dato: familiehendelsedato,
+                            erOmsorgsovertakelseFremtidig: dayjs(getFamiliehendelsedato(barnet)).isAfter(dayjs()),
                         }}
                     />
                 )}

@@ -94,7 +94,7 @@
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "Siste dag med foreldrepengar kan bli {dato}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin": "Om {antallBarn, select, 1 {barnet} other {barna}} vert fødd på termin{kunEnPartSkalHa, select, true {.} other { og om de tar permisjon samanhengande frå {erMorDelAvSøknaden, select, true {tre veker før termindato } other {termin}}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel": "Denne datoen gjeld om {erAlenesøkerValue, select, true {du} other {dere}} har foreldrepengar samanhengande frå {erFarOgFar, select, true {fødsel} other {tre veker før fødselen}}.",
-    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "Om {kunEnPartSkalHa, select, true {du} other {dykk}} har omsorgsovertaking den {dato} {kunEnPartSkalHa, select, true {.} other {og om de tek permisjon samanhengande frå overtakinga.}}",
+"HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "Dette er om {kunEnPartSkalHa, select, true {du} other {de}} har foreldrepengar samanhengande frå omsorgsovertakinga den {dato}.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker": "<b>{uker} veker {dager, select, 0 {} 1 {+ {dager} dag} other {+ {dager} dager}} av dei {uker2} vekene {dager2, select, 0 {} 1 {+ {dager2} dag} other {+ {dager2} dager}}</b> kan {hvem} bruke utan aktivitetskrav til {hvemPart1}.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker": "<b>{uker} av dei {uker2} vekene</b> kan {hvem} bruke om {hvemPart1} er i <a>godkjent aktivitet</a>.",
     "HvorLangPeriodeSteg.Infoboks.Barnehageplass.IkkeDekket": "{måneder, plural, one {# månad} other {# månader}} og {uker, plural, one {# veke} other {# veker}} før barnehagestart er ikkje dekt av foreldrepengar",

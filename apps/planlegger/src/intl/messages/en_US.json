@@ -93,7 +93,7 @@
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "The last day with parental benefit can be {dato}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin": "If the {antallBarn, select, 1 {child} other {children}} is born on the due date{kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from {erMorDelAvSøknaden, select, true {three weeks before the due date} other {the due date}}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel": "This date applies if you receive parental benefit continuously from {erFarOgFar, select, true {the birth} other {three weeks before the birth}}.",
-    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "If you're taking over the care of the child on the {dato} {kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from that date.}}",
+    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "{erOmsorgsovertakelseFremtidig, select, true {This is if you assume care of the child on the {dato} and if you take leave continuously from that date.} other {This applies if you have parental benefit continuously from when care of the child was assumed on the {dato}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker": "<b>{uker} of the {uker2} weeks</b> can be used by the {hvem} without requirements for {hvemPart1}.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker": "<b>{uker} of the {uker2} weeks</b> can be used by the {hvem} if {hvemPart1} is in <a>approved activity</a>.",
     "HvorLangPeriodeSteg.Infoboks.Barnehageplass.IkkeDekket": "{måneder, plural, one {# month} other {# months}} and {uker, plural, one {# week} other {# weeks}} before kindergarten start are not covered by parental benefits",
