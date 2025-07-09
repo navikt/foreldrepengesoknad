@@ -68,14 +68,26 @@ export const FordelingsdetaljerPanel = ({
                         </>
                     )}
                     {!erFødsel && (
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
-                            values={{
-                                antallBarn,
-                                dato: dato,
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
+                        <>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
+                                    values={{
+                                        antallBarn,
+                                        dato: dato,
+                                        erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2"
+                                    values={{
+                                        dato: dato,
+                                    }}
+                                />
+                            </BodyShort>
+                        </>
                     )}
                 </BodyShort>
                 <BodyShort>
