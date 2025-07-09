@@ -104,7 +104,6 @@ export const FlereForsørgereEttBarnBeggeHarRettAdopsjon: Story = {
         },
         omBarnet: {
             antallBarn: '1',
-            erBarnetFødt: true,
             erFødsel: false,
             fødselsdato: '2025-07-08',
             overtakelsesdato: '2025-07-08',

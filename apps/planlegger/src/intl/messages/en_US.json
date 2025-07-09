@@ -59,7 +59,7 @@
     "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {The joint period: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} to {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} to {hvem2}",
     "FordelingsdetaljerPanel.InfoboksTittel": "Your period",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnet": "This is if the {erFlereBarn, select, true {children} other {child}} {erFødt, select, true {was born {dato}} other {is born on due date}} and you take leave continuously from {erMorDelAvSøknaden, select, true {three weeks before the due date} other {the due date} }, the leave can look like this with the distribution you chose:.",
-    "FordelingsdetaljerPanel.Infoboks.HvisAdopsjon": "This is calulated based on you assuming care of the child on {dato} and if you  take continuous leave from that day.",
+    "FordelingsdetaljerPanel.Infoboks.HvisAdopsjon": "This is calculated based on you assuming care of the child on {dato} and if you  take continuous leave from that day.",
     "FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2": "Your leave might look like this, based on the distribution you chose:",
     "FordelingsdetaljerPanel.Infoboks.Periode": "<b>{hvem}: {fom} – {tom}</b>",
     "HvemPlanleggerSteg.HvemPlanlegger": "Who is planning?",
