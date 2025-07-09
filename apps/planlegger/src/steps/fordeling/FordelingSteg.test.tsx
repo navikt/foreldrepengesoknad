@@ -194,9 +194,10 @@ describe('<FordelingSteg>', () => {
 
         expect(
             screen.getByText(
-                'Hvis barnet har omsorgsovertakelsedato 8. juli 2024 og dere tar permisjon sammenhengende fra overtakelsen kan permisjonen se sånn ut med fordelingen dere valgte:',
+                'Dette er regnet ut fra dere overtok omsorgen den 8. juli 2024 og dere tar permisjon sammenhengende fra overtakelsen.',
             ),
         ).toBeInTheDocument();
+        expect(screen.getByText('Permisjonen kan se sånn ut med fordelingen dere valgte:')).toBeInTheDocument();
 
         expect(screen.getByText('Klara: 8. juli 2024 – 28. feb. 2025')).toBeInTheDocument();
         expect(screen.getByText('Espen: 3. mars 2025 – 13. juni 2025')).toBeInTheDocument();
