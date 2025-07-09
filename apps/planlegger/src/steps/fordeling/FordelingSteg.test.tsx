@@ -20,6 +20,8 @@ vi.mock('react-router-dom', async () => {
 
 const useNavigateMock = vi.mocked(useNavigate);
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 describe('<FordelingSteg>', () => {
     it('skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
         const navigateMock = vi.fn();
@@ -134,6 +136,7 @@ describe('<FordelingSteg>', () => {
             utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
             '80',
         );
+
         expect(
             screen.getByText(
                 'Dette er regnet ut fra at barnet ble født 1. jan. 2024 og om dere tar sammenhengende permisjon fra tre uker før fødsel.',
@@ -169,7 +172,7 @@ describe('<FordelingSteg>', () => {
                 omBarnet={{
                     ...(originalArgs.omBarnet as BarnetErAdoptert),
                     fødselsdato: '2025-07-08',
-                    overtakelsesdato: '2024-07-08',
+                    overtakelsesdato: '2025-07-08',
                     erFødsel: false,
                 }}
                 gåTilNesteSide={gåTilNesteSide}
@@ -191,13 +194,13 @@ describe('<FordelingSteg>', () => {
         expect(screen.getByText('Perioden deres')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Dette er regnet ut fra dere overtok omsorgen den 8. juli 2024 og dere tar permisjon sammenhengende fra overtakelsen.',
+                'Dette er regnet ut fra dere overtok omsorgen den 8. juli 2025 og dere tar permisjon sammenhengende fra overtakelsen.',
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Permisjonen kan se sånn ut med fordelingen dere valgte:')).toBeInTheDocument();
 
-        expect(screen.getByText('Klara: 8. juli 2024 – 28. feb. 2025')).toBeInTheDocument();
-        expect(screen.getByText('Espen: 3. mars 2025 – 13. juni 2025')).toBeInTheDocument();
+        expect(screen.getByText('Klara: 8. juli 2025 – 2. mars 2026')).toBeInTheDocument();
+        expect(screen.getByText('Espen: 3. mars 2026 – 15. juni 2026')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

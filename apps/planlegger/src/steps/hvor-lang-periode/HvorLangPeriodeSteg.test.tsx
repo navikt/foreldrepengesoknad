@@ -8,6 +8,8 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 const {
     FlereForsørgereEttBarnKunMorHarRett,
     FarOgFarBeggeHarRett,
