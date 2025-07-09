@@ -7,6 +7,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
+    erFarDelAvSøknaden,
     erFarOgFar,
     erMorDelAvSøknaden,
     getFornavnPåSøker1,
@@ -113,6 +114,7 @@ export const ValgtDekningsgradInfoboks = ({
                             erFarOgFar: erFarOgFar(hvemPlanlegger),
                             kunEnPartSkalHa,
                             erAlenesøkerValue,
+                            erFarDelAvSøknaden: erFarDelAvSøknaden(hvemPlanlegger),
                         }}
                     />
                 )}
