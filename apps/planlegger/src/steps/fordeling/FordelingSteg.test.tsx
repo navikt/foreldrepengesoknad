@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { BarnetErAdoptert } from '../../types/Barnet';
 import * as stories from './FordelingSteg.stories';
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 const { FlereForsørgereEttBarn } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -19,8 +21,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 const useNavigateMock = vi.mocked(useNavigate);
-
-// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
 
 describe('<FordelingSteg>', () => {
     it('skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
