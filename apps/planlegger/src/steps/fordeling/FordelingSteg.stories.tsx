@@ -14,6 +14,8 @@ import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 const DEFAULT_STØNADSKONTO = {
     '100': {
         kontoer: [
