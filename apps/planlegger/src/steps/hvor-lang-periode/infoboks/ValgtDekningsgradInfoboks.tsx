@@ -130,7 +130,6 @@ export const ValgtDekningsgradInfoboks = ({
                         />
                     )}
                 </BodyShort>
-                <span></span>
             </VStack>
             {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
                 (hvemHarRett === 'kunSøker1HarRett' &&
