@@ -12,11 +12,17 @@ import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } fro
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { Dekningsgrad, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Dekningsgrad, Periode, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { KvoteOppsummering, UttaksplanNy, finnOgSettInnHull, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import {
+    KvoteOppsummering,
+    Planperiode,
+    UttaksplanNy,
+    finnOgSettInnHull,
+    utledKomplettPlan,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
@@ -109,15 +115,25 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         mor: getNavnPåSøker1(hvemPlanlegger, intl),
     };
 
+    const konverterTilPlanperiode = (periode: SaksperiodeNy): Planperiode => ({
+        ...periode,
+        id: `${periode.fom}-${periode.tom}`,
+        readOnly: false,
+        fom: periode.fom,
+        tom: periode.tom,
+    });
+
     const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const søkersPerioderAsPlanperiode = søkersPerioder.map(konverterTilPlanperiode);
+
     const perioderMedHull: Planperiode[] = finnOgSettInnHull(
-        søkersPerioder as any, // cast hvis nødvendig
-        false, // harAktivitetskravIPeriodeUtenUttak
+        søkersPerioderAsPlanperiode,
+        false,
         familiehendelsedato,
         familiesituasjon === 'adopsjon',
         bareFarMedmorHarRett,
         erFarEllerMedmor,
-        undefined, // førsteUttaksdagNesteBarnsSak
+        undefined,
     );
 
     const harTapteDager = perioderMedHull.some((periode) => periode.periodeHullÅrsak === 'Tapte dager');
