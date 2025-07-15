@@ -16,7 +16,7 @@ import { Dekningsgrad, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoe
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { KvoteOppsummering, UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanNy, finnOgSettInnHull, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
@@ -108,6 +108,19 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         farMedmor: getNavnPåSøker2(hvemPlanlegger, intl),
         mor: getNavnPåSøker1(hvemPlanlegger, intl),
     };
+
+    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const perioderMedHull: Planperiode[] = finnOgSettInnHull(
+        søkersPerioder as any, // cast hvis nødvendig
+        false, // harAktivitetskravIPeriodeUtenUttak
+        familiehendelsedato,
+        familiesituasjon === 'adopsjon',
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        undefined, // førsteUttaksdagNesteBarnsSak
+    );
+
+    const harTapteDager = perioderMedHull.some((periode) => periode.periodeHullÅrsak === 'Tapte dager');
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -271,6 +284,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
                                         uttaksplan={gjeldendeUttaksplan}
+                                        inneHolderTapteDager={harTapteDager}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}

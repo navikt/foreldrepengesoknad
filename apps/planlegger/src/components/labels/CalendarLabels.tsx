@@ -27,9 +27,10 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
     uttaksplan: SaksperiodeNy[];
+    inneHolderTapteDager?: boolean;
 }
 
-export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan }: Props) => {
+export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan, inneHolderTapteDager }: Props) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -63,11 +64,13 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     {søker2Tekst && hvemHarRett === 'beggeHarRett' && <AntallUkerFpLabel søkerTekst={søker2Tekst} />}
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
-                    <CalendarLabel iconType={PeriodeColor.BLACK}>
-                        <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                            <FormattedMessage id="CalendarLabels.TapteDager" />
-                        </BodyShort>
-                    </CalendarLabel>
+                    {inneHolderTapteDager && (
+                        <CalendarLabel iconType={PeriodeColor.BLACK}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                                <FormattedMessage id="CalendarLabels.TapteDager" />
+                            </BodyShort>
+                        </CalendarLabel>
+                    )}
                     {inneholderFerie && (
                         <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
@@ -83,11 +86,13 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <AktivitetskravLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
-                    <CalendarLabel iconType={PeriodeColor.BLACK}>
-                        <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                            <FormattedMessage id="CalendarLabels.TapteDager" />
-                        </BodyShort>
-                    </CalendarLabel>
+                    {inneHolderTapteDager && (
+                        <CalendarLabel iconType={PeriodeColor.BLACK}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                                <FormattedMessage id="CalendarLabels.TapteDager" />
+                            </BodyShort>
+                        </CalendarLabel>
+                    )}
                     {inneholderFerie && (
                         <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
@@ -102,11 +107,13 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <ForeldrepengerLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
-                    <CalendarLabel iconType={PeriodeColor.BLACK}>
-                        <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                            <FormattedMessage id="CalendarLabels.TapteDager" />
-                        </BodyShort>
-                    </CalendarLabel>
+                    {inneHolderTapteDager && (
+                        <CalendarLabel iconType={PeriodeColor.BLACK}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                                <FormattedMessage id="CalendarLabels.TapteDager" />
+                            </BodyShort>
+                        </CalendarLabel>
+                    )}
                     {inneholderFerie && (
                         <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
