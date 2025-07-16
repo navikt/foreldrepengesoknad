@@ -300,7 +300,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
                                         uttaksplan={gjeldendeUttaksplan}
-                                        inneHolderTapteDager={harTapteDager}
+                                        inneholderTapteDager={harTapteDager}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}
