@@ -1,5 +1,5 @@
 import { NotePencilDashIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css';
@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { LeggTilPeriodeBox } from './components/leggTilPeriodeBox';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -168,6 +168,7 @@ export const UttaksplanNy = ({
                         <BodyShort weight="semibold" size="large">
                             <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
                         </BodyShort>
+                        <p>hei</p>
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.ingenPerioder.body" />
                         </BodyShort>
@@ -176,19 +177,23 @@ export const UttaksplanNy = ({
             )}
 
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={openModal}>
-                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                </Button>
+                <>
+                    <Button variant="secondary" onClick={openModal}>
+                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                    </Button>
+                    {isModalOpen && (
+                        <LeggTilPeriodeBox
+                            handleAddPeriode={(periode) => {
+                                handleAddPeriode(periode);
+                                closeModal();
+                            }}
+                            erBarnetFødt={erBarnetFødt}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            onCancel={closeModal}
+                        />
+                    )}
+                </>
             )}
-            {isModalOpen ? (
-                <LeggTilPeriodeModal
-                    closeModal={closeModal}
-                    handleAddPeriode={handleAddPeriode}
-                    isModalOpen={isModalOpen}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                />
-            ) : null}
         </UttaksplanDataContext>
     );
 };
