@@ -2,7 +2,7 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, Heading } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
@@ -77,9 +77,6 @@ export function LeggTilPeriodeBox({ handleAddPeriode, erBarnetFødt, gjelderAdop
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Heading>
-                <Button variant="tertiary" onClick={closeBox} style={{ marginLeft: 'auto' }}>
-                    Lukk
-                </Button>
             </div>
             {renderContent()}
         </div>
