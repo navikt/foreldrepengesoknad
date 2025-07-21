@@ -24,7 +24,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@tailwindcss/vite": "4.1.8",
+        "@tailwindcss/vite": "4.1.11",
         "@types/react": "19.1.7",
         "@types/react-dom": "19.1.6",
         "dayjs": "1.11.12",
@@ -50,7 +50,7 @@
         "@testing-library/user-event": "14.6.1",
         "@types/react-dom": "18.2.23",
         "@vitejs/plugin-react": "4.5.2",
-        "@vitest/browser": "3.2.3",
+        "@vitest/browser": "3.2.4",
         "cross-env": "7.0.3",
         "eslint": "9.28.0",
         "fast-glob": "3.3.3",
@@ -59,8 +59,8 @@
         "storybook-react-intl": "4.0.4",
         "tailwindcss": "4.1.8",
         "typescript": "5.8.3",
-        "vite": "6.3.5",
-        "vitest": "3.2.3"
+        "vite": "7.0.5",
+        "vitest": "3.2.4"
     },
     "peerDependencies": {
         "react": "18.2.0"

@@ -27,7 +27,7 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@tailwindcss/vite": "4.1.8",
+        "@tailwindcss/vite": "4.1.11",
         "dayjs": "1.11.12",
         "intl-messageformat": "10.7.16",
         "react": "19.1.0",
@@ -51,7 +51,7 @@
         "@testing-library/user-event": "14.6.1",
         "@types/react": "19.1.7",
         "@vitejs/plugin-react": "4.5.2",
-        "@vitest/browser": "3.2.3",
+        "@vitest/browser": "3.2.4",
         "eslint": "9.28.0",
         "fast-glob": "3.3.3",
         "playwright": "1.52.0",
@@ -59,8 +59,8 @@
         "storybook-react-intl": "4.0.4",
         "tailwindcss": "4.1.8",
         "typescript": "5.8.3",
-        "vite": "6.3.5",
-        "vitest": "3.2.3"
+        "vite": "7.0.5",
+        "vitest": "3.2.4"
     },
     "packageManager": "pnpm@9.1.4"
 }
