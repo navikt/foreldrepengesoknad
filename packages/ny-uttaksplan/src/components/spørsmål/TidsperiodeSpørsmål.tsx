@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
@@ -10,31 +11,24 @@ import { UttaksplanContextDataType, useContextGetData } from '../../context/Utta
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
+import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 
 type Props = {
-    formMethods: any;
     valgtPeriode?: Planperiode;
     gjelderAdopsjon: boolean;
     erBarnetFødt: boolean;
     oppholdsårsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 };
 
-export const TidsperiodeSpørsmål = ({
-    formMethods,
-    valgtPeriode,
-    gjelderAdopsjon,
-    erBarnetFødt,
-    oppholdsårsak,
-}: Props) => {
+export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetFødt, oppholdsårsak }: Props) => {
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
 
-    const fomValue = formMethods.watch('fom');
-    const tomValue = formMethods.watch('tom');
-    const skalDuJobbe = formMethods.watch('skalDuJobbe');
-    const forelder = formMethods.watch('forelder');
-    const kontoType = formMethods.watch('kontoType');
+    const fomValue = watch('fom');
+    const kontoType = watch('kontoType');
 
     const getÅrsak = () => {
         if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
@@ -65,41 +59,31 @@ export const TidsperiodeSpørsmål = ({
             <HStack gap="4">
                 <RhfDatepicker
                     name="fom"
-                    control={formMethods.control}
+                    control={control}
                     showMonthAndYearDropdowns
                     minDate={minDate}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     disableWeekends={true}
                     validate={getFomValidators({
-                        intl,
                         familiehendelsedato,
-                        kontoType: kontoType ?? valgtPeriode?.kontoType,
-                        tomValue,
                         erBarnetFødt,
                         minDate,
                         maxDate,
                         årsak,
                         gjelderAdopsjon,
-                        skalDuJobbe,
-                        forelder,
                     })}
                 />
                 <RhfDatepicker
                     name="tom"
-                    control={formMethods.control}
+                    control={control}
                     validate={getTomValidators({
-                        intl,
                         familiehendelsedato,
-                        kontoType: kontoType ?? valgtPeriode?.kontoType,
-                        fomValue,
                         erBarnetFødt,
                         minDate,
                         maxDate,
                         årsak,
                         gjelderAdopsjon,
-                        skalDuJobbe,
-                        forelder,
                     })}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
                     disableWeekends={true}
