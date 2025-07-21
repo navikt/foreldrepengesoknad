@@ -14,7 +14,6 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
-        screen.logTestingPlaygroundURL();
 
         expect(screen.queryAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
         expect(screen.queryAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
@@ -171,7 +170,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Avslutt')[0]);
-
+        screen.logTestingPlaygroundURL();
         expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });
 
