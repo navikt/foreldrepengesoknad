@@ -85,6 +85,10 @@ const getNesteDagEtterSistePeriode = (
     if (!alleVarierendePerioder || alleVarierendePerioder.length === 0) {
         return '';
     }
+
+    if (alleVarierendePerioder.some((p) => p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)) {
+        return '';
+    }
     const alleTomDatoer = alleVarierendePerioder
         .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
@@ -107,7 +111,7 @@ export const getUferdigPeriodeInput = (
         fom: getNesteDagEtterSistePeriode(sisteDagForSvangerskapspenger, alleVarierendePerioder),
         tom: '',
         stillingsprosent: '',
-        tomType: undefined!,
+        tomType: undefined,
         type: Tilretteleggingstype.DELVIS,
-    } as PeriodeMedVariasjon;
+    };
 };

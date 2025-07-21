@@ -35,8 +35,8 @@ export const NEW_PERIODE = {
     fom: '',
     tom: '',
     stillingsprosent: '',
-    tomType: undefined!,
-} as PeriodeMedVariasjon;
+    tomType: undefined,
+};
 
 type PerioderFormValues = {
     varierendePerioder: PeriodeMedVariasjon[];
@@ -86,6 +86,7 @@ export const PerioderFieldArray = ({
         name: 'varierendePerioder',
         control: formMethods.control,
     });
+    console.log(formMethods.watch());
 
     const alleVarierendePerioder = formMethods.watch(`varierendePerioder`);
 
@@ -103,6 +104,7 @@ export const PerioderFieldArray = ({
         sisteDagForSvangerskapspenger,
         alleVarierendePerioder,
     );
+    console.log(uferdigDelvisTilretteleggingInput);
 
     return (
         <>
