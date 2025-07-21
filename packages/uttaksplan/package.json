@@ -45,7 +45,7 @@
         "uuid": "11.1.0"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.4.2",
+        "@formatjs/cli-lib": "6.6.6",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-constants": "workspace:*",

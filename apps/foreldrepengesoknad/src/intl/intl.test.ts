@@ -1,4 +1,4 @@
-import { extract } from '@formatjs/cli-lib/lib_esnext';
+import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
 
 import nb from './nb_NO.json';
