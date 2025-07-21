@@ -20,7 +20,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@testing-library/jest-dom": "6.6.3",
         "@types/react": "19.1.7",
-        "eslint": "9.28.0",
+        "eslint": "9.31.0",
         "typescript": "5.8.3"
     },
     "packageManager": "pnpm@9.1.4"

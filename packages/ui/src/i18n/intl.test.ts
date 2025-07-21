@@ -1,4 +1,4 @@
-import { extract } from '@formatjs/cli-lib';
+import { extract } from '@formatjs/cli-lib/lib_esnext';
 import glob from 'fast-glob';
 import fs from 'fs';
 
