@@ -12,8 +12,8 @@ importers:
         specifier: 6.3.0
         version: 6.3.0
       glob:
-        specifier: 11.0.2
-        version: 11.0.2
+        specifier: 11.0.3
+        version: 11.0.3
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -85,8 +85,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.3.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -97,11 +97,11 @@ importers:
         specifier: 5.83.0
         version: 5.83.0(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -308,8 +308,8 @@ importers:
         specifier: 3.4.0
         version: 3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.8)(react@19.1.0))(jsdom@26.1.0)(react@19.1.0)
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@22.15.18)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -323,8 +323,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       jotai:
         specifier: 2.12.5
         version: 2.12.5(@types/react@19.1.8)(react@19.1.0)
@@ -417,8 +417,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(msw@2.10.4(@types/node@22.15.18)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@22.15.18)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))(vitest@3.2.4)
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -549,8 +549,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@snyk/protect':
         specifier: 1.1297.1
         version: 1.1297.1
@@ -570,11 +570,11 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       detect-browser:
         specifier: 5.3.0
         version: 5.3.0
@@ -850,8 +850,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -865,11 +865,11 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -1026,7 +1026,7 @@ importers:
         version: 7.25.1
       '@navikt/ds-datepicker':
         specifier: 4.2.0
-        version: 4.2.0(@navikt/ds-css@7.25.1)(@navikt/ds-react@7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.12)(react-day-picker@8.10.0(date-fns@4.1.0)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(uuid@11.1.0)
+        version: 4.2.0(@navikt/ds-css@7.25.1)(@navikt/ds-react@7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(uuid@11.1.0)
       '@navikt/ds-react':
         specifier: 7.25.1
         version: 7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1073,8 +1073,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.3.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -1088,11 +1088,11 @@ importers:
         specifier: 3.1.2
         version: 3.1.2
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       express:
         specifier: 5.1.0
         version: 5.1.0
@@ -1347,8 +1347,8 @@ importers:
         specifier: 3.4.0
         version: 3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.8)(react@19.1.0))(jsdom@26.1.0)(react@19.1.0)
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -1359,11 +1359,11 @@ importers:
         specifier: 5.83.0
         version: 5.83.0(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -1534,8 +1534,8 @@ importers:
         specifier: 3.4.0
         version: 3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.8)(react@19.1.0))(jsdom@26.1.0)(react@19.1.0)
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       '@tailwindcss/vite':
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
@@ -1546,11 +1546,11 @@ importers:
         specifier: 5.83.0
         version: 5.83.0(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)
       compression:
-        specifier: 1.8.0
-        version: 1.8.0
+        specifier: 1.8.1
+        version: 1.8.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -1772,8 +1772,8 @@ importers:
   packages/constants:
     dependencies:
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1818,8 +1818,8 @@ importers:
         specifier: 19.1.6
         version: 19.1.6(@types/react@19.1.8)
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -1945,11 +1945,11 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       date-holidays:
-        specifier: 3.24.3
-        version: 3.24.3
+        specifier: 3.24.4
+        version: 3.24.4
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       formik:
         specifier: 2.4.6
         version: 2.4.6(react@19.1.0)
@@ -2118,8 +2118,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       dayjs:
-        specifier: 1.11.10
-        version: 1.11.10
+        specifier: 1.11.13
+        version: 1.11.13
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -2303,8 +2303,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
@@ -2430,8 +2430,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
@@ -2548,8 +2548,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
@@ -2669,8 +2669,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
@@ -2793,8 +2793,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.43.1)(yaml@2.8.0))
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
@@ -2921,8 +2921,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@sentry/browser':
-        specifier: 9.28.0
-        version: 9.28.0
+        specifier: 9.40.0
+        version: 9.40.0
       bytes:
         specifier: 3.1.2
         version: 3.1.2
@@ -2930,8 +2930,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       intl-messageformat:
         specifier: 10.7.16
         version: 10.7.16
@@ -3036,8 +3036,8 @@ importers:
         specifier: 2.5.1
         version: 2.5.1
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       detect-browser:
         specifier: 5.3.0
         version: 5.3.0
@@ -3212,11 +3212,11 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       date-holidays:
-        specifier: 3.24.3
-        version: 3.24.3
+        specifier: 3.24.4
+        version: 3.24.4
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       eslint:
         specifier: 9.31.0
         version: 9.31.0(jiti@2.4.2)
@@ -3366,8 +3366,8 @@ importers:
         specifier: 19.1.8
         version: 19.1.8
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3478,8 +3478,8 @@ importers:
         specifier: 19.1.8
         version: 19.1.8
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3575,8 +3575,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       dayjs:
-        specifier: 1.11.12
-        version: 1.11.12
+        specifier: 1.11.13
+        version: 1.11.13
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -3680,8 +3680,8 @@ importers:
         specifier: 0.38.3
         version: 0.38.3
       axios:
-        specifier: 1.9.0
-        version: 1.9.0
+        specifier: 1.10.0
+        version: 1.10.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -4736,6 +4736,14 @@ packages:
       '@types/node':
         optional: true
 
+  '@isaacs/balanced-match@4.0.1':
+    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
+    engines: {node: 20 || >=22}
+
+  '@isaacs/brace-expansion@5.0.0':
+    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
+    engines: {node: 20 || >=22}
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -5082,36 +5090,36 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sentry-internal/browser-utils@9.28.0':
-    resolution: {integrity: sha512-SqntPnIXudP3FoKj4mQ1BVPC1RNzo4CGtAxJnLpbIUpdT/khJVM6Q59zrGl2MgZ7URZCI986L5jXihQeferf6g==}
+  '@sentry-internal/browser-utils@9.40.0':
+    resolution: {integrity: sha512-Ajvz6jN+EEMKrOHcUv2+HlhbRUh69uXhhRoBjJw8sc61uqA2vv3QWyBSmTRoHdTnLGboT5bKEhHIkzVXb+YgEw==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/feedback@9.28.0':
-    resolution: {integrity: sha512-z2jShmVENsesmDnShEOv841Saw0zXe1tX6GHNgkK9f6NrUMbL970JvGKByBFTffhQH6uQ0WeNPnXJ5L/YKnfDg==}
+  '@sentry-internal/feedback@9.40.0':
+    resolution: {integrity: sha512-39UbLdGWGvSJ7bAzRnkv91cBdd6fLbdkLVVvqE2ZUfegm7+rH1mRPglmEhw4VE4mQfKZM1zWr/xus2+XPqJcYw==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay-canvas@9.28.0':
-    resolution: {integrity: sha512-Bv4mbtUrRV3p6PpFQPseLv3+Uaen+3AlfX02Z6QHY1sMa4lpt+U8OHfRGLprnzb6Rarw6fK2LNVL5rnV9LNMwA==}
+  '@sentry-internal/replay-canvas@9.40.0':
+    resolution: {integrity: sha512-GLoJ4R4Uipd7Vb+0LzSJA2qCyN1J6YalQIoDuOJTfYyykHvKltds5D8a/5S3Q6d8PcL/nxTn93fynauGEZt2Ow==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay@9.28.0':
-    resolution: {integrity: sha512-BVGVBlmcpJdT55d/vywjfK1u6zMC5ycjJBxU1wUCNgCU3cSKRDBnvmYgk/+Ay23bFryT28Q4hM1p5qBBAOfxjQ==}
+  '@sentry-internal/replay@9.40.0':
+    resolution: {integrity: sha512-WrmCvqbLJQC45IFRVN3k0J5pU5NkdX0e9o6XxjcmDiATKk00RHnW4yajnCJ8J1cPR4918yqiJHPX5xpG08BZNA==}
     engines: {node: '>=18'}
 
   '@sentry-internal/tracing@7.120.3':
     resolution: {integrity: sha512-Ausx+Jw1pAMbIBHStoQ6ZqDZR60PsCByvHdw/jdH9AqPrNE9xlBSf9EwcycvmrzwyKspSLaB52grlje2cRIUMg==}
     engines: {node: '>=8'}
 
-  '@sentry/browser@9.28.0':
-    resolution: {integrity: sha512-ttqiv3D9sIB43nZnJTTln1nXw1p4C5BDSh+sHmGUOiqdCH6ND3HByDITYMYIOz1lACSISTT4V+MEpqx0V25Tlw==}
+  '@sentry/browser@9.40.0':
+    resolution: {integrity: sha512-qz/1Go817vcsbcIwgrz4/T34vi3oQ4UIqikosuaCTI9wjZvK0HyW3QmLvTbAnsE7G7h6+UZsVkpO5R16IQvQhQ==}
     engines: {node: '>=18'}
 
   '@sentry/core@7.120.3':
     resolution: {integrity: sha512-vyy11fCGpkGK3qI5DSXOjgIboBZTriw0YDx/0KyX5CjIjDDNgp5AGgpgFkfZyiYiaU2Ww3iFuKo4wHmBusz1uA==}
     engines: {node: '>=8'}
 
-  '@sentry/core@9.28.0':
-    resolution: {integrity: sha512-vzD9xhg9S864jxfCpq77feCE4y7iP2cZYsNMoTupl1vTUlmXlhp7XgF832fEMjEZq4vrPhaqCNsde7Sc3PAbaQ==}
+  '@sentry/core@9.40.0':
+    resolution: {integrity: sha512-cZkuz6BDna6VXSqvlWnrRsaDx4QBKq1PcfQrqhVz8ljs0M7Gcl+Mtj8dCzUxx12fkYM62hQXG72DEGNlAQpH/Q==}
     engines: {node: '>=18'}
 
   '@sentry/integrations@7.120.3':
@@ -5931,8 +5939,8 @@ packages:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
     engines: {node: '>=4'}
 
-  axios@1.9.0:
-    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
+  axios@1.10.0:
+    resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -6251,8 +6259,8 @@ packages:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
 
-  compression@1.8.0:
-    resolution: {integrity: sha512-k6WLKfunuqCYD3t6AsuPGvQWaKwuLLh2/xHNcX4qE+vIfDNXpSqnrhwA7O53R7WVQUnt8dVAIW+YHr7xTgOgGA==}
+  compression@1.8.1:
+    resolution: {integrity: sha512-9mAqGPHLakhCLeNyxPkK4xVo746zQ/czLH1Ky+vkitMnWfWZps8r0qXuwhwizagCRttsL4lfG4pIOvaWLpAP0w==}
     engines: {node: '>= 0.8.0'}
 
   concat-map@0.0.1:
@@ -6404,16 +6412,13 @@ packages:
     resolution: {integrity: sha512-h09ZEtM6u5cYM6m1bX+1Ny9f+nLO9KVZUKNPEnH7lhbXYTfqZogaGTnhONswGeIJFF91UImIftS3CdM9HLW5oQ==}
     engines: {node: '>=12.0.0'}
 
-  date-holidays@3.24.3:
-    resolution: {integrity: sha512-pTRCiwkWZeJwE70q9aezMF+tV8CGRbDtT69Kj0+KaPCo+edFQqCZRYKY8S+bBit2xitjXgNOeJ+vBNNXzJTSMg==}
+  date-holidays@3.24.4:
+    resolution: {integrity: sha512-IZsFU6KJvmomA+bzk1uvDJ8P0/9nEOGZ8YMPQGpipNDUY+pL219AmnwWypYrz36nyWYJ2/fSkGNHaWOfFwpiAg==}
     engines: {node: '>=12.0.0'}
     hasBin: true
 
-  dayjs@1.11.10:
-    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
-
-  dayjs@1.11.12:
-    resolution: {integrity: sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==}
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -7183,8 +7188,8 @@ packages:
     resolution: {integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==}
     engines: {node: '>= 0.12'}
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
+  form-data@4.0.4:
+    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
   formik@2.4.6:
@@ -7290,8 +7295,8 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
-  glob@11.0.2:
-    resolution: {integrity: sha512-YT7U7Vye+t5fZ/QMkBFrTJ7ZQxInIUjwyAjVj84CYXqgBdv30MFUPGnBR6sQaVq6Is15wYJUsnzTuWaGRBhBAQ==}
+  glob@11.0.3:
+    resolution: {integrity: sha512-2Nim7dha1KVkaiF4q6Dj+ngPPMdfvLJEOpZk/jKiUAkqKebpGAWQXAq9z1xu9HKu5lWfqw/FASuccEjyznjPaA==}
     engines: {node: 20 || >=22}
     hasBin: true
 
@@ -7743,8 +7748,8 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
-  jackspeak@4.1.0:
-    resolution: {integrity: sha512-9DDdhb5j6cpeitCbvLO7n7J4IxnbM6hoF6O1g4HQ5TfhvvKN8ywDM7668ZhMHRqVmxqhps/F6syWK2KcPxYlkw==}
+  jackspeak@4.1.1:
+    resolution: {integrity: sha512-zptv57P3GpL+O0I7VdMJNBZCu+BPHVQUk55Ft8/QCJjTVxrnJHuVuX/0Bl2A6/+2oyR/ZMEuFKwmzqqZ/U5nPQ==}
     engines: {node: 20 || >=22}
 
   jalaali-js@1.2.8:
@@ -8164,8 +8169,8 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  minimatch@10.0.1:
-    resolution: {integrity: sha512-ethXTt3SGGR+95gudmqJ1eNhRO7eGEGIgYA9vnPatK4/etz2MEVDno5GMCibdMTuBMyElzIlgxMna3K94XDIDQ==}
+  minimatch@10.0.3:
+    resolution: {integrity: sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==}
     engines: {node: 20 || >=22}
 
   minimatch@3.1.2:
@@ -8437,10 +8442,6 @@ packages:
 
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
-    engines: {node: '>= 0.8'}
-
-  on-headers@1.0.2:
-    resolution: {integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==}
     engines: {node: '>= 0.8'}
 
   on-headers@1.1.0:
@@ -11323,6 +11324,12 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.0.15
 
+  '@isaacs/balanced-match@4.0.1': {}
+
+  '@isaacs/brace-expansion@5.0.0':
+    dependencies:
+      '@isaacs/balanced-match': 4.0.1
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -11421,13 +11428,13 @@ snapshots:
 
   '@navikt/ds-css@7.25.1': {}
 
-  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.25.1)(@navikt/ds-react@7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.12)(react-day-picker@8.10.0(date-fns@4.1.0)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(uuid@11.1.0)':
+  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.25.1)(@navikt/ds-react@7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(uuid@11.1.0)':
     dependencies:
       '@navikt/ds-css': 7.25.1
       '@navikt/ds-react': 7.25.1(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       classnames: 2.5.1
       date-fns: 4.1.0
-      dayjs: 1.11.12
+      dayjs: 1.11.13
       focus-trap-react: 10.1.1(prop-types@15.8.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       prop-types: 15.8.1
       react: 19.1.0
@@ -11644,23 +11651,23 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sentry-internal/browser-utils@9.28.0':
+  '@sentry-internal/browser-utils@9.40.0':
     dependencies:
-      '@sentry/core': 9.28.0
+      '@sentry/core': 9.40.0
 
-  '@sentry-internal/feedback@9.28.0':
+  '@sentry-internal/feedback@9.40.0':
     dependencies:
-      '@sentry/core': 9.28.0
+      '@sentry/core': 9.40.0
 
-  '@sentry-internal/replay-canvas@9.28.0':
+  '@sentry-internal/replay-canvas@9.40.0':
     dependencies:
-      '@sentry-internal/replay': 9.28.0
-      '@sentry/core': 9.28.0
+      '@sentry-internal/replay': 9.40.0
+      '@sentry/core': 9.40.0
 
-  '@sentry-internal/replay@9.28.0':
+  '@sentry-internal/replay@9.40.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.28.0
-      '@sentry/core': 9.28.0
+      '@sentry-internal/browser-utils': 9.40.0
+      '@sentry/core': 9.40.0
 
   '@sentry-internal/tracing@7.120.3':
     dependencies:
@@ -11668,20 +11675,20 @@ snapshots:
       '@sentry/types': 7.120.3
       '@sentry/utils': 7.120.3
 
-  '@sentry/browser@9.28.0':
+  '@sentry/browser@9.40.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.28.0
-      '@sentry-internal/feedback': 9.28.0
-      '@sentry-internal/replay': 9.28.0
-      '@sentry-internal/replay-canvas': 9.28.0
-      '@sentry/core': 9.28.0
+      '@sentry-internal/browser-utils': 9.40.0
+      '@sentry-internal/feedback': 9.40.0
+      '@sentry-internal/replay': 9.40.0
+      '@sentry-internal/replay-canvas': 9.40.0
+      '@sentry/core': 9.40.0
 
   '@sentry/core@7.120.3':
     dependencies:
       '@sentry/types': 7.120.3
       '@sentry/utils': 7.120.3
 
-  '@sentry/core@9.28.0': {}
+  '@sentry/core@9.40.0': {}
 
   '@sentry/integrations@7.120.3':
     dependencies:
@@ -12871,10 +12878,10 @@ snapshots:
 
   axe-core@4.10.2: {}
 
-  axios@1.9.0:
+  axios@1.10.0:
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.1)
-      form-data: 4.0.2
+      form-data: 4.0.4
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -13215,13 +13222,13 @@ snapshots:
     dependencies:
       mime-db: 1.54.0
 
-  compression@1.8.0:
+  compression@1.8.1:
     dependencies:
       bytes: 3.1.2
       compressible: 2.0.18
       debug: 2.6.9
       negotiator: 0.6.4
-      on-headers: 1.0.2
+      on-headers: 1.1.0
       safe-buffer: 5.2.1
       vary: 1.1.2
     transitivePeerDependencies:
@@ -13384,16 +13391,14 @@ snapshots:
       jalaali-js: 1.2.8
       moment-timezone: 0.5.48
 
-  date-holidays@3.24.3:
+  date-holidays@3.24.4:
     dependencies:
       date-holidays-parser: 3.4.7
       js-yaml: 4.1.0
       lodash: 4.17.21
       prepin: 1.0.3
 
-  dayjs@1.11.10: {}
-
-  dayjs@1.11.12: {}
+  dayjs@1.11.13: {}
 
   debug@2.6.9:
     dependencies:
@@ -14302,11 +14307,12 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-data@4.0.2:
+  form-data@4.0.4:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
       mime-types: 2.1.35
 
   formik@2.4.6(react@19.1.0):
@@ -14444,11 +14450,11 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  glob@11.0.2:
+  glob@11.0.3:
     dependencies:
       foreground-child: 3.3.1
-      jackspeak: 4.1.0
-      minimatch: 10.0.1
+      jackspeak: 4.1.1
+      minimatch: 10.0.3
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.0
@@ -14906,7 +14912,7 @@ snapshots:
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
 
-  jackspeak@4.1.0:
+  jackspeak@4.1.1:
     dependencies:
       '@isaacs/cliui': 8.0.2
 
@@ -15341,9 +15347,9 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  minimatch@10.0.1:
+  minimatch@10.0.3:
     dependencies:
-      brace-expansion: 2.0.1
+      '@isaacs/brace-expansion': 5.0.0
 
   minimatch@3.1.2:
     dependencies:
@@ -15664,8 +15670,6 @@ snapshots:
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
-
-  on-headers@1.0.2: {}
 
   on-headers@1.1.0: {}
 

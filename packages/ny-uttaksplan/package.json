@@ -31,7 +31,7 @@
         "@tailwindcss/vite": "4.1.11",
         "@types/react": "19.1.8",
         "classnames": "2.5.1",
-        "dayjs": "1.11.10",
+        "dayjs": "1.11.13",
         "lodash": "4.17.21",
         "react": "19.1.0",
         "react-hook-form": "7.60.0",

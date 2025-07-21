@@ -28,7 +28,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@tailwindcss/vite": "4.1.11",
-        "dayjs": "1.11.12",
+        "dayjs": "1.11.13",
         "intl-messageformat": "10.7.16",
         "react": "19.1.0",
         "react-dom": "19.1.0",

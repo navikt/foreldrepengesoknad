@@ -12,7 +12,7 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "dayjs": "1.11.12",
+        "dayjs": "1.11.13",
         "react": "19.1.0",
         "react-dom": "19.1.0"
     },

@@ -26,7 +26,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@types/react": "19.1.8",
-        "dayjs": "1.11.12",
+        "dayjs": "1.11.13",
         "react": "19.1.0",
         "react-intl": "7.1.11",
         "react-to-pdf": "2.0.1"
