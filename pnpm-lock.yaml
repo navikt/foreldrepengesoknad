@@ -464,9 +464,6 @@ importers:
 
   apps/foreldrepengesoknad:
     dependencies:
-      '@babel/runtime':
-        specifier: 7.27.6
-        version: 7.27.6
       '@formatjs/intl-datetimeformat':
         specifier: 6.18.0
         version: 6.18.0
