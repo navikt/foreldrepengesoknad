@@ -159,13 +159,14 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 
-        render(<Default onAvsluttOgSlett={onAvsluttOgSlett} />);
+        render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Avslutt')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]);
 
-        expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
+        expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });
 
     it('skal gå til et tidligere steg', async () => {
