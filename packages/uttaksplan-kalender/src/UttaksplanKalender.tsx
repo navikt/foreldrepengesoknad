@@ -233,11 +233,11 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
 
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
-        resolution: Resolution.HIGH,
+        resolution: Resolution.MEDIUM,
         page: {
             margin: Margin.MEDIUM,
         },
-    } as Options;
+    } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
     return (
