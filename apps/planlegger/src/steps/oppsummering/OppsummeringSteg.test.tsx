@@ -165,7 +165,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(
             screen.getByText(
-                'Espen vil få rundt 3 003 kr per dag hvis dere velger 100 % foreldrepenger eller 2 403 kr per dag med 80 %.',
+                'Espen vil få rundt 3 004 kr per dag hvis dere velger 100 % foreldrepenger eller 2 403 kr per dag med 80 %.',
             ),
         ).toBeInTheDocument();
     });

@@ -224,7 +224,7 @@ describe('<ArbeidssituasjonSide>', () => {
         expect(screen.getByText('Gjennomsnittlig årslønn')).toBeInTheDocument();
         expect(screen.getByText('1 200 000 kr')).toBeInTheDocument();
 
-        expect(screen.getByText('Du får dekket opptil 744 168 kr av din inntekt')).toBeInTheDocument();
+        expect(screen.getByText('Du får dekket opptil 780 960 kr av din inntekt')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
