@@ -6,10 +6,10 @@ import { flereBortfalteNaturalytelser } from 'storybookData/inntektsmeldinger/fl
 import { medDelvisRefusjon } from 'storybookData/inntektsmeldinger/medDelvisRefusjon';
 import { medRefusjon } from 'storybookData/inntektsmeldinger/medRefusjon';
 import { medRefusjonsPerioder } from 'storybookData/inntektsmeldinger/medRefusjonsPerioder';
-import { satser } from 'storybookData/inntektsmeldinger/satser';
 import { utenRefusjon } from 'storybookData/inntektsmeldinger/utenRefusjon';
 import { saker } from 'storybookData/saker/saker';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OversiktRoutes } from '../../routes/routes';
@@ -41,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 
 const HANDLERS = [
     http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-    http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(satser)),
+    http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER)),
 ];
 
 export const EnBortfaltNaturalytelse: Story = {
