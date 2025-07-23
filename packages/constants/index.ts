@@ -19,6 +19,7 @@ export { InnsendingsType } from './src/innsendingsType';
 export { AttachmentMetadataType } from './src/attachmentMetadataType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
 export { SivilstandType } from './src/sivilstandType';
+export { DEFAULT_SATSER } from './src/grunnbeløp';
 export {
     DATE_4_YEARS_AGO,
     ISO_DATE_REGEX,

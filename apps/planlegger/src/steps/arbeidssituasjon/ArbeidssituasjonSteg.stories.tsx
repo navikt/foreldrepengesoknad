@@ -6,32 +6,10 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { ArbeidssituasjonSteg } from './ArbeidssituasjonSteg';
-
-const DEFAULT_SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;

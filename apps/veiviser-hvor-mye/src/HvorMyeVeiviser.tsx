@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import ky from 'ky';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 
@@ -20,6 +20,8 @@ export const HvorMyeVeiviser = () => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
+        staleTime: Infinity,
+        initialData: DEFAULT_SATSER,
     });
 
     const stønadskontoerData = useQuery({

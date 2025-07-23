@@ -11,7 +11,7 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -19,29 +19,6 @@ import { OppsummeringSteg } from './OppsummeringSteg';
 const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
     farRundtFødsel: 10,
     toTette: 0,
-};
-
-const DEFAULT_SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
 };
 
 type StoryArgs = {

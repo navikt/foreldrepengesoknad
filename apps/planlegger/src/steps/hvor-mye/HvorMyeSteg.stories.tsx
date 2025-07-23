@@ -8,6 +8,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { HvorMyeSteg } from './HvorMyeSteg';
@@ -19,28 +20,6 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof HvorMyeSteg>;
 
-const DEFAULT_SATSER = {
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-};
 const meta = {
     title: 'steg/HvorMyeSteg',
     component: HvorMyeSteg,
