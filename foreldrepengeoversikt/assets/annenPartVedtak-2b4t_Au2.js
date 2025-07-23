@@ -1,0 +1,1 @@
+import{F as e,S as r}from"./iframe-Baoq88Fe.js";import{P as t}from"./saker-DoO48uxw.js";const n={perioder:[{fom:"2023-03-12",tom:"2023-03-26",kontoType:r.Fedrekvote,samtidigUttak:100,resultat:{innvilget:!0,trekkerMinsterett:!1,trekkerDager:!0,årsak:t.ANNET},forelder:e.farMedmor}],termindato:"2022-08-17",dekningsgrad:"HUNDRE",antallBarn:1};export{n as a};
