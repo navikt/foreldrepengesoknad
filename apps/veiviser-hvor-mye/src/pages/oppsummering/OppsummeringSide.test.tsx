@@ -50,8 +50,8 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getByText('65 080 kr')).toBeInTheDocument();
         expect(screen.getByText('49 611 kr')).toBeInTheDocument();
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
-        expect(screen.getByText('2 862 kr')).toBeInTheDocument();
-        expect(screen.getByText('2 290 kr')).toBeInTheDocument();
+        expect(screen.getByText('3 003 kr')).toBeInTheDocument();
+        expect(screen.getByText('2 403 kr')).toBeInTheDocument();
         expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
         expect(screen.getByText('357 750 kr')).toBeInTheDocument();
         expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
