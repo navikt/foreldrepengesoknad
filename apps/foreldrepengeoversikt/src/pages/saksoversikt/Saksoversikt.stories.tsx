@@ -4,13 +4,13 @@ import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
-import { satser } from 'storybookData/inntektsmeldinger/satser';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
 import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -119,7 +119,7 @@ export const Engangsstønad: Story = {
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () => HttpResponse.json()),
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(satser)),
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },

@@ -7,9 +7,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { Saker } from '@navikt/fp-types';
+import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
+import { Saker, Satser } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -21,6 +22,14 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     const intl = useIntl();
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
+
+    const minimumOpptjening = useQuery({
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
+        staleTime: Infinity,
+        initialData: DEFAULT_SATSER,
+        select: (satser) => satser.grunnbeløp[0].verdi * 0.5,
+    }).data;
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setIsChecked] = useState(harGodkjentVilkår);
@@ -49,7 +58,10 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             <FormattedMessage id="forside.guidepanel.punkt1" />
                         </List.Item>
                         <List.Item>
-                            <FormattedMessage id="forside.guidepanel.punkt2" />
+                            <FormattedMessage
+                                id="forside.guidepanel.punkt2"
+                                values={{ beløp: formatCurrencyWithKr(minimumOpptjening) }}
+                            />
                         </List.Item>
                         <List.Item>
                             <FormattedMessage id="forside.guidepanel.punkt3" />
