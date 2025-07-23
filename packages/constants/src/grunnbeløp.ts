@@ -332,5 +332,3 @@ export const DEFAULT_SATSER = {
         },
     ],
 };
-
-export const GRUNNBELØPET = DEFAULT_SATSER.grunnbeløp[0].verdi;
