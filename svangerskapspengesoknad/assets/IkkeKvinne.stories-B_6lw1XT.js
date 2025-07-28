@@ -1,1 +1,0 @@
-import{I as r}from"./IkkeKvinne-D9XcMC8s.js";import"./iframe-Bt5SVsXg.js";const o={title:"pages/IkkeKvinne",component:r},e={};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:"{}",...e.parameters?.docs?.source}}};const s=["Default"];export{e as Default,s as __namedExportsOrder,o as default};
