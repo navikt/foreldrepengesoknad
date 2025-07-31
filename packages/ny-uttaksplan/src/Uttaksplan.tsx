@@ -168,7 +168,6 @@ export const UttaksplanNy = ({
                         <BodyShort weight="semibold" size="large">
                             <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
                         </BodyShort>
-                        <p>hei</p>
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.ingenPerioder.body" />
                         </BodyShort>
