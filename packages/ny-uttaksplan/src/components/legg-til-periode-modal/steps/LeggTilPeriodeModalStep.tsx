@@ -1,3 +1,4 @@
+import { ModalData } from 'components/leggTilPeriodeBox';
 import { useForm } from 'react-hook-form';
 
 import { VStack } from '@navikt/ds-react';
@@ -13,7 +14,6 @@ import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../LeggTilPeriodeModal';
 import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
 
 interface Props {
