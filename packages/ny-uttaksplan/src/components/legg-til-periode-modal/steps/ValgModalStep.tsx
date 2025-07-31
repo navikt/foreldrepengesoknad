@@ -42,7 +42,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
     };
 
     return (
-        <>
+        <div className="p-4">
             <Heading size="medium">
                 <FormattedMessage id="uttaksplan.valgModal.tittel" />
             </Heading>
@@ -63,6 +63,6 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                     <ModalButtons onCancel={closeModal} isFinalStep={false} />
                 </VStack>
             </RhfForm>
-        </>
+        </div>
     );
 };

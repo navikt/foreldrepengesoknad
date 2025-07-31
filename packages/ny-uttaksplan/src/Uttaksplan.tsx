@@ -1,5 +1,5 @@
 import { NotePencilDashIcon } from '@navikt/aksel-icons';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css';

@@ -71,8 +71,16 @@ export function LeggTilPeriodeBox({ handleAddPeriode, erBarnetFødt, gjelderAdop
     };
 
     return (
-        <div style={{ border: '1px solid #ddd', padding: 16, marginTop: 16, background: 'white' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <div style={{ border: '1px solid rgba(2, 20, 49, 0.49)', borderRadius: '8px', background: 'white' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    backgroundColor: 'rgba(18, 43, 68, 0.08)',
+                    padding: 16,
+                }}
+            >
                 <PencilIcon aria-hidden={true} width={24} height={24} />
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
