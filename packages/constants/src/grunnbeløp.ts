@@ -1,6 +1,4 @@
-import { Satser } from '@navikt/fp-types';
-
-export const satser = {
+export const DEFAULT_SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -44,6 +42,10 @@ export const satser = {
         },
     ],
     grunnbeløp: [
+        {
+            fom: '01.05.2025',
+            verdi: 130160,
+        },
         {
             fom: '01.05.2024',
             verdi: 124028,
@@ -329,4 +331,4 @@ export const satser = {
             verdi: 5400,
         },
     ],
-} satisfies Satser;
+};

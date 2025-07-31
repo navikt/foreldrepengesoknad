@@ -87,6 +87,12 @@ For å kjøre tester for en app:
 
 Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepenger@nav.no.
 
+## Bidrag
+
+Vi tar gjerne imot Pull Requests og gode forslag til forbedringer! 🧦
+
+Gode bidrag som blir merget inn kan bli belønnet med eksklusive Nav-sokker som takk for innsatsen. Vi setter stor pris på alle som bidrar til å gjøre våre løsninger bedre for brukerne.
+
 ## For NAV-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.

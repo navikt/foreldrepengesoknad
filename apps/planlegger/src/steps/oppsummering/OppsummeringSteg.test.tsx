@@ -39,7 +39,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Espen har jobbet 6 av de siste 10 månedene, og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Espen har jobbet 6 av de siste 10 månedene, og har tjent mer enn 65 080 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -65,7 +65,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Esther har jobbet 6 av de siste 10 månedene, og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Esther har jobbet 6 av de siste 10 månedene, og har tjent mer enn 65 080 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -107,11 +107,11 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
-            screen.getByText('Klara har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText('Klara har jobbet 6 av de siste 10 månedene og tjent mer enn 65 080 kr det siste året.'),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 65 080 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -138,11 +138,11 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 65 080 kr det siste året.',
             ),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Hugo har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText('Hugo har jobbet 6 av de siste 10 månedene og tjent mer enn 65 080 kr det siste året.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
@@ -165,7 +165,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(
             screen.getByText(
-                'Espen vil få rundt 2 862 kr per dag hvis dere velger 100 % foreldrepenger eller 2 289 kr per dag med 80 %.',
+                'Espen vil få rundt 3 003 kr per dag hvis dere velger 100 % foreldrepenger eller 2 403 kr per dag med 80 %.',
             ),
         ).toBeInTheDocument();
     });

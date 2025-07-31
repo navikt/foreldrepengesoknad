@@ -4,7 +4,6 @@ const server = express();
 server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const getDecorator = require('./decorator.cjs');
 const compression = require('compression');
 
 server.disable('x-powered-by');
@@ -26,9 +25,9 @@ server.use((req, res, next) => {
     next();
 });
 
-const renderApp = (decoratorFragments) =>
+const renderApp = () =>
     new Promise((resolve, reject) => {
-        server.render('index.html', decoratorFragments, (err, html) => {
+        server.render('index.html', (err, html) => {
             if (err) {
                 reject(err);
             } else {
@@ -58,7 +57,7 @@ const startServer = async (html) => {
 
     const vite = await require('vite').createServer({
         root: __dirname,
-        base: "./",
+        base: './',
         define: {
             'import.meta.env.BASE_URL': '""',
         },
@@ -89,9 +88,4 @@ const startServer = async (html) => {
 
 const logError = (errorMessage, details) => console.log(errorMessage, details);
 
-getDecorator()
-    .then(renderApp, (error) => {
-        logError('Failed to get decorator', error);
-        process.exit(1);
-    })
-    .then(startServer, (error) => logError('Failed to render app', error));
+renderApp().then(startServer, (error) => logError('Failed to render app', error));
