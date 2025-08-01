@@ -21,37 +21,37 @@ const sortDateRangeByToDate = (d1: DateRange, d2: DateRange): number => {
     }
     return 1;
 };
-export const getRangesStartingAfterDate = (date: Date, dateRanges: DateRange[] = []): DateRange[] => {
+const getRangesStartingAfterDate = (date: Date, dateRanges: DateRange[] = []): DateRange[] => {
     return dateRanges.filter((dateRange) => dayjs(dateRange.from).isAfter(date, 'day'));
 };
 
-export const getRangesEndingBeforeDate = (date: Date, dateRanges: DateRange[] = []): DateRange[] => {
+const getRangesEndingBeforeDate = (date: Date, dateRanges: DateRange[] = []): DateRange[] => {
     return dateRanges.filter((dateRange) => dayjs(dateRange.to).isBefore(date, 'day'));
 };
 
-export const findClosestDateAfterDate = (fromDate: Date, dates: Date[]): Date | undefined => {
+const findClosestDateAfterDate = (fromDate: Date, dates: Date[]): Date | undefined => {
     const days = dates.map((d) => dayjs(d)).filter((m) => m.isAfter(fromDate, 'day'));
     return days.length > 0 ? dayjs.min(days)!.toDate() : undefined;
 };
 
-export const findClosestDateBeforeDate = (fromDate: Date, dates: Date[]): Date | undefined => {
+const findClosestDateBeforeDate = (fromDate: Date, dates: Date[]): Date | undefined => {
     const days = dates.map((d) => dayjs(d)).filter((m) => m.isBefore(fromDate, 'day'));
     const maxDate = days.length > 0 ? dayjs.max(days)!.toDate() : undefined;
     return maxDate;
 };
 
-export const findClosestDateBeforeOrEqualDate = (fromDate: Date, dates: Date[]): Date | undefined => {
+const findClosestDateBeforeOrEqualDate = (fromDate: Date, dates: Date[]): Date | undefined => {
     const days = dates.map((d) => dayjs(d)).filter((m) => m.isSameOrBefore(fromDate, 'day'));
     const maxDate = days.length > 0 ? dayjs.max(days)!.toDate() : undefined;
     return maxDate;
 };
 
-export const getClosestDateRangeBeforeDate = (date: Date, ranges: DateRange[]): DateRange | undefined => {
+const getClosestDateRangeBeforeDate = (date: Date, ranges: DateRange[]): DateRange | undefined => {
     const rangesBeforeDate = getRangesEndingBeforeDate(date, ranges).sort(sortDateRangeByToDate).reverse();
     return rangesBeforeDate.length === 0 ? undefined : rangesBeforeDate[0];
 };
 
-export const getClosestDateRangeAfterDate = (date: Date, ranges: DateRange[]): DateRange | undefined => {
+const getClosestDateRangeAfterDate = (date: Date, ranges: DateRange[]): DateRange | undefined => {
     const rangesAfterDate = getRangesStartingAfterDate(date, ranges).sort(sortDateRange);
     return rangesAfterDate.length === 0 ? undefined : rangesAfterDate[0];
 };
@@ -66,7 +66,7 @@ const getFollowingDate = (
     return allowRangesToStartAndStopOnSameDate ? dateRange.from : dayjs(dateRange.from).subtract(1, 'day').toDate();
 };
 
-export const getMaxDateForRangeStart = ({
+const getMaxDateForRangeStart = ({
     fromDate,
     toDate,
     maxDate,
@@ -91,7 +91,7 @@ export const getMaxDateForRangeStart = ({
     ];
     return findClosestDateAfterDate(fromDate, dates) || maxDate;
 };
-export const getMaxDateForRangeEnd = ({
+const getMaxDateForRangeEnd = ({
     fromDate,
     toDate,
     maxDate,
@@ -124,7 +124,7 @@ const getPreceedingDate = (
     return allowRangesToStartAndStopOnSameDate ? dateRange.to : dayjs(dateRange.to).add(1, 'day').toDate();
 };
 
-export const getMinDateForRangeStart = ({
+const getMinDateForRangeStart = ({
     toDate,
     minDate,
     dateRanges = [],
@@ -145,7 +145,7 @@ export const getMinDateForRangeStart = ({
     return findClosestDateBeforeDate(toDate, dates) || minDate;
 };
 
-export const getMinDateForRangeEnd = ({
+const getMinDateForRangeEnd = ({
     fromDate,
     toDate,
     minDate,

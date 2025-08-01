@@ -13,9 +13,6 @@ interface Props extends TestProps, Omit<SelectProps, 'onChange' | 'children'> {
     showOnlyEuAndEftaCountries?: boolean;
     useAlpha3Code?: boolean;
 }
-
-export type ChangeEvent = React.ChangeEvent<HTMLSelectElement>;
-
 interface CountryOptionsCache {
     locale: string;
     options: React.ReactNode[];

@@ -6,7 +6,7 @@ import { getUtsettelseFarge } from '@navikt/fp-utils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
-export interface Props {
+interface Props {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
 }

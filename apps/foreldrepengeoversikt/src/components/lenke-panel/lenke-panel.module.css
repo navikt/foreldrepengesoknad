@@ -16,7 +16,7 @@
     box-shadow: none;
 
     > div > svg {
-        background: var(--a-deepblue-200)
+        background: var(--a-deepblue-200);
     }
 }
 
@@ -25,6 +25,6 @@
     box-shadow: inset 0 0 0 var(--a-spacing-1) var(--a-border-info);
 
     > div > svg {
-        background: var(--a-deepblue-200)
+        background: var(--a-deepblue-200);
     }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const noMatchMedia = typeof window !== 'undefined' && window.matchMedia === undefined;
+const noMatchMedia = typeof window !== 'undefined' && window.matchMedia === undefined;
 
 /**
  * @example useMedia("screen and (min-width: 1024px)")

@@ -1,10 +1,11 @@
+import { Gradering } from '@navikt/fp-types';
+
 import { MorsAktivitet } from './MorsAktivitet';
-import { StønadskontoType } from './StønadskontoType';
 import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
-import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
 import { PeriodeResultatDTO } from './PeriodeResultatDTO';
-import { Gradering } from '@navikt/fp-types';
+import { StønadskontoType } from './StønadskontoType';
+import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
 
 export interface SaksperiodeDTO {
     fom: string;

@@ -211,14 +211,14 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
 };
 
-export const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
+const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
     id: guid(),
     type: Periodetype.Hull,
     tidsperiode,
     årsak,
 });
 
-export const getNyPeriodeUtenUttak = (tidsperiode: TidsperiodeDate): PeriodeUtenUttak => ({
+const getNyPeriodeUtenUttak = (tidsperiode: TidsperiodeDate): PeriodeUtenUttak => ({
     id: guid(),
     type: Periodetype.PeriodeUtenUttak,
     tidsperiode,

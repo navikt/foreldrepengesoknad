@@ -206,7 +206,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
 };
 
-export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
+const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
     id: guid(),
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
@@ -214,7 +214,7 @@ export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
     readOnly: false,
 });
 
-export const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
+const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     id: guid(),
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,

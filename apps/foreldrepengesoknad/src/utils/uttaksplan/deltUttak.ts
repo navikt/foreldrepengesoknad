@@ -424,7 +424,7 @@ const deltUttakFødsel = (
     }
 };
 
-export interface DeltUttakParams {
+interface DeltUttakParams {
     situasjon: Situasjon;
     famDato: Date;
     erFarEllerMedmor: boolean;

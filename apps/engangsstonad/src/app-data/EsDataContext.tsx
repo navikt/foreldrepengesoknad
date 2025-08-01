@@ -105,19 +105,6 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
     );
 };
 
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(EsDispatchContext);
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
-    );
-};
-
 /** Hook returns state reset function  */
 export const useContextReset = () => {
     const dispatch = useContext(EsDispatchContext);

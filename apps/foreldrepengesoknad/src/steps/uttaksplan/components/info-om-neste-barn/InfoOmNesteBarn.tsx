@@ -12,7 +12,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import styles from './info-om-neste-barn.module.css';
 
-export interface Props {
+interface Props {
     minsterettUkerToTette?: number;
 }
 

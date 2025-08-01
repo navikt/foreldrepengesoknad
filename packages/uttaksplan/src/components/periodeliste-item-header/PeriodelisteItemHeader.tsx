@@ -45,7 +45,7 @@ interface Props {
 
 const bem = planBemUtils('periodelisteItemHeader');
 
-export const getPeriodeIkon = (
+const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,

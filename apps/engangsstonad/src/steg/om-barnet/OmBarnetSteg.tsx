@@ -43,7 +43,7 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
     antallBarnDropDown: omBarnet.antallBarn > 2 ? omBarnet.antallBarn.toString() : undefined,
 });
 
-export interface Props {
+interface Props {
     kjønn: PersonFrontend['kjønn'];
     mellomlagreOgNaviger: () => Promise<void>;
 }

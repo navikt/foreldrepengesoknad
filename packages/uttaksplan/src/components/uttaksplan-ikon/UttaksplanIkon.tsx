@@ -25,7 +25,7 @@ export enum UttaksplanIkonKeys {
     'feil' = 'feil',
 }
 
-export interface Props {
+interface Props {
     ikon: UttaksplanIkonKeys;
     title: string;
 }

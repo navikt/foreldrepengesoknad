@@ -3,7 +3,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
 
-export type GraderingsType = {
+type GraderingsType = {
     skalDuJobbe: boolean;
     stillingsprosent: string;
 };

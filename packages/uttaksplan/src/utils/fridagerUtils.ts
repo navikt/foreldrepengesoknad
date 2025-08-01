@@ -35,7 +35,7 @@ export const getOffentligeFridagerIMåned = (måned: Date): HolidaysTypes.Holida
 };
 
 /* Default - hente ut helligdager i default tidsrom */
-export const fridager = getOffentligeFridager({
+const fridager = getOffentligeFridager({
     fom: new Date(dayjs().subtract(4, 'years').toDate()),
     tom: new Date(dayjs().add(4, 'years').toDate()),
 });

@@ -4,7 +4,7 @@ import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
 //TODO (TOR) Ser ut som funksjonane i denne fila har duplikatar i foreldrepengesoknad. Flytt ut i felles-pakke
 
-export type SkjemaelementFeil = string | undefined;
+type SkjemaelementFeil = string | undefined;
 
 const getIllegalChars = (value: string): string => {
     const kunUgyldigeTegn = value.replace(textGyldigRegex, '');

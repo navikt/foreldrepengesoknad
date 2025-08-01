@@ -7,7 +7,7 @@ import { dagenFør, treUkerSiden } from '@navikt/fp-utils/src/dateUtils';
 
 dayjs.extend(isBetween);
 
-export const getDagenFørTreUkerFørTermin = (termindato: string): Dayjs => {
+const getDagenFørTreUkerFørTermin = (termindato: string): Dayjs => {
     return dayjs(treUkerSiden(termindato)).subtract(1, 'd');
 };
 

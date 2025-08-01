@@ -16,7 +16,7 @@ export interface UttaksplanRegelTestresultat {
     harFeil: boolean;
 }
 
-export type RegelKategori = 'fordeling' | undefined;
+type RegelKategori = 'fordeling' | undefined;
 
 export interface Regel {
     key: string;
@@ -47,7 +47,7 @@ export interface RegelStatus {
     regelAvvik?: RegelAvvik[];
 }
 
-export type AvvikType = 'forretning' | 'skjema';
+type AvvikType = 'forretning' | 'skjema';
 
 export interface RegelAvvik {
     id: string;

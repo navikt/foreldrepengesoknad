@@ -93,29 +93,6 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
     );
 };
 
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
-    );
-};
-
-/** Hook returns state reset function  */
-export const useContextReset = () => {
-    const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(() => {
-        if (dispatch) {
-            dispatch({ type: 'reset' });
-        }
-    }, [dispatch]);
-};
-
 /** Hook returns data for one specific data type  */
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
     const state = useContext(PlanleggerStateContext);

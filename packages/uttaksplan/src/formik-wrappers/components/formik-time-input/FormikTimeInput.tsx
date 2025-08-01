@@ -27,9 +27,6 @@ export type FormikTimeInputProps<FieldName, ErrorType> = OwnProps<FieldName> &
     TestProps;
 
 const bem = planBemUtils('formikTimeInput');
-
-export const Div = (props: any) => <div {...props} />;
-
 function FormikTimeInput<FieldName, ErrorType>({
     label,
     name,

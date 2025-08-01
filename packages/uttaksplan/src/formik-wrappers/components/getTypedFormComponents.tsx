@@ -21,7 +21,7 @@ import FormikYesOrNoQuestion, { FormikYesOrNoQuestionProps } from './formik-yes-
 import TypedFormikForm, { TypedFormikFormProps } from './typed-formik-form/TypedFormikForm';
 import TypedFormikWrapper, { TypedFormikWrapperProps } from './typed-formik-wrapper/TypedFormikWrapper';
 
-export interface TypedFormComponents<FieldName, FormValues, ErrorType> {
+interface TypedFormComponents<FieldName, FormValues, ErrorType> {
     Checkbox: (props: FormikCheckboxProps<FieldName, ErrorType>) => JSX.Element;
     CheckboxGroup: (props: FormikCheckboxGroupProps<FieldName, ErrorType>) => JSX.Element;
     ConfirmationCheckbox: (props: FormikConfirmationCheckboxProps<FieldName, ErrorType>) => JSX.Element;

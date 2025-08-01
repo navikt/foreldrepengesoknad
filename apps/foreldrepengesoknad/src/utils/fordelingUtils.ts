@@ -9,7 +9,7 @@ import {
 
 import { ISOStringToDate } from './dateUtils';
 
-export const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
+const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
     if (!sisteDagAnnenForelder) {
         throw new Error('Mangler informasjon om annen forelders siste dag.');
     }

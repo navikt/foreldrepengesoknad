@@ -9,7 +9,7 @@ import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
-export interface Props {
+interface Props {
     konto: StønadskontoType;
     forelder?: Forelder;
     gradert?: boolean;

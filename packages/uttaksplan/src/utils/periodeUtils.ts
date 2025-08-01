@@ -18,7 +18,6 @@ import {
     Tidsperiode,
     TidsperiodeDate,
     UtsettelseÅrsakType,
-    UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isUttakAnnenPart,
     isUttaksperiode,
@@ -27,12 +26,9 @@ import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@
 
 import { ISOStringToDate } from '../formik-wrappers';
 import { Perioden } from './Perioden';
-import { convertTidsperiodeToTidsperiodeDate, isDateInTheFuture, isDateTodayOrInTheFuture } from './dateUtils';
+import { convertTidsperiodeToTidsperiodeDate } from './dateUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
-
-const isoStringFormat = 'YYYY-MM-DD';
-const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -85,7 +81,7 @@ const prettifyProsent = (pst: string | undefined): number | undefined => {
     return nbr;
 };
 
-export const getUttaksprosentFromStillingsprosent = (
+const getUttaksprosentFromStillingsprosent = (
     stillingsPst: number | undefined,
     samtidigUttakPst: number | undefined,
 ): number | undefined => {
@@ -296,12 +292,6 @@ export const getPeriodeTittel = (
             return getPeriodeTittelInfoPeriode(intl, periode, navnPåForeldre, erFarEllerMedmor);
     }
 };
-
-export const erSentGradertUttak = (periode: Periode) =>
-    periode.type === Periodetype.Uttak &&
-    !isDateTodayOrInTheFuture(dateToISOString(periode.tidsperiode.fom)) &&
-    periode.gradert;
-
 export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
     if (eksisterendeSak === undefined) {
         return false;
@@ -328,24 +318,6 @@ export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnP�
     }
     return 'Ingen forelder registrert';
 };
-
-export const getSamtidigUttakEllerGraderingsProsent = (
-    periode: UttakAnnenPartInfoPeriode | Uttaksperiode,
-): number | undefined => {
-    const periodeErGradert = periode.stillingsprosent !== undefined;
-    const periodeErSamtidigUttak = periode.samtidigUttakProsent !== undefined;
-
-    if (periodeErSamtidigUttak) {
-        return (100 - getFloatFromString(periode.samtidigUttakProsent)!) / 100;
-    }
-
-    if (periodeErGradert) {
-        return getFloatFromString(periode.stillingsprosent)! / 100;
-    }
-
-    return undefined;
-};
-
 export const getSamtidigUttaksprosent = (
     gradertPeriode: boolean | undefined,
     stillingsprosent: string | undefined,
@@ -382,13 +354,6 @@ const erPeriodeFomEllerEtterDato = (periode: Periode, dato: Date): boolean => {
 export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
     return erPeriodeFomEllerEtterDato(periode, dato) === false;
 };
-
-export const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;
-
-export const erUtsettelseTilbakeITid = (periode: Periode) =>
-    periode.type === Periodetype.Utsettelse && !isDateInTheFuture(dateToISOString(periode.tidsperiode.fom));
-
-export const erUtsettelse = (periode: Periode) => periode.type === Periodetype.Utsettelse;
 
 export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
     årsak === UtsettelseÅrsakType.Sykdom ||

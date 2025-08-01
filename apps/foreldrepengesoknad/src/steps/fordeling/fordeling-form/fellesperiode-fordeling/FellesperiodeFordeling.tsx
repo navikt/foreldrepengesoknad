@@ -49,7 +49,7 @@ const getInputForAntallDagerFellesperiode = (
     return kanViseValgtAntallDager ? totallAntallDager : undefined;
 };
 
-export const getFordelingDagerForVisning = (
+const getFordelingDagerForVisning = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,

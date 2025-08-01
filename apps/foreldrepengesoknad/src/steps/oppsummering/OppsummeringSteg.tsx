@@ -53,7 +53,7 @@ const skalViseInfoOmFarskapsportal = (
     );
 };
 
-export interface Props {
+interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;

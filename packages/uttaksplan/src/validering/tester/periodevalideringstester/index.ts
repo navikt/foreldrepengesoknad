@@ -10,7 +10,7 @@ import { periodeDeFørsteSeksUkeneHarUlovligUttakBFHR } from './periodeDeFørste
 import { slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel } from './slutterUttaksperiodeRundtFødselInnen6UkerEtterFødsel';
 import { starterUttaksperiodeRundtFødselEtter2UkerFørFødsel } from './starterUttaksperiodeRundtFødselEtter2UkerFørFødsel';
 
-export enum PeriodeValiderRegelKey {
+enum PeriodeValiderRegelKey {
     'uttaksperiodeHarGyldigGradering' = 'uttaksperiodeHarGyldigGradering',
     'periodeHarGyldigTidsperiode' = 'periodeHarGyldigTidsperiode',
     'uttaksperiodeHarStønadskonto' = 'uttaksperiodeHarStønadskonto',

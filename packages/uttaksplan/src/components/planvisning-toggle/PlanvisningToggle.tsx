@@ -9,7 +9,7 @@ import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import planBemUtils from '../../utils/planBemUtils';
 import './planvisning-toggle.css';
 
-export type Visningsmodus = 'liste' | 'kalender';
+type Visningsmodus = 'liste' | 'kalender';
 
 interface Props {
     setVisningsmodus: Dispatch<SetStateAction<string>>;

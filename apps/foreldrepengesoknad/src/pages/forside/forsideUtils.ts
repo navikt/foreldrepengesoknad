@@ -18,23 +18,6 @@ import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export const getSortableBarnDato = (
-    fødselsdatoer: Date[],
-    termindato: Date | undefined,
-    omsorgsovertagelse: Date | undefined,
-): Date => {
-    //Dato som skal kun brukes til å sortere barna i visningen
-    if (fødselsdatoer.length > 0) {
-        return fødselsdatoer[0];
-    }
-    if (termindato !== undefined) {
-        return termindato;
-    }
-
-    return omsorgsovertagelse!;
-};
-
 const getSelectableBarnType = (
     gjelderAdopsjon: boolean,
     familiehendelse: Familiehendelse,

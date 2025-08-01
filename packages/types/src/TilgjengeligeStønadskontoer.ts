@@ -5,7 +5,7 @@ export type TilgjengeligeMinsterettskontoer = {
     [MinsterettType.toTette]: number;
 };
 
-export type TilgjengeligeKontoTillegg = {
+type TilgjengeligeKontoTillegg = {
     [KontoTilleggType.prematur]: number;
     [KontoTilleggType.flerbarn]: number;
 };

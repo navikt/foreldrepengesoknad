@@ -283,7 +283,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
     return uttaksplan;
 };
 
-export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
+const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
         return [];
     }
@@ -301,7 +301,7 @@ export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefine
     return vedleggArray;
 };
 
-export const cleanAnnenforelder = (
+const cleanAnnenforelder = (
     annenForelder: AnnenForelder | undefined,
 ): UtenlandskForelderDto | NorskForelderDto | undefined => {
     if (annenForelder === undefined || isAnnenForelderIkkeOppgitt(annenForelder)) {

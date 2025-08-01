@@ -5,7 +5,7 @@ import { PeriodeColor } from '@navikt/fp-constants';
 import planBemUtils from '../../utils/planBemUtils';
 import './iconBox.less';
 
-export interface Props {
+interface Props {
     color: PeriodeColor;
     stripes?: boolean;
     children?: React.ReactNode;

@@ -46,11 +46,7 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
 
 const DEFAULT_OPTION = 'default';
 
-export const getAttachmentTypeSelectOptions = (
-    intl: IntlShape,
-    manglendeSkjemanummer: string[],
-    sak: Sak | undefined,
-) => {
+const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: string[], sak: Sak | undefined) => {
     if (!sak) {
         return null;
     }

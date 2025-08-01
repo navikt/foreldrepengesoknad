@@ -6,7 +6,7 @@ import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan';
 
 type DateType = Date | string | undefined;
 
-export const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termindato: DateType): boolean => {
+const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termindato: DateType): boolean => {
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&

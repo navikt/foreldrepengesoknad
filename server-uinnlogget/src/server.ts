@@ -11,7 +11,7 @@ import {
 
 import { configureReverseProxyApi } from './reverseProxy';
 
-export const server = express();
+const server = express();
 
 setupServerDefaults(server);
 setupActuators(server);

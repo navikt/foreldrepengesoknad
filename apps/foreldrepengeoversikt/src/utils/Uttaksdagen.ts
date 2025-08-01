@@ -22,7 +22,7 @@ const getUkedag = (dato: Date): number => {
     return dayjs(dato).isoWeekday();
 };
 
-export const erUttaksdag = (dato: Date): boolean => {
+const erUttaksdag = (dato: Date): boolean => {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 };
 

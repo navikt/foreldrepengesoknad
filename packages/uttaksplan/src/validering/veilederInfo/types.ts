@@ -1,7 +1,8 @@
 import { Dictionary } from 'lodash';
+
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
 
-export type VeilederMessageType = 'normal' | 'info' | 'advarsel' | 'feil';
+type VeilederMessageType = 'normal' | 'info' | 'advarsel' | 'feil';
 
 export interface VeilederMessage {
     contentIntlKey: string;

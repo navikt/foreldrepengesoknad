@@ -1,4 +1,4 @@
-export interface IkkeUtfyltTypeBarn {
+interface IkkeUtfyltTypeBarn {
     fødselsdatoer: Array<{ dato?: string }>;
 }
 
@@ -18,7 +18,7 @@ export interface UfødtBarn {
     terminbekreftelsedato?: string;
 }
 
-export interface AdoptertStebarn {
+interface AdoptertStebarn {
     adopsjonAvEktefellesBarn: true;
     adopsjonsdato: string;
     antallBarn: number;
@@ -26,7 +26,7 @@ export interface AdoptertStebarn {
     fødselsdatoer: Array<{ dato: string }>;
 }
 
-export interface AdoptertAnnetBarn {
+interface AdoptertAnnetBarn {
     adopsjonAvEktefellesBarn: false;
     adopsjonsdato: string;
     antallBarn: number;

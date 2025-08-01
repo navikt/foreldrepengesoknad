@@ -39,7 +39,7 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
     return 'svangerskapspenger';
 };
 
-export interface Props {
+interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
     minidialog: MinidialogInnslag;

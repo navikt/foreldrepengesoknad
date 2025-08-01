@@ -4,7 +4,7 @@ import { ErrorSummary, ErrorSummaryProps } from '@navikt/ds-react';
 
 import ValidationErrorLink from './ValidationErrorLink';
 
-export interface Props extends Pick<ErrorSummaryProps, 'heading' | 'headingTag'> {
+interface Props extends Pick<ErrorSummaryProps, 'heading' | 'headingTag'> {
     errors: ValidationSummaryError[];
     summaryRef?: RefObject<HTMLDivElement | null>;
 }

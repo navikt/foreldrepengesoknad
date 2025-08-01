@@ -4,7 +4,6 @@
     "type": "module",
     "version": "1.0.0",
     "dependencies": {
-        "@storybook/react": "9.0.17",
         "@tailwindcss/vite": "4.1.11",
         "@vitejs/plugin-react": "4.7.0",
         "@vitest/browser": "3.2.4",

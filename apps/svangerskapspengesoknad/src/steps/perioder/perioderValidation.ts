@@ -150,7 +150,7 @@ export const validatePeriodeTom =
         return undefined;
     };
 
-export const validateAtPeriodeIkkeOverlapper = (
+const validateAtPeriodeIkkeOverlapper = (
     fom: string | undefined,
     tom: string | undefined,
     tomType: TilOgMedDatoType | undefined,
@@ -193,7 +193,7 @@ export const validateAtPeriodeIkkeOverlapper = (
     return undefined;
 };
 
-export const validateSammenhengendePerioderFom = (
+const validateSammenhengendePerioderFom = (
     fom: string | undefined,
     allePerioder: PeriodeMedVariasjon[] | undefined,
     sisteDagForSvangerskapspenger: string,

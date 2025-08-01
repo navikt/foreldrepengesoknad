@@ -43,7 +43,7 @@ const finnAntallUkerOgDager = (valgtStønadskonto: TilgjengeligeStønadskontoerF
     };
 };
 
-export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
+const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
     dekningsgrad: Dekningsgrad;

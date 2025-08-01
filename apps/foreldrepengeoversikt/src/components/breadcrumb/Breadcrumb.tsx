@@ -61,7 +61,7 @@ const inntektsmelding = {
     handleInApp: true,
 };
 
-export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
+const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
             return [minSide, hovedside];

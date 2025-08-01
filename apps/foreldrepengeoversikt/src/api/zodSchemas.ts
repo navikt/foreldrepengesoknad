@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const NaturalytelseTypeSchema = z.enum([
+const NaturalytelseTypeSchema = z.enum([
     'ELEKTRISK_KOMMUNIKASJON',
     'AKSJER_GRUNNFONDSBEVIS_TIL_UNDERKURS',
     'LOSJI',

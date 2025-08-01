@@ -7,14 +7,6 @@ import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
 import { RegelAvvik } from '../utils/types/regelTypes';
 import { VeilederMessage, VeiledermeldingerPerPeriode } from './types';
 
-export const veilederMessageAvsnitt = (
-    førsteTekst: VeilederMessage[],
-    andreTekst: VeilederMessage[],
-    visInfoOmPrematuruker: boolean,
-): VeilederMessage[] => {
-    return visInfoOmPrematuruker === false ? førsteTekst : førsteTekst.concat(andreTekst);
-};
-
 const mapAvvikTilMessage = (avvik: RegelAvvik, intl: IntlShape): VeilederMessage => {
     const { info } = avvik;
     const tittelIntlKey = `${info.intlKey}.tittel`;

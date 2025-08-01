@@ -1,28 +1,6 @@
-import {
-    QuestionVisibility,
-    YesOrNo,
-    convertBooleanOrUndefinedToYesOrNo,
-    convertYesOrNoOrUndefinedToBoolean,
-} from '@navikt/fp-uttaksplan';
+import { YesOrNo, convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-uttaksplan';
 
-import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
-
-export const cleanUttaksplanFormData = (
-    values: UttaksplanFormData,
-    visibility: QuestionVisibility<UttaksplanFormField, undefined>,
-): UttaksplanFormData => {
-    const cleanedData: UttaksplanFormData = {
-        ønskerAutomatiskJustering: visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)
-            ? values.ønskerAutomatiskJustering
-            : YesOrNo.UNANSWERED,
-    };
-
-    return cleanedData;
-};
-
-export const mapUttaksplanFormToState = (values: Partial<UttaksplanFormData>): boolean | undefined => {
-    return convertYesOrNoOrUndefinedToBoolean(values.ønskerAutomatiskJustering);
-};
+import { UttaksplanFormData } from './UttaksplanFormConfig';
 
 export const mapUttaksplanFormValueToState = (value: YesOrNo): boolean | undefined => {
     return convertYesOrNoOrUndefinedToBoolean(value);

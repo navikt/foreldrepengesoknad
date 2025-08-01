@@ -22,7 +22,7 @@ import {
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 
-export interface Props {
+interface Props {
     barnet: Barn;
     arbeidsforholdType: Arbeidsforholdstype;
     sluttdatoArbeid?: string;

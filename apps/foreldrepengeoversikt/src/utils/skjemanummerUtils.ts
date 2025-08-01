@@ -17,7 +17,7 @@ export const getRelevanteSkjemanummer = (sak: Sak): Skjemanummer[] => {
     return alleSkjemanummere.filter(isSkjemanummerForSvangerskapspengesoknad);
 };
 
-export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
+const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING:
         case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
@@ -36,7 +36,7 @@ export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: S
     }
 };
 
-export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
+const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.ANNET:
         case Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
@@ -65,7 +65,7 @@ export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skj
     }
 };
 
-export const isSkjemanummerForSvangerskapspengesoknad = (skjemanummer: Skjemanummer): boolean => {
+const isSkjemanummerForSvangerskapspengesoknad = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.ANNET:
         case Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE:
@@ -81,7 +81,7 @@ export const isSkjemanummerForSvangerskapspengesoknad = (skjemanummer: Skjemanum
     }
 };
 
-export const isSkjemanummerForEngangsstønad = (skjemanummer: Skjemanummer): boolean => {
+const isSkjemanummerForEngangsstønad = (skjemanummer: Skjemanummer): boolean => {
     switch (skjemanummer) {
         case Skjemanummer.ANNET:
         case Skjemanummer.TERMINBEKREFTELSE:

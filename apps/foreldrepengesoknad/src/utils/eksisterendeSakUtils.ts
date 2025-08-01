@@ -487,7 +487,7 @@ export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
     return søknad;
 };
 
-export const opprettAnnenForelderFraEksisterendeSak = (
+const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: Person | undefined,
     grunnlag: Saksgrunnlag,

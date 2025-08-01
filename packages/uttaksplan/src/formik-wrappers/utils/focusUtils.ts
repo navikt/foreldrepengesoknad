@@ -18,7 +18,7 @@ function nodelistToArray(nodes: NodeList): HTMLElement[] {
 const tabEnabledSelectors = [`[tabIndex='0']`].concat(elementSelector);
 const allTabIndexEnabledSelectors = [`[tabIndex]`].concat(elementSelector);
 
-export function getFocusableElements(el: Element, onlyTabReachable = true): HTMLElement[] | undefined {
+function getFocusableElements(el: Element, onlyTabReachable = true): HTMLElement[] | undefined {
     if (!el) {
         return undefined;
     }
@@ -33,15 +33,6 @@ export function focusFirstElement(el: Element) {
     const elements = getFocusableElements(el);
     if (elements && elements.length > 0) {
         (elements[0] as HTMLElement).focus();
-    } else {
-        (el as HTMLElement).focus();
-    }
-}
-
-export function focusLastElement(el: Element) {
-    const elements = getFocusableElements(el);
-    if (elements && elements.length > 0) {
-        (elements[elements.length - 1] as HTMLElement).focus();
     } else {
         (el as HTMLElement).focus();
     }

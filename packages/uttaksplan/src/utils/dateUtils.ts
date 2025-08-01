@@ -166,26 +166,6 @@ export const getToTetteReglerGjelder = (
     );
 };
 
-export const isDateToday = (date: string): boolean => {
-    if (dayjs().isSame(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateTodayOrInTheFuture = (date: string): boolean => {
-    return isDateInTheFuture(date) || isDateToday(date);
-};
-
-export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
 const validateFromDateInRange = ({
     intl,
     date,

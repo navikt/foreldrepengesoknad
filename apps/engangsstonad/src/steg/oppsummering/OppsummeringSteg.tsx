@@ -11,7 +11,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import { OmBarnetOppsummering } from './OmBarnetOppsummering';
 
-export interface Props {
+interface Props {
     sendSøknad: () => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }

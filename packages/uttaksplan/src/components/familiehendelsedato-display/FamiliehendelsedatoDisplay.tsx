@@ -14,7 +14,7 @@ interface Props {
     barn: Barn;
 }
 
-export const getFamiliehendelseTekst = (barn: Barn): ReactNode => {
+const getFamiliehendelseTekst = (barn: Barn): ReactNode => {
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     if (!isAdoptertBarn(barn)) {

@@ -9,7 +9,7 @@ const isoStringFormat = 'YYYY-MM-DD';
 export const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
 export const ISOStringToDate = (dateString = ''): Date | undefined => getDateFromDateString(dateString);
 
-export const getDisabledDates = (limitations: DatepickerLimitations): Matcher[] => {
+const getDisabledDates = (limitations: DatepickerLimitations): Matcher[] => {
     const invalidDates: Matcher[] = [];
     if (limitations.disabledDateRanges) {
         limitations.disabledDateRanges.forEach(({ from, to }) => {

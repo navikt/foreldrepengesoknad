@@ -14,9 +14,10 @@ import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
 import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';
 import { andreAugust2022ReglerGjelder } from '../../../utils/dateUtils';
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
-import getUttakSkjemaregler, {
+import {
     UttakSkjemaReglerProps,
     UttakSkjemaregler,
+    getUttakSkjemaregler,
 } from '../../../utils/uttaksskjema/uttakSkjemaregler';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
