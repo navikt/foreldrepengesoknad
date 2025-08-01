@@ -53,7 +53,6 @@
         "lodash": "4.17.21",
         "react": "19.1.0",
         "react-dom": "19.1.0",
-        "react-hook-form": "7.60.0",
         "react-intl": "7.1.11",
         "react-router-dom": "7.7.0",
         "zod": "4.0.5"
@@ -77,8 +76,6 @@
         "@types/node": "22.15.18",
         "@types/react": "19.1.8",
         "@types/react-dom": "19.1.6",
-        "@types/react-router-dom": "5.3.3",
-        "@vitejs/plugin-react": "4.7.0",
         "@vitest/browser": "3.2.4",
         "compression": "1.8.1",
         "dotenv": "16.5.0",
