@@ -23,10 +23,7 @@
     "author": "NAV",
     "license": "MIT",
     "dependencies": {
-        "@formatjs/intl-datetimeformat": "6.18.0",
-        "@formatjs/intl-numberformat": "8.15.4",
         "@formatjs/intl-pluralrules": "5.4.4",
-        "@formatjs/intl-relativetimeformat": "11.4.11",
         "@navikt/aksel-icons": "7.25.1",
         "@navikt/ds-css": "7.25.1",
         "@navikt/ds-react": "7.25.1",

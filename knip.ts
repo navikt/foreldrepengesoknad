@@ -1,8 +1,14 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
-    ignore: ['server/**'], //bootstrap files, mock-storage
-    ignoreBinaries: ['docker-compose'],
+    ignore: [
+        'server/**',
+        '**/mock-storage.cjs',
+        '**/@types/externals.d.ts',
+        '**/bootstrap.tsx',
+        'openapi-ts.config.ts',
+    ], //bootstrap files, mock-storage
+    ignoreBinaries: ['prettier', 'formatjs'],
     ignoreDependencies: [
         '@navikt/aksel-icons',
         '@navikt/ds-css',

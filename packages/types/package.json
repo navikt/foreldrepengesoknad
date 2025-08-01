@@ -11,6 +11,8 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "eslint": "9.31.0"
+    },
     "packageManager": "pnpm@9.1.4"
 }
