@@ -16,7 +16,13 @@ import { Dekningsgrad, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoe
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { KvoteOppsummering, UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import {
+    KvoteOppsummering,
+    Planperiode,
+    UttaksplanNy,
+    finnOgSettInnHull,
+    utledKomplettPlan,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
@@ -108,6 +114,29 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         farMedmor: getNavnPåSøker2(hvemPlanlegger, intl),
         mor: getNavnPåSøker1(hvemPlanlegger, intl),
     };
+
+    const konverterTilPlanperiode = (periode: SaksperiodeNy): Planperiode => ({
+        ...periode,
+        id: `${periode.fom}-${periode.tom}`,
+        readOnly: false,
+        fom: periode.fom,
+        tom: periode.tom,
+    });
+
+    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
+    const søkersPerioderAsPlanperiode = søkersPerioder.map(konverterTilPlanperiode);
+
+    const perioderMedHull: Planperiode[] = finnOgSettInnHull(
+        søkersPerioderAsPlanperiode,
+        false,
+        familiehendelsedato,
+        familiesituasjon === 'adopsjon',
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        undefined,
+    );
+
+    const harTapteDager = perioderMedHull.some((periode) => periode.periodeHullÅrsak === 'Tapte dager');
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -271,6 +300,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         barnet={omBarnet}
                                         hvemHarRett={hvemHarRett}
                                         uttaksplan={gjeldendeUttaksplan}
+                                        inneholderTapteDager={harTapteDager}
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}
