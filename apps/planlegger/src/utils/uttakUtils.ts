@@ -292,21 +292,10 @@ export const finnUttaksdata = (
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallDagerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
-
-export type UttakUker = {
-    uker: number;
-};
 export type UttakUkerOgDager = {
     uker: number;
     dager: number;
 };
-export type UttakMånederOgUkerOgDager = {
-    måneder: number;
-    uker: number;
-    dager: number;
-};
-
-//Funksjon henta fra https://stackoverflow.com/questions/37069186/calculate-working-days-between-two-dates-in-javascript-excepts-holidays
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (
     stønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,

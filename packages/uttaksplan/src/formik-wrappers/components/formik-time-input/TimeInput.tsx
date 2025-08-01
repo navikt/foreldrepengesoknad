@@ -19,7 +19,7 @@ export type TimeInputLabels = {
     minutes?: string;
 };
 
-export type TimeInputLayout = 'vertical' | 'horizontal';
+type TimeInputLayout = 'vertical' | 'horizontal';
 export interface TimeInputRefProps {
     refs?: {
         hours?: RefObject<HTMLInputElement>;

@@ -20,7 +20,7 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-export type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
+type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
 
 export interface ModalData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;

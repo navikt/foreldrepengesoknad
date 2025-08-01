@@ -29,7 +29,7 @@ export const getUttaksstatus = ({
     };
 };
 
-export interface UttaksstatusFuncParams {
+interface UttaksstatusFuncParams {
     erDeltUttak: boolean;
     erEndringssøknad: boolean;
     harKomplettUttaksplan: boolean;

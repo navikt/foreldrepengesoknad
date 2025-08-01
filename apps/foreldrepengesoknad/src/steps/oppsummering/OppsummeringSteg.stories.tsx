@@ -8,8 +8,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
-import { AndreInntektskilder } from 'types/AndreInntektskilder';
-import { AnnenInntektType } from 'types/AnnenInntekt';
+import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';

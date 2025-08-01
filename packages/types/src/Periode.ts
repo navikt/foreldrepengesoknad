@@ -15,18 +15,18 @@ import {
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
 
-export interface PeriodeBase {
+interface PeriodeBase {
     id: string;
     type: Periodetype;
     tidsperiode: TidsperiodeDate;
 }
 
-export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
+interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
     konto: StønadskontoType.ForeldrepengerFørFødsel;
     skalIkkeHaUttakFørTermin: boolean;
 }
 
-export interface UttaksperiodeBase extends PeriodeBase {
+interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
@@ -47,8 +47,6 @@ export interface UttaksperiodeBase extends PeriodeBase {
 }
 
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
-
-export type UtsettelseFormPeriodeType = Utsettelsesperiode | Oppholdsperiode;
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
@@ -71,7 +69,7 @@ export interface Overføringsperiode extends PeriodeBase {
     årsak: OverføringÅrsakType;
 }
 
-export interface PeriodeHull extends PeriodeBase {
+interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: TidsperiodeDate;
     årsak?: PeriodeHullÅrsak;
@@ -84,7 +82,7 @@ interface InfoPeriodeBase extends PeriodeBase {
     visPeriodeIPlan: boolean;
 }
 
-export interface AvslåttPeriode extends InfoPeriodeBase {
+interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
@@ -96,7 +94,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     opprinneligSøkt?: OpprinneligSøkt;
 }
 
-export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
+interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: OppholdÅrsakType;
@@ -109,7 +107,7 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     stillingsprosent?: string;
 }
 
-export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
+interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
     årsak: UtsettelseÅrsakType;
@@ -124,7 +122,7 @@ export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
 }
 
-export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
+interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
     type: Periodetype.Utsettelse;
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: UtsettelseÅrsakType.Fri;

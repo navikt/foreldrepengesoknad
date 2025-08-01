@@ -4,7 +4,7 @@ import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
-export interface DeltUttakParams {
+interface DeltUttakParams {
     famDato: string;
     tilgjengeligeStønadskontoer: Stønadskonto[];
     fellesperiodeDagerMor: number | undefined;

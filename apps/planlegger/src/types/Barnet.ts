@@ -20,6 +20,6 @@ export type BarnetErAdoptert = {
     fødselsdato: string;
 };
 
-export type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
+type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
 
 export type OmBarnet = Fødsel | BarnetErAdoptert;

@@ -7,7 +7,7 @@ import { TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './.
 import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
 import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
-export type FormikCheckboxGroupCheckboxProp = Omit<CheckboxProps, 'children' | 'name' | 'checked'> & {
+type FormikCheckboxGroupCheckboxProp = Omit<CheckboxProps, 'children' | 'name' | 'checked'> & {
     label: React.ReactNode;
 } & TestProps;
 

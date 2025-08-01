@@ -10,10 +10,10 @@ dayjs.extend(customParseFormat);
 export type ISODateString = string;
 
 /** DD-MM-YYYY */
-export type InputDateString = string;
+type InputDateString = string;
 
 /** Type used when input date is invalid  */
-export type INVALID_DATE_TYPE = 'Invalid date';
+type INVALID_DATE_TYPE = 'Invalid date';
 
 export const INVALID_DATE_VALUE = 'Invalid date';
 const INPUT_DATE_STRING_FORMAT: InputDateString = 'DD.MM.YYYY';

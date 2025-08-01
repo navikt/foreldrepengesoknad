@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode, createElement } from 'react';
 /**
  *  Skjuler tekst slik at den ikke er synlig på skjerm, men leses av skjermleser
  */
-export interface AriaTextProps {
+interface AriaTextProps {
     id?: string;
     children?: ReactNode;
     tag?: string;

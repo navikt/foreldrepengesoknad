@@ -20,7 +20,7 @@ export enum UttaksplanContextDataType {
     ALENE_OM_OMSORG = 'ALENE_OM_OMSORG',
 }
 
-export type UttaksplanContextDataMap = {
+type UttaksplanContextDataMap = {
     [UttaksplanContextDataType.UTTAKSPLAN]?: SaksperiodeNy[];
     [UttaksplanContextDataType.FAMILIEHENDELSEDATO]?: string;
     [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]?: boolean;
@@ -34,7 +34,7 @@ export type UttaksplanContextDataMap = {
 
 const defaultInitialState = {} as UttaksplanContextDataMap;
 
-export type Action = { type: 'update'; key: UttaksplanContextDataType; data: any } | { type: 'reset' };
+type Action = { type: 'update'; key: UttaksplanContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const UttaksplanStateContext = createContext<UttaksplanContextDataMap>(defaultInitialState);

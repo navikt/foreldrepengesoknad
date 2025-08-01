@@ -42,7 +42,7 @@ const finnAntallBarnTekst = (antall: number) => {
     }
 };
 
-export type FormValues = {
+type FormValues = {
     fødselsdatoer?: Array<{
         dato?: string;
     }>;

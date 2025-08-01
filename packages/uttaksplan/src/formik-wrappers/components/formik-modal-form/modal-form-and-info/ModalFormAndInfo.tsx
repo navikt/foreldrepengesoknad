@@ -4,8 +4,8 @@ import React from 'react';
 import { Button, Modal, Panel } from '@navikt/ds-react';
 
 import planBemUtils from '../../../../utils/planBemUtils';
+import { FormikModalFormWidths, ModalFormAndInfoLabels } from '../types';
 import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
-import { FormikModalFormWidths, ModalFormAndInfoLabels } from './../types';
 import './modalFormAndInfo.scss';
 
 type ModalFormRenderer<DataType> = (props: {

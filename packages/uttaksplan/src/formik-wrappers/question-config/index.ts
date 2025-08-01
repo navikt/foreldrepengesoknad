@@ -1,4 +1,3 @@
-export type QuestionValue = string | number | Date | boolean | undefined;
 export interface QuestionConfig<Payload, QuestionKeys, ErrorFormat = any> {
     [key: string]: {
         /** Depends on parentQuestions visibility, so if parent is hidden,
@@ -112,7 +111,7 @@ export interface QuestionVisibility<QuestionKeys, ErrorFormat = any> {
     getIncludedQuestions: () => QuestionKeys[];
 }
 
-export interface QuestionVisibilityInfo<ErrorFormat = any> {
+interface QuestionVisibilityInfo<ErrorFormat = any> {
     validate: (value: any) => undefined | boolean | ErrorFormat | ErrorFormat[];
     isVisible: () => boolean;
     isAnswered: () => boolean;

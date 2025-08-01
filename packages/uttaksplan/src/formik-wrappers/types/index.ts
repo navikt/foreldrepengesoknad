@@ -16,11 +16,6 @@ export interface DateRange {
     from: Date;
     to: Date;
 }
-export interface OpenDateRange {
-    from: Date;
-    to?: Date;
-}
-
 export type CancelButtonTypes = 'primary' | 'secondary' | 'tertiary' | 'danger';
 
 export type FormError = React.ReactNode | boolean;
