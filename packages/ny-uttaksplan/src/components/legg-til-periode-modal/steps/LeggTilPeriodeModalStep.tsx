@@ -6,6 +6,7 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
+import { ModalData } from '../../../components/leggTilPeriodeBox';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
@@ -13,7 +14,6 @@ import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../LeggTilPeriodeModal';
 import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
 
 interface Props {
@@ -102,7 +102,7 @@ export const LeggTilPeriodeModalStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4">
+            <VStack gap="4" className="p-4" style={{ backgroundColor: 'white' }}>
                 {isOpphold === false ? (
                     <>
                         <KontotypeSpørsmål formMethods={formMethods} />
