@@ -5,6 +5,7 @@
         "dev": "turbo dev",
         "build": "turbo build",
         "test": "turbo test",
+        "knip": "knip",
         "lint": "turbo lint",
         "lint:eslint": "turbo lint:eslint",
         "lint:tsc": "turbo lint:tsc",
@@ -35,6 +36,7 @@
     "packageManager": "pnpm@9.1.4",
     "devDependencies": {
         "@hey-api/openapi-ts": "0.79.1",
+        "knip": "5.62.0",
         "msw": "2.10.4",
         "msw-storybook-addon": "2.0.5"
     },
