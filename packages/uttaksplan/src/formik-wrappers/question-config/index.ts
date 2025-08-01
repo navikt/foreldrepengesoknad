@@ -1,9 +1,4 @@
 export type QuestionValue = string | number | Date | boolean | undefined;
-
-export const questionValueIsOk = (value: QuestionValue) => {
-    return value !== undefined && value !== '';
-};
-
 export interface QuestionConfig<Payload, QuestionKeys, ErrorFormat = any> {
     [key: string]: {
         /** Depends on parentQuestions visibility, so if parent is hidden,

@@ -155,7 +155,7 @@ export const getUgyldigUttakMor = (
     ];
 };
 
-export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
+const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
     erMorForSykDeFørsteSeksUker: (): boolean => {
         if (harMidlertidigOmsorg) {
             return true;

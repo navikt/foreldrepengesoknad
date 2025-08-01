@@ -44,7 +44,7 @@ const erUttaksdag = (dato: string): boolean => {
  * Sjekker om dato er en ukedag, dersom ikke finner den nærmeste påfølgende mandag
  * @param dato
  */
-export const getUttaksdagFraOgMedDato = (dato: string): string => {
+const getUttaksdagFraOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
@@ -307,34 +307,6 @@ export type UttakMånederOgUkerOgDager = {
 };
 
 //Funksjon henta fra https://stackoverflow.com/questions/37069186/calculate-working-days-between-two-dates-in-javascript-excepts-holidays
-const calcBusinessDays = (startDate: Date, endDate: Date) => {
-    let count = 0;
-    const curDate = new Date(startDate.getTime());
-    while (curDate <= endDate) {
-        const dayOfWeek = curDate.getDay();
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
-        curDate.setDate(curDate.getDate() + 1);
-    }
-    return count;
-};
-
-export const findWeeksBetween = (startDate: string, endDate: string): UttakUker => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    return { uker: weeks };
-};
-export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    return { uker: weeks, dager: totalDays - weeks * 5 };
-};
-
-export const findMonthsAndWeeksAndDaysBetween = (startDate: string, endDate: string): UttakMånederOgUkerOgDager => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    const months = Math.floor(weeks / 4);
-    return { måneder: months, uker: weeks - months * 4, dager: totalDays };
-};
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (
     stønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,

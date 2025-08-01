@@ -65,20 +65,3 @@ export const isUfødtBarn = (barn: Barn): barn is UfødtBarn => {
 export const isAdoptertBarn = (barn: Barn): barn is AdoptertBarn => {
     return barn.type === BarnType.ADOPTERT_STEBARN || barn.type === BarnType.ADOPTERT_ANNET_BARN;
 };
-
-export const isAdoptertStebarn = (barn: Barn): barn is AdoptertStebarn => {
-    return barn.type === BarnType.ADOPTERT_STEBARN;
-};
-
-export const isAdoptertAnnetBarn = (barn: Barn): barn is AdoptertAnnetBarn => {
-    return barn.type === BarnType.ADOPTERT_ANNET_BARN;
-};
-
-export const harFødselsdato = (barn: Barn): barn is IkkeUtfyltTypeBarn | FødtBarn | AdoptertBarn => {
-    return (
-        barn.type === BarnType.IKKE_UTFYLT ||
-        barn.type === BarnType.FØDT ||
-        barn.type === BarnType.ADOPTERT_STEBARN ||
-        barn.type === BarnType.ADOPTERT_ANNET_BARN
-    );
-};

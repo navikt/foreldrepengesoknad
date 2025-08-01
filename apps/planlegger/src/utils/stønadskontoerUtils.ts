@@ -35,7 +35,7 @@ const getDagerForKonto = (
     return konto ? konto.dager : 0;
 };
 
-export const getUkerOgDagerForKonto = (
+const getUkerOgDagerForKonto = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     stønadskontoType: StønadskontoType,
 ): UkerOgDager => {
@@ -51,11 +51,6 @@ export const getUkerOgDagerForKonto = (
 export const getAntallDagerForeldrepengerFørFødsel = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
 ): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
-
-export const getAntallUkerOgDagerForeldrepengerFørFødsel = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
-
 export const getAntallDagerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
     getDagerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
 

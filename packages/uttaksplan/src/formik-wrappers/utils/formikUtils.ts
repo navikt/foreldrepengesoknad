@@ -1,4 +1,4 @@
-export function resetFieldValue<FieldName extends string, FormValues>(
+function resetFieldValue<FieldName extends string, FormValues>(
     fieldName: FieldName,
     setFieldValue: (field: string, value: any) => void,
     initialValues: FormValues,
@@ -6,7 +6,7 @@ export function resetFieldValue<FieldName extends string, FormValues>(
     setFieldValue(fieldName, (initialValues as any)[fieldName]);
 }
 
-export function resetFieldValues<FieldName extends string, FormValues>(
+function resetFieldValues<FieldName extends string, FormValues>(
     fieldNames: FieldName[],
     setFieldValue: (field: string, value: any) => void,
     initialValues: FormValues,

@@ -1,6 +1,6 @@
 import { ValidationResult, ValidationTestVerdict, Validator } from './types/validatorTypes';
 
-export const runValidators = (validators: Validator[] | undefined, inputName: string): ValidationResult => {
+const runValidators = (validators: Validator[] | undefined, inputName: string): ValidationResult => {
     if (validators === undefined) {
         return {
             name: inputName,

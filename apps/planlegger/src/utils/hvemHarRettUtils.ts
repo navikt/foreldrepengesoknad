@@ -28,11 +28,6 @@ export const harKunMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPl
     (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
         hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
-
-export const harFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
-    (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
-
 export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
     hvemHarRett === 'kunSøker1HarRett';

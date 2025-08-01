@@ -24,7 +24,7 @@ type Props = {
 };
 const KvoteContext = createContext<Props | null>(null);
 
-export const useKvote = () => {
+const useKvote = () => {
     const context = useContext(KvoteContext);
     if (!context) {
         throw new Error('useKvote må brukes i en KvoteContext.Provider');

@@ -9,7 +9,7 @@ import {
 
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
-export const initialValues: PeriodeUtsettelseFormData = {
+const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,
     [PeriodeUtsettelseFormField.tom]: undefined,
     [PeriodeUtsettelseFormField.årsak]: '',

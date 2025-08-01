@@ -37,22 +37,3 @@ export interface UttaksstatusFuncParams {
     tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     uttaksplan: Periode[];
 }
-
-export const getUttaksstatusFunc = ({
-    erDeltUttak,
-    erEndringssøknad,
-    harKomplettUttaksplan,
-    erFarEllerMedmor,
-    tilgjengeligeStønadskontoer,
-    uttaksplan,
-}: UttaksstatusFuncParams): (() => Uttaksstatus) => {
-    return () =>
-        getUttaksstatus({
-            erDeltUttak,
-            erEndringssøknad,
-            harKomplettUttaksplan,
-            erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
-            uttaksplan,
-        });
-};

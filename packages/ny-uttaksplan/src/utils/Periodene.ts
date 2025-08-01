@@ -288,19 +288,6 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string |
     }
     return UttaksdagenString(perioder[perioder.length - 1].tom).neste();
 }
-
-export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[]): boolean => {
-    const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isHull(p));
-
-    if (perioderUtenInfoPerioderEllerHull.length === 0) {
-        return false;
-    }
-
-    return perioderUtenInfoPerioderEllerHull.every(
-        (periode) => isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
-    );
-};
-
 export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
     const perioderUtenInfoPerioder = perioder.filter((p) => !p.readOnly);
 

@@ -6,7 +6,7 @@ import { PeriodeColor } from '@navikt/fp-constants';
 
 import styles from './calendarLabel.module.css';
 
-export const getSirkel = (color: PeriodeColor) => {
+const getSirkel = (color: PeriodeColor) => {
     switch (color) {
         case PeriodeColor.BLUE:
             return <div className={styles.blueCircle} />;

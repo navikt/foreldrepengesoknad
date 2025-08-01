@@ -166,7 +166,7 @@ export const getToTetteReglerGjelder = (
     );
 };
 
-export const isDateToday = (date: string): boolean => {
+const isDateToday = (date: string): boolean => {
     if (dayjs().isSame(date, 'day')) {
         return true;
     }
