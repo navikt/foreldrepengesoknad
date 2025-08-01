@@ -8,7 +8,7 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
 import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
@@ -68,6 +68,8 @@ export const PlanleggerDataFetcher = () => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
+        staleTime: Infinity,
+        initialData: DEFAULT_SATSER,
     });
 
     const stønadskontoerData = useQuery({
