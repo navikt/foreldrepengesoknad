@@ -1,4 +1,3 @@
-import { ModalData } from 'components/leggTilPeriodeBox';
 import { useForm } from 'react-hook-form';
 
 import { VStack } from '@navikt/ds-react';
@@ -7,6 +6,7 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
+import { ModalData } from '../../../components/leggTilPeriodeBox';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';

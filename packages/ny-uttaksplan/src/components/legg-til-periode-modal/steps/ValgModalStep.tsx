@@ -1,4 +1,3 @@
-import { ModalData } from 'components/leggTilPeriodeBox';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -7,6 +6,7 @@ import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
+import { ModalData } from '../../../components/leggTilPeriodeBox';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 
 interface Props {
