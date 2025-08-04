@@ -102,7 +102,7 @@ export const LeggTilPeriodeModalStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4" className="p-4" style={{ backgroundColor: 'white' }}>
+            <VStack gap="4" className="p-4 rounded-lg bg-white">
                 {isOpphold === false ? (
                     <>
                         <KontotypeSpørsmål formMethods={formMethods} />
