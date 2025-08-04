@@ -12,7 +12,7 @@
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
         "dev-vite": "vite",
-        "test": "vitest --project=jsdom",
+        "test": "vitest run --project=jsdom",
         "test:browser": "vitest --project=browser",
         "test:browser:watch": "vitest --project=browser --watch=true",
         "build-storybook": "storybook build -o .storybook-static-build",

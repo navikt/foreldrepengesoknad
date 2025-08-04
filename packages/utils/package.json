@@ -4,7 +4,7 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "test": "vitest --project=jsdom",
+        "test": "vitest run --project=jsdom",
         "test:watch": "vitest --project=jsdom --watch=true",
         "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",

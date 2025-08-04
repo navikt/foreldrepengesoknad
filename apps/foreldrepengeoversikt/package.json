@@ -6,7 +6,7 @@
     "repository": "https://github.com/navikt/foreldrepengeoversikt",
     "scripts": {
         "build": "vite build",
-        "test": "vitest --project=jsdom",
+        "test": "vitest run --project=jsdom",
         "test:browser": "vitest --project=browser",
         "test:browser:watch": "vitest --project=browser --watch=true",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
