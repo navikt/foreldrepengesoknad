@@ -1596,6 +1596,9 @@ importers:
 
   packages/fp-common:
     dependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1752,6 +1755,9 @@ importers:
 
   packages/server-utils:
     dependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       '@navikt/nav-dekoratoren-moduler':
         specifier: 3.4.0
         version: 3.4.0(csp-header@6.1.0)(html-react-parser@5.2.6(@types/react@19.1.8)(react@19.1.0))(jsdom@26.1.0)(react@19.1.0)
@@ -2361,6 +2367,9 @@ importers:
 
   packages/types:
     dependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants

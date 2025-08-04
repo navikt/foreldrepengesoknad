@@ -7,7 +7,7 @@ const config: KnipConfig = {
         '**/@types/externals.d.ts',
         '**/bootstrap.tsx',
         'openapi-ts.config.ts',
-    ], //bootstrap files, mock-storage
+    ],
     ignoreBinaries: ['prettier', 'formatjs'],
     ignoreDependencies: [
         '@navikt/aksel-icons',
@@ -19,8 +19,9 @@ const config: KnipConfig = {
         'tailwindcss',
         'playwright',
         '@formatjs/intl-pluralrules',
-        '@sentry/browser', // Finn ut hvorfor denne fjernes i veiviser
-        'i18n-iso-countries', // Finn ut hvorfor denne fjernes i svp
+        '@trivago/prettier-plugin-sort-imports',
+        '@sentry/browser',
+        'i18n-iso-countries',
     ],
 };
 

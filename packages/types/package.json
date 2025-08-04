@@ -9,6 +9,7 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
