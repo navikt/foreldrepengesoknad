@@ -12,7 +12,7 @@ import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
-export interface Props {
+interface Props {
     uttak: Stønadskonto;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;

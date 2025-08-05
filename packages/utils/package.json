@@ -4,7 +4,7 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "test": "vitest --project=jsdom",
+        "test": "vitest --project=jsdom --watch=false",
         "test:watch": "vitest --project=jsdom --watch=true",
         "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",
@@ -17,12 +17,10 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "classnames": "2.5.1",
         "dayjs": "1.11.13",
         "detect-browser": "5.3.0",
         "i18n-iso-countries": "7.14.0",
         "react": "19.1.0",
-        "react-dom": "19.1.0",
         "react-intl": "7.1.11"
     },
     "devDependencies": {
@@ -31,9 +29,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.6.3",
-        "@testing-library/react": "16.3.0",
         "@types/react": "19.1.8",
-        "@vitejs/plugin-react": "4.7.0",
         "@vitest/browser": "3.2.4",
         "eslint": "9.31.0",
         "fast-glob": "3.3.3",

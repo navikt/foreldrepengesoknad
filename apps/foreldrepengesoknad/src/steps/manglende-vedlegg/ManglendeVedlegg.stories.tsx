@@ -6,8 +6,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { AndreInntektskilder } from 'types/AndreInntektskilder';
-import { AnnenInntektType } from 'types/AnnenInntekt';
+import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
 import {
     AnnenForelder,

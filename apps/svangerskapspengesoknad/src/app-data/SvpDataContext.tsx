@@ -119,16 +119,6 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
     };
 };
 
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(SvpDispatchContext);
-    return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    };
-};
-
 /** Hook returns state reset function  */
 export const useContextReset = () => {
     const dispatch = useContext(SvpDispatchContext);

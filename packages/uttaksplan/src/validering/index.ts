@@ -28,13 +28,13 @@ import { kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme } from './tester/k
 import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndrePerioderTest';
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
-import periodevalideringsregler, { PeriodeValiderRegelKey } from './tester/periodevalideringstester';
+import periodevalideringsregler from './tester/periodevalideringstester';
 import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
 
-export enum UttaksplanRegelKey {
+enum UttaksplanRegelKey {
     'planenInneholderIngenPerioder' = 'planenInneholderIngenPerioder',
     'morHarSøktUgyldigUttakFørsteSeksUker' = 'morHarSøktUgyldigUttakFørsteSeksUker',
     'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker' = 'farMedmorHarSøktUgyldigUttakEllerUtsettelseFørsteSeksUker',
@@ -69,9 +69,6 @@ export enum UttaksplanRegelKey {
     'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette' = 'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette',
     'uttaksplanErBareForeldrepengerFørFødsel' = 'uttaksplanErBareForeldrepengerFørFødsel',
 }
-
-export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
-
 const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
     {
         key: UttaksplanRegelKey.planenInneholderIngenPerioder,

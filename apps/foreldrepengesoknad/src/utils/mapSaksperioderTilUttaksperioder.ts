@@ -155,7 +155,7 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
-export const getUtsettelseÅrsakFromSaksperiode = (
+const getUtsettelseÅrsakFromSaksperiode = (
     årsak: UtsettelseÅrsakTypeDTO | undefined,
 ): UtsettelseÅrsakType | undefined => {
     switch (årsak) {
@@ -238,7 +238,7 @@ const getErMorForSyk = (
     return undefined;
 };
 
-export const mapUttaksperiodeFromSaksperiode = (
+const mapUttaksperiodeFromSaksperiode = (
     saksperiode: Saksperiode,
     grunnlag: Saksgrunnlag,
     innvilgedePerioder: Saksperiode[],
@@ -489,7 +489,7 @@ const mapPeriodeFromSaksperiode = (
     return mapUttaksperiodeFromSaksperiode(saksperiode, grunnlag, innvilgedePerioder);
 };
 
-export const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, termindato: string | undefined) => {
+const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, termindato: string | undefined) => {
     return (
         termindato &&
         saksperiode.gjelderAnnenPart &&
@@ -500,7 +500,7 @@ export const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, 
     );
 };
 
-export const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | undefined) => {
+const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | undefined) => {
     if (saksperiode.resultat.innvilget) return true;
 
     if (saksperiode.gjelderAnnenPart) {
@@ -518,7 +518,7 @@ export const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string
     return false;
 };
 
-export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
+const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     perioder: Periode[],
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,

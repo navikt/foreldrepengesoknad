@@ -2,7 +2,7 @@ import { Søkerinfo } from '@navikt/fp-types';
 
 import { Foreldrepengesak } from '../types/Sak';
 
-export interface NavnPåForeldre {
+interface NavnPåForeldre {
     farMedmor: string;
     mor: string;
 }

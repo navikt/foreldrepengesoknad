@@ -6,7 +6,7 @@
     "repository": "https://github.com/navikt/foreldrepengeoversikt",
     "scripts": {
         "build": "vite build",
-        "test": "vitest --project=jsdom",
+        "test": "vitest --project=jsdom --watch=false",
         "test:browser": "vitest --project=browser",
         "test:browser:watch": "vitest --project=browser --watch=true",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
@@ -26,7 +26,6 @@
     "license": "MIT",
     "dependencies": {
         "@formatjs/intl-pluralrules": "5.4.4",
-        "@formatjs/intl-relativetimeformat": "11.4.11",
         "@navikt/aksel-icons": "7.25.1",
         "@navikt/ds-css": "7.25.1",
         "@navikt/ds-react": "7.25.1",
@@ -53,7 +52,6 @@
         "lodash": "4.17.21",
         "react": "19.1.0",
         "react-dom": "19.1.0",
-        "react-hook-form": "7.60.0",
         "react-intl": "7.1.11",
         "react-router-dom": "7.7.0",
         "zod": "4.0.5"
@@ -77,8 +75,6 @@
         "@types/node": "22.15.18",
         "@types/react": "19.1.8",
         "@types/react-dom": "19.1.6",
-        "@types/react-router-dom": "5.3.3",
-        "@vitejs/plugin-react": "4.7.0",
         "@vitest/browser": "3.2.4",
         "compression": "1.8.1",
         "dotenv": "16.5.0",

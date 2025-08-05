@@ -70,7 +70,7 @@ type GetIkonFargeProps = {
     bem: any;
 };
 
-export const getIkonFarge = ({
+const getIkonFarge = ({
     erPeriodeUtenUttak,
     erMor,
     erUtsettelse,

@@ -13,7 +13,7 @@ import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
 import kontoSkalBesvares from './kontoSkalBesvarer';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
 
 export interface UttakSkjemaregler {
@@ -194,5 +194,3 @@ export const getUttakSkjemaregler = (
         },
     };
 };
-// eslint-disable-next-line import/no-default-export
-export default getUttakSkjemaregler;

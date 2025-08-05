@@ -17,7 +17,7 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-export function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
+function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
@@ -182,12 +182,6 @@ export const mapSakerDTOToSaker = (saker: Saker): SakOppslag => {
         svangerskapspenger: addYtelseToSak(saker.svangerskapspenger, 'SVANGERSKAPSPENGER') as SvangerskapspengeSak[],
     };
 };
-
-export const getAntallSaker = (saker: SakOppslag) => {
-    const { foreldrepenger, svangerskapspenger, engangsstønad } = saker;
-    return foreldrepenger.length + svangerskapspenger.length + engangsstønad.length;
-};
-
 const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) => {
     const startdato = dayjs(familiehendelsedato).subtract(2, 'months');
     const sluttdato = dayjs(familiehendelsedato).add(3, 'weeks');
@@ -246,7 +240,7 @@ export const getNavnAnnenForelder = (
     return annenForelderNavn !== undefined && annenForelderNavn.trim() !== '' ? annenForelderNavn : 'Annen forelder';
 };
 
-export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
+const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
     if (antallBarn === 1 || antallBarn === 0) {
         return intl.formatMessage({ id: 'barn' });
     } else if (antallBarn === 2) {
@@ -257,7 +251,7 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intl.formatMessage({ id: 'flerlinger' });
 };
 
-export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
+const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }
@@ -278,7 +272,7 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined
     return formatDate(unikeFødselsdatoer[0]);
 };
 
-export const getTittelBarnNårNavnSkalIkkeVises = (
+const getTittelBarnNårNavnSkalIkkeVises = (
     familiehendelsedato: Date,
     fødselsdatoer: Date[] | undefined,
     antallBarn: number,
