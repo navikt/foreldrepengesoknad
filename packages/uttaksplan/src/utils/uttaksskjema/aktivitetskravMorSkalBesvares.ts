@@ -5,7 +5,7 @@ import { Stønadskonto } from '@navikt/fp-types';
 
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 import kontoSkalBesvares from './kontoSkalBesvarer';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk = (
     famDato: Date,

@@ -2,7 +2,7 @@ import MockDate from 'mockdate';
 
 import { Periodetype, StønadskontoType } from '@navikt/fp-common';
 
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () => {
     beforeAll(() => {

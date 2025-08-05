@@ -8,7 +8,7 @@ import { VStack } from '@navikt/ds-react';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-export type FormValues = {
+type FormValues = {
     fødselsdatoer?: Array<{
         dato?: string;
     }>;

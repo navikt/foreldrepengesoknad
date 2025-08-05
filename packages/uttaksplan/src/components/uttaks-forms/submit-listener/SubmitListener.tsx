@@ -9,7 +9,7 @@ interface Props {
     cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData;
 }
 
-export const jsonSort = (json: any): string => {
+const jsonSort = (json: any): string => {
     function isObject(v: any) {
         return '[object Object]' === Object.prototype.toString.call(v);
     }

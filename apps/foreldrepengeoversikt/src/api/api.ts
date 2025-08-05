@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 import { DEFAULT_SATSER, Skjemanummer } from '@navikt/fp-constants';
 import {
-    AktivMellomlagringDto,
     AnnenPartSak,
     AnnenPartSakIdentifikator,
     DokumentDto,
@@ -88,12 +87,6 @@ export const hentSatserOptions = () =>
         queryFn: () => ky.get(`${urlPrefiks}/rest/satser`).json<Satser>(),
         staleTime: Infinity,
         initialData: DEFAULT_SATSER,
-    });
-
-export const hentMellomlagredeYtelserOptions = () =>
-    queryOptions({
-        queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<AktivMellomlagringDto>(),
     });
 
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>

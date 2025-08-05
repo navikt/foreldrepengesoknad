@@ -21,8 +21,6 @@ import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
 import { FpEllerEsOgHvaSkjerNåLinkPanel } from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import { Utbetalingspanel } from './Utbetalingspanel';
 
-export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
-
 const isNumber = (value?: string) => {
     return value && isValidNumber(value);
 };

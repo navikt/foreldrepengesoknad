@@ -88,7 +88,7 @@ export const countryIsMemberOfEøsOrEfta = (isoCode: string) => {
     return filteredListEØSCountries(isoCodeToUse.toUpperCase(), true) === true;
 };
 
-export const getCountries = () => countries;
+const getCountries = () => countries;
 
 export const createCountryOptions = (): Array<[string, string]> => {
     const lang = 'nb';

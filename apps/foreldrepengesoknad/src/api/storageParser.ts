@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { isISODateString } from '@navikt/fp-utils';
 
-export const dateStringToDateObjectMapper = (_key: string, value: string) => {
+const dateStringToDateObjectMapper = (_key: string, value: string) => {
     if (isISODateString(value)) {
         return value;
     }
