@@ -17,7 +17,7 @@ import {
 import { links } from '@navikt/fp-constants';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-export interface Props {
+interface Props {
     startSøknad: (start: boolean) => void;
     erVelkommen: boolean;
     mellomlagreOgNaviger: () => Promise<void>;

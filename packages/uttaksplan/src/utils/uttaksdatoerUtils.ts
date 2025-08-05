@@ -56,7 +56,7 @@ export const getUttaksdatoer = (
     };
 };
 
-export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
+function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
     return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 }
 

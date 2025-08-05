@@ -15,7 +15,7 @@ import { dateIsWithinRange } from '@navikt/fp-uttaksplan';
 
 import { guid } from './guid';
 
-export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
+const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
     return (
         isUttaksperiode(periode) ||
         isOverføringsperiode(periode) ||

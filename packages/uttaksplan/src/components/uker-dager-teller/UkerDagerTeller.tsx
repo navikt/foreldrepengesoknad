@@ -7,7 +7,7 @@ import planBemUtils from '../../utils/planBemUtils';
 import NumberStepper, { Props as NumberStepperProps } from './../number-stepper/NumberStepper';
 import './ukerDagerTeller.less';
 
-export interface Props {
+interface Props {
     ukeLegend: string;
     dagLegend: string;
     ukeStepper: NumberStepperProps;

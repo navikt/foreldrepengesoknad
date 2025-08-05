@@ -1,4 +1,4 @@
-import { Arbeidsform, MorsAktivitet, UtsettelseÅrsakType } from '@navikt/fp-common';
+import { MorsAktivitet, UtsettelseÅrsakType } from '@navikt/fp-common';
 
 import { getTypedFormComponents } from '../../../formik-wrappers';
 
@@ -9,9 +9,6 @@ export enum PeriodeUtsettelseFormField {
     morsAktivitetIPerioden = 'morsAktivitetIPerioden',
     bekrefterArbeidIPerioden = 'bekrefterArbeidIPerioden',
 }
-
-export type ArbeidUnderUtsettelse = Arbeidsform | string;
-
 export interface PeriodeUtsettelseFormData {
     [PeriodeUtsettelseFormField.fom]: Date | undefined;
     [PeriodeUtsettelseFormField.tom]: Date | undefined;

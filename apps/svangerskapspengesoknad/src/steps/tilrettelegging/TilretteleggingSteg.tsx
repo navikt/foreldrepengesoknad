@@ -86,7 +86,7 @@ const getLabel = (
         : intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.label.en' });
 };
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     arbeidsforhold: Arbeidsforhold[];

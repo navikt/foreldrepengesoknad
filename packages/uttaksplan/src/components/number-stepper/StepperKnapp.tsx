@@ -1,9 +1,9 @@
 import RangeIcon from '../../assets/RangeIcon';
 import Sirkelknapp from '../sirkelknapp/Sirkelknapp';
 
-export type Direction = 'next' | 'previous';
+type Direction = 'next' | 'previous';
 
-export interface Props {
+interface Props {
     onClick: () => void;
     direction: Direction;
     label: string;

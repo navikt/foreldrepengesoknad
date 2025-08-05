@@ -1,19 +1,9 @@
 import { IntlShape } from 'react-intl';
 
-import { Forelder, NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
+import { NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
-
-const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
-    let forelderNavn = '';
-    if (navnPåForeldre.farMedmor) {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    } else {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
-    }
-    return capitalizeFirstLetter(forelderNavn);
-};
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
@@ -57,33 +47,6 @@ export const getStønadskontoNavn = (
         }
     }
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
-};
-
-export const getUttakAnnenPartStønadskontoNavn = (
-    intl: IntlShape,
-    konto: StønadskontoType,
-    periodeForelder: Forelder,
-    navnPåForeldre: NavnPåForeldre,
-    samtidigUttakProsent: string | undefined,
-    erFarEllerMedmor: boolean,
-    erAleneOmOmsorg?: boolean,
-) => {
-    const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);
-    if (samtidigUttakProsent !== undefined) {
-        const navn = getNavnGenitivEierform(forelderNavn, intl.locale);
-        const intlTekst =
-            konto === StønadskontoType.Fellesperiode
-                ? 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode'
-                : 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak';
-        return intl.formatMessage(
-            { id: intlTekst },
-            {
-                navn: capitalizeFirstLetter(navn),
-                prosent: samtidigUttakProsent,
-            },
-        );
-    }
-    return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
 
 export const getAntallUkerFraStønadskontoer = (stønadskontoer: Stønadskonto[]): number => {

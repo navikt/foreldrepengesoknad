@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
@@ -30,11 +29,6 @@ export const getIndexOfSistePeriodeFørDato = (uttaksplan: SaksperiodeNy[], dato
     }
     return undefined;
 };
-
-export const isForeldrepengerFørFødselUttaksperiode = (periode: SaksperiodeNy) => {
-    return isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel;
-};
-
 export const getAnnenForelderSamtidigUttakPeriode = (
     periode: SaksperiodeNy,
     perioder: SaksperiodeNy[],

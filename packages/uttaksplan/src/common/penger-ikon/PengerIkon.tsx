@@ -1,4 +1,4 @@
-export interface OwnProps {
+interface OwnProps {
     size?: number;
 }
 

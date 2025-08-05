@@ -22,21 +22,12 @@ import {
     isPeriodeUtenUttakMorJobberOgStuderer,
     isPeriodeUtenUttakMorKvalprogram,
     isPeriodeUtenUttakMorStuderer,
-    isUtsettelseBarnInnlagt,
     isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
 } from '@navikt/fp-common';
 import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-
-export const isKvalifiseringsprogramVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
-};
-
-export const isIntroduksjonsprogramVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
-};
 
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
     return (
@@ -67,10 +58,6 @@ export const isPeriodeMedFarForSyk = (periode: Periode) => {
     return isOverføringFarForSyk(periode);
 };
 
-export const isPeriodeMedBarnInnleggelse = (periode: Periode) => {
-    return isUtsettelseBarnInnlagt(periode);
-};
-
 export const isPeriodeMedMorStuderer = (periode: Periode) => {
     return isMorStuderer(periode) || isPeriodeUtenUttakMorStuderer(periode);
 };
@@ -91,10 +78,6 @@ export const isPeriodeMedMorKvalprogram = (periode: Periode) => {
     return isMorKvalprogram(periode) || isPeriodeUtenUttakMorKvalprogram(periode);
 };
 
-export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.OMSORGSOVERTAKELSE;
-};
-
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
     const omsorgsovertakelseVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
         ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
@@ -103,20 +86,12 @@ export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
     return fjernSendSenereVedlegg(omsorgsovertakelseVedlegg);
 };
 
-export const isAleneOmOmsorgVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_AV_ALENEOMSORG;
-};
-
 export const getAleneOmOmsorgVedlegg = (vedlegg: VedleggDataType) => {
     const aleneOmOmsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG]
         ? vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG]
         : [];
 
     return fjernSendSenereVedlegg(aleneOmOmsorgVedlegg);
-};
-
-export const isTerminbekreftelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.TERMINBEKREFTELSE;
 };
 
 export const getTerminbekreftelseVedlegg = (vedlegg: VedleggDataType) => {
@@ -141,46 +116,6 @@ export const getEtterlønnEllerSluttvederlagVedlegg = (vedlegg: VedleggDataType)
         : [];
 
     return fjernSendSenereVedlegg(etterlønnEllerSluttvederlagVedlegg);
-};
-
-export const isMilitærVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
-};
-
-export const isEtterlønnVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-};
-
-export const isMorInnleggelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_MOR;
-};
-
-export const isMorForSykVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_SYKDOM_MOR;
-};
-
-export const isFarInnleggelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_FAR;
-};
-
-export const isFarForSykVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_SYKDOM_FAR;
-};
-
-export const isBarnInnleggelseVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_INNLEGGELSE_BARN;
-};
-
-export const isMorStudererVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_UTDANNING_MOR;
-};
-
-export const isMorJobberVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_ARBEID_MOR;
-};
-
-export const isMorJobberOgStudererVedlegg = (attachment: Attachment) => {
-    return attachment.skjemanummer === Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
 };
 
 export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
@@ -255,10 +190,10 @@ export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
     return fjernSendSenereVedlegg(morKvalprogramVedlegg);
 };
 
-export const isSendSenereVedlegg = (attachment: Attachment) => {
+const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
 };
 
-export const fjernSendSenereVedlegg = (attachments: Attachment[]) => {
+const fjernSendSenereVedlegg = (attachments: Attachment[]) => {
     return attachments.filter((a) => !isSendSenereVedlegg(a));
 };

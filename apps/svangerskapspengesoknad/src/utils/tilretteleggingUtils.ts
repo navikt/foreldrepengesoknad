@@ -1,7 +1,6 @@
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs, { Dayjs } from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Barn } from 'types/Barn';
 import {
     Arbeidsforholdstype,
     DelvisTilrettelegging,
@@ -202,32 +201,6 @@ export const getNesteTilretteleggingId = (
         return undefined;
     }
     return valgteArbeidsforhold[nesteTilretteleggingIndex];
-};
-
-export const getForrigeTilretteleggingId = (
-    arbeidsforhold: Arbeidsforhold[],
-    barnet: Barn,
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
-    valgteArbeidsforhold?: string[],
-    currentTilretteleggingId?: string,
-): string | undefined => {
-    if (!currentTilretteleggingId) {
-        return getTilretteleggingId(
-            arbeidsforhold,
-            barnet.termindato,
-            arbeidsforholdOgInntekt,
-            valgteArbeidsforhold,
-            true,
-        );
-    }
-    if (valgteArbeidsforhold) {
-        const index = valgteArbeidsforhold.findIndex((a) => a === currentTilretteleggingId) - 1;
-        if (index >= 0) {
-            return valgteArbeidsforhold[index];
-        }
-    }
-
-    return undefined;
 };
 
 export const getArbeidsgiverNavnForTilrettelegging = (
