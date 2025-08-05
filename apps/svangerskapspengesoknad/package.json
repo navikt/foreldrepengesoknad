@@ -13,7 +13,7 @@
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
         "prettier": "prettier --write src",
-        "test": "vitest --project=jsdom",
+        "test": "vitest --project=jsdom --watch=false",
         "test:browser": "vitest --project=browser",
         "test:browser:watch": "vitest --project=browser --watch=true",
         "build-storybook": "storybook build -o .storybook-static-build",

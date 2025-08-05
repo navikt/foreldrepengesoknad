@@ -11,7 +11,7 @@
         "lint:tsc": "tsc --noEmit",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003",
-        "test": "vitest --project=jsdom",
+        "test": "vitest --project=jsdom --watch=false",
         "test:watch": "vitest --project=jsdom --watch=true",
         "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",
