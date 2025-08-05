@@ -1,3 +1,0 @@
-import{j as t}from"./iframe-DiAkyT1S.js";import{F as r}from"./Fieldset-ByYjYOo0.js";import"./Label-BugTnpHP.js";const n={title:"components/Fieldset",component:r},e=()=>t.jsx(r,{legend:"Dette er header",children:t.jsx("div",{children:"Dette er innhold"})});e.__docgenInfo={description:"",methods:[],displayName:"Default"};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`() => <Fieldset legend="Dette er header">
-        <div>Dette er innhold</div>
-    </Fieldset>`,...e.parameters?.docs?.source}}};const a=["Default"];export{e as Default,a as __namedExportsOrder,n as default};

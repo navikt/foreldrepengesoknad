@@ -1,3 +1,0 @@
-import{j as r}from"./iframe-C0zW3gbC.js";import{M as a,P as s}from"./usePlanleggerNavigator-DtuLJGnq.js";import{P as n}from"./routes-Cyl7_Mgv.js";import{O as t}from"./OmPlanleggerenSteg-BvSz20CU.js";import"./Arbeidssituasjon-i2z_eSVB.js";import"./HvemPlanleggerUtils-sI2mxn03.js";import"./barnetUtils-B_cvbOpn.js";const{action:m}=__STORYBOOK_MODULE_ACTIONS__,d={title:"steg/OmPlanleggerenSteg",component:t,render:({gåTilNesteSide:o=m("button-click")})=>r.jsx(a,{initialEntries:[n.OM_PLANLEGGEREN],children:r.jsx(s,{onDispatch:o,children:r.jsx(t,{})})})},e={args:{}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  args: {}
-}`,...e.parameters?.docs?.source}}};const _=["Default"];export{e as Default,_ as __namedExportsOrder,d as default};
