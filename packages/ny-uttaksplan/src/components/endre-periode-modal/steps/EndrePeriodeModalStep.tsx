@@ -87,7 +87,7 @@ export const EndrePeriodeModalStep = ({
             tom: values.tom ?? valgtPeriode!.tom,
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
             kontoType: values.kontoType,
-            gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+            gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
             samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
         });
         closeModal();

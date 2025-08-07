@@ -98,7 +98,7 @@ export const LeggTilPeriodeModalStep = ({
                 readOnly: false,
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }

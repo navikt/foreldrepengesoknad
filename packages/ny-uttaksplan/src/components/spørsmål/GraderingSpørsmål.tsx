@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -15,7 +16,12 @@ export const GraderingSpørsmål = () => {
     const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
 
     const graderingValue = watch('skalDuJobbe');
+    const kontoTypeValue = watch('kontoType');
     const samtidigUttaksprosentValue = watch('samtidigUttaksprosent');
+
+    if (kontoTypeValue === StønadskontoType.ForeldrepengerFørFødsel) {
+        return null;
+    }
 
     return (
         <VStack gap="4">
