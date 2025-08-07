@@ -29,7 +29,7 @@ const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder)
     return false;
 };
 
-export const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
+const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (!erFarMedmor) {
         return true;
     }

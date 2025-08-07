@@ -155,10 +155,6 @@ describe('<SituasjonSide>', () => {
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
 
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
-
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
@@ -196,10 +192,6 @@ describe('<SituasjonSide>', () => {
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
-
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
@@ -241,10 +233,6 @@ describe('<SituasjonSide>', () => {
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
-
-        expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
-        ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
@@ -471,5 +459,40 @@ describe('<SituasjonSide>', () => {
             jobberDuINorge: null,
             lønnPerMåned: null,
         });
+    });
+
+    it('Melding om 1/2G skal først vises onBlur, men så skjules hvis man deretter skriver høyere beløp', async () => {
+        const setFpEllerEsSituasjon = vi.fn();
+        const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
+        await userEvent.click(screen.getByText('Mor'));
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[2]);
+
+        const alertErSynlig = () =>
+            expect(
+                screen.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
+            ).toBeInTheDocument();
+
+        const alertErIkkeSynlig = () =>
+            expect(
+                screen.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
+            ).not.toBeInTheDocument();
+
+        // Skal først vise under 1/2G melding når det tabbes og beløpet er under
+        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        await userEvent.type(hvorMye, '5');
+        alertErIkkeSynlig();
+        await userEvent.tab();
+        alertErSynlig();
+
+        // Når man fortsetter å skrive skal den forsvinne idet beløpet går over 1/2G
+        await userEvent.type(hvorMye, '0000');
+        alertErIkkeSynlig();
+
+        // Skal se dukke opp igjen dersom man blur'er feltet
+        await userEvent.type(hvorMye, '{backspace}'.repeat(3));
+        await userEvent.tab();
+        alertErSynlig();
     });
 });

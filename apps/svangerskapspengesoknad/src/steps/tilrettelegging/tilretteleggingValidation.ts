@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Stilling, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'utils/validationUtils';
@@ -247,15 +247,7 @@ export const validateBehovForTilretteleggingFom =
     };
 
 export const validerTilretteleggingTomType =
-    (
-        intl: IntlShape,
-        tilretteleggingType: Tilretteleggingstype,
-        behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: string,
-        arbeidNavn: string,
-        sluttDatoArbeid: string | undefined,
-        kanHaSVPFremTilTreUkerFørTermin: boolean,
-    ) =>
+    (intl: IntlShape, tilretteleggingType: Tilretteleggingstype, kanHaSVPFremTilTreUkerFørTermin: boolean) =>
     (value: string | number | boolean): string | undefined => {
         const erDelvis = tilretteleggingType === Tilretteleggingstype.DELVIS;
         if (!hasValue(value)) {
@@ -269,30 +261,7 @@ export const validerTilretteleggingTomType =
                     : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel' });
             }
         }
-        if (
-            sluttDatoArbeid &&
-            hasValue(behovForTilretteleggingFom) &&
-            value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&
-            dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
-            dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
-        ) {
-            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
-            return erDelvis
-                ? intl.formatMessage(
-                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.delvis' },
-                      {
-                          slutteTekst,
-                          navn: arbeidNavn,
-                      },
-                  )
-                : intl.formatMessage(
-                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.ingen' },
-                      {
-                          slutteTekst,
-                          navn: arbeidNavn,
-                      },
-                  );
-        }
+
         return undefined;
     };
 

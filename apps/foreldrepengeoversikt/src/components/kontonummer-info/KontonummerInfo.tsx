@@ -68,6 +68,16 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
             );
         }
     }
+
+    if (ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') {
+        return (
+            <BodyLong size="small">
+                Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.
+                Hvis du får utbetaling direkte fra Nav, vil pengene komme til det registrerte kontonummeret.
+            </BodyLong>
+        );
+    }
+
     if (!harKontonummer) {
         return (
             <>
@@ -82,16 +92,6 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
             </>
         );
     }
-
-    if (ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') {
-        return (
-            <BodyLong size="small">
-                Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.
-                Hvis du får utbetaling direkte fra Nav, vil pengene komme til det registrerte kontonummeret.
-            </BodyLong>
-        );
-    }
-
     // Kan kun inntreffe dersom ytelse ikke er tilgjengelig fra saken.
     return (
         <BodyLong size="small">

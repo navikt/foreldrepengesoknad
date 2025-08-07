@@ -21,7 +21,7 @@ import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
-export interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
+interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
     antallUttaksdagerTapt: number;
     førsteRegistrerteUttaksdag: Date;
     sisteUttaksdagInnenforSeksUker: Date;
@@ -155,7 +155,7 @@ export const getUgyldigUttakMor = (
     ];
 };
 
-export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
+const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
     erMorForSykDeFørsteSeksUker: (): boolean => {
         if (harMidlertidigOmsorg) {
             return true;

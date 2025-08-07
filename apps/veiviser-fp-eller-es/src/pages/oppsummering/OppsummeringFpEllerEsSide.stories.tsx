@@ -2,23 +2,10 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+
 import { Situasjon } from '../situasjon/SituasjonSide';
 import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
-
-const satser = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-    ],
-};
 
 const meta = {
     title: 'fpEllerEs/OppsummeringFpEllerEsSide',
@@ -37,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 
 export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
@@ -51,7 +38,7 @@ export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
 };
 export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
@@ -65,7 +52,7 @@ export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
 };
 export const FarKanHaRettTilFp: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
@@ -79,7 +66,7 @@ export const FarKanHaRettTilFp: Story = {
 };
 export const FarKanHaRettTilEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
@@ -93,7 +80,7 @@ export const FarKanHaRettTilEs: Story = {
 };
 export const MorHarRettTilEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: false,
@@ -108,7 +95,7 @@ export const MorHarRettTilEs: Story = {
 
 export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: true,
@@ -123,7 +110,7 @@ export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
 
 export const FarHarIkkeRett: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: false,
@@ -137,7 +124,7 @@ export const FarHarIkkeRett: Story = {
 };
 export const MorHarIkkeRettJobberIkkeINorgeMenIUtlandet: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: true,

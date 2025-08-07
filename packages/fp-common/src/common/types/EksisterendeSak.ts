@@ -1,6 +1,6 @@
-import { Saksperiode } from './Saksperiode';
-import { Saksgrunnlag } from './Saksgrunnlag';
 import { Periode } from './Periode';
+import { Saksgrunnlag } from './Saksgrunnlag';
+import { Saksperiode } from './Saksperiode';
 
 export interface EksisterendeSak {
     saksnummer: string;

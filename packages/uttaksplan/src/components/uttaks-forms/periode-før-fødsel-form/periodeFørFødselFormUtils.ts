@@ -6,7 +6,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import uttaksConstants from '../../../common/uttaksConstants';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
 
-export const initialValues: PeriodeFørFødselFormData = {
+const initialValues: PeriodeFørFødselFormData = {
     [PeriodeFørFødselFormField.fom]: undefined,
     [PeriodeFørFødselFormField.tom]: undefined,
     [PeriodeFørFødselFormField.skalIkkeHaUttakFørTermin]: false,

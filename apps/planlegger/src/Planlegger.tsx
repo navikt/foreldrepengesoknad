@@ -8,20 +8,12 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { Loader } from '@navikt/ds-react';
-
-import { StønadskontoType } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
 import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { SimpleErrorPage } from '@navikt/fp-ui';
+import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
-
-const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -76,6 +68,8 @@ export const PlanleggerDataFetcher = () => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
+        staleTime: Infinity,
+        initialData: DEFAULT_SATSER,
     });
 
     const stønadskontoerData = useQuery({

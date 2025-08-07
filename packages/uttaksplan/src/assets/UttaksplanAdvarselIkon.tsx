@@ -1,6 +1,6 @@
 import { SVGProps } from 'react';
 
-export interface OwnProps {
+interface OwnProps {
     type?: 'advarsel' | 'feil';
     title?: string;
 }

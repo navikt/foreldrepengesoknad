@@ -27,7 +27,7 @@ type TilretteleggingPerioderFormValues = {
     varierendePerioder: PeriodeMedVariasjon[];
 };
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     arbeidsforhold: Arbeidsforhold[];
@@ -83,12 +83,7 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step
-                onCancel={avbrytSøknad}
-                steps={stepConfig}
-                onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToStep}
-            >
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="10">
                         <ErrorSummaryHookForm />
@@ -119,7 +114,11 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
                             frilans={frilans}
                             behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
                         />
-                        <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
                     </VStack>
                 </RhfForm>
             </Step>

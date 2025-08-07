@@ -12,7 +12,6 @@ import {
     RegelStatus,
     RegelTestresultatInfo,
     RegelTestresultatInfoObject,
-    UttaksplanRegelTestresultat,
 } from './types/regelTypes';
 import { Validator } from './types/validatorTypes';
 
@@ -88,11 +87,6 @@ export const regelPasserer = (regel: Regel): RegelStatus => ({
     key: regel.key,
     passerer: true,
 });
-
-export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, periodeId: string): RegelAvvik[] => {
-    return resultat.avvikPerPeriode[periodeId] ?? [];
-};
-
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return flatten(
@@ -102,7 +96,7 @@ export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     return [];
 };
 
-export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.FEIL;
+const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.FEIL;
 
 export const hasRegelFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 

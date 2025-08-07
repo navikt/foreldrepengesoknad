@@ -15,7 +15,6 @@ describe('<AppContainer>', () => {
             setHandlers(FpEllerEsVeiviserMockaStønadskontoerOgSatser.parameters.msw);
             const utils = await render(<FpEllerEsVeiviserMockaStønadskontoerOgSatser />);
 
-            expect(await screen.findByTitle('Venter…')).toBeInTheDocument();
             expect(await screen.findAllByText('Foreldrepenger eller engangsstønad?')).toHaveLength(2);
             await userEvent.click(screen.getByText('Start'));
 

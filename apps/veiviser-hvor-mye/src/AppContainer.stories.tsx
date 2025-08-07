@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
@@ -57,30 +57,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} as TilgjengeligeStønadskontoer;
-
-const SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
+} satisfies TilgjengeligeStønadskontoer;
 
 const meta = {
     title: 'AppContainer',
@@ -129,7 +106,7 @@ export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
         msw: {
             handlers: [
                 http.post(`${import.meta.env.BASE_URL}/rest/konto`, () => HttpResponse.json(STØNADSKONTOER)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER)),
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },

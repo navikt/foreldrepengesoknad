@@ -3,30 +3,9 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AppContainer } from './AppContainer';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 
-const SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
+import { AppContainer } from './AppContainer';
 
 const meta = {
     title: 'AppContainer',
@@ -61,7 +40,7 @@ export const FpEllerEsVeiviser: Story = {};
 export const FpEllerEsVeiviserMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER))],
+            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER))],
         },
     },
 };

@@ -6,11 +6,11 @@ import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { Søkerinfo } from '@navikt/fp-types';
-import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
+import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 import './styles/app.css';
 

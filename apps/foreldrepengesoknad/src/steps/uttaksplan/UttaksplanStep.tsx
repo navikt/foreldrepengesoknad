@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
@@ -32,7 +33,7 @@ import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
 import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, Button, Loader, VStack } from '@navikt/ds-react';
+import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
     Forelder,
@@ -45,7 +46,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
     Uttaksplan,
@@ -64,7 +65,6 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import { StepButtonWrapper } from './components/StepButtonWrapper';
 import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
@@ -542,11 +542,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         (annenPartVedtakQuery.isPending && !eksisterendeSakAnnenPartRequestIsSuspended) ||
         (nesteSakAnnenPartVedtakQuery.isPending && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     const minsterettUkerToTette = getAntallUkerMinsterett(tilgjengeligeStønadskontoerQuery.data.minsteretter.toTette);
@@ -592,12 +588,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
                 return (
                     <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-                        <Step
-                            onCancel={avbrytSøknad}
-                            onContinueLater={navigator.fortsettSøknadSenere}
-                            steps={stepConfig}
-                            noFieldsRequired
-                        >
+                        <Step steps={stepConfig} noFieldsRequired>
                             {startStønadsperiodeNyttBarn && (
                                 <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                             )}
@@ -669,10 +660,19 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                         <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                     </Alert>
                                 )}
-                                <StepButtonWrapper>
-                                    {!erEndringssøknad && (
+                                {/*Siden knappene her har mye unik logikk gjør vi en liten duplisering av "StepButtons" istedenfor å innføre knotete logikk*/}
+                                <HGrid
+                                    gap={{ xs: '4', sm: '8 4' }}
+                                    columns={{ xs: 1, sm: 2 }}
+                                    width={{ sm: 'fit-content' }}
+                                >
+                                    {erEndringssøknad ? (
+                                        <div />
+                                    ) : (
                                         <Button
                                             variant="secondary"
+                                            icon={<ArrowLeftIcon aria-hidden />}
+                                            iconPosition="left"
                                             onClick={
                                                 harPlanBlittEndret
                                                     ? (event) => {
@@ -686,6 +686,8 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                         </Button>
                                     )}
                                     <Button
+                                        icon={<ArrowRightIcon aria-hidden />}
+                                        iconPosition="right"
                                         type="submit"
                                         onClick={clickHandler}
                                         disabled={isSubmitting}
@@ -693,7 +695,11 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     >
                                         <FormattedMessage id="søknad.gåVidere" />
                                     </Button>
-                                </StepButtonWrapper>
+                                    <StepFooter
+                                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                                        onAvsluttOgSlett={avbrytSøknad}
+                                    />
+                                </HGrid>
                             </VStack>
                         </Step>
                     </SkjemaRotLayout>

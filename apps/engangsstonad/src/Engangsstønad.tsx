@@ -6,11 +6,11 @@ import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { PersonFrontend } from '@navikt/fp-types';
-import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ApiErrorHandler, EngangsstønadRoutes, Spinner } from './EngangsstønadRoutes';
+import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {

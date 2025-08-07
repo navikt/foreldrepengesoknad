@@ -17,7 +17,7 @@ export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
             utils: path.resolve(__dirname, './src/utils'),
             api: path.resolve(__dirname, './src/api'),
             types: path.resolve(__dirname, './src/types'),
-            storybookData: path.resolve(__dirname, '.storybook/testData'),
+            storybookData: path.resolve(__dirname, './.storybook/storybook-data'),
         },
     },
 });

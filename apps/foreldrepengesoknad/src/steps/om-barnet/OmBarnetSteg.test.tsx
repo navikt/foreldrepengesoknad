@@ -44,6 +44,9 @@ describe('<OmBarnetSteg>', () => {
         await userEvent.tab();
 
         const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        expect(
+            screen.queryByText('Termindato er hentet fra søknaden til den andre forelderen'),
+        ).not.toBeInTheDocument();
         await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
@@ -637,6 +640,10 @@ describe('<OmBarnetSteg>', () => {
             render(<FarFødselMorHarVedtak gåTilNesteSide={gåTilNesteSide} />);
 
             expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+            expect(
+                await screen.findByText('Termindato er hentet fra søknaden til den andre forelderen'),
+            ).toBeInTheDocument();
+
             await userEvent.click(screen.getByText('Neste steg'));
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
                 data: {

@@ -24,8 +24,8 @@ const getSamtykkeTekst = (
 
 interface Props<TYPE> {
     sendSøknad: () => Promise<void>;
-    cancelApplication: () => void;
-    onContinueLater: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere: () => void;
     goToPreviousStep: () => void;
     onStepChange?: (id: TYPE) => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -36,8 +36,8 @@ interface Props<TYPE> {
 
 export const OppsummeringPanel = <TYPE extends string>({
     sendSøknad,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     goToPreviousStep,
     onStepChange,
     stepConfig,
@@ -61,13 +61,7 @@ export const OppsummeringPanel = <TYPE extends string>({
     };
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            onContinueLater={onContinueLater}
-            steps={stepConfig}
-            onStepChange={onStepChange}
-            noFieldsRequired
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange} noFieldsRequired>
             <VStack gap="10">
                 <VStack gap="3">{children}</VStack>
                 <ConfirmationPanel
@@ -81,6 +75,8 @@ export const OppsummeringPanel = <TYPE extends string>({
                     }
                 />
                 <StepButtons
+                    onAvsluttOgSlett={onAvsluttOgSlett}
+                    onFortsettSenere={onFortsettSenere}
                     goToPreviousStep={goToPreviousStep}
                     nextButtonOnClick={send}
                     isDisabledAndLoading={isSubmitting}

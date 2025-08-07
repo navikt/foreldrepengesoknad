@@ -2,9 +2,8 @@ import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 import { z } from 'zod';
 
-import { Skjemanummer } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, Skjemanummer } from '@navikt/fp-constants';
 import {
-    AktivMellomlagringDto,
     AnnenPartSak,
     AnnenPartSakIdentifikator,
     DokumentDto,
@@ -87,12 +86,7 @@ export const hentSatserOptions = () =>
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${urlPrefiks}/rest/satser`).json<Satser>(),
         staleTime: Infinity,
-    });
-
-export const hentMellomlagredeYtelserOptions = () =>
-    queryOptions({
-        queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<AktivMellomlagringDto>(),
+        initialData: DEFAULT_SATSER,
     });
 
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>

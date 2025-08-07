@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
-import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
-import storageKvittering from 'storybookData/kvittering/storage_kvittering.json';
-import saker from 'storybookData/saker/saker.json';
-import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak';
+import { kvittering } from 'storybookData/kvittering';
+import { saker } from 'storybookData/saker';
+import { stønadskontoer } from 'storybookData/stønadskontoer';
 
 import { Søkerinfo } from '@navikt/fp-types';
 
@@ -48,9 +48,9 @@ const meta = {
                     HttpResponse.json({ 80: stønadskontoer, 100: stønadskontoer }),
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/storage/kvittering/foreldrepenger`, () =>
-                    HttpResponse.json(storageKvittering),
+                    HttpResponse.json(kvittering),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/foreldrepenger`, () => HttpResponse.json(storageKvittering)),
+                http.get(`${import.meta.env.BASE_URL}/rest/foreldrepenger`, () => HttpResponse.json(kvittering)),
                 http.get(
                     `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
                     () => new HttpResponse(null, { status: 200 }),

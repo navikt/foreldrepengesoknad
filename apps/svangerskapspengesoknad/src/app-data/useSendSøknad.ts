@@ -10,7 +10,7 @@ import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
 const UKJENT_UUID = 'ukjent uuid';
-export const FEIL_VED_INNSENDING =
+const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, arbeidsforhold: Arbeidsforhold[]) => {

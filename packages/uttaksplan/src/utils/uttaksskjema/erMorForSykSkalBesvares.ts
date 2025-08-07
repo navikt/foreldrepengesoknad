@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 
 import { Uttaksdatoer, erInnenFørsteSeksUkerFødselFarMedmor } from '../uttaksdatoerUtils';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
     periodetype: Periodetype,

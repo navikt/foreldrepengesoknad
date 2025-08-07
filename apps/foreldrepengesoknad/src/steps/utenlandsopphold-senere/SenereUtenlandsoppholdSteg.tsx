@@ -37,8 +37,8 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
             />

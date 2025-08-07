@@ -97,7 +97,7 @@ interface Props {
     minsterettUkerToTette: number | undefined;
 }
 
-export interface PeriodeValidState {
+interface PeriodeValidState {
     id: string;
     isValid: boolean;
 }

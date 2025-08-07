@@ -55,7 +55,7 @@ export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string
         : undefined;
 };
 
-export const getTidslinjetekstForAntallBarn = (
+const getTidslinjetekstForAntallBarn = (
     antallBarn: number,
     intl: IntlShape,
     gjelderAdopsjon: boolean | undefined,
@@ -245,7 +245,7 @@ export const getTidslinjehendelseTittel = (
         return intl.formatMessage({ id: 'tidslinje.navVenterPå' }, { dokumentasjon: dokumentasjonLowerCase });
     }
     if (hendelsetype === 'FØRSTEGANGSSØKNAD') {
-        return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' }, { ytelse });
+        return intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' }, { ytelse: ytelse.toLowerCase() });
     }
     if (hendelsetype === 'FAMILIEHENDELSE' && familiehendelse && antallBarn !== undefined) {
         const gjelderAdopsjon = 'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined;
@@ -269,7 +269,7 @@ export const getTidslinjehendelseTittel = (
     return finnTekstForTidslinjehendelse(intl, hendelse, !!familiehendelse?.omsorgsovertakelse);
 };
 
-export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
+const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand) => {
     if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return 'VENTER_INNTEKTSMELDING';
     }
@@ -286,7 +286,7 @@ export const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTils
     }
 };
 
-export const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): TidslinjeHendelseDto['aktørType'] => {
+const getAktørtypeAvVenteårsak = (venteårsak: BehandlingTilstand): TidslinjeHendelseDto['aktørType'] => {
     if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return 'ARBEIDSGIVER';
     }
@@ -302,7 +302,7 @@ const createEttersendUrl = (skjematypeIds: Skjemanummer[]): string => {
     return `${OversiktRoutes.ETTERSEND}${queryPart}`;
 };
 
-export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): NavRoutes | undefined => {
+const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): NavRoutes | undefined => {
     if (venteårsak === 'VENT_INNTEKTSMELDING') {
         return NavRoutes.VENT_INNTEKTSMELDING;
     }
@@ -316,13 +316,13 @@ export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): 
     return undefined;
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBehandling) => {
+const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBehandling) => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
     const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: SvpÅpenBehandling) => {
+const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: SvpÅpenBehandling) => {
     const tilretteleggingerFomDatoer =
         åpenBehandling.søknad.arbeidsforhold
             .map((a) => {
@@ -334,7 +334,7 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: S
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (
+const getTidligstBehandlingsDatoForTidligSøknad = (
     ytelse: Ytelse,
     åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | SvpÅpenBehandling,
 ) => {
@@ -352,7 +352,7 @@ const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: TidslinjeHende
     return hendelseFørsteSøknad ? hendelseFørsteSøknad.opprettet : undefined;
 };
 
-export const getTidslinjehendelserDetaljer = (
+const getTidslinjehendelserDetaljer = (
     tidslinjeHendelserData: TidslinjeHendelseDto[],
     intl: IntlShape,
 ): Tidslinjehendelse[] => {
@@ -394,7 +394,7 @@ export const getTidslinjehendelserDetaljer = (
     });
 };
 
-export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): Tidslinjehendelse => {
+const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): Tidslinjehendelse => {
     const familiehendelsedato = getFamiliehendelseDato(familiehendelse);
     return {
         type: 'søknad',
@@ -406,7 +406,7 @@ export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): T
     };
 };
 
-export const getTidslinjeBarnTreÅrHendelse = (
+const getTidslinjeBarnTreÅrHendelse = (
     fødselsdato: string | undefined,
     omsorgsovertakelse: string | undefined,
     antallBarn: number,
@@ -435,7 +435,7 @@ export const getTidslinjeBarnTreÅrHendelse = (
     };
 };
 
-export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tidslinjehendelse => {
+const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tidslinjehendelse => {
     let url = NavRoutes.SAKSBEHANDLINGSTIDER_FP;
     if (ytelse === 'SVANGERSKAPSPENGER') {
         url = NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
@@ -496,7 +496,7 @@ const finnInfoTekstForYtelse = (intl: IntlShape, ytelse: Ytelse) =>
         ? intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.foreldrepenger' })
         : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
 
-export const getTidslinjehendelserFraBehandlingPåVent = (
+const getTidslinjehendelserFraBehandlingPåVent = (
     åpenBehandling: EsÅpenBehandling | FpÅpenBehandling | SvpÅpenBehandling,
     manglendeVedleggData: Skjemanummer[],
     intl: IntlShape,
@@ -551,7 +551,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     return [tidslinjeHendelse];
 };
 
-export const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
+const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
     if (dayjs(opprettet1).isBefore(opprettet2)) {
         return -1;
     } else if (dayjs(opprettet1).isAfter(opprettet2)) {

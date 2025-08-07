@@ -30,7 +30,6 @@ export {
     isInfoPeriode,
     isUtsettelsesperiode,
     isUttaksperiode,
-    isInfoPeriodeAnnenPart,
 } from './src/Periode';
 export { Dekningsgrad } from './src/Dekningsgrad';
 export type {

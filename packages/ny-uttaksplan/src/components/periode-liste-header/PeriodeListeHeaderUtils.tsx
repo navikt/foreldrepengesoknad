@@ -72,7 +72,7 @@ type GetIkonFargeProps = {
     bem: IPlanBemUtils;
 };
 
-export const getIkonFarge = ({
+const getIkonFarge = ({
     erPeriodeUtenUttak,
     erMor,
     erUtsettelse,

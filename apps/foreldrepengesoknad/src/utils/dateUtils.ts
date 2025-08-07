@@ -49,9 +49,7 @@ const getDateFromDateString = (dateString: string | undefined): Date | undefined
     }
     return undefined;
 };
-
-export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
-
+dayjs().subtract(4, 'year').startOf('day').toDate();
 export const isDateABeforeDateB = (a: string, b: string): boolean => {
     if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
         return false;
@@ -353,11 +351,6 @@ export const getToTetteReglerGjelder = (
         dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
     );
 };
-
-export const formaterDatoKompakt = (dato: Date): string => {
-    return formaterDato(dato, 'DD.MM.YYYY');
-};
-
 export const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };

@@ -23,11 +23,6 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }
-
-export interface ModalData {
-    perioderSomSkalSlettes: Planperiode[];
-}
-
 interface FormValues {
     perioder: string[];
 }

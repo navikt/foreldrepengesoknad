@@ -6,10 +6,8 @@ import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { Loader } from '@navikt/ds-react';
-
 import { Kvittering, PersonFrontend } from '@navikt/fp-types';
-import { ErrorPage } from '@navikt/fp-ui';
+import { ErrorPage, Spinner } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
 import { DokumentasjonSteg } from './steg/dokumentasjon/DokumentasjonSteg';
@@ -20,12 +18,6 @@ import { SenereUtenlandsoppholdSteg } from './steg/utenlandsopphold-senere/Sener
 import { TidligereUtenlandsoppholdSteg } from './steg/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { Velkommen } from './velkommen/Velkommen';
-
-export const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
 
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return <ErrorPage appName="engangsstonad" errorMessage={error.message} retryCallback={() => location.reload()} />;

@@ -28,12 +28,7 @@ import {
     getPeriodeInfoTekst,
     getUferdigPeriodeInput,
 } from './perioderStegUtils';
-import {
-    validatePeriodeFom,
-    validatePeriodeTom,
-    validatePeriodeTomType,
-    validateStillingsprosentPåPerioder,
-} from './perioderValidation';
+import { validatePeriodeFom, validatePeriodeTom, validateStillingsprosentPåPerioder } from './perioderValidation';
 
 export const NEW_PERIODE = {
     type: Tilretteleggingstype.DELVIS,
@@ -188,12 +183,6 @@ export const PerioderFieldArray = ({
                                     kanHaSVPFremTilTreUkerFørTermin
                                         ? intl.formatMessage({ id: 'valideringsfeil.periode.tomType.påkrevd.termin' })
                                         : intl.formatMessage({ id: 'valideringsfeil.periode.tomType.påkrevd.fødsel' }),
-                                ),
-                                validatePeriodeTomType(
-                                    intl,
-                                    sisteDagForSvangerskapspenger,
-                                    navnArbeidsgiver || '',
-                                    periode.tom,
                                 ),
                             ]}
                         >

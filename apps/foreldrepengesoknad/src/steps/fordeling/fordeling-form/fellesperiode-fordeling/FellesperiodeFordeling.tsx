@@ -13,7 +13,6 @@ import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 import { isValidAntallDagerFellesperiode, isValidAntallUkerFellesperiode } from '../fordelingFormUtils';
 import { FellesperiodeValgVisning } from './FellesperiodeValgVisning';
 import { FordelingValg } from './FordelingValg';
-import styles from './fellesperiode-fordeling.module.css';
 
 const getInputErNullEllerHeltall = (input: number) => {
     if (input) {
@@ -50,7 +49,7 @@ const getInputForAntallDagerFellesperiode = (
     return kanViseValgtAntallDager ? totallAntallDager : undefined;
 };
 
-export const getFordelingDagerForVisning = (
+const getFordelingDagerForVisning = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
@@ -124,14 +123,14 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
         <VStack gap="5">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
-                <div className={styles.fellesperiodeFordeling}>
+                <div className="pl-4 pb-4">
                     <Heading size="xsmall">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål"
                             values={{ harHeleUkerTilFordeling }}
                         />
                     </Heading>
-                    <BodyLong className={styles.description}>
+                    <BodyLong className="text-text-subtle">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål.description"
                             values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
@@ -139,7 +138,6 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                     </BodyLong>
                     <HStack gap="5" align="start">
                         <RhfTextField
-                            className={styles.textInput}
                             control={control}
                             name="antallUkerFellesperiodeTilSøker"
                             label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
@@ -156,7 +154,6 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                         />
                         {!harHeleUkerTilFordeling && (
                             <RhfTextField
-                                className={styles.textInput}
                                 control={control}
                                 name="antallDagerFellesperiodeTilSøker"
                                 label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}

@@ -15,7 +15,7 @@ import {
 import { formaterDatoKompakt } from '../../utils/dateUtils';
 import { getForelderNavn, getOppholdskontoNavn } from '../../utils/periodeUtils';
 
-export interface Props {
+interface Props {
     periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
 }

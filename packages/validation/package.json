@@ -12,16 +12,12 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "dayjs": "1.11.12",
-        "react": "19.1.0",
-        "react-dom": "19.1.0"
+        "dayjs": "1.11.13"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/bytes": "3.1.5",
-        "@types/react": "19.1.7",
-        "eslint": "9.28.0",
+        "eslint": "9.31.0",
         "typescript": "5.8.3"
     },
     "packageManager": "pnpm@9.1.4"

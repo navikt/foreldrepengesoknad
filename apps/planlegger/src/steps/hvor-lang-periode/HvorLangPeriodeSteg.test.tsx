@@ -8,12 +8,15 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 const {
     FlereForsørgereEttBarnKunMorHarRett,
     FarOgFarBeggeHarRett,
     FlereForsørgereFarOgFarKunFar1HarRettFødsel,
     FlereForsørgereKunFarHarRett,
     FlereForsørgereFarOgFarKunFar1HarRettAdopsjon,
+    FlereForsørgereEttBarnBeggeHarRettAdopsjon,
 } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -60,6 +63,66 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.FORDELING));
+    });
+
+    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FlereForsørgereEttBarnKunMorHarRett.args;
+
+        render(
+            <FlereForsørgereEttBarnKunMorHarRett
+                {...originalArgs}
+                omBarnet={{
+                    ...originalArgs.omBarnet,
+                    erBarnetFødt: true,
+                    fødselsdato: '2024-01-15',
+                    erFødsel: true,
+                    antallBarn: '1',
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
+
+        expect(
+            screen.getByText(
+                'Denne datoen gjelder om dere har foreldrepenger sammenhengende fra tre uker før fødselen.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal sjekke at siste dag med foreldrepenger-infotekst blir korrekt når barn er født, farOgFar - fødsel.', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FarOgFarBeggeHarRett.args;
+
+        render(
+            <FarOgFarBeggeHarRett
+                {...originalArgs}
+                omBarnet={{
+                    ...originalArgs.omBarnet,
+                    erBarnetFødt: true,
+                    fødselsdato: '2024-01-15',
+                    erFødsel: true,
+                    antallBarn: '1',
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
+
+        expect(
+            screen.getByText('Denne datoen gjelder om dere har foreldrepenger sammenhengende fra fødsel.'),
+        ).toBeInTheDocument();
     });
 
     it('skal gå til oversikt ved far og far og begge foreldre har rett', async () => {
@@ -175,5 +238,22 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
+    });
+
+    it('skal vise Forslag hvor lenge, omsorgsovertakelse tilbake i tid', async () => {
+        render(<FlereForsørgereEttBarnBeggeHarRettAdopsjon />);
+
+        await expect(screen.getByText('80 % eller 100 %?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor lang periode med foreldrepenger ønsker dere?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
+
+        expect(screen.queryByText('Siste dag med foreldrepenger kan bli mandag 15. juni 2026')).toBeInTheDocument();
+
+        expect(
+            screen.queryByText(
+                'Dette er hvis dere har foreldrepenger sammenhengende fra omsorgsovertagelsen den 08. juli 2025.',
+            ),
+        ).toBeInTheDocument();
     });
 });

@@ -27,7 +27,7 @@ import {
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 
-export interface Props {
+interface Props {
     barnet: Barn;
     arbeidsforholdType: Arbeidsforholdstype;
     sluttdatoArbeid?: string;
@@ -177,10 +177,6 @@ export const DelvisTilretteleggingPanel = ({
                         validerTilretteleggingTomType(
                             intl,
                             Tilretteleggingstype.DELVIS,
-                            behovForTilretteleggingFom,
-                            sisteDagForSvangerskapspenger,
-                            arbeidsforholdNavn || '',
-                            sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
                     ]}

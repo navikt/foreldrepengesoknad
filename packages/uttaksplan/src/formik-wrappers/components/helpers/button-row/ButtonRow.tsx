@@ -2,7 +2,7 @@ import React from 'react';
 
 import './buttonRow.scss';
 
-export interface Props {
+interface Props {
     align?: 'left' | 'right' | 'center';
     layout?: 'normal' | 'mobile-50-50' | 'stretch';
     children: React.ReactNode;

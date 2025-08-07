@@ -22,7 +22,7 @@ import {
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 
-export interface Props {
+interface Props {
     barnet: Barn;
     arbeidsforholdType: Arbeidsforholdstype;
     sluttdatoArbeid?: string;
@@ -104,15 +104,7 @@ export const IngenTilretteleggingPanel = ({
                     id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen',
                 })}
                 validate={[
-                    validerTilretteleggingTomType(
-                        intl,
-                        Tilretteleggingstype.INGEN,
-                        behovForTilretteleggingFom,
-                        sisteDagForSvangerskapspenger,
-                        arbeidsforholdNavn || '',
-                        sluttdatoArbeid,
-                        kanHaSVPFremTilTreUkerFørTermin,
-                    ),
+                    validerTilretteleggingTomType(intl, Tilretteleggingstype.INGEN, kanHaSVPFremTilTreUkerFørTermin),
                 ]}
             >
                 <Radio value={TilOgMedDatoType.VALGFRI_DATO}>

@@ -1,10 +1,18 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker,
+    erFarDelAvSøknaden,
+    erFarOgFar,
+    erMorDelAvSøknaden,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+} from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
@@ -38,15 +46,16 @@ export const ValgtDekningsgradInfoboks = ({
     antallUkerOgDager,
 }: Props) => {
     const intl = useIntl();
-
     const antallBarn = barnet.antallBarn;
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);
 
+    const erAlenesøkerValue = erAlenesøker(hvemPlanlegger);
+
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const kunEnPartSkalHa =
-        erAlenesøker(hvemPlanlegger) || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
+        erAlenesøkerValue || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
     const familiehendelsedato = intl.formatDate(getFamiliehendelsedato(barnet), {
         day: '2-digit',
@@ -85,39 +94,43 @@ export const ValgtDekningsgradInfoboks = ({
             shouldFadeIn
             color="green"
         >
-            <BodyShort>
-                {erAdopsjon && (
-                    <FormattedMessage
-                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
-                        values={{
-                            antallBarn,
-                            kunEnPartSkalHa,
-                            dato: familiehendelsedato,
-                        }}
-                    />
-                )}
-                {!erAdopsjon && erFødt && (
-                    <FormattedMessage
-                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
-                        values={{
-                            antallBarn,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            dato: familiehendelsedato,
-                            kunEnPartSkalHa,
-                        }}
-                    />
-                )}
-                {!erAdopsjon && !erFødt && (
-                    <FormattedMessage
-                        id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
-                        values={{
-                            antallBarn,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            kunEnPartSkalHa,
-                        }}
-                    />
-                )}
-            </BodyShort>
+            <VStack paddingBlock="0 2">
+                <BodyShort>
+                    {erAdopsjon && (
+                        <FormattedMessage
+                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
+                            values={{
+                                antallBarn,
+                                kunEnPartSkalHa,
+                                dato: familiehendelsedato,
+                                erOmsorgsovertakelseFremtidig: dayjs(getFamiliehendelsedato(barnet)).isAfter(dayjs()),
+                            }}
+                        />
+                    )}
+                    {!erAdopsjon && erFødt && (
+                        <FormattedMessage
+                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel"
+                            values={{
+                                antallBarn,
+                                erFarOgFar: erFarOgFar(hvemPlanlegger),
+                                kunEnPartSkalHa,
+                                erAlenesøkerValue,
+                                erFarDelAvSøknaden: erFarDelAvSøknaden(hvemPlanlegger),
+                            }}
+                        />
+                    )}
+                    {!erAdopsjon && !erFødt && (
+                        <FormattedMessage
+                            id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin"
+                            values={{
+                                antallBarn,
+                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                kunEnPartSkalHa,
+                            }}
+                        />
+                    )}
+                </BodyShort>
+            </VStack>
             {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
                 (hvemHarRett === 'kunSøker1HarRett' &&
                     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&

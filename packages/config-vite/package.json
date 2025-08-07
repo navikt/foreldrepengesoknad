@@ -4,12 +4,11 @@
     "type": "module",
     "version": "1.0.0",
     "dependencies": {
-        "@storybook/react": "9.0.8",
-        "@tailwindcss/vite": "4.1.8",
-        "@vitejs/plugin-react": "4.5.2",
-        "@vitest/browser": "3.2.3",
-        "vite": "6.3.5",
-        "vitest": "3.2.3"
+        "@tailwindcss/vite": "4.1.11",
+        "@vitejs/plugin-react": "4.7.0",
+        "@vitest/browser": "3.2.4",
+        "vite": "7.0.5",
+        "vitest": "3.2.4"
     },
     "packageManager": "pnpm@9.1.4"
 }

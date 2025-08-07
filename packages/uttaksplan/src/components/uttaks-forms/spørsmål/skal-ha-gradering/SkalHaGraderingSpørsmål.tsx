@@ -68,10 +68,7 @@ interface Props {
     tidsperiode: TidsperiodeDate;
 }
 
-export const getArbeidsOptions = (
-    arbeidsforhold: Arbeidsforhold[],
-    tidsperiode: TidsperiodeDate,
-): FormikRadioProp[] => {
+const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[], tidsperiode: TidsperiodeDate): FormikRadioProp[] => {
     const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode);
 
     const defaultOptions: FormikRadioProp[] = [
