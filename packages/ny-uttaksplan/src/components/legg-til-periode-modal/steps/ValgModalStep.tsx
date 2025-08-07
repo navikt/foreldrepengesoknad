@@ -6,7 +6,7 @@ import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { ModalData } from '../../../components/leggTilPeriodeBox';
+import { ModalData } from '../../LeggTilPeriodePanel';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 
 interface Props {

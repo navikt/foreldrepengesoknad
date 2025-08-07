@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeBox } from './components/leggTilPeriodeBox';
+import { LeggTilPeriodePanel } from './components/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -181,7 +181,7 @@ export const UttaksplanNy = ({
                         <FormattedMessage id="uttaksplan.leggTilPeriode" />
                     </Button>
                     {isModalOpen && (
-                        <LeggTilPeriodeBox
+                        <LeggTilPeriodePanel
                             handleAddPeriode={(periode) => {
                                 handleAddPeriode(periode);
                                 closeModal();

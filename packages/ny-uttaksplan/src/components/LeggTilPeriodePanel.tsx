@@ -30,7 +30,7 @@ export interface ModalData {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 }
 
-export function LeggTilPeriodeBox({ handleAddPeriode, erBarnetFødt, gjelderAdopsjon, onCancel }: Props) {
+export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAdopsjon, onCancel }: Props) {
     const initialModalState: ModalData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
