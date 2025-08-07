@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { Tidsperiode } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -18,7 +19,6 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
@@ -207,7 +207,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 };
 
 const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
@@ -215,7 +215,7 @@ const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
 });
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
@@ -346,6 +346,14 @@ export const finnOgSettInnHull = (
     return result;
 };
 
+const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
+    if (p.kontoType === StønadskontoType.ForeldrepengerFørFødsel || p.kontoType === StønadskontoType.Mødrekvote) {
+        return overlappendePeriode.samtidigUttak ?? 100;
+    }
+
+    return 100;
+};
+
 export const settInnAnnenPartsUttak = (
     perioder: Planperiode[],
     annenPartsUttak: Planperiode[],
@@ -392,7 +400,10 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode });
+                res.push({
+                    ...overlappendePeriode,
+                    samtidigUttak: beregnSamtidiguttaksprosent(p, overlappendePeriode),
+                });
             }
 
             return res;

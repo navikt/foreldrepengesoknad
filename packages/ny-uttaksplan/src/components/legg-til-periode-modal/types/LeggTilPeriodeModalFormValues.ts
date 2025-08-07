@@ -11,4 +11,6 @@ export type LeggTilPeriodeModalFormValues = {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
+    samtidigUttak?: boolean;
+    samtidigUttaksprosent?: string;
 };

@@ -15,6 +15,8 @@ import { Forelder } from '@navikt/fp-constants';
 import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
+import { IPlanBemUtils } from '../../planBemUtils';
+
 type GetFargeProps = {
     erPeriodeUtenUttak: boolean;
     erSamtidigUttak: boolean;
@@ -22,7 +24,7 @@ type GetFargeProps = {
     erHull: boolean | undefined;
     erUtsettelse: boolean | undefined;
     erFamiliehendelse: boolean | undefined;
-    bem: any;
+    bem: IPlanBemUtils;
 };
 
 export const getFarge = ({
@@ -67,7 +69,7 @@ type GetIkonFargeProps = {
     erUtsettelse: boolean | undefined;
     erHull: boolean | undefined;
     erFamiliehendelse: boolean | undefined;
-    bem: any;
+    bem: IPlanBemUtils;
 };
 
 const getIkonFarge = ({
@@ -189,7 +191,7 @@ type GetIkonProps = {
     utsettelseÅrsak: UtsettelseÅrsakType | undefined;
     erHull: boolean | undefined;
     erFamiliehendelse: boolean | undefined;
-    bem: any;
+    bem: IPlanBemUtils;
 };
 
 export const getIkon = ({

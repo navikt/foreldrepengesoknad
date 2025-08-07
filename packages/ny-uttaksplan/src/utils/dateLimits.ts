@@ -32,6 +32,10 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(60);
     }
 
+    if (kontoType === StønadskontoType.Fedrekvote && !gjelderAdopsjon) {
+        return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
+    }
+
     return UttaksdagenString(ukedagFamiliehendelsedato).denneEllerNeste();
 };
 
