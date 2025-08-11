@@ -19,6 +19,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();
@@ -163,7 +164,9 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                                 id="ErIkkeFødtPanel.UnderTreMndTilTermin"
                                                 values={{
                                                     erAlenesøker,
-                                                    navn: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    navn: capitalizeFirstLetter(
+                                                        getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    ),
                                                 }}
                                             />
                                         </BodyShort>
