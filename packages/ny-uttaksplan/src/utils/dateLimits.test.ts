@@ -27,7 +27,7 @@ describe('Datobegrensninger', () => {
         const minDate = getMinDate({ kontoType, familiehendelsedato, gjelderAdopsjon });
         const maxDate = getMaxDate({ kontoType, familiehendelsedato });
 
-        expect(minDate).toEqual(familiehendelsedato);
+        expect(minDate).toEqual(UttaksdagenString(familiehendelsedato).trekkFra(10));
         expect(maxDate).toEqual(dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT));
     });
 

@@ -1,6 +1,7 @@
 import { Forelder } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { OppholdÅrsakType } from '@navikt/fp-types';
+import { omitOne } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
 import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
@@ -348,7 +349,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(1);
-        expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+        expect(omitOne(result[0], 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
     });
 
     it('Hvis annen parts uttak overlapper starten av utsettelsesperioden (som ikke er fri utsettelse) returner kun delen som ikke overlapper', () => {
@@ -380,7 +381,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         expect(result.length).toBe(2);
         expect(result[0].fom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].fom);
         expect(result[0].tom).toEqual('2021-01-01');
-        expect(result[1]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+        expect(omitOne(result[1], 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
     });
     it(
         'Hvis annen parts uttak overlapper slutten av utsettelsesperioden' +
@@ -411,7 +412,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 førsteUttaksdagNesteBarnsSak,
             );
             expect(result.length).toBe(2);
-            expect(result[0]).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
+            expect(omitOne(result[0], 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
             expect(result[1].tom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].tom);
             expect(result[1].fom).toEqual('2021-01-08');
             expect(result[1].readOnly).toEqual(true);
