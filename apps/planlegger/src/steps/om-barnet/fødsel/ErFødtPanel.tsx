@@ -4,12 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker as erAlene,
-    erFarDelAvSøknaden,
-    erMorDelAvSøknaden,
-    finnSøker2Tekst,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -100,17 +95,16 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}
