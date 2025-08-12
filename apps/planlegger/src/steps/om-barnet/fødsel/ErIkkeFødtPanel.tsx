@@ -9,7 +9,6 @@ import {
     erFarDelAvSøknaden,
     erFarOgFar,
     erMorDelAvSøknaden,
-    finnSøker2Tekst,
     getFornavnPåSøker1,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
@@ -99,17 +98,15 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar: erFarMedISøknaden,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}
