@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-import { StønadskontoType } from '@navikt/fp-constants';
 import { Tidsperiode } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -346,12 +345,12 @@ export const finnOgSettInnHull = (
     return result;
 };
 
+// @ts-expect-error ubrukt parameter
 const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
-    if (p.kontoType === StønadskontoType.ForeldrepengerFørFødsel || p.kontoType === StønadskontoType.Mødrekvote) {
-        return overlappendePeriode.samtidigUttak ?? 100;
-    }
-
-    return 100;
+    // Når man lager planen ønsker vi å automatisk endre på den andre parten sin uttaksprosent så man slipper gjøre to sett med endringer.
+    // Men den må utledes utifra maks tillat prosent. Dette avhenger av hvilke kontoer som benyttes, eller om det er flerbarnsdager osv.
+    // For nå gjør vi det enkelt slik at det blir rett i innsyn for eksisterende planer.
+    return overlappendePeriode.samtidigUttak ?? 100;
 };
 
 export const settInnAnnenPartsUttak = (
