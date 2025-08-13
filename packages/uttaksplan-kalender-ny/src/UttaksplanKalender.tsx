@@ -84,7 +84,12 @@ const getPerioderForKalendervisning = (
 
     const res = unikePerioder.reduce((acc, periode) => {
         const color = erIPlanleggerModus
-            ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, foreldrepengerHarAktivitetskrav)
+            ? getKalenderFargeForPeriodeTypePlanlegger(
+                  periode,
+                  erFarEllerMedmor,
+                  allePerioder,
+                  foreldrepengerHarAktivitetskrav,
+              )
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, allePerioder, barn);
 
         if (
@@ -202,8 +207,18 @@ const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean)
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: KalenderPeriode,
     erFarEllerMedmor: boolean,
+    allePerioder: KalenderPeriode[],
     foreldrepengerHarAktivitetskrav: boolean,
 ): PeriodeColor => {
+    const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
+        ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
+        : undefined;
+
+    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
+    if (annenForelderSamtidigUttaksperiode && samtidigUttaksprosent && samtidigUttaksprosent > 0) {
+        return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
+    }
+
     if (periode.utsettelseÅrsak) {
         return PeriodeColor.BLUEOUTLINE;
     }

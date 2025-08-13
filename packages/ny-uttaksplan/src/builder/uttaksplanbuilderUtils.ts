@@ -18,7 +18,6 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
@@ -207,7 +206,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 };
 
 const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
@@ -215,7 +214,7 @@ const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
 });
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
@@ -346,6 +345,16 @@ export const finnOgSettInnHull = (
     return result;
 };
 
+// @ts-expect-error ubrukt parameter
+const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
+    /*
+     Når man lager planen ønsker vi å automatisk endre på den andre parten sin uttaksprosent så man slipper gjøre to sett med endringer.
+     Men den må utledes utifra maks tillat prosent. Dette avhenger av hvilke kontoer som benyttes, eller om det er flerbarnsdager osv.
+     For nå gjør vi det enkelt slik at det blir rett i innsyn for eksisterende planer.
+    */
+    return overlappendePeriode.samtidigUttak ?? 100;
+};
+
 export const settInnAnnenPartsUttak = (
     perioder: Planperiode[],
     annenPartsUttak: Planperiode[],
@@ -392,7 +401,10 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode });
+                res.push({
+                    ...overlappendePeriode,
+                    samtidigUttak: beregnSamtidiguttaksprosent(p, overlappendePeriode),
+                });
             }
 
             return res;

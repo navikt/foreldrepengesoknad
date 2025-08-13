@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
@@ -8,16 +9,15 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
+import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 
-interface Props {
-    formMethods: any;
-}
-
-export const KontotypeSpørsmål = ({ formMethods }: Props) => {
+export const KontotypeSpørsmål = () => {
     const intl = useIntl();
+    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
 
-    const kontoTypeValue = formMethods.watch('kontoType');
+    const kontoTypeValue = watch('kontoType');
 
     return (
         <VStack gap="4">
@@ -26,7 +26,7 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
             </Heading>
             <RhfRadioGroup
                 name="kontoType"
-                control={formMethods.control}
+                control={control}
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
@@ -41,7 +41,7 @@ export const KontotypeSpørsmål = ({ formMethods }: Props) => {
             {kontoTypeValue === StønadskontoType.Fellesperiode && (
                 <RhfRadioGroup
                     name="forelder"
-                    control={formMethods.control}
+                    control={control}
                     validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
                     label={intl.formatMessage({ id: 'KontotypeSpørsmål.hvemGjelder' })}
                 >

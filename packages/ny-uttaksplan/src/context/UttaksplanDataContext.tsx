@@ -1,12 +1,9 @@
 import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { Barn, NavnPåForeldre } from '@navikt/fp-common';
-import {
-    Familiesituasjon,
-    SaksperiodeNy,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-    UttaksplanModus,
-} from '@navikt/fp-types';
+import { Familiesituasjon, TilgjengeligeStønadskontoerForDekningsgrad, UttaksplanModus } from '@navikt/fp-types';
+
+import { Planperiode } from '../types/Planperiode';
 
 export enum UttaksplanContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
@@ -20,8 +17,8 @@ export enum UttaksplanContextDataType {
     ALENE_OM_OMSORG = 'ALENE_OM_OMSORG',
 }
 
-type UttaksplanContextDataMap = {
-    [UttaksplanContextDataType.UTTAKSPLAN]?: SaksperiodeNy[];
+export type UttaksplanContextDataMap = {
+    [UttaksplanContextDataType.UTTAKSPLAN]?: Planperiode[];
     [UttaksplanContextDataType.FAMILIEHENDELSEDATO]?: string;
     [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]?: boolean;
     [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]?: NavnPåForeldre;
@@ -34,7 +31,9 @@ type UttaksplanContextDataMap = {
 
 const defaultInitialState = {} as UttaksplanContextDataMap;
 
-type Action = { type: 'update'; key: UttaksplanContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: UttaksplanContextDataType; data: UttaksplanContextDataMap[keyof UttaksplanContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const UttaksplanStateContext = createContext<UttaksplanContextDataMap>(defaultInitialState);

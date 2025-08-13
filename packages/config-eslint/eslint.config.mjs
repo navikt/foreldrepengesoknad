@@ -75,7 +75,7 @@ export default [
             'no-shadow': OFF,
             '@typescript-eslint/no-shadow': [ERROR],
             'no-unused-vars': OFF,
-            '@typescript-eslint/no-unused-vars': [ERROR],
+            '@typescript-eslint/no-unused-vars': [ERROR, { ignoreRestSiblings: true }],
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
             '@typescript-eslint/ban-ts-comment': ERROR,
