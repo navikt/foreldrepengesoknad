@@ -4,12 +4,16 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
+import { getFloatFromString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
+import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../EndrePeriodeModal';
 
@@ -23,13 +27,15 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-interface FormValues {
+export interface EndrePeriodeModalStepFormValues {
     fom: string | undefined;
     tom: string | undefined;
     kontoType: StønadskontoType;
     forelder?: Forelder;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
+    samtidigUttak?: boolean;
+    samtidigUttaksprosent?: string;
 }
 
 export const EndrePeriodeModalStep = ({
@@ -43,15 +49,19 @@ export const EndrePeriodeModalStep = ({
 }: Props) => {
     const { valgtPeriode, årsak } = modalData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useForm<EndrePeriodeModalStepFormValues>({
         defaultValues: {
-            fom: modalData.valgtPeriode?.fom,
-            tom: modalData.valgtPeriode?.tom,
-            forelder: modalData.valgtPeriode?.forelder,
-            kontoType: modalData.valgtPeriode?.kontoType,
+            fom: valgtPeriode?.fom,
+            tom: valgtPeriode?.tom,
+            forelder: valgtPeriode?.forelder,
+            kontoType: valgtPeriode?.kontoType,
             skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
             stillingsprosent: graderingsInfo?.stillingsprosent,
+            samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
+            samtidigUttaksprosent:
+                valgtPeriode?.samtidigUttak !== undefined ? valgtPeriode.samtidigUttak.toString() : undefined,
         },
     });
 
@@ -70,14 +80,15 @@ export const EndrePeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: FormValues) => {
+    const onSubmit = (values: EndrePeriodeModalStepFormValues) => {
         handleUpdatePeriode({
             ...valgtPeriode!,
             fom: values.fom ?? valgtPeriode!.fom,
             tom: values.tom ?? valgtPeriode!.tom,
             forelder: getForelderFromKontoType(values.kontoType, values.forelder),
             kontoType: values.kontoType,
-            gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+            gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
+            samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
         });
         closeModal();
     };
@@ -85,14 +96,14 @@ export const EndrePeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="4">
-                <KontotypeSpørsmål formMethods={formMethods} />
+                <KontotypeSpørsmål />
                 <TidsperiodeSpørsmål
-                    formMethods={formMethods}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                     oppholdsårsak={årsak}
                 />
-                <GraderingSpørsmål formMethods={formMethods} />
+                {!erAleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                <GraderingSpørsmål />
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={

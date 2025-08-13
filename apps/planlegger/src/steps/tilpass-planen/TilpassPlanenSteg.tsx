@@ -160,7 +160,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         type="button"
                         variant="danger"
                         onClick={() => {
-                            lagreUttaksplan([]);
+                            lagreUttaksplan([[]]);
                             setOpen(false);
                         }}
                     >

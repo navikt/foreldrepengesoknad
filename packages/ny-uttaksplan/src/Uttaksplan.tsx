@@ -74,23 +74,23 @@ export const UttaksplanNy = ({
     const annenPartsPlanperioder = annenPartsPerioder
         ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
         : undefined;
-    const builder = Uttaksplanbuilder(
-        komplettPlan,
+    const builder = Uttaksplanbuilder({
+        perioder: komplettPlan,
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
         gjelderAdopsjon,
         bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
-        annenPartsPlanperioder,
-    );
+        opprinneligPlan: annenPartsPlanperioder,
+        erIPlanleggerModus: true,
+    });
 
     const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
         const result = builder.oppdaterPeriode(oppdatertPeriode);
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -102,7 +102,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -114,7 +113,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });
@@ -126,7 +124,6 @@ export const UttaksplanNy = ({
         const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
             const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
             return saksPeriodeNy;
         });

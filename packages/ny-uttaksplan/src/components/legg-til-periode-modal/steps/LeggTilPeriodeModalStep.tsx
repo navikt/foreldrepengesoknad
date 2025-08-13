@@ -5,13 +5,17 @@ import { VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { getFloatFromString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
+import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
 import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
@@ -36,6 +40,7 @@ export const LeggTilPeriodeModalStep = ({
     isOpphold,
 }: Props) => {
     const { forelder, kontoType, fom, tom, årsak } = modalData;
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
     const formMethods = useForm<LeggTilPeriodeModalFormValues>({
         defaultValues: {
@@ -93,7 +98,8 @@ export const LeggTilPeriodeModalStep = ({
                 readOnly: false,
                 kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent),
+                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
+                samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }
 
@@ -105,21 +111,20 @@ export const LeggTilPeriodeModalStep = ({
             <VStack gap="4">
                 {isOpphold === false ? (
                     <>
-                        <KontotypeSpørsmål formMethods={formMethods} />
+                        <KontotypeSpørsmål />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}
                         />
-                        <GraderingSpørsmål formMethods={formMethods} />
+                        {!erAleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                        <GraderingSpørsmål />
                     </>
                 ) : null}
                 {isOpphold ? (
                     <>
                         <OppholdsÅrsakSpørsmål />
                         <TidsperiodeSpørsmål
-                            formMethods={formMethods}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
                             oppholdsårsak={årsak}

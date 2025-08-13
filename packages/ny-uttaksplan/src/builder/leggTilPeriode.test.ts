@@ -1,5 +1,6 @@
 import { Forelder, MorsAktivitet, StønadskontoType } from '@navikt/fp-constants';
 import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { omitOne } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
@@ -241,7 +242,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(3);
         expect(result[0]).toEqual(perioderMedHull[0]);
-        expect(result[1]).toEqual(nyPeriode);
+        expect(omitOne(result[1], 'id')).toEqual(omitOne(nyPeriode, 'id'));
         expect(result[2]).toEqual(perioderMedHull[2]);
     });
 
@@ -267,13 +268,13 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[0]).toEqual(periodeMedAnnenPartsUttak[0]);
+        expect(omitOne(result[0], 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[0], 'id'));
         expect(result[1].fom).toEqual(periodeMedAnnenPartsUttak[1].fom);
         expect(result[1].tom).toEqual('2024-05-14');
-        expect(result[2]).toEqual(nyPeriode);
+        expect(omitOne(result[2], 'id')).toEqual(omitOne(nyPeriode, 'id'));
         expect(result[3].fom).toEqual('2024-05-23');
         expect(result[3].tom).toEqual(periodeMedAnnenPartsUttak[1].tom);
-        expect(result[4]).toEqual(periodeMedAnnenPartsUttak[2]);
+        expect(omitOne(result[4], 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[2], 'id'));
 
         const nyPeriode2: Planperiode = {
             id: '5',
@@ -296,7 +297,7 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result2.length).toEqual(6);
-        expect(result2[3]).toEqual(nyPeriode2);
+        expect(omitOne(result2[3], 'id')).toEqual(omitOne(nyPeriode2, 'id'));
     });
 
     it('Burde bare innehold ny periode om planen er tom', () => {
@@ -448,7 +449,7 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(4);
-        expect(result[1]).toEqual(nyPeriode);
+        expect(omitOne(result[1], 'id')).toEqual(omitOne(nyPeriode, 'id'));
         expect(result[2].fom).toEqual('2022-05-19');
         expect(result[2].tom).toEqual('2022-08-17');
     });

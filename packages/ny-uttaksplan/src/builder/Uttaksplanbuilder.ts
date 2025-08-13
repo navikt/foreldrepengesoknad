@@ -1,3 +1,5 @@
+import { Forelder } from '@navikt/fp-constants';
+
 import { Planperiode } from '../types/Planperiode';
 import { isAnnenPartsPeriode } from '../utils/periodeUtils';
 import { leggTilPeriode } from './leggTilPeriode';
@@ -169,73 +171,225 @@ const slettPeriodeOgBuild = (
     );
 };
 
-const getAnnenPartsUttak = (perioder: Planperiode[]): Planperiode[] => {
-    return perioder.filter((p) => isAnnenPartsPeriode(p));
+const getAnnenPart = (forelder: Forelder | undefined) => {
+    if (forelder) {
+        return forelder === Forelder.mor ? Forelder.farMedmor : Forelder.mor;
+    }
+
+    return undefined;
 };
 
-export const Uttaksplanbuilder = (
-    perioder: Planperiode[],
-    familiehendelsesdato: string,
-    harAktivitetskravIPeriodeUtenUttak: boolean,
-    erAdopsjon: boolean,
-    bareFarHarRett: boolean,
-    erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: string | undefined,
-    opprinneligPlan?: Planperiode[],
-) => {
-    const perioderUtenAnnenPart = finnOgSettInnHull(
-        perioder.filter((p) => !isAnnenPartsPeriode(p)),
+interface GetPerioderPåForelderParams {
+    perioder: Planperiode[];
+    forelder: Forelder | undefined;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    familiehendelsedato: string;
+    gjelderAdopsjon: boolean;
+    bareFarMedmorHarRett: boolean;
+    erFarEllerMedmor: boolean;
+    førsteUttaksdagNesteBarnsSak?: string;
+    erAnnenPart: boolean;
+}
+
+const getPerioderPåForelder = ({
+    perioder,
+    forelder,
+    harAktivitetskravIPeriodeUtenUttak,
+    familiehendelsedato,
+    gjelderAdopsjon,
+    bareFarMedmorHarRett,
+    erFarEllerMedmor,
+    førsteUttaksdagNesteBarnsSak,
+    erAnnenPart,
+}: GetPerioderPåForelderParams) => {
+    if (!forelder) {
+        if (erAnnenPart) {
+            return undefined;
+        }
+
+        return perioder;
+    }
+
+    if (erAnnenPart) {
+        return perioder.filter((p) => p.forelder === forelder);
+    }
+
+    return finnOgSettInnHull(
+        perioder.filter((p) => p.forelder === forelder),
         harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsesdato,
-        erAdopsjon,
-        bareFarHarRett,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
     );
-    let annenPartsUttak: Planperiode[] | undefined = undefined;
+};
 
-    if (opprinneligPlan) {
-        annenPartsUttak = getAnnenPartsUttak(opprinneligPlan);
+type GetPerioderParams = Omit<GetPerioderPåForelderParams, 'forelder' | 'erAnnenPart'>;
+
+const getAnnenPartsUttak = (perioder: Planperiode[] | undefined) => {
+    if (!perioder || perioder.length === 0) {
+        return undefined;
     }
 
+    return perioder.filter((p) => isAnnenPartsPeriode(p));
+};
+
+const getSøkersPerioder = ({
+    perioder,
+    harAktivitetskravIPeriodeUtenUttak,
+    familiehendelsedato,
+    gjelderAdopsjon,
+    bareFarMedmorHarRett,
+    erFarEllerMedmor,
+    førsteUttaksdagNesteBarnsSak,
+}: GetPerioderParams) => {
+    return finnOgSettInnHull(
+        perioder.filter((p) => !isAnnenPartsPeriode(p)),
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+};
+
+interface SøkerOgAnnenpartsPerioder {
+    søkersPerioder: Planperiode[];
+    annenpartsPerioder: Planperiode[] | undefined;
+}
+
+interface GetSøkerOgAnnenpartsPerioderParams extends Omit<GetPerioderPåForelderParams, 'forelder' | 'erAnnenPart'> {
+    erIPlanleggerModus: boolean;
+    periode: Planperiode;
+    opprinneligPlan: Planperiode[] | undefined;
+}
+
+const getSøkerOgAnnenpartsPerioder = ({
+    periode,
+    erIPlanleggerModus,
+    opprinneligPlan,
+    ...commonGetPerioderProps
+}: GetSøkerOgAnnenpartsPerioderParams): SøkerOgAnnenpartsPerioder => {
+    const forelder = periode.forelder;
+    const annenPart = getAnnenPart(forelder);
+    const egnePerioder = erIPlanleggerModus
+        ? getPerioderPåForelder({
+              ...commonGetPerioderProps,
+              forelder,
+              erAnnenPart: false,
+          })
+        : getSøkersPerioder({
+              ...commonGetPerioderProps,
+          });
+    const annenpartsPerioder = erIPlanleggerModus
+        ? getPerioderPåForelder({
+              ...commonGetPerioderProps,
+              forelder: annenPart,
+              erAnnenPart: true,
+          })
+        : getAnnenPartsUttak(opprinneligPlan);
+
     return {
-        leggTilPeriode: (nyPeriode: Planperiode) =>
-            leggTilPeriodeOgBuild(
-                perioder,
+        søkersPerioder: egnePerioder ?? [],
+        annenpartsPerioder: annenpartsPerioder,
+    };
+};
+
+interface UttaksplanbuilderParams {
+    perioder: Planperiode[];
+    familiehendelsedato: string;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    gjelderAdopsjon: boolean;
+    bareFarMedmorHarRett: boolean;
+    erFarEllerMedmor: boolean;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
+    opprinneligPlan?: Planperiode[];
+    erIPlanleggerModus?: boolean;
+}
+
+export const Uttaksplanbuilder = ({
+    perioder,
+    familiehendelsedato,
+    harAktivitetskravIPeriodeUtenUttak,
+    gjelderAdopsjon,
+    bareFarMedmorHarRett,
+    erFarEllerMedmor,
+    førsteUttaksdagNesteBarnsSak,
+    opprinneligPlan,
+    erIPlanleggerModus = false,
+}: UttaksplanbuilderParams) => {
+    const commonGetPerioderProps = {
+        perioder,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarMedmorHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    };
+
+    return {
+        leggTilPeriode: (nyPeriode: Planperiode) => {
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: nyPeriode,
+            });
+
+            return leggTilPeriodeOgBuild(
+                søkersPerioder,
                 nyPeriode,
-                familiehendelsesdato,
+                familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon,
-                bareFarHarRett,
+                gjelderAdopsjon,
+                bareFarMedmorHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak,
+                annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
-            ),
+            );
+        },
         leggTilPerioder: (nyePerioder: Planperiode[]) => {
+            const annenPart = getAnnenPart(nyePerioder[0].forelder);
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: nyePerioder[0],
+            });
+
             let resultat: Planperiode[] = [];
             nyePerioder.forEach((periode, index) => {
                 if (index === 0) {
                     resultat = leggTilPeriodeOgBuild(
-                        perioder,
+                        søkersPerioder,
                         periode,
-                        familiehendelsesdato,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak,
+                        annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
                     );
                 } else {
-                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    const nyAnnenPartsUttak = erIPlanleggerModus
+                        ? getPerioderPåForelder({
+                              ...commonGetPerioderProps,
+                              forelder: annenPart,
+                              erAnnenPart: true,
+                          })
+                        : getAnnenPartsUttak(opprinneligPlan);
 
                     resultat = leggTilPeriodeOgBuild(
                         perioder,
                         periode,
-                        familiehendelsesdato,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
                         nyAnnenPartsUttak,
                         førsteUttaksdagNesteBarnsSak,
@@ -244,42 +398,65 @@ export const Uttaksplanbuilder = (
             });
             return resultat;
         },
-        oppdaterPeriode: (endretPeriode: Planperiode) =>
-            oppdaterPeriodeOgBuild(
+        oppdaterPeriode: (endretPeriode: Planperiode) => {
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: endretPeriode,
+            });
+
+            return oppdaterPeriodeOgBuild(
                 endretPeriode,
-                perioderUtenAnnenPart,
-                familiehendelsesdato,
+                søkersPerioder,
+                familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon,
-                bareFarHarRett,
+                gjelderAdopsjon,
+                bareFarMedmorHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak,
+                annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
-            ),
+            );
+        },
         oppdaterPerioder: (oppdatertePerioder: Planperiode[]) => {
+            const annenPart = getAnnenPart(oppdatertePerioder[0].forelder);
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: oppdatertePerioder[0],
+            });
+
             let resultat: Planperiode[] = [];
             oppdatertePerioder.forEach((endretPeriode, index) => {
                 if (index === 0) {
                     resultat = oppdaterPeriodeOgBuild(
                         endretPeriode,
-                        perioderUtenAnnenPart,
-                        familiehendelsesdato,
+                        søkersPerioder,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak,
+                        annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
                     );
                 } else {
-                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    const nyAnnenPartsUttak = erIPlanleggerModus
+                        ? getPerioderPåForelder({
+                              ...commonGetPerioderProps,
+                              forelder: annenPart,
+                              erAnnenPart: true,
+                          })
+                        : getAnnenPartsUttak(opprinneligPlan);
+
                     resultat = leggTilPeriodeOgBuild(
                         resultat,
                         endretPeriode,
-                        familiehendelsesdato,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
                         nyAnnenPartsUttak,
                         førsteUttaksdagNesteBarnsSak,
@@ -288,42 +465,64 @@ export const Uttaksplanbuilder = (
             });
             return resultat;
         },
-        slettPeriode: (slettetPeriode: Planperiode) =>
-            slettPeriodeOgBuild(
-                perioderUtenAnnenPart,
+        slettPeriode: (slettetPeriode: Planperiode) => {
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: slettetPeriode,
+            });
+
+            return slettPeriodeOgBuild(
+                søkersPerioder,
                 slettetPeriode,
-                familiehendelsesdato,
+                familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
-                erAdopsjon,
-                bareFarHarRett,
+                gjelderAdopsjon,
+                bareFarMedmorHarRett,
                 erFarEllerMedmor,
-                annenPartsUttak,
+                annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
-            ),
+            );
+        },
         slettPerioder: (slettedePerioder: Planperiode[]) => {
+            const annenPart = getAnnenPart(slettedePerioder[0].forelder);
+            const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
+                ...commonGetPerioderProps,
+                erIPlanleggerModus,
+                opprinneligPlan,
+                periode: slettedePerioder[0],
+            });
+
             let resultat: Planperiode[] = [];
             slettedePerioder.forEach((slettetPeriode, index) => {
                 if (index === 0) {
                     resultat = slettPeriodeOgBuild(
-                        perioderUtenAnnenPart,
+                        søkersPerioder,
                         slettetPeriode,
-                        familiehendelsesdato,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
-                        annenPartsUttak,
+                        annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
                     );
                 } else {
-                    const nyAnnenPartsUttak = getAnnenPartsUttak(resultat);
+                    const nyAnnenPartsUttak = erIPlanleggerModus
+                        ? getPerioderPåForelder({
+                              ...commonGetPerioderProps,
+                              forelder: annenPart,
+                              erAnnenPart: true,
+                          })
+                        : getAnnenPartsUttak(opprinneligPlan);
                     resultat = slettPeriodeOgBuild(
                         resultat,
                         slettetPeriode,
-                        familiehendelsesdato,
+                        familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
-                        erAdopsjon,
-                        bareFarHarRett,
+                        gjelderAdopsjon,
+                        bareFarMedmorHarRett,
                         erFarEllerMedmor,
                         nyAnnenPartsUttak,
                         førsteUttaksdagNesteBarnsSak,
