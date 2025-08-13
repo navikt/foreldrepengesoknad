@@ -87,7 +87,6 @@ export const LeggTilPeriodeModalStep = ({
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${årsakValue}`,
                 readOnly: false,
-                forelder: Forelder.farMedmor,
                 periodeHullÅrsak: årsakValue,
             });
         } else {
