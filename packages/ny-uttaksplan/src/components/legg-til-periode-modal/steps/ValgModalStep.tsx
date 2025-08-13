@@ -6,8 +6,8 @@ import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
+import { ModalData } from '../../LeggTilPeriodePanel';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
-import { ModalData } from '../LeggTilPeriodeModal';
 
 interface Props {
     modalData: ModalData;
@@ -42,7 +42,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
     };
 
     return (
-        <>
+        <div className="p-4">
             <Heading size="medium">
                 <FormattedMessage id="uttaksplan.valgModal.tittel" />
             </Heading>
@@ -63,6 +63,6 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                     <ModalButtons onCancel={closeModal} isFinalStep={false} />
                 </VStack>
             </RhfForm>
-        </>
+        </div>
     );
 };

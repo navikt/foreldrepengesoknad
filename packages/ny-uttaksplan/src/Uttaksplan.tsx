@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { LeggTilPeriodePanel } from './components/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -173,19 +173,23 @@ export const UttaksplanNy = ({
             )}
 
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={openModal}>
-                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                </Button>
+                <>
+                    <Button variant="secondary" onClick={openModal}>
+                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                    </Button>
+                    {isModalOpen && (
+                        <LeggTilPeriodePanel
+                            handleAddPeriode={(periode) => {
+                                handleAddPeriode(periode);
+                                closeModal();
+                            }}
+                            erBarnetFødt={erBarnetFødt}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            onCancel={closeModal}
+                        />
+                    )}
+                </>
             )}
-            {isModalOpen ? (
-                <LeggTilPeriodeModal
-                    closeModal={closeModal}
-                    handleAddPeriode={handleAddPeriode}
-                    isModalOpen={isModalOpen}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                />
-            ) : null}
         </UttaksplanDataContext>
     );
 };

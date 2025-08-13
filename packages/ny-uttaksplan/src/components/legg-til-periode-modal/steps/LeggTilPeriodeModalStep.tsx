@@ -11,13 +11,13 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
+import { ModalData } from '../../LeggTilPeriodePanel';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../LeggTilPeriodeModal';
 import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
 
 interface Props {
@@ -107,7 +107,7 @@ export const LeggTilPeriodeModalStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4">
+            <VStack gap="4" className="p-4 rounded-lg bg-white">
                 {isOpphold === false ? (
                     <>
                         <KontotypeSpørsmål />
