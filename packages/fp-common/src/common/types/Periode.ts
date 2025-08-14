@@ -121,6 +121,16 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     stillingsprosent?: string;
 }
 
+export interface UttakAnnenPartEØSInfoPeriode extends InfoPeriodeBase {
+    type: Periodetype.Info;
+    infotype: PeriodeInfoType.uttakAnnenPart;
+    årsak: OppholdÅrsakType;
+    forelder: Forelder;
+    overskrives: boolean;
+    visPeriodeIPlan: boolean;
+    trekkdager: number;
+}
+
 export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
@@ -130,7 +140,11 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     visPeriodeIPlan: boolean;
 }
 
-export type InfoPeriode = AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
+export type InfoPeriode =
+    | AvslåttPeriode
+    | UttakAnnenPartInfoPeriode
+    | UttakAnnenPartEØSInfoPeriode
+    | UtsettelseAnnenPartInfoPeriode;
 
 export interface PeriodeUtenUttak extends PeriodeBase {
     type: Periodetype.PeriodeUtenUttak;
@@ -353,6 +367,10 @@ export const isOppholdsperiode = (periode: Periode): periode is Oppholdsperiode 
 
 export const isInfoPeriode = (periode: Periode): periode is InfoPeriode => {
     return periode.type === Periodetype.Info && periode.overskrives === true;
+};
+
+export const isUttaksperiodeAnnenpartEøs = (periode: Periode): periode is UttakAnnenPartEØSInfoPeriode => {
+    return 'trekkdager' in periode && periode.infotype === PeriodeInfoType.uttakAnnenPart;
 };
 
 export const isInfoPeriodeAnnenPart = (periode: Periode): periode is InfoPeriode => {

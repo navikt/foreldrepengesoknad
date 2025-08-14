@@ -201,11 +201,13 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         harAnnenForelderTilsvarendeRettEØS: false,
         ønskerJustertUttakVedFødsel: undefined,
         barn: [], // barn brukes ikke videre her
+        perioderAnnenpartEøs: undefined,
     };
 
     const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
         saksperioderAnnenPart,
         grunnlagForAnnenPart,
+        undefined,
         førsteUttaksdagNesteBarnsSak,
     );
 
@@ -269,7 +271,12 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, førsteUttaksdagNesteBarnsSak);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(
+        saksperioder,
+        grunnlag,
+        eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs,
+        førsteUttaksdagNesteBarnsSak,
+    );
 
     return {
         saksnummer: eksisterendeSak.saksnummer,

@@ -8,6 +8,15 @@ export interface Uttaksstatus {
     uttak: Stønadskonto[];
 }
 
+export interface UttaksstatusFuncParams {
+    erDeltUttak: boolean;
+    erEndringssøknad: boolean;
+    harKomplettUttaksplan: boolean;
+    erFarEllerMedmor: boolean;
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    uttaksplan: Periode[];
+}
+
 export const getUttaksstatus = ({
     erDeltUttak,
     erEndringssøknad,
@@ -28,12 +37,3 @@ export const getUttaksstatus = ({
             : uttak,
     };
 };
-
-interface UttaksstatusFuncParams {
-    erDeltUttak: boolean;
-    erEndringssøknad: boolean;
-    harKomplettUttaksplan: boolean;
-    erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
-    uttaksplan: Periode[];
-}
