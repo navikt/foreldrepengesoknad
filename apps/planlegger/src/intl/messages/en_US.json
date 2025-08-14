@@ -132,7 +132,7 @@
     "ErFødtPanel.Fødselsdato": "When was {antallBarn, select, 1 {the child} other {the oldest child}} born?",
     "ErFødtPanel.NårVarTermin": "When was the due date?",
     "ErFødtPanel.Født.InfoboksTittel": "If you haven't applied for parental benefit yet, you can do it now.",
-    "ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid": "You can apply for parental benefits up to three months back in time. If you apply later than that, you may loose payments for days due to a late application.",
+    "ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid": "You can apply for parental benefit up to three months back in time. If you apply later than that, you may lose payments for days due to a late application.",
     "ErFødtPanel.Født.InfoboksTekst.NAVanbefaler": "Nav recommends applying about four weeks before you plan to start the leave. The mother usually starts her leave three months before the due date.",
     "ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket": "{erAlenesøker, select, true {The other parent may be entitled to two weeks of leave in connection with the birth. If you are alone with the care and get help from others, they may be entitled to two weeks of leave. The person who is to help you must talk to their employer about the right to leave and pay. Only the parents of the child can be entitled to parental benefits from Nav.} other {The father or the co-mother may be entitled to paid leave from their employer for two weeks around the birth. If they are not entitled to payment, he or she can apply for parental benefits from Nav for these two weeks.}}",
     "ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr": "Since the child is older than three years you cannot apply for parental benefit",
