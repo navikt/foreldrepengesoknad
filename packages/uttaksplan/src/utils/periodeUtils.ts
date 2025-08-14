@@ -22,6 +22,7 @@ import {
     Uttaksperiode,
     isUttakAnnenPart,
     isUttaksperiode,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
@@ -213,7 +214,7 @@ const getPeriodeTittelInfoPeriode = (
                 getStønadskontoFromOppholdsårsak(periode.årsak),
                 periode.forelder,
                 navnPåForeldre,
-                periode.samtidigUttakProsent,
+                isUttaksperiodeAnnenpartEøs(periode) ? undefined : periode.samtidigUttakProsent,
                 erFarEllerMedmor,
             );
         case PeriodeInfoType.utsettelseAnnenPart:

@@ -15,10 +15,12 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     UtsettelseÅrsakTypeDTO,
+    UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     UttakArbeidType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+import { UttakPeriodeAnnenpartEøs } from '@navikt/fp-types';
 
 import { getKontotypeBareFarHarRett, mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 
@@ -76,7 +78,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(sakMedKunAnnenPartsUttak, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(sakMedKunAnnenPartsUttak, grunnlag, undefined, undefined);
         expect(result.length).toEqual(1);
         const infoperiode = result[0] as UttakAnnenPartInfoPeriode;
         expect(infoperiode.tidsperiode.fom).toEqual(new Date('2022-01-03'));
@@ -168,7 +170,12 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
             ] as Saksperiode[];
 
-            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomIkkeOverlapper, grunnlag, undefined);
+            const result = mapSaksperioderTilUttaksperioder(
+                perioderBeggeParterSomIkkeOverlapper,
+                grunnlag,
+                undefined,
+                undefined,
+            );
             expect(result.length).toEqual(4);
             const infoperiode1 = result[0] as UttakAnnenPartInfoPeriode;
             expect(infoperiode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
@@ -253,7 +260,12 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
             ] as Saksperiode[];
 
-            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
+            const result = mapSaksperioderTilUttaksperioder(
+                perioderBeggeParterSomOverlapper,
+                grunnlag,
+                undefined,
+                undefined,
+            );
             expect(result.length).toEqual(4);
             const uttak1 = result[0] as Uttaksperiode;
             expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
@@ -320,7 +332,12 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
             ] as Saksperiode[];
 
-            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
+            const result = mapSaksperioderTilUttaksperioder(
+                perioderBeggeParterSomOverlapper,
+                grunnlag,
+                undefined,
+                undefined,
+            );
             const uttak1 = result[0] as Uttaksperiode;
             expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
             expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
@@ -379,7 +396,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(perioderUtsettelse, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(perioderUtsettelse, grunnlag, undefined, undefined);
         expect(result.length).toEqual(2);
         const utsettelse1 = result[0] as Utsettelsesperiode;
         expect(utsettelse1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
@@ -431,7 +448,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePerioder, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(avslåttePerioder, grunnlag, undefined, undefined);
         expect(result.length).toEqual(2);
         const avslåttPeriode1 = result[0] as AvslåttPeriode;
         expect(avslåttPeriode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
@@ -470,7 +487,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePeriodeAnnenPart, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(avslåttePeriodeAnnenPart, grunnlag, undefined, undefined);
         expect(result.length).toEqual(0);
     });
     it('Skal filtrere bort søkerens avslåtte perioder som ikke trekker dager eller har PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER', () => {
@@ -507,7 +524,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, undefined, undefined);
         expect(result.length).toEqual(0);
     });
     it('Skal splitte perioder på familiehendelsesdato', () => {
@@ -529,7 +546,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, undefined, undefined);
         expect(result.length).toEqual(2);
         const periode1 = result[0] as Uttaksperiode;
         expect(periode1.tidsperiode.fom).toEqual(new Date('2021-12-30'));
@@ -557,7 +574,12 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderSøker, grunnlag, new Date('2023-01-03'));
+        const result = mapSaksperioderTilUttaksperioder(
+            avslåttePerioderSøker,
+            grunnlag,
+            undefined,
+            new Date('2023-01-03'),
+        );
         expect(result.length).toEqual(4);
         const periode1 = result[2] as Uttaksperiode;
         expect(periode1.tidsperiode.fom).toEqual(new Date('2022-12-30'));
@@ -586,7 +608,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(periodeSøker, grunnlag, new Date('2023-01-03'));
+        const result = mapSaksperioderTilUttaksperioder(periodeSøker, grunnlag, undefined, new Date('2023-01-03'));
         expect(result.length).toEqual(1);
         const periode1 = result[0] as Uttaksperiode;
         expect(periode1.erMorForSyk).toEqual(true);
@@ -626,12 +648,59 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             },
         ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderAnnenPart, grunnlag, undefined);
+        const result = mapSaksperioderTilUttaksperioder(avslåttePerioderAnnenPart, grunnlag, undefined, undefined);
         expect(result.length).toEqual(1);
         const periode1 = result[0] as AvslåttPeriode;
         expect(periode1.tidsperiode.fom).toEqual(new Date('2021-12-01'));
         expect(periode1.tidsperiode.tom).toEqual(new Date('2021-12-28'));
         expect(periode1.kontoType).toEqual(StønadskontoType.Fellesperiode);
         expect(periode1.infotype).toEqual(PeriodeInfoType.avslåttPeriode);
+    });
+
+    it('Skal legge til perioder for annenpart tatt ut i eøs hvis tilgjengelig', () => {
+        const søkersPerioderFraVedtak = [
+            {
+                periode: {
+                    fom: '2022-01-03',
+                    tom: '2022-02-04',
+                },
+                gjelderAnnenPart: false,
+                flerbarnsdager: false,
+                oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                guid: '0',
+                kontoType: StønadskontoType.Mødrekvote,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+            },
+        ] as Saksperiode[];
+        const annenpartsPerioderEøs = [
+            {
+                fom: '2022-02-05',
+                tom: '2022-03-04',
+                trekkonto: 'FELLESPERIODE',
+                trekkdager: 55,
+            },
+        ] as UttakPeriodeAnnenpartEøs[];
+
+        const result = mapSaksperioderTilUttaksperioder(
+            søkersPerioderFraVedtak,
+            grunnlag,
+            annenpartsPerioderEøs,
+            undefined,
+        );
+        expect(result.length).toEqual(2);
+        const uttakperiode = result[0] as Uttaksperiode;
+        expect(uttakperiode.tidsperiode.fom).toEqual(new Date('2022-01-03'));
+        expect(uttakperiode.tidsperiode.tom).toEqual(new Date('2022-02-04'));
+        expect(uttakperiode.konto).toEqual(StønadskontoType.Mødrekvote);
+        const uttakkAnnenpartEøs = result[1] as UttakAnnenPartEØSInfoPeriode;
+        expect(uttakkAnnenpartEøs.tidsperiode.fom).toEqual(new Date('2022-02-05'));
+        expect(uttakkAnnenpartEøs.tidsperiode.tom).toEqual(new Date('2022-03-04'));
+        expect(uttakkAnnenpartEøs.årsak).toEqual(OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
+        expect(uttakkAnnenpartEøs.trekkdager).toEqual(55);
     });
 });

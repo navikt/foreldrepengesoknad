@@ -1020,6 +1020,7 @@ export type FpSak = {
 
 export type FpVedtak = {
     perioder: UttakPeriode[];
+    perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs[];
 };
 
 export type FpÅpenBehandling = {
@@ -1095,6 +1096,13 @@ export type Tilrettelegging = {
 };
 
 export type TilretteleggingType = 'HEL' | 'DELVIS' | 'INGEN';
+
+export type UttakPeriodeAnnenpartEøs = {
+    fom: string;
+    tom: string;
+    trekkonto: KontoType;
+    trekkdager: number;
+};
 
 export type Vedtak = {
     arbeidsforhold: SvpArbeidsforhold[];

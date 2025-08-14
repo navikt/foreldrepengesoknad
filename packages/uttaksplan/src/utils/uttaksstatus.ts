@@ -8,6 +8,15 @@ export interface Uttaksstatus {
     uttak: Stønadskonto[];
 }
 
+export interface UttaksstatusFuncParams {
+    erDeltUttak: boolean;
+    erEndringssøknad: boolean;
+    harKomplettUttaksplan: boolean;
+    erFarEllerMedmor: boolean;
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    uttaksplan: Periode[];
+}
+
 export const getUttaksstatus = ({
     erDeltUttak,
     erEndringssøknad,
@@ -27,32 +36,4 @@ export const getUttaksstatus = ({
             ? uttak.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel)
             : uttak,
     };
-};
-
-export interface UttaksstatusFuncParams {
-    erDeltUttak: boolean;
-    erEndringssøknad: boolean;
-    harKomplettUttaksplan: boolean;
-    erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
-    uttaksplan: Periode[];
-}
-
-export const getUttaksstatusFunc = ({
-    erDeltUttak,
-    erEndringssøknad,
-    harKomplettUttaksplan,
-    erFarEllerMedmor,
-    tilgjengeligeStønadskontoer,
-    uttaksplan,
-}: UttaksstatusFuncParams): (() => Uttaksstatus) => {
-    return () =>
-        getUttaksstatus({
-            erDeltUttak,
-            erEndringssøknad,
-            harKomplettUttaksplan,
-            erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
-            uttaksplan,
-        });
 };

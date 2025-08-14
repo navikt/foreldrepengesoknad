@@ -201,11 +201,13 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         harAnnenForelderTilsvarendeRettEØS: false,
         ønskerJustertUttakVedFødsel: undefined,
         barn: [], // barn brukes ikke videre her
+        perioderAnnenpartEøs: undefined,
     };
 
     const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
         saksperioderAnnenPart,
         grunnlagForAnnenPart,
+        undefined,
         førsteUttaksdagNesteBarnsSak,
     );
 
@@ -227,7 +229,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const {
         dekningsgrad,
         familiehendelse: { fødselsdato: fødselsdatoFraFPSak, termindato, omsorgsovertakelse, antallBarn },
-        harAnnenForelderTilsvarendeRettEØS,
         morUføretrygd,
         rettighetType,
         sakTilhørerMor,
@@ -259,7 +260,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdatoForSaken, omsorgsovertakelse),
         familiehendelseType: getFamiliehendelseType(fødselsdatoForSaken, termindato, omsorgsovertakelse),
         ønskerJustertUttakVedFødsel: fødselsdatoForSaken === undefined ? ønskerJustertUttakVedFødsel : undefined,
-        harAnnenForelderTilsvarendeRettEØS,
     };
 
     const saksperioder = perioder
@@ -269,7 +269,12 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(saksperioder, grunnlag, førsteUttaksdagNesteBarnsSak);
+    const uttaksplan = mapSaksperioderTilUttaksperioder(
+        saksperioder,
+        grunnlag,
+        eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs,
+        førsteUttaksdagNesteBarnsSak,
+    );
 
     return {
         saksnummer: eksisterendeSak.saksnummer,
