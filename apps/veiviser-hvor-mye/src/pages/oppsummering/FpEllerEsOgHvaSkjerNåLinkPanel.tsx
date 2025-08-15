@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
@@ -22,12 +22,12 @@ export const FpEllerEsOgHvaSkjerNåLinkPanel = () => {
                     ),
                 },
                 {
-                    url: links.hvaSkjerNår,
+                    url: links.foreldrepengerPlanlegger,
                     content: (
                         <HStack gap="5" align="center" wrap={false}>
-                            <MagnifyingGlassIcon aria-hidden height={45} width={45} />
+                            <CalendarIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
-                                <FormattedMessage id="ArbeidssituasjonSide.HvaSkjer" />
+                                <FormattedMessage id="ArbeidssituasjonSide.PlanleggForeldrepenger" />
                             </Heading>
                         </HStack>
                     ),

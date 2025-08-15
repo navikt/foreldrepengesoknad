@@ -30,7 +30,7 @@ export const links = {
     søknadsfrister: 'https://www.nav.no/foreldrepenger#for-soknad',
     opphold: 'https://www.nav.no/foreldrepenger#opphold',
     hvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
-    hvorMye: 'https://familie.nav.no/hvor-mye',
+    hvorMye: 'https://nav.no/foreldrepenger/hvor-mye/',
     svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
     tilretteleggingsskjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
@@ -60,10 +60,10 @@ export const links = {
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',
-    hvaSkjerNår: 'https://familie.nav.no/soke-om-foreldrepenger',
     grunnbeløpet: 'https://www.nav.no/grunnbelopet',
     folketrygden:
         'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden',
     omForeldrepenger: 'https://www.nav.no/foreldrepenger',
     utbetalingsoversikt: 'https://www.nav.no/utbetalingsoversikt/',
+    foreldrepengerPlanlegger: 'https://www.nav.no/foreldrepenger/planlegger/',
 };
