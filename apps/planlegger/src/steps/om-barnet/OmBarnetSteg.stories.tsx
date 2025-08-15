@@ -73,3 +73,13 @@ export const FlereForsørgereFarOgFar: Story = {
         },
     },
 };
+
+export const FlereForsørgereMorOgMor: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåMedmor: 'Petra Utvikler',
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        },
+    },
+};

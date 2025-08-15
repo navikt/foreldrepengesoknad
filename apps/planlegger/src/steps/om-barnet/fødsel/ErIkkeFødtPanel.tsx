@@ -9,7 +9,6 @@ import {
     erFarDelAvSøknaden,
     erFarOgFar,
     erMorDelAvSøknaden,
-    finnSøker2Tekst,
     getFornavnPåSøker1,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
@@ -19,6 +18,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();
@@ -52,7 +52,15 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type === HvemPlanleggerType.FAR;
+    const erFar = (() => {
+        switch (hvemPlanlegger.type) {
+            case HvemPlanleggerType.MOR:
+            case HvemPlanleggerType.MOR_OG_MEDMOR:
+                return false;
+            default:
+                return true;
+        }
+    })();
 
     return (
         <VStack gap="5">
@@ -98,17 +106,15 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar: erFarMedISøknaden,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}
@@ -163,7 +169,9 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                                 id="ErIkkeFødtPanel.UnderTreMndTilTermin"
                                                 values={{
                                                     erAlenesøker,
-                                                    navn: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    navn: capitalizeFirstLetter(
+                                                        getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    ),
                                                 }}
                                             />
                                         </BodyShort>
