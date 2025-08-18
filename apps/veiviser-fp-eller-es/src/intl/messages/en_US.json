@@ -89,7 +89,7 @@
     "KravinfoBoks.DuIkkeMestSannsynligOppfyllerKravet": "You probably do not meet this requirement",
     "FpEllerEs.Tittel": "Parental benefit or lump sum grant?",
     "HvorMyeOgHvaSkjerNåLinkPanel.HvorMye": "How much?",
-    "HvorMyeOgHvaSkjerNåLinkPanel.HvaSkjer": "What will happen?",
+    "HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger": "Plan parental leave",
     "valideringsfeil.lønn.ikkeTall": "You have typed something that is not a number",
     "valideringsfeil.lønn.desimaler": "You have typed too many decimals. Type a number with the maximum of 2 decimals"
 }

@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, WalletIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
@@ -14,7 +14,7 @@ export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
                     url: links.hvorMye,
                     content: (
                         <HStack gap="5" align="center" wrap={false}>
-                            <BabyWrappedIcon aria-hidden height={45} width={45} />
+                            <WalletIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
                                 <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvorMye" />
                             </Heading>
@@ -22,12 +22,12 @@ export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
                     ),
                 },
                 {
-                    url: links.hvaSkjerNår,
+                    url: links.foreldrepengerPlanlegger,
                     content: (
                         <HStack gap="5" align="center" wrap={false}>
-                            <MagnifyingGlassIcon aria-hidden height={45} width={45} />
+                            <CalendarIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
-                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvaSkjer" />
+                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger" />
                             </Heading>
                         </HStack>
                     ),

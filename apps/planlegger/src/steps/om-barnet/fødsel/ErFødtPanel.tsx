@@ -4,12 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker as erAlene,
-    erFarDelAvSøknaden,
-    erMorDelAvSøknaden,
-    finnSøker2Tekst,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -36,7 +31,15 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
     const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type !== HvemPlanleggerType.MOR;
+    const erFar = (() => {
+        switch (hvemPlanlegger.type) {
+            case HvemPlanleggerType.MOR:
+            case HvemPlanleggerType.MOR_OG_MEDMOR:
+                return false;
+            default:
+                return true;
+        }
+    })();
 
     return (
         <VStack gap="5">
@@ -100,17 +103,16 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}

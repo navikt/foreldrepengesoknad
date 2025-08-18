@@ -119,7 +119,7 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string 
         barnet.termindato &&
         dayjs(familiehendelsedato).isBefore(dayjs(treUkerSiden(barnet.termindato)))
     ) {
-        return familiehendelsedato;
+        return getUttaksdagFraOgMedDato(familiehendelsedato);
     }
 
     return trekkUttaksdagerFraDato(
