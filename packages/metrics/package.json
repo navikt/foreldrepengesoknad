@@ -15,9 +15,9 @@
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/node": "22.15.18",
-        "eslint": "9.31.0",
-        "typescript": "5.8.3"
+        "@types/node": "24.3.0",
+        "eslint": "9.33.0",
+        "typescript": "5.9.2"
     },
     "packageManager": "pnpm@9.1.4"
 }
