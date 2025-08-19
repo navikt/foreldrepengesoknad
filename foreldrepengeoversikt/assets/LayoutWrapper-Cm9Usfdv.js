@@ -1,1 +1,0 @@
-import{j as r,W as a}from"./iframe-BKgqfQS5.js";const t=({children:e,className:s})=>r.jsx("div",{className:a("w-full md:w-[704px] m-auto",s),children:e});t.__docgenInfo={description:"",methods:[],displayName:"LayoutWrapper",props:{children:{required:!0,tsType:{name:"ReactNode"},description:""},className:{required:!1,tsType:{name:"string"},description:""}}};export{t as L};

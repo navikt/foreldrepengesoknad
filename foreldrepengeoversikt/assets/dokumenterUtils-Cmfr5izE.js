@@ -1,0 +1,1 @@
+import{h as e}from"./iframe-CE7hT7if.js";import{u as a}from"./api-CW_KiZht.js";const u=t=>{const r={};return t.forEach(o=>{const s=e(o.mottatt).format();r[s]?r[s].push(o):r[s]=[o]}),r},m=t=>`${a}/rest/dokument/hent-dokument/${t.journalpostId}/${t.dokumentId}`;export{u as g,m as l};
