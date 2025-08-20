@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, BabyWrappedIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
@@ -23,7 +23,6 @@ import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import { HvorMyeIkon } from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
 interface Props {
@@ -143,8 +142,30 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
             <div className={styles.background}>
                 <VStack gap="4" className={styles.content}>
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="OppsummeringSteg.AnnenVeiviser" />
+                        <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
+                    <Link
+                        inlineText
+                        href={links.hvorMye}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.lenkepanel}
+                    >
+                        <Box
+                            padding="4"
+                            background="surface-default"
+                            borderRadius="xlarge"
+                            shadow="medium"
+                            className={styles.panel}
+                        >
+                            <HStack gap="5" align="center">
+                                <WalletIcon height={43} width={43} />
+                                <Heading level="3" size="small">
+                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
+                                </Heading>
+                            </HStack>
+                        </Box>
+                    </Link>
                     <Link
                         inlineText
                         href={links.veiviser}
@@ -160,9 +181,9 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                             className={styles.panel}
                         >
                             <HStack gap="5" align="center">
-                                <HvorMyeIkon />
+                                <BabyWrappedIcon height={43} width={43} />
                                 <Heading level="3" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
+                                    <FormattedMessage id="OppsummeringSteg.VeiviserFpEllerEs" />
                                 </Heading>
                             </HStack>
                         </Box>
