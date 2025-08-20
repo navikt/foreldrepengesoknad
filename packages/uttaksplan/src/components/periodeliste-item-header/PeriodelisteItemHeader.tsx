@@ -1,3 +1,4 @@
+import { StarsEuIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FunctionComponent, JSX } from 'react';
@@ -17,6 +18,7 @@ import {
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { Tidsperioden, getValidTidsperiode } from '@navikt/fp-utils';
 
@@ -92,6 +94,9 @@ const getPeriodeIkon = (
                 />
             );
         case Periodetype.Info:
+            if (isUttaksperiodeAnnenpartEøs(periode)) {
+                return <StarsEuIcon title="a11y-title" fontSize="2rem" />;
+            }
             if (isUtsettelseAnnenPart(periode)) {
                 return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
             } else {

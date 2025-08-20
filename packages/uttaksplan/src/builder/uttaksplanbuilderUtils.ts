@@ -12,6 +12,7 @@ import {
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -377,14 +378,19 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
             : datoWrapper.dato;
 
         if (index < datoerIPerioden.length - 1) {
-            oppsplittetPeriode.push({
+            const endretPeriode = {
                 ...periode,
                 id: guid(),
                 tidsperiode: {
                     fom: datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste(),
                     tom: undefined!,
                 },
-            });
+            };
+            if (isUttaksperiodeAnnenpartEøs(endretPeriode)) {
+                oppsplittetPeriode.push({ ...endretPeriode, trekkdager: 0 });
+            } else {
+                oppsplittetPeriode.push(endretPeriode);
+            }
         }
     });
 
@@ -478,16 +484,13 @@ export const settInnAnnenPartsUttak = (
 
             return res;
         }
-
+        const overlappendePeriode = overlappendePerioderAnnenPart[0]; // Finnes alltid bare 1.
         if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
-
             res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Periode);
             return res;
         }
 
-        if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+        if (isUttaksperiode(p) && (p.ønskerSamtidigUttak || isUttaksperiodeAnnenpartEøs(overlappendePeriode))) {
             res.push(p);
 
             if (!isUtsettelseAnnenPart(overlappendePeriode)) {

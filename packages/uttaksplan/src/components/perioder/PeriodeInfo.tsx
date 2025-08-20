@@ -8,15 +8,17 @@ import {
     NavnPåForeldre,
     UtsettelseAnnenPartInfoPeriode,
     UtsettelseÅrsakType,
+    UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     isUttakAnnenPart,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 
 import { formaterDatoKompakt } from '../../utils/dateUtils';
 import { getForelderNavn, getOppholdskontoNavn } from '../../utils/periodeUtils';
 
 interface Props {
-    periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
+    periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | UttakAnnenPartEØSInfoPeriode;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -41,7 +43,7 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                 <span>&mdash;</span>
                 <span>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
             </strong>{' '}
-            {isUttakAnnenPart(periode)
+            {isUttakAnnenPart(periode) || isUttaksperiodeAnnenpartEøs(periode)
                 ? getOppholdskontoNavn(
                       intl,
                       periode.årsak,
