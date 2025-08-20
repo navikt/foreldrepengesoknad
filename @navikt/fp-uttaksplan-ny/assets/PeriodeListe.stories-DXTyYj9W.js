@@ -1,4 +1,4 @@
-import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeListeItem-DcNkBqGN.js";import{S as r,P as f,U as p,c as S,a as D,b as n}from"./TidsperiodeSpørsmål-idhT6PTl.js";import{A as k}from"./ArbeidsgiverInfoType-An3cd7W6.js";import{P as y}from"./PeriodeListe-U5kkrV-v.js";import"./preload-helper-D9Z9MdNV.js";const h=({perioder:T,familiehendelsedato:F,barn:u,erFarEllerMedmor:g,handleUpdatePeriode:O,handleDeletePeriode:M,handleDeletePerioder:U})=>m.jsx(D,{initialState:{[n.ER_FAR_ELLER_MEDMOR]:g,[n.FAMILIEHENDELSEDATO]:F,[n.BARN]:u,[n.FAMILIESITUASJON]:"fødsel",[n.MODUS]:"planlegger",[n.NAVN_PÅ_FORELDRE]:{farMedmor:"Far",mor:"Mor"}},children:m.jsx("div",{style:{maxWidth:"704px",margin:"2rem 4rem"},children:m.jsx(y,{perioder:T,handleUpdatePeriode:O,handleDeletePeriode:M,handleDeletePerioder:U})})}),I={title:"components/PeriodeListe",component:y,render:h},d={name:"Mor søker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-10",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"4",fom:"2024-06-11",tom:"2024-06-28",kontoType:r.Fellesperiode,forelder:e.mor,samtidigUttak:50,readOnly:!1},{id:"5",fom:"2024-07-01",tom:"2024-07-02",kontoType:r.Fedrekvote,forelder:e.mor,readOnly:!1},{id:"6",fom:"2024-07-03",tom:"2024-07-10",kontoType:r.Mødrekvote,forelder:e.mor,gradering:{aktivitet:{type:p.ORDINÆRT_ARBEID,arbeidsgiver:{id:"1",navn:"TESTY TEST",type:k.ORGANISASJON}},arbeidstidprosent:20},readOnly:!1}]}},a={name:"Mor og far med samtidig uttak",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-03",kontoType:r.Mødrekvote,forelder:e.mor,samtidigUttak:100,readOnly:!1},{id:"3",fom:"2024-04-22",tom:"2024-05-03",kontoType:r.Fedrekvote,forelder:e.farMedmor,samtidigUttak:100,readOnly:!0},{id:"4",fom:"2024-05-06",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1},{id:"5",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Fedrekvote,forelder:e.farMedmor,readOnly:!0},{id:"6",fom:"2024-07-01",tom:"2024-07-08",kontoType:r.Fellesperiode,forelder:e.farMedmor,readOnly:!0}]}},t={name:"Far søker og mor har ikke rett",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!0,familiehendelsedato:"2024-05-01",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-05-01",tom:"2024-08-21",kontoType:r.Foreldrepenger,forelder:e.farMedmor,readOnly:!1},{id:"2",fom:"2024-08-22",tom:"2024-08-29",kontoType:r.AktivitetsfriKvote,forelder:e.farMedmor,readOnly:!1},{id:"2",fom:"2024-08-30",tom:"2024-09-13",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"2",fom:"2024-09-16",tom:"2024-09-23",kontoType:r.Foreldrepenger,forelder:e.farMedmor,readOnly:!1,gradering:{aktivitet:{type:p.ORDINÆRT_ARBEID,arbeidsgiver:{id:"1",navn:"TESTY TEST",type:k.ORGANISASJON}},arbeidstidprosent:80}}]}},l={name:"Mor og far med flerbarnsdager og samtidig uttak",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,flerbarnsdager:!0,samtidigUttak:100,readOnly:!1},{id:"3",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Fedrekvote,forelder:e.farMedmor,flerbarnsdager:!0,samtidigUttak:100,readOnly:!0}]}},s={name:"Mor har ikke lagt inn uttak første seks uker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1}]}},i={name:"Mor er innlagt første seks uker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",utsettelseÅrsak:S.InstitusjonSøker,forelder:e.mor,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1}]}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+import{l as i}from"./iframe-zIH_5o8E.js";import{F as e,B as o}from"./PeriodeListeItem-DlviDpHu.js";import{S as r,P as f,U as p,c as D,a as E,b as n}from"./TidsperiodeSpørsmål-Bh3teEYa.js";import{A as k}from"./ArbeidsgiverInfoType-An3cd7W6.js";import{P as y}from"./PeriodeListe-CUMJM7yQ.js";import"./preload-helper-D9Z9MdNV.js";const h=({perioder:T,familiehendelsedato:F,barn:O,erFarEllerMedmor:g,erAleneOmOmsorg:u,handleUpdatePeriode:M,handleDeletePeriode:U,handleDeletePerioder:S})=>i.jsx(E,{initialState:{[n.ER_FAR_ELLER_MEDMOR]:g,[n.FAMILIEHENDELSEDATO]:F,[n.BARN]:O,[n.FAMILIESITUASJON]:"fødsel",[n.MODUS]:"planlegger",[n.ALENE_OM_OMSORG]:u,[n.NAVN_PÅ_FORELDRE]:{farMedmor:"Far",mor:"Mor"}},children:i.jsx("div",{style:{maxWidth:"704px",margin:"2rem 4rem"},children:i.jsx(y,{perioder:T,handleUpdatePeriode:M,handleDeletePeriode:U,handleDeletePerioder:S})})}),R={title:"components/PeriodeListe",component:y,render:h},a={name:"Mor søker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",erAleneOmOmsorg:!1,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-10",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"4",fom:"2024-06-11",tom:"2024-06-28",kontoType:r.Fellesperiode,forelder:e.mor,samtidigUttak:50,readOnly:!1},{id:"5",fom:"2024-07-01",tom:"2024-07-02",kontoType:r.Fedrekvote,forelder:e.mor,readOnly:!1},{id:"6",fom:"2024-07-03",tom:"2024-07-10",kontoType:r.Mødrekvote,forelder:e.mor,gradering:{aktivitet:{type:p.ORDINÆRT_ARBEID,arbeidsgiver:{id:"1",navn:"TESTY TEST",type:k.ORGANISASJON}},arbeidstidprosent:20},readOnly:!1}]}},d={name:"Mor og far med samtidig uttak",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",erAleneOmOmsorg:!1,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-03",kontoType:r.Mødrekvote,forelder:e.mor,samtidigUttak:100,readOnly:!1},{id:"3",fom:"2024-04-22",tom:"2024-05-03",kontoType:r.Fedrekvote,forelder:e.farMedmor,samtidigUttak:100,readOnly:!0},{id:"4",fom:"2024-05-06",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1},{id:"5",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Fedrekvote,forelder:e.farMedmor,readOnly:!0},{id:"6",fom:"2024-07-01",tom:"2024-07-08",kontoType:r.Fellesperiode,forelder:e.farMedmor,readOnly:!0}]}},t={name:"Far søker og mor har ikke rett",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!0,familiehendelsedato:"2024-05-01",erAleneOmOmsorg:!0,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-05-01",tom:"2024-08-21",kontoType:r.Foreldrepenger,forelder:e.farMedmor,readOnly:!1},{id:"2",fom:"2024-08-22",tom:"2024-08-29",kontoType:r.AktivitetsfriKvote,forelder:e.farMedmor,readOnly:!1},{id:"2",fom:"2024-08-30",tom:"2024-09-13",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"2",fom:"2024-09-16",tom:"2024-09-23",kontoType:r.Foreldrepenger,forelder:e.farMedmor,readOnly:!1,gradering:{aktivitet:{type:p.ORDINÆRT_ARBEID,arbeidsgiver:{id:"1",navn:"TESTY TEST",type:k.ORGANISASJON}},arbeidstidprosent:80}}]}},l={name:"Mor og far med flerbarnsdager og samtidig uttak",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",erAleneOmOmsorg:!1,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Mødrekvote,forelder:e.mor,flerbarnsdager:!0,samtidigUttak:100,readOnly:!1},{id:"3",fom:"2024-04-22",tom:"2024-05-31",kontoType:r.Fedrekvote,forelder:e.farMedmor,flerbarnsdager:!0,samtidigUttak:100,readOnly:!0}]}},s={name:"Mor har ikke lagt inn uttak første seks uker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",erAleneOmOmsorg:!1,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",periodeHullÅrsak:f.PERIODE_UTEN_UTTAK,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1}]}},m={name:"Mor er innlagt første seks uker",args:{handleUpdatePeriode:()=>null,handleDeletePeriode:()=>null,handleDeletePerioder:()=>null,erFarEllerMedmor:!1,familiehendelsedato:"2024-04-22",erAleneOmOmsorg:!1,barn:{type:o.FØDT,antallBarn:1,fødselsdatoer:["2023-08-19"],termindato:"2023-08-15",fnr:["19482356071"]},perioder:[{id:"1",fom:"2024-04-01",tom:"2024-04-19",kontoType:r.ForeldrepengerFørFødsel,forelder:e.mor,readOnly:!1},{id:"2",fom:"2024-04-22",tom:"2024-05-31",utsettelseÅrsak:D.InstitusjonSøker,forelder:e.mor,readOnly:!1},{id:"3",fom:"2024-06-03",tom:"2024-06-28",kontoType:r.Mødrekvote,forelder:e.mor,readOnly:!1}]}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
   name: 'Mor søker',
   args: {
     handleUpdatePeriode: () => null,
@@ -6,6 +6,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: false,
     familiehendelsedato: '2024-04-22',
+    erAleneOmOmsorg: false,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -68,7 +69,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
       readOnly: false
     }]
   }
-}`,...d.parameters?.docs?.source}}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+}`,...a.parameters?.docs?.source}}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
   name: 'Mor og far med samtidig uttak',
   args: {
     handleUpdatePeriode: () => null,
@@ -76,6 +77,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: false,
     familiehendelsedato: '2024-04-22',
+    erAleneOmOmsorg: false,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -129,7 +131,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
       readOnly: true
     }]
   }
-}`,...a.parameters?.docs?.source}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+}`,...d.parameters?.docs?.source}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
   name: 'Far søker og mor har ikke rett',
   args: {
     handleUpdatePeriode: () => null,
@@ -137,6 +139,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: true,
     familiehendelsedato: '2024-05-01',
+    erAleneOmOmsorg: true,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -192,6 +195,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: false,
     familiehendelsedato: '2024-04-22',
+    erAleneOmOmsorg: false,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -234,6 +238,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: false,
     familiehendelsedato: '2024-04-22',
+    erAleneOmOmsorg: false,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -263,7 +268,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
       readOnly: false
     }]
   }
-}`,...s.parameters?.docs?.source}}};i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
+}`,...s.parameters?.docs?.source}}};m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
   name: 'Mor er innlagt første seks uker',
   args: {
     handleUpdatePeriode: () => null,
@@ -271,6 +276,7 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
     handleDeletePerioder: () => null,
     erFarEllerMedmor: false,
     familiehendelsedato: '2024-04-22',
+    erAleneOmOmsorg: false,
     barn: {
       type: BarnType.FØDT,
       antallBarn: 1,
@@ -301,4 +307,4 @@ import{l as m}from"./iframe-DNdKhfDD.js";import{F as e,B as o}from"./PeriodeList
       readOnly: false
     }]
   }
-}`,...i.parameters?.docs?.source}}};const R=["UttaksperioderMor","UttaksperioderMorOgFar","UttaksperioderFarMorIkkeRett","UttaksperioderMorOgFarFlerbarnsdager","UttaksperioderMorIkkeSøktFørsteSeksUker","UttaksperioderMorInnlagtFørsteSeksUker"];export{t as UttaksperioderFarMorIkkeRett,d as UttaksperioderMor,s as UttaksperioderMorIkkeSøktFørsteSeksUker,i as UttaksperioderMorInnlagtFørsteSeksUker,a as UttaksperioderMorOgFar,l as UttaksperioderMorOgFarFlerbarnsdager,R as __namedExportsOrder,I as default};
+}`,...m.parameters?.docs?.source}}};const _=["UttaksperioderMor","UttaksperioderMorOgFar","UttaksperioderFarMorIkkeRett","UttaksperioderMorOgFarFlerbarnsdager","UttaksperioderMorIkkeSøktFørsteSeksUker","UttaksperioderMorInnlagtFørsteSeksUker"];export{t as UttaksperioderFarMorIkkeRett,a as UttaksperioderMor,s as UttaksperioderMorIkkeSøktFørsteSeksUker,m as UttaksperioderMorInnlagtFørsteSeksUker,d as UttaksperioderMorOgFar,l as UttaksperioderMorOgFarFlerbarnsdager,_ as __namedExportsOrder,R as default};
