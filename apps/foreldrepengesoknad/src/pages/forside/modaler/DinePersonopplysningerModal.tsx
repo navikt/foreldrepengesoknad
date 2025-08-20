@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Ingress, Link, List, Modal, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, HStack, Heading, Link, List, Modal, VStack } from '@navikt/ds-react';
 
 export const DinePersonopplysningerModal = () => {
     const intl = useIntl();
@@ -22,12 +22,12 @@ export const DinePersonopplysningerModal = () => {
             </HStack>
             <Modal ref={ref} aria-label={intl.formatMessage({ id: 'velkommen.dinePersonopplysninger.sectionheading' })}>
                 <Modal.Header>
-                    <Heading size="medium" level="1" className="velkommenModalContent__header">
+                    <Heading size="medium" level="1">
                         <FormattedMessage id="velkommen.dinePersonopplysninger.sectionheading" />
                     </Heading>
                 </Modal.Header>
                 <Modal.Body>
-                    <article className="velkommenModalContent velkommenModalContent--50">
+                    <article>
                         <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage
@@ -46,9 +46,9 @@ export const DinePersonopplysningerModal = () => {
                                 />
                             </BodyShort>
                             <div>
-                                <Ingress>
+                                <BodyLong size="large">
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.tittel" />
-                                </Ingress>
+                                </BodyLong>
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
                                 </BodyShort>
@@ -79,9 +79,9 @@ export const DinePersonopplysningerModal = () => {
                                 </BodyShort>
                             </div>
                             <div>
-                                <Ingress>
+                                <BodyLong size="large">
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.tittel" />
-                                </Ingress>
+                                </BodyLong>
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
                                 </BodyShort>
@@ -114,9 +114,9 @@ export const DinePersonopplysningerModal = () => {
                                 </List>
                             </div>
                             <div>
-                                <Ingress>
+                                <BodyLong size="large">
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel" />
-                                </Ingress>
+                                </BodyLong>
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
                                 </BodyShort>
@@ -139,9 +139,9 @@ export const DinePersonopplysningerModal = () => {
                                 </List>
                             </div>
                             <div>
-                                <Ingress as="h2">
+                                <BodyLong size="large">
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.tittel" />
-                                </Ingress>
+                                </BodyLong>
                                 <BodyShort>
                                     <FormattedMessage
                                         id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.html"

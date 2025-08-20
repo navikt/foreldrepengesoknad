@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
-import React from 'react';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
@@ -84,15 +83,7 @@ export const globalTypes = {
 };
 
 const preview: Preview = {
-    decorators: [
-        withIntlProvider,
-        withThemeDecorator,
-        (Story) => (
-            <div id="app" style={{ padding: '40px' }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [withIntlProvider, withThemeDecorator],
     // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
     beforeAll: async () => {
         initialize({

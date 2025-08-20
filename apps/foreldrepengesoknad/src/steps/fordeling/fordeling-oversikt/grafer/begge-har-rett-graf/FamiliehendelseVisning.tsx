@@ -37,7 +37,7 @@ export const FamiliehendelseVisning = ({ rowHeight, familiehendelseNavn, fieldWi
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <HeartFillIcon
                     style={{
-                        color: '#C30000',
+                        color: 'var(--ax-danger-700)',
                         width: `${iconSize}px`,
                         height: `${iconSize}px`,
                         gridRow: '2',

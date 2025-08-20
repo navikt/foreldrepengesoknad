@@ -76,15 +76,7 @@ export const globalTypes = {
 };
 
 const preview: Preview = {
-    decorators: [
-        withIntlProvider,
-        withThemeDecorator,
-        (Story) => (
-            <div id="app" style={{ backgroundColor: 'white', padding: '40px' }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [withIntlProvider, withThemeDecorator],
     // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
     beforeAll: async () => {
         initialize({

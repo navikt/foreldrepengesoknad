@@ -1,7 +1,7 @@
 .morOppstartinformasjon {
     margin-top: 3.2rem;
     margin-left: -13rem;
-    background-color: var(--Surface-Selected, #e6f0ff);
+    background-color: var(--ax-accent-200);
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
