@@ -45,7 +45,7 @@ export const BekreftelseSendtSøknad = ({
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack gap="space-24" className="p-6 bg-ax-bg-default rounded-lg shadow-xsmall">
+        <VStack gap="space-24" className="p-6 bg-ax-bg-default rounded-lg">
             <HStack gap="space-16">
                 <div className="w-[52px] h-[52px] rounded-[50%] bg-ax-success-200 pt-[14px] pl-[14px]">
                     <CheckmarkIcon fontSize={24} className="text-ax-success-900" aria-hidden={true} />

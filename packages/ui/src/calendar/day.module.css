@@ -397,7 +397,7 @@
 }
 
 .purpleDay {
-    background-color: var(--ax-meta-purple-300) !important;
+    background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
 }
 

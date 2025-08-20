@@ -2,7 +2,6 @@
     padding: var(--ax-space-24) var(--ax-space-16);
     border: none;
     border-radius: 0.5rem;
-    box-shadow: var(--a-shadow-small);
 }
 
 .sakLink > :global(.navds-link-panel__content) {

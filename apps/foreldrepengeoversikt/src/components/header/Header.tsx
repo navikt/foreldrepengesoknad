@@ -70,13 +70,13 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div className="w-[60px] h-[60px] rounded-full bg-ax-brand-blue-200 pt-2 pl-2">
-                    <YtelseIkon fontSize={44} className="text-lightblue-800" />
+                <div className="w-[60px] h-[60px] rounded-full bg-ax-brand-blue-400 pt-2 pl-2">
+                    <YtelseIkon fontSize={44} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
             <Show below="md">
-                <div className="w-[38px] h-[38px] rounded-full bg-ax-brand-blue-200 pt-2 pl-2">
-                    <YtelseIkon fontSize={22} className="text-lightblue-800" />
+                <div className="w-[38px] h-[38px] rounded-full bg-ax-brand-blue-400 pt-2 pl-2">
+                    <YtelseIkon fontSize={22} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
         </>
