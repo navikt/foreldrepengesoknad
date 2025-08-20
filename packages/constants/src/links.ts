@@ -30,7 +30,7 @@ export const links = {
     søknadsfrister: 'https://www.nav.no/foreldrepenger#for-soknad',
     opphold: 'https://www.nav.no/foreldrepenger#opphold',
     hvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
-    hvorMye: 'https://nav.no/foreldrepenger/hvor-mye/',
+    hvorMye: 'https://www.nav.no/foreldrepenger/hvor-mye',
     svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
     tilretteleggingsskjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
