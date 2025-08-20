@@ -18,13 +18,13 @@ export const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, descript
         <Page
             header={
                 <BlueHeading>
-                    <HStack gap="5" align="center" wrap={false}>
+                    <HStack gap="space-20" align="center" wrap={false}>
                         {icon && (
                             <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                             </IconCircleWrapper>
                         )}
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Heading size={description ? 'xsmall' : 'medium'}>{label}</Heading>
                             {description && <BodyShort size="medium">{description}</BodyShort>}
                         </VStack>

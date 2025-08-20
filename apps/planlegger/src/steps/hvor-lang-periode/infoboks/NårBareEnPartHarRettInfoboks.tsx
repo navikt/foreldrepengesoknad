@@ -38,7 +38,7 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
             color="gray"
         >
             {søker2HarIkkeRett && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
@@ -57,7 +57,7 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                 </VStack>
             )}
             {søker1HarIkkeRett && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"

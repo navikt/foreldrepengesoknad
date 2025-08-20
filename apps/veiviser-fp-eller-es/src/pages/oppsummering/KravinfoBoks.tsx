@@ -21,12 +21,12 @@ export const KravinfoBoks = ({
     testId,
     jobberINorge,
 }: Props) => (
-    <VStack gap="1" data-testid={testId}>
+    <VStack gap="space-4" data-testid={testId}>
         <Heading size="small" level={headerLevel}>
             {headerText}
         </Heading>
-        <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
-            <HStack gap="2" wrap={false}>
+        <Box.New background="brand-blue-moderate" padding="4" borderRadius="large">
+            <HStack gap="space-8" wrap={false}>
                 <div>
                     {erOppfylt && (
                         <CheckmarkCircleFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden color="#06893A" />
@@ -35,7 +35,7 @@ export const KravinfoBoks = ({
                         <XMarkOctagonFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden fill="#010B18" />
                     )}
                 </div>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Heading size="xsmall" level="4">
                         {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
                         {!erOppfylt && (
@@ -51,6 +51,6 @@ export const KravinfoBoks = ({
                     <BodyShort>{boxBodyText}</BodyShort>
                 </VStack>
             </HStack>
-        </Box>
+        </Box.New>
     </VStack>
 );

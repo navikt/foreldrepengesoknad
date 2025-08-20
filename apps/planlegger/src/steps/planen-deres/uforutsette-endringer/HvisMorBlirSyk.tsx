@@ -25,7 +25,7 @@ export const HvisMorBlirSyk = ({ arbeidssituasjon, barnet, hvemPlanlegger }: Pro
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
     return (
-        <HStack gap="5" wrap={false}>
+        <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
                     <StethoscopeIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />

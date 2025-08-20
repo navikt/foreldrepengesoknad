@@ -62,8 +62,8 @@ export const OppsummeringPanel = <TYPE extends string>({
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange} noFieldsRequired>
-            <VStack gap="10">
-                <VStack gap="3">{children}</VStack>
+            <VStack gap="space-40">
+                <VStack gap="space-12">{children}</VStack>
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}

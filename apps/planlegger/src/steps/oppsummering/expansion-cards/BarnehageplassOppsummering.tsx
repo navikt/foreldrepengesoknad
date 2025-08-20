@@ -29,10 +29,10 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
     const antallBarn = barnet.antallBarn;
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="6" align="center" wrap={false}>
+                    <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <TeddyBearIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
@@ -42,9 +42,9 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <HStack justify="space-between" wrap={false}>
                                     <Heading size="xsmall" level="4">
                                         <FormattedMessage

@@ -25,11 +25,11 @@ export const AndreInntektskilderFieldArray = () => {
     const andreInntektskilder = watch('andreInntektskilder');
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             {fields.map((field, index) => {
                 const inntektskilde = andreInntektskilder[index];
                 return (
-                    <VStack gap="10" key={field.id}>
+                    <VStack gap="space-40" key={field.id}>
                         <RhfRadioGroup
                             name={`andreInntektskilder.${index}.type`}
                             control={control}
@@ -59,7 +59,7 @@ export const AndreInntektskilderFieldArray = () => {
                         )}
                         {index === 0 && fields.length > 1 && <HorizontalLine />}
                         {index !== 0 && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <HStack>
                                     <Button
                                         icon={<XMarkIcon aria-hidden />}

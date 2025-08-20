@@ -19,7 +19,7 @@ export const OppholdsÅrsakSpørsmål = () => {
     const { control } = useFormContext<LeggTilPeriodeModalFormValues>();
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <RhfRadioGroup
                 name="årsak"
                 control={control}

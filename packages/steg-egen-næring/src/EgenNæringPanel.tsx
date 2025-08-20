@@ -126,7 +126,7 @@ export const EgenNæringPanel = <TYPE extends string>({
     return (
         <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="næringstype"

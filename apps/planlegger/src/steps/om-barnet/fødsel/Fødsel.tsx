@@ -25,7 +25,7 @@ export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBa
     const erBarnetFødt = formMethods.watch('erBarnetFødt');
 
     return (
-        <VStack gap="8">
+        <VStack gap="space-32">
             <BlueRadioGroup
                 name="erBarnetFødt"
                 control={formMethods.control}

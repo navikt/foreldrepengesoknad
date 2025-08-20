@@ -30,7 +30,7 @@ export const ShareDataInfobox = ({ erAlenesøker }: Props) => (
         color="gray"
         icon={<BookmarkIcon aria-hidden height={24} width={24} />}
     >
-        <VStack gap="4">
+        <VStack gap="space-16">
             <BodyShort>
                 <FormattedMessage id="OmPlanleggerenSteg.TaVarePå" values={{ erAlenesøker }} />
             </BodyShort>

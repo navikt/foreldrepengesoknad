@@ -592,7 +592,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                             {startStønadsperiodeNyttBarn && (
                                 <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                             )}
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Uttaksplan
                                     foreldreSituasjon={foreldreSituasjon}
                                     forelderVedAleneomsorg={forelderVedAleneomsorg}

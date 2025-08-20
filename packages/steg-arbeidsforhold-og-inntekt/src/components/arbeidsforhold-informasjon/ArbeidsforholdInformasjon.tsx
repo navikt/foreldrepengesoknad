@@ -19,7 +19,7 @@ export const ArbeidsforholdInformasjon = ({ appOrigin, arbeidsforhold, visMangle
     const intl = useIntl();
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (

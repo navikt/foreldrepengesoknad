@@ -42,7 +42,7 @@ export const FordelingsdetaljerPanel = ({
             shouldFadeIn
             color="green"
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     {erFødsel && (
                         <>

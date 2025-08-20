@@ -64,12 +64,12 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="6">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-24">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorMyeSteg.Tittel" />
                         </Heading>
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
                                 <RhfTextField
                                     name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
@@ -98,7 +98,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                             )}
                         </VStack>
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BluePanel isDarkBlue={true}>
                                     <RhfTextField
                                         name="lønnSøker2"
@@ -124,7 +124,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                 )}
                             </VStack>
                         )}
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <Infobox
                                 header={<FormattedMessage id="HvorMyeSteg.ViteMer" values={{ erAleneforsørger }} />}
                                 icon={

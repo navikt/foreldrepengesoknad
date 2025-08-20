@@ -25,7 +25,7 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
             icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ufør.Infoboks.ErUfør"

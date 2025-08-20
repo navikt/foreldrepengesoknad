@@ -60,7 +60,7 @@ export const MedTooltip: Story = {
     args: {
         ...Default.args,
         dateTooltipCallback: (date: string) => (
-            <VStack gap="1">
+            <VStack gap="space-4">
                 <BodyShort>Dette er en tooltip</BodyShort>
                 <Detail>{date}</Detail>
             </VStack>

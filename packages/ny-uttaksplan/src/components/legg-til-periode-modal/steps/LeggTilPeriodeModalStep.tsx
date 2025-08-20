@@ -107,7 +107,7 @@ export const LeggTilPeriodeModalStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4">
+            <VStack gap="space-16">
                 {isOpphold === false ? (
                     <>
                         <KontotypeSpørsmål />

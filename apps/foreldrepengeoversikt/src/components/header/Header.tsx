@@ -36,7 +36,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 
 function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
-        <div className={`bg-bg-default border-b-2 border-deepblue-200 mb-8`}>
+        <div className={`bg-ax-bg-default border-b-2 border-ax-brand-blue-300 mb-8`}>
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
@@ -44,14 +44,14 @@ function HeaderWrapper({ children }: { readonly children: ReactNode }) {
 
 function SimpleHeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
-        <div className={`bg-bg-default`}>
+        <div className={`bg-ax-bg-default`}>
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
 
 function BlueDot() {
-    return <div className="h-[4px] w-[4px] rounded-[50%] bg-deepblue-300" />;
+    return <div className="h-[4px] w-[4px] rounded-[50%] bg-ax-brand-blue-400" />;
 }
 
 function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
@@ -70,12 +70,12 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div className="w-[60px] h-[60px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                <div className="w-[60px] h-[60px] rounded-full bg-ax-brand-blue-200 pt-2 pl-2">
                     <YtelseIkon fontSize={44} className="text-lightblue-800" />
                 </div>
             </Show>
             <Show below="md">
-                <div className="w-[38px] h-[38px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                <div className="w-[38px] h-[38px] rounded-full bg-ax-brand-blue-200 pt-2 pl-2">
                     <YtelseIkon fontSize={22} className="text-lightblue-800" />
                 </div>
             </Show>
@@ -86,7 +86,7 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
 export function ForsideHeader() {
     return (
         <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="start">
+            <HGrid columns="max-content 1fr" gap="space-24" align="start">
                 <BabyIkon ytelse={undefined} />
                 <VStack>
                     <Heading level="1" size="medium">
@@ -197,10 +197,10 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
 
     return (
         <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="start">
+            <HGrid columns="max-content 1fr" gap="space-24" align="start">
                 <BabyIkon ytelse={sak.ytelse} />
                 <VStack>
-                    <HStack gap="6" align="center">
+                    <HStack gap="space-24" align="center">
                         <Heading level="1" size="medium">
                             Din sak
                         </Heading>
@@ -217,8 +217,8 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
                         </HStack>
                     </Show>
                     <Show below="md">
-                        <VStack gap="1">
-                            <HStack gap="2" align="center">
+                        <VStack gap="space-4">
+                            <HStack gap="space-8" align="center">
                                 <Detail uppercase>{sak.ytelse}</Detail>
                                 <BlueDot />
                                 <SaksnummerDetail />

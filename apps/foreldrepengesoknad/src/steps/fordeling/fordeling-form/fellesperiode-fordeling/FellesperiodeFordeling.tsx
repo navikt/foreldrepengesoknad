@@ -120,7 +120,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
     );
     const harHeleUkerTilFordeling = dagerMedFellesperiode % 5 === 0;
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <div className="pl-4 pb-4">
@@ -130,13 +130,13 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                             values={{ harHeleUkerTilFordeling }}
                         />
                     </Heading>
-                    <BodyLong className="text-text-subtle">
+                    <BodyLong className="text-ax-text-neutral-subtle">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål.description"
                             values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
                         />
                     </BodyLong>
-                    <HStack gap="5" align="start">
+                    <HStack gap="space-20" align="start">
                         <RhfTextField
                             control={control}
                             name="antallUkerFellesperiodeTilSøker"

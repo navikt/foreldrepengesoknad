@@ -148,12 +148,12 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     return (
         <form>
             <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-                <VStack gap="6">
+                <VStack gap="space-24">
                     <HStack justify="space-between">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                         </Heading>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Button
                                 size="xsmall"
                                 variant="secondary"
@@ -189,7 +189,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             </div>
                         </Infobox>
                     )}
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <ToggleGroup
                             defaultValue={hvorLangPeriode?.dekningsgrad}
                             size={isDesktop ? 'medium' : 'small'}
@@ -248,7 +248,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             )}
                     </VStack>
 
-                    <VStack gap="5">
+                    <VStack gap="space-20">
                         <div className={styles.calendar}>
                             <UttaksplanKalender
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
@@ -275,7 +275,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                         color="gray"
                         icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyLong>
                                 <FormattedMessage
                                     id="OversiktSteg.Infoboks.Utkast.Tekst"
@@ -300,7 +300,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             </HStack>
                         </VStack>
                     </Infobox>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}
                             barnet={omBarnet}

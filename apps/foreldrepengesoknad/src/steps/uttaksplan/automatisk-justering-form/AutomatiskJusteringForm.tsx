@@ -74,7 +74,7 @@ export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFøds
     return (
         <UttaksplanFormComponents.Form includeButtons={false}>
             <div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     {infoTekst && <Alert variant="info">{infoTekst}</Alert>}
                     {visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering) && (
                         <UttaksplanFormComponents.YesOrNoQuestion

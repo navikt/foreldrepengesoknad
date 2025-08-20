@@ -27,66 +27,66 @@
 }
 
 .periode-liste-header--farge-blaa {
-    color: var(--a-blue-400);
+    color: var(--ax-accent-500);
 }
 
 .periode-liste-header--farge-gronn {
-    color: var(--a-green-400);
+    color: var(--ax-success-500);
 }
 
 .periode-liste-header--farge-gul {
-    color: var(--a-orange-300);
+    color: var(--ax-warning-400);
 }
 
 .periode-liste-header--farge-graa {
-    color: var(--a-gray-400);
+    color: var(--ax-neutral-500);
 }
 
 .periode-liste-header--farge-lilla {
-    color: var(--a-purple-400);
+    color: var(--ax-meta-purple-500);
 }
 
 .periode-liste-header--farge-red {
-    color: var(--a-red-500);
+    color: var(--ax-danger-600);
 }
 
 .periode-liste-header--farge-bg-lysblaa {
-    background-color: var(--a-blue-50);
+    background-color: var(--ax-accent-100);
 }
 
 .periode-liste-header--farge-bg-lysblaa-gronn {
     background: linear-gradient(
         135deg,
-        var(--a-green-100) 0%,
-        var(--a-green-100) 50%,
-        var(--a-blue-50) 50%,
-        var(--a-blue-50) 100%
+        var(--ax-success-200) 0%,
+        var(--ax-success-200) 50%,
+        var(--ax-accent-100) 50%,
+        var(--ax-accent-100) 100%
     );
 }
 
 .periode-liste-header--farge-bg-gul {
-    background-color: var(--a-orange-100);
+    background-color: var(--ax-warning-200);
 }
 
 .periode-liste-header--farge-bg-gronn {
-    background-color: var(--a-green-100);
+    background-color: var(--ax-success-200);
 }
 
 .periode-liste-header--farge-bg-graa {
-    background-color: var(--a-surface-hover);
+    background-color: var(--ax-bg-neutral-moderate-hoverA);
 }
 
 .periode-liste-header--farge-bg-lilla {
-    background-color: var(--a-purple-100);
+    background-color: var(--ax-meta-purple-200);
 }
 
 .periode-liste-header--farge-bg-blaa {
     background-color: white;
-    box-shadow: inset 0px 0px 0px 2px var(--a-blue-400);
+    box-shadow: inset 0px 0px 0px 2px var(--ax-accent-500);
 }
 
 .periode-liste-header--farge-bg-red {
-    background-color: var(--a-red-50);
+    background-color: var(--ax-danger-100);
 }
 
 @media (max-width: 767px) {

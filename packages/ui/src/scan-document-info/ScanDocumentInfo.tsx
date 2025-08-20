@@ -12,7 +12,7 @@ export const ScanDocumentInfo = () => (
             </ExpansionCard.Title>
         </ExpansionCard.Header>
         <ExpansionCard.Content>
-            <VStack gap="5">
+            <VStack gap="space-20">
                 <BodyLong>
                     <FormattedMessage id="ScanDocumentInfo.Del1" />
                 </BodyLong>

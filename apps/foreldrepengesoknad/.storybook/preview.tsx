@@ -12,7 +12,7 @@ import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import '../src/index.css';
@@ -68,11 +68,25 @@ export const globalTypes = {
             dynamicTitle: true,
         },
     },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
 };
 
 const preview: Preview = {
     decorators: [
         withIntlProvider,
+        withThemeDecorator,
         (Story) => (
             <div id="app" style={{ padding: '40px' }}>
                 <Story />
@@ -91,4 +105,5 @@ const preview: Preview = {
     loaders: [mswLoader],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

@@ -34,7 +34,7 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
     };
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Infobox
                 header={
                     lønnSøker <= monthlyMax ? (
@@ -60,7 +60,7 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                 color="green"
                 icon={<WalletIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
             >
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorMyeSteg.Utregning"

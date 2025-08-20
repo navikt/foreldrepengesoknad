@@ -57,8 +57,8 @@ export const HvemPlanleggerSteg = () => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <BodyShort>
                             <FormattedMessage id="HarValgfrieFelt" />
                         </BodyShort>
@@ -95,7 +95,7 @@ export const HvemPlanleggerSteg = () => {
                         </BlueRadioGroup>
                         {type && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
-                                <VStack gap="10">
+                                <VStack gap="space-40">
                                     {erMorDelAvSøknadenGittType(type) && (
                                         <RhfTextField
                                             name="navnPåMor"

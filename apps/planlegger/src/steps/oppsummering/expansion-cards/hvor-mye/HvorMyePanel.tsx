@@ -33,9 +33,9 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
         Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <BluePanel>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <HStack justify="space-between" wrap={false}>
                         <Heading size="xsmall" level="4" spacing>
                             <FormattedMessage

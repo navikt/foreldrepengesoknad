@@ -32,7 +32,7 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
             }
             color="green"
         >
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <BodyShort>
                     <FormattedMessage
                         id="HarIkkeRettTilFpInfobox.AntattLønn"

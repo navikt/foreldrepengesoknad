@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--a-text-subtle);
+    color: var(--ax-text-neutral-subtle);
     font-size: 12px;
     font-style: normal;
     font-weight: 600;

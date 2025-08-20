@@ -117,7 +117,7 @@ export const PerioderFieldArray = ({
 
                 return (
                     <Fragment key={field.id}>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
                                 <Tag variant="info-moderate">
@@ -258,7 +258,7 @@ export const PerioderFieldArray = ({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                 })}
                             >
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
                                     </BodyShort>
@@ -270,7 +270,7 @@ export const PerioderFieldArray = ({
                         </div>
                         {måSendeNySøknad && (
                             <Alert variant="warning">
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <Heading size="small">
                                         <FormattedMessage id="perioder.alert.nySøknad.title" />
                                     </Heading>

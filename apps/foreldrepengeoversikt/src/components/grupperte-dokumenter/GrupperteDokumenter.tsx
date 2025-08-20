@@ -23,7 +23,7 @@ export const GrupperteDokumenter = ({ dokumenter }: Props) => {
                         boxShadow: 'inset 0 -2px 0 0 rgb(7 26 54 / 21%)',
                     }}
                 >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                         <FolderIcon aria-hidden={true} />
                         <BodyShort>{dokumenter.length} dokumenter</BodyShort>
                     </HStack>

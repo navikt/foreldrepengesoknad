@@ -32,8 +32,8 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
                 )
             }
         >
-            <HStack gap="2">
-                <VStack gap="4">
+            <HStack gap="space-8">
+                <VStack gap="space-16">
                     <BodyShort>
                         <FormattedMessage id="HøyInntektInfobox.OppgittHøyereInntekt" />
                     </BodyShort>

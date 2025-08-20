@@ -48,7 +48,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="forside.tittel" />}>
-            <VStack gap="8">
+            <VStack gap="space-32">
                 <GuidePanel poster>
                     <BodyShort size="medium">
                         <FormattedMessage id="forside.guidepanel" />
@@ -79,7 +79,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     />
                 </GuidePanel>
                 <Alert variant="info">
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <div>
                             <FormattedMessage
                                 id="forside.tilrettelegging.info.del1"

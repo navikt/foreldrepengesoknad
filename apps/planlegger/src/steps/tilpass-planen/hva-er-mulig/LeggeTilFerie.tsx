@@ -20,7 +20,7 @@ export const LeggeTilFerie = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunFarSøker2EllerMedmorHarRett = hvemHarRett === 'kunSøker2HarRett';
     return (
-        <HStack gap="5" wrap={false}>
+        <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
                     <ParasolBeachIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />

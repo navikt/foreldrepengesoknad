@@ -43,7 +43,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
     return (
         <>
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <RhfDatepicker
                         name="overtakelsesdato"
                         control={formMethods.control}
@@ -98,7 +98,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyLong>
                             <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
                         </BodyLong>

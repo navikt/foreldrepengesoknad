@@ -12,7 +12,7 @@ const meta = {
     render: (props) => {
         return (
             <MemoryRouter>
-                <LayoutWrapper className="pt-1 pb-1 pl-4 pr-4 bg-deepblue-50">
+                <LayoutWrapper className="pt-1 pb-1 pl-4 pr-4 bg-ax-brand-blue-100">
                     <Svangerskapspenger {...props} />
                 </LayoutWrapper>
             </MemoryRouter>

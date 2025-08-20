@@ -45,10 +45,10 @@ export const BekreftelseSendtSøknad = ({
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack gap="6" className="p-6 bg-white rounded-large shadow-xsmall">
-            <HStack gap="4">
-                <div className="w-[52px] h-[52px] rounded-[50%] bg-green-100 pt-[14px] pl-[14px]">
-                    <CheckmarkIcon fontSize={24} className="text-green-800" aria-hidden={true} />
+        <VStack gap="space-24" className="p-6 bg-ax-bg-default rounded-lg shadow-xsmall">
+            <HStack gap="space-16">
+                <div className="w-[52px] h-[52px] rounded-[50%] bg-ax-success-200 pt-[14px] pl-[14px]">
+                    <CheckmarkIcon fontSize={24} className="text-ax-success-900" aria-hidden={true} />
                 </div>
                 <VStack>
                     <Heading level="2" size="small">
@@ -66,7 +66,7 @@ export const BekreftelseSendtSøknad = ({
                 {manglendeVedlegg.length > 0 && (
                     <Accordion.Item>
                         <Accordion.Header>
-                            <VStack gap="1">
+                            <VStack gap="space-4">
                                 <Detail textColor="subtle">
                                     <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
                                 </Detail>
@@ -76,7 +76,7 @@ export const BekreftelseSendtSøknad = ({
                             </VStack>
                         </Accordion.Header>
                         <Accordion.Content>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BodyLong>
                                     <FormattedMessage id="BekreftelseSendtSøknad.ManglendeDokumentasjonDetaljer" />
                                 </BodyLong>
@@ -165,7 +165,7 @@ const ForeldrepengerBekreftelse = () => {
             {visInformasjonOmInntektsmelding && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
                                 Neste steg
                             </Detail>
@@ -195,7 +195,7 @@ const ForeldrepengerBekreftelse = () => {
             {harMinstEttArbeidsforhold && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle">
                                 <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
                             </Detail>
@@ -214,7 +214,7 @@ const ForeldrepengerBekreftelse = () => {
             <TidligstMuligeSvar />
             <Accordion.Item>
                 <Accordion.Header>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <Detail textColor="subtle">
                             <FormattedMessage id="BekreftelseSendtSøknad.TilSenere" />
                         </Detail>
@@ -245,7 +245,7 @@ const SvangerskapspengerBekreftelse = () => {
             {visInformasjonOmInntektsmelding && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
                                 Neste steg
                             </Detail>
@@ -287,7 +287,7 @@ const TidligstMuligeSvar = () => {
     return (
         <Accordion.Item>
             <Accordion.Header>
-                <VStack gap="1">
+                <VStack gap="space-4">
                     <Detail textColor="subtle">
                         <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
                     </Detail>

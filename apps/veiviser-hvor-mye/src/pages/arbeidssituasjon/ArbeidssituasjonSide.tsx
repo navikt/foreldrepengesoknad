@@ -90,7 +90,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
             icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
+                <VStack gap="space-40" style={{ flex: 1 }}>
                     <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
                         <Label>
                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
@@ -127,7 +127,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                             }
                             color="gray"
                         >
-                            <VStack gap="6">
+                            <VStack gap="space-24">
                                 <BodyShort>
                                     <FormattedMessage id="ArbeidssituasjonSide.SNKanIkkeBruke" />
                                 </BodyShort>
@@ -142,9 +142,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                     )}
                     {!formValues.erSelvstendigNæringsdrivende &&
                         (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BluePanel isDarkBlue={gjennomsnittslønnPerMåned === undefined} shouldFadeIn>
-                                    <VStack gap="6">
+                                    <VStack gap="space-24">
                                         {formValues.erArbeidstakerEllerFrilanser && !formValues.harUtbetalingFraNav && (
                                             <div>
                                                 <Label>
@@ -171,7 +171,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </div>
                                         )}
 
-                                        <VStack gap="4">
+                                        <VStack gap="space-16">
                                             <RhfTextField
                                                 name="lønnMåned1"
                                                 control={formMethods.control}

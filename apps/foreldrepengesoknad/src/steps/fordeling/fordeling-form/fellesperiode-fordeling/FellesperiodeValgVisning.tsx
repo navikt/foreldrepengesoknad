@@ -19,7 +19,7 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
     const fordelingErValgt =
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
-        <VStack gap="1" aria-hidden={true}>
+        <VStack gap="space-4" aria-hidden={true}>
             <Heading size="xsmall">
                 <FormattedMessage
                     id="fordeling.fellesperiodeVisning.sumUker"

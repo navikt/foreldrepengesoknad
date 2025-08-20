@@ -41,22 +41,22 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             <Heading level="2" size="medium" spacing>
                 {erSøknad ? 'Dette har du søkt om' : 'Dette har du fått vedtatt'}
             </Heading>
-            <VStack gap="4" className="bg-white p-4">
+            <VStack gap="space-16" className="bg-ax-bg-default p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
                     <React.Fragment key={gruppertePerioder[0].fom}>
                         <GruppertePerioder perioder={gruppertePerioder} />
-                        <hr className="text-border-divider" />
+                        <hr className="text-ax-border-neutral-subtle" />
                     </React.Fragment>
                 ))}
-                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                <HGrid gap="space-8" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>
                         {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
                     </BodyShort>
                     <BodyShort> </BodyShort>
                     <TreUkerFørTermin />
                 </HGrid>
-                <hr className="text-border-divider" />
-                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                <hr className="text-ax-border-neutral-subtle" />
+                <HGrid gap="space-8" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>{capitalizeFirstLetter(formatDateMedUkedag(terminDato))}</BodyShort>
                     <BodyShort> </BodyShort>
                     <Termin />
@@ -68,7 +68,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
-        <HGrid gap="2" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
+        <HGrid gap="space-8" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
             {sortBy(perioder, (p) => p.aktivitet.arbeidsgiverNavn).map((p, index) => {
                 const arbeidsgiverNavn =
                     capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
@@ -138,10 +138,10 @@ const DuHarArbeid = ({ prosentArbeid }: { prosentArbeid: number }) => {
     return (
         <HStack
             wrap={false}
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-deepblue-50 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-brand-blue-100 rounded-3xl"
         >
             <BodyShort>{prosentArbeid} % i jobb</BodyShort>
             <JobbIkon />
@@ -159,10 +159,10 @@ const DuHarSvangerskapspenger = ({
     return (
         <HStack
             wrap={false}
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-success-200 rounded-3xl"
         >
             <VStack>
                 <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
@@ -176,10 +176,10 @@ const DuHarSvangerskapspenger = ({
 const DuHarFerie = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-warning-200 rounded-3xl"
             wrap={false}
         >
             <BodyShort>Du har ferie</BodyShort>
@@ -191,10 +191,10 @@ const DuHarFerie = () => {
 const DuErSykemeldt = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-warning-200 rounded-3xl"
             wrap={false}
         >
             <BodyShort>Du er sykmeldt</BodyShort>
@@ -206,10 +206,10 @@ const DuErSykemeldt = () => {
 const TreUkerFørTermin = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-purple-50 rounded-3xl"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-meta-purple-100 rounded-3xl"
             wrap={false}
         >
             <BodyShort>Du kan søke om foreldrepenger</BodyShort>
@@ -220,40 +220,45 @@ const TreUkerFørTermin = () => {
 
 const Termin = () => {
     return (
-        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-3xl">
+        <HStack
+            gap="space-16"
+            align="center"
+            justify="space-between"
+            className="pt-2 pb-2 pl-4 pr-4 bg-ax-danger-100 rounded-3xl"
+        >
             <BodyShort>Termin</BodyShort>
-            <HeartFillIcon fontSize="2.5rem" className="text-icon-danger p-05" aria-hidden />
+            <HeartFillIcon fontSize="2.5rem" className="text-ax-text-danger-decoration p-05" aria-hidden />
         </HStack>
     );
 };
 
 const BandasjeIkon = () => (
-    <div className="rounded-3xl bg-orange-200 justify-self-end">
-        <BandageFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    <div className="rounded-3xl bg-ax-warning-300 justify-self-end">
+        <BandageFillIcon fontSize={'2.5rem'} className=" text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const ParasollIkon = () => (
-    <div className="rounded-3xl bg-orange-200 justify-self-end">
-        <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    <div className="rounded-3xl bg-ax-warning-300 justify-self-end">
+        <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const GravidIkon = () => (
-    <div className="rounded-3xl bg-green-200 justify-self-end">
-        <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
+    <div className="rounded-3xl bg-ax-success-300 justify-self-end">
+        <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-ax-bg-success-strong p-05" aria-hidden />
     </div>
 );
 
 const JobbIkon = () => (
-    <div className="rounded-3xl bg-deepblue-100 justify-self-end">
-        <BriefcaseClockFillIcon fontSize={'2.5rem'} className=" text-deepblue-500 p-05" aria-hidden />
+    <div className="rounded-3xl bg-ax-brand-blue-200 justify-self-end">
+        <BriefcaseClockFillIcon fontSize={'2.5rem'} className=" text-ax-brand-blue-600 p-05" aria-hidden />
     </div>
 );
 
 const BarnevognIkon = () => (
-    <div className="rounded-3xl bg-purple-100 justify-self-end">
-        <StrollerFillIcon fontSize={'2.5rem'} className=" text-purple-500 p-05" aria-hidden />
+    <div className="rounded-3xl bg-ax-meta-purple-200 justify-self-end">
+        <StrollerFillIcon fontSize={'2.5rem'} className=" text-ax-meta-purple-600 p-05" aria-hidden />
     </div>
 );
 

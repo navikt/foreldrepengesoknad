@@ -69,8 +69,8 @@ export const OmBarnetSteg = () => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading level="2" size="medium">
                             <FormattedMessage id="OmBarnetSteg.Tittel" />
                         </Heading>

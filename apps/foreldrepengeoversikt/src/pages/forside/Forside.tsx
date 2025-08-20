@@ -56,7 +56,7 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
 
     return (
         <PageRouteLayout header={<ForsideHeader />}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={undefined}

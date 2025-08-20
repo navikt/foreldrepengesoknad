@@ -42,9 +42,9 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id={'Søknad.Pageheading'} />}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <GuidePanel poster>
-                    <VStack gap="5">
+                    <VStack gap="space-20">
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del1" />
                         </BodyShort>
@@ -63,7 +63,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                             <FormattedMessage id={'Velkommen.Bobletekst.Del2'} />
                         </List.Item>
                     </List>
-                    <VStack gap="5">
+                    <VStack gap="space-20">
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del3" />
                         </BodyShort>
@@ -81,7 +81,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                         </ExpansionCard.Title>
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
-                        <VStack gap="5">
+                        <VStack gap="space-20">
                             <BodyShort>
                                 <FormattedMessage id="Velkommen.Info.Del1" />
                             </BodyShort>
@@ -94,7 +94,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                             <BodyShort>
                                 <FormattedMessage id="Velkommen.Info.Del4" />
                             </BodyShort>
-                            <HStack gap="1">
+                            <HStack gap="space-4">
                                 <BodyShort>
                                     <FormattedMessage id="Velkommen.Info.Del5" />
                                 </BodyShort>
@@ -120,13 +120,13 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                         intl.formatMessage({ id: 'Velkommen.Validering.BekreftLestOgForståttRettigheter' })
                     }
                 >
-                    <VStack gap="5">
-                        <HStack gap="1">
+                    <VStack gap="space-20">
+                        <HStack gap="space-4">
                             <BodyShort>
                                 <FormattedMessage id="Velkommen.Plikter.ApneLabel" />
                             </BodyShort>
                             <BodyShort>
-                                <Link href={links.plikter} style={{ color: 'var(--a-text-action)' }}>
+                                <Link href={links.plikter} style={{ color: 'var(--ax-text-accent-subtle)' }}>
                                     <FormattedMessage id="Velkommen.LestOgForstått.Link" />
                                 </Link>
                             </BodyShort>

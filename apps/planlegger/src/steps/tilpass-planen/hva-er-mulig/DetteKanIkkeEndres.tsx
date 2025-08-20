@@ -30,7 +30,7 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
     const morHarRett = hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett';
 
     return (
-        <HStack gap="5" wrap={false}>
+        <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
                     <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
@@ -40,7 +40,7 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                 <Heading size="small">
                     <FormattedMessage id="HvaErMulig.KanIkkeEndres" />
                 </Heading>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     {!erFedre &&
                         hvemHarRett !== 'kunSøker2HarRett' &&
                         hvemPlanlegger.type !== HvemPlanleggerType.FAR && (

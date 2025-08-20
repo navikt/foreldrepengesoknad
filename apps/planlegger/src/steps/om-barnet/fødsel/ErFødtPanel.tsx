@@ -42,9 +42,9 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
     })();
 
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <RhfDatepicker
                         name="fødselsdato"
                         control={formMethods.control}
@@ -90,7 +90,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                         </BodyShort>
@@ -130,7 +130,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         shouldFadeIn
                         color="green"
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage
                                     id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"

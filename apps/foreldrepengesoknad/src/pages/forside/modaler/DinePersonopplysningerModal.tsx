@@ -28,7 +28,7 @@ export const DinePersonopplysningerModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <article className="velkommenModalContent velkommenModalContent--50">
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage
                                     id="velkommen.dinePersonopplysninger.behandling.html"

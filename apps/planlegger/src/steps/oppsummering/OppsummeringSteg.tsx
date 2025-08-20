@@ -60,10 +60,10 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
     return (
         <>
             <OppsummeringHeader>
-                <VStack gap="10">
-                    <VStack gap="5">
+                <VStack gap="space-40">
+                    <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
-                            <VStack gap="5">
+                            <VStack gap="space-20">
                                 <Infobox
                                     header={
                                         erAleneforsørger ? (
@@ -92,7 +92,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                             </VStack>
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
@@ -126,7 +126,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         )}
                     </VStack>
 
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <HStack>
                             <Button
                                 variant="secondary"
@@ -140,7 +140,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                 </VStack>
             </OppsummeringHeader>
             <div className={styles.background}>
-                <VStack gap="4" className={styles.content}>
+                <VStack gap="space-16" className={styles.content}>
                     <Heading level="2" size="medium">
                         <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
@@ -173,20 +173,20 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         rel="noreferrer"
                         className={styles.lenkepanel}
                     >
-                        <Box
+                        <Box.New
                             padding="4"
-                            background="surface-default"
+                            background="default"
                             borderRadius="xlarge"
-                            shadow="medium"
+                            shadow="dialog"
                             className={styles.panel}
                         >
-                            <HStack gap="5" align="center">
+                            <HStack gap="space-20" align="center">
                                 <BabyWrappedIcon height={43} width={43} />
                                 <Heading level="3" size="small">
                                     <FormattedMessage id="OppsummeringSteg.VeiviserFpEllerEs" />
                                 </Heading>
                             </HStack>
-                        </Box>
+                        </Box.New>
                     </Link>
                 </VStack>
             </div>

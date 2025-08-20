@@ -17,7 +17,7 @@ body {
 
 #app {
     flex: 1;
-    background-color: var(--a-gray-100);
+    background-color: var(--ax-neutral-200);
 }
 
 @media (max-width: 768px) {

@@ -135,7 +135,7 @@ export const ValgtDekningsgradInfoboks = ({
                 (hvemHarRett === 'kunSøker1HarRett' &&
                     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
                     erAdopsjon)) && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"

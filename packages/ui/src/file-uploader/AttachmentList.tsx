@@ -15,11 +15,11 @@ export const AttachmentList = ({ headingText, attachments, deleteAttachment, get
     const intl = useIntl();
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Heading level="3" size="xsmall">
                 {headingText}
             </Heading>
-            <VStack gap="3">
+            <VStack gap="space-12">
                 {attachments.map((attachment) => (
                     <FileUpload.Item
                         key={attachment.attachmentData.id}

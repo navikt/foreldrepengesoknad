@@ -198,7 +198,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <MorInnlagtDokumentasjon
                             attachments={morInnlagtVedlegg}
                             familiehendelsesdato={familiehendelsesdato}

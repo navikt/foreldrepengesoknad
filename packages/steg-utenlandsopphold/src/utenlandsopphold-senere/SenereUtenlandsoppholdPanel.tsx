@@ -60,9 +60,9 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdNeste12Mnd)}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
-                    <VStack gap="10" align="start">
+                    <VStack gap="space-40" align="start">
                         {fields.map((field, index) => (
                             <Fragment key={field.id}>
                                 <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />

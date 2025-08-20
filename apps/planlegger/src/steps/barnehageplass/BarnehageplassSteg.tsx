@@ -62,11 +62,11 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <VStack gap="8">
+            <VStack gap="space-32">
                 <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyLong>
                         <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
                     </BodyLong>

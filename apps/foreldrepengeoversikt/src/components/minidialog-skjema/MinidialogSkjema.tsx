@@ -132,7 +132,7 @@ export const MinidialogSkjema = ({
 
     if (ettersendelseError) {
         return (
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <ScrollToTop />
                 <Alert variant="error"> {ettersendelseError}</Alert>
                 <Link to={`/sak/${minidialog.saksnr}`}>
@@ -144,8 +144,8 @@ export const MinidialogSkjema = ({
 
     return (
         <form onSubmit={handleSubmit}>
-            <VStack gap="8">
-                <VStack gap="5">
+            <VStack gap="space-32">
+                <VStack gap="space-20">
                     <Chat avatar="Nav" name="Nav" timestamp={formatDate(minidialog.opprettet)}>
                         <Chat.Bubble>
                             <FormattedMessage

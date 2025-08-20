@@ -126,9 +126,9 @@ export const DekningsgradForm = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ErrorSummaryHookForm />
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <RhfRadioGroup
                         name="dekningsgrad"
                         control={formMethods.control}

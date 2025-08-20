@@ -57,7 +57,7 @@ export const OversiktPerDel = ({
     return (
         <VStack
             className={classNames(styles.oversiktPerDel, hoverClass)}
-            gap="2"
+            gap="space-8"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
@@ -65,7 +65,7 @@ export const OversiktPerDel = ({
                 <BodyLong className={styles.uker}>{tittel}</BodyLong>
             </div>
             <DelGraf fordelingsdager={delInformasjon.fordelingDager} sumDager={delInformasjon.sumDager} />
-            <VStack gap="2">
+            <VStack gap="space-8">
                 {delInformasjon.fordelingInfo.map((infoTekst) => {
                     return (
                         <BodyLong size="medium" key={guid()}>

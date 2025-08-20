@@ -31,7 +31,7 @@ interface ManglerDokumentasjonProps {
 }
 
 const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonProps) => (
-    <VStack gap="2">
+    <VStack gap="space-8">
         <Label>
             {headerLabel} <FormattedMessage id="dokumentasjon.mangler" />
         </Label>
@@ -252,7 +252,7 @@ export const DokumentasjonSendSenereLabel = ({
             );
         case Skjemanummer.DOK_UTDANNING_MOR:
             return (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="manglendeVedlegg.studerer.label" />{' '}
                         <FormattedMessage id="dokumentasjon.mangler" />
@@ -291,7 +291,7 @@ export const DokumentasjonSendSenereLabel = ({
             );
         case Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR:
             return (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="manglendeVedlegg.studererOgJobber.label" />{' '}
                         <FormattedMessage id="dokumentasjon.mangler" />

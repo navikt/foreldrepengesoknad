@@ -56,7 +56,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
             <Heading size="medium">
                 <FormattedMessage id="uttaksplan.tidsperiodeSpørsmål.heading" />
             </Heading>
-            <HStack gap="4">
+            <HStack gap="space-16">
                 <RhfDatepicker
                     name="fom"
                     control={control}

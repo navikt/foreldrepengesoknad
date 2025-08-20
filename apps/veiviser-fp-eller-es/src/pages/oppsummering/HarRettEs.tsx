@@ -28,9 +28,9 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
-                <VStack gap="8">
-                    <VStack gap="8" align="center">
+            <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
+                <VStack gap="space-32">
+                    <VStack gap="space-32" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
                         <Heading size="medium" align="center" className="m-6" level="2">
                             {erMor ? (
@@ -40,8 +40,8 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                             )}
                         </Heading>
                     </VStack>
-                    <Box background="bg-default" padding="4" borderRadius="large">
-                        <VStack gap="2">
+                    <Box.New background="default" padding="4" borderRadius="large">
+                        <VStack gap="space-8">
                             <Heading size="xsmall" level="2">
                                 <FormattedMessage id="OppsummeringSide.HvaErEs" />
                             </Heading>
@@ -55,9 +55,9 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 />
                             </BodyShort>
                         </VStack>
-                    </Box>
+                    </Box.New>
                 </VStack>
-            </Box>
+            </Box.New>
 
             <HStack justify="space-around">
                 <Link href={links.søknadEngangsstønad} target="_blank" rel="norefferer">
@@ -71,7 +71,7 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                     </Button>
                 </Link>
             </HStack>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} />
                 <HvorforHarJegIkkeRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
             </VStack>

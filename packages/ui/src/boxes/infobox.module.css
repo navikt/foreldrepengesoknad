@@ -8,15 +8,15 @@
 }
 
 .blue {
-    background-color: var(--a-deepblue-100);
+    background-color: var(--ax-brand-blue-200);
 }
 
 .green {
-    background-color: var(--a-limegreen-200);
+    background-color: var(--ax-meta-lime-300);
 }
 
 .gray {
-    background-color: var(--a-gray-100);
+    background-color: var(--ax-neutral-200);
 }
 
 .animation {

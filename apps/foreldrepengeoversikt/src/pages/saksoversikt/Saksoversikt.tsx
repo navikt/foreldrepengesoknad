@@ -123,7 +123,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
 
     if (harIkkeOppdatertSak) {
         return (
-            <VStack gap="2">
+            <VStack gap="space-8">
                 {nettoppSendtInnSøknad && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
@@ -150,7 +150,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     }
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
@@ -163,7 +163,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
             )}
 
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
-            <VStack gap="1">
+            <VStack gap="space-4">
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                     showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
@@ -181,7 +181,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 <section className="mb-12">
                     <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
                 </section>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
+                <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
                     {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
@@ -220,21 +220,21 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 )}
                 {gjeldendeSak.ytelse === 'SVANGERSKAPSPENGER' && <Svangerskapspenger svpSak={gjeldendeSak} />}
                 {gjeldendeSak.ytelse === 'ENGANGSSTØNAD' && !gjeldendeSak.sakAvsluttet && (
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <ContentSection
                             heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}
                             showSkeleton={ENGANGSTØNAD === undefined}
                             skeletonProps={{ height: '90px', variant: 'rounded' }}
                         >
-                            <HStack gap="8" align="center">
+                            <HStack gap="space-32" align="center">
                                 <WalletIcon
-                                    className="p-1 rounded-full text-icon-info bg-green-100"
+                                    className="p-1 rounded-full text-ax-text-info-decoration bg-ax-success-200"
                                     width={40}
                                     height={40}
                                     aria-hidden
                                 />
 
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     {ENGANGSTØNAD && (
                                         <Heading size="small">
                                             <FormattedMessage

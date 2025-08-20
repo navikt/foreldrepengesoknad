@@ -93,8 +93,8 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
                         </Heading>
@@ -135,7 +135,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                     }
                                     color="gray"
                                 >
-                                    <VStack gap="2">
+                                    <VStack gap="space-8">
                                         <BodyShort>
                                             <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
                                         </BodyShort>
@@ -194,7 +194,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <ValgtDekningsgradInfoboks
                                     key={valgtDekningsgrad}
                                     barnet={barnet}

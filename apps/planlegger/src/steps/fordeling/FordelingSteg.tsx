@@ -153,8 +153,8 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="FordelingSteg.Tittel" />
                         </Heading>
