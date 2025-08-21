@@ -8,7 +8,7 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { PeriodeHullType } from '../../types/Planperiode';
-import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 // TODO (TOR) Bør ikkje denne komponenten ligga under folder legg-til-periode-modal? Den blir kun brukt der.
 // Det er bedre å ha ein funksjonell inndeling enn gruppering av like komponentar
@@ -16,7 +16,7 @@ import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/L
 export const OppholdsÅrsakSpørsmål = () => {
     const intl = useIntl();
 
-    const { control } = useFormContext<LeggTilPeriodeModalFormValues>();
+    const { control } = useFormContext<LeggTilPeriodePanelFormValues>();
 
     return (
         <VStack gap="4">

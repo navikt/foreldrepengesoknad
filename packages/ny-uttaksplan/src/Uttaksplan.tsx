@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodePanel } from './components/LeggTilPeriodePanel';
+import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';

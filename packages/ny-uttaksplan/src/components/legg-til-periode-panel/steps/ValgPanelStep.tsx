@@ -6,13 +6,13 @@ import { Heading, Radio, VStack } from '@navikt/ds-react';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { ModalData } from '../../LeggTilPeriodePanel';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { PanelData } from '../LeggTilPeriodePanel';
 
 interface Props {
-    modalData: ModalData;
-    setModalData: (data: ModalData) => void;
-    closeModal: () => void;
+    panelData: PanelData;
+    setPanelData: (data: PanelData) => void;
+    closePanel: () => void;
 }
 
 export enum HvaVilDuGjøre {
@@ -24,18 +24,18 @@ interface FormValues {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
 }
 
-export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const ValgPanelStep = ({ panelData, setPanelData, closePanel }: Props) => {
     const intl = useIntl();
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            hvaVilDuGjøre: modalData.hvaVilDuGjøre,
+            hvaVilDuGjøre: panelData.hvaVilDuGjøre,
         },
     });
 
     const onSubmit = (values: FormValues) => {
-        setModalData({
-            ...modalData,
+        setPanelData({
+            ...panelData,
             hvaVilDuGjøre: values.hvaVilDuGjøre,
             currentStep: 'step2',
         });
@@ -60,7 +60,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                             <FormattedMessage id="uttaksplan.valgModal.leggTilFerieEllerOpphold" />
                         </Radio>
                     </RhfRadioGroup>
-                    <ModalButtons onCancel={closeModal} isFinalStep={false} />
+                    <ModalButtons onCancel={closePanel} isFinalStep={false} />
                 </VStack>
             </RhfForm>
         </div>

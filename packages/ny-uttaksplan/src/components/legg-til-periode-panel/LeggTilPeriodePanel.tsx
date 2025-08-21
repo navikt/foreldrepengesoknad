@@ -7,9 +7,9 @@ import { Heading } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
-import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { LeggTilPeriodeModalStep } from './legg-til-periode-modal/steps/LeggTilPeriodeModalStep';
-import { HvaVilDuGjøre, ValgModalStep } from './legg-til-periode-modal/steps/ValgModalStep';
+import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { LeggTilPeriodePanelStep } from './steps/LeggTilPeriodePanelStep';
+import { HvaVilDuGjøre, ValgPanelStep } from './steps/ValgPanelStep';
 
 interface Props {
     handleAddPeriode: (periode: Planperiode) => void;
@@ -18,11 +18,11 @@ interface Props {
     onCancel: () => void;
 }
 
-type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
+type PanelStep = 'step1' | 'step2' | 'step3' | 'step4';
 
-export interface ModalData {
+export interface PanelData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
-    currentStep: ModalStep;
+    currentStep: PanelStep;
     fom?: string;
     tom?: string;
     kontoType?: StønadskontoType;
@@ -31,7 +31,7 @@ export interface ModalData {
 }
 
 export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAdopsjon, onCancel }: Props) {
-    const initialModalState: ModalData = {
+    const initialPanelState: PanelData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
         tom: undefined,
@@ -41,24 +41,24 @@ export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAd
         årsak: undefined,
     };
 
-    const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { currentStep, hvaVilDuGjøre } = modalData;
+    const [panelData, setPanelData] = useState<PanelData>(initialPanelState);
+    const { currentStep, hvaVilDuGjøre } = panelData;
 
     const closeBox = () => {
-        setModalData(initialModalState);
+        setPanelData(initialPanelState);
         onCancel();
     };
 
     const renderContent = () => {
         switch (currentStep) {
             case 'step1':
-                return <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeBox} />;
+                return <ValgPanelStep panelData={panelData} setPanelData={setPanelData} closePanel={closeBox} />;
             case 'step2':
                 return (
-                    <LeggTilPeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeBox}
+                    <LeggTilPeriodePanelStep
+                        panelData={panelData}
+                        setPanelData={setPanelData}
+                        closePanel={closeBox}
                         erBarnetFødt={erBarnetFødt}
                         gjelderAdopsjon={gjelderAdopsjon}
                         handleAddPeriode={handleAddPeriode}
@@ -69,7 +69,7 @@ export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAd
                 return null;
         }
     };
-
+    // Todo: deaktiver når åpnes? At innholder
     return (
         <div className="border rounded-lg bg-white">
             <div className="flex items-center gap-2 p-4 bg-grayalpha-100">
