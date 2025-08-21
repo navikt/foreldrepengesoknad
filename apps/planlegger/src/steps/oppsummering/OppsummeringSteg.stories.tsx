@@ -296,9 +296,6 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
-        fordeling: {
-            antallDagerSøker1: 25,
-        },
         hvorMye: {
             lønnSøker1: 70000,
         },
