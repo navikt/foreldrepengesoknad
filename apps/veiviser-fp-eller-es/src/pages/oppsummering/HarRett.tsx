@@ -29,7 +29,13 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
             <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
-                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
+                        <StrollerIcon
+                            height={48}
+                            width={48}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-accent-500)"
+                        />
                         <Heading size="medium" align="center" className="m-6" level="2">
                             {erMor ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
@@ -56,7 +62,15 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
             </Box.New>
             {erMor && (
                 <Infobox
-                    icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <InformationIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-neutral-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     color="gray"
                 >
                     <BodyShort>

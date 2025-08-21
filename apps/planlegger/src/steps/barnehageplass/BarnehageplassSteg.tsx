@@ -99,7 +99,13 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         color="blue"
                         icon={
                             <IconCircleWrapper color="lightBlue" size="medium">
-                                <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                                <BabyWrappedIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-brand-blue-700)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             </IconCircleWrapper>
                         }
                     >
@@ -128,7 +134,13 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                     <Infobox
                         header={<FormattedMessage id="Barnehageplass.BarnehageTittel" />}
                         icon={
-                            <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                            <InformationIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-neutral-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         }
                         color="gray"
                     >

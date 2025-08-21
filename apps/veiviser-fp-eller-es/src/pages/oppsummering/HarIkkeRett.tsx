@@ -29,7 +29,13 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
             <Box.New background="neutral-moderate" borderColor="brand-blue" padding="8" borderRadius="large">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
-                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
+                        <StrollerIcon
+                            height={48}
+                            width={48}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-accent-500)"
+                        />
                         <Heading size="medium" align="center" className="m-6" level="2">
                             {jobberIkkeINorge ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRettNorge" />
@@ -52,7 +58,7 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     <BabyWrappedIcon
                                         height={24}
                                         width={24}
-                                        color="#236B7D"
+                                        color="var(--ax-accent-800)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

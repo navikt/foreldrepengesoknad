@@ -175,7 +175,13 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                         <Infobox
                             header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
                             icon={
-                                <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                                <PersonGroupIcon
+                                    height={24}
+                                    width={24}
+                                    fontSize="1.5rem"
+                                    color="var(--ax-bg-accent-strong)"
+                                    aria-hidden
+                                />
                             }
                             color="green"
                         >

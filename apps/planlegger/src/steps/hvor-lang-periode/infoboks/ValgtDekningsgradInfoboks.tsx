@@ -90,7 +90,15 @@ export const ValgtDekningsgradInfoboks = ({
                     }}
                 />
             }
-            icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CalendarIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
             color="green"
         >

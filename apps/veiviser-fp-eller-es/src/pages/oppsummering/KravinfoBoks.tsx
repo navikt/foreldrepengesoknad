@@ -29,11 +29,15 @@ export const KravinfoBoks = ({
             <HStack gap="space-8" wrap={false}>
                 <div>
                     {erOppfylt && (
-                        <CheckmarkCircleFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden color="#06893A" />
+                        <CheckmarkCircleFillIcon
+                            height={24}
+                            width={24}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-bg-success-strong)"
+                        />
                     )}
-                    {!erOppfylt && (
-                        <XMarkOctagonFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden fill="#010B18" />
-                    )}
+                    {!erOppfylt && <XMarkOctagonFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
                 </div>
                 <VStack gap="space-8">
                     <Heading size="xsmall" level="4">

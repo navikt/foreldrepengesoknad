@@ -107,7 +107,7 @@ export const OmBarnetSteg = () => {
                                     <PersonGroupIcon
                                         height={24}
                                         width={24}
-                                        color="#7F8900"
+                                        color="var(--ax-bg-success-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

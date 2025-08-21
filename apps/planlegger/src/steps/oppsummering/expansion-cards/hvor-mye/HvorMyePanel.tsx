@@ -49,7 +49,13 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                             />
                         </Heading>
                         <IconCircleWrapper size="medium" color="blue">
-                            <WalletIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            <WalletIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-accent-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         </IconCircleWrapper>
                     </HStack>
 

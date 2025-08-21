@@ -12,7 +12,15 @@ export const KravFarEllerMedmor = () => {
                 <FormattedMessage id="HvorforHarJegRettPanel.FarEllerMedmor" />
             </Heading>
             <Infobox
-                icon={<QuestionmarkIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+                icon={
+                    <QuestionmarkIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-neutral-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
+                }
                 color="gray"
             >
                 <VStack gap="space-8">

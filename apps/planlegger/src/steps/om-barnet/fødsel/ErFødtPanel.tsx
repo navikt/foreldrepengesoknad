@@ -86,7 +86,15 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
             {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >
@@ -126,7 +134,14 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 values={{ erAlenesøker, antallBarn }}
                             />
                         }
-                        icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" />}
+                        icon={
+                            <TasklistStartIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-success-strong)"
+                                fontSize="1.5rem"
+                            />
+                        }
                         shouldFadeIn
                         color="green"
                     >

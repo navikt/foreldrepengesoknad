@@ -94,7 +94,15 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                     header={
                         <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfo" values={{ erAlenesøker }} />
                     }
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >

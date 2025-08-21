@@ -22,7 +22,15 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
                 />
             }
             color="green"
-            icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CircleSlashIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
         >
             <VStack gap="space-8">

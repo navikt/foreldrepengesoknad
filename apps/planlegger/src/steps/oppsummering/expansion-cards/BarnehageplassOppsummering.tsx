@@ -62,7 +62,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
                                         <BabyWrappedIcon
                                             height={24}
                                             width={24}
-                                            color="#236B7D"
+                                            color="var(--ax-bg-accent-strong)"
                                             fontSize="1.5rem"
                                             aria-hidden
                                         />
@@ -99,7 +99,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
                                 <InformationIcon
                                     height={24}
                                     width={24}
-                                    color="#020C1CAD"
+                                    color="var(--ax-bg-neutral-strong)"
                                     fontSize="1.5rem"
                                     aria-hidden
                                 />

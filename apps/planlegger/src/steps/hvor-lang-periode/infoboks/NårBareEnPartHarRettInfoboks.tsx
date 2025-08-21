@@ -34,7 +34,15 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                     }}
                 />
             }
-            icon={<PersonGroupIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <PersonGroupIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             color="gray"
         >
             {søker2HarIkkeRett && (

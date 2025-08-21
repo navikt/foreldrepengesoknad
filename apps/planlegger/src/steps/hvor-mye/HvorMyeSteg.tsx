@@ -131,7 +131,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     <SackKronerIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

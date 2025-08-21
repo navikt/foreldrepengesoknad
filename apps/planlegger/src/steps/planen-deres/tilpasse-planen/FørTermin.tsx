@@ -21,7 +21,13 @@ export const FørTermin = ({ barnet, hvemPlanlegger }: Props) => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                    <PersonPregnantIcon
+                        height={22}
+                        width={22}
+                        fontSize="1.5rem"
+                        color="var(--ax-bg-accent-strong)"
+                        aria-hidden
+                    />
                 </IconCircleWrapper>
             </div>
             <div>

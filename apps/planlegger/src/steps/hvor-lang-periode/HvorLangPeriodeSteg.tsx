@@ -101,7 +101,13 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                             icon={
-                                <CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                                <CalendarIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-bg-neutral-strong)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             }
                             color="gray"
                         >

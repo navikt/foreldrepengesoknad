@@ -72,7 +72,14 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                                             <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                         )
                                     }
-                                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" aria-hidden />}
+                                    icon={
+                                        <TasklistStartIcon
+                                            height={24}
+                                            width={24}
+                                            color="var(--ax-bg-success-strong)"
+                                            aria-hidden
+                                        />
+                                    }
                                     color="green"
                                 >
                                     <BodyShort>

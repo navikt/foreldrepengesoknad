@@ -31,7 +31,13 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
             <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
-                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
+                        <StrollerIcon
+                            height={48}
+                            width={48}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-accent-500)"
+                        />
                         <Heading size="medium" align="center" className="m-6" level="2">
                             {erMor ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettPåEs" />

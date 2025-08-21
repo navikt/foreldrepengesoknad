@@ -20,7 +20,7 @@ export const CalendarIconLabel = ({ children, iconType }: Props) => {
             <div className={styles.pinkPanel}>
                 <HStack gap="space-8" align="center">
                     {children}
-                    <HeartFillIcon color="#F68282" aria-hidden />
+                    <HeartFillIcon color="var(--ax-bg-warning-strong)" aria-hidden />
                 </HStack>
             </div>
         );
