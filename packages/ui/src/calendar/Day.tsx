@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 
-import '@navikt/ds-css';
 import { Popover } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';

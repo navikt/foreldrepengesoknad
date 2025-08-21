@@ -21,7 +21,7 @@
 }
 
 .periode-liste-header__hendelse-wrapper {
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: space-between;
 }
@@ -81,7 +81,7 @@
 }
 
 .periode-liste-header--farge-bg-blaa {
-    background-color: white;
+    background-color: var(--ax-bg-default);
     box-shadow: inset 0px 0px 0px 2px var(--ax-accent-500);
 }
 

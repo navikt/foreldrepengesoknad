@@ -59,7 +59,7 @@
 }
 
 .lightgreenDay {
-    background-color: var(--a-green-100) !important;
+    background-color: var(--ax-success-400) !important;
     border-top: 2px solid var(--ax-success-400);
     border-bottom: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
@@ -161,19 +161,19 @@
 .blueStripedDay {
     background: linear-gradient(
         45deg,
-        var(--a-blue-200) 0%,
-        var(--a-blue-200) 15%,
+        var(--ax-accent-400) 0%,
+        var(--ax-accent-400) 15%,
         var(--ax-bg-default) 15%,
         var(--ax-bg-default) 30%,
-        var(--a-blue-200) 30%,
-        var(--a-blue-200) 45%,
+        var(--ax-accent-400) 30%,
+        var(--ax-accent-400) 45%,
         var(--ax-bg-default) 45%,
         var(--ax-bg-default) 60%,
-        var(--a-blue-200) 60%,
-        var(--a-blue-200) 75%,
+        var(--ax-accent-400) 60%,
+        var(--ax-accent-400) 75%,
         var(--ax-bg-default) 75%,
         var(--ax-bg-default) 90%,
-        var(--a-blue-200) 90%
+        var(--ax-accent-400) 90%
     ) !important;
     border-top: 2px solid var(--ax-accent-500);
     border-bottom: 2px solid var(--ax-accent-500);
@@ -183,19 +183,19 @@
 .blueStripedDaySelected {
     background: linear-gradient(
         45deg,
-        var(--a-blue-200) 0%,
-        var(--a-blue-200) 15%,
+        var(--ax-accent-400) 0%,
+        var(--ax-accent-400) 15%,
         var(--ax-bg-default) 15%,
         var(--ax-bg-default) 30%,
-        var(--a-blue-200) 30%,
-        var(--a-blue-200) 45%,
+        var(--ax-accent-400) 30%,
+        var(--ax-accent-400) 45%,
         var(--ax-bg-default) 45%,
         var(--ax-bg-default) 60%,
-        var(--a-blue-200) 60%,
-        var(--a-blue-200) 75%,
+        var(--ax-accent-400) 60%,
+        var(--ax-accent-400) 75%,
         var(--ax-bg-default) 75%,
         var(--ax-bg-default) 90%,
-        var(--a-blue-200) 90%
+        var(--ax-accent-400) 90%
     ) !important;
     border-top: 2px solid var(--ax-accent-500);
     border-bottom: 2px solid var(--ax-accent-500);
@@ -224,16 +224,16 @@
 }
 
 .blackDay {
-    background-color: var(--a-gray-800) !important;
+    background-color: var(--ax-bg-neutral-strong) !important;
     color: var(--ax-bg-default);
     print-color-adjust: exact;
 }
 
 .blackDaySelected {
-    border-top: 2px solid var(--a-gray-800);
-    border-bottom: 2px solid var(--a-gray-800);
-    border-left: 1px solid var(--a-gray-800);
-    border-right: 1px solid var(--a-gray-800);
+    border-top: 2px solid var(--ax-bg-neutral-strong);
+    border-bottom: 2px solid var(--ax-bg-neutral-strong);
+    border-left: 1px solid var(--ax-bg-neutral-strong);
+    border-right: 1px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
@@ -397,15 +397,15 @@
 }
 
 .purpleDay {
-    background-color: var(--a-purple-200) !important;
+    background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
 }
 
 .purpleDaySelected {
-    border-top: 2px solid var(--a-purple-200);
-    border-bottom: 2px solid var(--a-purple-200);
-    border-left: 1px solid var(--a-purple-200);
-    border-right: 1px solid var(--a-purple-200);
+    border-top: 2px solid var(--ax-meta-purple-400);
+    border-bottom: 2px solid var(--ax-meta-purple-400);
+    border-left: 1px solid var(--ax-meta-purple-400);
+    border-right: 1px solid var(--ax-meta-purple-400);
     print-color-adjust: exact;
 }
 
