@@ -9,15 +9,19 @@ import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListe } from './PeriodeListe';
 
-type StoryArgs = { familiehendelsedato: string; barn: Barn; erFarEllerMedmor: boolean } & ComponentProps<
-    typeof PeriodeListe
->;
+type StoryArgs = {
+    familiehendelsedato: string;
+    barn: Barn;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
+} & ComponentProps<typeof PeriodeListe>;
 
 const customRenderer = ({
     perioder,
     familiehendelsedato,
     barn,
     erFarEllerMedmor,
+    erAleneOmOmsorg,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -30,6 +34,7 @@ const customRenderer = ({
                 [UttaksplanContextDataType.BARN]: barn,
                 [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
                 [UttaksplanContextDataType.MODUS]: 'planlegger',
+                [UttaksplanContextDataType.ALENE_OM_OMSORG]: erAleneOmOmsorg,
                 [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
                     farMedmor: 'Far',
                     mor: 'Mor',
@@ -65,6 +70,7 @@ export const UttaksperioderMor: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
+        erAleneOmOmsorg: false,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
@@ -144,6 +150,7 @@ export const UttaksperioderMorOgFar: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
+        erAleneOmOmsorg: false,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
@@ -214,6 +221,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-05-01',
+        erAleneOmOmsorg: true,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
@@ -276,6 +284,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
+        erAleneOmOmsorg: false,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
@@ -324,6 +333,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
+        erAleneOmOmsorg: false,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
@@ -367,6 +377,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
+        erAleneOmOmsorg: false,
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,

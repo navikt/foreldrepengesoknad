@@ -5,6 +5,7 @@ import {
     Overføringsperiode,
     Periode,
     Periodetype,
+    UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isAvslåttPeriode,
@@ -12,6 +13,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { PeriodeInfoType } from '@navikt/fp-constants';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
@@ -21,6 +23,9 @@ import { Perioden } from './Perioden';
 import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
+    if (isUttaksperiodeAnnenpartEøs(periode)) {
+        return periode.trekkdager;
+    }
     const dager = Perioden(periode).getAntallUttaksdager();
     if (isUttaksperiode(periode)) {
         const periodeErGradert = periode.stillingsprosent !== undefined;
@@ -117,7 +122,7 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
     if (perioder.length === 0) {
         return [];
     }
-    const oppholdAnnenPart: UttakAnnenPartInfoPeriode[] = [];
+    const oppholdAnnenPart: Array<UttakAnnenPartInfoPeriode | UttakAnnenPartEØSInfoPeriode> = [];
     perioder
         .filter((periode) => isAvslåttPeriode(periode) === false)
         .forEach((periode) => {

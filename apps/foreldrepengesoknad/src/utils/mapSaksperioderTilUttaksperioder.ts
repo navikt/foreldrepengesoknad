@@ -4,6 +4,7 @@ import {
     AvslåttPeriode,
     FamiliehendelseType,
     Forelder,
+    InfoPeriode,
     MorsAktivitet,
     OppholdÅrsakType,
     OpprinneligSøkt,
@@ -19,11 +20,13 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     UtsettelseÅrsakTypeDTO,
+    UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { KontoType, UttakPeriodeAnnenpartEøs } from '@navikt/fp-types/src/apiDtoGenerert';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -541,9 +544,61 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     return nyePerioder;
 };
 
+const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): OppholdÅrsakType => {
+    switch (konto) {
+        case 'FEDREKVOTE':
+            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+        case 'FELLESPERIODE':
+            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+        case 'MØDREKVOTE':
+            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+        default:
+            return OppholdÅrsakType.Ingen;
+    }
+};
+
+const mapUttaksperiodeAnnenpartEøs = (
+    søkerErFarEllerMedmor: boolean,
+    p: UttakPeriodeAnnenpartEøs,
+): UttakAnnenPartEØSInfoPeriode => {
+    return {
+        id: guid(),
+        type: Periodetype.Info,
+        infotype: PeriodeInfoType.uttakAnnenPart,
+        overskrives: true,
+        visPeriodeIPlan: true,
+        forelder: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
+        tidsperiode: {
+            fom: ISOStringToDate(p.fom)!,
+            tom: ISOStringToDate(p.tom)!,
+        },
+        trekkdager: p.trekkdager,
+        årsak: mapKontoTypeTilOppholdÅrsakType(p.trekkonto),
+    };
+};
+
+const annnepartsUttak = (
+    søkerErFarEllerMedmor: boolean,
+    sammenslåddePerioder: Periode[],
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
+): InfoPeriode[] => {
+    const uttakAnnenPart = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
+
+    if (perioderAnnenpartEøs) {
+        const mappedPeridoeRAnnenpartEøs = perioderAnnenpartEøs.map((p) =>
+            mapUttaksperiodeAnnenpartEøs(søkerErFarEllerMedmor, p),
+        );
+
+        return [...uttakAnnenPart, ...mappedPeridoeRAnnenpartEøs].sort(sorterPerioder);
+    }
+
+    return uttakAnnenPart;
+};
+
 export const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const gyldigePerioder = saksperioder.filter((periode) => gyldigeSaksperioder(periode, grunnlag.termindato));
@@ -572,8 +627,8 @@ export const mapSaksperioderTilUttaksperioder = (
     const erAdopsjon = grunnlag.familiehendelseType === FamiliehendelseType.ADOPSJON;
 
     const perioderUtenAnnenPartsSamtidigUttak = sammenslåddePerioder.filter((p) => !isInfoPeriode(p));
+    const annenPartsUttak = annnepartsUttak(grunnlag.søkerErFarEllerMedmor, sammenslåddePerioder, perioderAnnenpartEøs);
 
-    const annenPartsUttak = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
     const harAktivitetskravIPeriodeUtenUttak =
         !grunnlag.erDeltUttak && kunFarMedmorHarRett && !grunnlag.farMedmorErAleneOmOmsorg;
     const perioderUtenAnnenPartsSamtidigUttakMedHull = finnOgSettInnHull(

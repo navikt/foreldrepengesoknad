@@ -11,15 +11,19 @@ import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
 
-type StoryArgs = { erFarEllerMedmor: boolean; familiehendelsedato: string; barn: Barn } & ComponentProps<
-    typeof PeriodeListeItem
->;
+type StoryArgs = {
+    erFarEllerMedmor: boolean;
+    familiehendelsedato: string;
+    barn: Barn;
+    erAleneOmOmsorg: boolean;
+} & ComponentProps<typeof PeriodeListeItem>;
 
 const customRenderer = ({
     erFarEllerMedmor,
     erFamiliehendelse,
     permisjonsperiode,
     familiehendelsedato,
+    erAleneOmOmsorg,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -32,6 +36,7 @@ const customRenderer = ({
                 [UttaksplanContextDataType.BARN]: barn,
                 [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
                 [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
+                [UttaksplanContextDataType.ALENE_OM_OMSORG]: erAleneOmOmsorg,
                 [UttaksplanContextDataType.MODUS]: 'planlegger',
                 [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
                     farMedmor: 'Far',
@@ -74,6 +79,7 @@ export const UttaksperiodeMor: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -107,6 +113,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -148,6 +155,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -207,6 +215,7 @@ export const UttaksperiodeFar: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -240,6 +249,7 @@ export const PeriodeUtenUttak: Story = {
             type: BarnType.FØDT,
             termindato: '2024-08-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-08-01',
         permisjonsperiode: {
