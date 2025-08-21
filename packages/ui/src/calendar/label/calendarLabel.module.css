@@ -1,7 +1,7 @@
 .bluePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--ax-accent-100) !important;
-    background-color: var(--ax-accent-100) !important;
+    border: 2px solid var(--ax-accent-300) !important;
+    background-color: var(--ax-accent-300) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -130,12 +130,12 @@
     border-radius: 50%;
     background: linear-gradient(
         to top,
-        var(--ax-success-500),
-        var(--ax-success-500) 50%,
-        var(--ax-bg-info-soft) 50%,
-        var(--ax-bg-info-soft) 100%
+        var(--ax-success-400),
+        var(--ax-success-400) 50%,
+        var(--ax-accent-200) 50%,
+        var(--ax-accent-200) 100%
     ) !important;
-    border: 2px solid var(--ax-success-500) !important;
+    border: 2px solid var(--ax-success-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -146,12 +146,12 @@
     border-radius: 50%;
     background: linear-gradient(
         to top,
-        var(--ax-bg-info-strong),
-        var(--ax-bg-info-strong) 50%,
+        var(--ax-accent-500),
+        var(--ax-accent-500) 50%,
         var(--ax-success-200) 50%,
         var(--ax-success-200) 100%
     ) !important;
-    border: 2px solid var(--ax-bg-info-strong) !important;
+    border: 2px solid var(--ax-accent-500) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -160,7 +160,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--ax-success-600) !important;
+    border: 2px solid var(--ax-accent-500) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -196,7 +196,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--ax-bg-info-strong) !important;
+    background-color: var(--ax-accent-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
