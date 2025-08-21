@@ -57,7 +57,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
 }: Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -130,8 +130,8 @@ export const UttaksplanNy = ({
         handleOnPlanChange(saksPerioder);
     };
 
-    const closeModal = () => setIsModalOpen(false);
-    const openModal = () => setIsModalOpen(true);
+    const closePanel = () => setIsPanelOpen(false);
+    const openPanel = () => setIsPanelOpen(true);
 
     const erBarnetFødt = isFødtBarn(barn);
 
@@ -174,18 +174,18 @@ export const UttaksplanNy = ({
 
             {modus !== 'innsyn' && (
                 <>
-                    <Button variant="secondary" onClick={openModal}>
+                    <Button variant="secondary" onClick={openPanel}>
                         <FormattedMessage id="uttaksplan.leggTilPeriode" />
                     </Button>
-                    {isModalOpen && (
+                    {isPanelOpen && (
                         <LeggTilPeriodePanel
                             handleAddPeriode={(periode) => {
                                 handleAddPeriode(periode);
-                                closeModal();
+                                closePanel();
                             }}
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            onCancel={closeModal}
+                            onCancel={closePanel}
                         />
                     )}
                 </>
