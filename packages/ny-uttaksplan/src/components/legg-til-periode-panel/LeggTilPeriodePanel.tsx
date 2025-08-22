@@ -71,8 +71,8 @@ export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAd
     };
     // Todo: deaktiver når åpnes? At innholder
     return (
-        <div className="border rounded-lg bg-white">
-            <div className="flex items-center gap-2 p-4 bg-grayalpha-100">
+        <div className="border rounded-xl">
+            <div className="flex items-center gap-2 p-4 bg-ax-bg-neutral-soft rounded-t-xl">
                 <PencilIcon aria-hidden={true} width={24} height={24} />
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
