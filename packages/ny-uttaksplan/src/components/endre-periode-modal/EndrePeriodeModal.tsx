@@ -100,16 +100,16 @@ export const EndrePeriodeModal = ({
     };
 
     return (
-        <Modal className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
-            <Modal.Header className={styles.header} closeButton={false}>
+        <div className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
+            <div className={styles.header} closeButton={false}>
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
                         <FormattedMessage id="endrePeriodeModal.tittel" />
                     </Heading>
                 </div>
-            </Modal.Header>
-            <Modal.Body>{renderContent()}</Modal.Body>
-        </Modal>
+            </div>
+            <div>{renderContent()}</div>
+        </div>
     );
 };
