@@ -158,11 +158,11 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         rel="noreferrer"
                         className={styles.lenkepanel}
                     >
-                        <Box
+                        <Box.New
                             padding="4"
-                            background="surface-default"
+                            background="default"
                             borderRadius="xlarge"
-                            shadow="medium"
+                            shadow="dialog"
                             className={styles.panel}
                         >
                             <HStack gap="5" align="center">
@@ -171,7 +171,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                                     <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
                                 </Heading>
                             </HStack>
-                        </Box>
+                        </Box.New>
                     </Link>
                     <Link
                         inlineText
