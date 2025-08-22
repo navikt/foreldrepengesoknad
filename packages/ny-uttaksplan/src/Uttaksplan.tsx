@@ -2,7 +2,7 @@ import { NotePencilDashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import '@navikt/ds-css';
+import '@navikt/ds-css/darkside';
 import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
@@ -161,7 +161,7 @@ export const UttaksplanNy = ({
             {komplettPlan.length === 0 && (
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <NotePencilDashIcon fontSize={24} />
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort weight="semibold" size="large">
                             <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
                         </BodyShort>

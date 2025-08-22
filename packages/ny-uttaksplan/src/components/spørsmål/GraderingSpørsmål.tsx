@@ -24,7 +24,7 @@ export const GraderingSpørsmål = () => {
     }
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <RhfRadioGroup
                 name="skalDuJobbe"
                 control={control}

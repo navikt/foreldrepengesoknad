@@ -95,7 +95,7 @@ export const EndrePeriodeModalStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <KontotypeSpørsmål />
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}

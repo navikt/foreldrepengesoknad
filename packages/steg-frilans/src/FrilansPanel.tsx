@@ -45,7 +45,7 @@ export const FrilansPanel = <TYPE extends string>({
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfDatepicker
                         name="oppstart"

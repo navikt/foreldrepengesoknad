@@ -14,10 +14,16 @@ interface Props {
 export const ToUkerRundtFødsel = ({ hvemPlanlegger }: Props) => {
     const intl = useIntl();
     return (
-        <HStack gap="5" wrap={false}>
+        <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                    <BabyWrappedIcon
+                        height={22}
+                        width={22}
+                        fontSize="1.5rem"
+                        color="var(--ax-bg-accent-strong)"
+                        aria-hidden
+                    />
                 </IconCircleWrapper>
             </div>
             <div>

@@ -141,7 +141,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         return (
             <>
                 <ScrollToTop />
-                <VStack gap="2">
+                <VStack gap="space-8">
                     {isSuccess && <Alert variant="success">Dokumentene er sendt</Alert>}
                     {isError && (
                         <Alert variant="error">
@@ -159,7 +159,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
 
     return (
         <form onSubmit={onSubmit}>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <BodyLong>
                     Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
                     at saksbehandlerene i Nav skal kunne behandle saken din.

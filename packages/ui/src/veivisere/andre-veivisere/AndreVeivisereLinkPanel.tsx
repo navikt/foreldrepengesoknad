@@ -18,7 +18,7 @@ export const AndreVeivisereLinkPanel = ({ links }: Props) => {
     return (
         <div className={styles.background}>
             <div className={styles.box}>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     {links.length > 1 && (
                         <Heading size="small" level="2">
                             <FormattedMessage id="AndreVeivisereLinkPanel.AndreVeivisere" />
@@ -26,9 +26,9 @@ export const AndreVeivisereLinkPanel = ({ links }: Props) => {
                     )}
                     {links.map((link) => (
                         <Link key={link.url} inlineText href={link.url} rel="noreferrer" className={styles.lenkepanel}>
-                            <Box padding="4" background="surface-default" borderRadius="xlarge" shadow="small">
+                            <Box.New padding="4" background="default" borderRadius="xlarge">
                                 {link.content}
-                            </Box>
+                            </Box.New>
                         </Link>
                     ))}
                 </VStack>

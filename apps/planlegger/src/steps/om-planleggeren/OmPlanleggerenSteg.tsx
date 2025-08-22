@@ -23,7 +23,7 @@ export const OmPlanleggerenSteg = () => {
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>
-                        <HStack gap="4" align="center" wrap={false}>
+                        <HStack gap="space-16" align="center" wrap={false}>
                             <IconCircleWrapper color="lightBlue" size="medium">
                                 <QuestionmarkIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
@@ -31,7 +31,7 @@ export const OmPlanleggerenSteg = () => {
                                 <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
                             </BodyShort>
                         </HStack>
-                        <HStack gap="4" align="center" wrap={false}>
+                        <HStack gap="space-16" align="center" wrap={false}>
                             <IconCircleWrapper color="lightBlue" size="medium">
                                 <CalendarIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>

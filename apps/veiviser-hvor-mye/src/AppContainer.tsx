@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
@@ -66,9 +66,11 @@ export const AppContainer = () => {
             >
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
-                        <HvorMyeVeiviser />
-                    </Provider>
+                    <Theme theme="light">
+                        <Provider locale={getDsProviderLocale(locale)}>
+                            <HvorMyeVeiviser />
+                        </Provider>
+                    </Theme>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>

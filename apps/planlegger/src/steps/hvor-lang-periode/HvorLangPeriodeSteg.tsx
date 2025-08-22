@@ -93,15 +93,21 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
                         </Heading>
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                             icon={
-                                <CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                                <CalendarIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-bg-neutral-strong)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             }
                             color="gray"
                         >
@@ -135,7 +141,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                     }
                                     color="gray"
                                 >
-                                    <VStack gap="2">
+                                    <VStack gap="space-8">
                                         <BodyShort>
                                             <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
                                         </BodyShort>
@@ -194,7 +200,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <ValgtDekningsgradInfoboks
                                     key={valgtDekningsgrad}
                                     barnet={barnet}

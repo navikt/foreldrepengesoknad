@@ -20,7 +20,7 @@ export const KontotypeSpørsmål = () => {
     const kontoTypeValue = watch('kontoType');
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Heading size="medium">
                 <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
             </Heading>

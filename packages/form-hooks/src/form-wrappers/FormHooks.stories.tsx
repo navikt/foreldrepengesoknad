@@ -46,7 +46,7 @@ const meta = {
         return (
             <RhfForm formMethods={formMethods}>
                 <HStack justify="space-between">
-                    <VStack gap="7" align="start">
+                    <VStack gap="space-28" align="start">
                         <RhfCheckbox name="check" control={formMethods.control} label="Dette er en checkbox" />
                         <RhfCheckbox
                             name="checkpre"
@@ -179,7 +179,7 @@ const meta = {
                     </VStack>
                     <div>
                         <Alert variant="info">
-                            <VStack gap="5">
+                            <VStack gap="space-20">
                                 <Label>Values in form state:</Label>
                                 {Object.entries(stateVerdier).map((entry) => (
                                     <BodyShort key={entry[0]}>{entry[0] + ': ' + entry[1]}</BodyShort>

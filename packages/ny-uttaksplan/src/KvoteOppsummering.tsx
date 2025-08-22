@@ -39,7 +39,7 @@ export const KvoteOppsummering = (props: Props) => {
             <ExpansionCard aria-label="Kvoteoversikt" size="small">
                 <OppsummeringsTittel />
                 <ExpansionCard.Content>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <ForeldrepengerFørFødselKvoter />
                         <MødreKvoter />
                         <AktivitetsfriKvoter />
@@ -383,7 +383,7 @@ const TittelKomponent = ({
     const { visStatusIkoner } = useKvote();
     return (
         <ExpansionCard.Header>
-            <HStack wrap={false} gap="4" align="start">
+            <HStack wrap={false} gap="space-16" align="start">
                 {visStatusIkoner ? ikon : null}
                 <div>
                     <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -488,14 +488,14 @@ const FellesKvoter = () => {
     };
 
     return (
-        <VStack gap="4">
-            <HStack gap="2" align="center">
+        <VStack gap="space-16">
+            <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
                     {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
                 </BodyShort>
             </HStack>
-            <VStack gap="1" className="ml-4">
+            <VStack gap="space-4" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
                         {
@@ -578,8 +578,8 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
     };
 
     return (
-        <VStack gap="4">
-            <HStack gap="2" align="center">
+        <VStack gap="space-16">
+            <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
                     <VisningsnavnForKvote kontoType={konto.konto} />
@@ -587,7 +587,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
                     {getVarighetString(konto.dager, intl)}
                 </BodyShort>
             </HStack>
-            <VStack gap="1" className="ml-4">
+            <VStack gap="space-4" className="ml-4">
                 {overtrukketDager <= 0 ? (
                     <FordelingsBar
                         fordelinger={[
@@ -700,11 +700,19 @@ const FordelingSegment = ({
     }
 
     if (erOvertrukket) {
-        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-red-300 border-red-300`} />;
+        return (
+            <div
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-danger-400 border-ax-danger-400`}
+            />
+        );
     }
 
     if (erUtløpt) {
-        return <div className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-gray-300 border-gray-300`} />;
+        return (
+            <div
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-neutral-400 border-ax-neutral-400`}
+            />
+        );
     }
 
     if (forelder === 'MOR') {
@@ -716,14 +724,14 @@ const FordelingSegment = ({
         ) {
             return (
                 <div
-                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-accent-500' : 'bg-ax-bg-default'} border-ax-accent-500`}
                 />
             );
         }
         if (kontoType === 'FEDREKVOTE') {
             return (
                 <div
-                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
+                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-success-300' : 'bg-ax-bg-default'} border-ax-success-300`}
                 />
             );
         }
@@ -738,45 +746,51 @@ const FordelingSegment = ({
     ) {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-success-500' : 'bg-ax-bg-default'} border-ax-success-500`}
             />
         );
     }
     if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
+                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${
+                    erFyllt ? 'bg-ax-brand-blue-300' : 'bg-ax-bg-default'
+                } border-ax-brand-blue-300`}
             />
         );
     }
 
     return (
-        <div className="first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-bg-default border-surface-neutral-hover" />
+        <div className="first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-bg-default border-ax-bg-neutral-strong-hover" />
     );
 };
 
 type IkonProps = { size: 'stor' | 'liten' };
 const AllTidIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-surface-success-subtle">
-        <CheckmarkIcon fontSize={size === 'stor' ? '2.5rem' : '1.5rem'} className="text-icon-success p-1" aria-hidden />
+    <div className="rounded-full bg-ax-bg-success-moderate">
+        <CheckmarkIcon
+            fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
+            className="text-ax-text-success-decoration p-1"
+            aria-hidden
+        />
     </div>
 );
 
 const MerTidÅBrukeIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-surface-selected">
+    <div className="rounded-full bg-ax-bg-accent-moderate">
         <CircleBrokenIcon
             fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
-            className="text-text-action p-1"
+            className="text-ax-text-accent-subtle p-1"
             aria-hidden
         />
     </div>
 );
 
 const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-surface-danger-subtle">
+    <div className="rounded-full bg-ax-bg-danger-moderate">
         <ExclamationmarkIcon
             fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
-            className="text-text-danger p-05"
+            className="text-ax-text-danger-subtle p-05"
             aria-hidden
         />
     </div>

@@ -77,7 +77,7 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         <RhfCheckboxGroup
                             name="arbeidMedTilrettelegging"

@@ -77,7 +77,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
             <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
                         {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}

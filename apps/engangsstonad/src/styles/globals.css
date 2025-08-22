@@ -6,7 +6,7 @@ body {
 
 #app {
     flex: 1;
-    background-color: white;
+    background-color: var(--ax-bg-default);
     min-width: 320px;
 }
 

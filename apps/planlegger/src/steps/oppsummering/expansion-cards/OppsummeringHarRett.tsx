@@ -119,10 +119,10 @@ export const OppsummeringHarRett = ({
     const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="6" align="center" wrap={false}>
+                    <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <CalendarIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
@@ -135,10 +135,10 @@ export const OppsummeringHarRett = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="5">
+                    <VStack gap="space-20">
                         {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && fornavnSøker2Genitiv && (
                             <BluePanel>
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyLong>
                                         <FormattedMessage
                                             id="OppsummeringSteg.DereValgte"
@@ -206,7 +206,7 @@ export const OppsummeringHarRett = ({
                         )}
                         {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
                             <BluePanel>
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OppsummeringSteg.DereValgteFedreEllerAlene"
@@ -244,7 +244,7 @@ export const OppsummeringHarRett = ({
                         )}
                         {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
                             <BluePanel>
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OppsummeringSteg.DereValgteAktivitetskrav"

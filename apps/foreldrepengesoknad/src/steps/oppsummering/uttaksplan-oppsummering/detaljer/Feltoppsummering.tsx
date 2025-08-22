@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Feltoppsummering = ({ feltnavn, verdi }: Props) => (
-    <HStack gap="1">
+    <HStack gap="space-4">
         <BodyShort>{feltnavn}:</BodyShort>
         <BodyShort>{verdi}</BodyShort>
     </HStack>

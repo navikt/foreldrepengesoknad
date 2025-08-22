@@ -47,7 +47,7 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                 <FormattedMessage id="uttaksplan.valgModal.tittel" />
             </Heading>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <RhfRadioGroup
                         name="hvaVilDuGjøre"
                         control={formMethods.control}

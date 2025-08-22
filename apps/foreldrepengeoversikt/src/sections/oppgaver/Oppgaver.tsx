@@ -22,7 +22,7 @@ export const Oppgaver = ({ saksnummer }: Props) => {
         return (
             <ContentSection
                 heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })}
-                className="bg-orange-100 border-orange-500 border-2"
+                className="bg-ax-warning-200 border-ax-warning-600 border-2"
             >
                 <BodyShort>{intl.formatMessage({ id: 'oppgaver.feilVedHentingAvOppgaver' })}</BodyShort>
             </ContentSection>
@@ -35,7 +35,7 @@ export const Oppgaver = ({ saksnummer }: Props) => {
     }
 
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             {aktiveMinidialogerForSaken.map((minidialog) => (
                 <OppgaveLenkepanel
                     key={guid()}

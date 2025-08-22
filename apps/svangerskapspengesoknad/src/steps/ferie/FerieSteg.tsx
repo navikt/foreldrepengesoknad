@@ -96,9 +96,9 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <RhfRadioGroup
                                 name="skalHaFerie"
                                 control={formMethods.control}
@@ -161,10 +161,10 @@ function FeriePerioder() {
     }
 
     return (
-        <VStack gap="4">
-            <VStack gap="6">
+        <VStack gap="space-16">
+            <VStack gap="space-24">
                 {fields.map((field, index) => (
-                    <VStack gap="4" key={field.id} className="feriePeriode">
+                    <VStack gap="space-16" key={field.id} className="feriePeriode">
                         <HStack justify="space-between" align="center">
                             <Tag variant="info-moderate">
                                 <FormattedMessage id="ferie.heading" />

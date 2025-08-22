@@ -141,8 +141,8 @@ export const RhfDateRangepicker = ({
             toDate={toDate}
             disableWeekends={disableWeekends}
         >
-            <VStack gap="2">
-                <HStack wrap={false} gap="4" align="start">
+            <VStack gap="space-8">
+                <HStack wrap={false} gap="space-16" align="start">
                     <DatePicker.Input
                         {...fromInputProps}
                         ref={fromField.ref}

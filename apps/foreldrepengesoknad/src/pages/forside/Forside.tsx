@@ -145,9 +145,9 @@ export const Forside = ({
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <GuidePanel poster>
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <FormattedMessage id="velkommen.guidepanel.del1" />
                             <FormattedMessage
                                 id="velkommen.guidepanel.del2"
@@ -178,8 +178,8 @@ export const Forside = ({
                                     : null,
                         ]}
                     >
-                        <VStack gap="5">
-                            <HStack gap="1">
+                        <VStack gap="space-20">
+                            <HStack gap="space-4">
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.samtykkeIntro.del1" />
                                 </BodyShort>

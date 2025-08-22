@@ -1,6 +1,5 @@
 .background {
-    background-color: var(--a-gray-100);
-    --ac-link-active-text: 'black';
+    background-color: var(--ax-neutral-200);
 }
 
 .box {
@@ -11,7 +10,7 @@
 
 @media (max-width: 768px) {
     .background {
-        background-color: white;
+        background-color: var(--ax-bg-default);
     }
 }
 

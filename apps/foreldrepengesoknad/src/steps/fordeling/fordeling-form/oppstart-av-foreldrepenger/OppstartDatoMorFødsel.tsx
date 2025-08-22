@@ -41,7 +41,7 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     return (
         <div>
             <VStack gap="3">
-                <HStack gap="1">
+                <HStack gap="space-4">
                     <OppstartDatoInput oppstartValg={oppstartValg} />
                     {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
                 </HStack>

@@ -64,9 +64,9 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
     if (iconType === PeriodeColor.PINK) {
         return (
             <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center">
+                <HStack gap="space-8" align="center">
                     {children}
-                    <HeartFillIcon color="#F68282" aria-hidden />
+                    <HeartFillIcon color="var(--ax-danger-500)" aria-hidden />
                 </HStack>
             </div>
         );
@@ -74,8 +74,8 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
     if (iconType === PeriodeColor.BLACK) {
         return (
             <div className={styles.grayPanel}>
-                <HStack gap="2" align="center">
-                    <ExclamationmarkTriangleFillIcon style={{ color: '#FF9100' }} />
+                <HStack gap="space-8" align="center">
+                    <ExclamationmarkTriangleFillIcon style={{ color: 'var(--ax-bg-warning-strong)' }} />
                     {children}
                     <div className={styles.margin}>{getSirkel(iconType)}</div>
                 </HStack>
@@ -84,7 +84,7 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
     } else {
         return (
             <div className={`${PANEL_STYLE[iconType]}`}>
-                <HStack gap="2" align="end" wrap={false}>
+                <HStack gap="space-8" align="end" wrap={false}>
                     {children}
                     <div className={styles.margin}>{getSirkel(iconType)}</div>
                 </HStack>

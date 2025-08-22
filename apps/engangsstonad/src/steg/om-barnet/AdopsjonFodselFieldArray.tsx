@@ -47,7 +47,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
     }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             {fields.map((field, index) => (
                 <RhfDatepicker
                     key={field.id}

@@ -19,7 +19,7 @@ export const HvemKanDriveMedEgenNæring = () => {
             }
             header={intl.formatMessage({ id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel' })}
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1" />
                 </BodyShort>

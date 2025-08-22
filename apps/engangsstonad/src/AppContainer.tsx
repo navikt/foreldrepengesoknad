@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
@@ -91,7 +91,9 @@ export const AppContainer = () => {
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
                     <Provider locale={getDsProviderLocale(locale)}>
-                        <Engangsstønad />
+                        <Theme theme="light">
+                            <Engangsstønad />
+                        </Theme>
                     </Provider>
                 </QueryClientProvider>
             </ErrorBoundary>

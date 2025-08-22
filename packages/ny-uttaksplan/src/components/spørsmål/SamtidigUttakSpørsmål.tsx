@@ -19,7 +19,7 @@ export const SamtidigUttakSpørsmål = () => {
     const intl = useIntl();
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <RhfRadioGroup
                 control={control}
                 name="samtidigUttak"

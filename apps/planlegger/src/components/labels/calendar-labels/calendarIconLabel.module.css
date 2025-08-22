@@ -1,6 +1,6 @@
 .bluePanel {
     border-radius: 1.25rem;
-    background-color: var(--a-blue-50);
+    background-color: var(--ax-accent-100);
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -11,7 +11,7 @@
 
 .greenPanel {
     border-radius: 1.25rem;
-    background-color: var(--a-green-100);
+    background-color: var(--ax-success-200);
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -22,7 +22,7 @@
 
 .pinkPanel {
     border-radius: 1.25rem;
-    background-color: var(--a-red-50);
+    background-color: var(--ax-danger-100);
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -33,7 +33,7 @@
 
 .purplePanel {
     border-radius: 1.25rem;
-    background-color: var(--a-purple-100);
+    background-color: var(--ax-meta-purple-200);
     display: flex;
     padding-left: 10px;
     padding-right: 8px;

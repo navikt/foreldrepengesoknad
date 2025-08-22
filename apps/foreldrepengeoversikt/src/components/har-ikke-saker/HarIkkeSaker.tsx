@@ -13,7 +13,7 @@ export const HarIkkeSaker = ({ harOppdatertSak }: Props) => {
     useSetBackgroundColor('blue');
 
     return (
-        <VStack gap="8">
+        <VStack gap="space-32">
             {harOppdatertSak && (
                 <Alert variant="info">
                     <Heading spacing size="small" level="3">

@@ -13,7 +13,7 @@ export const InfoTilFiskere = () => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>

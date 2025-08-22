@@ -23,9 +23,9 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
             </>
         }
     >
-        <VStack gap="10">
+        <VStack gap="space-40">
             <Alert variant="warning">
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <Heading size="small" level="3">
                         <FormattedMessage id="ErrorPage.Heading" />
                     </Heading>
@@ -34,7 +34,7 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
                     </BodyShort>
                 </VStack>
             </Alert>
-            <HStack gap="4" justify="center">
+            <HStack gap="space-16" justify="center">
                 <Link href={links.kontaktOss} target="_blank">
                     <Button type="button" variant="secondary">
                         <FormattedMessage id="ErrorPage.Contact" />
@@ -44,14 +44,14 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
                     <FormattedMessage id="ErrorPage.TryAgain" />
                 </Button>
             </HStack>
-            <Box background="surface-neutral-moderate" padding="4">
-                <VStack gap="2">
+            <Box.New background="neutral-moderate" padding="4">
+                <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="ErrorPage.ErrorMessage" />
                     </Label>
                     <BodyShort>Error: {errorMessage}</BodyShort>
                 </VStack>
-            </Box>
+            </Box.New>
         </VStack>
     </SkjemaRotLayout>
 );

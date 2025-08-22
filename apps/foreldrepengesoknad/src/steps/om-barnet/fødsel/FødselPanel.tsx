@@ -69,7 +69,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                         </RhfRadioGroup>
                         {!erFarEllerMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.erBarnetFødt.readMore.header' })}>
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <div>
                                         <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
                                     </div>

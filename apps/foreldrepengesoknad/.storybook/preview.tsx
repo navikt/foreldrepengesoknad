@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
-import React from 'react';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
@@ -12,7 +11,7 @@ import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import '../src/index.css';
@@ -68,17 +67,23 @@ export const globalTypes = {
             dynamicTitle: true,
         },
     },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
 };
 
 const preview: Preview = {
-    decorators: [
-        withIntlProvider,
-        (Story) => (
-            <div id="app" style={{ padding: '40px' }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [withIntlProvider, withThemeDecorator],
     // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
     beforeAll: async () => {
         initialize({
@@ -91,4 +96,5 @@ const preview: Preview = {
     loaders: [mswLoader],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

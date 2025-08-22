@@ -33,14 +33,14 @@ export const FrontPage = ({
             <>
                 <Show below="md">
                     <BlueHeading>
-                        <VStack gap="4" align="center">
+                        <VStack gap="space-16" align="center">
                             <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
-                            <VStack gap="1" align="center">
+                            <VStack gap="space-4" align="center">
                                 <Heading size="large">{titleLabel}</Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>{minutesLabel}</BodyShort>
                                 </HStack>
@@ -50,14 +50,14 @@ export const FrontPage = ({
                 </Show>
                 <Show above="md">
                     <BlueHeading>
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
-                            <VStack gap="1">
+                            <VStack gap="space-4">
                                 <Heading size="large">{titleLabel}</Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>{minutesLabel}</BodyShort>
                                 </HStack>

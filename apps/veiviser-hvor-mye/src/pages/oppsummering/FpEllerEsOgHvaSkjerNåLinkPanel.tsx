@@ -13,7 +13,7 @@ export const FpEllerEsOgHvaSkjerNåLinkPanel = () => {
                 {
                     url: links.veiviser,
                     content: (
-                        <HStack gap="5" align="center" wrap={false}>
+                        <HStack gap="space-20" align="center" wrap={false}>
                             <BabyWrappedIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
                                 <FormattedMessage id="ArbeidssituasjonSide.FpEllerEs" />
@@ -24,7 +24,7 @@ export const FpEllerEsOgHvaSkjerNåLinkPanel = () => {
                 {
                     url: links.foreldrepengerPlanlegger,
                     content: (
-                        <HStack gap="5" align="center" wrap={false}>
+                        <HStack gap="space-20" align="center" wrap={false}>
                             <CalendarIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
                                 <FormattedMessage id="ArbeidssituasjonSide.PlanleggForeldrepenger" />

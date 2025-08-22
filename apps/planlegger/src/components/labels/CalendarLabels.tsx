@@ -57,9 +57,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
     return (
-        <VStack gap="1">
+        <VStack gap="space-4">
             {skalViseAntallUkerLabels && (
-                <HStack gap="2">
+                <HStack gap="space-8">
                     <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
                     {søker2Tekst && hvemHarRett === 'beggeHarRett' && <AntallUkerFpLabel søkerTekst={søker2Tekst} />}
                     <FamiliehendelseLabel barnet={barnet} />
@@ -81,7 +81,7 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
-                <HStack gap="2">
+                <HStack gap="space-8">
                     <AktivitetskravLabel utenAktivitetskrav isBluePanel />
                     <AktivitetskravLabel />
                     <FamiliehendelseLabel barnet={barnet} />
@@ -103,7 +103,7 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
-                <HStack gap="2">
+                <HStack gap="space-8">
                     <ForeldrepengerLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}

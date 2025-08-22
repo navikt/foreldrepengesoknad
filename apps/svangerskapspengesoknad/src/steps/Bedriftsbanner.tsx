@@ -33,9 +33,9 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
             : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
     return (
         <div className={styles.bedriftsbanner}>
-            <HStack gap="5" align="center">
+            <HStack gap="space-20" align="center">
                 <Buildings3Icon aria-hidden={true} height="24px" width="24px" className={styles.ikon} />
-                <VStack gap="1">
+                <VStack gap="space-4">
                     <BodyShort size="small" className={styles.bold}>
                         {detailTekst}
                     </BodyShort>

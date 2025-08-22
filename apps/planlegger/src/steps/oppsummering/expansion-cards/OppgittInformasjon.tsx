@@ -82,10 +82,10 @@ export const OppgittInformasjon = ({
     const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="6" align="center" wrap={false}>
+                    <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
@@ -95,9 +95,9 @@ export const OppgittInformasjon = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
                                 </Heading>
@@ -162,7 +162,7 @@ export const OppgittInformasjon = ({
                             </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
@@ -246,7 +246,7 @@ export const OppgittInformasjon = ({
                             </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage
                                         id="OppgittInformasjon.LengdeOgFordeling"

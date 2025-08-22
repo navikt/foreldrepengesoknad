@@ -40,7 +40,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
             size="small"
         >
             <ExpansionCard.Header>
-                <HStack gap="6" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
                             <PencilWritingIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
@@ -54,7 +54,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyLong>
                         <FormattedMessage id="HvaErMulig.MyeManKanEndre" />
                     </BodyLong>

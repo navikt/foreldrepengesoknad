@@ -68,7 +68,7 @@ export const InntektsmeldingPage = () => {
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
-            <HGrid columns={2} gap="4">
+            <HGrid columns={2} gap="space-16">
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
                     size="large"
@@ -80,7 +80,7 @@ export const InntektsmeldingPage = () => {
                     }
                     Ikon={WalletIcon}
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             Månedsinntekten din blir som regel beregnet ut fra gjennomsnittet av inntekten din de siste
                             tre månedene før du skal ut i permisjon
@@ -236,12 +236,12 @@ const InntektsmeldingInfoBlokk = ({
     return (
         <div
             className={classNames(
-                'rounded-large p-6 bg-surface-alt-3-subtle flex gap-4 justify-between sm:justify-normal flex-row-reverse sm:flex-row',
+                'rounded-lg p-6 bg-ax-bg-brand-blue-soft flex gap-4 justify-between ax-sm:justify-normal flex-row-reverse ax-sm:flex-row',
                 className,
             )}
         >
-            {Ikon && <Ikon className="text-icon-info flex-shrink-0" width={24} height={24} aria-hidden />}
-            <VStack gap="1">
+            {Ikon && <Ikon className="text-ax-text-info-decoration flex-shrink-0" width={24} height={24} aria-hidden />}
+            <VStack gap="space-4">
                 <Heading level="2" size={size}>
                     {heading}
                 </Heading>
@@ -253,7 +253,7 @@ const InntektsmeldingInfoBlokk = ({
 
 const InntektsmeldingSpørsmålOgSvar = () => {
     return (
-        <VStack gap="2" className="bg-surface-subtle rounded-large p-6 pb-8 col-span-2">
+        <VStack gap="space-8" className="bg-ax-bg-neutral-soft rounded-lg p-6 pb-8 col-span-2">
             <VStack>
                 <Heading level="2" spacing size="small">
                     Hva er en inntektsmelding?

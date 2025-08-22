@@ -53,7 +53,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <Infobox
                 color="blue"
                 header={

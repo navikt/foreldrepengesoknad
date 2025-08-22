@@ -60,7 +60,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     });
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             {!sakAvsluttet && (
                 <HStack>
                     <Button
@@ -74,7 +74,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 </HStack>
             )}
 
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ToggleGroup
                     defaultValue={visKalender ? 'kalender' : 'plan'}
                     onChange={(value: string) => setVisKalender(value === 'kalender')}

@@ -19,7 +19,7 @@ export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
-                <HStack gap="6" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
@@ -33,11 +33,11 @@ export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyShort>
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav: false }} />
                     </BodyShort>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <KravinfoBoks
                             testId="harRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}

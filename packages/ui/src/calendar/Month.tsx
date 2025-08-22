@@ -36,7 +36,7 @@ export const Month = ({ year, month, showYear, children, headerLevel, showWeekNu
     const nrOfColumns = showWeekNumbers ? 8 : 7;
 
     return (
-        <Box className={styles.box} data-testid={`year:${year};month:${month}`} aria-hidden>
+        <Box.New className={styles.box} data-testid={`year:${year};month:${month}`} aria-hidden>
             <Heading size="small" level={headerLevel}>
                 {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
             </Heading>
@@ -62,6 +62,6 @@ export const Month = ({ year, month, showYear, children, headerLevel, showWeekNu
                     })}
                 </HGrid>
             ))}
-        </Box>
+        </Box.New>
     );
 };

@@ -54,7 +54,7 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
     const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
     const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;
     return (
-        <VStack gap="1">
+        <VStack gap="space-4">
             {visBeggeHarRettGraf && (
                 <BeggeHarRettGraf
                     kontoer={kontoer}

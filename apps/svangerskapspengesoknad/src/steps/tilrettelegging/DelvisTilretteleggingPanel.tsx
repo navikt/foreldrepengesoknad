@@ -117,7 +117,7 @@ export const DelvisTilretteleggingPanel = ({
                             id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                         })}
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
                             </BodyShort>

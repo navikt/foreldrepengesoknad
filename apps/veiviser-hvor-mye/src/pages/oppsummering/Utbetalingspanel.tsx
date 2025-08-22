@@ -84,7 +84,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
             useHorizontalDivider
             color="blue"
         >
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
