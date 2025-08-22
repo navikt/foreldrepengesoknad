@@ -1,5 +1,5 @@
 import { NotePencilDashIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css/darkside';
@@ -58,6 +58,13 @@ export const UttaksplanNy = ({
     erAleneOmOmsorg,
 }: Props) => {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isPanelOpen && panelRef.current) {
+            panelRef.current.focus();
+        }
+    }, [isPanelOpen]);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -174,19 +181,23 @@ export const UttaksplanNy = ({
 
             {modus !== 'innsyn' && (
                 <>
-                    <Button variant="secondary" onClick={openPanel}>
-                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                    </Button>
+                    {!isPanelOpen && (
+                        <Button variant="secondary" onClick={openPanel}>
+                            <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                        </Button>
+                    )}
                     {isPanelOpen && (
-                        <LeggTilPeriodePanel
-                            handleAddPeriode={(periode) => {
-                                handleAddPeriode(periode);
-                                closePanel();
-                            }}
-                            erBarnetFødt={erBarnetFødt}
-                            gjelderAdopsjon={gjelderAdopsjon}
-                            onCancel={closePanel}
-                        />
+                        <div ref={panelRef} tabIndex={-1}>
+                            <LeggTilPeriodePanel
+                                handleAddPeriode={(periode) => {
+                                    handleAddPeriode(periode);
+                                    closePanel();
+                                }}
+                                erBarnetFødt={erBarnetFødt}
+                                gjelderAdopsjon={gjelderAdopsjon}
+                                onCancel={closePanel}
+                            />
+                        </div>
                     )}
                 </>
             )}
