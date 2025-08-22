@@ -28,7 +28,7 @@ const meta = {
     render: ({ saksnummer, ...props }) => {
         const isFirstRender = useRef(false);
         return (
-            <div className="bg-deepblue-50">
+            <div className="bg-ax-brand-blue-100">
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
                     <Routes>
                         <Route

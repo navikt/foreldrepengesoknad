@@ -77,12 +77,12 @@ export const Snarveier = () => {
             : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
-        <div className="bg-white p-8">
-            <div className="w-full md:w-[704px] m-auto">
+        <div className="bg-ax-bg-default p-8">
+            <div className="w-full ax-md:w-[704px] m-auto">
                 <Heading spacing size="medium">
                     {intl.formatMessage({ id: 'saksoversikt.snarveier' })}
                 </Heading>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                <HGrid gap="space-16" columns={{ sm: 1, md: 2 }}>
                     <LenkePanel
                         tittel={intl.formatMessage({ id: 'snarveier.lesMerOm' }, { ytelse: ytelseTekst })}
                         to={lesMerLink}

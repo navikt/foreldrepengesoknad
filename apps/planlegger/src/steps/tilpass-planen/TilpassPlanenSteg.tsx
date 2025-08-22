@@ -172,7 +172,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 </Modal.Footer>
             </Modal>
 
-            <VStack gap="6">
+            <VStack gap="space-24">
                 <Alert variant="info">
                     <Heading size="medium" spacing level="2">
                         Savner du noe i planleggeren?
@@ -188,7 +188,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger: erAleneOmOmsorg }} />
                 </Heading>
 
-                <VStack gap="6">
+                <VStack gap="space-24">
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
@@ -215,7 +215,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                             />
-                            <HStack gap="4">
+                            <HStack gap="space-16">
                                 <Button
                                     size="xsmall"
                                     variant="secondary"
@@ -279,7 +279,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     )}
                 </VStack>
 
-                <VStack gap="5">
+                <VStack gap="space-20">
                     {visningsmodus === 'kalender' && (
                         <div className={styles.calendar}>
                             <UttaksplanKalender

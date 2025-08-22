@@ -13,7 +13,7 @@ export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
                 {
                     url: links.hvorMye,
                     content: (
-                        <HStack gap="5" align="center" wrap={false}>
+                        <HStack gap="space-20" align="center" wrap={false}>
                             <WalletIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
                                 <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvorMye" />
@@ -24,7 +24,7 @@ export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
                 {
                     url: links.foreldrepengerPlanlegger,
                     content: (
-                        <HStack gap="5" align="center" wrap={false}>
+                        <HStack gap="space-20" align="center" wrap={false}>
                             <CalendarIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
                                 <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger" />

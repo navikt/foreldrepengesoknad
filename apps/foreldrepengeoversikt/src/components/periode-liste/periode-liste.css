@@ -9,7 +9,7 @@
 
 .periode-liste__title {
     font-style: italic;
-    font-weight: var(--a-font-weight-regular);
+    font-weight: var(--ax-font-weight-regular);
 }
 
 @media (max-width: 768px) {

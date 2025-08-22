@@ -28,12 +28,18 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
                 showKrIcon ? (
                     <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
                 ) : (
-                    <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                    <InformationIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-neutral-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
                 )
             }
         >
-            <HStack gap="2">
-                <VStack gap="4">
+            <HStack gap="space-8">
+                <VStack gap="space-16">
                     <BodyShort>
                         <FormattedMessage id="HøyInntektInfobox.OppgittHøyereInntekt" />
                     </BodyShort>

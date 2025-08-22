@@ -47,7 +47,7 @@ export const ArbeidIUtlandetFieldArray = () => {
     return (
         <>
             {fields.map((field, index) => (
-                <VStack key={field.id} gap="10">
+                <VStack key={field.id} gap="space-40">
                     <HStack justify="space-between">
                         <RhfSelect
                             name={`arbeidIUtlandet.${index}.land`}

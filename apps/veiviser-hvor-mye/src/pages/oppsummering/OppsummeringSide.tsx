@@ -82,7 +82,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                 description={intl.formatMessage({ id: 'Tittel' })}
                 icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
-                <VStack gap="5">
+                <VStack gap="space-20">
                     {årslønn > grunnbeløpetGanger6 && (
                         <HøyInntektInfobox maxÅrslønnDekket={grunnbeløpetGanger6} isGray />
                     )}
@@ -96,7 +96,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                     <InformationIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
@@ -134,14 +134,14 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         <WalletIcon
                                             height={24}
                                             width={24}
-                                            color="#020C1CAD"
+                                            color="var(--ax-bg-neutral-strong)"
                                             fontSize="1.5rem"
                                             aria-hidden
                                         />
                                     }
                                     color="gray"
                                 >
-                                    <VStack gap="4">
+                                    <VStack gap="space-16">
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="OppsummeringSide.SammenlignFpOgEsInfoPart1"
@@ -165,7 +165,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                     <InformationIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
@@ -180,7 +180,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                     )}
                     <ExpansionCard aria-label="" size="small">
                         <ExpansionCard.Header>
-                            <HStack gap="6" align="center" wrap={false}>
+                            <HStack gap="space-24" align="center" wrap={false}>
                                 <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
@@ -194,7 +194,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                 arbeidssituasjon.harUtbetalingFraNav) && (
                                 <VStack gap="3">
                                     <BluePanel>
-                                        <VStack gap="1">
+                                        <VStack gap="space-4">
                                             <Heading size="small" level="4">
                                                 <FormattedMessage id="OppsummeringSide.NæverendeArbeidssitasjon" />
                                             </Heading>
@@ -211,8 +211,8 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         </VStack>
                                     </BluePanel>
                                     <BluePanel>
-                                        <VStack gap="4">
-                                            <VStack gap="1">
+                                        <VStack gap="space-16">
+                                            <VStack gap="space-4">
                                                 <Heading size="small" level="4">
                                                     <FormattedMessage id="OppsummeringSide.Lønn" />
                                                 </Heading>

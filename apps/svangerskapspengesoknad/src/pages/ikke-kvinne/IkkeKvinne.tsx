@@ -16,9 +16,9 @@ export const IkkeKvinne = () => {
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <GuidePanel poster>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading level="2" size="small">
                             <FormattedMessage id="ikkeKvinne.tittel" />
                         </Heading>

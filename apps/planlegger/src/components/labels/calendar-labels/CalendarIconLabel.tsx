@@ -18,9 +18,9 @@ export const CalendarIconLabel = ({ children, iconType }: Props) => {
     if (iconType === 'pink') {
         return (
             <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center">
+                <HStack gap="space-8" align="center">
                     {children}
-                    <HeartFillIcon color="#F68282" aria-hidden />
+                    <HeartFillIcon color="var(--ax-bg-warning-strong)" aria-hidden />
                 </HStack>
             </div>
         );
@@ -28,7 +28,7 @@ export const CalendarIconLabel = ({ children, iconType }: Props) => {
     if (iconType === 'purple') {
         return (
             <div className={styles.purplePanel}>
-                <HStack gap="2" align="center">
+                <HStack gap="space-8" align="center">
                     {children}
                     <div>{<LillaSirkel />} </div>
                 </HStack>
@@ -37,7 +37,7 @@ export const CalendarIconLabel = ({ children, iconType }: Props) => {
     } else {
         return (
             <div className={iconType === 'blue' ? styles.bluePanel : styles.greenPanel}>
-                <HStack gap="2" align="center" wrap={false}>
+                <HStack gap="space-8" align="center" wrap={false}>
                     {children}
 
                     <div>{iconType === 'blue' ? <BlåSirkel /> : <GrønnSirkel />}</div>

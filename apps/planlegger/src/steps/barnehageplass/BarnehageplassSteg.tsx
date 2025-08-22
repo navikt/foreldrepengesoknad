@@ -62,11 +62,11 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <VStack gap="8">
+            <VStack gap="space-32">
                 <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyLong>
                         <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
                     </BodyLong>
@@ -99,7 +99,13 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         color="blue"
                         icon={
                             <IconCircleWrapper color="lightBlue" size="medium">
-                                <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                                <BabyWrappedIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-brand-blue-700)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             </IconCircleWrapper>
                         }
                     >
@@ -128,7 +134,13 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                     <Infobox
                         header={<FormattedMessage id="Barnehageplass.BarnehageTittel" />}
                         icon={
-                            <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                            <InformationIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-neutral-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         }
                         color="gray"
                     >

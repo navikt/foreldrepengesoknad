@@ -31,7 +31,7 @@ export const InntektsmeldingOversiktPage = () => {
 
     return (
         <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 {aktiveInntektsmeldinger.map((im) => (
                     <LenkePanel
                         key={im.journalpostId}

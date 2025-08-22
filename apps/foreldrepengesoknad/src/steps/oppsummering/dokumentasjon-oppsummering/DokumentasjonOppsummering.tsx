@@ -94,7 +94,7 @@ export const DokumentasjonOppsummering = ({
                                         )}
                                     </FormSummary.Label>
                                     <FormSummary.Value>
-                                        <VStack gap="2">
+                                        <VStack gap="space-8">
                                             {idOgVedlegg[1]
                                                 .filter(
                                                     (vedlegg) =>
@@ -117,7 +117,7 @@ export const DokumentasjonOppsummering = ({
             </FormSummary>
             {harSendSenereDokument && (
                 <Alert variant="info">
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <Heading size="small" level="2">
                             <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
                         </Heading>

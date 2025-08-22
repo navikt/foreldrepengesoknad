@@ -62,7 +62,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </Radio>
                 </RhfRadioGroup>
                 <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <BodyLong>
                             <FormattedMessage id="annenForelder.aleneOmOmsorg.del1" />
                         </BodyLong>
@@ -195,7 +195,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                             id: 'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
                         })}
                     >
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <div>
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
                             </div>

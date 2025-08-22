@@ -16,7 +16,7 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
 
     return (
         <>
-            <FileIcon className="text-text-action" height={24} width={24} aria-hidden={true} />
+            <FileIcon className="text-ax-text-accent-subtle" height={24} width={24} aria-hidden={true} />
             <Link href={url} target="_blank" className="overflow-hidden overflow-ellipsis block whitespace-nowrap">
                 {dokument.tittel}
             </Link>
@@ -45,18 +45,18 @@ export const Dokument = ({ dokument }: Props) => {
     const { type, mottatt } = dokument;
 
     return (
-        <div className="border-b-2 p-4 pr-3 border-gray-300 last:border-none">
+        <div className="border-b-2 p-4 pr-3 border-ax-neutral-400 last:border-none">
             <Hide above="md" className="flex flex-col gap-4">
-                <HGrid columns={'max-content 1fr'} gap="4">
+                <HGrid columns={'max-content 1fr'} gap="space-16">
                     <DokumentLenke dokument={dokument} />
                 </HGrid>
-                <HStack gap="4" align="center" justify="space-between">
+                <HStack gap="space-16" align="center" justify="space-between">
                     <DokumentAvsender dokumentType={type} />
                     <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
                 </HStack>
             </Hide>
             <Show above="md">
-                <HGrid columns="max-content 2fr max-content 112px" gap="8" align="center">
+                <HGrid columns="max-content 2fr max-content 112px" gap="space-32" align="center">
                     <DokumentLenke dokument={dokument} />
                     <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
                     <DokumentAvsender dokumentType={type} />

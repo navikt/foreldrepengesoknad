@@ -18,7 +18,7 @@ export const VilDuGåTilbakeModal = ({ isOpen, setIsOpen, goToPreviousStep }: Pr
                 </Heading>
             </Modal.Header>
             <Modal.Body>
-                <HStack gap="4">
+                <HStack gap="space-16">
                     <BodyShort>
                         <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.intro" />
                     </BodyShort>

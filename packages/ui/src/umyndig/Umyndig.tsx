@@ -34,9 +34,9 @@ export const Umyndig = ({ appName }: Props) => {
 
     return (
         <SkjemaRotLayout pageTitle={titleText}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <GuidePanel poster>
-                    <VStack gap="8">
+                    <VStack gap="space-32">
                         <Heading level="3" size="small">
                             <FormattedMessage id="Umyndig.Tittel" />
                         </Heading>

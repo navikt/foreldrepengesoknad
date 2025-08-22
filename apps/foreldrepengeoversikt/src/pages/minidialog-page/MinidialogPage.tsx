@@ -50,7 +50,7 @@ export const MinidialogPage = ({ fnr }: Props) => {
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>
             <ContentSection>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Heading size="medium" level="2">
                         <FormattedMessage id="miniDialog.tilbakekreving.undertittel" />
                     </Heading>

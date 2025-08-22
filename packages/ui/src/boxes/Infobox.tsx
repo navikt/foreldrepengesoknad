@@ -44,9 +44,9 @@ export const Infobox = ({
     useHorizontalDivider = false,
 }: Props) => (
     <div className={`${styles.box} ${shouldFadeIn ? styles.animation : undefined} ${BOX_BACKGROUND[color]}`}>
-        <VStack gap="2">
+        <VStack gap="space-8">
             {(header || (!header && icon)) && (
-                <HStack wrap={false} gap="4" justify="space-between" align={header ? 'center' : 'start'}>
+                <HStack wrap={false} gap="space-16" justify="space-between" align={header ? 'center' : 'start'}>
                     {header && (
                         <Heading size="xsmall" level={headingLevel}>
                             {header}

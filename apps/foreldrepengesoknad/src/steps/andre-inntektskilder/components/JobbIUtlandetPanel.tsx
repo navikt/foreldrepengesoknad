@@ -26,7 +26,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
     }
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <RhfSelect
                 name={`andreInntektskilder.${index}.land`}
                 control={control}
@@ -64,7 +64,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
                     <FormattedMessage id="JobbIUtlandetPanel.RadioButton.Ja" />
                 </Radio>
             </RhfRadioGroup>
-            <HStack gap="6">
+            <HStack gap="space-24">
                 <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
                     control={control}

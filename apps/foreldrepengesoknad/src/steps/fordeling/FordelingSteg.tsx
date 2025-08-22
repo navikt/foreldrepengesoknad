@@ -138,7 +138,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <FordelingOversikt
                         kontoer={valgtStønadskonto}
                         navnFarMedmor={navnFarMedmor}

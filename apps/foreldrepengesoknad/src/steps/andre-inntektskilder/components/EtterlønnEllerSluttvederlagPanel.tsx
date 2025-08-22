@@ -17,8 +17,8 @@ export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Prop
     const intl = useIntl();
 
     return (
-        <VStack gap="10">
-            <HStack gap="6">
+        <VStack gap="space-40">
+            <HStack gap="space-24">
                 <RhfDateRangepicker
                     nameFrom={`andreInntektskilder.${index}.fom`}
                     nameTo={`andreInntektskilder.${index}.tom`}
@@ -50,7 +50,7 @@ export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Prop
                 />
             </HStack>
             <BluePanel isDarkBlue>
-                <HStack gap="2" wrap={false}>
+                <HStack gap="space-8" wrap={false}>
                     <div>
                         <FileIcon fontSize="1.5rem" />
                     </div>

@@ -185,11 +185,11 @@ export const FileUploader = ({
     );
 
     return (
-        <VStack gap="6">
+        <VStack gap="space-24">
             <FileUpload.Dropzone
                 label={label}
                 description={
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             {description}
                             {description && ' '}

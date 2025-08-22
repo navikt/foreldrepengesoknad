@@ -2569,6 +2569,9 @@ importers:
         specifier: 7.1.11
         version: 7.1.11(react@19.1.1)(typescript@5.9.2)
     devDependencies:
+      '@navikt/ds-react':
+        specifier: 7.28.1
+        version: 7.28.1(@types/react@19.1.10)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint

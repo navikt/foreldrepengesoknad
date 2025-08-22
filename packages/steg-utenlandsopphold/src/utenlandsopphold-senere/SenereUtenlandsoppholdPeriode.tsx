@@ -45,7 +45,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
     const maxDateTom = dayjs(DATE_1_YEAR_FROM_NOW).toDate();
 
     return (
-        <VStack gap="5" align="start">
+        <VStack gap="space-20" align="start">
             <RhfSelect
                 name={`utenlandsoppholdNeste12Mnd.${index}.landkode`}
                 control={control}

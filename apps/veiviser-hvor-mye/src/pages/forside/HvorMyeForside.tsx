@@ -26,9 +26,9 @@ export const HvorMyeForside = () => {
                     {
                         url: links.veiviser,
                         content: (
-                            <HStack gap="5" align="center" wrap={false}>
+                            <HStack gap="space-20" align="center" wrap={false}>
                                 <BabyWrappedIcon aria-hidden height={45} width={45} />
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <Heading level="2" size="small">
                                         <FormattedMessage id="HvorMyeForside.UsikkerFp" />
                                     </Heading>

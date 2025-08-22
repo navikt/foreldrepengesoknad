@@ -17,7 +17,7 @@ export const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, ch
         <Page
             header={
                 <BlueHeading>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading size="large">
                             <FormattedMessage id="PlanleggerStepPage.Tittel" />
                         </Heading>

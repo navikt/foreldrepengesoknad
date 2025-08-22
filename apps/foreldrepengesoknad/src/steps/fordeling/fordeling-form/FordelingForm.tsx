@@ -81,7 +81,7 @@ export const FordelingForm = ({
     };
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ErrorSummaryHookForm />
                 {søkerDeltUttakINorgeSomMorFørFar && (
                     <FellesperiodeFordeling

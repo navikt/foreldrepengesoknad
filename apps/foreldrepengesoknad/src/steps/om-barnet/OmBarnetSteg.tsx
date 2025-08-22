@@ -173,7 +173,7 @@ const OmBarnetStegInner = ({
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
                             <ValgteRegistrerteBarn

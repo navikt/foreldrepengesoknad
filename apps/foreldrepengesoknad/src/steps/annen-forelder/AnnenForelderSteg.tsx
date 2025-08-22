@@ -116,7 +116,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {skalOppgiPersonalia && (
                             <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />

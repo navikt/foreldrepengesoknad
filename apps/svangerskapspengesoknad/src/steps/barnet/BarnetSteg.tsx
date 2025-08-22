@@ -85,7 +85,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         <div>
                             <RhfRadioGroup

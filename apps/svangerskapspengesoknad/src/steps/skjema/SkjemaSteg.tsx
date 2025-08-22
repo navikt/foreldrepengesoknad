@@ -115,7 +115,7 @@ export const SkjemaSteg = ({
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
                             <Bedriftsbanner
@@ -123,7 +123,7 @@ export const SkjemaSteg = ({
                                 arbeidsforholdNavn={navnArbeidsgiver}
                             />
                         )}
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <FileUploader
                                 label={finnFileUploaderLabel(intl, tilretteleggingId)}
                                 description={

@@ -47,7 +47,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
 
     return (
         <>
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <Label>
                     <FormattedMessage id="omBarnet.valgteBarn.tittel" values={{ antallBarn: sorterteBarn.length }} />
                 </Label>

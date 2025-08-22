@@ -31,9 +31,9 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                 </>
             }
         >
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <Alert variant="warning">
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading size="small" level="3">
                             <FormattedMessage id="RegisterdataUtdatert.Heading" />
                         </Heading>

@@ -26,26 +26,26 @@
 }
 
 .green {
-    background: var(--a-limegreen-200);
+    background: var(--ax-meta-lime-300);
 }
 .mediumGreen {
-    background: var(--a-limegreen-300);
+    background: var(--ax-meta-lime-400);
 }
 
 .darkGreen {
-    background: var(--a-limegreen-400);
+    background: var(--ax-meta-lime-400);
 }
 
 .gray {
-    background: var(--a-gray-300);
+    background: var(--ax-neutral-400);
 }
 
 .blue {
-    background: var(--a-deepblue-100);
+    background: var(--ax-brand-blue-400);
 }
 .lightBlue {
-    background: var(--a-deepblue-200);
+    background: var(--ax-brand-blue-400);
 }
 .darkBlue {
-    background: var(--a-deepblue-500);
+    background: var(--ax-brand-blue-600);
 }

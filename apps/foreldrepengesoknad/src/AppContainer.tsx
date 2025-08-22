@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
@@ -98,9 +98,11 @@ export const AppContainer = () => {
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <Provider locale={locale === 'nb' ? nb : nn}>
-                        <Foreldrepengesøknad />
-                    </Provider>
+                    <Theme theme="light">
+                        <Provider locale={locale === 'nb' ? nb : nn}>
+                            <Foreldrepengesøknad />
+                        </Provider>
+                    </Theme>
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>

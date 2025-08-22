@@ -7,7 +7,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
@@ -27,8 +27,24 @@ const withIntlProvider = getIntlDecorator({
     },
 });
 
+export const globalTypes = {
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
+};
+
 const preview: Preview = {
-    decorators: [withIntlProvider],
+    decorators: [withIntlProvider, withThemeDecorator],
     // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
     beforeAll: async () => {
         initialize({
@@ -41,4 +57,5 @@ const preview: Preview = {
     loaders: [mswLoader],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

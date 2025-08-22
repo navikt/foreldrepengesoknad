@@ -55,7 +55,7 @@ export const Foreldrepengeoversikt = () => {
     };
 
     return (
-        <div className={backgroundColor === 'white' ? 'bg-white' : 'bg-deepblue-50'}>
+        <div className={backgroundColor === 'white' ? 'bg-ax-bg-default' : 'bg-ax-brand-blue-100'}>
             <ScrollToTop />
             <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data ?? defaultSaker} />
         </div>

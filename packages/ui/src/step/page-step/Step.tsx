@@ -30,7 +30,7 @@ export const Step = <TYPE extends string>({
     const title = steps[currentStepIndex].label;
 
     return (
-        <VStack gap="6">
+        <VStack gap="space-24">
             <div role="presentation">
                 <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
             </div>
@@ -44,7 +44,7 @@ export const Step = <TYPE extends string>({
                 </BodyShort>
             )}
             <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
-                <VStack gap="4">{children}</VStack>
+                <VStack gap="space-16">{children}</VStack>
             </section>
         </VStack>
     );

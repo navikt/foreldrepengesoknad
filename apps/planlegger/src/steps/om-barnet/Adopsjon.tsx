@@ -43,7 +43,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
     return (
         <>
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <RhfDatepicker
                         name="overtakelsesdato"
                         control={formMethods.control}
@@ -94,11 +94,19 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                     header={
                         <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfo" values={{ erAlenesøker }} />
                     }
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyLong>
                             <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
                         </BodyLong>

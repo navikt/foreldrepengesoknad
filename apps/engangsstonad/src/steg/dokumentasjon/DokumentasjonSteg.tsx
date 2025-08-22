@@ -63,7 +63,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
             <Step onStepChange={navigator.goToNextStep} steps={stepConfig} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {erBarnetAdoptert && (
                             <AdopsjonDokPanel

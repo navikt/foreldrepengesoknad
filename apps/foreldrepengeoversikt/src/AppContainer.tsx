@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { Route, Routes } from 'react-router-dom';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { nb } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
@@ -55,19 +55,21 @@ export const AppContainer = () => {
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools />
-                <Provider locale={nb}>
-                    <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                        <ByttBrowserModal />
-                        <Routes>
-                            {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
-                            <Route
-                                path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                                element={<BruktOpplysningerOmArbeidsforhold />}
-                            />
-                            <Route path="*" element={<Foreldrepengeoversikt />} />
-                        </Routes>
-                    </IntlProvider>
-                </Provider>
+                <Theme theme="light">
+                    <Provider locale={nb}>
+                        <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                            <ByttBrowserModal />
+                            <Routes>
+                                {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
+                                <Route
+                                    path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                                    element={<BruktOpplysningerOmArbeidsforhold />}
+                                />
+                                <Route path="*" element={<Foreldrepengeoversikt />} />
+                            </Routes>
+                        </IntlProvider>
+                    </Provider>
+                </Theme>
             </QueryClientProvider>
         </ErrorBoundary>
     );

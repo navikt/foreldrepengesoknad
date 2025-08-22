@@ -90,7 +90,15 @@ export const ValgtDekningsgradInfoboks = ({
                     }}
                 />
             }
-            icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CalendarIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
             color="green"
         >
@@ -135,7 +143,7 @@ export const ValgtDekningsgradInfoboks = ({
                 (hvemHarRett === 'kunSøker1HarRett' &&
                     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
                     erAdopsjon)) && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"

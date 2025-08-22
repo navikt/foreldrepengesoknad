@@ -31,9 +31,9 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
         startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
 
     return (
-        <Box padding="4" background="surface-alt-3-subtle" className={styles.infoOmNesteBarn}>
+        <Box.New padding="4" background="brand-blue-moderate" className={styles.infoOmNesteBarn}>
             <HStack justify="space-between" align="start">
-                <VStack gap="2" style={{ width: '85%' }}>
+                <VStack gap="space-8" style={{ width: '85%' }}>
                     <Heading size="xsmall">
                         {erToTette ? (
                             <FormattedMessage
@@ -68,9 +68,9 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
                     </BodyShort>
                 </VStack>
                 <IconCircleWrapper size="medium" color="lightBlue">
-                    <BabyWrappedIcon height={24} width={24} color="#005B82" />
+                    <BabyWrappedIcon height={24} width={24} color="var(--ax-brand-blue-800)" />
                 </IconCircleWrapper>
             </HStack>
-        </Box>
+        </Box.New>
     );
 };

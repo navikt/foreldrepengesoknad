@@ -1,7 +1,7 @@
 .bluePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-blue-50) !important;
-    background-color: var(--a-blue-50) !important;
+    border: 2px solid var(--ax-accent-300) !important;
+    background-color: var(--ax-accent-300) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -13,8 +13,8 @@
 
 .greenPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-green-100) !important;
-    background-color: var(--a-green-100) !important;
+    border: 2px solid var(--ax-success-200) !important;
+    background-color: var(--ax-success-200) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -26,7 +26,7 @@
 
 .greenOutlinePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-green-300) !important;
+    border: 2px solid var(--ax-success-400) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -38,7 +38,7 @@
 
 .blueOutlinePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-data-surface-1) !important;
+    border: 2px solid var(--ax-bg-info-strong) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -50,8 +50,8 @@
 
 .pinkPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-red-50) !important;
-    background-color: var(--a-red-50) !important;
+    border: 2px solid var(--ax-danger-200) !important;
+    background-color: var(--ax-danger-200) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -63,8 +63,8 @@
 
 .grayPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-gray-50) !important;
-    background-color: var(--a-gray-50) !important;
+    border: 2px solid var(--ax-neutral-100) !important;
+    background-color: var(--ax-neutral-100) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -84,19 +84,19 @@
     border-radius: 50%;
     background: linear-gradient(
         45deg,
-        var(--a-green-200) 0%,
-        var(--a-green-200) 25%,
+        var(--ax-success-500) 0%,
+        var(--ax-success-500) 25%,
         white 25%,
         white 40%,
-        var(--a-green-200) 40%,
-        var(--a-green-200) 60%,
+        var(--ax-success-500) 40%,
+        var(--ax-success-500) 60%,
         white 60%,
         white 75%,
-        var(--a-green-200) 75%,
-        var(--a-green-200) 100%,
+        var(--ax-success-500) 75%,
+        var(--ax-success-500) 100%,
         white 100%
     ) !important;
-    border: 2px solid var(--a-green-300) !important;
+    border: 2px solid var(--ax-success-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -107,19 +107,19 @@
     border-radius: 50%;
     background: linear-gradient(
         45deg,
-        var(--a-blue-200) 0%,
-        var(--a-blue-200) 25%,
+        var(--ax-accent-500) 0%,
+        var(--ax-accent-500) 25%,
         white 25%,
         white 40%,
-        var(--a-blue-200) 40%,
-        var(--a-blue-200) 60%,
+        var(--ax-accent-500) 40%,
+        var(--ax-accent-500) 60%,
         white 60%,
         white 75%,
-        var(--a-blue-200) 75%,
-        var(--a-blue-200) 100%,
+        var(--ax-accent-500) 75%,
+        var(--ax-accent-500) 100%,
         white 100%
     ) !important;
-    border: 2px solid var(--a-blue-300) !important;
+    border: 2px solid var(--ax-accent-500) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -130,12 +130,12 @@
     border-radius: 50%;
     background: linear-gradient(
         to top,
-        var(--a-green-300),
-        var(--a-green-300) 50%,
-        var(--a-data-surface-1-subtle) 50%,
-        var(--a-data-surface-1-subtle) 100%
+        var(--ax-success-400),
+        var(--ax-success-400) 50%,
+        var(--ax-accent-200) 50%,
+        var(--ax-accent-200) 100%
     ) !important;
-    border: 2px solid var(--a-green-300) !important;
+    border: 2px solid var(--ax-success-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -146,12 +146,12 @@
     border-radius: 50%;
     background: linear-gradient(
         to top,
-        var(--a-data-surface-1),
-        var(--a-data-surface-1) 50%,
-        var(--a-green-100) 50%,
-        var(--a-green-100) 100%
+        var(--ax-accent-500),
+        var(--ax-accent-500) 50%,
+        var(--ax-success-200) 50%,
+        var(--ax-success-200) 100%
     ) !important;
-    border: 2px solid var(--a-data-surface-1) !important;
+    border: 2px solid var(--ax-accent-500) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -160,7 +160,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--a-data-surface-1) !important;
+    border: 2px solid var(--ax-accent-500) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -169,7 +169,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--a-green-300) !important;
+    border: 2px solid var(--ax-success-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -178,7 +178,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-gray-800) !important;
+    background-color: var(--ax-neutral-900) !important;
     margin-bottom: 25%;
     print-color-adjust: exact;
 }
@@ -187,7 +187,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-green-300) !important;
+    background-color: var(--ax-success-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -196,7 +196,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-blue-300) !important;
+    background-color: var(--ax-accent-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -205,7 +205,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-gray-300) !important;
+    background-color: var(--ax-neutral-400) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }

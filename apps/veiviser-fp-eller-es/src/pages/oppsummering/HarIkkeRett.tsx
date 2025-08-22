@@ -26,10 +26,16 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="bg-subtle" padding="8" borderRadius="large">
-                <VStack gap="8">
-                    <VStack gap="8" align="center">
-                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
+            <Box.New background="neutral-moderate" borderColor="brand-blue" padding="8" borderRadius="large">
+                <VStack gap="space-32">
+                    <VStack gap="space-32" align="center">
+                        <StrollerIcon
+                            height={48}
+                            width={48}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-accent-500)"
+                        />
                         <Heading size="medium" align="center" className="m-6" level="2">
                             {jobberIkkeINorge ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRettNorge" />
@@ -38,15 +44,9 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                             )}
                         </Heading>
                     </VStack>
-                    <Box
-                        background="bg-subtle"
-                        borderColor="border-info"
-                        borderWidth="2"
-                        padding="4"
-                        borderRadius="large"
-                    >
-                        <VStack gap="4">
-                            <HStack gap="8" justify="space-between" wrap={false}>
+                    <Box.New background="neutral-moderate" borderWidth="2" padding="4" borderRadius="large">
+                        <VStack gap="space-16">
+                            <HStack gap="space-32" justify="space-between" wrap={false}>
                                 <BodyShort>
                                     {jobberIkkeINorge ? (
                                         <FormattedMessage id="OppsummeringFpEllerEsSide.SidenDuIkkeJobberINorge" />
@@ -58,16 +58,16 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     <BabyWrappedIcon
                                         height={24}
                                         width={24}
-                                        color="#236B7D"
+                                        color="var(--ax-accent-800)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
                                 </IconCircleWrapper>
                             </HStack>
                         </VStack>
-                    </Box>
+                    </Box.New>
                 </VStack>
-            </Box>
+            </Box.New>
             <HStack justify="space-around">
                 <Link href={links.omForeldrepenger} target="_blank" rel="norefferer" underline={false}>
                     <Button type="submit" variant="secondary">
@@ -80,7 +80,7 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                     </Button>
                 </Link>
             </HStack>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <HvorforHarJegIkkeRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} />
                 <HvorforHarJegIkkeRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
             </VStack>

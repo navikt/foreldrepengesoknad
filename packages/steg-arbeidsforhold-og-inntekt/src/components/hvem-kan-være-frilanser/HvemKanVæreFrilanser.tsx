@@ -21,7 +21,7 @@ export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {
             }
             header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' })}
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     <FormattedMessage id="inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del1" />
                 </BodyShort>

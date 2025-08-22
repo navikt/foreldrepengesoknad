@@ -24,7 +24,7 @@ export const HvorforHarJegRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Pr
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
-                <HStack gap="6" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
@@ -38,11 +38,11 @@ export const HvorforHarJegRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Pr
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyShort>
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav: true }} />
                     </BodyShort>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <KravinfoBoks
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}

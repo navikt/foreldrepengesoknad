@@ -20,7 +20,7 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon:
                     <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
                 </FormSummary.Label>
                 <FormSummary.Answer>
-                    <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                    <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
                 </FormSummary.Answer>
             </FormSummary.Answer>
         </>
@@ -35,7 +35,7 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedl
             </FormSummary.Label>
             <FormSummary.Answer>
                 {/*TODO: klikke på lenke*/}
-                <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
             </FormSummary.Answer>
         </FormSummary.Answer>
     );

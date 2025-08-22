@@ -19,13 +19,13 @@ export const KontonummerInfo = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }
     return (
         <Accordion.Item>
             <Accordion.Header>
-                <VStack gap="1">
+                <VStack gap="space-4">
                     <Detail textColor="subtle">KONTONUMMER</Detail>
                     <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
                 </VStack>
             </Accordion.Header>
             <Accordion.Content>
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <KontonummerInfoTekst
                         harKontonummer={harKontonummer}
                         ytelse={ytelse}

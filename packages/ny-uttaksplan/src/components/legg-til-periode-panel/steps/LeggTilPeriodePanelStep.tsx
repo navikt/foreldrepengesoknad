@@ -107,7 +107,7 @@ export const LeggTilPeriodePanelStep = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-            <VStack gap="4" className="p-4 rounded-lg bg-white">
+            <VStack gap="space-16">
                 {isOpphold === false ? (
                     <>
                         <KontotypeSpørsmål />

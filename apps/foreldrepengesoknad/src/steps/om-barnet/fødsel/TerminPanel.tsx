@@ -61,7 +61,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
     return (
         <>
             {søknadGjelderEtNyttBarn && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <RhfDatepicker
                         name="termindato"
                         control={formMethods.control}
@@ -93,7 +93,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                     />
                     {!søkerErFarMedmor && (
                         <ReadMore header={intl.formatMessage({ id: 'omBarnet.termindato.åpneLabel' })}>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BodyShort>
                                     <FormattedMessage id="omBarnet.termindato.innhold.del1" />
                                 </BodyShort>
@@ -138,7 +138,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
             )}
             {(erForTidligTilÅSøkePåTermin || (farMedMorSøkerPåTermin && !kanSøkePåTermin)) && (
                 <Alert variant="warning">
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading level="3" size="small">
                             <FormattedMessage id="omBarnet.termindato.erForTidligTilÅSøkePåTermin.heading" />
                         </Heading>

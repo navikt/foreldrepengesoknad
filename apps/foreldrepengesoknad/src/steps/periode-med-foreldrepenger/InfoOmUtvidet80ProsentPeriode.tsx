@@ -4,7 +4,7 @@ import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 export const InfoOmUtvidet80ProsentPeriode = () => {
     return (
-        <VStack gap="4" style={{ width: '85%' }}>
+        <VStack gap="space-16" style={{ width: '85%' }}>
             <Heading size="xsmall">
                 <FormattedMessage id="Utvidet80ProsentPeriodePanel.Heading" />
             </Heading>
