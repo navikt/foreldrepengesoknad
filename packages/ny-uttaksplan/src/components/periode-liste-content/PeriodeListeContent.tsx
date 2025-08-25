@@ -138,7 +138,11 @@ export const PeriodeListeContent = ({
     const erBarnetFødt = isFødtBarn(barn);
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
-        return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
+        return (
+            <div className="pt-10 pb-10">
+                <FamiliehendelseContent familiehendelseType={familiehendelseType} />
+            </div>
+        );
     }
 
     const closeEndringsModal = () => {
@@ -156,7 +160,7 @@ export const PeriodeListeContent = ({
     };
 
     return (
-        <div style={{ marginTop: '1rem' }}>
+        <div className="pt-10 pb-10">
             <Stack direction={{ sm: 'column', md: 'column' }}>
                 {permisjonsperiode.perioder.map((periode) => {
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);

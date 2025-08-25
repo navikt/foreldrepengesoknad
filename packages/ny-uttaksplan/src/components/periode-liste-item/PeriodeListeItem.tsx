@@ -1,11 +1,11 @@
-import { Accordion } from '@navikt/ds-react';
+import { useState } from 'react';
 
-import { planBemUtils } from '../../planBemUtils';
+import { VStack } from '@navikt/ds-react';
+
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { PeriodeListeContent } from '../periode-liste-content/PeriodeListeContent';
 import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
-import './periode-liste-item.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
@@ -22,14 +22,33 @@ export const PeriodeListeItem = ({
     handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
-    const bem = planBemUtils('periode-liste-item');
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Accordion.Item>
-            <Accordion.Header style={{ flexDirection: 'row-reverse' }} className={bem.element('header')}>
-                <PeriodeListeHeader permisjonsperiode={permisjonsperiode} erFamiliehendelse={erFamiliehendelse} />
-            </Accordion.Header>
-            <Accordion.Content>
+        <VStack gap="0" className="cursor-pointer border-t-1 border-b-1 border-ax-neutral-300">
+            <div
+                className="select-none pt-4 pb-4 hover:bg-ax-accent-300"
+                onClick={() => setIsOpen(!isOpen)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setIsOpen((prev) => !prev);
+                    }
+                }}
+            >
+                <PeriodeListeHeader
+                    isOpen={isOpen}
+                    permisjonsperiode={permisjonsperiode}
+                    erFamiliehendelse={erFamiliehendelse}
+                />
+            </div>
+            <div
+                className={`overflow-hidden transition-all duration-500 ${
+                    isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+            >
                 <PeriodeListeContent
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
@@ -37,7 +56,7 @@ export const PeriodeListeItem = ({
                     erFamiliehendelse={!!erFamiliehendelse}
                     permisjonsperiode={permisjonsperiode}
                 />
-            </Accordion.Content>
-        </Accordion.Item>
+            </div>
+        </VStack>
     );
 };
