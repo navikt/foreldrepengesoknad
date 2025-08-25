@@ -71,15 +71,15 @@ export const SlettPeriodeModal = ({
     };
 
     return (
-        <Modal className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
-            <Modal.Header className={styles.header} closeButton={false}>
+        <div className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
+            <header className={styles.header} closeButton={false}>
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ariaLabelId}>
                         <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
                     </Heading>
                 </div>
-            </Modal.Header>
+            </header>
             <Modal.Body>
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
@@ -123,6 +123,6 @@ export const SlettPeriodeModal = ({
                     </div>
                 </RhfForm>
             </Modal.Body>
-        </Modal>
+        </div>
     );
 };

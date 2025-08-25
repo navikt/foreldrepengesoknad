@@ -19,7 +19,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
+import { EndrePeriodeModal } from '../endre-periode-panel/EndrePeriodeModal';
 import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
@@ -157,40 +157,6 @@ export const PeriodeListeContent = ({
 
     return (
         <div style={{ marginTop: '1rem' }}>
-            <Stack direction={{ sm: 'column', md: 'column' }}>
-                {permisjonsperiode.perioder.map((periode) => {
-                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
-                })}
-            </Stack>
-            <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            {modus !== 'innsyn' && erRedigerbar && (
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        onClick={openEndringsModal}
-                        icon={<PencilIcon />}
-                    >
-                        Endre
-                    </Button>
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        icon={<TrashIcon />}
-                        onClick={() => {
-                            if (inneholderKunEnPeriode) {
-                                return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                            }
-
-                            openDeleteModal();
-                        }}
-                    >
-                        <FormattedMessage id="uttaksplan.slett" />
-                    </Button>
-                </div>
-            )}
             {isEndringsModalOpen ? (
                 <EndrePeriodeModal
                     closeModal={closeEndringsModal}
@@ -202,6 +168,46 @@ export const PeriodeListeContent = ({
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
+            {!isEndringsModalOpen ? (
+                <>
+                    <Stack direction={{ sm: 'column', md: 'column' }}>
+                        {permisjonsperiode.perioder.map((periode) => {
+                            return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                        })}
+                    </Stack>
+                    <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+
+                    {modus !== 'innsyn' && erRedigerbar && (
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                            <Button
+                                type="button"
+                                size="xsmall"
+                                variant="secondary"
+                                onClick={openEndringsModal}
+                                icon={<PencilIcon />}
+                            >
+                                Endre
+                            </Button>
+                            <Button
+                                type="button"
+                                size="xsmall"
+                                variant="secondary"
+                                icon={<TrashIcon />}
+                                onClick={() => {
+                                    if (inneholderKunEnPeriode) {
+                                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
+                                    }
+
+                                    openDeleteModal();
+                                }}
+                            >
+                                <FormattedMessage id="uttaksplan.slett" />
+                            </Button>
+                        </div>
+                    )}
+                </>
+            ) : null}
+
             {isDeleteModalOpen ? (
                 <SlettPeriodeModal
                     closeModal={closeDeleteModal}

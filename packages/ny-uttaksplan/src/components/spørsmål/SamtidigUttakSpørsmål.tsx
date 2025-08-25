@@ -6,7 +6,7 @@ import { Radio, VStack } from '@navikt/ds-react';
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { EndrePeriodeModalStepFormValues } from '../endre-periode-panel/steps/EndrePeriodeModalStep';
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { valideringSamtidigUttak } from './validators';
 
