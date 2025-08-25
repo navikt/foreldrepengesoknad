@@ -154,7 +154,16 @@ const Planlegger: FunctionComponent<Props> = ({
                         </section>
                     </Block>
                     {nyPeriodeFormIsVisible && (
-                        <div style={{ backgroundColor: 'white', padding: '1rem' }}>
+                        <div
+                            style={{
+                                backgroundColor: 'white',
+                                padding: '1rem',
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                borderColor: 'var(--ax-border-neutral-subtleA)',
+                                borderRadius: '10px',
+                            }}
+                        >
                             <NyPeriode
                                 setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
                                 annenForelder={annenForelder}
