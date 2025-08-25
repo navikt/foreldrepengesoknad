@@ -64,17 +64,17 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                 {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
             </div>
             <div
-                className={`min-w-[8%] md:min-w-[40%] p-4 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem] 
+                className={`min-w-[60px] md:min-w-[38%] p-4 rounded-2xl md:px-4 md:py-2 md:rounded-xl 
                         ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
             >
                 <HStack justify="space-between" wrap={false}>
                     <Show above="md">
                         <BodyShort>{tekst}</BodyShort>
                     </Show>
-                    {getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}
+                    <div>{getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}</div>
                 </HStack>
             </div>
-            <div className="min-w-[10%] p-4 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem]">
+            <div className="p-4 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem]">
                 <div className="flex items-center justify-center w-6 h-6 rounded-2xl bg-ax-bg-accent-moderate">
                     {isOpen ? (
                         <ChevronUpIcon color="var(--ax-bg-accent-strong)" />

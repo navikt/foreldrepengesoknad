@@ -45,17 +45,19 @@ export const PeriodeListeItem = ({
                 />
             </div>
             <div
-                className={`overflow-hidden transition-all duration-500 ${
+                className={`overflow-hidden transition-all duration-250 ${
                     isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
-                <PeriodeListeContent
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleDeletePerioder={handleDeletePerioder}
-                    erFamiliehendelse={!!erFamiliehendelse}
-                    permisjonsperiode={permisjonsperiode}
-                />
+                <div className="pt-10 pb-10 pl-10">
+                    <PeriodeListeContent
+                        handleUpdatePeriode={handleUpdatePeriode}
+                        handleDeletePeriode={handleDeletePeriode}
+                        handleDeletePerioder={handleDeletePerioder}
+                        erFamiliehendelse={!!erFamiliehendelse}
+                        permisjonsperiode={permisjonsperiode}
+                    />
+                </div>
             </div>
         </VStack>
     );
