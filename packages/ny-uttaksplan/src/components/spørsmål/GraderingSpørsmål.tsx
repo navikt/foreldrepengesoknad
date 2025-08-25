@@ -8,12 +8,12 @@ import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { prosentValideringGradering } from './validators';
 
 export const GraderingSpørsmål = () => {
     const intl = useIntl();
-    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodeModalStepFormValues>();
 
     const graderingValue = watch('skalDuJobbe');
     const kontoTypeValue = watch('kontoType');

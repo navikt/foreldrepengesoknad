@@ -3,7 +3,7 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType } from '../../../types/Planperiode';
 
-export type LeggTilPeriodeModalFormValues = {
+export type LeggTilPeriodePanelFormValues = {
     kontoType?: StønadskontoType;
     forelder: Forelder;
     fom: string;

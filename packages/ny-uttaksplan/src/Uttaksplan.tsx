@@ -1,5 +1,5 @@
 import { NotePencilDashIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import '@navikt/ds-css/darkside';
@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -57,7 +57,14 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
 }: Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isPanelOpen && panelRef.current) {
+            panelRef.current.focus();
+        }
+    }, [isPanelOpen]);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -130,8 +137,8 @@ export const UttaksplanNy = ({
         handleOnPlanChange(saksPerioder);
     };
 
-    const closeModal = () => setIsModalOpen(false);
-    const openModal = () => setIsModalOpen(true);
+    const closePanel = () => setIsPanelOpen(false);
+    const openPanel = () => setIsPanelOpen(true);
 
     const erBarnetFødt = isFødtBarn(barn);
 
@@ -173,19 +180,27 @@ export const UttaksplanNy = ({
             )}
 
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={openModal}>
-                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                </Button>
+                <>
+                    {!isPanelOpen && (
+                        <Button variant="secondary" onClick={openPanel}>
+                            <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                        </Button>
+                    )}
+                    {isPanelOpen && (
+                        <div ref={panelRef} tabIndex={-1}>
+                            <LeggTilPeriodePanel
+                                handleAddPeriode={(periode) => {
+                                    handleAddPeriode(periode);
+                                    closePanel();
+                                }}
+                                erBarnetFødt={erBarnetFødt}
+                                gjelderAdopsjon={gjelderAdopsjon}
+                                onCancel={closePanel}
+                            />
+                        </div>
+                    )}
+                </>
             )}
-            {isModalOpen ? (
-                <LeggTilPeriodeModal
-                    closeModal={closeModal}
-                    handleAddPeriode={handleAddPeriode}
-                    isModalOpen={isModalOpen}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                />
-            ) : null}
         </UttaksplanDataContext>
     );
 };

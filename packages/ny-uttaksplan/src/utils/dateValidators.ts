@@ -14,7 +14,7 @@ import {
     isWeekday,
 } from '@navikt/fp-validation';
 
-import { LeggTilPeriodeModalFormValues } from '../components/legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { LeggTilPeriodePanelFormValues } from '../components/legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface FomValidatorProps {
@@ -35,7 +35,7 @@ export const getFomValidators = ({
     gjelderAdopsjon,
 }: FomValidatorProps) => {
     const intl = useIntl();
-    const { watch } = useFormContext<LeggTilPeriodeModalFormValues>();
+    const { watch } = useFormContext<LeggTilPeriodePanelFormValues>();
 
     const tomValue = watch('tom');
     const skalDuJobbe = watch('skalDuJobbe');
@@ -213,7 +213,7 @@ export const getTomValidators = ({
     årsak,
     gjelderAdopsjon,
 }: TomValidatorProps) => {
-    const { watch } = useFormContext<LeggTilPeriodeModalFormValues>();
+    const { watch } = useFormContext<LeggTilPeriodePanelFormValues>();
     const intl = useIntl();
 
     const fomValue = watch('fom');
