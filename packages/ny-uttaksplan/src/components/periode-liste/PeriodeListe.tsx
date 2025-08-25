@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 import { Fragment } from 'react';
 
-import { Accordion } from '@navikt/ds-react';
-
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -37,51 +35,49 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
 
     return (
         <div>
-            <Accordion>
-                {permisjonsperioder.map((p, index) => {
-                    if (perioderEtterFamdato.length === 0) {
-                        return (
-                            <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
+            {permisjonsperioder.map((p, index) => {
+                if (perioderEtterFamdato.length === 0) {
+                    return (
+                        <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
+                            <PeriodeListeItem
+                                handleUpdatePeriode={handleUpdatePeriode}
+                                handleDeletePeriode={handleDeletePeriode}
+                                handleDeletePerioder={handleDeletePerioder}
+                                permisjonsperiode={p}
+                            />
+                            {permisjonsperioder.length - 1 === index ? (
                                 <PeriodeListeItem
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={p}
+                                    erFamiliehendelse={true}
                                 />
-                                {permisjonsperioder.length - 1 === index ? (
-                                    <PeriodeListeItem
-                                        handleUpdatePeriode={handleUpdatePeriode}
-                                        handleDeletePeriode={handleDeletePeriode}
-                                        handleDeletePerioder={handleDeletePerioder}
-                                        permisjonsperiode={p}
-                                        erFamiliehendelse={true}
-                                    />
-                                ) : null}
-                            </Fragment>
-                        );
-                    } else {
-                        return (
-                            <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
-                                {indexOfFørstePeriodeEtterFødsel === index ? (
-                                    <PeriodeListeItem
-                                        handleUpdatePeriode={handleUpdatePeriode}
-                                        handleDeletePeriode={handleDeletePeriode}
-                                        handleDeletePerioder={handleDeletePerioder}
-                                        permisjonsperiode={p}
-                                        erFamiliehendelse={true}
-                                    />
-                                ) : null}
+                            ) : null}
+                        </Fragment>
+                    );
+                } else {
+                    return (
+                        <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
+                            {indexOfFørstePeriodeEtterFødsel === index ? (
                                 <PeriodeListeItem
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={p}
+                                    erFamiliehendelse={true}
                                 />
-                            </Fragment>
-                        );
-                    }
-                })}
-            </Accordion>
+                            ) : null}
+                            <PeriodeListeItem
+                                handleUpdatePeriode={handleUpdatePeriode}
+                                handleDeletePeriode={handleDeletePeriode}
+                                handleDeletePerioder={handleDeletePerioder}
+                                permisjonsperiode={p}
+                            />
+                        </Fragment>
+                    );
+                }
+            })}
         </div>
     );
 };

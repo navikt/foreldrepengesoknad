@@ -8,6 +8,7 @@ import {
     ParasolBeachFillIcon,
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
@@ -15,119 +16,94 @@ import { Forelder } from '@navikt/fp-constants';
 import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import { IPlanBemUtils } from '../../planBemUtils';
+import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 
-type GetFargeProps = {
-    erPeriodeUtenUttak: boolean;
-    erSamtidigUttak: boolean;
-    erMor: boolean;
-    erHull: boolean | undefined;
-    erUtsettelse: boolean | undefined;
-    erFamiliehendelse: boolean | undefined;
-    bem: IPlanBemUtils;
-};
+export const finnBakgrunnsfarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
+    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
+    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
+    const erMor = forelder === Forelder.mor;
 
-export const getFarge = ({
-    bem,
-    erPeriodeUtenUttak,
-    erSamtidigUttak,
-    erUtsettelse,
-    erMor,
-    erHull,
-    erFamiliehendelse,
-}: GetFargeProps) => {
     if (erFamiliehendelse) {
-        return bem.modifier('farge-bg-red');
+        return 'bg-ax-danger-100';
     }
 
     if (erHull) {
-        return bem.modifier('farge-bg-graa');
+        return 'bg-ax-bg-neutral-moderate-hoverA';
     }
 
     if (erPeriodeUtenUttak) {
-        return bem.modifier('farge-bg-gul');
+        return 'bg-ax-warning-200';
     }
 
     if (erSamtidigUttak) {
-        return bem.modifier('farge-bg-lysblaa-gronn');
+        return 'bg-[linear-gradient(135deg,var(--ax-success-200)_0%,var(--ax-success-200)_50%,var(--ax-accent-100)_50%,var(--ax-accent-100)_100%)]';
     }
 
     if (erUtsettelse) {
-        return bem.modifier('farge-bg-blaa');
+        return 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-accent-500)]';
     }
 
     if (erMor) {
-        return bem.modifier('farge-bg-lysblaa');
+        return 'bg-ax-accent-100';
     }
 
-    return bem.modifier('farge-bg-gronn');
+    return 'bg-ax-success-200';
 };
 
-type GetIkonFargeProps = {
-    erPeriodeUtenUttak: boolean;
-    erMor: boolean;
-    erUtsettelse: boolean | undefined;
-    erHull: boolean | undefined;
-    erFamiliehendelse: boolean | undefined;
-    bem: IPlanBemUtils;
-};
+const getIkonFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
+    const { forelder, erUtsettelse, erHull } = permisjonsperiode;
+    const erMor = forelder === Forelder.mor;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
 
-const getIkonFarge = ({
-    erPeriodeUtenUttak,
-    erMor,
-    erUtsettelse,
-    bem,
-    erHull,
-    erFamiliehendelse,
-}: GetIkonFargeProps) => {
+    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+
     if (erFamiliehendelse) {
-        return bem.modifier('farge-red');
+        return 'text-ax-danger-600';
     }
 
     if (erHull) {
-        return bem.modifier('farge-svart');
+        return 'text-ax-neutral-800';
     }
 
     if (erPeriodeUtenUttak) {
-        return bem.modifier('farge-gul');
+        return 'text-ax-warning-400';
     }
 
-    if (erUtsettelse) {
-        return bem.modifier('farge-blaa');
+    if (utsettelseÅrsak !== undefined) {
+        return 'text-ax-accent-500';
     }
 
     if (erMor) {
-        return bem.modifier('farge-blaa');
+        return 'text-ax-accent-500';
     }
 
-    return bem.modifier('farge-gronn');
+    return 'text-ax-success-500';
 };
 
-type GetTekstProps = {
-    erPeriodeUtenUttak: boolean;
-    erSamtidigUttak: boolean;
-    erHull: boolean | undefined;
-    utsettelseÅrsak: UtsettelseÅrsakType | undefined;
-    erFamiliehendelse: boolean | undefined;
-    navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
-    forelder: Forelder | undefined;
-    familiesituasjon: Familiesituasjon;
-    intl: IntlShape;
-};
+export const getTekst = (
+    intl: IntlShape,
+    permisjonsperiode: Permisjonsperiode,
+    erFarEllerMedmor: boolean,
+    navnPåForeldre: NavnPåForeldre,
+    familiesituasjon: Familiesituasjon,
+    erFamiliehendelse?: boolean,
+) => {
+    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
 
-export const getTekst = ({
-    erPeriodeUtenUttak,
-    erSamtidigUttak,
-    erHull,
-    utsettelseÅrsak,
-    erFamiliehendelse,
-    navnPåForeldre,
-    erFarEllerMedmor,
-    forelder,
-    familiesituasjon,
-    intl,
-}: GetTekstProps) => {
+    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
+    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
@@ -184,156 +160,48 @@ export const getTekst = ({
     );
 };
 
-type GetIkonProps = {
-    periodeFørTermindato: boolean;
-    erPeriodeUtenUttak: boolean;
-    erMor: boolean;
-    utsettelseÅrsak: UtsettelseÅrsakType | undefined;
-    erHull: boolean | undefined;
-    erFamiliehendelse: boolean | undefined;
-    bem: IPlanBemUtils;
-};
+export const getIkon = (
+    permisjonsperiode: Permisjonsperiode,
+    familiehendelsedato: string,
+    erFamiliehendelse?: boolean,
+) => {
+    const { erUtsettelse, erHull } = permisjonsperiode;
+    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
+    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
 
-export const getIkon = ({
-    erPeriodeUtenUttak,
-    periodeFørTermindato,
-    erMor,
-    bem,
-    utsettelseÅrsak,
-    erHull,
-    erFamiliehendelse,
-}: GetIkonProps) => {
+    const ikonfarge = getIkonFarge(permisjonsperiode, erFamiliehendelse);
+
     if (erFamiliehendelse) {
-        return (
-            <HeartFillIcon
-                className={getIkonFarge({
-                    bem,
-                    erMor,
-                    erPeriodeUtenUttak,
-                    erUtsettelse: utsettelseÅrsak !== undefined,
-                    erHull,
-                    erFamiliehendelse,
-                })}
-                width={24}
-                height={24}
-            />
-        );
+        return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
     if (erHull) {
-        return (
-            <InformationSquareFillIcon
-                className={getIkonFarge({
-                    bem,
-                    erMor,
-                    erPeriodeUtenUttak,
-                    erUtsettelse: utsettelseÅrsak !== undefined,
-                    erHull,
-                    erFamiliehendelse,
-                })}
-                width={24}
-                height={24}
-            />
-        );
+        return <InformationSquareFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
     if (utsettelseÅrsak !== undefined) {
         if (utsettelseÅrsak === UtsettelseÅrsakType.Arbeid || utsettelseÅrsak === UtsettelseÅrsakType.Fri) {
-            return (
-                <BriefcaseFillIcon
-                    className={getIkonFarge({
-                        bem,
-                        erMor,
-                        erPeriodeUtenUttak,
-                        erUtsettelse: utsettelseÅrsak !== undefined,
-                        erHull,
-                        erFamiliehendelse,
-                    })}
-                    width={24}
-                    height={24}
-                />
-            );
+            return <BriefcaseFillIcon className={ikonfarge} width={24} height={24} />;
         }
 
         if (utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
-            return (
-                <ParasolBeachFillIcon
-                    className={getIkonFarge({
-                        bem,
-                        erMor,
-                        erPeriodeUtenUttak,
-                        erUtsettelse: utsettelseÅrsak !== undefined,
-                        erHull,
-                        erFamiliehendelse,
-                    })}
-                    width={24}
-                    height={24}
-                />
-            );
+            return <ParasolBeachFillIcon className={ikonfarge} width={24} height={24} />;
         }
 
-        return (
-            <BandageFillIcon
-                className={getIkonFarge({
-                    bem,
-                    erMor,
-                    erPeriodeUtenUttak,
-                    erUtsettelse: utsettelseÅrsak !== undefined,
-                    erHull,
-                    erFamiliehendelse,
-                })}
-                width={24}
-                height={24}
-            />
-        );
+        return <BandageFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
     if (periodeFørTermindato) {
-        return (
-            <PersonPregnantFillIcon
-                className={getIkonFarge({
-                    bem,
-                    erMor,
-                    erPeriodeUtenUttak,
-                    erUtsettelse: utsettelseÅrsak !== undefined,
-                    erHull,
-                    erFamiliehendelse,
-                })}
-                width={24}
-                height={24}
-            />
-        );
+        return <PersonPregnantFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
     if (erPeriodeUtenUttak) {
-        return (
-            <CloudFillIcon
-                className={getIkonFarge({
-                    bem,
-                    erMor,
-                    erPeriodeUtenUttak,
-                    erUtsettelse: utsettelseÅrsak !== undefined,
-                    erHull,
-                    erFamiliehendelse,
-                })}
-                width={24}
-                height={24}
-            />
-        );
+        return <CloudFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    return (
-        <BabyWrappedFillIcon
-            className={getIkonFarge({
-                bem,
-                erMor,
-                erPeriodeUtenUttak,
-                erUtsettelse: utsettelseÅrsak !== undefined,
-                erHull,
-                erFamiliehendelse,
-            })}
-            width={24}
-            height={24}
-        />
-    );
+    return <BabyWrappedFillIcon className={ikonfarge} width={24} height={24} />;
 };

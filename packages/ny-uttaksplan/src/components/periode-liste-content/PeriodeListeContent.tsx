@@ -156,7 +156,7 @@ export const PeriodeListeContent = ({
     };
 
     return (
-        <div style={{ marginTop: '1rem' }}>
+        <>
             <Stack direction={{ sm: 'column', md: 'column' }}>
                 {permisjonsperiode.perioder.map((periode) => {
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
@@ -213,6 +213,6 @@ export const PeriodeListeContent = ({
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
             ) : null}
-        </div>
+        </>
     );
 };
