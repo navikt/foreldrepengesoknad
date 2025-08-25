@@ -70,6 +70,9 @@ export const beregnGjenståendeUttaksdager = (
                         ? antallDager + finnAntallDagerÅTrekke(p)
                         : antallDager - finnAntallDagerÅTrekke(p);
                 }
+                //if (isUttaksperiodeAnnenpartEøs(p) && antallDager < 0) { // TODO: TFP-6302
+                //    antallDager = 0;
+                //}
             });
 
             antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
@@ -131,7 +134,6 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
             }
         });
     return oppholdAnnenPart.map((periode): Uttaksperiode => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { type, årsak, ...rest } = periode;
         return {
             type: Periodetype.Uttak,

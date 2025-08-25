@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -43,19 +43,26 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                 <span>&mdash;</span>
                 <span>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
             </strong>{' '}
-            {isUttakAnnenPart(periode) || isUttaksperiodeAnnenpartEøs(periode)
-                ? getOppholdskontoNavn(
-                      intl,
-                      periode.årsak,
-                      getForelderNavn(periode.forelder, navnPåForeldre),
-                      periode.forelder === Forelder.mor,
-                  )
-                : getUtsettelseTekst(
-                      intl,
-                      periode.årsak,
-                      getForelderNavn(periode.forelder, navnPåForeldre),
-                      periode.forelder === Forelder.mor,
-                  )}
+            {isUttaksperiodeAnnenpartEøs(periode) && (
+                <FormattedMessage
+                    id="uttaksplan.periodeinfo.uttak.eøs.annenforelder"
+                    //values={{ trekkdager: getVarighetString(periode.trekkdager, intl).toString() }}
+                ></FormattedMessage>
+            )}
+            {!isUttaksperiodeAnnenpartEøs(periode) &&
+                (isUttakAnnenPart(periode) || isUttaksperiodeAnnenpartEøs(periode)
+                    ? getOppholdskontoNavn(
+                          intl,
+                          periode.årsak,
+                          getForelderNavn(periode.forelder, navnPåForeldre),
+                          periode.forelder === Forelder.mor,
+                      )
+                    : getUtsettelseTekst(
+                          intl,
+                          periode.årsak,
+                          getForelderNavn(periode.forelder, navnPåForeldre),
+                          periode.forelder === Forelder.mor,
+                      ))}
         </BodyShort>
     );
 };
