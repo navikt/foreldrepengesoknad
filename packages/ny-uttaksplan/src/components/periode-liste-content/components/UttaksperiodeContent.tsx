@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
@@ -21,42 +21,43 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-const getArbeidsTekst = (arbeidstidprosent: number) => {
-    const uttaksprosent = Math.round((100 - arbeidstidprosent) * 100) / 100;
+export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
+    const intl = useIntl();
+
+    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        periode.kontoType!,
+        navnPåForeldre,
+        erFarEllerMedmor,
+        erAleneOmOmsorg,
+    );
 
     return (
-        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
-    );
-};
-
-const getSamtidigUttakTekst = (
-    samtidiguttaksProsent: number,
-    forelderIPerioden: Forelder,
-    erFarEllerMedmor: boolean,
-    navnPåForeldre: NavnPåForeldre,
-) => {
-    const periodenGjelderSøker = erFarEllerMedmor
-        ? forelderIPerioden === Forelder.farMedmor
-        : forelderIPerioden === Forelder.mor;
-    const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
-
-    return periodenGjelderSøker ? (
-        <FormattedMessage
-            id="uttaksplan.periodeListeContent.samtidigUttak"
-            values={{
-                samtidiguttaksProsent,
-                navnPåHovedforelderIPerioden: capitalizeFirstLetter(navnPåHovedforelderIPerioden),
-            }}
-        />
-    ) : (
-        <FormattedMessage
-            id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
-            values={{
-                navnPåAnnenForelderIPerioden: capitalizeFirstLetter(navnPåAnnenForelderIPerioden),
-                samtidiguttaksProsent,
-            }}
-        />
+        <HStack gap="space-8">
+            <div>
+                <CalendarIcon width={24} height={24} />
+            </div>
+            <VStack gap="space-4">
+                <HStack gap="space-8">
+                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            intl,
+                        )}
+                    </BodyShort>
+                </HStack>
+                <HStack gap="space-8">
+                    <BodyShort>{stønadskontoNavn}</BodyShort>
+                    {periode.morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
+                    )}
+                    {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
+                </HStack>
+            </VStack>
+        </HStack>
     );
 };
 
@@ -113,40 +114,41 @@ const getTekstForArbeidOgSamtidigUttak = (
     return undefined;
 };
 
-export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
-    const intl = useIntl();
-    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
-    const stønadskontoNavn = getStønadskontoNavn(
-        intl,
-        periode.kontoType!,
-        navnPåForeldre,
-        erFarEllerMedmor,
-        erAleneOmOmsorg,
-    );
+const getArbeidsTekst = (arbeidstidprosent: number) => {
+    const uttaksprosent = Math.round((100 - arbeidstidprosent) * 100) / 100;
 
     return (
-        <div style={{ marginBottom: '2rem', display: 'flex' }}>
-            <div>
-                <CalendarIcon width={24} height={24} />
-            </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
-                    <BodyShort>
-                        {getVarighetString(
-                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
-                            intl,
-                        )}
-                    </BodyShort>
-                </div>
-                <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>{stønadskontoNavn}</BodyShort>
-                    {periode.morsAktivitet !== undefined && (
-                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
-                    )}
-                    {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
-                </div>
-            </div>
-        </div>
+        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
+    );
+};
+
+const getSamtidigUttakTekst = (
+    samtidiguttaksProsent: number,
+    forelderIPerioden: Forelder,
+    erFarEllerMedmor: boolean,
+    navnPåForeldre: NavnPåForeldre,
+) => {
+    const periodenGjelderSøker = erFarEllerMedmor
+        ? forelderIPerioden === Forelder.farMedmor
+        : forelderIPerioden === Forelder.mor;
+    const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+
+    return periodenGjelderSøker ? (
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak"
+            values={{
+                samtidiguttaksProsent,
+                navnPåHovedforelderIPerioden: capitalizeFirstLetter(navnPåHovedforelderIPerioden),
+            }}
+        />
+    ) : (
+        <FormattedMessage
+            id="uttaksplan.periodeListeContent.samtidigUttak.annenForelder"
+            values={{
+                navnPåAnnenForelderIPerioden: capitalizeFirstLetter(navnPåAnnenForelderIPerioden),
+                samtidiguttaksProsent,
+            }}
+        />
     );
 };

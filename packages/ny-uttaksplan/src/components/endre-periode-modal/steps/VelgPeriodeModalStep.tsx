@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Heading, Radio } from '@navikt/ds-react';
+import { Button, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { formatDate } from '@navikt/fp-utils';
@@ -45,9 +45,11 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
     };
 
     return (
-        <>
-            <Heading size="medium">Hvilken periode vil du endre?</Heading>
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+            <VStack gap="space-16">
+                <Heading size="medium">
+                    <FormattedMessage id="uttaksplan.hvilkeperiode" />
+                </Heading>
                 <RhfRadioGroup
                     name="periodeId"
                     control={formMethods.control}
@@ -69,26 +71,15 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                         );
                     })}
                 </RhfRadioGroup>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        padding: '1rem 0',
-                    }}
-                >
-                    <div>
-                        <Button type="button" variant="secondary" onClick={closeModal}>
-                            <FormattedMessage id="uttaksplan.avbryt" />
-                        </Button>
-                    </div>
-                    <div>
-                        <Button>
-                            <FormattedMessage id="uttaksplan.gåVidere" />
-                        </Button>
-                    </div>
-                </div>
-            </RhfForm>
-        </>
+                <HStack justify="space-between">
+                    <Button type="button" variant="secondary" onClick={closeModal}>
+                        <FormattedMessage id="uttaksplan.avbryt" />
+                    </Button>
+                    <Button>
+                        <FormattedMessage id="uttaksplan.gåVidere" />
+                    </Button>
+                </HStack>
+            </VStack>
+        </RhfForm>
     );
 };

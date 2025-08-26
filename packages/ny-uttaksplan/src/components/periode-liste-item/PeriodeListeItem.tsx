@@ -22,34 +22,34 @@ export const PeriodeListeItem = ({
     handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
 
     return (
         <VStack gap="0" className="cursor-pointer border-t-1 border-b-1 border-ax-neutral-300">
             <div
                 className="select-none pt-4 pb-4 hover:bg-ax-accent-300"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setErPeriodeInnholdÅpen(!erPeriodeInnholdÅpen)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setIsOpen((prev) => !prev);
+                        setErPeriodeInnholdÅpen((prev) => !prev);
                     }
                 }}
             >
                 <PeriodeListeHeader
-                    isOpen={isOpen}
+                    isOpen={erPeriodeInnholdÅpen}
                     permisjonsperiode={permisjonsperiode}
                     erFamiliehendelse={erFamiliehendelse}
                 />
             </div>
             <div
                 className={`overflow-hidden transition-all duration-250 ${
-                    isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    erPeriodeInnholdÅpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
-                <div className="pt-10 pb-10 pl-10">
+                <div className="pt-10 pb-10 pl-10 pr-10">
                     <PeriodeListeContent
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}

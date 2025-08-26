@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
@@ -17,6 +17,46 @@ interface Props {
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
+
+export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
+    const intl = useIntl();
+    const { forelder } = periode;
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        // TODO fiks bruk av !
+        periode.kontoType!,
+        navnPåForeldre,
+        forelder === Forelder.farMedmor,
+    );
+    const navnPåAnnenForelder = forelder === Forelder.farMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+
+    return (
+        <HStack gap="space-8">
+            <div>
+                <CalendarIcon width={24} height={24} />
+            </div>
+            <VStack gap="space-8">
+                <HStack gap="space-8">
+                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            intl,
+                        )}
+                    </BodyShort>
+                </HStack>
+                <HStack gap="space-8">
+                    <BodyShort>
+                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                    </BodyShort>
+                    {periode.gradering !== undefined && (
+                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                    )}
+                </HStack>
+            </VStack>
+        </HStack>
+    );
+};
 
 const getArbeidsTekst = (arbeidstidprosent: number) => {
     const uttaksprosent = 100 - arbeidstidprosent;
@@ -71,43 +111,4 @@ const getOverføringsTekst = (
         default:
             return 'Ingen overføringsårsak oppgitt';
     }
-};
-
-export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
-    const intl = useIntl();
-    const { forelder } = periode;
-    const stønadskontoNavn = getStønadskontoNavn(
-        intl,
-        periode.kontoType!,
-        navnPåForeldre,
-        forelder === Forelder.farMedmor,
-    );
-    const navnPåAnnenForelder = forelder === Forelder.farMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-
-    return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
-            <div>
-                <CalendarIcon width={24} height={24} />
-            </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
-                    <BodyShort>
-                        {getVarighetString(
-                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
-                            intl,
-                        )}
-                    </BodyShort>
-                </div>
-                <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>
-                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
-                    </BodyShort>
-                    {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
 };
