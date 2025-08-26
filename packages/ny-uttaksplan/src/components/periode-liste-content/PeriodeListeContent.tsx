@@ -194,7 +194,7 @@ export const PeriodeListeContent = ({
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                             <Button
                                 type="button"
-                                size="xsmall"
+                                size="small"
                                 variant="secondary"
                                 onClick={openEndringsModal}
                                 icon={<PencilIcon />}
@@ -203,7 +203,7 @@ export const PeriodeListeContent = ({
                             </Button>
                             <Button
                                 type="button"
-                                size="xsmall"
+                                size="small"
                                 variant="secondary"
                                 icon={<TrashIcon />}
                                 onClick={() => {
