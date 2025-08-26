@@ -168,7 +168,20 @@ export const PeriodeListeContent = ({
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
-            {!isEndringsModalOpen ? (
+
+            {isDeleteModalOpen ? (
+                <SlettPeriodeModal
+                    closeModal={closeDeleteModal}
+                    handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    permisjonsperiode={permisjonsperiode}
+                    isModalOpen={isDeleteModalOpen}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
+            ) : null}
+
+            {!isEndringsModalOpen && !isDeleteModalOpen ? (
                 <>
                     <Stack direction={{ sm: 'column', md: 'column' }}>
                         {permisjonsperiode.perioder.map((periode) => {
@@ -206,18 +219,6 @@ export const PeriodeListeContent = ({
                         </div>
                     )}
                 </>
-            ) : null}
-
-            {isDeleteModalOpen ? (
-                <SlettPeriodeModal
-                    closeModal={closeDeleteModal}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleDeletePerioder={handleDeletePerioder}
-                    permisjonsperiode={permisjonsperiode}
-                    isModalOpen={isDeleteModalOpen}
-                    navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
             ) : null}
         </div>
     );

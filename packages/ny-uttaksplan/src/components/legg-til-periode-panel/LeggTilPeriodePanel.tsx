@@ -78,7 +78,7 @@ export function LeggTilPeriodePanel({ handleAddPeriode, erBarnetFødt, gjelderAd
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Heading>
             </div>
-            {renderContent()}
+            <div className="p-4">{renderContent()}</div>
         </div>
     );
 }
