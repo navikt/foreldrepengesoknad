@@ -21,7 +21,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
         .filter((p) => !isAvslåttPeriode(p))
         .filter((p) => !isUttaksperiodeAnnenpartEøs(p));
 
-    if (grunnlag.eksisterendeSak === undefined || perioderSomKanOverstyres === undefined) {
+    if (perioderSomKanOverstyres === undefined) {
         return { passerer: true };
     }
 
