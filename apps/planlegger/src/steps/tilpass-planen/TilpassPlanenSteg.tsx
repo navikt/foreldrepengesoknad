@@ -217,7 +217,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                             />
                             <HStack gap="space-16">
                                 <Button
-                                    size="xsmall"
+                                    size="small"
                                     variant="secondary"
                                     icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
@@ -228,7 +228,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                                 </Button>
                                 <Button
-                                    size="xsmall"
+                                    size="small"
                                     variant="secondary"
                                     icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
@@ -240,7 +240,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     Angre
                                 </Button>
                                 <Button
-                                    size="xsmall"
+                                    size="small"
                                     variant="secondary"
                                     icon={<TrashIcon aria-hidden height={24} width={24} />}
                                     onClick={() => setOpen(true)}
