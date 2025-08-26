@@ -44,10 +44,7 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                 <span>{formaterDatoKompakt(periode.tidsperiode.tom)}:</span>
             </strong>{' '}
             {isUttaksperiodeAnnenpartEøs(periode) && (
-                <FormattedMessage
-                    id="uttaksplan.periodeinfo.uttak.eøs.annenforelder"
-                    //values={{ trekkdager: getVarighetString(periode.trekkdager, intl).toString() }}
-                ></FormattedMessage>
+                <FormattedMessage id="uttaksplan.periodeinfo.uttak.eøs.annenforelder"></FormattedMessage>
             )}
             {!isUttaksperiodeAnnenpartEøs(periode) &&
                 (isUttakAnnenPart(periode) || isUttaksperiodeAnnenpartEøs(periode)

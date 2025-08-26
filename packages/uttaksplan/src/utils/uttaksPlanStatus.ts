@@ -62,27 +62,29 @@ export const beregnGjenståendeUttaksdager = (
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
     return tilgjengeligeStønadskontoer.kontoer.map((konto) => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
-        const uttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
-        if (uttaksplanPerioder) {
-            uttaksplanPerioder.forEach((p: Periode) => {
-                if (p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p)) {
-                    antallDager = beregnDagerBrukt
-                        ? antallDager + finnAntallDagerÅTrekke(p)
-                        : antallDager - finnAntallDagerÅTrekke(p);
-                }
-                //if (isUttaksperiodeAnnenpartEøs(p) && antallDager < 0) { // TODO: TFP-6302
-                //    antallDager = 0;
-                //}
-            });
+        const gjeldendeUttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
+        const uttaksplanPerioderNorge = gjeldendeUttaksplanPerioder
+            .filter((p) => !isUttaksperiodeAnnenpartEøs(p))
+            .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p));
+        const uttaksplanPerioderEøs = gjeldendeUttaksplanPerioder.filter((p) => isUttaksperiodeAnnenpartEøs(p));
 
-            antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
-        }
+        const antallDagerForbruktTotalt =
+            Math.min(summerAntallDagerForbrukt(uttaksplanPerioderEøs), konto.dager) + // OBS: Kan være mer en tilgjengelig konto
+            summerAntallDagerForbrukt(uttaksplanPerioderNorge);
+        antallDager = beregnDagerBrukt
+            ? antallDager + antallDagerForbruktTotalt
+            : antallDager - antallDagerForbruktTotalt;
+        antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
 
         return {
             konto: konto.konto,
             dager: antallDager,
         };
     });
+};
+
+const summerAntallDagerForbrukt = (perioder: Periode[]): number => {
+    return perioder.flatMap((p) => finnAntallDagerÅTrekke(p)).reduce((sum, dager) => sum + dager, 0);
 };
 
 export const beregnBrukteUttaksdager = (
