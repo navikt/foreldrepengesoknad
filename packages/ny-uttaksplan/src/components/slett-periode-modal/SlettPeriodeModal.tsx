@@ -72,6 +72,37 @@ export const SlettPeriodeModal = ({
 
     return (
         <div className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                header={{
+                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
+                    size: 'small',
+                    closeButton: false,
+                }}
+                width="small"
+            >
+                <Modal.Body>
+                    <BodyLong>
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Body" />
+                    </BodyLong>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        type="button"
+                        variant="danger"
+                        onClick={() => {
+                            lagreUttaksplan([[]]);
+                            setOpen(false);
+                        }}
+                    >
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft" />
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
+                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt" />
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <header className={styles.header} closeButton={false}>
                 <div className={styles.headerContent}>
                     <PencilIcon aria-hidden={true} width={24} height={24} />
@@ -80,7 +111,7 @@ export const SlettPeriodeModal = ({
                     </Heading>
                 </div>
             </header>
-            <Modal.Body>
+            <div>
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
                 </Heading>
@@ -122,7 +153,7 @@ export const SlettPeriodeModal = ({
                         </div>
                     </div>
                 </RhfForm>
-            </Modal.Body>
+            </div>
         </div>
     );
 };
