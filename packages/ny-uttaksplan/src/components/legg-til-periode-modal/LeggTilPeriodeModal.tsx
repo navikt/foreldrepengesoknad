@@ -5,12 +5,11 @@ import { FormattedMessage } from 'react-intl';
 import { Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Planperiode } from '../../types/Planperiode';
 import styles from './leggTilPeriodeModal.module.css';
 import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
-import { HvaVilDuGjøre, ValgModalStep } from './steps/ValgModalStep';
+import { HvaVilDuGjøre } from './types/LeggTilPeriodeModalFormValues';
 
 interface Props {
     closeModal: () => void | undefined;
@@ -20,16 +19,12 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
-
 export interface ModalData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
-    currentStep: ModalStep;
     fom?: string;
     tom?: string;
     kontoType?: StønadskontoType;
     forelder?: Forelder;
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 }
 
 export const LeggTilPeriodeModal = ({
@@ -43,45 +38,17 @@ export const LeggTilPeriodeModal = ({
         hvaVilDuGjøre: undefined,
         fom: undefined,
         tom: undefined,
-        currentStep: 'step1',
         kontoType: undefined,
         forelder: undefined,
-        årsak: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { currentStep } = modalData;
-
-    const { hvaVilDuGjøre } = modalData;
 
     const ariaLabelId = 'legg-til-periode-modal-heading';
 
     const closeModalWrapper = () => {
         setModalData(initialModalState);
         closeModal();
-    };
-
-    const renderContent = () => {
-        switch (currentStep) {
-            case 'step1':
-                return (
-                    <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModalWrapper} />
-                );
-            case 'step2':
-                return (
-                    <LeggTilPeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        erBarnetFødt={erBarnetFødt}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        handleAddPeriode={handleAddPeriode}
-                        isOpphold={hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD}
-                    />
-                );
-            default:
-                return null;
-        }
     };
 
     return (
@@ -94,7 +61,16 @@ export const LeggTilPeriodeModal = ({
                     </Heading>
                 </div>
             </Modal.Header>
-            <Modal.Body>{renderContent()}</Modal.Body>
+            <Modal.Body>
+                <LeggTilPeriodeModalStep
+                    modalData={modalData}
+                    setModalData={setModalData}
+                    closeModal={closeModalWrapper}
+                    erBarnetFødt={erBarnetFødt}
+                    gjelderAdopsjon={gjelderAdopsjon}
+                    handleAddPeriode={handleAddPeriode}
+                />
+            </Modal.Body>
         </Modal>
     );
 };

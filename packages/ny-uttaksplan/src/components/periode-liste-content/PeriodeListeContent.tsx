@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, UttaksplanModus, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -32,6 +32,7 @@ import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
@@ -112,9 +113,63 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
+const renderKnapper = (
+    modus: UttaksplanModus,
+    erRedigerbar: boolean,
+    permisjonsperiode: Permisjonsperiode,
+    inneholderKunEnPeriode: boolean,
+    openEndringsModal: any,
+    handleDeletePeriode: any,
+    openDeleteModal: any,
+) => {
+    if (modus === 'innsyn') {
+        return null;
+    }
+
+    if (!erRedigerbar) {
+        return (
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                <Button
+                    type="button"
+                    size="xsmall"
+                    variant="secondary"
+                    onClick={openEndringsModal}
+                    icon={<PencilIcon />}
+                >
+                    Endre
+                </Button>
+            </div>
+        );
+    }
+
+    return (
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+            <Button type="button" size="xsmall" variant="secondary" onClick={openEndringsModal} icon={<PencilIcon />}>
+                Endre
+            </Button>
+            <Button
+                type="button"
+                size="xsmall"
+                variant="secondary"
+                icon={<TrashIcon />}
+                onClick={() => {
+                    if (inneholderKunEnPeriode) {
+                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
+                    }
+
+                    openDeleteModal();
+                }}
+            >
+                <FormattedMessage id="uttaksplan.slett" />
+            </Button>
+        </div>
+    );
+};
+
 export const PeriodeListeContent = ({
     permisjonsperiode,
     erFamiliehendelse,
+    handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -163,38 +218,20 @@ export const PeriodeListeContent = ({
                 })}
             </Stack>
             <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            {modus !== 'innsyn' && erRedigerbar && (
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        onClick={openEndringsModal}
-                        icon={<PencilIcon />}
-                    >
-                        Endre
-                    </Button>
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        icon={<TrashIcon />}
-                        onClick={() => {
-                            if (inneholderKunEnPeriode) {
-                                return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                            }
-
-                            openDeleteModal();
-                        }}
-                    >
-                        <FormattedMessage id="uttaksplan.slett" />
-                    </Button>
-                </div>
+            {renderKnapper(
+                modus,
+                erRedigerbar,
+                permisjonsperiode,
+                inneholderKunEnPeriode,
+                openEndringsModal,
+                handleDeletePeriode,
+                openDeleteModal,
             )}
             {isEndringsModalOpen ? (
                 <EndrePeriodeModal
                     closeModal={closeEndringsModal}
                     handleUpdatePeriode={handleUpdatePeriode}
+                    handleAddPeriode={handleAddPeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     isModalOpen={isEndringsModalOpen}

@@ -12,16 +12,19 @@ import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import {
+    HvaVilDuGjøre,
+    LeggTilPeriodeModalFormValues,
+} from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 
 type Props = {
     valgtPeriode?: Planperiode;
     gjelderAdopsjon: boolean;
     erBarnetFødt: boolean;
-    oppholdsårsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    hvaVilDuGjøre: HvaVilDuGjøre;
 };
 
-export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetFødt, oppholdsårsak }: Props) => {
+export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetFødt, hvaVilDuGjøre }: Props) => {
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
@@ -30,7 +33,15 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
     const fomValue = watch('fom');
     const kontoType = watch('kontoType');
 
-    const getÅrsak = () => {
+    const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre) => {
+        if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
+            return UtsettelseÅrsakType.Ferie;
+        }
+
+        if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+            return PeriodeHullType.PERIODE_UTEN_UTTAK;
+        }
+
         if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
             return valgtPeriode.utsettelseÅrsak;
         }
@@ -42,7 +53,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
         return undefined;
     };
 
-    const årsak = oppholdsårsak ?? getÅrsak();
+    const årsak = getÅrsak(hvaVilDuGjøre);
     const minDate = getMinDate({
         årsak,
         kontoType: kontoType ?? valgtPeriode?.kontoType,

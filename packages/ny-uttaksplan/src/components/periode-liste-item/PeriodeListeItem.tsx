@@ -10,6 +10,7 @@ import './periode-liste-item.css';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
+    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
@@ -21,6 +22,7 @@ export const PeriodeListeItem = ({
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
+    handleAddPeriode,
 }: Props) => {
     const bem = planBemUtils('periode-liste-item');
 
@@ -34,6 +36,7 @@ export const PeriodeListeItem = ({
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
+                    handleAddPeriode={handleAddPeriode}
                     erFamiliehendelse={!!erFamiliehendelse}
                     permisjonsperiode={permisjonsperiode}
                 />

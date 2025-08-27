@@ -152,6 +152,7 @@ export const UttaksplanNy = ({
             {komplettPlan.length > 0 && (
                 <PeriodeListe
                     perioder={komplettPlan}
+                    handleAddPeriode={handleAddPeriode}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
