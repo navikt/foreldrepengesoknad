@@ -38,6 +38,7 @@ interface Props {
     modus: UttaksplanModus;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
+    openAccordions: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -56,6 +57,7 @@ export const UttaksplanNy = ({
     modus,
     valgtStønadskonto,
     erAleneOmOmsorg,
+    openAccordions,
 }: Props) => {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
@@ -158,6 +160,7 @@ export const UttaksplanNy = ({
         >
             {komplettPlan.length > 0 && (
                 <PeriodeListe
+                    openAccordions={openAccordions}
                     perioder={komplettPlan}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}

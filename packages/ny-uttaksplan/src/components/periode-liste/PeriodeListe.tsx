@@ -18,6 +18,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    openAccordions: boolean;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
@@ -28,7 +29,13 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
-export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriode, handleDeletePerioder }: Props) => {
+export const PeriodeListe = ({
+    perioder,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+    openAccordions,
+}: Props) => {
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
@@ -47,6 +54,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={p}
+                                    openAccordions={openAccordions}
                                 />
                                 {permisjonsperioder.length - 1 === index ? (
                                     <PeriodeListeItem
@@ -55,6 +63,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                                         handleDeletePerioder={handleDeletePerioder}
                                         permisjonsperiode={p}
                                         erFamiliehendelse={true}
+                                        openAccordions={openAccordions}
                                     />
                                 ) : null}
                             </Fragment>
@@ -64,6 +73,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                             <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
                                 {indexOfFørstePeriodeEtterFødsel === index ? (
                                     <PeriodeListeItem
+                                        openAccordions={openAccordions}
                                         handleUpdatePeriode={handleUpdatePeriode}
                                         handleDeletePeriode={handleDeletePeriode}
                                         handleDeletePerioder={handleDeletePerioder}
@@ -72,6 +82,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                                     />
                                 ) : null}
                                 <PeriodeListeItem
+                                    openAccordions={openAccordions}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}

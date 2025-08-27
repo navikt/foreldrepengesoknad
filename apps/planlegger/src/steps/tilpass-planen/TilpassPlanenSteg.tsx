@@ -38,6 +38,7 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
+    const [openAccordions, setOpenAccordions] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -195,6 +196,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     {visningsmodus === 'liste' && (
                         <>
                             <UttaksplanNy
+                                openAccordions={openAccordions}
                                 familiehendelsedato={familiehendelsedato}
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
@@ -243,6 +245,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     size="small"
                                     variant="secondary"
                                     icon={<PencilIcon aria-hidden height={24} width={24} />}
+                                    onClick={() => setOpenAccordions(!openAccordions)}
                                 >
                                     <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
                                 </Button>
@@ -260,6 +263,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 modus="planlegger"
                                 visStatusIkoner
                                 konto={valgtStønadskonto}
+                                openAccordions={openAccordions}
                                 perioder={utledKomplettPlan({
                                     familiehendelsedato,
                                     erFarEllerMedmor,

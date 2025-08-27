@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { Accordion } from '@navikt/ds-react';
 
 import { planBemUtils } from '../../planBemUtils';
@@ -10,6 +12,7 @@ import './periode-liste-item.css';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
+    openAccordions?: boolean;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
@@ -21,12 +24,22 @@ export const PeriodeListeItem = ({
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
+    openAccordions,
 }: Props) => {
     const bem = planBemUtils('periode-liste-item');
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setIsOpen(openAccordions || false);
+    }, [openAccordions]);
 
     return (
-        <Accordion.Item>
-            <Accordion.Header style={{ flexDirection: 'row-reverse' }} className={bem.element('header')}>
+        <Accordion.Item open={isOpen}>
+            <Accordion.Header
+                style={{ flexDirection: 'row-reverse' }}
+                className={bem.element('header')}
+                onClick={() => setIsOpen(!isOpen)}
+            >
                 <PeriodeListeHeader permisjonsperiode={permisjonsperiode} erFamiliehendelse={erFamiliehendelse} />
             </Accordion.Header>
             <Accordion.Content>
