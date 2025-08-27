@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -238,6 +238,13 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     }}
                                 >
                                     Angre
+                                </Button>
+                                <Button
+                                    size="small"
+                                    variant="secondary"
+                                    icon={<PencilIcon aria-hidden height={24} width={24} />}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
                                 </Button>
                                 <Button
                                     size="small"
