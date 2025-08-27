@@ -1,0 +1,16 @@
+import{i as m,j as t}from"./iframe-C-5o1vG8.js";import{h as e,H as s}from"./index-cgSXQBlf.js";import{t as p,m as a}from"./tidslinjeHendelser-BHMgLRJD.js";import{s as l}from"./saker-CXgKbb_I.js";import{O as o}from"./routes-C7yRzVAD.js";import{T as n}from"./ForeldrepengeoversiktRoutes-Dhpaa7ep.js";import{M as d,R as g,a as j}from"./chunk-UH6JLGW7-BjFkVpg_.js";import"./preload-helper-D9Z9MdNV.js";import"./skjemanummer-B0kSgjH2.js";import"./RettighetType-BD_oerVS.js";import"./useBackgroundColor-DtB0TyGX.js";import"./useSelectedSak-DATXCtHI.js";import"./useQuery-TlMAIBbQ.js";import"./api-BRtp39ZL.js";import"./sakerUtils-DxnvNSBa.js";import"./Snarveier-BgfZf2Rb.js";import"./LenkePanel-BujT9UV2.js";import"./index-CQtlta_e.js";import"./Dokument-CTWE364q.js";import"./dokumenterUtils-BZ8Iao9B.js";import"./Tag-MaDmkoTF.js";import"./GrupperteDokumenter-DfO1_ptc.js";import"./guid-CsArkN6i.js";import"./Accordion-CagUBT_y.js";import"./Header-CnMcs578.js";import"./LayoutWrapper-CqoKtpDs.js";import"./StatusTag-DQRNv4ve.js";import"./Stroller-CSVLdPOE.js";import"./NoeGikkGalt-B7pYij3m.js";import"./MinidialogSkjema-DOiYIYU8.js";import"./BekreftelseSendtSøknad-DjXgeNpx.js";import"./KontonummerInfo-Djzp59xo.js";import"./HarIkkeSaker-Cqxadr4A.js";import"./SøkelenkerPanel-DdfzN-pf.js";import"./HarSaker-eQ5KyHrG.js";import"./SakLink-IjeWEw3f.js";import"./ContentSection-Cg2mxq-C.js";import"./Svangerskapspenger-CgPB3lr0.js";import"./DinPlan-C_P-deoc.js";import"./Oppgaver-SPGfaacq.js";import"./OppgaveLenkepanel-rMHAL_ET.js";import"./KontaktOss-CEwms0O5.js";const et={title:"TidslinjePage",component:n,decorators:[m],render:i=>t.jsx(d,{initialEntries:[`/${o.TIDSLINJEN}/352011079`],children:t.jsx(g,{children:t.jsx(j,{element:t.jsx(n,{...i}),path:`/${o.TIDSLINJEN}/:saksnummer`})})})},r={parameters:{msw:{handlers:[e.get(".//rest/innsyn/v2/saker",()=>s.json(l)),e.get(".//rest/innsyn/tidslinje",()=>s.json(p)),e.get(".//rest/historikk/vedlegg",()=>s.json(a))]}},args:{søkersBarn:[{fornavn:"Olga",etternavn:"Utvikler",fnr:"23232424",fødselsdato:"2024-01-01",kjønn:"K"}]}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  parameters: {
+    msw: {
+      handlers: [http.get(\`\${import.meta.env.BASE_URL}/rest/innsyn/v2/saker\`, () => HttpResponse.json(saker)), http.get(\`\${import.meta.env.BASE_URL}/rest/innsyn/tidslinje\`, () => HttpResponse.json(tidslinjeHendelser)), http.get(\`\${import.meta.env.BASE_URL}/rest/historikk/vedlegg\`, () => HttpResponse.json(manglendeVedlegg))]
+    }
+  },
+  args: {
+    søkersBarn: [{
+      fornavn: 'Olga',
+      etternavn: 'Utvikler',
+      fnr: '23232424',
+      fødselsdato: '2024-01-01',
+      kjønn: 'K'
+    }]
+  }
+}`,...r.parameters?.docs?.source}}};const st=["Default"];export{r as Default,st as __namedExportsOrder,et as default};
