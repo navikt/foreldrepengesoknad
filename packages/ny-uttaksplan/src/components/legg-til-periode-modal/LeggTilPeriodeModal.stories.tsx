@@ -52,6 +52,5 @@ export const LeggTilMødrekvote: Story = {
     args: {
         erBarnetFødt: true,
         gjelderAdopsjon: false,
-        isModalOpen: true,
     },
 };
