@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, HStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
@@ -17,46 +17,31 @@ export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
 
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (
-            <HStack>
-                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
-                    <FormattedMessage
-                        id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                        values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor }}
-                    />
-                </div>
-            </HStack>
+            <BodyShort>
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.familiehendelse.termin"
+                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor }}
+                />
+            </BodyShort>
         );
     }
 
     if (familiehendelseType === FamiliehendelseType.ADOPSJON) {
         return (
-            <HStack>
-                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
-                    <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.adopsjon" />
-                </div>
-            </HStack>
+            <BodyShort>
+                <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.adopsjon" />
+            </BodyShort>
         );
     }
 
     return (
-        <HStack gap={'4'}>
-            <div style={{ display: 'flex' }}>
-                <div
-                    style={{
-                        marginLeft: '1rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1rem',
-                    }}
-                >
-                    <BodyLong>
-                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel1" />
-                    </BodyLong>
-                    <BodyLong>
-                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel2" />
-                    </BodyLong>
-                </div>
-            </div>
-        </HStack>
+        <VStack gap="space-16">
+            <BodyLong>
+                <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel1" />
+            </BodyLong>
+            <BodyLong>
+                <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel2" />
+            </BodyLong>
+        </VStack>
     );
 };

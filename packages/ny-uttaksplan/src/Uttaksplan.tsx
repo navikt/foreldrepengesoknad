@@ -2,8 +2,7 @@ import { NotePencilDashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import '@navikt/ds-css/darkside';
-import { BodyShort, Button, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import {
@@ -14,6 +13,7 @@ import {
     UttaksplanModus,
     isFødtBarn,
 } from '@navikt/fp-types';
+import { omitMany } from '@navikt/fp-utils';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
 import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
@@ -57,7 +57,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
 }: Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [erLeggTilPeriodeModalOpen, setErLeggTilPeriodeModalOpen] = useState(false);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -86,55 +86,6 @@ export const UttaksplanNy = ({
         erIPlanleggerModus: true,
     });
 
-    const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
-        const result = builder.oppdaterPeriode(oppdatertPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const handleAddPeriode = (nyPeriode: Planperiode) => {
-        const result = builder.leggTilPeriode(nyPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const handleDeletePeriode = (slettetPeriode: Planperiode) => {
-        const result = builder.slettPeriode(slettetPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const handleDeletePerioder = (slettedePerioder: Planperiode[]) => {
-        const result = builder.slettPerioder(slettedePerioder);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const closeModal = () => setIsModalOpen(false);
-    const openModal = () => setIsModalOpen(true);
-
-    const erBarnetFødt = isFødtBarn(barn);
-
     return (
         <UttaksplanDataContext
             initialState={{
@@ -152,14 +103,19 @@ export const UttaksplanNy = ({
             {komplettPlan.length > 0 && (
                 <PeriodeListe
                     perioder={komplettPlan}
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleDeletePerioder={handleDeletePerioder}
+                    handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
+                        modifyPlan(builder.oppdaterPeriode(oppdatertPeriode), handleOnPlanChange);
+                    }}
+                    handleDeletePeriode={(slettetPeriode: Planperiode) => {
+                        modifyPlan(builder.slettPeriode(slettetPeriode), handleOnPlanChange);
+                    }}
+                    handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
+                        modifyPlan(builder.slettPerioder(slettedePerioder), handleOnPlanChange);
+                    }}
                 />
             )}
-
             {komplettPlan.length === 0 && (
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <HStack gap="space-12">
                     <NotePencilDashIcon fontSize={24} />
                     <VStack gap="space-8">
                         <BodyShort weight="semibold" size="large">
@@ -169,23 +125,31 @@ export const UttaksplanNy = ({
                             <FormattedMessage id="uttaksplan.ingenPerioder.body" />
                         </BodyShort>
                     </VStack>
-                </div>
+                </HStack>
             )}
-
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={openModal}>
+                <Button variant="secondary" onClick={() => setErLeggTilPeriodeModalOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isModalOpen ? (
+            {erLeggTilPeriodeModalOpen && (
                 <LeggTilPeriodeModal
-                    closeModal={closeModal}
-                    handleAddPeriode={handleAddPeriode}
-                    isModalOpen={isModalOpen}
-                    erBarnetFødt={erBarnetFødt}
+                    closeModal={() => setErLeggTilPeriodeModalOpen(false)}
+                    handleAddPeriode={(nyPeriode: Planperiode) => {
+                        modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                    }}
+                    erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
-            ) : null}
+            )}
         </UttaksplanDataContext>
+    );
+};
+
+const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange: (perioder: SaksperiodeNy[]) => void) => {
+    const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+    handleOnPlanChange(
+        resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
     );
 };
