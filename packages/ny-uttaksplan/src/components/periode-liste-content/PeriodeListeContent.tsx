@@ -206,13 +206,7 @@ export const PeriodeListeContent = ({
                                 size="small"
                                 variant="secondary"
                                 icon={<TrashIcon />}
-                                onClick={() => {
-                                    if (inneholderKunEnPeriode) {
-                                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                                    }
-
-                                    openDeleteModal();
-                                }}
+                                onClick={openDeleteModal}
                             >
                                 <FormattedMessage id="uttaksplan.slett" />
                             </Button>

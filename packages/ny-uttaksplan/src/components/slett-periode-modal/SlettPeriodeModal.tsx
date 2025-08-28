@@ -2,7 +2,7 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Checkbox, Heading, Modal } from '@navikt/ds-react';
+import { Button, Checkbox, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { RhfCheckboxGroup, RhfForm } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
@@ -12,7 +12,6 @@ import { isRequired } from '@navikt/fp-validation';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
-import styles from './slettPeriodeModal.module.css';
 
 interface Props {
     closeModal: () => void | undefined;
@@ -43,9 +42,11 @@ export const SlettPeriodeModal = ({
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            perioder: [],
+            perioder: perioder.length === 1 ? [perioder[0].id] : [],
         },
     });
+
+    const watchedPerioder = formMethods.watch('perioder');
 
     const onSubmit = (values: FormValues) => {
         if (values.perioder.length === 1) {
@@ -71,89 +72,68 @@ export const SlettPeriodeModal = ({
     };
 
     return (
-        <div className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
-            <Modal
-                open={open}
-                onClose={() => setOpen(false)}
-                header={{
-                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
-                    size: 'small',
-                    closeButton: false,
-                }}
-                width="small"
-            >
-                <Modal.Body>
-                    <BodyLong>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Body" />
-                    </BodyLong>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        type="button"
-                        variant="danger"
-                        onClick={() => {
-                            lagreUttaksplan([[]]);
-                            setOpen(false);
-                        }}
-                    >
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft" />
-                    </Button>
-                    <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt" />
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <header className={styles.header} closeButton={false}>
-                <div className={styles.headerContent}>
-                    <PencilIcon aria-hidden={true} width={24} height={24} />
-                    <Heading size="medium" id={ariaLabelId}>
-                        <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
-                    </Heading>
-                </div>
-            </header>
-            <div>
-                <Heading size="medium">
-                    <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
-                </Heading>
+        <Modal open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
+            <Modal.Body>
+                <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
+                    <HStack gap="space-8" align="center">
+                        <PencilIcon aria-hidden={true} width={24} height={24} />
+                        <Heading size="medium">
+                            <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
+                        </Heading>
+                    </HStack>
+                </Modal.Header>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
-                    <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
-                        <RhfCheckboxGroup
-                            name="perioder"
-                            control={formMethods.control}
-                            validate={[isRequired('Du må velge en periode du vil slette')]}
-                            label="Perioder"
-                        >
-                            {perioder.map((p) => {
-                                return (
-                                    <Checkbox key={p.id} name={p.id} value={p.id}>
-                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
+                    <VStack gap="space-16">
+                        {perioder.length === 1 && (
+                            <Heading size="medium">
+                                <FormattedMessage id="uttaksplan.slettPeriode.bekreftelse" />
+                            </Heading>
+                        )}
+                        <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
+                            <RhfCheckboxGroup
+                                name="perioder"
+                                control={formMethods.control}
+                                validate={[isRequired('Du må velge en periode du vil slette')]}
+                                label="Perioder"
+                            >
+                                {perioder.map((p) => {
+                                    return (
+                                        <Checkbox key={p.id} name={p.id} value={p.id}>
+                                            {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
-                                    </Checkbox>
-                                );
-                            })}
-                        </RhfCheckboxGroup>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            padding: '1rem 0',
-                        }}
-                    >
-                        <div>
-                            <Button type="button" variant="secondary" onClick={closeModal}>
-                                <FormattedMessage id="uttaksplan.avbryt" />
-                            </Button>
+                                        </Checkbox>
+                                    );
+                                })}
+                            </RhfCheckboxGroup>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <Button>
-                                <FormattedMessage id="uttaksplan.slettValgte" />
-                            </Button>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '1rem 0',
+                            }}
+                        >
+                            <div>
+                                <Button type="button" variant="secondary" onClick={closeModal}>
+                                    <FormattedMessage id="uttaksplan.avbryt" />
+                                </Button>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <Button>
+                                    <FormattedMessage
+                                        id={
+                                            watchedPerioder.length === 1
+                                                ? 'uttaksplan.slettValgtPeriode'
+                                                : 'uttaksplan.slettValgte'
+                                        }
+                                    />
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    </VStack>
                 </RhfForm>
-            </div>
-        </div>
+            </Modal.Body>
+        </Modal>
     );
 };
