@@ -19,12 +19,14 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@secrets-refactor
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
       bake-target: 'foreldrepengeoversikt'
-    secrets: inherit
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-dev:
     name: Deploy dev
@@ -39,7 +41,6 @@ jobs:
       cluster: dev-gcp
       image_suffix: '/foreldrepengeoversikt'
       deploy_context: '/foreldrepengeoversikt'
-    secrets: inherit
 
   deploy-prod:
     name: Deploy prod
@@ -54,4 +55,3 @@ jobs:
       cluster: prod-gcp
       image_suffix: '/foreldrepengeoversikt'
       deploy_context: '/foreldrepengeoversikt'
-    secrets: inherit
