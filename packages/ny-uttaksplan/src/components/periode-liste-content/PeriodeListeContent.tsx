@@ -164,16 +164,12 @@ const renderPeriode = (
     }
 
     return (
-        <div key={periode.id} style={{ marginBottom: '1rem', display: 'flex' }}>
+        <HStack gap="space-8">
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">Ikke implementert</BodyShort>
-                </div>
-            </div>
-        </div>
+            <BodyShort weight="semibold">Ikke implementert</BodyShort>
+        </HStack>
     );
 };
 
@@ -204,7 +200,7 @@ const renderKnapper = (
 
     if (!erRedigerbar) {
         return (
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+            <HStack gap="space-16" justify="end">
                 <Button
                     type="button"
                     size="xsmall"
@@ -216,7 +212,7 @@ const renderKnapper = (
                 >
                     Endre
                 </Button>
-            </div>
+            </HStack>
         );
     }
 
