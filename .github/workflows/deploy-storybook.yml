@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write
       pages: write
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@6ce683e0359fa8a3fa445b894db110aab532d2d6
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@d4e74b74e16b16d1a9973225f33bb8d34e80943f
     with:
       package-manager: pnpm
     secrets:
