@@ -20,7 +20,7 @@ import {
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodeModal } from '../endre-periode-panel/EndrePeriodeModal';
-import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
+import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodepanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
@@ -170,8 +170,8 @@ export const PeriodeListeContent = ({
             ) : null}
 
             {isDeleteModalOpen ? (
-                <SlettPeriodeModal
-                    closeModal={closeDeleteModal}
+                <SlettPeriodePanel
+                    closePanel={closeDeleteModal}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}

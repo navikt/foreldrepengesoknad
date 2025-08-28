@@ -13,7 +13,7 @@ import { Planperiode } from '../../types/Planperiode';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 
 interface Props {
-    closeModal: () => void | undefined;
+    closePanel: () => void | undefined;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     permisjonsperiode: Permisjonsperiode;
@@ -24,8 +24,8 @@ interface FormValues {
     perioder: string[];
 }
 
-export const SlettPeriodeModal = ({
-    closeModal,
+export const SlettPeriodePanel = ({
+    closePanel,
     handleDeletePeriode,
     handleDeletePerioder,
     permisjonsperiode,
@@ -35,7 +35,7 @@ export const SlettPeriodeModal = ({
     const intl = useIntl();
     const { perioder } = permisjonsperiode;
 
-    const ariaLabelId = 'slett-periode-modal-heading';
+    const ariaLabelId = 'slett-periode-panel-heading';
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -65,7 +65,7 @@ export const SlettPeriodeModal = ({
 
             handleDeletePerioder(slettedePerioder);
         }
-        closeModal();
+        closePanel();
     };
 
     return (
@@ -112,7 +112,7 @@ export const SlettPeriodeModal = ({
                             }}
                         >
                             <div>
-                                <Button type="button" variant="secondary" onClick={closeModal}>
+                                <Button type="button" variant="secondary" onClick={closePanel}>
                                     <FormattedMessage id="uttaksplan.avbryt" />
                                 </Button>
                             </div>
