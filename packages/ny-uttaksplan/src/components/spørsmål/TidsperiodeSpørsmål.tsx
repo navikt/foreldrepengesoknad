@@ -33,7 +33,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
     const fomValue = watch('fom');
     const kontoType = watch('kontoType');
 
-    const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre) => {
+    const getÅrsak = () => {
         if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             return UtsettelseÅrsakType.Ferie;
         }
@@ -53,7 +53,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
         return undefined;
     };
 
-    const årsak = getÅrsak(hvaVilDuGjøre);
+    const årsak = getÅrsak();
     const minDate = getMinDate({
         årsak,
         kontoType: kontoType ?? valgtPeriode?.kontoType,

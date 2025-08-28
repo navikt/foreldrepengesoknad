@@ -24,6 +24,7 @@ const customRenderer = ({
     permisjonsperiode,
     familiehendelsedato,
     erAleneOmOmsorg,
+    handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -47,6 +48,7 @@ const customRenderer = ({
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
                     <PeriodeListeItem
+                        handleAddPeriode={handleAddPeriode}
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
@@ -70,6 +72,7 @@ type Story = StoryObj<typeof meta>;
 
 export const UttaksperiodeMor: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -104,6 +107,7 @@ export const UttaksperiodeMor: Story = {
 
 export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -146,6 +150,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
 
 export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -206,6 +211,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
 
 export const UttaksperiodeFar: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -240,6 +246,7 @@ export const UttaksperiodeFar: Story = {
 
 export const PeriodeUtenUttak: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,

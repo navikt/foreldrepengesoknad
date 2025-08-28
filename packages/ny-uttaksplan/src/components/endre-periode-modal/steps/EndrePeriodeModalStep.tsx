@@ -57,7 +57,7 @@ export const EndrePeriodeModalStep = ({
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
-    const getHvaVilDuGjøre = (valgtPeriode: Planperiode | undefined) => {
+    const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
             if (valgtPeriode.utsettelseÅrsak) {
                 return HvaVilDuGjøre.LEGG_TIL_FERIE;
@@ -84,7 +84,7 @@ export const EndrePeriodeModalStep = ({
             samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
             samtidigUttaksprosent:
                 valgtPeriode?.samtidigUttak !== undefined ? valgtPeriode.samtidigUttak.toString() : undefined,
-            hvaVilDuGjøre: getHvaVilDuGjøre(valgtPeriode),
+            hvaVilDuGjøre: getHvaVilDuGjøre(),
         },
     });
 

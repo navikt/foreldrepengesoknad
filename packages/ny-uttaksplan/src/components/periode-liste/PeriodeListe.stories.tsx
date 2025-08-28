@@ -22,6 +22,7 @@ const customRenderer = ({
     barn,
     erFarEllerMedmor,
     erAleneOmOmsorg,
+    handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -44,6 +45,7 @@ const customRenderer = ({
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <PeriodeListe
                     perioder={perioder}
+                    handleAddPeriode={handleAddPeriode}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
@@ -65,6 +67,7 @@ type Story = StoryObj<typeof meta>;
 export const UttaksperioderMor: Story = {
     name: 'Mor søker',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -145,6 +148,7 @@ export const UttaksperioderMor: Story = {
 export const UttaksperioderMorOgFar: Story = {
     name: 'Mor og far med samtidig uttak',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -216,6 +220,7 @@ export const UttaksperioderMorOgFar: Story = {
 export const UttaksperioderFarMorIkkeRett: Story = {
     name: 'Far søker og mor har ikke rett',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -279,6 +284,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
 export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
     name: 'Mor og far med flerbarnsdager og samtidig uttak',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -328,6 +334,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
 export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
     name: 'Mor har ikke lagt inn uttak første seks uker',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -372,6 +379,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
 export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
     name: 'Mor er innlagt første seks uker',
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
