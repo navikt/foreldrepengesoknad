@@ -31,7 +31,7 @@ jobs:
     name: Deploy
     permissions:
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@d4e74b74e16b16d1a9973225f33bb8d34e80943f
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@d82a6fe449f56938a073da20baca50bed596a800
     with:
       gar: true
       image: ${{ inputs.image }}
