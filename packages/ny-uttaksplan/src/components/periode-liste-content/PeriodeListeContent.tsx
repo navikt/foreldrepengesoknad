@@ -175,7 +175,6 @@ export const PeriodeListeContent = ({
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
-                    isModalOpen={isDeleteModalOpen}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />

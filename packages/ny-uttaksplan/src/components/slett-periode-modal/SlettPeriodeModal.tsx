@@ -1,8 +1,7 @@
-import { PencilIcon } from '@navikt/aksel-icons';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Checkbox, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Button, Checkbox, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfCheckboxGroup, RhfForm } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
@@ -17,7 +16,6 @@ interface Props {
     closeModal: () => void | undefined;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
-    isModalOpen: boolean;
     permisjonsperiode: Permisjonsperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -31,7 +29,6 @@ export const SlettPeriodeModal = ({
     handleDeletePeriode,
     handleDeletePerioder,
     permisjonsperiode,
-    isModalOpen,
     navnPåForeldre,
     erFarEllerMedmor,
 }: Props) => {
@@ -72,29 +69,29 @@ export const SlettPeriodeModal = ({
     };
 
     return (
-        <Modal open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModal}>
-            <Modal.Body>
-                <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
-                    <HStack gap="space-8" align="center">
-                        <PencilIcon aria-hidden={true} width={24} height={24} />
-                        <Heading size="medium">
-                            <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
-                        </Heading>
-                    </HStack>
-                </Modal.Header>
+        <div aria-labelledby={ariaLabelId}>
+            <div>
+                <div className="mb-4"></div>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                     <VStack gap="space-16">
-                        {perioder.length === 1 && (
-                            <Heading size="medium">
-                                <FormattedMessage id="uttaksplan.slettPeriode.bekreftelse" />
-                            </Heading>
-                        )}
+                        <Heading size="medium">
+                            <FormattedMessage
+                                id={
+                                    perioder.length === 1
+                                        ? 'uttaksplan.slettPeriode.bekreftelse'
+                                        : 'uttaksplan.slettPeriode.hvilkePerioder'
+                                }
+                            />
+                        </Heading>
+
                         <div style={{ display: 'flex', gap: '2rem', margin: '1rem 0' }}>
                             <RhfCheckboxGroup
                                 name="perioder"
                                 control={formMethods.control}
                                 validate={[isRequired('Du må velge en periode du vil slette')]}
-                                label="Perioder"
+                                label={intl.formatMessage({
+                                    id: perioder.length === 1 ? 'uttaksplan.periode' : 'uttaksplan.perioder',
+                                })}
                             >
                                 {perioder.map((p) => {
                                     return (
@@ -133,7 +130,7 @@ export const SlettPeriodeModal = ({
                         </div>
                     </VStack>
                 </RhfForm>
-            </Modal.Body>
-        </Modal>
+            </div>
+        </div>
     );
 };

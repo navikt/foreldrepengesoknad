@@ -6,6 +6,8 @@
     "uttaksplan.slett": "Slett",
     "uttaksplan.slettValgte": "Slett valgte perioder",
     "uttaksplan.slettValgtPeriode": "Slett valgt periode",
+    "uttaksplan.periode": "Periode",
+    "uttaksplan.perioder": "Perioder",
     "uttaksplan.gåVidere": "Gå videre",
     "uttaksplan.gåTilbake": "Gå tilbake",
     "uttaksplan.ferdig": "Ferdig, legg til i plan",
@@ -92,6 +94,9 @@
     "uttaksplan.slettPeriode.tittel": "Slett periode",
     "uttaksplan.slettPeriode.bekreftelse": "Er du sikker på at du vil slette denne perioden?",
     "uttaksplan.slettPeriode.hvilkePerioder": "Hvilke perioder vil du slette?",
+    "uttaksplan.slettPeriode.periode": "Periode",
+    "uttaksplan.slettPeriode.perioder": "Perioder",
+    
     "uttaksplan.ingenPerioder.tittel": "Alle perioder er fjernet fra planen.",
     "uttaksplan.ingenPerioder.body": "Du har ingen perioder i planen. Legg til en ny periode for å starte planleggingen.",
     "uttaksplan.tidsperiodeSpørsmål.heading": "Hvilke datoer skal perioden være?",
