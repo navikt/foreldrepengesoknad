@@ -83,6 +83,10 @@ router.get('/rest/innsyn/uttaksplan', (req, res) => {
     res.send(MockStorage.getUttaksplan());
 });
 
+router.post('/rest/konto', (req, res) => {
+    res.send(MockStorage.getKonto());
+});
+
 router.get('/rest/innsyn/tidslinje', (req, res) => {
     res.send(MockStorage.getTidslinjeHendelser());
 });

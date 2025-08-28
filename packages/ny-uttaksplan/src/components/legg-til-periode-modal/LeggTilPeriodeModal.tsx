@@ -2,22 +2,15 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Heading, Modal } from '@navikt/ds-react';
+import { HStack, Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
 import { Planperiode } from '../../types/Planperiode';
-import styles from './leggTilPeriodeModal.module.css';
 import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
 import { HvaVilDuGjøre } from './types/LeggTilPeriodeModalFormValues';
 
-interface Props {
-    closeModal: () => void | undefined;
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
-    isModalOpen: boolean;
-    erBarnetFødt: boolean;
-    gjelderAdopsjon: boolean;
-}
+const ARIA_LABEL_ID = 'legg-til-periode-modal-heading';
 
 export interface ModalData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
@@ -27,13 +20,14 @@ export interface ModalData {
     forelder?: Forelder;
 }
 
-export const LeggTilPeriodeModal = ({
-    closeModal,
-    handleAddPeriode,
-    isModalOpen,
-    erBarnetFødt,
-    gjelderAdopsjon,
-}: Props) => {
+interface Props {
+    closeModal: () => void;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
+    erBarnetFødt: boolean;
+    gjelderAdopsjon: boolean;
+}
+
+export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, erBarnetFødt, gjelderAdopsjon }: Props) => {
     const initialModalState: ModalData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
@@ -44,22 +38,20 @@ export const LeggTilPeriodeModal = ({
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
 
-    const ariaLabelId = 'legg-til-periode-modal-heading';
-
     const closeModalWrapper = () => {
         setModalData(initialModalState);
         closeModal();
     };
 
     return (
-        <Modal className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
-            <Modal.Header className={styles.header} closeButton={false}>
-                <div className={styles.headerContent}>
+        <Modal className="w-[100%]" open aria-labelledby={ARIA_LABEL_ID} onClose={closeModalWrapper}>
+            <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
+                <HStack gap="space-8" align="center">
                     <PencilIcon aria-hidden={true} width={24} height={24} />
-                    <Heading size="medium" id={ariaLabelId}>
+                    <Heading size="medium" id={ARIA_LABEL_ID}>
                         <FormattedMessage id="uttaksplan.leggTilPeriode" />
                     </Heading>
-                </div>
+                </HStack>
             </Modal.Header>
             <Modal.Body>
                 <LeggTilPeriodeModalStep

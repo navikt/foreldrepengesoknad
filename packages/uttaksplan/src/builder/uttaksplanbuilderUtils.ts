@@ -490,7 +490,13 @@ export const settInnAnnenPartsUttak = (
             return res;
         }
 
-        if (isUttaksperiode(p) && (p.ønskerSamtidigUttak || isUttaksperiodeAnnenpartEøs(overlappendePeriode))) {
+        if (isUttaksperiodeAnnenpartEøs(overlappendePeriode)) {
+            res.push(p);
+            res.push({ ...overlappendePeriode, visPeriodeIPlan: false } as Periode);
+            return res;
+        }
+
+        if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
             res.push(p);
 
             if (!isUtsettelseAnnenPart(overlappendePeriode)) {

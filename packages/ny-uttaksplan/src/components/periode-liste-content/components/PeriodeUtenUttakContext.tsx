@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { TidsperiodenString } from '@navikt/fp-utils';
 
@@ -17,12 +17,12 @@ export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
     const intl = useIntl();
 
     return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
+        <HStack gap="space-8">
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+            <VStack gap="space-4">
+                <HStack gap="space-8">
                     <BodyShort weight="semibold">
                         <FormattedMessage id="uttaksplan.varighet.helePerioden" />
                     </BodyShort>
@@ -32,17 +32,15 @@ export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
                             intl,
                         )}
                     </BodyShort>
-                </div>
-                <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>
-                        {isHull ? (
-                            <FormattedMessage id="uttaksplan.periodeListeContent.tapteDager" />
-                        ) : (
-                            <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
-                        )}
-                    </BodyShort>
-                </div>
-            </div>
-        </div>
+                </HStack>
+                <BodyShort>
+                    {isHull ? (
+                        <FormattedMessage id="uttaksplan.periodeListeContent.tapteDager" />
+                    ) : (
+                        <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
+                    )}
+                </BodyShort>
+            </VStack>
+        </HStack>
     );
 };

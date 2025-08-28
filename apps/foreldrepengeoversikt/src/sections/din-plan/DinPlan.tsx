@@ -2,7 +2,7 @@ import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, Heading, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
@@ -111,6 +111,9 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                         <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
+                        {gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs && (
+                            <InformasjonAnnenforelderUttakEøsUnderUtvikling />
+                        )}
                     </>
                 )}
                 {visKalender && (
@@ -126,5 +129,23 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 )}
             </VStack>
         </VStack>
+    );
+};
+
+const InformasjonAnnenforelderUttakEøsUnderUtvikling = () => {
+    return (
+        <Alert variant="info">
+            <Heading size="xsmall" style={{ marginBottom: '1rem' }}>
+                <FormattedMessage id="DinPlan.AnnenpartUttakEøs.Tittel" />
+            </Heading>
+            <VStack gap="4">
+                <BodyShort>
+                    <FormattedMessage id="DinPlan.AnnenpartUttakEøs"></FormattedMessage>
+                </BodyShort>
+                <BodyShort>
+                    <FormattedMessage id="DinPlan.AnnenpartUttakEøs.UnderUtvikling"></FormattedMessage>
+                </BodyShort>
+            </VStack>
+        </Alert>
     );
 };

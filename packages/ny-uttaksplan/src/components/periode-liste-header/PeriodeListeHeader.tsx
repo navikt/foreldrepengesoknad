@@ -1,148 +1,88 @@
-import classNames from 'classnames';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { IntlShape, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
-import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { Tidsperioden, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
-import { planBemUtils } from '../../planBemUtils';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
-import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
-import './periode-liste-header.css';
+import { finnBakgrunnsfarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
+    isOpen: boolean;
 }
 
-const renderPeriode = (
-    permisjonsperiode: Permisjonsperiode,
-    erFamiliehendelse: boolean | undefined,
-    familiehendelsedato: string,
-) => {
-    if (erFamiliehendelse) {
-        return (
-            <div>
-                <Heading size="xsmall" as="p">
-                    {formatDateShortMonth(familiehendelsedato)}
-                </Heading>
-            </div>
-        );
-    }
-
-    return (
-        <div>
-            <Heading size="xsmall" as="p">
-                {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
-                {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
-            </Heading>
-        </div>
-    );
-};
-
-const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: number, intl: IntlShape) => {
-    if (erFamiliehendelse) {
-        return null;
-    }
-
-    return <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>;
-};
-
-export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse }: Props) => {
+export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpen }: Props) => {
     const intl = useIntl();
-    const bem = planBemUtils('periode-liste-header');
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const familiesituasjon = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIESITUASJON));
 
-    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
-    const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;
-    const erMor = forelder === Forelder.mor;
+    const { tidsperiode } = permisjonsperiode;
+
     const antallDager = Tidsperioden({
         fom: ISOStringToDate(tidsperiode.fom)!,
         tom: ISOStringToDate(tidsperiode.tom)!,
     }).getAntallUttaksdager();
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
-    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+
     const erPermisjonsperiodeTilbakeITid = dayjs(
         erFamiliehendelse ? permisjonsperiode.tidsperiode.fom : permisjonsperiode.tidsperiode.tom,
     ).isBefore(new Date());
 
+    const tekst = getTekst(
+        intl,
+        permisjonsperiode,
+        erFarEllerMedmor,
+        navnPåForeldre,
+        familiesituasjon,
+        erFamiliehendelse,
+    );
+
     return (
-        <div className={bem.block} style={{ opacity: erPermisjonsperiodeTilbakeITid ? '75%' : undefined }}>
-            <div className={bem.element('dato')}>
-                {renderPeriode(permisjonsperiode, erFamiliehendelse, familiehendelsedato)}
+        <HStack gap="0" wrap={false}>
+            <div
+                className={`min-w-[60%] md:min-w-[30%] px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
+            >
+                <Heading size="xsmall" as="p">
+                    {erFamiliehendelse
+                        ? formatDateShortMonth(familiehendelsedato)
+                        : `${formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} - ${formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}`}
+                </Heading>
                 <Hide above="md">
-                    <BodyShort>
-                        {getTekst({
-                            erPeriodeUtenUttak,
-                            erSamtidigUttak,
-                            erHull,
-                            utsettelseÅrsak,
-                            erFamiliehendelse,
-                            erFarEllerMedmor,
-                            navnPåForeldre,
-                            forelder,
-                            familiesituasjon,
-                            intl,
-                        })}
-                    </BodyShort>
+                    <BodyShort>{tekst}</BodyShort>
                 </Hide>
             </div>
-            <div className={bem.element('uker')}>{renderVarighet(erFamiliehendelse, antallDager, intl)}</div>
+            <div className="min-w-[22%] md:min-w-[25%] px-4 py-2">
+                {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
+            </div>
             <div
-                className={classNames(
-                    bem.element('hendelse'),
-                    getFarge({
-                        bem,
-                        erMor,
-                        erPeriodeUtenUttak,
-                        erSamtidigUttak,
-                        erUtsettelse,
-                        erHull,
-                        erFamiliehendelse,
-                    }),
-                )}
+                className={`min-w-[60px] md:min-w-[38%] p-4 rounded-2xl md:px-4 md:py-2 md:rounded-xl 
+                        ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
             >
-                <div className={classNames(bem.element('hendelse-wrapper'))}>
+                <HStack justify="space-between" wrap={false}>
                     <Show above="md">
-                        <BodyShort>
-                            {getTekst({
-                                erPeriodeUtenUttak,
-                                erSamtidigUttak,
-                                erHull,
-                                utsettelseÅrsak,
-                                erFamiliehendelse,
-                                erFarEllerMedmor,
-                                navnPåForeldre,
-                                forelder,
-                                familiesituasjon,
-                                intl,
-                            })}
-                        </BodyShort>
+                        <BodyShort>{tekst}</BodyShort>
                     </Show>
-                    {getIkon({
-                        bem,
-                        erMor,
-                        erPeriodeUtenUttak,
-                        periodeFørTermindato,
-                        utsettelseÅrsak,
-                        erHull,
-                        erFamiliehendelse,
-                    })}
+                    <div>{getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}</div>
+                </HStack>
+            </div>
+            <div className="p-4 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem]">
+                <div className="flex items-center justify-center w-6 h-6 rounded-2xl bg-ax-bg-accent-moderate">
+                    {isOpen ? (
+                        <ChevronUpIcon color="var(--ax-bg-accent-strong)" />
+                    ) : (
+                        <ChevronDownIcon color="var(--ax-bg-accent-strong)" />
+                    )}
                 </div>
             </div>
-        </div>
+        </HStack>
     );
 };

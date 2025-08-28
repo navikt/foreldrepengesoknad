@@ -68,6 +68,19 @@ const getUttaksplan = function () {
     }
 };
 
+const getKonto = function () {
+    const fileName = getFilePath('konto.json');
+    if (!fs.existsSync(fileName)) {
+        return {};
+    } else {
+        try {
+            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+        } catch {
+            return {};
+        }
+    }
+};
+
 module.exports = {
     getSokerinfo,
     getSaker,
@@ -75,6 +88,7 @@ module.exports = {
     getHistorikk,
     getMinidialog,
     getUttaksplan,
+    getKonto,
     getDokumenter,
     getManglendeVedlegg,
     getAnnenPartsVedtak,

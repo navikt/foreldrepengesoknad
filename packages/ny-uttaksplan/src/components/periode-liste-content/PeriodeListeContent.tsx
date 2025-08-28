@@ -2,7 +2,7 @@ import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, Stack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, UttaksplanModus, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
@@ -37,6 +37,82 @@ interface Props {
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
+
+export const PeriodeListeContent = ({
+    permisjonsperiode,
+    erFamiliehendelse,
+    handleAddPeriode,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+}: Props) => {
+    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const erRedigerbar = !permisjonsperiode.perioder.some(
+        (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
+    );
+
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
+    const familiehendelseType = getFamiliehendelseType(barn);
+    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
+    const gjelderAdopsjon = isAdoptertBarn(barn);
+    const erBarnetFødt = isFødtBarn(barn);
+
+    if (erFamiliehendelse && familiehendelseType !== undefined) {
+        return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
+    }
+
+    return (
+        <>
+            <VStack gap="space-16">
+                {permisjonsperiode.perioder.map((periode) => {
+                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                })}
+                <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+            </VStack>
+            {renderKnapper(
+                modus,
+                erRedigerbar,
+                permisjonsperiode,
+                inneholderKunEnPeriode,
+                handleDeletePeriode,
+                setIsEndringsModalOpen,
+                setIsDeleteModalOpen,
+            )}
+            {isEndringsModalOpen ? (
+                <EndrePeriodeModal
+                    closeModal={() => {
+                        setIsEndringsModalOpen(false);
+                    }}
+                    handleUpdatePeriode={handleUpdatePeriode}
+                    handleAddPeriode={handleAddPeriode}
+                    permisjonsperiode={permisjonsperiode}
+                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                    isModalOpen={isEndringsModalOpen}
+                    erBarnetFødt={erBarnetFødt}
+                    gjelderAdopsjon={gjelderAdopsjon}
+                />
+            ) : null}
+            {isDeleteModalOpen ? (
+                <SlettPeriodeModal
+                    closeModal={() => {
+                        setIsDeleteModalOpen(false);
+                    }}
+                    handleDeletePeriode={handleDeletePeriode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    permisjonsperiode={permisjonsperiode}
+                    isModalOpen={isDeleteModalOpen}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
+            ) : null}
+        </>
+    );
+};
 
 const renderPeriode = (
     periode: Planperiode,
@@ -118,9 +194,9 @@ const renderKnapper = (
     erRedigerbar: boolean,
     permisjonsperiode: Permisjonsperiode,
     inneholderKunEnPeriode: boolean,
-    openEndringsModal: any,
     handleDeletePeriode: any,
-    openDeleteModal: any,
+    setIsEndringsModalOpen: any,
+    setIsDeleteModalOpen: any,
 ) => {
     if (modus === 'innsyn') {
         return null;
@@ -133,7 +209,9 @@ const renderKnapper = (
                     type="button"
                     size="xsmall"
                     variant="secondary"
-                    onClick={openEndringsModal}
+                    onClick={() => {
+                        setIsEndringsModalOpen(true);
+                    }}
                     icon={<PencilIcon />}
                 >
                     Endre
@@ -143,9 +221,17 @@ const renderKnapper = (
     }
 
     return (
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <Button type="button" size="xsmall" variant="secondary" onClick={openEndringsModal} icon={<PencilIcon />}>
-                Endre
+        <HStack gap="space-16" justify="end">
+            <Button
+                type="button"
+                size="xsmall"
+                variant="secondary"
+                onClick={() => {
+                    setIsEndringsModalOpen(true);
+                }}
+                icon={<PencilIcon />}
+            >
+                <FormattedMessage id="uttaksplan.endre" />
             </Button>
             <Button
                 type="button"
@@ -157,99 +243,11 @@ const renderKnapper = (
                         return handleDeletePeriode(permisjonsperiode.perioder[0]);
                     }
 
-                    openDeleteModal();
+                    setIsDeleteModalOpen(true);
                 }}
             >
                 <FormattedMessage id="uttaksplan.slett" />
             </Button>
-        </div>
-    );
-};
-
-export const PeriodeListeContent = ({
-    permisjonsperiode,
-    erFamiliehendelse,
-    handleAddPeriode,
-    handleUpdatePeriode,
-    handleDeletePeriode,
-    handleDeletePerioder,
-}: Props) => {
-    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
-    const erRedigerbar =
-        permisjonsperiode.perioder.find(
-            (p: Planperiode) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
-        ) === undefined;
-
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
-    const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
-    const familiehendelseType = getFamiliehendelseType(barn);
-    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
-    const gjelderAdopsjon = isAdoptertBarn(barn);
-
-    const erBarnetFødt = isFødtBarn(barn);
-
-    if (erFamiliehendelse && familiehendelseType !== undefined) {
-        return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
-    }
-
-    const closeEndringsModal = () => {
-        setIsEndringsModalOpen(false);
-    };
-    const openEndringsModal = () => {
-        setIsEndringsModalOpen(true);
-    };
-
-    const closeDeleteModal = () => {
-        setIsDeleteModalOpen(false);
-    };
-    const openDeleteModal = () => {
-        setIsDeleteModalOpen(true);
-    };
-
-    return (
-        <div style={{ marginTop: '1rem' }}>
-            <Stack direction={{ sm: 'column', md: 'column' }}>
-                {permisjonsperiode.perioder.map((periode) => {
-                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
-                })}
-            </Stack>
-            <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            {renderKnapper(
-                modus,
-                erRedigerbar,
-                permisjonsperiode,
-                inneholderKunEnPeriode,
-                openEndringsModal,
-                handleDeletePeriode,
-                openDeleteModal,
-            )}
-            {isEndringsModalOpen ? (
-                <EndrePeriodeModal
-                    closeModal={closeEndringsModal}
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    handleAddPeriode={handleAddPeriode}
-                    permisjonsperiode={permisjonsperiode}
-                    inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    isModalOpen={isEndringsModalOpen}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                />
-            ) : null}
-            {isDeleteModalOpen ? (
-                <SlettPeriodeModal
-                    closeModal={closeDeleteModal}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleDeletePerioder={handleDeletePerioder}
-                    permisjonsperiode={permisjonsperiode}
-                    isModalOpen={isDeleteModalOpen}
-                    navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-            ) : null}
-        </div>
+        </HStack>
     );
 };
