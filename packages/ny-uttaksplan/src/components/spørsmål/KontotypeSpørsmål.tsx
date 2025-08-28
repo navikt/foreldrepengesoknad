@@ -9,12 +9,12 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
-import { EndrePeriodeModalStepFormValues } from '../endre-periode-panel/steps/EndrePeriodeModalStep';
+import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 export const KontotypeSpørsmål = () => {
     const intl = useIntl();
-    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
 
     const kontoTypeValue = watch('kontoType');

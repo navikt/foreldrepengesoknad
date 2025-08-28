@@ -1,34 +1,30 @@
-import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-
-import { Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import styles from './endrePeriodeModal.module.css';
-import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
-import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
+import styles from './endrePeriodePanel.module.css';
+import { EndrePeriodePanelStep } from './steps/EndrePeriodePanelStep';
+import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
 
 interface Props {
-    closeModal: () => void | undefined;
+    closePanel: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;
-    isModalOpen: boolean;
+    isPanelOpen: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
 }
 
-type ModalStep = 'step1' | 'step2' | 'step3' | 'step4';
+type PanelStep = 'step1' | 'step2' | 'step3' | 'step4';
 
-export interface ModalData {
+export interface PanelData {
     valgtPeriode: Planperiode | undefined;
     hvaVilDuGjøre: string | undefined;
-    currentStep: ModalStep;
+    currentStep: PanelStep;
     fom?: string;
     tom?: string;
     forelder?: Forelder;
@@ -38,18 +34,17 @@ export interface ModalData {
     skalDuJobbe?: boolean;
 }
 
-export const EndrePeriodeModal = ({
-    closeModal,
+export const EndrePeriodePanel = ({
+    closePanel,
     permisjonsperiode,
     handleUpdatePeriode,
     inneholderKunEnPeriode,
-    isModalOpen,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
 
-    const initialModalState: ModalData = {
+    const initialPanelState: PanelData = {
         valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
         hvaVilDuGjøre: undefined,
         fom: undefined,
@@ -61,33 +56,33 @@ export const EndrePeriodeModal = ({
         stillingsprosent: undefined,
     };
 
-    const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { currentStep } = modalData;
+    const [panelData, setPanelData] = useState<PanelData>(initialPanelState);
+    const { currentStep } = panelData;
 
-    const ariaLabelId = 'endre-periode-modal-heading';
+    const ariaLabelId = 'endre-periode-panel-heading';
 
-    const closeModalWrapper = () => {
-        setModalData(initialModalState);
-        closeModal();
+    const closePanelWrapper = () => {
+        setPanelData(initialPanelState);
+        closePanel();
     };
 
     const renderContent = () => {
         switch (currentStep) {
             case 'step1':
                 return (
-                    <VelgPeriodeModalStep
+                    <VelgPeriodePanelStep
                         perioder={permisjonsperiode.perioder}
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                        panelData={panelData}
+                        setPanelData={setPanelData}
+                        closePanel={closePanelWrapper}
                     />
                 );
             case 'step2':
                 return (
-                    <EndrePeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                    <EndrePeriodePanelStep
+                        closePanel={closePanelWrapper}
+                        panelData={panelData}
+                        setPanelData={setPanelData}
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                         erBarnetFødt={erBarnetFødt}
@@ -100,7 +95,7 @@ export const EndrePeriodeModal = ({
     };
 
     return (
-        <div className={styles.modal} open={isModalOpen} aria-labelledby={ariaLabelId} onClose={closeModalWrapper}>
+        <div className={styles.modal} aria-labelledby={ariaLabelId}>
             <div>{renderContent()}</div>
         </div>
     );

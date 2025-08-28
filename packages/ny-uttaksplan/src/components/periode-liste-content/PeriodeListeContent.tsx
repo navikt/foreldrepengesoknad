@@ -19,7 +19,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import { EndrePeriodeModal } from '../endre-periode-panel/EndrePeriodeModal';
+import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
 import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodepanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
@@ -119,8 +119,8 @@ export const PeriodeListeContent = ({
     handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
-    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEndringsPanelOpen, setIsEndringsPanelOpen] = useState(false);
+    const [isDeletePanelOpen, setIsDeletePanelOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const erRedigerbar =
@@ -141,37 +141,37 @@ export const PeriodeListeContent = ({
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
-    const closeEndringsModal = () => {
-        setIsEndringsModalOpen(false);
+    const closeEndringsPanel = () => {
+        setIsEndringsPanelOpen(false);
     };
-    const openEndringsModal = () => {
-        setIsEndringsModalOpen(true);
+    const openEndringsPanel = () => {
+        setIsEndringsPanelOpen(true);
     };
 
-    const closeDeleteModal = () => {
-        setIsDeleteModalOpen(false);
+    const closeDeletePanel = () => {
+        setIsDeletePanelOpen(false);
     };
-    const openDeleteModal = () => {
-        setIsDeleteModalOpen(true);
+    const openDeletePanel = () => {
+        setIsDeletePanelOpen(true);
     };
 
     return (
         <div style={{ marginTop: '1rem' }}>
-            {isEndringsModalOpen ? (
-                <EndrePeriodeModal
-                    closeModal={closeEndringsModal}
+            {isEndringsPanelOpen ? (
+                <EndrePeriodePanel
+                    closePanel={closeEndringsPanel}
                     handleUpdatePeriode={handleUpdatePeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    isModalOpen={isEndringsModalOpen}
+                    isPanelOpen={isEndringsPanelOpen}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
 
-            {isDeleteModalOpen ? (
+            {isDeletePanelOpen ? (
                 <SlettPeriodePanel
-                    closePanel={closeDeleteModal}
+                    closePanel={closeDeletePanel}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
@@ -180,7 +180,7 @@ export const PeriodeListeContent = ({
                 />
             ) : null}
 
-            {!isEndringsModalOpen && !isDeleteModalOpen ? (
+            {!isEndringsPanelOpen && !isDeletePanelOpen ? (
                 <>
                     <Stack direction={{ sm: 'column', md: 'column' }}>
                         {permisjonsperiode.perioder.map((periode) => {
@@ -195,7 +195,7 @@ export const PeriodeListeContent = ({
                                 type="button"
                                 size="small"
                                 variant="secondary"
-                                onClick={openEndringsModal}
+                                onClick={openEndringsPanel}
                                 icon={<PencilIcon />}
                             >
                                 Endre
@@ -205,7 +205,7 @@ export const PeriodeListeContent = ({
                                 size="small"
                                 variant="secondary"
                                 icon={<TrashIcon />}
-                                onClick={openDeleteModal}
+                                onClick={openDeletePanel}
                             >
                                 <FormattedMessage id="uttaksplan.slett" />
                             </Button>
