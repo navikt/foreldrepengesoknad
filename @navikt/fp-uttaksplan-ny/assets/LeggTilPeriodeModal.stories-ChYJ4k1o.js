@@ -1,0 +1,6 @@
+import{a as l,S as e,b as o}from"./TidsperiodeSpørsmål-_XMDTGO5.js";import{l as r}from"./iframe-Cm8qu49n.js";import{L as i}from"./LeggTilPeriodeModal-BsVBFOR7.js";import"./preload-helper-D9Z9MdNV.js";const a=(n,{parameters:s})=>{const{context:d}=s;return r.jsx(l,{initialState:d,children:r.jsx(n,{})})};a.__docgenInfo={description:"",methods:[],displayName:"withUttaksplanContextDecorator"};const k={title:"components/LeggTilPeriodeModal",component:i,decorators:[a],args:{closeModal:()=>{},handleAddPeriode:()=>{}},parameters:{context:{[o.UTTAKSPLAN]:[],[o.VALGT_STØNADSKONTO]:{kontoer:[{konto:e.Mødrekvote,dager:75},{konto:e.Fedrekvote,dager:75},{konto:e.Fellesperiode,dager:80},{konto:e.ForeldrepengerFørFødsel,dager:15}],minsteretter:{farRundtFødsel:10,toTette:0}}}}},t={args:{erBarnetFødt:!0,gjelderAdopsjon:!1}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    erBarnetFødt: true,
+    gjelderAdopsjon: false
+  }
+}`,...t.parameters?.docs?.source}}};const x=["LeggTilMødrekvote"];export{t as LeggTilMødrekvote,x as __namedExportsOrder,k as default};
