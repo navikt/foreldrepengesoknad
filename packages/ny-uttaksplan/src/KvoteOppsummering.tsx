@@ -21,7 +21,7 @@ type Props = {
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
-    openAccordions: boolean;
+    openAccordions?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 

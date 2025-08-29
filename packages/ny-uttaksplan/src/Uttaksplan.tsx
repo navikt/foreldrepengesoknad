@@ -38,7 +38,7 @@ interface Props {
     modus: UttaksplanModus;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
-    openAccordions: boolean;
+    openAccordions?: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -160,7 +160,7 @@ export const UttaksplanNy = ({
         >
             {komplettPlan.length > 0 && (
                 <PeriodeListe
-                    openAccordions={openAccordions}
+                    openAccordions={openAccordions ?? false}
                     perioder={komplettPlan}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
