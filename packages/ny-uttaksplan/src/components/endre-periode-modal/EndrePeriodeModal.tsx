@@ -9,6 +9,7 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { HvaVilDuGjøre } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
 import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
 import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
@@ -17,6 +18,7 @@ const ARIA_LABEL_ID = 'endre-periode-modal-heading';
 interface Props {
     closeModal: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;
     isModalOpen: boolean;
@@ -28,7 +30,7 @@ type ModalStep = 'step1' | 'step2';
 
 export interface ModalData {
     valgtPeriode: Planperiode | undefined;
-    hvaVilDuGjøre: string | undefined;
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined;
     currentStep: ModalStep;
     fom?: string;
     tom?: string;
@@ -43,6 +45,7 @@ export const EndrePeriodeModal = ({
     closeModal,
     permisjonsperiode,
     handleUpdatePeriode,
+    handleAddPeriode,
     inneholderKunEnPeriode,
     isModalOpen,
     erBarnetFødt,
@@ -98,6 +101,7 @@ export const EndrePeriodeModal = ({
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                         erBarnetFødt={erBarnetFødt}
                         gjelderAdopsjon={gjelderAdopsjon}
+                        handleAddPeriode={handleAddPeriode}
                     />
                 )}
             </Modal.Body>

@@ -13,12 +13,19 @@ import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
     perioder: Planperiode[];
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
-export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriode, handleDeletePerioder }: Props) => {
+export const PeriodeListe = ({
+    perioder,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+    handleAddPeriode,
+}: Props) => {
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
@@ -32,6 +39,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                     return (
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             <PeriodeListeItem
+                                handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
@@ -39,6 +47,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                             />
                             {permisjonsperioder.length - 1 === index && (
                                 <PeriodeListeItem
+                                    handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
@@ -53,6 +62,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             {indexOfFørstePeriodeEtterFødsel === index && (
                                 <PeriodeListeItem
+                                    handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
@@ -61,6 +71,7 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
                                 />
                             )}
                             <PeriodeListeItem
+                                handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}

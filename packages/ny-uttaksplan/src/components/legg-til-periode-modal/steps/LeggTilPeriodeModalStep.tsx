@@ -13,12 +13,12 @@ import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
+import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
-import { OppholdsÅrsakSpørsmål } from '../../spørsmål/OppholdsÅrsakSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
 import { ModalData } from '../LeggTilPeriodeModal';
-import { LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
+import { HvaVilDuGjøre, LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
 
 interface Props {
     modalData: ModalData;
@@ -27,7 +27,6 @@ interface Props {
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    isOpphold: boolean;
 }
 
 export const LeggTilPeriodeModalStep = ({
@@ -37,9 +36,8 @@ export const LeggTilPeriodeModalStep = ({
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
-    isOpphold,
 }: Props) => {
-    const { forelder, kontoType, fom, tom, årsak } = modalData;
+    const { forelder, kontoType, fom, tom } = modalData;
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
     const formMethods = useForm<LeggTilPeriodeModalFormValues>({
@@ -48,9 +46,10 @@ export const LeggTilPeriodeModalStep = ({
             kontoType: kontoType,
             fom,
             tom,
-            årsak,
         },
     });
+
+    const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
     const getForelderFromKontoType = (
         ktValue: StønadskontoType | undefined,
@@ -70,24 +69,24 @@ export const LeggTilPeriodeModalStep = ({
     const onSubmit = (values: LeggTilPeriodeModalFormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
-        const årsakValue = values.årsak;
 
-        if (årsakValue === UtsettelseÅrsakType.Ferie) {
+        if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsakValue}`,
+                id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
                 readOnly: false,
-                forelder: Forelder.farMedmor,
-                utsettelseÅrsak: årsakValue,
+                forelder: Forelder.mor,
+                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
             });
-        } else if (årsakValue === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${årsakValue}`,
+                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 readOnly: false,
-                periodeHullÅrsak: årsakValue,
+                forelder: Forelder.mor,
+                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
             handleAddPeriode({
@@ -108,25 +107,25 @@ export const LeggTilPeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                {isOpphold === false ? (
+                <HvaVilDuGjøreSpørsmål label="Hva vil du legge til?" />
+                {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
                         <TidsperiodeSpørsmål
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            oppholdsårsak={årsak}
+                            hvaVilDuGjøre={hvaVilDuGjøre}
                         />
                         {!erAleneOmOmsorg && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />
                     </>
                 ) : null}
-                {isOpphold ? (
+                {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD || hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE ? (
                     <>
-                        <OppholdsÅrsakSpørsmål />
                         <TidsperiodeSpørsmål
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}
-                            oppholdsårsak={årsak}
+                            hvaVilDuGjøre={hvaVilDuGjøre}
                         />
                     </>
                 ) : null}
@@ -134,7 +133,7 @@ export const LeggTilPeriodeModalStep = ({
                 <ModalButtons
                     onCancel={closeModal}
                     onGoPreviousStep={() => {
-                        setModalData({ ...modalData, currentStep: 'step1' });
+                        setModalData(modalData);
                     }}
                     isFinalStep={true}
                 />

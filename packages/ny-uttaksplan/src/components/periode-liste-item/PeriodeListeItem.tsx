@@ -10,6 +10,7 @@ import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
+    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
@@ -21,6 +22,7 @@ export const PeriodeListeItem = ({
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
+    handleAddPeriode,
 }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
 
@@ -54,6 +56,7 @@ export const PeriodeListeItem = ({
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
+                        handleAddPeriode={handleAddPeriode}
                         erFamiliehendelse={!!erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
                     />

@@ -5,24 +5,19 @@ import { FormattedMessage } from 'react-intl';
 import { HStack, Heading, Modal } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Planperiode } from '../../types/Planperiode';
 import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
-import { HvaVilDuGjøre, ValgModalStep } from './steps/ValgModalStep';
-
-type ModalStep = 'step1' | 'step2';
+import { HvaVilDuGjøre } from './types/LeggTilPeriodeModalFormValues';
 
 const ARIA_LABEL_ID = 'legg-til-periode-modal-heading';
 
 export interface ModalData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
-    currentStep: ModalStep;
     fom?: string;
     tom?: string;
     kontoType?: StønadskontoType;
     forelder?: Forelder;
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
 }
 
 interface Props {
@@ -37,14 +32,11 @@ export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, erBarnetFød
         hvaVilDuGjøre: undefined,
         fom: undefined,
         tom: undefined,
-        currentStep: 'step1',
         kontoType: undefined,
         forelder: undefined,
-        årsak: undefined,
     };
 
     const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { hvaVilDuGjøre, currentStep } = modalData;
 
     const closeModalWrapper = () => {
         setModalData(initialModalState);
@@ -62,20 +54,14 @@ export const LeggTilPeriodeModal = ({ closeModal, handleAddPeriode, erBarnetFød
                 </HStack>
             </Modal.Header>
             <Modal.Body>
-                {currentStep === 'step1' && (
-                    <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModalWrapper} />
-                )}
-                {currentStep === 'step2' && (
-                    <LeggTilPeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
-                        erBarnetFødt={erBarnetFødt}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        handleAddPeriode={handleAddPeriode}
-                        isOpphold={hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD}
-                    />
-                )}
+                <LeggTilPeriodeModalStep
+                    modalData={modalData}
+                    setModalData={setModalData}
+                    closeModal={closeModalWrapper}
+                    erBarnetFødt={erBarnetFødt}
+                    gjelderAdopsjon={gjelderAdopsjon}
+                    handleAddPeriode={handleAddPeriode}
+                />
             </Modal.Body>
         </Modal>
     );

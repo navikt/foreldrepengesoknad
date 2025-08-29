@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, UttaksplanModus, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -32,6 +32,7 @@ import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
@@ -40,6 +41,7 @@ interface Props {
 export const PeriodeListeContent = ({
     permisjonsperiode,
     erFamiliehendelse,
+    handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
@@ -48,7 +50,6 @@ export const PeriodeListeContent = ({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
-
     const erRedigerbar = !permisjonsperiode.perioder.some(
         (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
     );
@@ -58,7 +59,6 @@ export const PeriodeListeContent = ({
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
-
     const gjelderAdopsjon = isAdoptertBarn(barn);
     const erBarnetFødt = isFødtBarn(barn);
 
@@ -74,35 +74,14 @@ export const PeriodeListeContent = ({
                 })}
                 <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
             </VStack>
-            {modus !== 'innsyn' && erRedigerbar && (
-                <HStack gap="space-16" justify="end">
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        onClick={() => {
-                            setIsEndringsModalOpen(true);
-                        }}
-                        icon={<PencilIcon />}
-                    >
-                        <FormattedMessage id="uttaksplan.endre" />
-                    </Button>
-                    <Button
-                        type="button"
-                        size="xsmall"
-                        variant="secondary"
-                        icon={<TrashIcon />}
-                        onClick={() => {
-                            if (inneholderKunEnPeriode) {
-                                return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                            }
-
-                            setIsDeleteModalOpen(true);
-                        }}
-                    >
-                        <FormattedMessage id="uttaksplan.slett" />
-                    </Button>
-                </HStack>
+            {renderKnapper(
+                modus,
+                erRedigerbar,
+                permisjonsperiode,
+                inneholderKunEnPeriode,
+                handleDeletePeriode,
+                setIsEndringsModalOpen,
+                setIsDeleteModalOpen,
             )}
             {isEndringsModalOpen ? (
                 <EndrePeriodeModal
@@ -110,6 +89,7 @@ export const PeriodeListeContent = ({
                         setIsEndringsModalOpen(false);
                     }}
                     handleUpdatePeriode={handleUpdatePeriode}
+                    handleAddPeriode={handleAddPeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     isModalOpen={isEndringsModalOpen}
@@ -203,4 +183,67 @@ const getFamiliehendelseType = (barn: Barn) => {
     }
 
     return FamiliehendelseType.FØDSEL;
+};
+
+const renderKnapper = (
+    modus: UttaksplanModus,
+    erRedigerbar: boolean,
+    permisjonsperiode: Permisjonsperiode,
+    inneholderKunEnPeriode: boolean,
+    handleDeletePeriode: any,
+    setIsEndringsModalOpen: any,
+    setIsDeleteModalOpen: any,
+) => {
+    if (modus === 'innsyn') {
+        return null;
+    }
+
+    if (!erRedigerbar) {
+        return (
+            <HStack gap="space-16" justify="end">
+                <Button
+                    type="button"
+                    size="xsmall"
+                    variant="secondary"
+                    onClick={() => {
+                        setIsEndringsModalOpen(true);
+                    }}
+                    icon={<PencilIcon />}
+                >
+                    Endre
+                </Button>
+            </HStack>
+        );
+    }
+
+    return (
+        <HStack gap="space-16" justify="end">
+            <Button
+                type="button"
+                size="xsmall"
+                variant="secondary"
+                onClick={() => {
+                    setIsEndringsModalOpen(true);
+                }}
+                icon={<PencilIcon />}
+            >
+                <FormattedMessage id="uttaksplan.endre" />
+            </Button>
+            <Button
+                type="button"
+                size="xsmall"
+                variant="secondary"
+                icon={<TrashIcon />}
+                onClick={() => {
+                    if (inneholderKunEnPeriode) {
+                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
+                    }
+
+                    setIsDeleteModalOpen(true);
+                }}
+            >
+                <FormattedMessage id="uttaksplan.slett" />
+            </Button>
+        </HStack>
+    );
 };

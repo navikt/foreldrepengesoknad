@@ -103,6 +103,9 @@ export const UttaksplanNy = ({
             {komplettPlan.length > 0 && (
                 <PeriodeListe
                     perioder={komplettPlan}
+                    handleAddPeriode={(nyPeriode: Planperiode) => {
+                        modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                    }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
                         modifyPlan(builder.oppdaterPeriode(oppdatertPeriode), handleOnPlanChange);
                     }}
