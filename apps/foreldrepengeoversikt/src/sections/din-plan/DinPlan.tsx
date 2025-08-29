@@ -111,7 +111,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                         <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
-                        {gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs && (
+                        {(gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs?.length ?? 0) > 0 && (
                             <InformasjonAnnenforelderUttakEøsUnderUtvikling />
                         )}
                     </>
