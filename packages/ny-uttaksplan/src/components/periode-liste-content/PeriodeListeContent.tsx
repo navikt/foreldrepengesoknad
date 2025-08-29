@@ -20,7 +20,7 @@ import {
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
-import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodepanel';
+import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodePanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
