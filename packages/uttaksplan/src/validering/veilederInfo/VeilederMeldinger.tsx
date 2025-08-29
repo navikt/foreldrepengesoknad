@@ -12,9 +12,9 @@ interface Props {
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
 const VeilederMeldinger: React.FunctionComponent<Props> = ({ meldinger, stil, skjulMeldingIkon }) => {
     return (
-        <div>
+        <div className="grid gap-8">
             {meldinger.map((melding: VeilederMessage) => (
-                <Block padBottom="xl" key={melding.contentIntlKey + melding.periodeId}>
+                <Block key={melding.contentIntlKey + melding.periodeId}>
                     <VeilederMelding message={melding} stil={stil} skjulMeldingIkon={skjulMeldingIkon} />
                 </Block>
             ))}
