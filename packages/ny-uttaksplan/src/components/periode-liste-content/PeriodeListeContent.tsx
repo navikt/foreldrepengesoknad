@@ -68,20 +68,24 @@ export const PeriodeListeContent = ({
 
     return (
         <>
-            <VStack gap="space-16">
-                {permisjonsperiode.perioder.map((periode) => {
-                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
-                })}
-                <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            </VStack>
-            {renderKnapper(
-                modus,
-                erRedigerbar,
-                permisjonsperiode,
-                inneholderKunEnPeriode,
-                handleDeletePeriode,
-                setIsEndringsModalOpen,
-                setIsDeleteModalOpen,
+            {!isEndringsModalOpen && (
+                <>
+                    <VStack gap="space-16">
+                        {permisjonsperiode.perioder.map((periode) => {
+                            return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                        })}
+                        <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+                    </VStack>
+                    {renderKnapper(
+                        modus,
+                        erRedigerbar,
+                        permisjonsperiode,
+                        inneholderKunEnPeriode,
+                        handleDeletePeriode,
+                        setIsEndringsModalOpen,
+                        setIsDeleteModalOpen,
+                    )}
+                </>
             )}
             {isEndringsModalOpen ? (
                 <EndrePeriodeModal
@@ -92,7 +96,6 @@ export const PeriodeListeContent = ({
                     handleAddPeriode={handleAddPeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    isModalOpen={isEndringsModalOpen}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                 />

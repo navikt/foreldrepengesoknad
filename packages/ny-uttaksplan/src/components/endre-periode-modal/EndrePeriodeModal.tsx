@@ -2,7 +2,7 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Heading, Modal } from '@navikt/ds-react';
+import { HStack, Heading } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
@@ -21,7 +21,6 @@ interface Props {
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;
-    isModalOpen: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
 }
@@ -47,7 +46,6 @@ export const EndrePeriodeModal = ({
     handleUpdatePeriode,
     handleAddPeriode,
     inneholderKunEnPeriode,
-    isModalOpen,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
@@ -74,16 +72,16 @@ export const EndrePeriodeModal = ({
     };
 
     return (
-        <Modal className="w-[100%]" open={isModalOpen} aria-labelledby={ARIA_LABEL_ID} onClose={closeModalWrapper}>
-            <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
+        <div aria-labelledby={ARIA_LABEL_ID}>
+            <div className="mb-4">
                 <HStack gap="space-8" align="center">
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ARIA_LABEL_ID}>
                         <FormattedMessage id="endrePeriodeModal.tittel" />
                     </Heading>
                 </HStack>
-            </Modal.Header>
-            <Modal.Body>
+            </div>
+            <div>
                 {currentStep === 'step1' && (
                     <VelgPeriodeModalStep
                         perioder={permisjonsperiode.perioder}
@@ -104,7 +102,7 @@ export const EndrePeriodeModal = ({
                         handleAddPeriode={handleAddPeriode}
                     />
                 )}
-            </Modal.Body>
-        </Modal>
+            </div>
+        </div>
     );
 };

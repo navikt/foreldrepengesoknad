@@ -57,7 +57,7 @@ export const PeriodeListeItem = ({
             </div>
             <div
                 className={`overflow-hidden transition-all duration-250 ${
-                    erPeriodeInnholdÅpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    erPeriodeInnholdÅpen ? 'opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
                 <div className="pt-10 pb-10 pl-10 pr-10">
