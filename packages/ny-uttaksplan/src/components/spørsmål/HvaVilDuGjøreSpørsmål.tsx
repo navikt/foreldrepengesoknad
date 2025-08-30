@@ -13,33 +13,32 @@ import {
 
 type Props = {
     label: string;
+    autoFocus?: boolean;
 };
 
-export const HvaVilDuGjøreSpørsmål = ({ label }: Props) => {
+export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
     const intl = useIntl();
 
     const { control } = useFormContext<LeggTilPeriodeModalFormValues>();
 
     return (
-        <>
-            <VStack gap="space-16">
-                <RhfRadioGroup
-                    name="hvaVilDuGjøre"
-                    label={label}
-                    control={control}
-                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
-                >
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilFerie" />
-                    </Radio>
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilOpphold" />
-                    </Radio>
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilPeriode" />
-                    </Radio>
-                </RhfRadioGroup>
-            </VStack>
-        </>
+        <VStack gap="space-16">
+            <RhfRadioGroup
+                name="hvaVilDuGjøre"
+                label={label}
+                control={control}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
+            >
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
+                    <FormattedMessage id="uttaksplan.valgModal.leggTilFerie" />
+                </Radio>
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
+                    <FormattedMessage id="uttaksplan.valgModal.leggTilOpphold" />
+                </Radio>
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
+                    <FormattedMessage id="uttaksplan.valgModal.leggTilPeriode" />
+                </Radio>
+            </RhfRadioGroup>
+        </VStack>
     );
 };

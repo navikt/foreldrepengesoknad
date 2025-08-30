@@ -23,7 +23,6 @@ import { HvaVilDuGjøre, LeggTilPeriodeModalFormValues } from '../types/LeggTilP
 interface Props {
     modalData: ModalData;
     closeModal: () => void;
-    setModalData: (data: ModalData) => void;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
@@ -32,7 +31,6 @@ interface Props {
 export const LeggTilPeriodeModalStep = ({
     modalData,
     closeModal,
-    setModalData,
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
@@ -107,7 +105,7 @@ export const LeggTilPeriodeModalStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label="Hva vil du legge til?" />
+                <HvaVilDuGjøreSpørsmål label="Hva vil du legge til?" autoFocus />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
@@ -121,22 +119,14 @@ export const LeggTilPeriodeModalStep = ({
                     </>
                 ) : null}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD || hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE ? (
-                    <>
-                        <TidsperiodeSpørsmål
-                            erBarnetFødt={erBarnetFødt}
-                            gjelderAdopsjon={gjelderAdopsjon}
-                            hvaVilDuGjøre={hvaVilDuGjøre}
-                        />
-                    </>
+                    <TidsperiodeSpørsmål
+                        erBarnetFødt={erBarnetFødt}
+                        gjelderAdopsjon={gjelderAdopsjon}
+                        hvaVilDuGjøre={hvaVilDuGjøre}
+                    />
                 ) : null}
 
-                <ModalButtons
-                    onCancel={closeModal}
-                    onGoPreviousStep={() => {
-                        setModalData(modalData);
-                    }}
-                    isFinalStep={true}
-                />
+                <ModalButtons onCancel={closeModal} isFinalStep={true} />
             </VStack>
         </RhfForm>
     );

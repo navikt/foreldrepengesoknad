@@ -137,9 +137,10 @@ export const UttaksplanNy = ({
             )}
             {erLeggTilPeriodeModalOpen && (
                 <LeggTilPeriodeModal
-                    closeModal={() => setErLeggTilPeriodeModalOpen(false)}
+                    onCancel={() => setErLeggTilPeriodeModalOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        setErLeggTilPeriodeModalOpen(false);
                     }}
                     erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}

@@ -7,11 +7,11 @@ import { withUttaksplanContextDecorator } from '../../storybook/decorators/withU
 import { LeggTilPeriodeModal } from './LeggTilPeriodeModal';
 
 const meta = {
-    title: 'components/LeggTilPeriodeModal',
+    title: 'components/LeggTilPeriode',
     component: LeggTilPeriodeModal,
     decorators: [withUttaksplanContextDecorator],
     args: {
-        closeModal: () => undefined,
+        onCancel: () => undefined,
         handleAddPeriode: () => undefined,
     },
     parameters: {
