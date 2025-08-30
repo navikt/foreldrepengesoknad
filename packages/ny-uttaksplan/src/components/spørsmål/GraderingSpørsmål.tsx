@@ -29,7 +29,7 @@ export const GraderingSpørsmål = () => {
                 name="skalDuJobbe"
                 control={control}
                 label={intl.formatMessage({ id: 'uttaksplan.graderingSpørsmål.heading' })}
-                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.skalDuJobbe.påkrevd' }))]}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.skalDuJobbe.påkrevd' }))]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="uttaksplan.ja" />

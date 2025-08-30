@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -38,6 +38,7 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
+    const [erAlleAccordionsÅpne, setErAlleAccordionsÅpne] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -108,6 +109,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         nyUttaksplan.push(perioder);
         setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
         lagreUttaksplan(nyUttaksplan);
+    };
+
+    const handleToggleAlleAccordions = () => {
+        setErAlleAccordionsÅpne(!erAlleAccordionsÅpne);
     };
 
     const navnPåForeldre = {
@@ -214,6 +219,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
+                                erAlleAccordionsÅpne={erAlleAccordionsÅpne}
                             />
                             <HStack gap="space-16">
                                 <Button
@@ -238,6 +244,14 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     }}
                                 >
                                     Angre
+                                </Button>
+                                <Button
+                                    size="small"
+                                    variant="secondary"
+                                    icon={<PencilIcon aria-hidden height={24} width={24} />}
+                                    onClick={handleToggleAlleAccordions}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
                                 </Button>
                                 <Button
                                     size="small"

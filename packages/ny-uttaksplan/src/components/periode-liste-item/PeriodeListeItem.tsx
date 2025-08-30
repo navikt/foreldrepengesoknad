@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -14,6 +14,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    erAlleAccordionsÅpne?: boolean;
 }
 
 export const PeriodeListeItem = ({
@@ -23,8 +24,16 @@ export const PeriodeListeItem = ({
     handleDeletePeriode,
     handleDeletePerioder,
     handleAddPeriode,
+    erAlleAccordionsÅpne,
 }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
+
+    // Sync local state with global accordion state
+    useEffect(() => {
+        if (erAlleAccordionsÅpne !== undefined) {
+            setErPeriodeInnholdÅpen(erAlleAccordionsÅpne);
+        }
+    }, [erAlleAccordionsÅpne]);
 
     return (
         <VStack gap="0" className="cursor-pointer border-t-1 border-b-1 border-ax-neutral-300">

@@ -27,7 +27,7 @@ export const KontotypeSpørsmål = () => {
             <RhfRadioGroup
                 name="kontoType"
                 control={control}
-                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.kontoType.påkrevd' }))]}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.kontoType.påkrevd' }))]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
                 {valgtStønadskonto.kontoer.map((konto) => {
@@ -42,7 +42,7 @@ export const KontotypeSpørsmål = () => {
                 <RhfRadioGroup
                     name="forelder"
                     control={control}
-                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.forelder.påkrevd' }))]}
+                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.forelder.påkrevd' }))]}
                     label={intl.formatMessage({ id: 'KontotypeSpørsmål.hvemGjelder' })}
                 >
                     <Radio value={Forelder.mor}>
