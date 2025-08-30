@@ -11,34 +11,34 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
-import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { PanelButtons } from '../../panel-buttons/PanelButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../LeggTilPeriodeModal';
-import { HvaVilDuGjøre, LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
+import { PanelData } from '../LeggTilPeriodePanel';
+import { HvaVilDuGjøre, LeggTilPeriodePanelFormValues } from '../types/LeggTilPeriodePanelFormValues';
 
 interface Props {
-    modalData: ModalData;
-    closeModal: () => void;
+    panelData: PanelData;
+    closePanel: () => void;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
 }
 
-export const LeggTilPeriodeModalStep = ({
-    modalData,
-    closeModal,
+export const LeggTilPeriodePanelStep = ({
+    panelData,
+    closePanel,
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
-    const { forelder, kontoType, fom, tom } = modalData;
+    const { forelder, kontoType, fom, tom } = panelData;
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
-    const formMethods = useForm<LeggTilPeriodeModalFormValues>({
+    const formMethods = useForm<LeggTilPeriodePanelFormValues>({
         defaultValues: {
             forelder: forelder,
             kontoType: kontoType,
@@ -64,7 +64,7 @@ export const LeggTilPeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: LeggTilPeriodeModalFormValues) => {
+    const onSubmit = (values: LeggTilPeriodePanelFormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
 
@@ -99,7 +99,7 @@ export const LeggTilPeriodeModalStep = ({
             });
         }
 
-        closeModal();
+        closePanel();
     };
 
     return (
@@ -126,7 +126,7 @@ export const LeggTilPeriodeModalStep = ({
                     />
                 ) : null}
 
-                <ModalButtons onCancel={closeModal} isFinalStep={true} />
+                <PanelButtons onCancel={closePanel} isFinalStep={true} />
             </VStack>
         </RhfForm>
     );

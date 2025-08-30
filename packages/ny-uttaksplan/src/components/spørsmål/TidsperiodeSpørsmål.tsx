@@ -14,8 +14,8 @@ import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
 import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
 import {
     HvaVilDuGjøre,
-    LeggTilPeriodeModalFormValues,
-} from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+    LeggTilPeriodePanelFormValues,
+} from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 type Props = {
     valgtPeriode?: Planperiode;
@@ -28,7 +28,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
-    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodeModalStepFormValues>();
 
     const fomValue = watch('fom');
     const kontoType = watch('kontoType');

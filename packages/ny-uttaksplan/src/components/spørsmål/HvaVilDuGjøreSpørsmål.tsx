@@ -8,8 +8,8 @@ import { isRequired } from '@navikt/fp-validation';
 
 import {
     HvaVilDuGjøre,
-    LeggTilPeriodeModalFormValues,
-} from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+    LeggTilPeriodePanelFormValues,
+} from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 type Props = {
     label: string;
@@ -19,7 +19,7 @@ type Props = {
 export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
     const intl = useIntl();
 
-    const { control } = useFormContext<LeggTilPeriodeModalFormValues>();
+    const { control } = useFormContext<LeggTilPeriodePanelFormValues>();
 
     return (
         <VStack gap="space-16">
@@ -27,7 +27,7 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
                 name="hvaVilDuGjøre"
                 label={label}
                 control={control}
-                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
             >
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
                     <FormattedMessage id="uttaksplan.valgModal.leggTilFerie" />

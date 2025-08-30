@@ -9,7 +9,7 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { HvaVilDuGjøre } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { HvaVilDuGjøre } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
 import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 

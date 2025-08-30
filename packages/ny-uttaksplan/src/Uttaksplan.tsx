@@ -16,7 +16,7 @@ import {
 import { omitMany } from '@navikt/fp-utils';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -57,7 +57,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
 }: Props) => {
-    const [erLeggTilPeriodeModalOpen, setErLeggTilPeriodeModalOpen] = useState(false);
+    const [erLeggTilPeriodePanelOpen, setErLeggTilPeriodePanelOpen] = useState(false);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -131,16 +131,16 @@ export const UttaksplanNy = ({
                 </HStack>
             )}
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={() => setErLeggTilPeriodeModalOpen(true)}>
+                <Button variant="secondary" onClick={() => setErLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {erLeggTilPeriodeModalOpen && (
-                <LeggTilPeriodeModal
-                    onCancel={() => setErLeggTilPeriodeModalOpen(false)}
+            {erLeggTilPeriodePanelOpen && (
+                <LeggTilPeriodePanel
+                    onCancel={() => setErLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
-                        setErLeggTilPeriodeModalOpen(false);
+                        setErLeggTilPeriodePanelOpen(false);
                     }}
                     erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}

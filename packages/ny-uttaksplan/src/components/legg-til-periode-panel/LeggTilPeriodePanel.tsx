@@ -6,10 +6,10 @@ import { HStack, Heading, VStack } from '@navikt/ds-react';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
 import { Planperiode } from '../../types/Planperiode';
-import { LeggTilPeriodeModalStep } from './steps/LeggTilPeriodeModalStep';
-import { HvaVilDuGjøre } from './types/LeggTilPeriodeModalFormValues';
+import { LeggTilPeriodePanelStep } from './steps/LeggTilPeriodePanelStep';
+import { HvaVilDuGjøre } from './types/LeggTilPeriodePanelFormValues';
 
-export interface ModalData {
+export interface PanelData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
     fom?: string;
     tom?: string;
@@ -24,8 +24,8 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-export const LeggTilPeriode = ({ onCancel, handleAddPeriode, erBarnetFødt, gjelderAdopsjon }: Props) => {
-    const modalData: ModalData = {
+export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode, erBarnetFødt, gjelderAdopsjon }: Props) => {
+    const panelData: PanelData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
         tom: undefined,
@@ -41,9 +41,9 @@ export const LeggTilPeriode = ({ onCancel, handleAddPeriode, erBarnetFødt, gjel
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Heading>
             </HStack>
-            <LeggTilPeriodeModalStep
-                modalData={modalData}
-                closeModal={onCancel || (() => {})}
+            <LeggTilPeriodePanelStep
+                panelData={panelData}
+                closePanel={onCancel || (() => {})}
                 erBarnetFødt={erBarnetFødt}
                 gjelderAdopsjon={gjelderAdopsjon}
                 handleAddPeriode={handleAddPeriode}
@@ -53,4 +53,5 @@ export const LeggTilPeriode = ({ onCancel, handleAddPeriode, erBarnetFødt, gjel
 };
 
 // Backward compatibility
-export const LeggTilPeriodeModal = LeggTilPeriode;
+export const LeggTilPeriodeModal = LeggTilPeriodePanel;
+export const LeggTilPeriode = LeggTilPeriodePanel;

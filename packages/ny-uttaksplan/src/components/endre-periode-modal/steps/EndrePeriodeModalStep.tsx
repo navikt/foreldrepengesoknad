@@ -11,7 +11,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
-import { HvaVilDuGjøre } from '../../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { ModalButtons } from '../../modal-buttons/ModalButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
