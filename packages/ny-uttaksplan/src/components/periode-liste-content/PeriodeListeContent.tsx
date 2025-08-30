@@ -220,7 +220,7 @@ const renderKnapper = (
         <HStack gap="space-16" justify="end">
             <Button
                 type="button"
-                size="xsmall"
+                size="small"
                 variant="secondary"
                 onClick={() => {
                     setIsEndringsModalOpen(true);
@@ -231,7 +231,7 @@ const renderKnapper = (
             </Button>
             <Button
                 type="button"
-                size="xsmall"
+                size="small"
                 variant="secondary"
                 icon={<TrashIcon />}
                 onClick={() => {
