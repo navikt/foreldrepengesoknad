@@ -11,7 +11,7 @@ import { UttaksplanContextDataType, useContextGetData } from '../../context/Utta
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
-import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
+import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
 import {
     HvaVilDuGjøre,
     LeggTilPeriodePanelFormValues,
@@ -28,7 +28,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
     const intl = useIntl();
 
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
-    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
 
     const fomValue = watch('fom');
     const kontoType = watch('kontoType');

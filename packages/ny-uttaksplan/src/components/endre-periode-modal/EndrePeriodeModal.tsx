@@ -9,9 +9,9 @@ import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { EndrePeriodePanelStep } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
+import { VelgPeriodePanelStep } from '../endre-periode-panel/steps/VelgPeriodePanelStep';
 import { HvaVilDuGjøre } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
-import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
-import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
 const ARIA_LABEL_ID = 'endre-periode-modal-heading';
 
@@ -83,18 +83,18 @@ export const EndrePeriodeModal = ({
             </div>
             <div>
                 {currentStep === 'step1' && (
-                    <VelgPeriodeModalStep
+                    <VelgPeriodePanelStep
                         perioder={permisjonsperiode.perioder}
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                        panelData={modalData}
+                        setPanelData={setModalData}
+                        closePanel={closeModalWrapper}
                     />
                 )}
                 {currentStep === 'step2' && (
-                    <EndrePeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                    <EndrePeriodePanelStep
+                        panelData={modalData}
+                        setPanelData={setModalData}
+                        closePanel={closeModalWrapper}
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                         erBarnetFødt={erBarnetFødt}

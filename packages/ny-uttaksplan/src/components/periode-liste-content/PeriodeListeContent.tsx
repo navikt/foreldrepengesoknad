@@ -19,7 +19,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
+import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
 import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
@@ -88,8 +88,8 @@ export const PeriodeListeContent = ({
                 </>
             )}
             {isEndringsModalOpen ? (
-                <EndrePeriodeModal
-                    closeModal={() => {
+                <EndrePeriodePanel
+                    closePanel={() => {
                         setIsEndringsModalOpen(false);
                     }}
                     handleUpdatePeriode={handleUpdatePeriode}
