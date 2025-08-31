@@ -180,12 +180,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
             <VStack gap="space-24">
                 <Alert variant="info">
                     <Heading size="medium" spacing level="2">
-                        Savner du noe i planleggeren?
+                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tittel" />
                     </Heading>
                     <BodyLong>
-                        Vi jobber med å forbedre planleggeren. Det betyr at flere funksjoner kommer snart. Det kan
-                        derfor være forskjeller mellom det du kan legge inn i planleggeren og det du faktisk kan søke
-                        om.
+                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tekst" />
                     </BodyLong>
                 </Alert>
 
@@ -243,7 +241,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         }
                                     }}
                                 >
-                                    Angre
+                                    <FormattedMessage id="TilpassPlanenSteg.Angre" />
                                 </Button>
                                 <Button
                                     size="small"

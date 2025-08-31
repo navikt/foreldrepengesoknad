@@ -30,13 +30,13 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
             >
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
-                    <FormattedMessage id="uttaksplan.valgModal.leggTilFerie" />
+                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                    <FormattedMessage id="uttaksplan.valgModal.leggTilOpphold" />
+                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
-                    <FormattedMessage id="uttaksplan.valgModal.leggTilPeriode" />
+                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
                 </Radio>
             </RhfRadioGroup>
         </VStack>
