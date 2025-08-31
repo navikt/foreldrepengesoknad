@@ -17,7 +17,7 @@
     "uttaksplan.oppholdsårsakModal.tittel": "What would you like to add?",
     "uttaksplan.oppholdsårsakModal.ferie": "Holiday",
     "uttaksplan.oppholdsårsakModal.periodeUtenForeldrepenger": "Period without parental benefits",
-    "uttaksplan.valgPanel.tittel": "What would you like to add?",
+    "uttaksplan.valgPanel.label": "What do you want to do?",
     "uttaksplan.valgPanel.leggTilPeriode": "Add period with parental benefits",
     "uttaksplan.valgPanel.leggTilFerie": "Add holiday",
     "uttaksplan.valgPanel.leggTilOpphold": "Add period without parental benefits",

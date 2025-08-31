@@ -17,7 +17,7 @@
     "uttaksplan.oppholdsårsakModal.tittel": "Kva vil du legge til?",
     "uttaksplan.oppholdsårsakModal.ferie": "Ferie",
     "uttaksplan.oppholdsårsakModal.periodeUtenForeldrepenger": "Periode utan foreldrepengar",
-    "uttaksplan.valgPanel.tittel": "Kva vil du legge til?",
+    "uttaksplan.valgPanel.label": "Kva vil du gjere?",
     "uttaksplan.valgPanel.leggTilPeriode": "Legg til periode med foreldrepengar",
     "uttaksplan.valgPanel.leggTilFerie": "Legg til ferie",
     "uttaksplan.valgPanel.leggTilOpphold": "Legg til periode utan foreldrepengar",

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -53,6 +54,7 @@ export const EndrePeriodePanelStep = ({
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
+    const intl = useIntl();
     const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
@@ -160,7 +162,7 @@ export const EndrePeriodePanelStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label="Hva vil du gjøre?" />
+                <HvaVilDuGjøreSpørsmål label={intl.formatMessage({ id: 'uttaksplan.valgPanel.tittel' })} />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}
