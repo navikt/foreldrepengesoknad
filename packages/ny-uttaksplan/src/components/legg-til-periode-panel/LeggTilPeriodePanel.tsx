@@ -51,7 +51,3 @@ export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode, erBarnetFødt,
         </VStack>
     );
 };
-
-// Backward compatibility
-export const LeggTilPeriodeModal = LeggTilPeriodePanel;
-export const LeggTilPeriode = LeggTilPeriodePanel;
