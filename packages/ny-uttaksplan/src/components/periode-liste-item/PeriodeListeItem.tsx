@@ -60,7 +60,7 @@ export const PeriodeListeItem = ({
                     erPeriodeInnholdÅpen ? 'opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
-                <div className="pt-10 pb-10 pl-10 pr-10 has-[div[data-panel='endre-periode']]:pt-4">
+                <div className="pt-10 pb-10 pl-10 pr-10 has-[div[data-panel='endre-periode']]:pt-0">
                     <PeriodeListeContent
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
