@@ -219,7 +219,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
-                                erAlleAccordionsÅpne={isAllAccordionsOpen}
+                                isAllAccordionsOpen={isAllAccordionsOpen}
                             />
                             <HStack gap="space-16">
                                 <Button

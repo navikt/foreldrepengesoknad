@@ -38,7 +38,7 @@ interface Props {
     modus: UttaksplanModus;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
-    erAlleAccordionsÅpne?: boolean;
+    isAllAccordionsOpen?: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -57,7 +57,7 @@ export const UttaksplanNy = ({
     modus,
     valgtStønadskonto,
     erAleneOmOmsorg,
-    erAlleAccordionsÅpne,
+    isAllAccordionsOpen,
 }: Props) => {
     const [erLeggTilPeriodePanelOpen, setErLeggTilPeriodePanelOpen] = useState(false);
 
@@ -117,7 +117,7 @@ export const UttaksplanNy = ({
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
                         modifyPlan(builder.slettPerioder(slettedePerioder), handleOnPlanChange);
                     }}
-                    erAlleAccordionsÅpne={erAlleAccordionsÅpne}
+                    isAllAccordionsOpen={isAllAccordionsOpen}
                 />
             )}
             {komplettPlan.length === 0 && (
