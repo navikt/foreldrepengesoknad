@@ -59,7 +59,7 @@ export const UttaksplanNy = ({
     erAleneOmOmsorg,
     isAllAccordionsOpen,
 }: Props) => {
-    const [isAddPeriodePanelOpen, setIsAddPeriodePanelOpen] = useState(false);
+    const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -134,16 +134,16 @@ export const UttaksplanNy = ({
                 </HStack>
             )}
             {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={() => setIsAddPeriodePanelOpen(true)}>
+                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isAddPeriodePanelOpen && (
+            {isLeggTilPeriodePanelOpen && (
                 <LeggTilPeriodePanel
-                    onCancel={() => setIsAddPeriodePanelOpen(false)}
+                    onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
-                        setIsAddPeriodePanelOpen(false);
+                        setIsLeggTilPeriodePanelOpen(false);
                     }}
                     erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}
