@@ -46,8 +46,8 @@ export const PeriodeListeContent = ({
     handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
-    const [isEndringsPanelOpen, setIsEndringsPanelOpen] = useState(false);
-    const [isDeletePanelOpen, setIsDeletePanelOpen] = useState(false);
+    const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
+    const [isSlettPeriodePanelOpen, setIsSlettPeriodePanelOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const erRedigerbar = !permisjonsperiode.perioder.some(
@@ -68,7 +68,7 @@ export const PeriodeListeContent = ({
 
     return (
         <>
-            {!isEndringsPanelOpen && !isDeletePanelOpen && (
+            {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
                         {permisjonsperiode.perioder.map((periode) => {
@@ -76,13 +76,13 @@ export const PeriodeListeContent = ({
                         })}
                         <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
                     </VStack>
-                    {renderKnapper(modus, erRedigerbar, setIsEndringsPanelOpen, setIsDeletePanelOpen)}
+                    {renderKnapper(modus, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
                 </>
             )}
-            {isEndringsPanelOpen ? (
+            {isEndrePeriodePanelOpen ? (
                 <EndrePeriodePanel
                     closePanel={() => {
-                        setIsEndringsPanelOpen(false);
+                        setIsEndrePeriodePanelOpen(false);
                     }}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleAddPeriode={handleAddPeriode}
@@ -92,10 +92,10 @@ export const PeriodeListeContent = ({
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
-            {isDeletePanelOpen ? (
+            {isSlettPeriodePanelOpen ? (
                 <SlettPeriodePanel
                     closePanel={() => {
-                        setIsDeletePanelOpen(false);
+                        setIsSlettPeriodePanelOpen(false);
                     }}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
@@ -182,8 +182,8 @@ const getFamiliehendelseType = (barn: Barn) => {
 const renderKnapper = (
     modus: UttaksplanModus,
     erRedigerbar: boolean,
-    setIsEndringsPanelOpen: any,
-    setIsDeletePanelOpen: any,
+    setIsEndrePeriodePanelOpen: any,
+    setIsSlettPeriodePanelOpen: any,
 ) => {
     if (modus === 'innsyn') {
         return null;
@@ -197,7 +197,7 @@ const renderKnapper = (
                     size="xsmall"
                     variant="secondary"
                     onClick={() => {
-                        setIsEndringsPanelOpen(true);
+                        setIsEndrePeriodePanelOpen(true);
                     }}
                     icon={<PencilIcon />}
                 >
@@ -214,7 +214,7 @@ const renderKnapper = (
                 size="small"
                 variant="secondary"
                 onClick={() => {
-                    setIsEndringsPanelOpen(true);
+                    setIsEndrePeriodePanelOpen(true);
                 }}
                 icon={<PencilIcon />}
             >
@@ -226,7 +226,7 @@ const renderKnapper = (
                 variant="secondary"
                 icon={<TrashIcon />}
                 onClick={() => {
-                    setIsDeletePanelOpen(true);
+                    setIsSlettPeriodePanelOpen(true);
                 }}
             >
                 <FormattedMessage id="uttaksplan.slett" />
