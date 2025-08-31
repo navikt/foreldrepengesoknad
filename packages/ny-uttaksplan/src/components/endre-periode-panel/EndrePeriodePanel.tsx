@@ -72,7 +72,7 @@ export const EndrePeriodePanel = ({
     };
 
     return (
-        <div aria-labelledby={ARIA_LABEL_ID}>
+        <div aria-labelledby={ARIA_LABEL_ID} data-panel="endre-periode">
             <div className="mb-4">
                 <HStack gap="space-8" align="center">
                     <PencilIcon aria-hidden={true} width={24} height={24} />
