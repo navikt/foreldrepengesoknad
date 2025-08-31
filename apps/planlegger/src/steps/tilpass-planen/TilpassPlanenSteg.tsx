@@ -111,7 +111,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         lagreUttaksplan(nyUttaksplan);
     };
 
-    const handleToggleAlleAccordions = () => {
+    const handleToggleAllAccordions = () => {
         setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
 
@@ -249,7 +249,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     size="small"
                                     variant="secondary"
                                     icon={<PencilIcon aria-hidden height={24} width={24} />}
-                                    onClick={handleToggleAlleAccordions}
+                                    onClick={handleToggleAllAccordions}
                                 >
                                     <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
                                 </Button>
