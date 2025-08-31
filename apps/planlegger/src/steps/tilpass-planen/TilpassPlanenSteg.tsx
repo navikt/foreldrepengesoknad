@@ -38,7 +38,7 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
-    const [erAlleAccordionsÅpne, setErAlleAccordionsÅpne] = useState(false);
+    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -112,7 +112,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     };
 
     const handleToggleAlleAccordions = () => {
-        setErAlleAccordionsÅpne(!erAlleAccordionsÅpne);
+        setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
 
     const navnPåForeldre = {
@@ -219,7 +219,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
-                                erAlleAccordionsÅpne={erAlleAccordionsÅpne}
+                                erAlleAccordionsÅpne={isAllAccordionsOpen}
                             />
                             <HStack gap="space-16">
                                 <Button
