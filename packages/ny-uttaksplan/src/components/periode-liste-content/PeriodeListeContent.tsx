@@ -76,15 +76,7 @@ export const PeriodeListeContent = ({
                         })}
                         <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
                     </VStack>
-                    {renderKnapper(
-                        modus,
-                        erRedigerbar,
-                        permisjonsperiode,
-                        inneholderKunEnPeriode,
-                        handleDeletePeriode,
-                        setIsEndringsModalOpen,
-                        setIsDeleteModalOpen,
-                    )}
+                    {renderKnapper(modus, erRedigerbar, setIsEndringsModalOpen, setIsDeleteModalOpen)}
                 </>
             )}
             {isEndringsModalOpen ? (
@@ -190,9 +182,6 @@ const getFamiliehendelseType = (barn: Barn) => {
 const renderKnapper = (
     modus: UttaksplanModus,
     erRedigerbar: boolean,
-    permisjonsperiode: Permisjonsperiode,
-    inneholderKunEnPeriode: boolean,
-    handleDeletePeriode: any,
     setIsEndringsModalOpen: any,
     setIsDeleteModalOpen: any,
 ) => {
@@ -237,10 +226,6 @@ const renderKnapper = (
                 variant="secondary"
                 icon={<TrashIcon />}
                 onClick={() => {
-                    if (inneholderKunEnPeriode) {
-                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                    }
-
                     setIsDeleteModalOpen(true);
                 }}
             >
