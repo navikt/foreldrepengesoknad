@@ -20,7 +20,7 @@ import {
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
-import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
+import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodePanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
@@ -68,7 +68,7 @@ export const PeriodeListeContent = ({
 
     return (
         <>
-            {!isEndringsModalOpen && (
+            {!isEndringsModalOpen && !isDeleteModalOpen && (
                 <>
                     <VStack gap="space-16">
                         {permisjonsperiode.perioder.map((periode) => {
@@ -101,14 +101,13 @@ export const PeriodeListeContent = ({
                 />
             ) : null}
             {isDeleteModalOpen ? (
-                <SlettPeriodeModal
-                    closeModal={() => {
+                <SlettPeriodePanel
+                    closePanel={() => {
                         setIsDeleteModalOpen(false);
                     }}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
-                    isModalOpen={isDeleteModalOpen}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
