@@ -107,7 +107,7 @@ export const LeggTilPeriodePanelStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label={intl.formatMessage({ id: 'uttaksplan.valgPanel.tittel' })} autoFocus />
+                <HvaVilDuGjøreSpørsmål label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })} autoFocus />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
