@@ -182,8 +182,8 @@ const getFamiliehendelseType = (barn: Barn) => {
 const renderKnapper = (
     modus: UttaksplanModus,
     erRedigerbar: boolean,
-    setIsEndrePeriodePanelOpen: any,
-    setIsSlettPeriodePanelOpen: any,
+    setIsEndrePeriodePanelOpen: (open: boolean) => void,
+    setIsSlettPeriodePanelOpen: (open: boolean) => void,
 ) => {
     if (modus === 'innsyn') {
         return null;
