@@ -63,9 +63,9 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                         },
                     ]}
                 >
-                    {perioder.map((p) => {
+                    {perioder.map((p, index) => {
                         return (
-                            <Radio key={p.id} value={p.id}>
+                            <Radio key={p.id} value={p.id} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                             </Radio>
                         );

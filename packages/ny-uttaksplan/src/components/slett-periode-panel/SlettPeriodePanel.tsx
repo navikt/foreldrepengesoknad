@@ -90,9 +90,9 @@ export const SlettPeriodePanel = ({
                             validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
-                            {perioder.map((p) => {
+                            {perioder.map((p, index) => {
                                 return (
-                                    <Checkbox key={p.id} name={p.id} value={p.id}>
+                                    <Checkbox key={p.id} name={p.id} value={p.id} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                                     </Checkbox>
