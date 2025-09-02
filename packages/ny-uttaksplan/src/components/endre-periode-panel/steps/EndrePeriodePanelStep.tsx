@@ -162,7 +162,10 @@ export const EndrePeriodePanelStep = ({
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })} />
+                <HvaVilDuGjøreSpørsmål
+                    label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label.endre' })}
+                    erEndring={true}
+                />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}

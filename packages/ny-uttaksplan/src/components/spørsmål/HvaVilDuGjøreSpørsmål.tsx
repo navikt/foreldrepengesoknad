@@ -14,9 +14,10 @@ import {
 type Props = {
     label: string;
     autoFocus?: boolean;
+    erEndring: boolean;
 };
 
-export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
+export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus, erEndring }: Props) => {
     const intl = useIntl();
 
     const { control } = useFormContext<LeggTilPeriodePanelFormValues>();
@@ -30,13 +31,27 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus }: Props) => {
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
             >
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
+                    <FormattedMessage
+                        id={erEndring ? 'uttaksplan.valgPanel.leggTilFerie.endre' : 'uttaksplan.valgPanel.leggTilFerie'}
+                    />
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
+                    <FormattedMessage
+                        id={
+                            erEndring
+                                ? 'uttaksplan.valgPanel.leggTilOpphold.endre'
+                                : 'uttaksplan.valgPanel.leggTilOpphold'
+                        }
+                    />
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
+                    <FormattedMessage
+                        id={
+                            erEndring
+                                ? 'uttaksplan.valgPanel.leggTilPeriode.endre'
+                                : 'uttaksplan.valgPanel.leggTilFerie'
+                        }
+                    />
                 </Radio>
             </RhfRadioGroup>
         </VStack>

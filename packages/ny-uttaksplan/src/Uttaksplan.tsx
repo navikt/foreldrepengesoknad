@@ -133,7 +133,7 @@ export const UttaksplanNy = ({
                     </VStack>
                 </HStack>
             )}
-            {modus !== 'innsyn' && (
+            {modus !== 'innsyn' && !isLeggTilPeriodePanelOpen && (
                 <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
