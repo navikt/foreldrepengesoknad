@@ -15,9 +15,11 @@ const validateEgenNæringOrgnr =
         if (!erValgfri && !orgnr) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.påkrevd' });
         }
-        if (orgnr.length > 0 && containsWhiteSpace(orgnr || '')) {
+
+        if (orgnr.length > 0 && containsWhiteSpace(orgnr)) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom' });
         }
+
         if (orgnr.length > 0 && !erGyldigNorskOrgnummer(orgnr)) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.ugyldigFormat' });
         }

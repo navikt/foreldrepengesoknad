@@ -25,7 +25,10 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
     const onSubmit = (values: NæringDto) => {
-        oppdaterEgenNæring(values);
+        oppdaterEgenNæring({
+            ...values,
+            organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
+        });
 
         if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
             return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
