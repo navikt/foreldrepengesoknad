@@ -1101,6 +1101,7 @@ export type UttakPeriodeAnnenpartEøs = {
     fom: string;
     tom: string;
     trekkonto: KontoType;
+    kontoType: KontoType;
     trekkdager: number;
 };
 

@@ -573,7 +573,7 @@ const mapUttaksperiodeAnnenpartEøs = (
             tom: ISOStringToDate(p.tom)!,
         },
         trekkdager: p.trekkdager,
-        årsak: mapKontoTypeTilOppholdÅrsakType(p.trekkonto),
+        årsak: mapKontoTypeTilOppholdÅrsakType(p.kontoType),
     };
 };
 
