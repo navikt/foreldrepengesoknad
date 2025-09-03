@@ -832,6 +832,7 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
 
     let dagerTotalt = 0;
 
+    // TODO
     for (const aktuellKontoType of aktuelleKontotyper) {
         const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType)!;
         const dagerEøs = Math.min(
