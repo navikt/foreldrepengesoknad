@@ -60,6 +60,7 @@
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} takes shared period",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} takes their quota",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} takes your quota",
+    "uttaksplan.periodeListeContent.eøs": "The other parent is receiving parental benefits from another EU/EEA country",
     "uttaksplan.periodeListeContent.familiehendelse.termin": "If {erFarEllerMedmor, select, true {{navnMor}} other {you}} give birth before term, {erFarEllerMedmor, select, true {{navnMor}} other {you}} start using the quota {erFarEllerMedmor, select, true {her} other {your}} from birth. The rest of the three weeks will be deleted. If {erFarEllerMedmor, select, true {{navnMor}} other {you}} give birth after term, {erFarEllerMedmor, select, true {{navnMor}} other {you}} will use the shared period until the birth.",
     "uttaksplan.periodeListeContent.familiehendelse.fødsel1": "Mother gets 3 weeks of parental benefits set aside to be used before term. If the baby is born before term, the days from this period will be lost, and the mother will start using the maternity quota from the day the baby is born.",
     "uttaksplan.periodeListeContent.familiehendelse.fødsel2": "If the baby is born after term, the mother will use some days from the shared period before the birth, but will not start using the maternity quota until after the baby is born.",

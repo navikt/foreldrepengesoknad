@@ -55,7 +55,9 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
                     {periode.trekkdager !== undefined ? (
-                        <BodyShort>Den andre forelderen mottar pengestøtte i et annet EU/EØS-land</BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />
+                        </BodyShort>
                     ) : (
                         <BodyShort>
                             {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
