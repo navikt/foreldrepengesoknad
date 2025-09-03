@@ -11,6 +11,7 @@ import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
+import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 type Props = {
     konto: KontoBeregningDto;
@@ -91,6 +92,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 
                 return kontoType === p.kontoType;
             }),
+            konto.kontoer,
         );
         const ubrukteDager = aktuellKonto.dager - brukteDager;
         const overtrukketDager = ubrukteDager * -1;
@@ -171,6 +173,7 @@ const KvoteTittel = () => {
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL'),
+        konto.kontoer,
     );
     const dagerBruktAvMor = summerDagerIPerioder(
         perioder.filter(
@@ -179,12 +182,15 @@ const KvoteTittel = () => {
                 p.kontoType === 'MØDREKVOTE' ||
                 p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
         ),
+        konto.kontoer,
     );
     const dagerBruktAvFar = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
+        konto.kontoer,
     );
     const dagerFellesBrukt = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
+        konto.kontoer,
     );
 
     const barnetErFødt = !!familiehendelse?.fødselsdato;
@@ -459,9 +465,11 @@ const FellesKvoter = () => {
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder === forelder),
+        konto.kontoer,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' && p.forelder !== forelder),
+        konto.kontoer,
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
     const ubrukteDager = fellesKonto.dager - samletBrukteDager;
@@ -561,7 +569,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
     // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
     const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
 
-    const dagerBrukt = summerDagerIPerioder(perioder);
+    const dagerBrukt = summerDagerIPerioder(perioder, [konto]);
     const ubrukteDager = konto.dager - dagerBrukt;
     const overtrukketDager = ubrukteDager * -1;
     const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
@@ -797,6 +805,10 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
 );
 
 const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+    if (periode.trekkdager !== undefined) {
+        return periode.trekkdager;
+    }
+
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
     const samtidigUttak = periode.samtidigUttak;
     const dager = TidsperiodenString(periode).getAntallUttaksdager();
@@ -811,6 +823,26 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
-    return Math.floor(sum(perioder.map(finnAntallDagerÅTrekke)));
+const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
+    const aktuelleKontotyper = new Set(perioder.map((p) => p.kontoType));
+
+    if (aktuelleKontotyper === undefined) {
+        return 0;
+    }
+
+    let dagerTotalt = 0;
+
+    for (const aktuellKontoType of aktuelleKontotyper) {
+        const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType)!;
+        const dagerEøs = Math.min(
+            sum(perioder.filter((p) => isUttaksperiodeAnnenpartEøs(p as Planperiode)).map(finnAntallDagerÅTrekke)),
+            gjeldendeKonto.dager,
+        );
+        const dagerNorge = sum(
+            perioder.filter((p) => !isUttaksperiodeAnnenpartEøs(p as Planperiode)).map(finnAntallDagerÅTrekke),
+        );
+        dagerTotalt += dagerEøs + dagerNorge;
+    }
+
+    return Math.floor(dagerTotalt);
 };

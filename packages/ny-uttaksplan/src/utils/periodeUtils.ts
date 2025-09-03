@@ -62,6 +62,10 @@ export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
     return periode.utsettelseÅrsak !== undefined;
 };
 
+export const isUttaksperiodeAnnenpartEøs = (periode: Planperiode) => {
+    return periode.trekkdager !== undefined;
+};
+
 export const isAnnenPartsPeriode = (periode: Planperiode) => {
     return isUtsettelsesperiodeAnnenPart(periode) || isUttaksperiodeAnnenPart(periode);
 };
@@ -159,11 +163,17 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
         oppPeriode.id = `${oppPeriode.fom} - ${oppPeriode.tom} - ${oppPeriode.kontoType || oppPeriode.periodeHullÅrsak || oppPeriode.utsettelseÅrsak}`;
 
         if (index < datoerIPerioden.length - 1) {
-            oppsplittetPeriode.push({
+            const endretPeriode = {
                 ...periode,
                 fom: datoWrapper.erFom ? datoWrapper.dato : UttaksdagenString(datoWrapper.dato).neste(),
                 tom: undefined!,
-            });
+            };
+
+            if (isUttaksperiodeAnnenpartEøs(endretPeriode)) {
+                oppsplittetPeriode.push({ ...endretPeriode, trekkdager: 0 });
+            } else {
+                oppsplittetPeriode.push(endretPeriode);
+            }
         }
     });
 
@@ -194,16 +204,23 @@ export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPer
         }
         return new Date(d1.dato).getTime() - new Date(d2.dato).getTime();
     });
+
+    const alleUnikeDatoer = alleDatoer.reduce((result, datoWrapper) => {
+        if (!result.some((d) => d.dato === datoWrapper.dato)) {
+            result.push(datoWrapper);
+        }
+        return result;
+    }, [] as SplittetDatoType[]);
     const normaliserteEgnePerioder: Planperiode[] = [];
     const normaliserteAnnenPartsPerioder: Planperiode[] = [];
 
     søkersPerioder.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteEgnePerioder.push(...oppsplittetPeriode);
     });
 
     annenPartsPerioder.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
+        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
     });
 

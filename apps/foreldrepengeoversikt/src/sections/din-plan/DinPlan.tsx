@@ -2,7 +2,7 @@ import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Button, HStack, Heading, ToggleGroup, VStack } from '@navikt/ds-react';
+import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
@@ -28,6 +28,16 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
         return null;
     }
 
+    const getAnnenPartsPerioder = () => {
+        const perioderAnnenPartEØS = gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs;
+
+        if (perioderAnnenPartEØS && perioderAnnenPartEØS.length > 0) {
+            return perioderAnnenPartEØS as SaksperiodeNy[];
+        }
+
+        return annenPartsPerioder;
+    };
+
     const søkersPerioder = gjeldendeSak.gjeldendeVedtak?.perioder;
     const perioderSomErSøktOm = gjeldendeSak.åpenBehandling?.søknadsperioder;
     const familiehendelse = gjeldendeSak.familiehendelse;
@@ -46,12 +56,13 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
+    const relevanteAnnenPartsPerioder = getAnnenPartsPerioder();
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato: familiehendelseDato,
         erFarEllerMedmor: søkerErFarEllerMedmor,
         søkersPerioder: relevantePerioder,
-        annenPartsPerioder,
+        annenPartsPerioder: relevanteAnnenPartsPerioder,
         gjelderAdopsjon,
         bareFarMedmorHarRett,
         harAktivitetskravIPeriodeUtenUttak,
@@ -98,7 +109,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             erFarEllerMedmor={søkerErFarEllerMedmor}
                             familiehendelsedato={familiehendelseDato}
                             navnPåForeldre={navnPåForeldre}
-                            annenPartsPerioder={annenPartsPerioder}
+                            annenPartsPerioder={relevanteAnnenPartsPerioder}
                             søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
                             bareFarMedmorHarRett={bareFarMedmorHarRett}
@@ -111,9 +122,6 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                         <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
-                        {(gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs?.length ?? 0) > 0 && (
-                            <InformasjonAnnenforelderUttakEøsUnderUtvikling />
-                        )}
                     </>
                 )}
                 {visKalender && (
@@ -123,29 +131,11 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         søkersPerioder={relevantePerioder}
-                        annenPartsPerioder={annenPartsPerioder}
+                        annenPartsPerioder={relevanteAnnenPartsPerioder}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />
                 )}
             </VStack>
         </VStack>
-    );
-};
-
-const InformasjonAnnenforelderUttakEøsUnderUtvikling = () => {
-    return (
-        <Alert variant="info">
-            <Heading size="xsmall" style={{ marginBottom: '1rem' }}>
-                <FormattedMessage id="DinPlan.AnnenpartUttakEøs.Tittel" />
-            </Heading>
-            <VStack gap="4">
-                <BodyShort>
-                    <FormattedMessage id="DinPlan.AnnenpartUttakEøs"></FormattedMessage>
-                </BodyShort>
-                <BodyShort>
-                    <FormattedMessage id="DinPlan.AnnenpartUttakEøs.UnderUtvikling"></FormattedMessage>
-                </BodyShort>
-            </VStack>
-        </Alert>
     );
 };

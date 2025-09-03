@@ -49,13 +49,19 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                         )}
                     </BodyShort>
                 </HStack>
-                <HStack gap="space-8">
+                <VStack gap="space-8">
                     <BodyShort>{stønadskontoNavn}</BodyShort>
                     {periode.morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
-                    {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
-                </HStack>
+                    {periode.trekkdager !== undefined ? (
+                        <BodyShort>Den andre forelderen mottar pengestøtte i et annet EU/EØS-land</BodyShort>
+                    ) : (
+                        <BodyShort>
+                            {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
+                        </BodyShort>
+                    )}
+                </VStack>
             </VStack>
         </HStack>
     );
