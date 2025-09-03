@@ -4,14 +4,14 @@ import { StønadskontoType } from '@navikt/fp-constants';
 
 import { UttaksplanContextDataType } from '../../context/UttaksplanDataContext';
 import { withUttaksplanContextDecorator } from '../../storybook/decorators/withUttaksplanContextDecorator';
-import { LeggTilPeriodeModal } from './LeggTilPeriodeModal';
+import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
 const meta = {
-    title: 'components/LeggTilPeriodeModal',
-    component: LeggTilPeriodeModal,
+    title: 'components/LeggTilPeriodePanel',
+    component: LeggTilPeriodePanel,
     decorators: [withUttaksplanContextDecorator],
     args: {
-        closeModal: () => undefined,
+        onCancel: () => undefined,
         handleAddPeriode: () => undefined,
     },
     parameters: {
@@ -43,7 +43,7 @@ const meta = {
             },
         },
     },
-} satisfies Meta<typeof LeggTilPeriodeModal>;
+} satisfies Meta<typeof LeggTilPeriodePanel>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

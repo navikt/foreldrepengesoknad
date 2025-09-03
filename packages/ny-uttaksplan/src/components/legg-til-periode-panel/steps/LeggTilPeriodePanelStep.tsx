@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -11,36 +12,35 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
-import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { PanelButtons } from '../../panel-buttons/PanelButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../LeggTilPeriodeModal';
-import { HvaVilDuGjøre, LeggTilPeriodeModalFormValues } from '../types/LeggTilPeriodeModalFormValues';
+import { PanelData } from '../LeggTilPeriodePanel';
+import { HvaVilDuGjøre, LeggTilPeriodePanelFormValues } from '../types/LeggTilPeriodePanelFormValues';
 
 interface Props {
-    modalData: ModalData;
-    closeModal: () => void;
-    setModalData: (data: ModalData) => void;
+    panelData: PanelData;
+    closePanel: () => void;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
 }
 
-export const LeggTilPeriodeModalStep = ({
-    modalData,
-    closeModal,
-    setModalData,
+export const LeggTilPeriodePanelStep = ({
+    panelData,
+    closePanel,
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
-    const { forelder, kontoType, fom, tom } = modalData;
+    const intl = useIntl();
+    const { forelder, kontoType, fom, tom } = panelData;
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
-    const formMethods = useForm<LeggTilPeriodeModalFormValues>({
+    const formMethods = useForm<LeggTilPeriodePanelFormValues>({
         defaultValues: {
             forelder: forelder,
             kontoType: kontoType,
@@ -66,7 +66,7 @@ export const LeggTilPeriodeModalStep = ({
         }
     };
 
-    const onSubmit = (values: LeggTilPeriodeModalFormValues) => {
+    const onSubmit = (values: LeggTilPeriodePanelFormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
 
@@ -101,13 +101,17 @@ export const LeggTilPeriodeModalStep = ({
             });
         }
 
-        closeModal();
+        closePanel();
     };
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label="Hva vil du legge til?" />
+                <HvaVilDuGjøreSpørsmål
+                    label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
+                    autoFocus
+                    erEndring={false}
+                />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
@@ -121,22 +125,14 @@ export const LeggTilPeriodeModalStep = ({
                     </>
                 ) : null}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD || hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE ? (
-                    <>
-                        <TidsperiodeSpørsmål
-                            erBarnetFødt={erBarnetFødt}
-                            gjelderAdopsjon={gjelderAdopsjon}
-                            hvaVilDuGjøre={hvaVilDuGjøre}
-                        />
-                    </>
+                    <TidsperiodeSpørsmål
+                        erBarnetFødt={erBarnetFødt}
+                        gjelderAdopsjon={gjelderAdopsjon}
+                        hvaVilDuGjøre={hvaVilDuGjøre}
+                    />
                 ) : null}
 
-                <ModalButtons
-                    onCancel={closeModal}
-                    onGoPreviousStep={() => {
-                        setModalData(modalData);
-                    }}
-                    isFinalStep={true}
-                />
+                <PanelButtons onCancel={closePanel} isFinalStep={true} />
             </VStack>
         </RhfForm>
     );

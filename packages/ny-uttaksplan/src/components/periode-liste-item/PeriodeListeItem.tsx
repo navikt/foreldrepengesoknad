@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -14,6 +14,7 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    isAllAccordionsOpen?: boolean;
 }
 
 export const PeriodeListeItem = ({
@@ -23,8 +24,16 @@ export const PeriodeListeItem = ({
     handleDeletePeriode,
     handleDeletePerioder,
     handleAddPeriode,
+    isAllAccordionsOpen,
 }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
+
+    // Sync local state with global accordion state
+    useEffect(() => {
+        if (isAllAccordionsOpen !== undefined) {
+            setErPeriodeInnholdÅpen(isAllAccordionsOpen);
+        }
+    }, [isAllAccordionsOpen]);
 
     return (
         <VStack gap="0" className="cursor-pointer border-t-1 border-b-1 border-ax-neutral-300">
@@ -48,10 +57,10 @@ export const PeriodeListeItem = ({
             </div>
             <div
                 className={`overflow-hidden transition-all duration-250 ${
-                    erPeriodeInnholdÅpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    erPeriodeInnholdÅpen ? 'opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
-                <div className="pt-10 pb-10 pl-10 pr-10">
+                <div className="pt-10 pb-10 pl-10 pr-10 has-[div[data-panel='endre-periode']]:pt-0 has-[div[data-panel='slett-periode']]:pt-0">
                     <PeriodeListeContent
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}

@@ -8,7 +8,7 @@ interface Props {
     isFinalStep: boolean;
 }
 
-export const ModalButtons = ({ onCancel, onGoPreviousStep, isFinalStep }: Props) => {
+export const PanelButtons = ({ onCancel, onGoPreviousStep, isFinalStep }: Props) => {
     return (
         <HStack gap="space-8" justify="space-between">
             <Button type="button" variant="secondary" onClick={onCancel}>

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -11,19 +12,19 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
-import { HvaVilDuGjøre } from '../../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
-import { ModalButtons } from '../../modal-buttons/ModalButtons';
+import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
+import { PanelButtons } from '../../panel-buttons/PanelButtons';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { ModalData } from '../EndrePeriodeModal';
+import { PanelData } from '../EndrePeriodePanel';
 
 interface Props {
-    modalData: ModalData;
-    setModalData: (data: ModalData) => void;
-    closeModal: () => void;
+    panelData: PanelData;
+    setPanelData: (data: PanelData) => void;
+    closePanel: () => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
@@ -31,7 +32,7 @@ interface Props {
     gjelderAdopsjon: boolean;
 }
 
-export interface EndrePeriodeModalStepFormValues {
+export interface EndrePeriodePanelStepFormValues {
     fom: string | undefined;
     tom: string | undefined;
     kontoType: StønadskontoType;
@@ -43,17 +44,18 @@ export interface EndrePeriodeModalStepFormValues {
     hvaVilDuGjøre: HvaVilDuGjøre;
 }
 
-export const EndrePeriodeModalStep = ({
-    modalData,
-    setModalData,
-    closeModal,
+export const EndrePeriodePanelStep = ({
+    panelData,
+    setPanelData,
+    closePanel,
     handleUpdatePeriode,
     handleAddPeriode,
     inneholderKunEnPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
-    const { valgtPeriode } = modalData;
+    const intl = useIntl();
+    const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
     const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
 
@@ -73,7 +75,7 @@ export const EndrePeriodeModalStep = ({
         return undefined;
     };
 
-    const formMethods = useForm<EndrePeriodeModalStepFormValues>({
+    const formMethods = useForm<EndrePeriodePanelStepFormValues>({
         defaultValues: {
             fom: valgtPeriode?.fom,
             tom: valgtPeriode?.tom,
@@ -117,7 +119,7 @@ export const EndrePeriodeModalStep = ({
         return handleAddPeriode;
     };
 
-    const onSubmit = (values: EndrePeriodeModalStepFormValues) => {
+    const onSubmit = (values: EndrePeriodePanelStepFormValues) => {
         const fomValue = values.fom ?? valgtPeriode!.fom;
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
@@ -154,13 +156,16 @@ export const EndrePeriodeModalStep = ({
             });
         }
 
-        closeModal();
+        closePanel();
     };
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
             <VStack gap="space-16">
-                <HvaVilDuGjøreSpørsmål label="Hva vil du endre til?" />
+                <HvaVilDuGjøreSpørsmål
+                    label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label.endre' })}
+                    erEndring={true}
+                />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}
@@ -169,13 +174,13 @@ export const EndrePeriodeModalStep = ({
                 />
                 {!erAleneOmOmsorg && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
-                <ModalButtons
-                    onCancel={closeModal}
+                <PanelButtons
+                    onCancel={closePanel}
                     onGoPreviousStep={
                         inneholderKunEnPeriode
                             ? undefined
                             : () => {
-                                  setModalData({ ...modalData, currentStep: 'step1' });
+                                  setPanelData({ ...panelData, currentStep: 'step1' });
                               }
                     }
                     isFinalStep={true}

@@ -1,8 +1,8 @@
-import { PencilIcon } from '@navikt/aksel-icons';
+import { TrashIcon } from '@navikt/aksel-icons';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Checkbox, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Button, Checkbox, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfCheckboxGroup, RhfForm } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
@@ -13,27 +13,26 @@ import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 
-const ARIA_LABEL_ID = 'slett-periode-modal-heading';
+const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
 interface Props {
-    closeModal: () => void | undefined;
+    closePanel: () => void | undefined;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
-    isModalOpen: boolean;
     permisjonsperiode: Permisjonsperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }
+
 interface FormValues {
     perioder: string[];
 }
 
-export const SlettPeriodeModal = ({
-    closeModal,
+export const SlettPeriodePanel = ({
+    closePanel,
     handleDeletePeriode,
     handleDeletePerioder,
     permisjonsperiode,
-    isModalOpen,
     navnPåForeldre,
     erFarEllerMedmor,
 }: Props) => {
@@ -66,20 +65,20 @@ export const SlettPeriodeModal = ({
 
             handleDeletePerioder(slettedePerioder);
         }
-        closeModal();
+        closePanel();
     };
 
     return (
-        <Modal className="w-[100%]" open={isModalOpen} aria-labelledby={ARIA_LABEL_ID} onClose={closeModal}>
-            <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
+        <div aria-labelledby={ARIA_LABEL_ID} data-panel="slett-periode">
+            <div className="mb-4">
                 <HStack gap="space-8" align="center">
-                    <PencilIcon aria-hidden={true} width={24} height={24} />
+                    <TrashIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ARIA_LABEL_ID}>
                         <FormattedMessage id="uttaksplan.slettPeriode.tittel" />
                     </Heading>
                 </HStack>
-            </Modal.Header>
-            <Modal.Body>
+            </div>
+            <div>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit} id="skjema">
                     <VStack gap="space-16">
                         <Heading size="medium">
@@ -91,9 +90,9 @@ export const SlettPeriodeModal = ({
                             validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
-                            {perioder.map((p) => {
+                            {perioder.map((p, index) => {
                                 return (
-                                    <Checkbox key={p.id} name={p.id} value={p.id}>
+                                    <Checkbox key={p.id} name={p.id} value={p.id} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                                     </Checkbox>
@@ -101,7 +100,7 @@ export const SlettPeriodeModal = ({
                             })}
                         </RhfCheckboxGroup>
                         <HStack justify="space-between">
-                            <Button type="button" variant="secondary" onClick={closeModal}>
+                            <Button type="button" variant="secondary" onClick={closePanel}>
                                 <FormattedMessage id="uttaksplan.avbryt" />
                             </Button>
                             <Button>
@@ -110,7 +109,7 @@ export const SlettPeriodeModal = ({
                         </HStack>
                     </VStack>
                 </RhfForm>
-            </Modal.Body>
-        </Modal>
+            </div>
+        </div>
     );
 };

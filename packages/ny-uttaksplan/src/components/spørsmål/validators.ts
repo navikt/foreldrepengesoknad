@@ -10,24 +10,24 @@ export const prosentValideringGradering =
         const samtidiguttaksprosent = getFloatFromString(samtidiguttaksprosentValue);
 
         if (!hasValue(value) || value.trim() === '') {
-            return intl.formatMessage({ id: 'leggTilPeriodeModal.stillingsprosent.påkrevd' });
+            return intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.påkrevd' });
         }
 
         if (stillingsprosent === undefined) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.stillingsprosent.måVæreEtTall',
+                id: 'leggTilPeriodePanel.stillingsprosent.måVæreEtTall',
             });
         }
 
         if (stillingsprosent <= 0) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.stillingsprosent.måVæreStørreEnn0',
+                id: 'leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0',
             });
         }
 
         if (stillingsprosent >= 100) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.stillingsprosent.måVæreMindreEnn100',
+                id: 'leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100',
             });
         }
 
@@ -44,24 +44,24 @@ export const valideringSamtidigUttak =
         const stillingsprosent = getFloatFromString(stillingsprosentValue);
 
         if (!hasValue(value) || value.trim() === '') {
-            return intl.formatMessage({ id: 'leggTilPeriodeModal.samtidiguttaksprosent.påkrevd' });
+            return intl.formatMessage({ id: 'leggTilPeriodePanel.samtidiguttaksprosent.påkrevd' });
         }
 
         if (samtidiguttaksprosent === undefined) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreEtTall',
+                id: 'leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall',
             });
         }
 
         if (samtidiguttaksprosent <= 0) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreStørreEnn0',
+                id: 'leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0',
             });
         }
 
         if (samtidiguttaksprosent > 100) {
             return intl.formatMessage({
-                id: 'leggTilPeriodeModal.samtidiguttaksprosent.måVæreMindreEnn100',
+                id: 'leggTilPeriodePanel.samtidiguttaksprosent.måVæreMindreEnn100',
             });
         }
 

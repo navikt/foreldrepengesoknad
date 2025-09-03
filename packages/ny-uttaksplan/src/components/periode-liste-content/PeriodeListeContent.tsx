@@ -19,8 +19,8 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import { EndrePeriodeModal } from '../endre-periode-modal/EndrePeriodeModal';
-import { SlettPeriodeModal } from '../slett-periode-modal/SlettPeriodeModal';
+import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
+import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodePanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
@@ -46,8 +46,8 @@ export const PeriodeListeContent = ({
     handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
-    const [isEndringsModalOpen, setIsEndringsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
+    const [isSlettPeriodePanelOpen, setIsSlettPeriodePanelOpen] = useState(false);
 
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const erRedigerbar = !permisjonsperiode.perioder.some(
@@ -68,44 +68,38 @@ export const PeriodeListeContent = ({
 
     return (
         <>
-            <VStack gap="space-16">
-                {permisjonsperiode.perioder.map((periode) => {
-                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
-                })}
-                <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
-            </VStack>
-            {renderKnapper(
-                modus,
-                erRedigerbar,
-                permisjonsperiode,
-                inneholderKunEnPeriode,
-                handleDeletePeriode,
-                setIsEndringsModalOpen,
-                setIsDeleteModalOpen,
+            {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
+                <>
+                    <VStack gap="space-16">
+                        {permisjonsperiode.perioder.map((periode) => {
+                            return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                        })}
+                        <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+                    </VStack>
+                    {renderKnapper(modus, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
+                </>
             )}
-            {isEndringsModalOpen ? (
-                <EndrePeriodeModal
-                    closeModal={() => {
-                        setIsEndringsModalOpen(false);
+            {isEndrePeriodePanelOpen ? (
+                <EndrePeriodePanel
+                    closePanel={() => {
+                        setIsEndrePeriodePanelOpen(false);
                     }}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleAddPeriode={handleAddPeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    isModalOpen={isEndringsModalOpen}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
-            {isDeleteModalOpen ? (
-                <SlettPeriodeModal
-                    closeModal={() => {
-                        setIsDeleteModalOpen(false);
+            {isSlettPeriodePanelOpen ? (
+                <SlettPeriodePanel
+                    closePanel={() => {
+                        setIsSlettPeriodePanelOpen(false);
                     }}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
-                    isModalOpen={isDeleteModalOpen}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
@@ -188,11 +182,8 @@ const getFamiliehendelseType = (barn: Barn) => {
 const renderKnapper = (
     modus: UttaksplanModus,
     erRedigerbar: boolean,
-    permisjonsperiode: Permisjonsperiode,
-    inneholderKunEnPeriode: boolean,
-    handleDeletePeriode: any,
-    setIsEndringsModalOpen: any,
-    setIsDeleteModalOpen: any,
+    setIsEndrePeriodePanelOpen: (open: boolean) => void,
+    setIsSlettPeriodePanelOpen: (open: boolean) => void,
 ) => {
     if (modus === 'innsyn') {
         return null;
@@ -206,7 +197,7 @@ const renderKnapper = (
                     size="xsmall"
                     variant="secondary"
                     onClick={() => {
-                        setIsEndringsModalOpen(true);
+                        setIsEndrePeriodePanelOpen(true);
                     }}
                     icon={<PencilIcon />}
                 >
@@ -220,10 +211,10 @@ const renderKnapper = (
         <HStack gap="space-16" justify="end">
             <Button
                 type="button"
-                size="xsmall"
+                size="small"
                 variant="secondary"
                 onClick={() => {
-                    setIsEndringsModalOpen(true);
+                    setIsEndrePeriodePanelOpen(true);
                 }}
                 icon={<PencilIcon />}
             >
@@ -231,15 +222,11 @@ const renderKnapper = (
             </Button>
             <Button
                 type="button"
-                size="xsmall"
+                size="small"
                 variant="secondary"
                 icon={<TrashIcon />}
                 onClick={() => {
-                    if (inneholderKunEnPeriode) {
-                        return handleDeletePeriode(permisjonsperiode.perioder[0]);
-                    }
-
-                    setIsDeleteModalOpen(true);
+                    setIsSlettPeriodePanelOpen(true);
                 }}
             >
                 <FormattedMessage id="uttaksplan.slett" />

@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, ArrowUndoIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -38,6 +38,7 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
+    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -110,6 +111,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         lagreUttaksplan(nyUttaksplan);
     };
 
+    const handleToggleAllAccordions = () => {
+        setIsAllAccordionsOpen(!isAllAccordionsOpen);
+    };
+
     const navnPåForeldre = {
         farMedmor: getNavnPåSøker2(hvemPlanlegger, intl),
         mor: getNavnPåSøker1(hvemPlanlegger, intl),
@@ -175,12 +180,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
             <VStack gap="space-24">
                 <Alert variant="info">
                     <Heading size="medium" spacing level="2">
-                        Savner du noe i planleggeren?
+                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tittel" />
                     </Heading>
                     <BodyLong>
-                        Vi jobber med å forbedre planleggeren. Det betyr at flere funksjoner kommer snart. Det kan
-                        derfor være forskjeller mellom det du kan legge inn i planleggeren og det du faktisk kan søke
-                        om.
+                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tekst" />
                     </BodyLong>
                 </Alert>
 
@@ -214,10 +217,11 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
+                                isAllAccordionsOpen={isAllAccordionsOpen}
                             />
                             <HStack gap="space-16">
                                 <Button
-                                    size="xsmall"
+                                    size="small"
                                     variant="secondary"
                                     icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
@@ -228,7 +232,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                                 </Button>
                                 <Button
-                                    size="xsmall"
+                                    size="small"
                                     variant="secondary"
                                     icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
                                     onClick={() => {
@@ -237,10 +241,18 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         }
                                     }}
                                 >
-                                    Angre
+                                    <FormattedMessage id="TilpassPlanenSteg.Angre" />
                                 </Button>
                                 <Button
-                                    size="xsmall"
+                                    size="small"
+                                    variant="secondary"
+                                    icon={<PencilIcon aria-hidden height={24} width={24} />}
+                                    onClick={handleToggleAllAccordions}
+                                >
+                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
+                                </Button>
+                                <Button
+                                    size="small"
                                     variant="secondary"
                                     icon={<TrashIcon aria-hidden height={24} width={24} />}
                                     onClick={() => setOpen(true)}

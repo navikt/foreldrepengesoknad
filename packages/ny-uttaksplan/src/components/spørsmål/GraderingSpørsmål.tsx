@@ -7,13 +7,13 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { EndrePeriodeModalStepFormValues } from '../endre-periode-modal/steps/EndrePeriodeModalStep';
-import { LeggTilPeriodeModalFormValues } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
+import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { prosentValideringGradering } from './validators';
 
 export const GraderingSpørsmål = () => {
     const intl = useIntl();
-    const { watch, control } = useFormContext<LeggTilPeriodeModalFormValues | EndrePeriodeModalStepFormValues>();
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
 
     const graderingValue = watch('skalDuJobbe');
     const kontoTypeValue = watch('kontoType');
@@ -29,7 +29,7 @@ export const GraderingSpørsmål = () => {
                 name="skalDuJobbe"
                 control={control}
                 label={intl.formatMessage({ id: 'uttaksplan.graderingSpørsmål.heading' })}
-                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.skalDuJobbe.påkrevd' }))]}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.skalDuJobbe.påkrevd' }))]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="uttaksplan.ja" />

@@ -10,35 +10,35 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
-import { ModalData } from '../EndrePeriodeModal';
+import { PanelData } from '../EndrePeriodePanel';
 
 interface Props {
     perioder: Planperiode[];
-    modalData: ModalData;
-    setModalData: (data: ModalData) => void;
-    closeModal: () => void;
+    panelData: PanelData;
+    setPanelData: (data: PanelData) => void;
+    closePanel: () => void;
 }
 
 interface FormValues {
     periodeId: string | undefined;
 }
 
-export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeModal }: Props) => {
+export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closePanel }: Props) => {
     const intl = useIntl();
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            periodeId: modalData.valgtPeriode?.id,
+            periodeId: panelData.valgtPeriode?.id,
         },
     });
 
     const onSubmit = (values: FormValues) => {
         const valgtPeriode = perioder.find((p) => p.id === values.periodeId);
 
-        setModalData({
-            ...modalData,
+        setPanelData({
+            ...panelData,
             valgtPeriode,
             currentStep: 'step2',
         });
@@ -63,16 +63,16 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                         },
                     ]}
                 >
-                    {perioder.map((p) => {
+                    {perioder.map((p, index) => {
                         return (
-                            <Radio key={p.id} value={p.id}>
+                            <Radio key={p.id} value={p.id} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
                             </Radio>
                         );
                     })}
                 </RhfRadioGroup>
                 <HStack justify="space-between">
-                    <Button type="button" variant="secondary" onClick={closeModal}>
+                    <Button type="button" variant="secondary" onClick={closePanel}>
                         <FormattedMessage id="uttaksplan.avbryt" />
                     </Button>
                     <Button>

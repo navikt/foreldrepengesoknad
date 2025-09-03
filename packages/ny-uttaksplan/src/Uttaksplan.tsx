@@ -16,7 +16,7 @@ import {
 import { omitMany } from '@navikt/fp-utils';
 
 import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { Planperiode } from './types/Planperiode';
@@ -38,6 +38,7 @@ interface Props {
     modus: UttaksplanModus;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
+    isAllAccordionsOpen?: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -56,8 +57,9 @@ export const UttaksplanNy = ({
     modus,
     valgtStønadskonto,
     erAleneOmOmsorg,
+    isAllAccordionsOpen,
 }: Props) => {
-    const [erLeggTilPeriodeModalOpen, setErLeggTilPeriodeModalOpen] = useState(false);
+    const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
     const komplettPlan = utledKomplettPlan({
         familiehendelsedato,
@@ -115,6 +117,7 @@ export const UttaksplanNy = ({
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
                         modifyPlan(builder.slettPerioder(slettedePerioder), handleOnPlanChange);
                     }}
+                    isAllAccordionsOpen={isAllAccordionsOpen}
                 />
             )}
             {komplettPlan.length === 0 && (
@@ -130,16 +133,17 @@ export const UttaksplanNy = ({
                     </VStack>
                 </HStack>
             )}
-            {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={() => setErLeggTilPeriodeModalOpen(true)}>
+            {modus !== 'innsyn' && !isLeggTilPeriodePanelOpen && (
+                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {erLeggTilPeriodeModalOpen && (
-                <LeggTilPeriodeModal
-                    closeModal={() => setErLeggTilPeriodeModalOpen(false)}
+            {isLeggTilPeriodePanelOpen && (
+                <LeggTilPeriodePanel
+                    onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        setIsLeggTilPeriodePanelOpen(false);
                     }}
                     erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}

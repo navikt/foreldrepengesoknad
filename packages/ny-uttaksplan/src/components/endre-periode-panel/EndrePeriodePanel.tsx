@@ -2,36 +2,35 @@ import { PencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Heading, Modal } from '@navikt/ds-react';
+import { HStack, Heading } from '@navikt/ds-react';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { HvaVilDuGjøre } from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
-import { EndrePeriodeModalStep } from './steps/EndrePeriodeModalStep';
-import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
+import { HvaVilDuGjøre } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
+import { EndrePeriodePanelStep } from './steps/EndrePeriodePanelStep';
+import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
 
-const ARIA_LABEL_ID = 'endre-periode-modal-heading';
+const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 
 interface Props {
-    closeModal: () => void | undefined;
+    closePanel: () => void | undefined;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;
-    isModalOpen: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
 }
 
-type ModalStep = 'step1' | 'step2';
+type PanelStep = 'step1' | 'step2';
 
-export interface ModalData {
+export interface PanelData {
     valgtPeriode: Planperiode | undefined;
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
-    currentStep: ModalStep;
+    currentStep: PanelStep;
     fom?: string;
     tom?: string;
     forelder?: Forelder;
@@ -41,19 +40,18 @@ export interface ModalData {
     skalDuJobbe?: boolean;
 }
 
-export const EndrePeriodeModal = ({
-    closeModal,
+export const EndrePeriodePanel = ({
+    closePanel,
     permisjonsperiode,
     handleUpdatePeriode,
     handleAddPeriode,
     inneholderKunEnPeriode,
-    isModalOpen,
     erBarnetFødt,
     gjelderAdopsjon,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
 
-    const initialModalState: ModalData = {
+    const initialPanelState: PanelData = {
         valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
         hvaVilDuGjøre: undefined,
         fom: undefined,
@@ -65,38 +63,38 @@ export const EndrePeriodeModal = ({
         stillingsprosent: undefined,
     };
 
-    const [modalData, setModalData] = useState<ModalData>(initialModalState);
-    const { currentStep } = modalData;
+    const [panelData, setPanelData] = useState<PanelData>(initialPanelState);
+    const { currentStep } = panelData;
 
-    const closeModalWrapper = () => {
-        setModalData(initialModalState);
-        closeModal();
+    const closePanelWrapper = () => {
+        setPanelData(initialPanelState);
+        closePanel();
     };
 
     return (
-        <Modal className="w-[100%]" open={isModalOpen} aria-labelledby={ARIA_LABEL_ID} onClose={closeModalWrapper}>
-            <Modal.Header className="bg-ax-neutral-200A mb-4" closeButton={false}>
+        <div aria-labelledby={ARIA_LABEL_ID} data-panel="endre-periode">
+            <div className="mb-4">
                 <HStack gap="space-8" align="center">
                     <PencilIcon aria-hidden={true} width={24} height={24} />
                     <Heading size="medium" id={ARIA_LABEL_ID}>
-                        <FormattedMessage id="endrePeriodeModal.tittel" />
+                        <FormattedMessage id="endrePeriodePanel.tittel" />
                     </Heading>
                 </HStack>
-            </Modal.Header>
-            <Modal.Body>
+            </div>
+            <div>
                 {currentStep === 'step1' && (
-                    <VelgPeriodeModalStep
+                    <VelgPeriodePanelStep
                         perioder={permisjonsperiode.perioder}
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                        panelData={panelData}
+                        setPanelData={setPanelData}
+                        closePanel={closePanelWrapper}
                     />
                 )}
                 {currentStep === 'step2' && (
-                    <EndrePeriodeModalStep
-                        modalData={modalData}
-                        setModalData={setModalData}
-                        closeModal={closeModalWrapper}
+                    <EndrePeriodePanelStep
+                        panelData={panelData}
+                        setPanelData={setPanelData}
+                        closePanel={closePanelWrapper}
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                         erBarnetFødt={erBarnetFødt}
@@ -104,7 +102,7 @@ export const EndrePeriodeModal = ({
                         handleAddPeriode={handleAddPeriode}
                     />
                 )}
-            </Modal.Body>
-        </Modal>
+            </div>
+        </div>
     );
 };

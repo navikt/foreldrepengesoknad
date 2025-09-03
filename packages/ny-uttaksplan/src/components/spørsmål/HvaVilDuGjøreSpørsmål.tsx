@@ -8,38 +8,52 @@ import { isRequired } from '@navikt/fp-validation';
 
 import {
     HvaVilDuGjøre,
-    LeggTilPeriodeModalFormValues,
-} from '../legg-til-periode-modal/types/LeggTilPeriodeModalFormValues';
+    LeggTilPeriodePanelFormValues,
+} from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 type Props = {
     label: string;
+    autoFocus?: boolean;
+    erEndring: boolean;
 };
 
-export const HvaVilDuGjøreSpørsmål = ({ label }: Props) => {
+export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus, erEndring }: Props) => {
     const intl = useIntl();
 
-    const { control } = useFormContext<LeggTilPeriodeModalFormValues>();
+    const { control } = useFormContext<LeggTilPeriodePanelFormValues>();
 
     return (
-        <>
-            <VStack gap="space-16">
-                <RhfRadioGroup
-                    name="hvaVilDuGjøre"
-                    label={label}
-                    control={control}
-                    validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodeModal.hvaVilDuGjøre.påkrevd' }))]}
-                >
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilFerie" />
-                    </Radio>
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilOpphold" />
-                    </Radio>
-                    <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
-                        <FormattedMessage id="uttaksplan.valgModal.leggTilPeriode" />
-                    </Radio>
-                </RhfRadioGroup>
-            </VStack>
-        </>
+        <VStack gap="space-16">
+            <RhfRadioGroup
+                name="hvaVilDuGjøre"
+                label={label}
+                control={control}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
+            >
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
+                    <FormattedMessage
+                        id={erEndring ? 'uttaksplan.valgPanel.leggTilFerie.endre' : 'uttaksplan.valgPanel.leggTilFerie'}
+                    />
+                </Radio>
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
+                    <FormattedMessage
+                        id={
+                            erEndring
+                                ? 'uttaksplan.valgPanel.leggTilOpphold.endre'
+                                : 'uttaksplan.valgPanel.leggTilOpphold'
+                        }
+                    />
+                </Radio>
+                <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
+                    <FormattedMessage
+                        id={
+                            erEndring
+                                ? 'uttaksplan.valgPanel.leggTilPeriode.endre'
+                                : 'uttaksplan.valgPanel.leggTilFerie'
+                        }
+                    />
+                </Radio>
+            </RhfRadioGroup>
+        </VStack>
     );
 };

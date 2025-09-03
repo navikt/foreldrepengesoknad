@@ -6,7 +6,7 @@ export enum HvaVilDuGjøre {
     LEGG_TIL_FERIE = 'leggTilFerie',
 }
 
-export type LeggTilPeriodeModalFormValues = {
+export type LeggTilPeriodePanelFormValues = {
     kontoType?: StønadskontoType;
     forelder: Forelder;
     fom: string;
