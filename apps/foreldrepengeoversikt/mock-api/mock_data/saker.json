@@ -1,71 +1,109 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "1",
+            "saksnummer": "352018391",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
-            "sakTilhørerMor": false,
+            "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
-            "harAnnenForelderTilsvarendeRettEØS": true,
+            "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "26457040805"
+                "fnr": "06499640380"
             },
             "familiehendelse": {
-                "termindato": "2025-07-15",
+                "fødselsdato": "2024-09-16",
+                "termindato": "2024-09-16",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2025-09-18",
-                        "tom": "2025-10-10",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2024-08-26",
+                        "tom": "2024-09-13",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "samtidigUttak": 100.00,
                         "flerbarnsdager": false,
-                        "forelder": "FAR_MEDMOR"
+                        "forelder": "MOR"
                     },
                     {
-                        "fom": "2025-10-11",
-                        "tom": "2025-10-29",
-                        "kontoType": "FELLESPERIODE",
+                        "fom": "2024-09-30",
+                        "tom": "2024-10-27",
+                        "kontoType": "MØDREKVOTE",
                         "resultat": {
-                            "innvilget": false,
+                            "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "FAR_MEDMOR"
-                    }
-                ],
-                "perioderAnnenpartEøs": [
-                    {
-                        "fom": "2025-07-15",
-                        "tom": "2025-09-01",
-                        "kontoType": "MØDREKVOTE",
-                        "trekkdager": 35.0
+                        "forelder": "MOR"
                     },
                     {
-                        "fom": "2025-09-02",
-                        "tom": "2025-10-31",
+                        "fom": "2024-10-28",
+                        "tom": "2024-12-27",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false,
+                        "forelder": "MOR"
+                    },
+                    {
+                        "fom": "2024-12-30",
+                        "tom": "2025-03-07",
                         "kontoType": "FELLESPERIODE",
-                        "trekkdager": 44.0
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false,
+                        "forelder": "MOR"
+                    },
+                    {
+                        "fom": "2025-03-10",
+                        "tom": "2025-05-30",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "896929119",
+                                    "type": "ORGANISASJON"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false,
+                        "forelder": "MOR"
                     }
                 ]
             },
-            "barn": [],
+            "barn": [
+                {
+                    "fnr": "16492452800"
+                }
+            ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2025-08-26T12:38:50.377",
-            "forelder": "FAR_MEDMOR"
+            "oppdatertTidspunkt": "2024-09-18T12:40:04.733"
         }
     ],
     "engangsstønad": [],
