@@ -835,11 +835,17 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
     for (const aktuellKontoType of aktuelleKontotyper) {
         const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType)!;
         const dagerEøs = Math.min(
-            sum(perioder.filter((p) => isUttaksperiodeAnnenpartEøs(p as Planperiode)).map(finnAntallDagerÅTrekke)),
+            sum(
+                perioder
+                    .filter((p) => isUttaksperiodeAnnenpartEøs(p as Planperiode) && p.kontoType === aktuellKontoType)
+                    .map(finnAntallDagerÅTrekke),
+            ),
             gjeldendeKonto.dager,
         );
         const dagerNorge = sum(
-            perioder.filter((p) => !isUttaksperiodeAnnenpartEøs(p as Planperiode)).map(finnAntallDagerÅTrekke),
+            perioder
+                .filter((p) => !isUttaksperiodeAnnenpartEøs(p as Planperiode) && p.kontoType === aktuellKontoType)
+                .map(finnAntallDagerÅTrekke),
         );
         dagerTotalt += dagerEøs + dagerNorge;
     }
