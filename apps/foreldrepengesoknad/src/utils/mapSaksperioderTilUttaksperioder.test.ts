@@ -681,7 +681,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             {
                 fom: '2022-02-05',
                 tom: '2022-03-04',
-                trekkonto: 'FELLESPERIODE',
+                kontoType: 'FELLESPERIODE',
                 trekkdager: 55,
             },
         ] as UttakPeriodeAnnenpartEøs[];
