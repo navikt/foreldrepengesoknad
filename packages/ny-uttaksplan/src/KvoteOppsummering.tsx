@@ -6,7 +6,16 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Familiehendelse, FpSak, KontoBeregningDto, KontoDto, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
+import { StønadskontoType } from '@navikt/fp-constants';
+import {
+    Familiehendelse,
+    FpSak,
+    KontoBeregningDto,
+    KontoDto,
+    OppholdÅrsakType,
+    SaksperiodeNy,
+    UttaksplanModus,
+} from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { Planperiode } from './types/Planperiode';
@@ -823,8 +832,31 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+    switch (årsak) {
+        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+            return StønadskontoType.Fedrekvote;
+        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+            return StønadskontoType.Fellesperiode;
+        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+            return StønadskontoType.Mødrekvote;
+        case OppholdÅrsakType.UttakForeldrepengerAnnenForelder:
+            return StønadskontoType.Foreldrepenger;
+        default:
+            return undefined;
+    }
+};
+
 const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
-    const aktuelleKontotyper = new Set(perioder.map((p) => p.kontoType));
+    const aktuelleKontotyper = new Set(
+        perioder.map((p) => {
+            if (p.oppholdÅrsak) {
+                return getStønadskontoTypeFromOppholdÅrsakType(p.oppholdÅrsak);
+            }
+
+            return p.kontoType;
+        }),
+    );
 
     if (aktuelleKontotyper === undefined) {
         return 0;
