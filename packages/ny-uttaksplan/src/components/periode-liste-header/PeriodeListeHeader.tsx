@@ -65,11 +65,11 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
             </div>
             <div className="flex flex-col justify-center md:block">
                 <div
-                    className={`md:min-w-2/5 md:p-4 min-w-[2rem] rounded-2xl md:px-4 md:py-2 md:rounded-xl w-1/8 
+                    className={`md:min-w-2/5 md:p-4 min-w-[2rem] rounded-2xl md:px-4 md:py-2 md:rounded-xl 
                         md:w-auto md:h-auto flex items-center justify-center m-2 md:m-0 w-10 h-10
                             ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
                 >
-                    <HStack justify={{ xs: 'center', md: 'space-between' }} wrap={false} className="sm:p-3 md:p-0">
+                    <HStack justify={{ xs: 'center', md: 'space-between' }} wrap={false}>
                         <Show above="md">
                             <BodyShort>{tekst}</BodyShort>
                         </Show>
@@ -77,10 +77,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                     </HStack>
                 </div>
             </div>
-            <div
-                className="sm:p-3 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem] ml-auto  flex items-center justify-center
-"
-            >
+            <div className="ml-auto flex items-center justify-center p-3 md:px-4 md:py-2 rounded-[2rem] md:rounded-[1.25rem]">
                 <div className="flex items-center justify-center w-6 h-6 rounded-2xl bg-ax-bg-accent-moderate">
                     {isOpen ? (
                         <ChevronUpIcon color="var(--ax-bg-accent-strong)" />
