@@ -47,9 +47,9 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
     );
 
     return (
-        <HStack gap="0" wrap={false}>
+        <HStack width="100%" gap="0" wrap={false}>
             <div
-                className={`min-w-[60%] md:min-w-[30%] px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
+                className={`md:min-w-1/4 w-1/2 px-1 xs:px-2 md:px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
             >
                 <Heading size="xsmall" as="p">
                     {erFamiliehendelse
@@ -60,21 +60,27 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                     <BodyShort>{tekst}</BodyShort>
                 </Hide>
             </div>
-            <div className="min-w-[22%] md:min-w-[25%] px-4 py-2">
+            <div className="md:min-w-1/4 min-w-[30%] w-1/4 px-1 md:px-4 py-2">
                 {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
             </div>
-            <div
-                className={`min-w-[60px] md:min-w-[38%] p-4 rounded-2xl md:px-4 md:py-2 md:rounded-xl 
-                        ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
-            >
-                <HStack justify="space-between" wrap={false}>
-                    <Show above="md">
-                        <BodyShort>{tekst}</BodyShort>
-                    </Show>
-                    <div>{getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}</div>
-                </HStack>
+            <div className="flex flex-col justify-center md:block">
+                <div
+                    className={`md:min-w-2/5 md:p-4 min-w-[2rem] rounded-2xl md:px-4 md:py-2 md:rounded-xl w-1/8 
+                        md:w-auto md:h-auto flex items-center justify-center m-2 md:m-0 w-10 h-10
+                            ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
+                >
+                    <HStack justify={{ xs: 'center', md: 'space-between' }} wrap={false} className="sm:p-3 md:p-0">
+                        <Show above="md">
+                            <BodyShort>{tekst}</BodyShort>
+                        </Show>
+                        <div>{getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}</div>
+                    </HStack>
+                </div>
             </div>
-            <div className="p-4 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem]">
+            <div
+                className="sm:p-3 rounded-[2rem] md:px-4 md:py-2 md:rounded-[1.25rem] ml-auto  flex items-center justify-center
+"
+            >
                 <div className="flex items-center justify-center w-6 h-6 rounded-2xl bg-ax-bg-accent-moderate">
                     {isOpen ? (
                         <ChevronUpIcon color="var(--ax-bg-accent-strong)" />
