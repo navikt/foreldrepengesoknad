@@ -60,7 +60,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                     <BodyShort>{tekst}</BodyShort>
                 </Hide>
             </div>
-            <div className="md:min-w-1/4 min-w-[30%] w-1/4 px-1 md:px-4 py-2">
+            <div className="md:min-w-1/4 min-w-3/10 w-1/4 px-1 md:px-4 py-2">
                 {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
             </div>
             <div className="flex flex-col justify-center md:block">
