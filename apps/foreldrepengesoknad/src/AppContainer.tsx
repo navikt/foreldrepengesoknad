@@ -94,17 +94,17 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
-                <ByttBrowserModal />
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Theme theme="light">
+            <Theme theme="light">
+                <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+                    <ByttBrowserModal />
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
                         <Provider locale={locale === 'nb' ? nb : nn}>
                             <Foreldrepengesøknad />
                         </Provider>
-                    </Theme>
-                </QueryClientProvider>
-            </ErrorBoundary>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };

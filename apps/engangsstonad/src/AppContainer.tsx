@@ -87,16 +87,16 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
-                        <Theme theme="light">
+            <Theme theme="light">
+                <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
+                        <Provider locale={getDsProviderLocale(locale)}>
                             <Engangsstønad />
-                        </Theme>
-                    </Provider>
-                </QueryClientProvider>
-            </ErrorBoundary>
+                        </Provider>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };
