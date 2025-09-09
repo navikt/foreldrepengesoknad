@@ -49,7 +49,7 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus, erEndring }: Props)
                         id={
                             erEndring
                                 ? 'uttaksplan.valgPanel.leggTilPeriode.endre'
-                                : 'uttaksplan.valgPanel.leggTilFerie'
+                                : 'uttaksplan.valgPanel.leggTilPeriode'
                         }
                     />
                 </Radio>
