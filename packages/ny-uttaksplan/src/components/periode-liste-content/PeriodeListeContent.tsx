@@ -208,7 +208,7 @@ const renderKnapper = (
     }
 
     return (
-        <HStack gap="space-16" justify="end">
+        <HStack gap="space-16" justify="end" marginBlock={{ xs: 'space-16 space-0', sm: 'space-0' }}>
             <Button
                 type="button"
                 size="small"
