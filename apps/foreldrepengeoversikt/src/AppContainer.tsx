@@ -52,10 +52,10 @@ dayjs.locale('nb');
 
 export const AppContainer = () => {
     return (
-        <ErrorBoundary>
-            <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools />
-                <Theme theme="light">
+        <Theme theme="light">
+            <ErrorBoundary>
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
                     <Provider locale={nb}>
                         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                             <ByttBrowserModal />
@@ -69,8 +69,8 @@ export const AppContainer = () => {
                             </Routes>
                         </IntlProvider>
                     </Provider>
-                </Theme>
-            </QueryClientProvider>
-        </ErrorBoundary>
+                </QueryClientProvider>
+            </ErrorBoundary>
+        </Theme>
     );
 };
