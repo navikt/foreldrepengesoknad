@@ -60,19 +60,19 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary
-                appName="veiviser-fp-eller-es"
-                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Theme theme="light">
+            <Theme theme="light">
+                <ErrorBoundary
+                    appName="veiviser-fp-eller-es"
+                    customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
                         <Provider locale={getDsProviderLocale(locale)}>
                             <FpEllerEsVeiviser />
                         </Provider>
-                    </Theme>
-                </QueryClientProvider>
-            </ErrorBoundary>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };
