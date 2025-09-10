@@ -262,6 +262,7 @@
     "TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft": "Yes, remove everything",
     "TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt": "Cancel",
     "TilpassPlanenSteg.EndrePlanen": "Edit the plan",
+    "TilpassPlanenSteg.LukkPerioder": "Close periods",
     "TilpassPlanenSteg.Angre": "Undo",
     "TilpassPlanenSteg.SavnerDuNoe.Tittel": "Are you missing something in the planner?",
     "TilpassPlanenSteg.SavnerDuNoe.Tekst": "We are working to improve the planner. This means that more features are coming soon. There may therefore be differences between what you can enter in the planner and what you can actually apply for.",
