@@ -65,7 +65,10 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
             </div>
             <div className="flex w-full flex-col md:grow justify-center ">
                 <div
-                    className={`rounded-2xl w-12 h-12 md:w-full md:px-4 md:py-2 md:rounded-xl md:h-auto flex justify-between m-2 md:m-0 ${finnBakgrunnsfarge(permisjonsperiode, erFamiliehendelse)}`}
+                    className={`rounded-2xl w-12 h-12 md:w-full md:px-4 md:py-2 md:rounded-xl md:h-auto flex justify-between m-2 md:m-0 ${finnBakgrunnsfarge(
+                        permisjonsperiode,
+                        erFamiliehendelse,
+                    )}`}
                 >
                     <HStack flexGrow="1" justify={{ xs: 'center', md: 'space-between' }} wrap={false} gap="space-4">
                         <Show above="md">
