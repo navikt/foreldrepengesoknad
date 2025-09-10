@@ -256,13 +256,11 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     }
                                     onClick={handleToggleAllAccordions}
                                 >
-                                    <FormattedMessage
-                                        id={
-                                            isAllAccordionsOpen
-                                                ? 'TilpassPlanenSteg.LukkPerioder'
-                                                : 'TilpassPlanenSteg.EndrePlanen'
-                                        }
-                                    />
+                                    {isAllAccordionsOpen ? (
+                                        <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
+                                    ) : (
+                                        <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
+                                    )}
                                 </Button>
                                 <Button
                                     size="small"
