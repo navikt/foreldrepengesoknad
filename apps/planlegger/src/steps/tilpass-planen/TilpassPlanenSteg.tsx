@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -246,11 +246,23 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 </Button>
                                 <Button
                                     size="small"
-                                    variant="secondary"
-                                    icon={<PencilIcon aria-hidden height={24} width={24} />}
+                                    variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
+                                    icon={
+                                        isAllAccordionsOpen ? (
+                                            <XMarkIcon aria-hidden height={24} width={24} />
+                                        ) : (
+                                            <PencilIcon aria-hidden height={24} width={24} />
+                                        )
+                                    }
                                     onClick={handleToggleAllAccordions}
                                 >
-                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
+                                    <FormattedMessage
+                                        id={
+                                            isAllAccordionsOpen
+                                                ? 'TilpassPlanenSteg.LukkPerioder'
+                                                : 'TilpassPlanenSteg.EndrePlanen'
+                                        }
+                                    />
                                 </Button>
                                 <Button
                                     size="small"
