@@ -6,5 +6,5 @@ type Props = {
     className?: string;
 };
 export const LayoutWrapper = ({ children, className }: Props) => {
-    return <div className={classNames('w-full ax-md:w-[704px] m-auto', className)}>{children}</div>;
+    return <div className={classNames('ax-md:w-[704px] m-auto w-full', className)}>{children}</div>;
 };

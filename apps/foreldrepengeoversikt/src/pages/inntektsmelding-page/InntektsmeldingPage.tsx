@@ -43,7 +43,7 @@ export const InntektsmeldingPage = () => {
     if (inntektsmeldingerQuery.isPending) {
         return (
             <PageRouteLayout header="">
-                <div className="flex flex-col gap-4 items-center justify-center">
+                <div className="flex flex-col items-center justify-center gap-4">
                     <Loader size="2xlarge" />
                     <BodyShort>Henter inntektsmelding…</BodyShort>
                 </div>
@@ -236,7 +236,7 @@ const InntektsmeldingInfoBlokk = ({
     return (
         <div
             className={classNames(
-                'rounded-lg p-6 bg-ax-bg-brand-blue-soft flex gap-4 justify-between ax-sm:justify-normal flex-row-reverse ax-sm:flex-row',
+                'bg-ax-bg-brand-blue-soft ax-sm:justify-normal ax-sm:flex-row flex flex-row-reverse justify-between gap-4 rounded-lg p-6',
                 className,
             )}
         >
@@ -253,7 +253,7 @@ const InntektsmeldingInfoBlokk = ({
 
 const InntektsmeldingSpørsmålOgSvar = () => {
     return (
-        <VStack gap="space-8" className="bg-ax-bg-neutral-soft rounded-lg p-6 pb-8 col-span-2">
+        <VStack gap="space-8" className="bg-ax-bg-neutral-soft col-span-2 rounded-lg p-6 pb-8">
             <VStack>
                 <Heading level="2" spacing size="small">
                     Hva er en inntektsmelding?

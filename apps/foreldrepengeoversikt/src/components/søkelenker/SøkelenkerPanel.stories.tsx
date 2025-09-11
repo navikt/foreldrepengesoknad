@@ -10,7 +10,7 @@ const meta = {
     render: (props) => {
         return (
             <MemoryRouter>
-                <LayoutWrapper className="pt-1 pb-1 pl-4 pr-4">
+                <LayoutWrapper className="pb-1 pl-4 pr-4 pt-1">
                     <SøkelenkerPanel {...props} />
                 </LayoutWrapper>
             </MemoryRouter>

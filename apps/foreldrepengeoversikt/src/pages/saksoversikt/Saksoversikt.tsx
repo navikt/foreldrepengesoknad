@@ -228,7 +228,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         >
                             <HStack gap="space-32" align="center">
                                 <WalletIcon
-                                    className="p-1 rounded-full text-ax-text-info-decoration bg-ax-success-200"
+                                    className="text-ax-text-info-decoration bg-ax-success-200 rounded-full p-1"
                                     width={40}
                                     height={40}
                                     aria-hidden

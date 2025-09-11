@@ -17,7 +17,7 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
     return (
         <>
             <FileIcon className="text-ax-text-accent-subtle" height={24} width={24} aria-hidden={true} />
-            <Link href={url} target="_blank" className="overflow-hidden overflow-ellipsis block whitespace-nowrap">
+            <Link href={url} target="_blank" className="block overflow-hidden overflow-ellipsis whitespace-nowrap">
                 {dokument.tittel}
             </Link>
         </>
@@ -45,7 +45,7 @@ export const Dokument = ({ dokument }: Props) => {
     const { type, mottatt } = dokument;
 
     return (
-        <div className="border-b-2 p-4 pr-3 border-ax-neutral-400 last:border-none">
+        <div className="border-ax-neutral-400 border-b-2 p-4 pr-3 last:border-none">
             <Hide above="md" className="flex flex-col gap-4">
                 <HGrid columns={'max-content 1fr'} gap="space-16">
                     <DokumentLenke dokument={dokument} />

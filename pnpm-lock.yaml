@@ -42,6 +42,12 @@ importers:
       msw-storybook-addon:
         specifier: 2.0.5
         version: 2.0.5(msw@2.10.5(@types/node@24.3.0)(typescript@5.9.2))
+      prettier:
+        specifier: 3.6.2
+        version: 3.6.2
+      prettier-plugin-tailwindcss:
+        specifier: 0.6.14
+        version: 0.6.14(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.6.2))(prettier@3.6.2)
 
   apps/engangsstonad:
     dependencies:
@@ -407,9 +413,6 @@ importers:
       playwright:
         specifier: 1.54.2
         version: 1.54.2
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       storybook:
         specifier: 9.1.2
         version: 9.1.2(@testing-library/dom@10.4.1)(msw@2.10.5(@types/node@24.3.0)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(less@4.4.1)(lightningcss@1.30.1)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))
@@ -639,9 +642,6 @@ importers:
       playwright:
         specifier: 1.54.2
         version: 1.54.2
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       storybook:
         specifier: 9.1.2
         version: 9.1.2(@testing-library/dom@10.4.1)(msw@2.10.5(@types/node@24.3.0)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(less@4.4.1)(lightningcss@1.30.1)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))
@@ -1022,9 +1022,6 @@ importers:
       playwright:
         specifier: 1.54.2
         version: 1.54.2
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       storybook:
         specifier: 9.1.2
         version: 9.1.2(@testing-library/dom@10.4.1)(msw@2.10.5(@types/node@24.3.0)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(less@4.4.1)(lightningcss@1.30.1)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))
@@ -1191,9 +1188,6 @@ importers:
       playwright:
         specifier: 1.54.2
         version: 1.54.2
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       storybook:
         specifier: 9.1.2
         version: 9.1.2(@testing-library/dom@10.4.1)(msw@2.10.5(@types/node@24.3.0)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(less@4.4.1)(lightningcss@1.30.1)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))
@@ -1786,9 +1780,6 @@ importers:
       morgan:
         specifier: 1.10.1
         version: 1.10.1
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -3003,9 +2994,6 @@ importers:
       morgan:
         specifier: 1.10.1
         version: 1.10.1
-      prettier:
-        specifier: 3.6.2
-        version: 3.6.2
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -7326,6 +7314,67 @@ packages:
   prepin@1.0.3:
     resolution: {integrity: sha512-0XL2hreherEEvUy0fiaGEfN/ioXFV+JpImqIzQjxk6iBg4jQ2ARKqvC4+BmRD8w/pnpD+lbxvh0Ub+z7yBEjvA==}
     hasBin: true
+
+  prettier-plugin-tailwindcss@0.6.14:
+    resolution: {integrity: sha512-pi2e/+ZygeIqntN+vC573BcW5Cve8zUB0SSAGxqpB4f96boZF4M3phPVoOFCeypwkpRYdi7+jQ5YJJUwrkGUAg==}
+    engines: {node: '>=14.21.3'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-hermes': '*'
+      '@prettier/plugin-oxc': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      '@zackad/prettier-plugin-twig': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-multiline-arrays: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-sort-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-hermes':
+        optional: true
+      '@prettier/plugin-oxc':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      '@zackad/prettier-plugin-twig':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-multiline-arrays:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-sort-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
 
   prettier@3.6.2:
     resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
@@ -13186,6 +13235,12 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prepin@1.0.3: {}
+
+  prettier-plugin-tailwindcss@0.6.14(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.6.2))(prettier@3.6.2):
+    dependencies:
+      prettier: 3.6.2
+    optionalDependencies:
+      '@trivago/prettier-plugin-sort-imports': 5.2.2(prettier@3.6.2)
 
   prettier@3.6.2: {}
 

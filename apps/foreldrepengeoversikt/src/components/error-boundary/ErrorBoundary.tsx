@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     render() {
         if (this.state.hasError) {
-            return <div className="p-8 w-[704px] m-0 ml-auto mr-auto">{this.state.error?.message}</div>;
+            return <div className="m-0 ml-auto mr-auto w-[704px] p-8">{this.state.error?.message}</div>;
         }
 
         return this.props.children;

@@ -36,8 +36,8 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 
 function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
-        <div className={`bg-ax-bg-default border-b-2 border-ax-brand-blue-300 mb-8`}>
-            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+        <div className={`bg-ax-bg-default border-ax-brand-blue-300 mb-8 border-b-2`}>
+            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -45,13 +45,13 @@ function HeaderWrapper({ children }: { readonly children: ReactNode }) {
 function SimpleHeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default`}>
-            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
         </div>
     );
 }
 
 function BlueDot() {
-    return <div className="h-[4px] w-[4px] rounded-[50%] bg-ax-brand-blue-400" />;
+    return <div className="bg-ax-brand-blue-400 h-[4px] w-[4px] rounded-[50%]" />;
 }
 
 function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
@@ -70,12 +70,12 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div className="w-[60px] h-[60px] rounded-full bg-ax-brand-blue-400 pt-2 pl-2">
+                <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pl-2 pt-2">
                     <YtelseIkon fontSize={44} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
             <Show below="md">
-                <div className="w-[38px] h-[38px] rounded-full bg-ax-brand-blue-400 pt-2 pl-2">
+                <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pl-2 pt-2">
                     <YtelseIkon fontSize={22} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
