@@ -123,7 +123,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
         <VStack gap="space-20">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
-                <div className="pl-4 pb-4">
+                <div className="pb-4 pl-4">
                     <Heading size="xsmall">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål"
