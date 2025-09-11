@@ -43,7 +43,7 @@ Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:8080/foreldrepenger/oversikt`
+2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
 4. **Identifiser appens wonderwall port**:
    Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.

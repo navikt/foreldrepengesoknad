@@ -25,7 +25,7 @@ export const createSharedAppConfig = (setupFileDirName) =>
             cors: {
                 origin: ['https://www.intern.dev.nav.no', new RegExp('^http://localhost:')],
             },
-            port: 8080,
+            port: 5173,
         },
         build: {
             sourcemap: true,

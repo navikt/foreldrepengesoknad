@@ -68,13 +68,13 @@ const startServer = async () => {
 
     const vite = await require('vite').createServer({
         root: __dirname,
-        base: "./",
+        base: './',
         define: {
             'import.meta.env.BASE_URL': '""',
         },
         server: {
             middlewareMode: true,
-            port: 8080,
+            port: 5173,
             open: './index-decorated.html',
         },
     });
