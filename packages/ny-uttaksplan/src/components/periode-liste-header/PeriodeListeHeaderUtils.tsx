@@ -205,3 +205,39 @@ export const getIkon = (
 
     return <BabyWrappedFillIcon className={ikonfarge} width={24} height={24} />;
 };
+
+export const getBorderFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
+    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
+    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
+    const erMor = forelder === Forelder.mor;
+
+    if (erFamiliehendelse) {
+        return 'border-ax-danger-100';
+    }
+
+    if (erHull) {
+        return 'border-ax-bg-neutral-moderate-hoverA';
+    }
+
+    if (erPeriodeUtenUttak) {
+        return 'border-ax-warning-200';
+    }
+
+    if (erSamtidigUttak) {
+        return 'border-ax-success-200 border-double';
+    }
+
+    if (erUtsettelse) {
+        return 'border-ax-accent-500';
+    }
+
+    if (erMor) {
+        return 'border-ax-accent-100';
+    }
+
+    return 'border-ax-success-200';
+};
