@@ -141,7 +141,7 @@ const DuHarArbeid = ({ prosentArbeid }: { prosentArbeid: number }) => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-brand-blue-100 rounded-3xl"
+            className="bg-ax-brand-blue-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
         >
             <BodyShort>{prosentArbeid} % i jobb</BodyShort>
             <JobbIkon />
@@ -162,7 +162,7 @@ const DuHarSvangerskapspenger = ({
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-success-200 rounded-3xl"
+            className="bg-ax-success-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
         >
             <VStack>
                 <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
@@ -179,7 +179,7 @@ const DuHarFerie = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-warning-200 rounded-3xl"
+            className="bg-ax-warning-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
             wrap={false}
         >
             <BodyShort>Du har ferie</BodyShort>
@@ -194,7 +194,7 @@ const DuErSykemeldt = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-warning-200 rounded-3xl"
+            className="bg-ax-warning-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
             wrap={false}
         >
             <BodyShort>Du er sykmeldt</BodyShort>
@@ -209,7 +209,7 @@ const TreUkerFørTermin = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-meta-purple-100 rounded-3xl"
+            className="bg-ax-meta-purple-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
             wrap={false}
         >
             <BodyShort>Du kan søke om foreldrepenger</BodyShort>
@@ -224,7 +224,7 @@ const Termin = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-ax-danger-100 rounded-3xl"
+            className="bg-ax-danger-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
         >
             <BodyShort>Termin</BodyShort>
             <HeartFillIcon fontSize="2.5rem" className="text-ax-text-danger-decoration p-05" aria-hidden />
@@ -233,32 +233,32 @@ const Termin = () => {
 };
 
 const BandasjeIkon = () => (
-    <div className="rounded-3xl bg-ax-warning-300 justify-self-end">
-        <BandageFillIcon fontSize={'2.5rem'} className=" text-ax-warning-600 p-05" aria-hidden />
+    <div className="bg-ax-warning-300 justify-self-end rounded-3xl">
+        <BandageFillIcon fontSize={'2.5rem'} className="text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const ParasollIkon = () => (
-    <div className="rounded-3xl bg-ax-warning-300 justify-self-end">
-        <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-ax-warning-600 p-05" aria-hidden />
+    <div className="bg-ax-warning-300 justify-self-end rounded-3xl">
+        <ParasolBeachFillIcon fontSize={'2.5rem'} className="text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const GravidIkon = () => (
-    <div className="rounded-3xl bg-ax-success-300 justify-self-end">
-        <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-ax-bg-success-strong p-05" aria-hidden />
+    <div className="bg-ax-success-300 justify-self-end rounded-3xl">
+        <PersonPregnantFillIcon fontSize={'2.5rem'} className="text-ax-bg-success-strong p-05" aria-hidden />
     </div>
 );
 
 const JobbIkon = () => (
-    <div className="rounded-3xl bg-ax-brand-blue-200 justify-self-end">
-        <BriefcaseClockFillIcon fontSize={'2.5rem'} className=" text-ax-brand-blue-600 p-05" aria-hidden />
+    <div className="bg-ax-brand-blue-200 justify-self-end rounded-3xl">
+        <BriefcaseClockFillIcon fontSize={'2.5rem'} className="text-ax-brand-blue-600 p-05" aria-hidden />
     </div>
 );
 
 const BarnevognIkon = () => (
-    <div className="rounded-3xl bg-ax-meta-purple-200 justify-self-end">
-        <StrollerFillIcon fontSize={'2.5rem'} className=" text-ax-meta-purple-600 p-05" aria-hidden />
+    <div className="bg-ax-meta-purple-200 justify-self-end rounded-3xl">
+        <StrollerFillIcon fontSize={'2.5rem'} className="text-ax-meta-purple-600 p-05" aria-hidden />
     </div>
 );
 

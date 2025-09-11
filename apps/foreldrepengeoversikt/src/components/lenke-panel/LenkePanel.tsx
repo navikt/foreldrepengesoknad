@@ -22,7 +22,7 @@ export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Pr
                 <HStack gap="space-16" align="center" wrap={false}>
                     {Ikon && (
                         <Ikon
-                            className="p-1 rounded-[50%] bg-ax-brand-blue-200 text-ax-text-info-decoration"
+                            className="bg-ax-brand-blue-200 text-ax-text-info-decoration rounded-[50%] p-1"
                             width={32}
                             height={32}
                             aria-hidden

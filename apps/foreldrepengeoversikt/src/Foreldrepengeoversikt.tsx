@@ -42,7 +42,7 @@ export const Foreldrepengeoversikt = () => {
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {
         return (
-            <div className="py-48 px-0 text-center">
+            <div className="px-0 py-48 text-center">
                 <Loader type="XXL" />
             </div>
         );

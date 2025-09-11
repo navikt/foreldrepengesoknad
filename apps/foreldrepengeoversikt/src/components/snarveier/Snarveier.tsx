@@ -78,7 +78,7 @@ export const Snarveier = () => {
     const lesMerLink = getLesMerLink(ytelse);
     return (
         <div className="bg-ax-bg-default p-8">
-            <div className="w-full ax-md:w-[704px] m-auto">
+            <div className="ax-md:w-[704px] m-auto w-full">
                 <Heading spacing size="medium">
                     {intl.formatMessage({ id: 'saksoversikt.snarveier' })}
                 </Heading>

@@ -16,7 +16,7 @@ export const GrupperteDokumenter = ({ dokumenter }: Props) => {
         <Accordion>
             <Accordion.Item>
                 <Accordion.Header
-                    className="flex-row-reverse p-4 pt-4 rounded-none"
+                    className="flex-row-reverse rounded-none p-4 pt-4"
                     // NOTE: tailwind støtter ikke box-shadows.
                     // Enten må det være et Aksel-token, eller så må det legges inn i custom config. Tar det derfor i style
                     style={{
