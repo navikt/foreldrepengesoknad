@@ -77,7 +77,7 @@ const startServer = async () => {
         },
         server: {
             middlewareMode: true,
-            port: 8080,
+            port: 5173,
             open: './index-decorated.html',
         },
     });
