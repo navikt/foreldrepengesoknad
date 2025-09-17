@@ -141,7 +141,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         return (
             <>
                 <ScrollToTop />
-                <VStack gap="space-8">
+                <VStack gap="space-16">
                     {isSuccess && <Alert variant="success">Dokumentene er sendt</Alert>}
                     {isError && (
                         <Alert variant="error">
@@ -149,9 +149,9 @@ const EttersendingPageInner = ({ saker }: Props) => {
                             kontakt brukerstøtte.
                         </Alert>
                     )}
-                    <Link to={`/sak/${sak!.saksnummer}`}>
+                    <NAVLink as={Link} to={`/sak/${sak!.saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
-                    </Link>
+                    </NAVLink>
                 </VStack>
             </>
         );
