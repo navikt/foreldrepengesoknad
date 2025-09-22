@@ -92,7 +92,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     useDocumentTitle(
-        `${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+        `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
