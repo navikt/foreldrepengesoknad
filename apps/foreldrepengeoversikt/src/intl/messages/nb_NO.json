@@ -191,16 +191,5 @@
     "BruktOpplysningerOmArbeidsforhold.tekst.1": "Den andre forelderen har søkt om foreldrepenger. For at den andre forelderen skal kunne få foreldrepenger i enkelte perioder, forutsetter regelverket at du er i aktivitet, for eksempel i arbeid. I søknaden har den andre forelderen oppgitt at du er i arbeid i en eller flere av disse periodene.",
     "BruktOpplysningerOmArbeidsforhold.tekst.2": "Nav har derfor hentet informasjon om arbeidsforholdene dine fra Arbeidsgiver- og arbeidstakerregisteret (Aa-registeret). Vi bruker opplysningene når vi behandler søknaden. Vi kan også bruke opplysningene for andre perioder i nye søknader. Du kan selv sjekke hva som er registrert på deg i <a>Aa-registeret (åpner i en ny fane)</a>.",
     "BruktOpplysningerOmArbeidsforhold.tekst.3": "Dette har vi gjort med hjemmel i folketrygdloven § 21-4. Du kan lese mer <a>om behandling av personvernopplysninger (åpner i en ny fane)</a>.",
-    "BruktOpplysningerOmArbeidsforhold.tekst.4": "Regelverket for aktivitetskrav står i folketrygdloven § 14-13. Vil du vite mer finner du informasjon på <a>nav.no/foreldrepenger (åpner i en ny fane)</a>.",
-    "header.oversikt": "Oversikt",
-    "header.dineSaker": "Dine saker om foreldrepenger, engangsstønad og svangerskapspenger",
-    "header.engangsstonadsak": "Engangsstønadsak",
-    "header.svangerskapspengesak": "Svangerskapspengesak",
-    "header.dinSak": "Din sak",
-    "header.dokumenter": "Dokumenter",
-    "header.dokumenterBeskrivelse": "Dokumenter fra du, arbeidsgiver og Nav som tilhører saken din ({saksnummer})",
-    "header.lastOppDokumenter": "Last opp dokumenter",
-    "header.dinInntektRapportert": "Din inntekt rapportert av {arbeidsgiverNavn}",
-    "header.endret": "Endret {dato}",
-    "header.inntektRapportertAv": "Inntekt rapportert av dine arbeidsgivere"
+    "BruktOpplysningerOmArbeidsforhold.tekst.4": "Regelverket for aktivitetskrav står i folketrygdloven § 14-13. Vil du vite mer finner du informasjon på <a>nav.no/foreldrepenger (åpner i en ny fane)</a>."
 }

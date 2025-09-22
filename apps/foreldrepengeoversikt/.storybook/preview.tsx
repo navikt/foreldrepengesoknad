@@ -13,7 +13,6 @@ import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
-import nnMessages from '../src/intl/messages/nn_NO.json';
 
 dayjs.locale('nb');
 
@@ -26,29 +25,9 @@ const withIntlProvider = getIntlDecorator({
         ...uttaksplanKalenderMessages.nb,
         ...formHookMessages.nb,
     },
-    nn: {
-        ...nnMessages,
-        ...uiMessages.nn,
-        ...utilsMessages.nn,
-        ...nyUttaksplanMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
-        ...formHookMessages.nb,
-    },
 });
 
 export const globalTypes = {
-    locale: {
-        description: 'Internationalization locale',
-        toolbar: {
-            title: 'Språk',
-            icon: 'globe',
-            items: [
-                { value: 'nb', title: 'Bokmål' },
-                { value: 'nn', title: 'Nynorsk' },
-            ],
-            dynamicTitle: true,
-        },
-    },
     theme: {
         name: 'Tema',
         description: 'Aksel tema',

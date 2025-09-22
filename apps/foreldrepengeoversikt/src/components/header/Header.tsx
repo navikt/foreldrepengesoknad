@@ -22,16 +22,16 @@ import {
 } from '../../utils/sakerUtils';
 import { StatusTag } from '../status-tag/StatusTag';
 
-export const getSaksoversiktHeading = (ytelse: Ytelse | undefined, intl: ReturnType<typeof useIntl>) => {
+export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === 'ENGANGSSTØNAD') {
-        return intl.formatMessage({ id: 'header.engangsstonadsak' });
+        return 'Engangsstønadsak';
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return intl.formatMessage({ id: 'header.svangerskapspengesak' });
+        return 'Svangerskapspengesak';
     }
 
-    return intl.formatMessage({ id: 'header.dinSak' });
+    return 'Din sak';
 };
 
 function HeaderWrapper({ children }: { readonly children: ReactNode }) {
@@ -84,17 +84,17 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
 }
 
 export function ForsideHeader() {
-    const intl = useIntl();
-
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="space-24" align="start">
                 <BabyIkon ytelse={undefined} />
                 <VStack>
                     <Heading level="1" size="medium">
-                        {intl.formatMessage({ id: 'header.oversikt' })}
+                        Oversikt
                     </Heading>
-                    <Detail textColor="subtle">{intl.formatMessage({ id: 'header.dineSaker' })}</Detail>
+                    <Detail textColor="subtle">
+                        Dine saker om foreldrepenger, engangsstønad og svangerskapspenger
+                    </Detail>
                 </VStack>
             </HGrid>
         </HeaderWrapper>
@@ -108,60 +108,44 @@ function SaksnummerDetail() {
 
 export function DokumenterHeader() {
     const { saksnummer } = useParams();
-    const intl = useIntl();
-
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                {intl.formatMessage({ id: 'header.dokumenter' })}
+                Dokumenter
             </Heading>
             <Detail textColor="subtle">
-                {intl.formatMessage({ id: 'header.dokumenterBeskrivelse' }, { saksnummer })}
+                Dokumenter fra du, arbeidsgiver og Nav som tilhører saken din ({saksnummer})
             </Detail>
         </SimpleHeaderWrapper>
     );
 }
 
 export function EttersendingHeader() {
-    const intl = useIntl();
-
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                {intl.formatMessage({ id: 'header.lastOppDokumenter' })}
+                Last opp dokumenter
             </Heading>
         </SimpleHeaderWrapper>
     );
 }
 
 export const InntektsmeldingHeader = ({ inntektsmelding }: { readonly inntektsmelding: InntektsmeldingDto }) => {
-    const intl = useIntl();
-
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                {intl.formatMessage(
-                    { id: 'header.dinInntektRapportert' },
-                    { arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn) },
-                )}
+                Din inntekt rapportert av {capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}
             </Heading>
-            <Detail textColor="subtle">
-                {intl.formatMessage(
-                    { id: 'header.endret' },
-                    { dato: formatDateMedUkedag(inntektsmelding.mottattTidspunkt) },
-                )}
-            </Detail>
+            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.mottattTidspunkt)}</Detail>
         </SimpleHeaderWrapper>
     );
 };
 
 export const InntektsmeldingOversiktHeader = () => {
-    const intl = useIntl();
-
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                {intl.formatMessage({ id: 'header.inntektRapportertAv' })}
+                Inntekt rapportert av dine arbeidsgivere
             </Heading>
         </SimpleHeaderWrapper>
     );
@@ -204,7 +188,6 @@ function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; re
 
 export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
     const søkerinfo = useQuery(søkerInfoOptions()).data;
-    const intl = useIntl();
 
     if (!sak) {
         return null;
@@ -219,7 +202,7 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
                 <VStack>
                     <HStack gap="space-24" align="center">
                         <Heading level="1" size="medium">
-                            {intl.formatMessage({ id: 'header.dinSak' })}
+                            Din sak
                         </Heading>
                         <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                     </HStack>
