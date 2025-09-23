@@ -1,6 +1,6 @@
 import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
-import fs from 'fs';
+import fs from 'node:fs';
 
 import en from './messages/en_US.json';
 import nb from './messages/nb_NO.json';
