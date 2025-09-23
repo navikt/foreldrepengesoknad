@@ -1,0 +1,26 @@
+import{G as e}from"./GrupperteDokumenter-CCC4YnY1.js";import"./iframe-uM6vJfA6.js";import"./preload-helper-D9Z9MdNV.js";import"./guid-CsArkN6i.js";import"./Dokument-BgwEfrWw.js";import"./dokumenterUtils-AQGuBYyu.js";import"./api-BJinRP0h.js";import"./Tag-Da-sr-Y2.js";import"./Accordion-DAADNL1k.js";const u={title:"GrupperteDokumenter",component:e},t={args:{dokumenter:[{type:"INNGÅENDE_DOKUMENT",mottatt:new Date().toISOString(),saksnummer:"124324",tittel:"Tittel arbeidsgiver",journalpostId:"2",dokumentId:"3"},{type:"INNGÅENDE_DOKUMENT",mottatt:new Date().toISOString(),saksnummer:"124",tittel:"Tittel på inngåande dok",journalpostId:"4",dokumentId:"6"},{type:"UTGÅENDE_DOKUMENT",mottatt:new Date().toISOString(),saksnummer:"124",tittel:"Tittel på utgående dok",journalpostId:"5",dokumentId:"6"}]}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    dokumenter: [{
+      type: 'INNGÅENDE_DOKUMENT',
+      mottatt: new Date().toISOString(),
+      saksnummer: '124324',
+      tittel: 'Tittel arbeidsgiver',
+      journalpostId: '2',
+      dokumentId: '3'
+    }, {
+      type: 'INNGÅENDE_DOKUMENT',
+      mottatt: new Date().toISOString(),
+      saksnummer: '124',
+      tittel: 'Tittel på inngåande dok',
+      journalpostId: '4',
+      dokumentId: '6'
+    }, {
+      type: 'UTGÅENDE_DOKUMENT',
+      mottatt: new Date().toISOString(),
+      saksnummer: '124',
+      tittel: 'Tittel på utgående dok',
+      journalpostId: '5',
+      dokumentId: '6'
+    }]
+  }
+}`,...t.parameters?.docs?.source}}};const l=["Default"];export{t as Default,l as __namedExportsOrder,u as default};
