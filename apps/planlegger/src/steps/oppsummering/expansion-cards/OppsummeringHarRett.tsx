@@ -112,7 +112,7 @@ export const OppsummeringHarRett = ({
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const tilpassPlan = notEmpty(useContextGetData(ContextDataType.TILPASS_PLAN));
-    const gjeldendeUttaksplan = uttaksplan && uttaksplan.length > 0 ? uttaksplan[uttaksplan.length - 1] : [];
+    const gjeldendeUttaksplan = uttaksplan?.at(-1) ?? [];
     const erDeltUttak = fordeling !== undefined;
 
     const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
@@ -166,14 +166,11 @@ export const OppsummeringHarRett = ({
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                tom: intl.formatDate(
-                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
-                                                    {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    },
-                                                ),
+                                                tom: intl.formatDate(planforslag.søker1.at(-1)!.tom, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
                                                 b: (msg) => <b>{msg}</b>,
                                             }}
                                         />
@@ -190,14 +187,11 @@ export const OppsummeringHarRett = ({
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(
-                                                planforslag.søker2[planforslag.søker2.length - 1].tom,
-                                                {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                },
-                                            ),
+                                            tom: intl.formatDate(planforslag.søker2.at(-1)!.tom, {
+                                                day: '2-digit',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
                                             b: (msg) => <b>{msg}</b>,
                                         }}
                                     />
@@ -227,14 +221,11 @@ export const OppsummeringHarRett = ({
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                tom: intl.formatDate(
-                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
-                                                    {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    },
-                                                ),
+                                                tom: intl.formatDate(planforslag.søker1.at(-1)!.tom, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
                                                 b: (msg) => <b>{msg}</b>,
                                             }}
                                         />

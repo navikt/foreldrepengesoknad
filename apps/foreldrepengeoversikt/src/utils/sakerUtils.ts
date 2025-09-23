@@ -266,7 +266,7 @@ const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): stri
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => formatDate(fd));
         const førsteFødselsdaoer = fødselsdatoerTekst.slice(0, -1).join(', ');
-        const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
+        const sisteFødselsdato = fødselsdatoerTekst.at(-1);
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
     return formatDate(unikeFødselsdatoer[0]);
@@ -327,7 +327,7 @@ export const getNavnPåBarna = (fornavn: string[]): string => {
             .map((n) => n.trim())
             .slice(0, -1)
             .join(', ');
-        const sisteFornavn = fornavn[fornavn.length - 1];
+        const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     } else {
         return `${fornavn[0]}`;

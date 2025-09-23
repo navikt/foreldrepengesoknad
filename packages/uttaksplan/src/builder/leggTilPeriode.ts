@@ -207,7 +207,7 @@ export const leggTilPeriode = ({
         ];
     } else {
         const førstePeriode = perioder[0];
-        const sistePeriode = perioder[perioder.length - 1];
+        const sistePeriode = perioder.at(-1)!;
         const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
         const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
 

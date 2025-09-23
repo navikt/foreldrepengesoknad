@@ -133,9 +133,7 @@ export const leggTilPeriode = ({
         // }
 
         const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]);
-        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(
-            berørtePerioder[berørtePerioder.length - 1],
-        );
+        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtePerioder.at(-1)!);
 
         //TODO: Må endre navn i normaliserPerioder hvis denne skal brukes
         const {
@@ -154,19 +152,14 @@ export const leggTilPeriode = ({
         }
 
         //Når ny periode slutter etter alle de gamle periodene
-        if (
-            dayjs(normaliserteNyePerioder[normaliserteNyePerioder.length - 1].fom).isAfter(
-                normaliserteBerørtePerioder[normaliserteBerørtePerioder.length - 1].tom,
-                'd',
-            )
-        ) {
-            erstattedeBerørtePerioder.push(normaliserteNyePerioder[normaliserteNyePerioder.length - 1]);
+        if (dayjs(normaliserteNyePerioder.at(-1)!.fom).isAfter(normaliserteBerørtePerioder.at(-1)!.tom, 'd')) {
+            erstattedeBerørtePerioder.push(normaliserteNyePerioder.at(-1)!);
         }
 
         return [...foregåendePerioder, ...erstattedeBerørtePerioder, ...påfølgendePerioder];
     } else {
         const førstePeriode = perioder[0];
-        const sistePeriode = perioder[perioder.length - 1];
+        const sistePeriode = perioder.at(-1);
         const nyPeriodeFom = dayjs(nyPeriode.fom);
 
         if (nyPeriodeFom.isBefore(førstePeriode.fom, 'day')) {
@@ -194,7 +187,7 @@ export const leggTilPeriode = ({
             return [nyPeriode, ...perioder];
         } else {
             const tidsperiodeMellomSistePeriodeOgNyPeriode = getTidsperiodeMellomPerioder(
-                { fom: sistePeriode.fom, tom: sistePeriode.tom },
+                { fom: sistePeriode!.fom, tom: sistePeriode!.tom },
                 { fom: nyPeriode.fom, tom: nyPeriode.tom },
             );
 

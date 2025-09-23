@@ -328,7 +328,7 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undef
     if (perioder.length === 0) {
         return undefined;
     }
-    return Uttaksdagen(perioder[perioder.length - 1].tidsperiode.tom).neste();
+    return Uttaksdagen(perioder.at(-1)!.tidsperiode.tom).neste();
 }
 
 const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelder): boolean => {

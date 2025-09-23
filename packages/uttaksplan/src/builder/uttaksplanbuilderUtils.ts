@@ -517,7 +517,7 @@ export const settInnAnnenPartsUttak = (
         dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day'),
     );
 
-    const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
+    const sistePeriodeSluttdato = perioder.at(-1)!.tidsperiode.tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day'),
     );

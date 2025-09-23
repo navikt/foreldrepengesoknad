@@ -212,14 +212,15 @@ export const getEndringstidspunkt = (
                 }
             }
 
+            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
+
             //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
             //finn første uttak/utsettelse etter endringstidspunktet
             if (
                 endringstidspunktNyPlan &&
                 isPeriodeUtenUttak(periode) &&
-                dayjs(endringstidspunktNyPlan).isAfter(
-                    søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom,
-                )
+                sistePeriodeISøkersOpprinneligePlan &&
+                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tidsperiode.tom)
             ) {
                 const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
                     (p) =>

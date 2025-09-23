@@ -274,7 +274,7 @@ export const getBarnFraNesteSak = (valgteBarn: ValgtBarn, selectableBarn: ValgtB
             dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day'),
     );
     allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst);
-    const nesteBarn = allePåfølgendeBarn[allePåfølgendeBarn.length - 1];
+    const nesteBarn = allePåfølgendeBarn.at(-1);
     if (nesteBarn === undefined) {
         return undefined;
     }

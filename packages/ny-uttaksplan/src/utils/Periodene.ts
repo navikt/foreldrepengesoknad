@@ -286,7 +286,8 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string |
     if (perioder.length === 0) {
         return undefined;
     }
-    return UttaksdagenString(perioder[perioder.length - 1].tom).neste();
+
+    return UttaksdagenString(perioder.at(-1)!.tom).neste();
 }
 export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
     const perioderUtenInfoPerioder = perioder.filter((p) => !p.readOnly);

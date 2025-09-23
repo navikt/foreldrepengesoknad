@@ -945,11 +945,10 @@ export const getSisteUttaksdagAnnenForelder = (
         (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
     );
 
+    const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
     const sisteDagAnnenForelder =
-        annenForeldersFiltrertePerioder && annenForeldersFiltrertePerioder.length > 0
-            ? Uttaksdagen(
-                  annenForeldersFiltrertePerioder[annenForeldersFiltrertePerioder.length - 1].tidsperiode.tom,
-              ).denneEllerForrige()
+        annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
+            ? Uttaksdagen(sistePeriodeAnnenForelder.tidsperiode.tom).denneEllerForrige()
             : undefined;
     return sisteDagAnnenForelder;
 };

@@ -25,7 +25,7 @@ export type Period = {
 
 const findDayColor = (date: Dayjs, periods: Period[]) => {
     const fomFirstPeriod = periods[0].fom;
-    const tomLastPeriod = periods[periods.length - 1].tom;
+    const tomLastPeriod = periods.at(-1)!.tom;
 
     if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
         return PeriodeColor.NONE;
@@ -124,7 +124,7 @@ export const Calendar = ({
     dateTooltipCallback,
     dateClickCallback,
 }: Props) => {
-    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+    const months = findMonths(periods[0].fom, periods.at(-1)!.tom);
 
     return (
         <>

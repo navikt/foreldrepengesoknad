@@ -173,7 +173,7 @@ export const getTilretteleggingId = (
     isSisteTilrettelegging = false,
 ) => {
     if (valgteArbeidsforhold) {
-        return isSisteTilrettelegging ? valgteArbeidsforhold[valgteArbeidsforhold.length - 1] : valgteArbeidsforhold[0];
+        return isSisteTilrettelegging ? valgteArbeidsforhold.at(-1)! : valgteArbeidsforhold[0];
     } else if (arbeidsforholdOgInntekt.harJobbetSomFrilans) {
         return FRILANS_ID;
     } else if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {

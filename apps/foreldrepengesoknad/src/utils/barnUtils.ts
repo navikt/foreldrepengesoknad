@@ -136,7 +136,7 @@ export const formaterNavnPåBarn = (
 
     if (fornavn.length > 1) {
         const fornavnene = fornavn.slice(0, -1).join(', ');
-        const sisteFornavn = fornavn[fornavn.length - 1];
+        const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     }
     return `${fornavn[0]}`;
@@ -158,7 +158,7 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => dayjs(fd).format(DDMMMMYYY_DATE_FORMAT));
         const førsteFødselsdaoer = fødselsdatoerTekst.slice(0, -1).join(', ');
-        const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
+        const sisteFødselsdato = fødselsdatoerTekst.at(-1);
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
     return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);
