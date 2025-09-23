@@ -1,0 +1,5 @@
+import{g as c}from"./iframe-DKoNO4rG.js";var i={exports:{}};/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/var f;function l(){return f||(f=1,(function(s){(function(){var r={}.hasOwnProperty;function n(){for(var t="",e=0;e<arguments.length;e++){var o=arguments[e];o&&(t=a(t,p(o)))}return t}function p(t){if(typeof t=="string"||typeof t=="number")return t;if(typeof t!="object")return"";if(Array.isArray(t))return n.apply(null,t);if(t.toString!==Object.prototype.toString&&!t.toString.toString().includes("[native code]"))return t.toString();var e="";for(var o in t)r.call(t,o)&&t[o]&&(e=a(e,o));return e}function a(t,e){return e?t?t+" "+e:t+e:t}s.exports?(n.default=n,s.exports=n):window.classNames=n})()})(i)),i.exports}var m=l();const d=c(m),u=s=>({block:s,element:(r,n)=>`${s}__${r}${n?` ${s}__${r}--${n}`:""}`,modifier:r=>`${s}--${r}`,modifierConditional:(r,n)=>n===!0&&r!==void 0?`${s}--${r}`:void 0,child:r=>u(u(s).element(r)),classNames:d});export{d as c,u as p};

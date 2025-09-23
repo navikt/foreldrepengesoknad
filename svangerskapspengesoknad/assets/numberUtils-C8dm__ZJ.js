@@ -1,0 +1,1 @@
+const t=RegExp(/^[-]?[0-9,.\s]*$/),n=e=>e.replace(/,/g,".").replace(/\s/g,"").replace(/%/g,""),s=e=>{if(e!=null&&e.length>0&&t.test(e)){const r=n(e);return(r.match(/\./g)||[]).length>1?void 0:Number.parseFloat(r.replace(",","."))}};export{s as g};
