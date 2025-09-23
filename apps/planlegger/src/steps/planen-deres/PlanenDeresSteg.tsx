@@ -230,7 +230,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                     hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
-                                        lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
+                                        lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
                                     }}
                                 >
                                     {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(

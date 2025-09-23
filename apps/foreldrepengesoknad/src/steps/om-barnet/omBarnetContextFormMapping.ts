@@ -82,7 +82,7 @@ export const mapOmBarnetFormDataToState = (
         return {
             type: BarnType.FØDT,
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             termindato: hasValue(values.termindato) ? values.termindato : undefined,
         };
     }
@@ -98,13 +98,13 @@ export const mapOmBarnetFormDataToState = (
             return {
                 type: BarnType.UFØDT,
                 terminbekreftelsedato: values.terminbekreftelsedato,
-                antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+                antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
                 termindato: values.termindato,
             };
         }
         return {
             type: BarnType.UFØDT,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             termindato: values.termindato,
         };
     }
@@ -113,7 +113,7 @@ export const mapOmBarnetFormDataToState = (
         return {
             type: BarnType.ADOPTERT_STEBARN,
             adopsjonsdato: values.adopsjonsdato,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
         };
     }
@@ -123,7 +123,7 @@ export const mapOmBarnetFormDataToState = (
             type: BarnType.ADOPTERT_ANNET_BARN,
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
             adopsjonsdato: values.adopsjonsdato,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             adoptertIUtlandet: values.adoptertIUtlandet,
             ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
         };

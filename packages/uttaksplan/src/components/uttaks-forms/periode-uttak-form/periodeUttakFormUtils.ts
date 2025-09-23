@@ -300,7 +300,7 @@ const getSamtidigUttaksProsentWLB = (
     dekningsgrad: string | undefined,
 ): string => {
     return ønskerGradering && dekningsgrad !== undefined
-        ? (100 - parseFloat(trimNumberValue(dekningsgrad))).toString()
+        ? (100 - Number.parseFloat(trimNumberValue(dekningsgrad))).toString()
         : '100';
 };
 

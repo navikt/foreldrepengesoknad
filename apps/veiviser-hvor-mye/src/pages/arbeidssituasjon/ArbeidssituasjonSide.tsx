@@ -43,9 +43,9 @@ const isNumber = (value?: string) => {
 export const finnGjennomsnittsMånedslønn = (formValues: Arbeidssituasjon): string | undefined => {
     const { lønnMåned1, lønnMåned2, lønnMåned3 } = formValues;
 
-    const m1 = isNumber(lønnMåned1) ? parseFloat(lønnMåned1) : 0;
-    const m2 = isNumber(lønnMåned2) ? parseFloat(lønnMåned2) : 0;
-    const m3 = isNumber(lønnMåned3) ? parseFloat(lønnMåned3) : 0;
+    const m1 = isNumber(lønnMåned1) ? Number.parseFloat(lønnMåned1) : 0;
+    const m2 = isNumber(lønnMåned2) ? Number.parseFloat(lønnMåned2) : 0;
+    const m3 = isNumber(lønnMåned3) ? Number.parseFloat(lønnMåned3) : 0;
 
     const gjennomsnittslønn = (m1 + m2 + m3) / 3;
     return gjennomsnittslønn > 0 ? gjennomsnittslønn.toFixed(0) : undefined;
@@ -75,7 +75,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
     const forrigeMåned = dayjs().subtract(1, 'month');
 
     const gjennomsnittslønnPerMåned = finnGjennomsnittsMånedslønn(formValues);
-    const antattÅrslønn = gjennomsnittslønnPerMåned ? parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
+    const antattÅrslønn = gjennomsnittslønnPerMåned ? Number.parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minÅrslønn = grunnbeløpet / 2;
@@ -226,7 +226,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(parseInt(gjennomsnittslønnPerMåned, 10) * 12)
+                                                    ? formatCurrencyWithKr(
+                                                          Number.parseInt(gjennomsnittslønnPerMåned, 10) * 12,
+                                                      )
                                                     : '-'}
                                             </Heading>
                                         </div>
