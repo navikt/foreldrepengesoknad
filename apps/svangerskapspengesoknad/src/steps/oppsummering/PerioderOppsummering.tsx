@@ -32,9 +32,6 @@ export function PerioderOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="oppsummering.periode.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <VirksomhetSummary
@@ -45,6 +42,11 @@ export function PerioderOppsummering({
                 <FrilansSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
                 <SelvstendigNæringsdrivendeSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }
