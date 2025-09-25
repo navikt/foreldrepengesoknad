@@ -85,7 +85,7 @@ describe('<Forside>', () => {
         expect(screen.queryByText('Det vil opprettes en ny sak')).toBeInTheDocument();
         expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Saksnummer 123456, saken er ferdig behandlet'));
+        await userEvent.click(screen.getByText('Evig Lykkelig født 06. desember 2022'));
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
 
         expect(await screen.findByText('Endre søknad')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('<Forside>', () => {
         expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har lest og forstått dine plikter.')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Saksnummer 123456, saken er ferdig behandlet'));
+        await userEvent.click(screen.getByText('Evig Lykkelig født 06. desember 2022'));
         await userEvent.click(screen.getByText('Endre søknad'));
 
         expect(screen.getByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('<Forside>', () => {
 
         expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Det vil opprettes en ny sak'));
+        await userEvent.click(screen.getByText('Et annet barn'));
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
 
         expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
@@ -174,7 +174,7 @@ describe('<Forside>', () => {
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Saksnummer 123456, saken er under behandling'));
+        await userEvent.click(screen.getByText('Evig Lykkelig adoptert 08. desember 2022'));
 
         expect(screen.getByText('Endre søknad')).toBeInTheDocument();
     });
