@@ -60,9 +60,6 @@ export const DokumentasjonOppsummering = ({
                             <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
                         )}
                     </FormSummary.Heading>
-                    <FormSummary.EditLink onClick={onVilEndreSvar}>
-                        <FormattedMessage id="Oppsummering.EndreSvar" />
-                    </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     {alleVedlegg &&
@@ -114,6 +111,11 @@ export const DokumentasjonOppsummering = ({
                                 </FormSummary.Answer>
                             ))}
                 </FormSummary.Answers>
+                <FormSummary.Footer>
+                    <FormSummary.EditLink onClick={onVilEndreSvar}>
+                        <FormattedMessage id="Oppsummering.EndreSvar" />
+                    </FormSummary.EditLink>
+                </FormSummary.Footer>
             </FormSummary>
             {harSendSenereDokument && (
                 <Alert variant="info">

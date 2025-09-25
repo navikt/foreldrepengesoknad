@@ -22,9 +22,6 @@ export function DokumentasjonOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="oppsummering.dokumentasjon.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => (
@@ -51,6 +48,11 @@ export function DokumentasjonOppsummering({
                     </FormSummary.Answer>
                 ))}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }

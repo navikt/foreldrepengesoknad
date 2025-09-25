@@ -28,9 +28,6 @@ export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) 
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="PeriodeMedForeldrepengerOppsummering.Tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -46,6 +43,11 @@ export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) 
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

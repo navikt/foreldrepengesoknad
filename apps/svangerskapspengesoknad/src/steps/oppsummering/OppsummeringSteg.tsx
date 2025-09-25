@@ -70,9 +70,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                         <FormSummary.Heading level="2">
                             <FormattedMessage id="oppsummering.omBarnet" />
                         </FormSummary.Heading>
-                        <FormSummary.EditLink onClick={() => navigator.goToStep(SøknadRoute.BARNET)}>
-                            <FormattedMessage id="oppsummering.EndreSvar" />
-                        </FormSummary.EditLink>
                     </FormSummary.Header>
                     <FormSummary.Answers>
                         <FormSummary.Answer>
@@ -90,6 +87,11 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                             </FormSummary.Answer>
                         )}
                     </FormSummary.Answers>
+                    <FormSummary.Footer>
+                        <FormSummary.EditLink onClick={() => navigator.goToStep(SøknadRoute.BARNET)}>
+                            <FormattedMessage id="oppsummering.EndreSvar" />
+                        </FormSummary.EditLink>
+                    </FormSummary.Footer>
                 </FormSummary>
                 <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.UTENLANDSOPPHOLD)}

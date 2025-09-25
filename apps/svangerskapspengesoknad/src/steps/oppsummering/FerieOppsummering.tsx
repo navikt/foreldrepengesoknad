@@ -30,9 +30,6 @@ export function FerieOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ferie.heading" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {arbeidsforholdMedFerie.length > 1 ? (
@@ -44,6 +41,11 @@ export function FerieOppsummering({
                     <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }
