@@ -213,7 +213,8 @@ const getSelectableBarnOptionsFraPDL = (
                 !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
             ),
     );
-    registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
+
+    for (const regBarn of registrerteBarnUtenDødeBarnMedSak) {
         if (!fnrPåBarnSomErLagtTil.includes(regBarn.fnr) && !erEldreEnn3ÅrOg3Måneder(regBarn.fødselsdato)) {
             const barnFødtISammePeriode = getAndreBarnFødtSammenMedBarnet(
                 regBarn.fnr,
@@ -241,15 +242,18 @@ const getSelectableBarnOptionsFraPDL = (
                     barnFødtISammePeriode,
                     annenForelder,
                 );
-                barnFødtISammePeriode.forEach((b) => {
+
+                for (const b of barnFødtISammePeriode) {
                     fnrPåBarnSomErLagtTil.push(b.fnr);
-                });
+                }
+
                 if (selectableFlerlinger !== undefined) {
                     selectableBarnFraPDL.push(selectableFlerlinger);
                 }
             }
         }
-    });
+    }
+
     //Fjerner temp fnr fra barna som skal vises på forsiden
     const selectableBarn = selectableBarnFraPDL.map((b) =>
         b.fnr && b.fnr.length > 0 ? { ...b, fnr: b.fnr.filter((nr) => nr && !nr.startsWith(tempString)) } : b,

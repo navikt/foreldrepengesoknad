@@ -53,7 +53,10 @@ const deltUttakAdopsjonSøktFørst = (
                 tidperiodeOverlapperDato(periodeMødrekvote.tidsperiode, førsteUttaksdagNesteBarnsSak)
             ) {
                 const splittedePerioder = splittPeriodePåDato(periodeMødrekvote, førsteUttaksdagNesteBarnsSak);
-                splittedePerioder.forEach((periode) => perioder.push(periode));
+
+                for (const periode of splittedePerioder) {
+                    perioder.push(periode);
+                }
             } else {
                 perioder.push(periodeMødrekvote);
             }
@@ -74,7 +77,10 @@ const deltUttakAdopsjonSøktFørst = (
                 tidperiodeOverlapperDato(periodeFellesperiode.tidsperiode, førsteUttaksdagNesteBarnsSak)
             ) {
                 const splittedePerioder = splittPeriodePåDato(periodeFellesperiode, førsteUttaksdagNesteBarnsSak);
-                splittedePerioder.forEach((periode) => perioder.push(periode));
+
+                for (const periode of splittedePerioder) {
+                    perioder.push(periode);
+                }
             } else {
                 perioder.push(periodeFellesperiode);
             }
@@ -354,13 +360,19 @@ const deltUttakFødselFarMedmor = (
                 fedrekvotePeriode,
                 familiehendelsesdato,
             );
-            fedrekvotePerioder.forEach((periode) => perioder.push(periode));
+
+            for (const periode of fedrekvotePerioder) {
+                perioder.push(periode);
+            }
         } else if (
             førsteUttaksdagNesteBarnsSak !== undefined &&
             tidperiodeOverlapperDato(fedrekvotePeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
         ) {
             const fedrekvotePerioder = splittPeriodePåDato(fedrekvotePeriode, førsteUttaksdagNesteBarnsSak);
-            fedrekvotePerioder.forEach((periode) => perioder.push(periode));
+
+            for (const periode of fedrekvotePerioder) {
+                perioder.push(periode);
+            }
         } else {
             perioder.push(fedrekvotePeriode);
         }

@@ -180,7 +180,7 @@ const getStepConfig = (
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
     if (harValgtFlereTilrettelegginger) {
-        valgteArbeidsforhold.forEach((tilretteleggingId) => {
+        for (const tilretteleggingId of valgteArbeidsforhold) {
             const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
             const labels = getTilretteleggingLabels(
                 intl,
@@ -197,7 +197,7 @@ const getStepConfig = (
                     typeArbeidsgiver,
                 }),
             );
-        });
+        }
     } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]

@@ -182,13 +182,11 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
 
 export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPerioder: Planperiode[]) => {
     const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce((res, p) => {
-        res.push({ dato: p.fom, erFom: true });
-        res.push({ dato: p.tom, erFom: false });
+        res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsPerioder.reduce((res, p) => {
-        res.push({ dato: p.fom, erFom: true });
-        res.push({ dato: p.tom, erFom: false });
+        res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
 
@@ -214,15 +212,15 @@ export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPer
     const normaliserteEgnePerioder: Planperiode[] = [];
     const normaliserteAnnenPartsPerioder: Planperiode[] = [];
 
-    søkersPerioder.forEach((p) => {
+    for (const p of søkersPerioder) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteEgnePerioder.push(...oppsplittetPeriode);
-    });
+    }
 
-    annenPartsPerioder.forEach((p) => {
+    for (const p of annenPartsPerioder) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
-    });
+    }
 
     return {
         normaliserteEgnePerioder,
@@ -259,7 +257,7 @@ export const mapSaksperiodeTilPlanperiode = (
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.innvilget : true));
 
-    saksperioderUtenAvslåttePerioder.forEach((p) => {
+    for (const p of saksperioderUtenAvslåttePerioder) {
         const tidsperiodenKrysserFamdato =
             dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
 
@@ -282,8 +280,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
-            result.push(planperiodeFør);
-            result.push(planperiodeEtter);
+            result.push(planperiodeFør, planperiodeEtter);
         } else {
             const planperiode: Planperiode = {
                 ...p,
@@ -294,7 +291,7 @@ export const mapSaksperiodeTilPlanperiode = (
 
             result.push(planperiode);
         }
-    });
+    }
 
     return result;
 };

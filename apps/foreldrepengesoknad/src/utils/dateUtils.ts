@@ -234,7 +234,7 @@ export const getEndringstidspunkt = (
             }
         });
 
-        søkerensOpprinneligePlan.forEach((periode) => {
+        for (const periode of søkerensOpprinneligePlan) {
             if (endringstidspunktOpprinneligPlan) {
                 return;
             }
@@ -251,7 +251,7 @@ export const getEndringstidspunkt = (
             if (nyPeriodeMedSammeFom === undefined) {
                 endringstidspunktOpprinneligPlan = fom;
             }
-        });
+        }
     } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
         return søkerensUpdatedPlan[0].tidsperiode.fom;

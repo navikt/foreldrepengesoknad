@@ -434,15 +434,15 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     const normaliserteEgnePerioder: Periode[] = [];
     const normaliserteAnnenPartsPerioder: Periode[] = [];
 
-    perioder.forEach((p) => {
+    for (const p of perioder) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteEgnePerioder.push(...oppsplittetPeriode);
-    });
+    }
 
-    annenPartsUttak.forEach((p) => {
+    for (const p of annenPartsUttak) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
-    });
+    }
 
     return {
         normaliserteEgnePerioder,
