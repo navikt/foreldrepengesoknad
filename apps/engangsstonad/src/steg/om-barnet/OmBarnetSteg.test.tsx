@@ -266,7 +266,7 @@ describe('<OmBarnetSteg>', () => {
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
-        expect(screen.getByText('Hvor mange barn venter du?')).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Hvor mange barn venter du?')[0]).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tre eller flere barn'));
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -274,7 +274,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi hvor mange barn du venter')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvor mange barn venter du?'), '3');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvor mange barn venter du?')[1], '3');
 
         await userEvent.click(screen.getByText('Neste steg'));
 
