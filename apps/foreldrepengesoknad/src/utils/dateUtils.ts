@@ -236,7 +236,7 @@ export const getEndringstidspunkt = (
 
         for (const periode of søkerensOpprinneligePlan) {
             if (endringstidspunktOpprinneligPlan) {
-                return;
+                continue;
             }
 
             const { fom } = periode.tidsperiode;
