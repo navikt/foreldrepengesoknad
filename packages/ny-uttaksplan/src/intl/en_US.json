@@ -37,6 +37,7 @@
     "uttaksplan.stønadskontotype.FORELDREPENGER": "Parental benefits",
     "uttaksplan.stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Parental benefits before birth",
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mother's quota",
+    "uttaksplan.stønadskontotype.MEDMORKVOTE": "Co-mother's quota",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} quota",
     "uttaksplan.stønadskontotype.dinKvote": "Your quota",
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode": "New period without quota",

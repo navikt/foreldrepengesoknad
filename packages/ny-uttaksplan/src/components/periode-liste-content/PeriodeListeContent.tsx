@@ -32,6 +32,7 @@ import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
+    erMedmorDelAvSøknaden: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
@@ -41,6 +42,7 @@ interface Props {
 export const PeriodeListeContent = ({
     permisjonsperiode,
     erFamiliehendelse,
+    erMedmorDelAvSøknaden,
     handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
@@ -61,7 +63,6 @@ export const PeriodeListeContent = ({
     const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
     const gjelderAdopsjon = isAdoptertBarn(barn);
     const erBarnetFødt = isFødtBarn(barn);
-
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
@@ -90,6 +91,7 @@ export const PeriodeListeContent = ({
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
+                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                 />
             ) : null}
             {isSlettPeriodePanelOpen ? (

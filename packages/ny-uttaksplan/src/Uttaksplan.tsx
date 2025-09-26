@@ -39,6 +39,7 @@ interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
     isAllAccordionsOpen?: boolean;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -58,6 +59,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
     isAllAccordionsOpen,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
@@ -118,6 +120,7 @@ export const UttaksplanNy = ({
                         modifyPlan(builder.slettPerioder(slettedePerioder), handleOnPlanChange);
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
+                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                 />
             )}
             {komplettPlan.length === 0 && (
@@ -147,6 +150,7 @@ export const UttaksplanNy = ({
                     }}
                     erBarnetFødt={isFødtBarn(barn)}
                     gjelderAdopsjon={gjelderAdopsjon}
+                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                 />
             )}
         </UttaksplanDataContext>

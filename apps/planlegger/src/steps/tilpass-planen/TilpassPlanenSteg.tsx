@@ -4,7 +4,13 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker,
+    erMedmorDelAvSøknaden,
+    getErFarEllerMedmor,
+    getNavnPåSøker1,
+    getNavnPåSøker2,
+} from 'utils/HvemPlanleggerUtils';
 import { getFamiliesituasjon, mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
@@ -84,8 +90,8 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
+    const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
     const erDeltUttak = fordeling !== undefined;
-
     const utledRettighetType = () => {
         if (erDeltUttak) {
             return RettighetType.BEGGE_RETT;
@@ -219,6 +225,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 valgtStønadskonto={valgtStønadskonto}
                                 erAleneOmOmsorg={erAleneOmOmsorg}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
+                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
                             />
                             <HStack gap="space-16">
                                 <Button

@@ -23,6 +23,7 @@ interface Props {
     inneholderKunEnPeriode: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 type PanelStep = 'step1' | 'step2';
@@ -48,6 +49,7 @@ export const EndrePeriodePanel = ({
     inneholderKunEnPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
 
@@ -70,7 +72,6 @@ export const EndrePeriodePanel = ({
         setPanelData(initialPanelState);
         closePanel();
     };
-
     return (
         <div aria-labelledby={ARIA_LABEL_ID} data-panel="endre-periode">
             <div className="mb-4">
@@ -100,6 +101,7 @@ export const EndrePeriodePanel = ({
                         erBarnetFødt={erBarnetFødt}
                         gjelderAdopsjon={gjelderAdopsjon}
                         handleAddPeriode={handleAddPeriode}
+                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                     />
                 )}
             </div>

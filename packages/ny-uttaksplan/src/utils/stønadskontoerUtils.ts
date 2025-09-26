@@ -3,7 +3,10 @@ import { IntlShape } from 'react-intl';
 import { NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
-export const getStønadskontoNavnSimple = (intl: IntlShape, konto: StønadskontoType) => {
+export const getStønadskontoNavnSimple = (intl: IntlShape, konto: StønadskontoType, erMedmorDelAvSøknaden: boolean) => {
+    if (konto === StønadskontoType.Fedrekvote && erMedmorDelAvSøknaden) {
+        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MEDMORKVOTE' });
+    }
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
 

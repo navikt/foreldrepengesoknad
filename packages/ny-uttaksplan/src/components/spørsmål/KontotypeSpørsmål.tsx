@@ -12,11 +12,14 @@ import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
-export const KontotypeSpørsmål = () => {
+interface Props {
+    erMedmorDelAvSøknaden: boolean;
+}
+
+export const KontotypeSpørsmål = ({ erMedmorDelAvSøknaden }: Props) => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
-
     const kontoTypeValue = watch('kontoType');
 
     return (
@@ -33,7 +36,7 @@ export const KontotypeSpørsmål = () => {
                 {valgtStønadskonto.kontoer.map((konto) => {
                     return (
                         <Radio key={konto.konto} value={konto.konto}>
-                            {getStønadskontoNavnSimple(intl, konto.konto)}
+                            {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
                         </Radio>
                     );
                 })}

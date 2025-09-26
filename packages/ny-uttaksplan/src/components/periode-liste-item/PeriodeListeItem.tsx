@@ -16,6 +16,7 @@ interface Props {
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     isAllAccordionsOpen?: boolean;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 export const PeriodeListeItem = ({
@@ -26,6 +27,7 @@ export const PeriodeListeItem = ({
     handleDeletePerioder,
     handleAddPeriode,
     isAllAccordionsOpen,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
 
@@ -39,9 +41,9 @@ export const PeriodeListeItem = ({
     }, [isAllAccordionsOpen]);
 
     return (
-        <VStack gap="0" className="cursor-pointer border-t-1 border-b-1 border-ax-neutral-100">
+        <VStack gap="0" className="border-t-1 border-b-1 border-ax-neutral-100 cursor-pointer">
             <div
-                className={`select-none pt-4 pb-4 hover:bg-ax-accent-300 border-l-8 ${borderFarge}`}
+                className={`hover:bg-ax-accent-300 select-none border-l-8 pb-4 pt-4 ${borderFarge}`}
                 onClick={() => setErPeriodeInnholdÅpen(!erPeriodeInnholdÅpen)}
                 role="button"
                 tabIndex={0}
@@ -59,13 +61,12 @@ export const PeriodeListeItem = ({
                 />
             </div>
             <div
-                className={`overflow-hidden transition-all duration-250 ${
+                className={`duration-250 overflow-hidden transition-all ${
                     erPeriodeInnholdÅpen ? 'opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
                 <div
-                    className={`pt-10 pb-10 pl-10 pr-10 has-[div[data-panel='endre-periode']]:pt-0 
-                        has-[div[data-panel='slett-periode']]:pt-0 border-l-8 ${borderFarge}`}
+                    className={`border-l-8 pb-10 pl-10 pr-10 pt-10 has-[div[data-panel='endre-periode']]:pt-0 has-[div[data-panel='slett-periode']]:pt-0 ${borderFarge}`}
                 >
                     <PeriodeListeContent
                         handleUpdatePeriode={handleUpdatePeriode}
@@ -74,6 +75,7 @@ export const PeriodeListeItem = ({
                         handleAddPeriode={handleAddPeriode}
                         erFamiliehendelse={!!erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
+                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                     />
                 </div>
             </div>

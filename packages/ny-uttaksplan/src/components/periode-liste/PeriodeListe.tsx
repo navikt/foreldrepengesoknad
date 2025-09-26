@@ -18,6 +18,7 @@ interface Props {
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     isAllAccordionsOpen?: boolean;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 export const PeriodeListe = ({
@@ -27,6 +28,7 @@ export const PeriodeListe = ({
     handleDeletePerioder,
     handleAddPeriode,
     isAllAccordionsOpen,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
@@ -47,6 +49,7 @@ export const PeriodeListe = ({
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
+                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                             />
                             {permisjonsperioder.length - 1 === index && (
                                 <PeriodeListeItem
@@ -57,6 +60,7 @@ export const PeriodeListe = ({
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
                                     isAllAccordionsOpen={isAllAccordionsOpen}
+                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                                 />
                             )}
                         </Fragment>
@@ -73,6 +77,7 @@ export const PeriodeListe = ({
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
                                     isAllAccordionsOpen={isAllAccordionsOpen}
+                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                                 />
                             )}
                             <PeriodeListeItem
@@ -82,6 +87,7 @@ export const PeriodeListe = ({
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
+                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                             />
                         </Fragment>
                     );

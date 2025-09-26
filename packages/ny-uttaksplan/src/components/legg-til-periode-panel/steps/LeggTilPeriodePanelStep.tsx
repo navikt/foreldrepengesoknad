@@ -27,6 +27,7 @@ interface Props {
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 export const LeggTilPeriodePanelStep = ({
@@ -35,6 +36,7 @@ export const LeggTilPeriodePanelStep = ({
     handleAddPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const intl = useIntl();
     const { forelder, kontoType, fom, tom } = panelData;
@@ -114,7 +116,7 @@ export const LeggTilPeriodePanelStep = ({
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
-                        <KontotypeSpørsmål />
+                        <KontotypeSpørsmål erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                         <TidsperiodeSpørsmål
                             erBarnetFødt={erBarnetFødt}
                             gjelderAdopsjon={gjelderAdopsjon}

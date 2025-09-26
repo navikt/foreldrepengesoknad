@@ -30,6 +30,7 @@ interface Props {
     inneholderKunEnPeriode: boolean;
     erBarnetFødt: boolean;
     gjelderAdopsjon: boolean;
+    erMedmorDelAvSøknaden: boolean;
 }
 
 export interface EndrePeriodePanelStepFormValues {
@@ -53,6 +54,7 @@ export const EndrePeriodePanelStep = ({
     inneholderKunEnPeriode,
     erBarnetFødt,
     gjelderAdopsjon,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const intl = useIntl();
     const { valgtPeriode } = panelData;
@@ -166,7 +168,9 @@ export const EndrePeriodePanelStep = ({
                     label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label.endre' })}
                     erEndring={true}
                 />
-                {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
+                {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
+                    <KontotypeSpørsmål erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                ) : null}
                 <TidsperiodeSpørsmål
                     erBarnetFødt={erBarnetFødt}
                     gjelderAdopsjon={gjelderAdopsjon}
