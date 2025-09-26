@@ -72,7 +72,9 @@ export const regelHarAvvik = (
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {
-        info.forEach((i) => regelAvvik.push(mapInfoToRegelAvvik(i)));
+        for (const i of info) {
+            regelAvvik.push(mapInfoToRegelAvvik(i));
+        }
     } else {
         regelAvvik.push(mapInfoToRegelAvvik(info));
     }
@@ -117,12 +119,12 @@ export const getRegelIntlValues = (
         return undefined;
     }
     const newValues: { [key: string]: string } = {};
-    Object.keys(values).forEach((key) => {
+    for (const key of Object.keys(values)) {
         const valueOrFunc = values[key];
         if (valueOrFunc) {
             newValues[key] = typeof valueOrFunc === 'function' ? valueOrFunc(intl) : `${valueOrFunc}`;
         }
-    });
+    }
     return newValues;
 };
 

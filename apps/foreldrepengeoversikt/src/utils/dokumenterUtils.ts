@@ -7,7 +7,7 @@ import { urlPrefiks } from '../api/api';
 export const grupperDokumenterPåTidspunkt = (dokumenter: DokumentDto[]): Record<string, DokumentDto[]> => {
     const gruppert: Record<string, DokumentDto[]> = {};
 
-    dokumenter.forEach((dokument) => {
+    for (const dokument of dokumenter) {
         const mottattTidspunkt = dayjs(dokument.mottatt).format();
 
         if (!gruppert[mottattTidspunkt]) {
@@ -15,7 +15,7 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: DokumentDto[]): Record
         } else {
             gruppert[mottattTidspunkt].push(dokument);
         }
-    });
+    }
 
     return gruppert;
 };

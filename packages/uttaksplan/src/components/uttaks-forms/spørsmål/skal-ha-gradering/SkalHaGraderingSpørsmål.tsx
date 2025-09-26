@@ -84,9 +84,9 @@ const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[], tidsperiode: Tidspe
     const eksisterendeArbeidsforhold: FormikRadioProp[] = [];
 
     if (aktiveArbeidsforholdIPerioden.length > 0) {
-        aktiveArbeidsforholdIPerioden.forEach((arb) =>
-            eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` }),
-        );
+        for (const arb of aktiveArbeidsforholdIPerioden) {
+            eksisterendeArbeidsforhold.push({ label: `${arb.arbeidsgiverNavn}`, value: `${arb.arbeidsgiverId}` });
+        }
     }
 
     return [...eksisterendeArbeidsforhold, ...defaultOptions];

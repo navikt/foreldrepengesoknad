@@ -12,14 +12,14 @@ export const ISOStringToDate = (dateString = ''): Date | undefined => getDateFro
 const getDisabledDates = (limitations: DatepickerLimitations): Matcher[] => {
     const invalidDates: Matcher[] = [];
     if (limitations.disabledDateRanges) {
-        limitations.disabledDateRanges.forEach(({ from, to }) => {
+        for (const { from, to } of limitations.disabledDateRanges) {
             if (from && to) {
                 invalidDates.push({
                     from,
                     to,
                 });
             }
-        });
+        }
     }
     const minDate = limitations.minDate;
     const maxDate = limitations.maxDate;

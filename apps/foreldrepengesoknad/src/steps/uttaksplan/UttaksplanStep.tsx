@@ -284,7 +284,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             !uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
-            opprinneligPlan.forEach((p) => {
+            for (const p of opprinneligPlan) {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
                         eksisterendeVedtakAnnenPart.uttaksplan,
@@ -302,7 +302,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                         }
                     }
                 }
-            });
+            }
 
             const uttaksplanMedAnnenPart = finnOgSettInnHull(
                 settInnAnnenPartsUttak(

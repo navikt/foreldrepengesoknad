@@ -89,7 +89,7 @@ export const PlanleggerDataFetcher = () => {
             // Liste over dekningsgrader vi skal prosessere
             const dekningsgrader: Array<keyof TilgjengeligeStønadskontoer> = ['80', '100'];
             // Bearbeide hver dekningsgrad
-            dekningsgrader.forEach((dekningsgrad) => {
+            for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];
                 if (stønadskonto?.kontoer) {
                     // Summer antall dager i alle kontoer
@@ -99,7 +99,7 @@ export const PlanleggerDataFetcher = () => {
                         .filter((konto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
                         .map((konto) => ({ ...konto, dager: totalDager }));
                 }
-            });
+            }
             return modifiserteData;
         },
     });
