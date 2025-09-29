@@ -77,9 +77,6 @@ export const UttaksplanOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="oppsummering.uttak" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -105,6 +102,11 @@ export const UttaksplanOppsummering = ({
                     </FormSummary.Answer>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

@@ -60,7 +60,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
         familiehendelsedato,
         gjelderAdopsjon,
     });
-    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType, årsak });
 
     return (
         <>

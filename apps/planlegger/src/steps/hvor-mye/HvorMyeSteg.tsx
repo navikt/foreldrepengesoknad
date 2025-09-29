@@ -16,6 +16,7 @@ import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { Utbetaling } from './infoboks/Utbetaling';
@@ -61,8 +62,10 @@ export const HvorMyeSteg = ({ satser }: Props) => {
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
 
+    const { ref } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-24">

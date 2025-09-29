@@ -290,13 +290,13 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
 
     const vedleggArray: Attachment[] = [];
 
-    Object.keys(vedlegg).forEach((key: unknown) => {
+    for (const key of Object.keys(vedlegg)) {
         const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
 
         if (vedleggAvTypeSkjemanummer && vedleggAvTypeSkjemanummer.length > 0) {
             vedleggArray.push(...vedleggAvTypeSkjemanummer);
         }
-    });
+    }
 
     return vedleggArray;
 };

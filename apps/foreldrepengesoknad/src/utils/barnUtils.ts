@@ -147,13 +147,13 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
         return undefined;
     }
     const unikeFødselsdatoer = [] as string[];
-    fødselsdatoer.forEach((f) => {
+    for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
             const dateString = dayjs(f).format(ISO_DATE_FORMAT);
             unikeFødselsdatoer.push(dateString);
         }
-    });
+    }
 
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => dayjs(fd).format(DDMMMMYYY_DATE_FORMAT));

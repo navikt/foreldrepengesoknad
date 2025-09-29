@@ -30,9 +30,6 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="AnnenForelderOppsummering.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {isAnnenForelderIkkeOppgitt(annenForelder) && (
@@ -149,6 +146,11 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                     </>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

@@ -255,13 +255,15 @@ const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): stri
     if (fødselsdatoer === undefined) {
         return undefined;
     }
+
     const unikeFødselsdatoer = [] as Date[];
-    fødselsdatoer.forEach((f) => {
+
+    for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
             unikeFødselsdatoer.push(f);
         }
-    });
+    }
 
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => formatDate(fd));

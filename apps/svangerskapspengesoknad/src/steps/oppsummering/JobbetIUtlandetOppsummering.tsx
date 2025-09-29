@@ -22,9 +22,6 @@ export const JobbetIUtlandetOppsummering = ({ onVilEndreSvar }: Props) => {
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="steps.label.arbeidIUtlandet" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -58,6 +55,11 @@ export const JobbetIUtlandetOppsummering = ({ onVilEndreSvar }: Props) => {
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

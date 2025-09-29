@@ -40,12 +40,13 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
 };
 
 interface MaxDateProps {
+    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     kontoType?: StønadskontoType;
     familiehendelsedato: string;
 }
 
-export const getMaxDate = ({ kontoType, familiehendelsedato }: MaxDateProps) => {
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+export const getMaxDate = ({ kontoType, familiehendelsedato, årsak }: MaxDateProps) => {
+    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel && !årsak) {
         return UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
     }
 

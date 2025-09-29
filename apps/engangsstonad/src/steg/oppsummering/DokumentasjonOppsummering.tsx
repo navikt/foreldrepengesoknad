@@ -58,6 +58,15 @@ export function DokumentasjonOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="DokumentasjonOppsummering.tittel" />
                 </FormSummary.Heading>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                {erTerminDokumentasjon(dokumentasjon) ? (
+                    <TerminDokumentasjonSummary dokumentasjon={dokumentasjon} />
+                ) : (
+                    <AdopsjonDokumentasjon dokumentasjon={dokumentasjon} />
+                )}
+            </FormSummary.Answers>
+            <FormSummary.Footer>
                 <FormSummary.EditLink
                     onClick={() =>
                         onVilEndreSvar(
@@ -67,14 +76,7 @@ export function DokumentasjonOppsummering({
                 >
                     <FormattedMessage id="Oppsummering.EndreSvar" />
                 </FormSummary.EditLink>
-            </FormSummary.Header>
-            <FormSummary.Answers>
-                {erTerminDokumentasjon(dokumentasjon) ? (
-                    <TerminDokumentasjonSummary dokumentasjon={dokumentasjon} />
-                ) : (
-                    <AdopsjonDokumentasjon dokumentasjon={dokumentasjon} />
-                )}
-            </FormSummary.Answers>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }

@@ -36,9 +36,6 @@ export const ArbeidsforholdOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Arbeid" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -117,6 +114,11 @@ export const ArbeidsforholdOppsummering = ({
                     </FormSummary.Answer>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
@@ -169,9 +171,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Næring" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -308,6 +307,11 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     </>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
@@ -328,9 +332,6 @@ export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsumme
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Frilans" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -348,6 +349,11 @@ export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsumme
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
