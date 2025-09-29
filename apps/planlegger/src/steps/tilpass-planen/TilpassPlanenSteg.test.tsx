@@ -16,7 +16,7 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('true');
     });
 
-    it('skal vise korrekt genitiv for medmors kvote nå det er hun som skal endre periode med foreldrepenger', async () => {
+    it('skal vise "Medmors kvote" når det er morOgMor som skal endre periode med foreldrepenger', async () => {
         render(<MorOgMedmorBeggeHarRett />);
         expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
         expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
@@ -33,7 +33,7 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         within(screen.getByText('Medmors kvote').closest('div') as HTMLElement);
     });
 
-    it('skal vise korrekt genitiv for fars kvote nå det er han som skal endre periode med foreldrepenger', async () => {
+    it('skal vise "Fars kvote" når det er morOgFar som skal endre periode med foreldrepenger', async () => {
         render(<MorOgFarBeggeHarRett />);
         expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
         expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
@@ -48,5 +48,35 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         expect(await screen.findByText('Hvilken del av foreldrepengene vil du bruke?')).toBeInTheDocument();
         within(screen.getByText('Velg kontotype').closest('fieldset') as HTMLElement);
         within(screen.getByText('Fars kvote').closest('div') as HTMLElement);
+    });
+
+    it('skal vise "Fedrekvote" når det er morOgFar i kvoteoppsummering', async () => {
+        render(<MorOgFarBeggeHarRett />);
+        expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
+        expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
+        expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('true');
+
+        expect(await screen.findByText('All tid er i planen')).toBeInTheDocument();
+
+        const titleElement = screen.getByText('All tid er i planen');
+        const expandButton = titleElement.closest('.aksel-expansioncard__header')?.querySelector('button');
+        if (expandButton) {
+            await userEvent.click(expandButton);
+        }
+        expect(screen.getAllByText('Fedrekvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+    });
+    it('skal vise "Medmorkvote" når det er morOgMor i kvoteoppsummering', async () => {
+        render(<MorOgMedmorBeggeHarRett />);
+        expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);
+        expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('false');
+        expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('true');
+
+        expect(await screen.findByText('All tid er i planen')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('All tid er i planen'));
+        expect(await screen.findByText('All tid er i planen')).toBeInTheDocument();
+        expect(screen.getAllByText('Medmorkvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Fedrekvote')).not.toBeInTheDocument();
     });
 });
