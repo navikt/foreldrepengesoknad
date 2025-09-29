@@ -77,6 +77,7 @@ export const UttaksperiodeMor: Story = {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
+        erMedmorDelAvSøknaden: false,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -112,6 +113,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
+        erMedmorDelAvSøknaden: false,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -155,6 +157,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
+        erMedmorDelAvSøknaden: false,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -216,6 +219,7 @@ export const UttaksperiodeFar: Story = {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
+        erMedmorDelAvSøknaden: false,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -251,6 +255,7 @@ export const PeriodeUtenUttak: Story = {
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
+        erMedmorDelAvSøknaden: false,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-08-01'],
