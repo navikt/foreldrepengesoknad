@@ -297,6 +297,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 })}
                                 rettighetType={utledRettighetType()}
                                 forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                                hvemPlanlegger={hvemPlanlegger.type}
                             />
                         </>
                     )}
