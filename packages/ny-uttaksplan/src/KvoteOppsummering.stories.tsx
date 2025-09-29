@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
+    HvemPlanleggerType,
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
@@ -683,5 +684,16 @@ export const AleneomsorgFarForMangeDager: Story = {
         ],
         rettighetType: RettighetType.ALENEOMSORG,
         forelder: Forelder.farMedmor,
+    },
+};
+
+export const MorOgMedmorBeggeRettMorIngenDagerBrukt: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        hvemPlanlegger: HvemPlanleggerType.MOR_OG_MEDMOR,
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Maria',
+        },
     },
 };
