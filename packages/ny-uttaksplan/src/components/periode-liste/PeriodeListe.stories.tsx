@@ -49,6 +49,7 @@ const customRenderer = ({
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
+                    erMedmorDelAvSøknaden={false}
                 />
             </div>
         </UttaksplanDataContext>

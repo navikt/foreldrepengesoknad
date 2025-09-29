@@ -54,6 +54,7 @@ const customRenderer = ({
                         handleDeletePerioder={handleDeletePerioder}
                         erFamiliehendelse={erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
+                        erMedmorDelAvSøknaden={false}
                     />
                 </Accordion>
             </div>
