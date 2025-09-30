@@ -15,6 +15,7 @@ export enum UttaksplanContextDataType {
     MODUS = 'MODUS',
     VALGT_STØNADSKONTO = 'VALGT_STØNADSKONTO',
     ALENE_OM_OMSORG = 'ALENE_OM_OMSORG',
+    ER_MEDMOR_DEL_AV_SØKNADEN = 'ER_MEDMOR_DEL_AV_SØKNADEN',
 }
 
 export type UttaksplanContextDataMap = {
@@ -27,6 +28,7 @@ export type UttaksplanContextDataMap = {
     [UttaksplanContextDataType.MODUS]?: UttaksplanModus;
     [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: TilgjengeligeStønadskontoerForDekningsgrad;
     [UttaksplanContextDataType.ALENE_OM_OMSORG]?: boolean;
+    [UttaksplanContextDataType.ER_MEDMOR_DEL_AV_SØKNADEN]?: boolean;
 };
 
 const defaultInitialState = {} as UttaksplanContextDataMap;

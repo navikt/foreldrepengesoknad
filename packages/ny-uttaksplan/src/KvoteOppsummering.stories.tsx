@@ -690,7 +690,7 @@ export const AleneomsorgFarForMangeDager: Story = {
 export const MorOgMedmorBeggeRettMorIngenDagerBrukt: Story = {
     args: {
         ...BeggeRettMorIngenDagerBrukt.args,
-        hvemPlanlegger: HvemPlanleggerType.MOR_OG_MEDMOR,
+        erMedmorDelAvSøknaden: true,
         navnPåForeldre: {
             mor: 'Helga',
             farMedmor: 'Maria',

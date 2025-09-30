@@ -16,7 +16,7 @@ export const KontotypeSpørsmål = () => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
-
+    const erMedmorDelAvSøknaden = notEmpty(useContextGetData(UttaksplanContextDataType.ER_MEDMOR_DEL_AV_SØKNADEN));
     const kontoTypeValue = watch('kontoType');
 
     return (
@@ -33,7 +33,7 @@ export const KontotypeSpørsmål = () => {
                 {valgtStønadskonto.kontoer.map((konto) => {
                     return (
                         <Radio key={konto.konto} value={konto.konto}>
-                            {getStønadskontoNavnSimple(intl, konto.konto)}
+                            {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
                         </Radio>
                     );
                 })}

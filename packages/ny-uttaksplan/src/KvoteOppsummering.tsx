@@ -33,6 +33,7 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
     hvemPlanlegger?: HvemPlanleggerType;
+    erMedmorDelAvSøknaden?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -571,7 +572,7 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner, familiehendelse, hvemPlanlegger } = useKvote();
+    const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
     if (!konto) {
         return null;
@@ -585,7 +586,6 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
     const overtrukketDager = ubrukteDager * -1;
     const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
     const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
-    const erMedmorDelAvSøknaden = hvemPlanlegger === HvemPlanleggerType.MOR_OG_MEDMOR;
 
     const finnIkon = () => {
         if (overtrukketDager > 0) {
