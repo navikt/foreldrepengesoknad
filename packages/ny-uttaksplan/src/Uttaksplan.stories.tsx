@@ -78,3 +78,15 @@ export const Default: Story = {
         erAleneOmOmsorg: false,
     },
 };
+
+export const MorOgMedmor: Story = {
+    args: {
+        ...Default.args,
+        erFarEllerMedmor: true,
+        erMedmorDelAvSøknaden: true,
+        navnPåForeldre: {
+            mor: 'Olga Utvikler',
+            farMedmor: 'Helga Utvikler',
+        },
+    },
+};
