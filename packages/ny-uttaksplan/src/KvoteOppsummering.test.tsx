@@ -13,7 +13,7 @@ const {
     EnRettFarLedigeDager,
     AleneomsorgFarForMangeDager,
     BeggeRettMorForMangeDagerBrukt,
-    MorOgMedmorBeggeRettMorIngenDagerBrukt,
+    BeggeRettMorOgMedmorMorIngenDagerBrukt,
     BeggeRettMorIngenDagerBrukt,
 } = composeStories(stories);
 
@@ -21,10 +21,10 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorLedigeDager >', async () => {
         render(<BeggeRettMorLedigeDager />);
 
-        expect(screen.getByText('Det er 12 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
+        expect(screen.getByText('Det er 32 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
         expect(
             screen.getByText(
-                '5 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 2 uker til Espen ligger ikke i planen.',
+                '12 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 15 uker til Espen ligger ikke i planen.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('<KvoteOppsummering >', () => {
     });
 
     it('<MorOgMedmorBeggeRettMorIngenDagerBrukt - Medmors kvote skal være "Medmorkvote" >', async () => {
-        render(<MorOgMedmorBeggeRettMorIngenDagerBrukt />);
+        render(<BeggeRettMorOgMedmorMorIngenDagerBrukt />);
         expect(screen.getByText('Det er 49 uker igjen som kan legges til i planen')).toBeInTheDocument();
 
         const expandButton = screen.getByRole('button', { expanded: false });
