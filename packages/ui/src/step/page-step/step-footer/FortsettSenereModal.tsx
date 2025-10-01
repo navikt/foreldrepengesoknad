@@ -40,7 +40,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
             </Modal>
             <Box.New asChild marginBlock={{ xs: '4 0', sm: '0' }} onClick={() => setIsOpen(true)}>
                 <Button
-                    className="order-3 md:order-3"
+                    className="order-3"
                     variant="tertiary"
                     icon={<FloppydiskIcon aria-hidden />}
                     iconPosition="left"
