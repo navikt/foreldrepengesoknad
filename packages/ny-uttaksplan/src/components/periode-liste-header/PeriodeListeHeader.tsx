@@ -49,7 +49,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
     return (
         <HGrid columns={{ xs: '4fr 4fr 1fr 1fr', md: '3fr 3fr 3fr 1fr' }}>
             <div
-                className={`px-1 xs:px-2 md:px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
+                className={`xs:px-2 px-1 py-2 md:px-4 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
             >
                 <Heading size="xsmall" as="p">
                     {erFamiliehendelse
@@ -60,12 +60,12 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                     <BodyShort>{tekst}</BodyShort>
                 </Hide>
             </div>
-            <div className="px-1 md:px-4 py-2">
+            <div className="px-1 py-2 md:px-4">
                 {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
             </div>
-            <div className="flex w-full flex-col md:grow justify-center ">
+            <div className="flex w-full flex-col justify-center md:grow">
                 <div
-                    className={`rounded-2xl w-12 h-12 md:w-full md:px-4 md:py-2 md:rounded-xl md:h-auto flex justify-between m-2 md:m-0 ${finnBakgrunnsfarge(
+                    className={`m-2 flex h-12 w-12 justify-between rounded-2xl md:m-0 md:h-auto md:w-full md:rounded-xl md:px-4 md:py-2 ${finnBakgrunnsfarge(
                         permisjonsperiode,
                         erFamiliehendelse,
                     )}`}
@@ -81,7 +81,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                 </div>
             </div>
             <div className="flex items-center justify-center p-3 md:px-4 md:py-2">
-                <div className="flex items-center justify-center w-6 h-6 rounded-2xl bg-ax-bg-accent-moderate">
+                <div className="bg-ax-bg-accent-moderate flex h-6 w-6 items-center justify-center rounded-2xl">
                     {isOpen ? (
                         <ChevronUpIcon color="var(--ax-bg-accent-strong)" />
                     ) : (
