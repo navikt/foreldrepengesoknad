@@ -73,13 +73,8 @@ export const Day = ({ day, periodeColor, dayType, isSelected, dateTooltipCallbac
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div
             data-testid={`day:${day};dayColor:${periodeColor};dayType:${dayType}`}
-            className={`${styles.days} 
-                ${!isSelected && DAY_STYLE[periodeColor]} 
-                ${isSelected && SELECTED_DAY_STYLE[periodeColor]} 
-                ${isStart && styles.firstDay} 
-                ${isEnd && styles.lastDay} 
-                ${isStartAndEnd && styles.firstAndLastDay} 
-                ${!!dateClickCallback && styles.cursor}`}
+            // eslint-disable-next-line max-len
+            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay} ${!!dateClickCallback && styles.cursor}`}
             ref={buttonRef}
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
             onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
