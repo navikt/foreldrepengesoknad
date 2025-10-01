@@ -34,6 +34,19 @@ export const StepButtons = ({
 }: Props) => {
     return (
         <HGrid gap={{ xs: '4', sm: '8 4' }} columns={{ xs: 1, sm: 2 }} width={{ sm: 'fit-content' }}>
+            <Button
+                type="button"
+                variant="secondary"
+                onClick={goToPreviousStep}
+                icon={<ArrowLeftIcon aria-hidden />}
+                iconPosition="left"
+            >
+                {useSimplifiedTexts ? (
+                    <FormattedMessage id="StepButtons.ForrigeSimple" />
+                ) : (
+                    <FormattedMessage id="StepButtons.Forrige" />
+                )}
+            </Button>
             {isNextButtonVisible ? (
                 <Button
                     icon={isSendButton ? <PaperplaneIcon aria-hidden /> : <ArrowRightIcon aria-hidden />}
@@ -60,19 +73,6 @@ export const StepButtons = ({
             ) : (
                 <div />
             )}
-            <Button
-                type="button"
-                variant="secondary"
-                onClick={goToPreviousStep}
-                icon={<ArrowLeftIcon aria-hidden />}
-                iconPosition="left"
-            >
-                {useSimplifiedTexts ? (
-                    <FormattedMessage id="StepButtons.ForrigeSimple" />
-                ) : (
-                    <FormattedMessage id="StepButtons.Forrige" />
-                )}
-            </Button>
             <StepFooter onFortsettSenere={onFortsettSenere} onAvsluttOgSlett={onAvsluttOgSlett} />
         </HGrid>
     );
