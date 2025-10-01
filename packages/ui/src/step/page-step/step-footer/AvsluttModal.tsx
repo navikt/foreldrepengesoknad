@@ -40,6 +40,7 @@ export const AvsluttModal = ({ onAvsluttOgSlett }: Props) => {
                 icon={<TrashIcon aria-hidden />}
                 iconPosition="left"
                 onClick={() => setIsOpen(true)}
+                className="order-4 md:order-4"
             >
                 {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
             </Button>
