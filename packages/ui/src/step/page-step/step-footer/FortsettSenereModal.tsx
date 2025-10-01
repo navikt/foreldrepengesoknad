@@ -39,7 +39,13 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
                 </Modal.Footer>
             </Modal>
             <Box.New asChild marginBlock={{ xs: '4 0', sm: '0' }} onClick={() => setIsOpen(true)}>
-                <Button variant="tertiary" icon={<FloppydiskIcon aria-hidden />} iconPosition="left" type="button">
+                <Button
+                    className="order-3"
+                    variant="tertiary"
+                    icon={<FloppydiskIcon aria-hidden />}
+                    iconPosition="left"
+                    type="button"
+                >
                     {intl.formatMessage({ id: 'StepFooter.ContinueLater' })}
                 </Button>
             </Box.New>
