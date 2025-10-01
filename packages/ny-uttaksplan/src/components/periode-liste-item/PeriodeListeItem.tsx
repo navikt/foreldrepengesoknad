@@ -64,6 +64,7 @@ export const PeriodeListeItem = ({
                 }`}
             >
                 <div
+                    // eslint-disable-next-line
                     className={`border-l-8 pb-10 pl-10 pr-10 pt-10 has-[div[data-panel='endre-periode']]:pt-0 has-[div[data-panel='slett-periode']]:pt-0 ${borderFarge}`}
                 >
                     <PeriodeListeContent
