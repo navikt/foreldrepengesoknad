@@ -3,7 +3,7 @@ const { injectDecoratorServerSide } = require('@navikt/nav-dekoratoren-moduler/s
 const express = require('express');
 const server = express();
 server.use(express.json());
-const path = require('path');
+const path = require('node:path');
 const mustacheExpress = require('mustache-express');
 const compression = require('compression');
 
@@ -64,7 +64,7 @@ const startServer = async () => {
         }),
     );
 
-    const fs = require('fs');
+    const fs = require('node:fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
     const vedleggMockStore = './dist/vedlegg';
 

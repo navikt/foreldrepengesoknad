@@ -31,12 +31,12 @@ export const encodeToBase64 = (stringToBeEncoded: string) => {
     if (isWellFormed(stringToBeEncoded)) {
         return bytesToBase64(new TextEncoder().encode(stringToBeEncoded));
     }
-    throw Error('Error in base64 encoding');
+    throw new Error('Error in base64 encoding');
 };
 
 export const decodeBase64 = (stringToBeDecoded: string) => {
     if (isWellFormed(stringToBeDecoded)) {
         return new TextDecoder().decode(base64ToBytes(stringToBeDecoded));
     }
-    throw Error('Error in base64 decoding');
+    throw new Error('Error in base64 decoding');
 };

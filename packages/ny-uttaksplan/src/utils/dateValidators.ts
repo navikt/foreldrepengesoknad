@@ -100,20 +100,24 @@ export const getFomValidators = ({
             );
             break;
         case StønadskontoType.Fellesperiode:
-            validators.push((fomValue: string) => {
-                if (dayjs(fomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
-                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode' });
-                }
+            validators.push(
+                (fomValue: string) => {
+                    if (dayjs(fomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
+                        return intl.formatMessage({
+                            id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode',
+                        });
+                    }
 
-                return null;
-            });
-            validators.push((fomValue: string) => {
-                if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
-                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
-                }
+                    return null;
+                },
+                (fomValue: string) => {
+                    if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
+                        return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
+                    }
 
-                return null;
-            });
+                    return null;
+                },
+            );
             break;
     }
 
@@ -157,8 +161,6 @@ export const getFomValidators = ({
             intl.formatMessage({ id: 'endreTidsPeriodeModal.minDato' }, { minDate: formatDateMedUkedag(minDate) }),
             minDate,
         ),
-    );
-    validators.push(
         isBeforeOrSame(
             intl.formatMessage({ id: 'endreTidsPeriodeModal.maksDato' }, { maxDate: formatDateMedUkedag(maxDate) }),
             maxDate,
@@ -278,20 +280,24 @@ export const getTomValidators = ({
             );
             break;
         case StønadskontoType.Fellesperiode:
-            validators.push((tomValue: string) => {
-                if (dayjs(tomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
-                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode' });
-                }
+            validators.push(
+                (tomValue: string) => {
+                    if (dayjs(tomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
+                        return intl.formatMessage({
+                            id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode',
+                        });
+                    }
 
-                return null;
-            });
-            validators.push((tomValue: string) => {
-                if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
-                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
-                }
+                    return null;
+                },
+                (tomValue: string) => {
+                    if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
+                        return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
+                    }
 
-                return null;
-            });
+                    return null;
+                },
+            );
             break;
     }
 
@@ -335,8 +341,6 @@ export const getTomValidators = ({
             intl.formatMessage({ id: 'endreTidsPeriodeModal.minDato' }, { minDate: formatDateMedUkedag(minDate) }),
             minDate,
         ),
-    );
-    validators.push(
         isBeforeOrSame(
             intl.formatMessage({ id: 'endreTidsPeriodeModal.maksDato' }, { maxDate: formatDateMedUkedag(maxDate) }),
             maxDate,

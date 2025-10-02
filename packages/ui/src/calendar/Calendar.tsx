@@ -91,7 +91,7 @@ const monthDiff = (d1: Date, d2: Date) => {
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
     months -= d1.getMonth();
     months += d2.getMonth();
-    return months <= 0 ? 0 : months;
+    return Math.max(months, 0);
 };
 
 const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
@@ -153,7 +153,7 @@ export const Calendar = ({
                         headerLevel={useSmallerWidth ? '5' : '4'}
                         showWeekNumbers={showWeekNumbers}
                     >
-                        {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
+                        {[...new Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
                             (day) => {
                                 const date = dayjs()
                                     .year(monthData.year)

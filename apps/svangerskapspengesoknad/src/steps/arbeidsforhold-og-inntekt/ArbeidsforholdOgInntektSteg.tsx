@@ -59,7 +59,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
         if (!isArbeidsforholdOgInntektSvp(values)) {
-            throw Error('values er på feil format');
+            throw new Error('values er på feil format');
         }
 
         oppdaterArbeidsforholdOgInntekt(values);

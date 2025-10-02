@@ -168,10 +168,10 @@ const getTidslinjeTittelForFamiliehendelse = (
 const getTittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
     const dokumenter = hendelse.dokumenter;
     if (dokumenter && dokumenter.length > 0) {
-        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.AVSLAGSBREV))) {
+        if (dokumenter.some((d) => d.tittel.includes(Vedtaksbrev.AVSLAGSBREV))) {
             return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
         }
-        if (dokumenter.find((d) => d.tittel.includes(Vedtaksbrev.INNVILGELSESBREV))) {
+        if (dokumenter.some((d) => d.tittel.includes(Vedtaksbrev.INNVILGELSESBREV))) {
             return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
         }
     }
@@ -324,12 +324,10 @@ const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBe
 
 const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: SvpÅpenBehandling) => {
     const tilretteleggingerFomDatoer =
-        åpenBehandling.søknad.arbeidsforhold
-            .map((a) => {
-                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
-                return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
-            })
-            .flat(1) ?? [];
+        åpenBehandling.søknad.arbeidsforhold.flatMap((a) => {
+            const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
+            return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
+        }) ?? [];
     const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.toDate();
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };

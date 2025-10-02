@@ -28,7 +28,7 @@ export const Month = ({ year, month, showYear, children, headerLevel, showWeekNu
     const endWeekday = monthDate.endOf('month').isoWeekday();
     const totalDays = monthDate.daysInMonth() + (startWeekDay - 1) + (7 - endWeekday);
 
-    const nrOfWeeks = [...Array(totalDays / 7).keys()];
+    const nrOfWeeks = [...new Array(totalDays / 7).keys()];
     const firstWeekNrOfMonth = monthDate.isoWeek();
 
     let arrayCounter = 0;
@@ -42,7 +42,7 @@ export const Month = ({ year, month, showYear, children, headerLevel, showWeekNu
             </Heading>
             {nrOfWeeks.map((weeknr) => (
                 <HGrid key={weeknr} columns={nrOfColumns}>
-                    {[...Array(nrOfColumns).keys()].map((index) => {
+                    {[...new Array(nrOfColumns).keys()].map((index) => {
                         if (showWeekNumbers && index === 0) {
                             return (
                                 <div key={8} className={styles.weeknr}>

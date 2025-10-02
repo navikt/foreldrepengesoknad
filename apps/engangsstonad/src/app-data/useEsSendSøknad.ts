@@ -45,7 +45,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
         };
     }
 
-    throw Error('Det er feil i data om barnet');
+    throw new Error('Det er feil i data om barnet');
 };
 
 // TODO (TOR) Fiks lokalisering
@@ -101,7 +101,7 @@ export const useEsSendSøknad = (setKvittering: (kvittering: Kvittering) => void
                 const jsonResponse = await error.response.json();
                 Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
-                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
                 throw error;

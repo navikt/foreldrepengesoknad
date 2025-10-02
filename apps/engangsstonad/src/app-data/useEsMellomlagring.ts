@@ -55,7 +55,7 @@ export const useEsMellomlagring = (personinfo: PersonFrontend, setVelkommen: (er
                             const jsonResponse = await error.response.json();
                             const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                             Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                         }
                         if (error instanceof Error) {
                             throw error;
