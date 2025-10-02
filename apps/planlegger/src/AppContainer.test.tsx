@@ -13,6 +13,13 @@ const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
 
 describe('<AppContainer>', () => {
+    beforeEach(() => {
+        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+            setAvailableLanguages: vi.fn(),
+            onLanguageSelect: vi.fn(),
+        }));
+    });
+
     it(
         'skal gå gjennom applikasjonen og så tilbake',
         mswWrapper(async ({ setHandlers }) => {
