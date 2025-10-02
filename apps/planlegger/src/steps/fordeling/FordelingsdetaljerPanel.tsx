@@ -51,53 +51,51 @@ export const FordelingsdetaljerPanel = ({
             color="green"
         >
             <VStack gap="space-8">
-                <BodyShort>
-                    {erFødsel && (
-                        <>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
-                                    values={{
-                                        erFødt,
-                                        dato: dato,
-                                        erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                        erFlereBarn: antallBarn !== '1',
-                                    }}
-                                />
-                            </BodyShort>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2"
-                                    values={{
-                                        erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        </>
-                    )}
-                    {!erFødsel && (
-                        <>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
-                                    values={{
-                                        antallBarn,
-                                        dato: dato,
-                                        erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2"
-                                    values={{
-                                        dato: dato,
-                                    }}
-                                />
-                            </BodyShort>
-                        </>
-                    )}
-                </BodyShort>
+                {erFødsel && (
+                    <>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                                values={{
+                                    erFødt,
+                                    dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                    erFlereBarn: antallBarn !== '1',
+                                }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2"
+                                values={{
+                                    erAlenesøker: erAlenesøker(hvemPlanlegger),
+                                }}
+                            />
+                        </BodyShort>
+                    </>
+                )}
+                {!erFødsel && (
+                    <>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
+                                values={{
+                                    antallBarn,
+                                    dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2"
+                                values={{
+                                    dato: dato,
+                                }}
+                            />
+                        </BodyShort>
+                    </>
+                )}
                 <BodyShort>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"

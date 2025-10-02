@@ -464,7 +464,7 @@ describe('eksisterendeSakUtils', () => {
             samtidigUttak: 50,
             flerbarnsdager: true,
         } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
 
         const forventetMappetPeriodeSøker = {
@@ -489,7 +489,7 @@ describe('eksisterendeSakUtils', () => {
             },
             utsettelseÅrsak: 'HV_ØVELSE',
         } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
 
         const forventetMappetUtsettelseSøker = {
@@ -519,7 +519,7 @@ describe('eksisterendeSakUtils', () => {
             },
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
         } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
         const forventetMappetOverføringSøker = {
             ...overføringsperiodeRest,
@@ -546,7 +546,7 @@ describe('eksisterendeSakUtils', () => {
             },
             oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
         } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
 
         const forventetMappetOppholdSøker = {
@@ -581,7 +581,6 @@ describe('eksisterendeSakUtils', () => {
             },
         } as SaksperiodeDTO;
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
 
         const forventetMappetAvslåttPeriodeSøker = {

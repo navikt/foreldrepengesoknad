@@ -44,9 +44,8 @@ const finnAntallDagerSøker1 = (
             ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
             : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    return fordeling.antallDagerSøker1 > ukerOgDagerFellesperiode.totaltAntallDager
-        ? ukerOgDagerFellesperiode.totaltAntallDager
-        : fordeling.antallDagerSøker1;
+
+    return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
 };
 
 interface Props {

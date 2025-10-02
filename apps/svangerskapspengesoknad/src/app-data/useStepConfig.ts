@@ -215,8 +215,10 @@ const getStepConfig = (
             }),
         );
     } else {
-        steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
-        steps.push(createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath));
+        steps.push(
+            createStep(SøknadRoute.SKJEMA, intl, currentPath),
+            createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath),
+        );
 
         if (
             !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&

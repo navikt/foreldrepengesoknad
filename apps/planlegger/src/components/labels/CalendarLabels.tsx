@@ -42,8 +42,9 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
 
-    const inneholderFerie =
-        uttaksplan.find((p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) !== undefined;
+    const inneholderFerie = uttaksplan.some(
+        (p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie,
+    );
 
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&

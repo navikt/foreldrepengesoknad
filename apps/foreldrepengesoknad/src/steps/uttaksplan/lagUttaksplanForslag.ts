@@ -47,7 +47,7 @@ const getSøkerensUttaksplanForslag = (
     const ankomstNorgeForAdoptertBarn =
         isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? dayjs(barn.ankomstdato).toDate() : undefined;
     const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
-    const annenPartsSistePeriode = annenPartsPerioder && annenPartsPerioder.at(-1);
+    const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
     const annenPartsSisteDag =
         annenPartsPerioder && annenPartsSistePeriode
             ? Uttaksdagen(annenPartsSistePeriode.tidsperiode.tom).denneEllerForrige()

@@ -14,7 +14,23 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
     const perioder: SaksperiodeNy[] = [];
 
-    if (erMorUfør !== true) {
+    if (erMorUfør) {
+        const aktivitetsFriPeriode: SaksperiodeNy = {
+            kontoType: StønadskontoType.AktivitetsfriKvote,
+            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
+            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+        };
+        perioder.push(aktivitetsFriPeriode);
+
+        const aktivitetskravPeriode: SaksperiodeNy = {
+            kontoType: StønadskontoType.Foreldrepenger,
+            fom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
+                .fom,
+            tom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
+                .tom,
+        };
+        perioder.push(aktivitetskravPeriode);
+    } else {
         if (farOgFar) {
             const periode: SaksperiodeNy = {
                 kontoType: StønadskontoType.AktivitetsfriKvote,
@@ -42,22 +58,6 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 
             perioder.push(periode);
         }
-    } else {
-        const aktivitetsFriPeriode: SaksperiodeNy = {
-            kontoType: StønadskontoType.AktivitetsfriKvote,
-            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
-        };
-        perioder.push(aktivitetsFriPeriode);
-
-        const aktivitetskravPeriode: SaksperiodeNy = {
-            kontoType: StønadskontoType.Foreldrepenger,
-            fom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
-                .fom,
-            tom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
-                .tom,
-        };
-        perioder.push(aktivitetskravPeriode);
     }
 
     return { søker1: perioder, søker2: [] };
@@ -83,9 +83,7 @@ const ikkeDeltUttakAdopsjon = (
     bareFarMedmorHarRett: boolean,
     farOgFar: boolean,
 ) => {
-    if (!erFarEllerMedmor) {
-        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto);
-    } else {
+    if (erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonFarMedmor(
             famDato,
             foreldrepengerKonto,
@@ -94,6 +92,8 @@ const ikkeDeltUttakAdopsjon = (
             bareFarMedmorHarRett,
             farOgFar,
         );
+    } else {
+        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto);
     }
 };
 
@@ -141,7 +141,39 @@ const ikkeDeltUttakFødselFarMedmor = (
     const startDato = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
     const perioder: SaksperiodeNy[] = [];
 
-    if (erMorUfør !== true) {
+    if (erMorUfør) {
+        if (erAleneOmOmsorg) {
+            const aktivitetskravPeriode: SaksperiodeNy = {
+                kontoType: StønadskontoType.Foreldrepenger,
+                fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
+                tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
+            };
+
+            perioder.push(aktivitetskravPeriode);
+        } else {
+            const aktivitetsFriPeriode: SaksperiodeNy = {
+                kontoType: StønadskontoType.AktivitetsfriKvote,
+                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
+                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+            };
+
+            perioder.push(aktivitetsFriPeriode);
+
+            const aktivitetskravPeriode: SaksperiodeNy = {
+                kontoType: StønadskontoType.Foreldrepenger,
+                fom: getTidsperiodeString(
+                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
+                    foreldrepengerKonto.dager,
+                ).fom,
+                tom: getTidsperiodeString(
+                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
+                    foreldrepengerKonto.dager,
+                ).tom,
+            };
+
+            perioder.push(aktivitetskravPeriode);
+        }
+    } else {
         if (farOgFar) {
             const periode: SaksperiodeNy = {
                 kontoType: StønadskontoType.AktivitetsfriKvote,
@@ -175,38 +207,6 @@ const ikkeDeltUttakFødselFarMedmor = (
 
             perioder.push(periode);
         }
-    } else {
-        if (!erAleneOmOmsorg) {
-            const aktivitetsFriPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.AktivitetsfriKvote,
-                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
-            };
-
-            perioder.push(aktivitetsFriPeriode);
-
-            const aktivitetskravPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.Foreldrepenger,
-                fom: getTidsperiodeString(
-                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
-                    foreldrepengerKonto.dager,
-                ).fom,
-                tom: getTidsperiodeString(
-                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
-                    foreldrepengerKonto.dager,
-                ).tom,
-            };
-
-            perioder.push(aktivitetskravPeriode);
-        } else {
-            const aktivitetskravPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.Foreldrepenger,
-                fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
-                tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
-            };
-
-            perioder.push(aktivitetskravPeriode);
-        }
     }
 
     return { søker1: [...perioder].sort(sorterPerioder), søker2: [] };
@@ -224,9 +224,7 @@ const ikkeDeltUttakFødsel = (
     farOgFar: boolean,
     startdato?: string,
 ) => {
-    if (!erFarEllerMedmor) {
-        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, foreldrePengerFørFødselKonto!);
-    } else {
+    if (erFarEllerMedmor) {
         return ikkeDeltUttakFødselFarMedmor(
             famDato,
             foreldrepengerKonto,
@@ -237,6 +235,8 @@ const ikkeDeltUttakFødsel = (
             farOgFar,
             startdato,
         );
+    } else {
+        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, foreldrePengerFørFødselKonto!);
     }
 };
 

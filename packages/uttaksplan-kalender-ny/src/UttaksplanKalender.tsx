@@ -354,8 +354,8 @@ export const UttaksplanKalender = ({
     );
 
     const foreldrepengerHarAktivitetskrav =
-        allePerioder.find((p) => p.kontoType === StønadskontoType.Foreldrepenger) !== undefined &&
-        allePerioder.find((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote) !== undefined;
+        allePerioder.some((p) => p.kontoType === StønadskontoType.Foreldrepenger) &&
+        allePerioder.some((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote);
 
     const søkersHullPerioder = finnOgSettInnHull(
         allePerioder as Planperiode[],

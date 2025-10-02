@@ -36,7 +36,6 @@ import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
-    Forelder,
     Periode,
     isAnnenForelderOppgitt,
     isUfødtBarn,
@@ -130,7 +129,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
-    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
@@ -595,7 +593,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                             <VStack gap="space-8">
                                 <Uttaksplan
                                     foreldreSituasjon={foreldreSituasjon}
-                                    forelderVedAleneomsorg={forelderVedAleneomsorg}
                                     erDeltUttak={erDeltUttak}
                                     uttaksplan={uttaksplan}
                                     familiehendelsesdato={familiehendelsesdato}
@@ -631,7 +628,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     handleResetUttaksplan={handleResetUttaksplan}
                                     termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                     barn={barn}
-                                    visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                                     barnFraNesteSak={barnFraNesteSak}
                                     familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                                     førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}

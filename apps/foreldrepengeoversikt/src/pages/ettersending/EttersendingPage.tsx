@@ -87,7 +87,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
         return snr;
     }
 
-    throw Error('Valgt skjemanr finnes ikke');
+    throw new Error('Valgt skjemanr finnes ikke');
 };
 
 type Props = {
