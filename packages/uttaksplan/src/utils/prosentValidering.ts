@@ -41,7 +41,7 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
         return intl.formatMessage({ id: 'uttaksplan.validering.stillingsprosent.måVæreStørreEnn0' });
     }
 
-    if (stillingsprosent > 100) {
+    if (stillingsprosent >= 100) {
         return intl.formatMessage({ id: 'uttaksplan.validering.stillingsprosent.måVæreMindreEnn100' });
     }
 
