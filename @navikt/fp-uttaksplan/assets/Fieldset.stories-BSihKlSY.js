@@ -1,3 +1,0 @@
-import{j as t}from"./iframe-B2WDX9kl.js";import{F as r}from"./Fieldset-Q_f2Vl7s.js";import"./preload-helper-D9Z9MdNV.js";import"./Label-BxdbODBH.js";const a={title:"components/Fieldset",component:r},e=()=>t.jsx(r,{legend:"Dette er header",children:t.jsx("div",{children:"Dette er innhold"})});e.__docgenInfo={description:"",methods:[],displayName:"Default"};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`() => <Fieldset legend="Dette er header">
-        <div>Dette er innhold</div>
-    </Fieldset>`,...e.parameters?.docs?.source}}};const i=["Default"];export{e as Default,i as __namedExportsOrder,a as default};
