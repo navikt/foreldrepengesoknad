@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 
 import { DatePicker, DatePickerProps, useDatepicker } from '@navikt/ds-react';
@@ -62,7 +61,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
                 return;
             }
             const isoDateString = InputDateStringToISODateString(inputProps.value);
-            onChange(isoDateString !== INVALID_DATE_VALUE ? isoDateString : inputProps.value);
+            onChange(isoDateString === INVALID_DATE_VALUE ? inputProps.value : isoDateString);
             setListenForInputValueChange(true);
             return;
         }
@@ -110,7 +109,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
     useEffect(() => {
         if (listenForInputValueChange && typeof inputValue === 'string') {
             const isoDateString = InputDateStringToISODateString(inputValue);
-            onChange(isoDateString !== INVALID_DATE_VALUE ? isoDateString : inputValue);
+            onChange(isoDateString === INVALID_DATE_VALUE ? inputValue : isoDateString);
             setListenForInputValueChange(false);
         }
     }, [inputValue, listenForInputValueChange, onChange]);

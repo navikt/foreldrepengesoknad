@@ -8,7 +8,6 @@ import {
     BarnFraNesteSak,
     Dekningsgrad,
     EksisterendeSak,
-    Forelder,
     ForeldreparSituasjon,
     NavnPåForeldre,
     Arbeidsforhold as OldArbeidsforhold,
@@ -61,7 +60,6 @@ const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[]): OldArbeids
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
-    forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
     uttaksplan: Periode[];
     familiehendelsesdato: string;
@@ -90,7 +88,6 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleSlettUttaksplan: () => void;
     handleResetUttaksplan: () => void;
-    visAutomatiskJusteringForm: boolean;
     barnFraNesteSak: BarnFraNesteSak | undefined;
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
@@ -155,8 +152,7 @@ const Uttaksplan = ({
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
-    const harAktivitetsfriKvote =
-        stønadskontoer.kontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
+    const harAktivitetsfriKvote = stønadskontoer.kontoer.some((st) => st.konto === StønadskontoType.AktivitetsfriKvote);
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,

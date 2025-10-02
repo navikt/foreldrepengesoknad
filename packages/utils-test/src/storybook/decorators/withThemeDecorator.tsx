@@ -19,10 +19,8 @@ export const withThemeDecorator: DecoratorFunction<ReactRenderer> = (Story, cont
     }, [theme]);
 
     return (
-        <>
-            <Theme theme={theme === 'dark' ? 'dark' : 'light'}>
-                <Story />
-            </Theme>
-        </>
+        <Theme theme={theme === 'dark' ? 'dark' : 'light'}>
+            <Story />
+        </Theme>
     );
 };

@@ -110,9 +110,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagFo
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
-    const harFrilansTilrettelegging = Object.keys(tilrettelegginger).some(
-        (tilretteleggingId) => tilretteleggingId === FRILANS_ID,
-    );
+    const harFrilansTilrettelegging = Object.keys(tilrettelegginger).includes(FRILANS_ID);
 
     if (!harFrilansTilrettelegging || !frilans) {
         return null;
@@ -175,9 +173,7 @@ function SelvstendigNæringsdrivendeSummary({
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
 
-    const harEgenNæringTilrettelegging = Object.keys(tilrettelegginger).some(
-        (tilretteleggingId) => tilretteleggingId === EGEN_NÆRING_ID,
-    );
+    const harEgenNæringTilrettelegging = Object.keys(tilrettelegginger).includes(EGEN_NÆRING_ID);
 
     if (!harEgenNæringTilrettelegging || !egenNæring) {
         return null;

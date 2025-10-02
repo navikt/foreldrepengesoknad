@@ -28,7 +28,7 @@ const erUttaksmengdeForFarMedmorForHøy = (
     tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     farEllerMedmor: boolean,
 ): boolean => {
-    const harFarMedmorSøktOmFellesperiode = uttaksplan.find((p) => harSøktOmFellesperiode(p)) !== undefined;
+    const harFarMedmorSøktOmFellesperiode = uttaksplan.some((p) => harSøktOmFellesperiode(p));
 
     const perioderSomSkalBrukes = uttaksplan.filter((p) => {
         if (harFarMedmorSøktOmFellesperiode) {

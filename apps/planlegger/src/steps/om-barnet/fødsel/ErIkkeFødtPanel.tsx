@@ -44,8 +44,9 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
     const formMethods = useFormContext<OmBarnet>();
     const termindato = formMethods.watch('termindato');
 
-    const datoSvangerskapsuke22 =
-        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate() : undefined;
+    const datoSvangerskapsuke22 = termindato
+        ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate()
+        : undefined;
 
     // TODO: disse sjekker nå på dato, skal den sjekke på ukenummer?
 
@@ -238,21 +239,12 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                 <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
                             </BodyShort>
                             <BodyShort>
-                                {!erFedre ? (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: true,
-                                        }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: false,
-                                        }}
-                                    />
-                                )}
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: !erFedre,
+                                    }}
+                                />
                             </BodyShort>
                             {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                                 <BodyShort>

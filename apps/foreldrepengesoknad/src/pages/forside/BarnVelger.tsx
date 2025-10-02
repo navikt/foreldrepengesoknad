@@ -19,18 +19,16 @@ enum SelectableBarnOptions {
 
 const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {
-        const saksStatus =
-            barn.sak !== undefined ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
-        const saksnummerTekst =
-            barn.sak !== undefined
-                ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
-                : '';
+        const saksStatus = barn.sak ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
+        const saksnummerTekst = barn.sak
+            ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
+            : '';
 
         return (
             <Radio
                 key={barn.id}
                 value={barn.id}
-                description={barn.sak !== undefined ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
+                description={barn.sak ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
             >
                 <FormattedMessage
                     id="velkommen.barnVelger.ufødtBarn"
@@ -71,12 +69,10 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
                 ? intl.formatMessage({ id: 'velkommen.barnVelger.født' })
                 : intl.formatMessage({ id: 'velkommen.barnVelger.adopsjon' });
 
-        const saksnummerTekst =
-            barn.sak !== undefined
-                ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
-                : '';
-        const saksStatus =
-            barn.sak !== undefined ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
+        const saksnummerTekst = barn.sak
+            ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
+            : '';
+        const saksStatus = barn.sak ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
 
         return (
             <Radio

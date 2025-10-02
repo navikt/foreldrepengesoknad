@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import path from 'path';
+import path from 'node:path';
 import { mergeConfig } from 'vite';
 
 import { createSharedAppConfig } from '@navikt/fp-config-vite';

@@ -20,15 +20,14 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const startStønadsperiodeNyttBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
-    const familiehendelsedatoNesteBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const startStønadsperiodeNyttBarn = barnFraNesteSak ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const familiehendelsedatoNesteBarn = barnFraNesteSak ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
     const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intl.formatMessage({ id: 'uker' })].join(' ');
-    const sisteUttaksdagDetteBarnet =
-        startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
+    const sisteUttaksdagDetteBarnet = startStønadsperiodeNyttBarn
+        ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige()
+        : undefined;
 
     return (
         <Box.New padding="4" background="brand-blue-moderate" className={styles.infoOmNesteBarn}>

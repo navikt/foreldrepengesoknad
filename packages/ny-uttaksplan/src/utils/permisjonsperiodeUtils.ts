@@ -120,17 +120,7 @@ export const mapPerioderToPermisjonsperiode = (
         if (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode)) {
             const forelderType = periode.forelder;
 
-            if (!nyPermisjonsperiode) {
-                nyPermisjonsperiode = {
-                    forelder: forelderType,
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: formatDateIso(periode.fom),
-                        tom: formatDateIso(periode.tom),
-                    },
-                    samtidigUttak: !!periode.samtidigUttak,
-                };
-            } else {
+            if (nyPermisjonsperiode) {
                 if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
                     nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
                     nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tom);
@@ -144,6 +134,16 @@ export const mapPerioderToPermisjonsperiode = (
                         },
                     };
                 }
+            } else {
+                nyPermisjonsperiode = {
+                    forelder: forelderType,
+                    perioder: [{ ...periode }],
+                    tidsperiode: {
+                        fom: formatDateIso(periode.fom),
+                        tom: formatDateIso(periode.tom),
+                    },
+                    samtidigUttak: !!periode.samtidigUttak,
+                };
             }
 
             if (!permisjonsPerioder.includes(nyPermisjonsperiode)) {

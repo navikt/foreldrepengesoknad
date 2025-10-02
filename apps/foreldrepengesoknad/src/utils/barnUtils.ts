@@ -30,7 +30,7 @@ type DateType = string | Date | undefined;
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined, regBarnFødselsdato: DateType) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.some((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato))
         : false;
 };
 
@@ -99,7 +99,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     antallBarn: number,
     intl: IntlShape,
 ): string => {
-    if (omsorgsovertagelsesdato !== undefined) {
+    if (omsorgsovertagelsesdato) {
         return intl.formatMessage(
             { id: 'velkommen.barnVelger.adoptertBarn' },
             {

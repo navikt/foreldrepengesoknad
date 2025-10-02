@@ -84,7 +84,6 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
 
                 const skalViseSomSvp = prosentSvangerskapspengerHvisInnvilget > 0;
-                // const skalViseSomJobb = !skalViseSomSvp && prosentJobb >= 0;
 
                 /*
                  Vi ønsker kun å vise %-svangerskapspenger når det er fattet et vedtak. Prosenten som kan utledes fra søknaden er ikke nødvendigvis reell.
@@ -265,7 +264,7 @@ const BarnevognIkon = () => (
 export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const perioder = (arbeidsforhold ?? [])
-        .map((af) =>
+        .flatMap((af) =>
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
                 arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
@@ -279,7 +278,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 avslutningÅrsak: af.avslutningÅrsak,
             })),
         )
-        .flat()
         .sort((a, b) => a.fom.localeCompare(b.fom));
 
     const endeligePerioder = [];

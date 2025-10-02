@@ -402,13 +402,12 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     const perioderTidsperioder: SplittetDatoType[] = perioder
         .filter((per) => isValidTidsperiodeString(per.tidsperiode))
         .reduce((res, p) => {
-            res.push({ dato: p.tidsperiode.fom, erFom: true });
-            res.push({ dato: p.tidsperiode.tom, erFom: false });
+            res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
+
             return res;
         }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
+        res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
 
@@ -491,8 +490,7 @@ export const settInnAnnenPartsUttak = (
         }
 
         if (isUttaksperiodeAnnenpartEøs(overlappendePeriode)) {
-            res.push(p);
-            res.push({ ...overlappendePeriode, visPeriodeIPlan: false } as Periode);
+            res.push(p, { ...overlappendePeriode, visPeriodeIPlan: false } as Periode);
             return res;
         }
 

@@ -64,7 +64,8 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
     if (!søknadstidspunkt) {
         return engangstønad[0].verdi;
     }
-    return engangstønad.filter((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))[0].verdi;
+
+    return engangstønad.find((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))?.verdi;
 };
 
 export const Saksoversikt = ({ søkerinfo, isFirstRender }: Props) => {
