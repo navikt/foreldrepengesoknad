@@ -10,7 +10,6 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import {
     Familiehendelse,
     FpSak,
-    HvemPlanleggerType,
     KontoBeregningDto,
     KontoDto,
     OppholdÅrsakType,
@@ -32,7 +31,6 @@ type Props = {
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
-    hvemPlanlegger?: HvemPlanleggerType;
     erMedmorDelAvSøknaden?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
