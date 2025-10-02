@@ -31,6 +31,7 @@ type Props = {
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
+    erMedmorDelAvSøknaden?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -569,7 +570,7 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner, familiehendelse } = useKvote();
+    const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
     if (!konto) {
         return null;
@@ -599,7 +600,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
             <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
-                    <VisningsnavnForKvote kontoType={konto.konto} />
+                    <VisningsnavnForKvote kontoType={konto.konto} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
                 </BodyShort>
@@ -665,12 +666,22 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
     );
 };
 
-const VisningsnavnForKvote = ({ kontoType }: { kontoType: KontoDto['konto'] }) => {
+const VisningsnavnForKvote = ({
+    kontoType,
+    erMedmorDelAvSøknaden,
+}: {
+    kontoType: KontoDto['konto'];
+    erMedmorDelAvSøknaden?: boolean;
+}) => {
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
             return <FormattedMessage id="kvote.konto.Aktivitetsfrikvote" />;
         case 'FEDREKVOTE':
-            return <FormattedMessage id="kvote.konto.Fedrekvote" />;
+            return erMedmorDelAvSøknaden ? (
+                <FormattedMessage id="kvote.konto.Medmorkvote" />
+            ) : (
+                <FormattedMessage id="kvote.konto.Fedrekvote" />
+            );
         case 'MØDREKVOTE':
             return <FormattedMessage id="kvote.konto.Mødrekvote" />;
         case 'FORELDREPENGER_FØR_FØDSEL':

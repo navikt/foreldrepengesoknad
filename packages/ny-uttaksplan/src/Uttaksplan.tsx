@@ -39,6 +39,7 @@ interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg: boolean;
     isAllAccordionsOpen?: boolean;
+    erMedmorDelAvSøknaden?: boolean;
 }
 
 export const UttaksplanNy = ({
@@ -58,6 +59,7 @@ export const UttaksplanNy = ({
     valgtStønadskonto,
     erAleneOmOmsorg,
     isAllAccordionsOpen,
+    erMedmorDelAvSøknaden = false,
 }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
@@ -100,6 +102,7 @@ export const UttaksplanNy = ({
                 MODUS: modus,
                 VALGT_STØNADSKONTO: valgtStønadskonto,
                 ALENE_OM_OMSORG: erAleneOmOmsorg,
+                ER_MEDMOR_DEL_AV_SØKNADEN: erMedmorDelAvSøknaden,
             }}
         >
             {komplettPlan.length > 0 && (
