@@ -64,18 +64,17 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
 
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
-    const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
+    const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
-    const pdlBarnMedSammeFødselsdato =
-        fødselsdatoFraSak !== undefined
-            ? registrerteBarn.filter(
-                  (barn) =>
-                      getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
-                      !pdlBarnMedSammeFnr?.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
-              )
-            : [];
+    const pdlBarnMedSammeFødselsdato = fødselsdatoFraSak
+        ? registrerteBarn.filter(
+              (barn) =>
+                  getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
+                  !pdlBarnMedSammeFnr?.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
+          )
+        : [];
 
     const alleBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
     alleBarn.sort(sorterPersonEtterEldstOgNavn);
@@ -129,7 +128,7 @@ export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'
                     saker: [sak],
                     type,
                     ytelse: sak.ytelse,
-                    barn: type !== 'termin' ? getBarnGrupperingFraSak(sak, registrerteBarn) : undefined,
+                    barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
                 };
 
                 result.push(gruppertSak);

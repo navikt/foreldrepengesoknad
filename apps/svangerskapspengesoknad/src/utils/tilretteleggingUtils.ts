@@ -196,7 +196,7 @@ export const getNesteTilretteleggingId = (
         return valgteArbeidsforhold[0];
     }
 
-    const nesteTilretteleggingIndex = valgteArbeidsforhold.findIndex((id) => id === currentTilretteleggingId) + 1;
+    const nesteTilretteleggingIndex = valgteArbeidsforhold.indexOf(currentTilretteleggingId) + 1;
     if (nesteTilretteleggingIndex === valgteArbeidsforhold.length) {
         return undefined;
     }

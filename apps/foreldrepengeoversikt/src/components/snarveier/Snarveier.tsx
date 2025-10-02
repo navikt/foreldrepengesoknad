@@ -71,10 +71,9 @@ export const Snarveier = () => {
     const intl = useIntl();
     const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;
-    const ytelseTekst =
-        currentSak !== undefined
-            ? currentSak.ytelse.toLowerCase()
-            : intl.formatMessage({ id: 'snarveier.pengestøtter' });
+    const ytelseTekst = currentSak
+        ? currentSak.ytelse.toLowerCase()
+        : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
         <div className="bg-ax-bg-default p-8">
@@ -95,7 +94,7 @@ export const Snarveier = () => {
                         to={NavRoutes.MELD_FRA_OM_ENDRINGER}
                         tittel={intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}
                     />
-                    {currentSak !== undefined ? (
+                    {currentSak ? (
                         <LenkePanel
                             to={getKlageLinkMedSak(ytelse, currentSak)}
                             tittel={intl.formatMessage({ id: 'snarveier.jegVilKlage' })}

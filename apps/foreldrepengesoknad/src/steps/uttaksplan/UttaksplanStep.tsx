@@ -145,15 +145,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             ? annenForelder.fnr
             : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
-    const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
+    const annenForelderFnrNesteSak = barnFraNesteSak ? barnFraNesteSak.annenForelderFnr : undefined;
     const førsteBarnFraNesteSakFnr =
         barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
             ? barnFraNesteSak.fnr[0]
             : undefined;
-    const familieHendelseDatoNesteSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const førsteUttaksdagNesteBarnsSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const familieHendelseDatoNesteSak = barnFraNesteSak ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const bareFarMedmorHarRett =
         !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
@@ -164,8 +162,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const eksisterendeSakAnnenPartRequestIsSuspended =
         søkerErAleneOmOmsorg || !annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
 
-    const startStønadsperiodeNyttBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const startStønadsperiodeNyttBarn = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const debouncedState = useDebounce(useContextComplete(), 3000);
     const initialRender = useRef(true);
     useEffect(() => {

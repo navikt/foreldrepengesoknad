@@ -11,6 +11,13 @@ import * as stories from './AppContainer.stories';
 const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
+    beforeEach(() => {
+        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+            setAvailableLanguages: vi.fn(),
+            onLanguageSelect: vi.fn(),
+        }));
+    });
+
     it(
         'skal gå raskeste vei gjennom applikasjonen og så tilbake',
         mswWrapper(async ({ setHandlers }) => {

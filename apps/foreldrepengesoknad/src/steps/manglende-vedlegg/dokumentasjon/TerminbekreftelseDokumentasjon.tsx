@@ -56,9 +56,9 @@ export const TerminbekreftelseDokumentasjon = ({
             skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.terminbekreftelse.tittel' })}
             description={intl.formatMessage({
-                id: !erFarEllerMedmor
-                    ? 'manglendeVedlegg.terminbekreftelse.description'
-                    : 'manglendeVedlegg.terminbekreftelse.description.farMedmor',
+                id: erFarEllerMedmor
+                    ? 'manglendeVedlegg.terminbekreftelse.description.farMedmor'
+                    : 'manglendeVedlegg.terminbekreftelse.description',
             })}
             attachmentType={AttachmentType.TERMINBEKREFTELSE}
             metadataType={AttachmentMetadataType.BARN}

@@ -28,9 +28,9 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
 
     const detailTekst =
-        arbeidsforholdType !== Arbeidsforholdstype.FRILANSER
-            ? intl.formatMessage({ id: 'bedriftsbanner.detail' })
-            : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
+        arbeidsforholdType === Arbeidsforholdstype.FRILANSER
+            ? intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' })
+            : intl.formatMessage({ id: 'bedriftsbanner.detail' });
     return (
         <div className={styles.bedriftsbanner}>
             <HStack gap="space-20" align="center">

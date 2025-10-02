@@ -7,7 +7,7 @@ export const useScrollBehaviour = () => {
     const scrollToBottom = () => setScrollCounter(scrollCounter + 1);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        globalThis.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {

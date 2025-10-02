@@ -13,5 +13,5 @@ expect.extend(matchers);
 
 // @ts-expect-error greit her
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
-    window.scrollTo = () => undefined;
+    globalThis.scrollTo = () => undefined;
 }

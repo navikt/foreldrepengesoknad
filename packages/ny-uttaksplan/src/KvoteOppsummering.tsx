@@ -550,7 +550,7 @@ const FellesKvoter = () => {
                                 { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvAnnenPart, intl),
-                                    forelder: forelder !== 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                                    forelder: forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
                                 },
                             ),
                             ubrukteDager > 0

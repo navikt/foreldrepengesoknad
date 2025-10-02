@@ -770,7 +770,7 @@ const getFordelingForeldrepengerFar = (
 
 export const getMorTekst = (erFarEllerMedmor: boolean, navnMor: string, intl: IntlShape) => {
     if (erFarEllerMedmor) {
-        return navnMor !== intl.formatMessage({ id: 'annen.forelder' }) ? navnMor : intl.formatMessage({ id: 'mor' });
+        return navnMor === intl.formatMessage({ id: 'annen.forelder' }) ? intl.formatMessage({ id: 'mor' }) : navnMor;
     }
     return intl.formatMessage({ id: 'du' });
 };
@@ -779,7 +779,7 @@ export const getFarTekst = (erFarEllerMedmor: boolean, navnFar: string, intl: In
     if (erFarEllerMedmor) {
         return intl.formatMessage({ id: 'du' });
     }
-    return navnFar !== intl.formatMessage({ id: 'annen.forelder' }) ? navnFar : intl.formatMessage({ id: 'mor' });
+    return navnFar === intl.formatMessage({ id: 'annen.forelder' }) ? intl.formatMessage({ id: 'mor' }) : navnFar;
 };
 
 export const getFordelingFraKontoer = (
