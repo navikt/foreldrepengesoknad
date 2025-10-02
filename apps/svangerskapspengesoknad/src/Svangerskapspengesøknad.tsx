@@ -71,12 +71,12 @@ export const Svangerskapspengesøknad = () => {
 
     return (
         <div>
-            {!erPersonMyndig ? (
-                <Umyndig appName="svangerskapspengesoknad" />
-            ) : (
+            {erPersonMyndig ? (
                 <SvpDataContext initialState={mellomlagretState}>
                     <SvangerskapspengesøknadRoutes søkerInfo={søkerinfo.data} mellomlagretData={mellomlagretState} />
                 </SvpDataContext>
+            ) : (
+                <Umyndig appName="svangerskapspengesoknad" />
             )}
         </div>
     );

@@ -30,34 +30,32 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 .tom,
         };
         perioder.push(aktivitetskravPeriode);
+    } else if (farOgFar) {
+        const periode: SaksperiodeNy = {
+            kontoType: StønadskontoType.AktivitetsfriKvote,
+            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
+            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+        };
+        perioder.push(periode);
     } else {
-        if (farOgFar) {
-            const periode: SaksperiodeNy = {
+        let startDatoNestePeriode = førsteUttaksdag;
+        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
+            const aktivitetsFriPeriode: SaksperiodeNy = {
                 kontoType: StønadskontoType.AktivitetsfriKvote,
                 fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
                 tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
             };
-            perioder.push(periode);
-        } else {
-            let startDatoNestePeriode = førsteUttaksdag;
-            if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
-                const aktivitetsFriPeriode: SaksperiodeNy = {
-                    kontoType: StønadskontoType.AktivitetsfriKvote,
-                    fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-                    tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
-                };
 
-                perioder.push(aktivitetsFriPeriode);
-                startDatoNestePeriode = UttaksdagenString(aktivitetsFriPeriode.tom).neste();
-            }
-            const periode: SaksperiodeNy = {
-                kontoType: foreldrepengerKonto.konto,
-                fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
-                tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
-            };
-
-            perioder.push(periode);
+            perioder.push(aktivitetsFriPeriode);
+            startDatoNestePeriode = UttaksdagenString(aktivitetsFriPeriode.tom).neste();
         }
+        const periode: SaksperiodeNy = {
+            kontoType: foreldrepengerKonto.konto,
+            fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
+            tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
+        };
+
+        perioder.push(periode);
     }
 
     return { søker1: perioder, søker2: [] };

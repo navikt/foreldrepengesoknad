@@ -18,7 +18,7 @@ countries.registerLocale(langNN);
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
-        environment: window.location.hostname,
+        environment: globalThis.location.hostname,
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
 }

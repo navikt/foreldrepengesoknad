@@ -84,8 +84,7 @@ export const EndrePeriodePanelStep = ({
             skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
             stillingsprosent: graderingsInfo?.stillingsprosent,
             samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
-            samtidigUttaksprosent:
-                valgtPeriode?.samtidigUttak !== undefined ? valgtPeriode.samtidigUttak.toString() : undefined,
+            samtidigUttaksprosent: valgtPeriode?.samtidigUttak?.toString(),
             hvaVilDuGjøre: getHvaVilDuGjøre(),
         },
     });

@@ -171,11 +171,11 @@ export const Forside = ({
                         label={intl.formatMessage({ id: 'velkommen.samtykke' })}
                         validate={[
                             (value: boolean) =>
-                                value !== true
-                                    ? intl.formatMessage({
+                                value
+                                    ? null
+                                    : intl.formatMessage({
                                           id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
-                                      })
-                                    : null,
+                                      }),
                         ]}
                     >
                         <VStack gap="space-20">

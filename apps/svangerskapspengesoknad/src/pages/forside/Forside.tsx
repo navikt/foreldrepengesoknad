@@ -35,14 +35,14 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     const [isChecked, setIsChecked] = useState(harGodkjentVilkår);
 
     const bekreft = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
+        if (isChecked) {
             setHarGodkjentVilkår(true);
 
             oppdaterAppRoute(SøknadRoute.BARNET);
 
             mellomlagreSøknadOgNaviger();
+        } else {
+            setIsError(true);
         }
     };
 

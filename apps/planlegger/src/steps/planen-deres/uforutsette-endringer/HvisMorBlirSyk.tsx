@@ -42,15 +42,15 @@ export const HvisMorBlirSyk = ({ arbeidssituasjon, barnet, hvemPlanlegger }: Pro
                     <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
                 </Heading>
                 <BodyLong>
-                    {!kunEnPartSkalHa ? (
-                        <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                            values={{ antallBarn, hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
-                        />
-                    ) : (
+                    {kunEnPartSkalHa ? (
                         <FormattedMessage
                             id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene"
                             values={{ antallBarn }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
+                            values={{ antallBarn, hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
                         />
                     )}
                 </BodyLong>

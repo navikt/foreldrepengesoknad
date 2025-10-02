@@ -40,8 +40,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
     const erAvslåttForeldrepengesøknad =
         sak.ytelse === 'FORELDREPENGER' &&
         !!sak.gjeldendeVedtak &&
-        (sak.gjeldendeVedtak.perioder.length === 0 ||
-            sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
+        sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false);
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 

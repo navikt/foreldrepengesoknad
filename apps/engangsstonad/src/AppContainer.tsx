@@ -82,7 +82,7 @@ export const AppContainer = () => {
     const { pathname } = useLocation();
     // Scroll til toppen når man endrer side.
     useEffect(() => {
-        window.scrollTo(0, 0);
+        globalThis.scrollTo(0, 0);
     }, [pathname]);
 
     return (

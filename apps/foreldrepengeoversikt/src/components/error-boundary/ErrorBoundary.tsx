@@ -17,7 +17,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo): void {
-        if (error && error.message !== 'window.hasFocus is not a function') {
+        if (error && error.message !== 'globalThis.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
             Sentry.withScope((scope) => {
