@@ -4,8 +4,8 @@ export const utenRefusjon = [
     {
         versjon: 2,
         erAktiv: true,
-        stillingsprosent: 100.0,
-        inntektPrMnd: 140000.0,
+        stillingsprosent: 100,
+        inntektPrMnd: 140000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',
         journalpostId: '1017115920',

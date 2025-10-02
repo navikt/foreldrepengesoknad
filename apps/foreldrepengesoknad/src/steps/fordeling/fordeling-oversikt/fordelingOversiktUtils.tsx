@@ -52,7 +52,7 @@ export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
         }
         return intl.formatMessage({ id: 'skalAdoptere' });
     }
-    throw Error('Ukjent type barn');
+    throw new Error('Ukjent type barn');
 };
 
 const getHvorLengeDisseUkeneKanBrukesTekst = (
@@ -118,18 +118,18 @@ export const getFordelingDelTittel = (
 
     switch (delInfo.eier) {
         case FordelingEier.Mor:
-            return !erFarEllerMedmor
+            return erFarEllerMedmor
                 ? intl.formatMessage(
-                      { id: 'fordeling.antallUkerTilDeg' },
-                      {
-                          varighetTekst,
-                      },
-                  )
-                : intl.formatMessage(
                       { id: 'fordeling.antallUkerTilAnnenForelder' },
                       {
                           varighetTekst,
                           navn: navnMor,
+                      },
+                  )
+                : intl.formatMessage(
+                      { id: 'fordeling.antallUkerTilDeg' },
+                      {
+                          varighetTekst,
                       },
                   );
         case FordelingEier.FarMedmor:

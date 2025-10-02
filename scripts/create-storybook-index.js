@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const shell = require('shelljs');
 const glob = require('glob');
-const fs = require('fs');
+const fs = require('node:fs');
 
 const generateRow = (packageJson) => `
   <div class="box">

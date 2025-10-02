@@ -22,7 +22,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
     const { control } = useFormContext<AndreInntekterFormValues>();
 
     if (inntektskilde.type !== AnnenInntektType.JOBB_I_UTLANDET) {
-        throw Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
+        throw new Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
     }
 
     return (

@@ -1,5 +1,5 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('node:path');
+const fs = require('node:fs');
 
 const getFilePath = function (filnavn) {
     const directories = ['./mock-api/', 'mock_data', filnavn];

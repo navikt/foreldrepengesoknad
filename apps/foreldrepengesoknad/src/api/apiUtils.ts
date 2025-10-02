@@ -144,7 +144,7 @@ const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
         };
     }
 
-    throw Error('Det er feil i data om barnet');
+    throw new Error('Det er feil i data om barnet');
 };
 
 const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
