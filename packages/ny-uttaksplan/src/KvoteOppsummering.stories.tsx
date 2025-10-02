@@ -685,3 +685,14 @@ export const AleneomsorgFarForMangeDager: Story = {
         forelder: Forelder.farMedmor,
     },
 };
+
+export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        erMedmorDelAvSøknaden: true,
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Maria',
+        },
+    },
+};

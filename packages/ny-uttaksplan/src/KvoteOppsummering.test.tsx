@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event/dist/cjs/setup/index.js';
 import { describe, expect, it } from 'vitest';
 
 import * as stories from './KvoteOppsummering.stories';
@@ -12,16 +13,18 @@ const {
     EnRettFarLedigeDager,
     AleneomsorgFarForMangeDager,
     BeggeRettMorForMangeDagerBrukt,
+    BeggeRettMorOgMedmorMorIngenDagerBrukt,
+    BeggeRettMorIngenDagerBrukt,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorLedigeDager >', async () => {
         render(<BeggeRettMorLedigeDager />);
 
-        expect(screen.getByText('Det er 12 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
+        expect(screen.getByText('Det er 32 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
         expect(
             screen.getByText(
-                '5 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 2 uker til Espen ligger ikke i planen.',
+                '12 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 15 uker til Espen ligger ikke i planen.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -86,5 +89,26 @@ describe('<KvoteOppsummering >', () => {
         render(<BeggeRettMorForMangeDagerBrukt />);
 
         expect(screen.getByText('Det er lagt til 2 uker og 3 dager for mye')).toBeInTheDocument();
+    });
+
+    it('<MorOgMedmorBeggeRettMorIngenDagerBrukt - Medmors kvote skal være "Medmorkvote" >', async () => {
+        render(<BeggeRettMorOgMedmorMorIngenDagerBrukt />);
+        expect(screen.getByText('Det er 49 uker igjen som kan legges til i planen')).toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        expect(screen.getAllByText('Medmorkvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Fedrekvote')).not.toBeInTheDocument();
+    });
+
+    it('<BeggeRettMorIngenDagerBrukt - Fars kvote skal være "Fedrekvote" >', async () => {
+        render(<BeggeRettMorIngenDagerBrukt />);
+        expect(screen.getByText('Det er 49 uker igjen som kan legges til i planen')).toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+        expect(screen.getAllByText('Fedrekvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
     });
 });

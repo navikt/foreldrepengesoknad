@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
@@ -8,7 +8,7 @@ import { UttakArbeidType } from '@navikt/fp-types';
 
 import * as stories from './Uttaksplan.stories';
 
-const { Default } = composeStories(stories);
+const { Default, MorOgMedmor } = composeStories(stories);
 
 describe('Uttaksplan', () => {
     it('skal legge til ny periode - ferie', async () => {
@@ -264,5 +264,51 @@ describe('Uttaksplan', () => {
                 tom: '2026-03-26',
             },
         ]);
+    });
+
+    it('Skal vise "Fars kvote" når det er morOgFar som skal endre periode og legge til periode med foreldrepenger', async () => {
+        const handleOnPlanChange = vi.fn();
+        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('09. May - 26. Mar'));
+        await userEvent.click(screen.getAllByText('Endre')[1]);
+        expect(await screen.findByText('Hvilken periode vil du endre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12.12.2025 - 26.03.2026 - Espen Utviklers kvote'));
+        await userEvent.click(screen.getByText('Gå videre'));
+        const kontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
+        expect(within(kontotypeFieldset).getByText('Fars kvote')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        // Bruk getAllByText for heading i stedet for getByText
+        expect(screen.getAllByText('Hvilken del av foreldrepengene vil du bruke?').length).toBeGreaterThan(0);
+        // Finn fieldset ved å bruke legend-teksten
+        const nyKontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
+        expect(within(nyKontotypeFieldset).getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.queryByText('Medmors kvote')).not.toBeInTheDocument();
+    });
+
+    it('Skal vise "Medmors kvote" når det er morOgmor som skal endre periode og legge til periode med foreldrepenger', async () => {
+        const handleOnPlanChange = vi.fn();
+        render(<MorOgMedmor handleOnPlanChange={handleOnPlanChange} />);
+        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('09. May - 26. Mar'));
+        await userEvent.click(screen.getAllByText('Endre')[1]);
+        expect(await screen.findByText('Hvilken periode vil du endre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12.12.2025 - 26.03.2026 - Helga Utviklers kvote'));
+        await userEvent.click(screen.getByText('Gå videre'));
+        const kontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
+        expect(within(kontotypeFieldset).getByText('Medmors kvote')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        // Bruk getAllByText for heading i stedet for getByText
+        expect(screen.getAllByText('Hvilken del av foreldrepengene vil du bruke?').length).toBeGreaterThan(0);
+        // Finn fieldset ved å bruke legend-teksten
+        const nyKontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
+        expect(within(nyKontotypeFieldset).getByText('Medmors kvote')).toBeInTheDocument();
+        expect(screen.queryByText('Fars kvote')).not.toBeInTheDocument();
     });
 });
