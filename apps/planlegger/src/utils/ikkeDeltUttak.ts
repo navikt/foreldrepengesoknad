@@ -224,7 +224,7 @@ const ikkeDeltUttakFødsel = (
     farOgFar: boolean,
     startdato?: string,
 ) => {
-    if (!erFarEllerMedmor) {
+    if (erFarEllerMedmor) {
         return ikkeDeltUttakFødselFarMedmor(
             famDato,
             foreldrepengerKonto,
