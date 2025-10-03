@@ -195,7 +195,7 @@ export const saker = {
                                 type: 'INGEN',
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             },
                         ],
@@ -219,7 +219,7 @@ export const saker = {
                                 type: 'INGEN',
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             },
                         ],

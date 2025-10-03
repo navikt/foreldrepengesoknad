@@ -18,7 +18,7 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): PersonFrontend['
         if (fnr === undefined || fnr.length !== 11) {
             return undefined;
         }
-        return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+        return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
     }
 
     return undefined;
@@ -28,7 +28,7 @@ export const getKjønnFromFnrString = (fnr: string): PersonFrontend['kjønn'] | 
     if (fnr.length !== 11) {
         return undefined;
     }
-    return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+    return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
 };
 
 export const getKunFarHarRett = (

@@ -43,7 +43,7 @@ export const RhfTextarea = <T extends FieldValues>({
     const onChange = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {
             field.onChange(
-                event.currentTarget.value !== '' ? replaceInvisibleCharsWithSpace(event.currentTarget.value) : null,
+                event.currentTarget.value === '' ? null : replaceInvisibleCharsWithSpace(event.currentTarget.value),
             );
         },
         [field],

@@ -19,7 +19,7 @@
         "@navikt/fp-server-utils": "workspace:*",
         "@types/express": "5.0.3",
         "@types/morgan": "1.9.10",
-        "@types/node": "24.3.0",
+        "@types/node": "24.5.2",
         "@vercel/ncc": "0.38.3",
         "morgan": "1.10.1",
         "typescript": "5.9.2",

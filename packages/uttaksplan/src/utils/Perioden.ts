@@ -51,7 +51,6 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
 }
 
 function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { tidsperiode, id, ...rest } = periode;
     const sortedPeriode: any = {};
     Object.keys(rest)

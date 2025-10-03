@@ -54,12 +54,15 @@ const slåSammenPeriods = (periods: Period[]) => {
     }
 
     return periods.reduce((res, period, index) => {
+        const sisteRes = res.at(-1);
+
         if (
             index !== 0 &&
-            period.color === res[res.length - 1].color &&
-            dayjs(Uttaksdagen(new Date(res[res.length - 1].tom)).neste()).isSame(dayjs(period.fom), 'day')
+            sisteRes &&
+            period.color === sisteRes.color &&
+            dayjs(Uttaksdagen(new Date(sisteRes.tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
-            res[res.length - 1].tom = period.tom;
+            sisteRes.tom = period.tom;
             return res;
         } else {
             res.push(period);
@@ -127,7 +130,7 @@ const getKalenderFargeForUttaksperiode = (
         ? getAnnenForelderSamtidigUttakPeriode(periode, uttaksplan)
         : undefined;
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
-    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && parseInt(samtidigUttaksprosent) > 0)) {
+    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && Number.parseInt(samtidigUttaksprosent) > 0)) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
     if (!annenForelderSamtidigUttaksperiode && !samtidigUttaksprosent && isUttaksperiode(periode) && periode.gradert) {
@@ -193,7 +196,7 @@ const getKalenderFargeForPeriodeType = (
 
 const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
     const førsteDag = periods[0].fom;
-    const sisteDag = periods[periods.length - 1].tom;
+    const sisteDag = periods.at(-1)!.tom;
     if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
         return true;
     }

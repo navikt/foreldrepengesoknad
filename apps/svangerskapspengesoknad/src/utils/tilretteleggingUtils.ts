@@ -173,7 +173,7 @@ export const getTilretteleggingId = (
     isSisteTilrettelegging = false,
 ) => {
     if (valgteArbeidsforhold) {
-        return isSisteTilrettelegging ? valgteArbeidsforhold[valgteArbeidsforhold.length - 1] : valgteArbeidsforhold[0];
+        return isSisteTilrettelegging ? valgteArbeidsforhold.at(-1)! : valgteArbeidsforhold[0];
     } else if (arbeidsforholdOgInntekt.harJobbetSomFrilans) {
         return FRILANS_ID;
     } else if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {
@@ -196,7 +196,7 @@ export const getNesteTilretteleggingId = (
         return valgteArbeidsforhold[0];
     }
 
-    const nesteTilretteleggingIndex = valgteArbeidsforhold.findIndex((id) => id === currentTilretteleggingId) + 1;
+    const nesteTilretteleggingIndex = valgteArbeidsforhold.indexOf(currentTilretteleggingId) + 1;
     if (nesteTilretteleggingIndex === valgteArbeidsforhold.length) {
         return undefined;
     }

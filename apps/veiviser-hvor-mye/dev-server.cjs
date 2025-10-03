@@ -2,7 +2,7 @@ const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware
 const express = require('express');
 const server = express();
 server.use(express.json());
-const path = require('path');
+const path = require('node:path');
 const mustacheExpress = require('mustache-express');
 const compression = require('compression');
 
@@ -52,7 +52,7 @@ const startServer = async (html) => {
         }),
     );
 
-    const fs = require('fs');
+    const fs = require('node:fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
 
     const vite = await require('vite').createServer({

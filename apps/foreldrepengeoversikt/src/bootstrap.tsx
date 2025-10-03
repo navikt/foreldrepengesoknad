@@ -17,8 +17,8 @@ dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
-    release: (window as any).APP_VERSION,
-    environment: window.location.hostname,
+    release: (globalThis as any).APP_VERSION,
+    environment: globalThis.location.hostname,
     integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
 

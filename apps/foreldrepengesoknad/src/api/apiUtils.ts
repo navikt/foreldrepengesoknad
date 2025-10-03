@@ -144,7 +144,7 @@ const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
         };
     }
 
-    throw Error('Det er feil i data om barnet');
+    throw new Error('Det er feil i data om barnet');
 };
 
 const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
@@ -290,13 +290,13 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
 
     const vedleggArray: Attachment[] = [];
 
-    Object.keys(vedlegg).forEach((key: unknown) => {
+    for (const key of Object.keys(vedlegg)) {
         const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
 
         if (vedleggAvTypeSkjemanummer && vedleggAvTypeSkjemanummer.length > 0) {
             vedleggArray.push(...vedleggAvTypeSkjemanummer);
         }
-    });
+    }
 
     return vedleggArray;
 };

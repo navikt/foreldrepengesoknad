@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const noMatchMedia = typeof window !== 'undefined' && window.matchMedia === undefined;
+const noMatchMedia = typeof globalThis !== 'undefined' && globalThis.matchMedia === undefined;
 
 /**
  * @example useMedia("screen and (min-width: 1024px)")
@@ -15,7 +15,7 @@ export const useMedia = (media: string, fallback?: boolean): boolean | undefined
         if (noMatchMedia) {
             return;
         }
-        const mediaQueryList = window.matchMedia(media);
+        const mediaQueryList = globalThis.matchMedia(media);
 
         setMatches(mediaQueryList.matches);
 

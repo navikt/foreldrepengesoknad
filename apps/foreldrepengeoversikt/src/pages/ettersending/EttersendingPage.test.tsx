@@ -111,7 +111,7 @@ describe('<EttersendingPage>', () => {
             const optionsTextContent = within(select)
                 .getAllByRole('option')
                 .map((o) => o.textContent);
-            expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
+            expect(optionsTextContent.at(-1)).toBe('Annet dokument');
         }),
     );
 

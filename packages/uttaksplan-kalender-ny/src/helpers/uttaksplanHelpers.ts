@@ -39,7 +39,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (
             .filter((p) => p.forelder !== forelder && isUttaksperiode(periode))
             .find((p) => dayjs(periode.fom).isSame(p.fom));
 
-        return samtidigUttak !== undefined ? samtidigUttak : undefined;
+        return samtidigUttak;
     }
 
     return undefined;

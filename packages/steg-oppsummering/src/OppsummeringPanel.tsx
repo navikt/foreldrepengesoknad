@@ -52,11 +52,11 @@ export const OppsummeringPanel = <TYPE extends string>({
     const [isError, setIsError] = useState(false);
 
     const send = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
+        if (isChecked) {
             setIsSubmitting(true);
             sendSøknad();
+        } else {
+            setIsError(true);
         }
     };
 

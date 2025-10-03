@@ -1,7 +1,6 @@
 import { UttaksplanIkonProps } from '../components/uttaksplan-ikon/UttaksplanIkon';
 
 const UttakIkon = (props: UttaksplanIkonProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { title, ...rest } = props;
     return (
         <svg

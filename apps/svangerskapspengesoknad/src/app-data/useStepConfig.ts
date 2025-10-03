@@ -180,7 +180,7 @@ const getStepConfig = (
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
     if (harValgtFlereTilrettelegginger) {
-        valgteArbeidsforhold.forEach((tilretteleggingId) => {
+        for (const tilretteleggingId of valgteArbeidsforhold) {
             const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
             const labels = getTilretteleggingLabels(
                 intl,
@@ -197,7 +197,7 @@ const getStepConfig = (
                     typeArbeidsgiver,
                 }),
             );
-        });
+        }
     } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
@@ -215,8 +215,10 @@ const getStepConfig = (
             }),
         );
     } else {
-        steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
-        steps.push(createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath));
+        steps.push(
+            createStep(SøknadRoute.SKJEMA, intl, currentPath),
+            createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath),
+        );
 
         if (
             !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&

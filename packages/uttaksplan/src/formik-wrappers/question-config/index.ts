@@ -69,13 +69,13 @@ const areAllQuestionsAnswered = <Payload, QuestionKeys, ErrorFormat>(
     payload: Payload,
 ): boolean => {
     let allQuestionsHasAnswers = true;
-    Object.keys(questions).forEach((key) => {
+    for (const key of Object.keys(questions)) {
         const question = questions[key];
         if (isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key as any, payload)) {
             const isOptional = question.isOptional !== undefined ? question.isOptional(payload) === true : false;
             allQuestionsHasAnswers = allQuestionsHasAnswers === true && (question.isAnswered(payload) || isOptional);
         }
-    });
+    }
     return allQuestionsHasAnswers;
 };
 

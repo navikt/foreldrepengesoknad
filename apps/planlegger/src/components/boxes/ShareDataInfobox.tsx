@@ -13,7 +13,7 @@ const copyUrlToClipboard = async () => {
         eventData: { tittel: 'OppsummeringSteg.KopierUrl' },
     });
     try {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(globalThis.location.href);
     } catch (err) {
         // eslint-disable-next-line no-console
         console.error('Failed to copy: ', err);

@@ -30,7 +30,7 @@ type DateType = string | Date | undefined;
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined, regBarnFødselsdato: DateType) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
+        ? fødselsdatoer.some((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato))
         : false;
 };
 
@@ -99,7 +99,7 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     antallBarn: number,
     intl: IntlShape,
 ): string => {
-    if (omsorgsovertagelsesdato !== undefined) {
+    if (omsorgsovertagelsesdato) {
         return intl.formatMessage(
             { id: 'velkommen.barnVelger.adoptertBarn' },
             {
@@ -136,7 +136,7 @@ export const formaterNavnPåBarn = (
 
     if (fornavn.length > 1) {
         const fornavnene = fornavn.slice(0, -1).join(', ');
-        const sisteFornavn = fornavn[fornavn.length - 1];
+        const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     }
     return `${fornavn[0]}`;
@@ -147,18 +147,18 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
         return undefined;
     }
     const unikeFødselsdatoer = [] as string[];
-    fødselsdatoer.forEach((f) => {
+    for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
             const dateString = dayjs(f).format(ISO_DATE_FORMAT);
             unikeFødselsdatoer.push(dateString);
         }
-    });
+    }
 
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => dayjs(fd).format(DDMMMMYYY_DATE_FORMAT));
         const førsteFødselsdaoer = fødselsdatoerTekst.slice(0, -1).join(', ');
-        const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
+        const sisteFødselsdato = fødselsdatoerTekst.at(-1);
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
     return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);

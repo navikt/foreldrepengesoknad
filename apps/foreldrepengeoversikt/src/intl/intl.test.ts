@@ -31,8 +31,12 @@ describe('intl foreldrepengeoversikt', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysBokmål.length).toBe(0);
     });
 
@@ -58,8 +62,12 @@ describe('intl foreldrepengeoversikt', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysCode.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysCode) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysCode.length).toBe(0);
     });
 });

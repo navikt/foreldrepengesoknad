@@ -308,7 +308,7 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] =
     if (valgteBarn.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
-        return Array(sak.antallBarn).fill(sak.fødselsdato!);
+        return new Array(sak.antallBarn).fill(sak.fødselsdato!);
     }
     return [];
 };
@@ -400,16 +400,12 @@ const finnAnnenForelderForSaken = (
     if ((valgtBarnFnr === undefined && fødselsdato === undefined) || !annenForeldersFnrFraSaken) {
         return undefined;
     }
-    const barnMedGittFnr =
-        valgtBarnFnr !== undefined
-            ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenForelder !== undefined)
-            : undefined;
-    const barnMedGittFødselsdato =
-        fødselsdato !== undefined
-            ? barn.find(
-                  (b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined,
-              )
-            : undefined;
+    const barnMedGittFnr = valgtBarnFnr
+        ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenForelder !== undefined)
+        : undefined;
+    const barnMedGittFødselsdato = fødselsdato
+        ? barn.find((b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined)
+        : undefined;
 
     const barnet = barnMedGittFnr ?? barnMedGittFødselsdato;
 
@@ -437,7 +433,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
                     : undefined,
         };
-    } else if (valgteBarn.termindato !== undefined) {
+    } else if (valgteBarn.termindato) {
         return {
             type: BarnType.UFØDT,
             antallBarn: valgteBarn.antallBarn,

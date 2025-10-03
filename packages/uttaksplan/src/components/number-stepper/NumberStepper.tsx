@@ -46,7 +46,7 @@ const NumberStepper: React.FunctionComponent<Props> = ({
                     value={value}
                     type="number"
                     aria-labelledby={legendId}
-                    onChange={(evt) => onChange(parseInt(evt.target.value, 10))}
+                    onChange={(evt) => onChange(Number.parseInt(evt.target.value, 10))}
                 />
             </div>
             <div className={bem.element('increase')}>

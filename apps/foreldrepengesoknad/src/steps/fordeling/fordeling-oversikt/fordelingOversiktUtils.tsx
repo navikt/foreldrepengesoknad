@@ -52,7 +52,7 @@ export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
         }
         return intl.formatMessage({ id: 'skalAdoptere' });
     }
-    throw Error('Ukjent type barn');
+    throw new Error('Ukjent type barn');
 };
 
 const getHvorLengeDisseUkeneKanBrukesTekst = (
@@ -118,18 +118,18 @@ export const getFordelingDelTittel = (
 
     switch (delInfo.eier) {
         case FordelingEier.Mor:
-            return !erFarEllerMedmor
+            return erFarEllerMedmor
                 ? intl.formatMessage(
-                      { id: 'fordeling.antallUkerTilDeg' },
-                      {
-                          varighetTekst,
-                      },
-                  )
-                : intl.formatMessage(
                       { id: 'fordeling.antallUkerTilAnnenForelder' },
                       {
                           varighetTekst,
                           navn: navnMor,
+                      },
+                  )
+                : intl.formatMessage(
+                      { id: 'fordeling.antallUkerTilDeg' },
+                      {
+                          varighetTekst,
                       },
                   );
         case FordelingEier.FarMedmor:
@@ -770,7 +770,7 @@ const getFordelingForeldrepengerFar = (
 
 export const getMorTekst = (erFarEllerMedmor: boolean, navnMor: string, intl: IntlShape) => {
     if (erFarEllerMedmor) {
-        return navnMor !== intl.formatMessage({ id: 'annen.forelder' }) ? navnMor : intl.formatMessage({ id: 'mor' });
+        return navnMor === intl.formatMessage({ id: 'annen.forelder' }) ? intl.formatMessage({ id: 'mor' }) : navnMor;
     }
     return intl.formatMessage({ id: 'du' });
 };
@@ -779,7 +779,7 @@ export const getFarTekst = (erFarEllerMedmor: boolean, navnFar: string, intl: In
     if (erFarEllerMedmor) {
         return intl.formatMessage({ id: 'du' });
     }
-    return navnFar !== intl.formatMessage({ id: 'annen.forelder' }) ? navnFar : intl.formatMessage({ id: 'mor' });
+    return navnFar === intl.formatMessage({ id: 'annen.forelder' }) ? intl.formatMessage({ id: 'mor' }) : navnFar;
 };
 
 export const getFordelingFraKontoer = (
@@ -945,11 +945,10 @@ export const getSisteUttaksdagAnnenForelder = (
         (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
     );
 
+    const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
     const sisteDagAnnenForelder =
-        annenForeldersFiltrertePerioder && annenForeldersFiltrertePerioder.length > 0
-            ? Uttaksdagen(
-                  annenForeldersFiltrertePerioder[annenForeldersFiltrertePerioder.length - 1].tidsperiode.tom,
-              ).denneEllerForrige()
+        annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
+            ? Uttaksdagen(sistePeriodeAnnenForelder.tidsperiode.tom).denneEllerForrige()
             : undefined;
     return sisteDagAnnenForelder;
 };

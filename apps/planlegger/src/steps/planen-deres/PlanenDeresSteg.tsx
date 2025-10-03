@@ -44,9 +44,8 @@ const finnAntallDagerSøker1 = (
             ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
             : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    return fordeling.antallDagerSøker1 > ukerOgDagerFellesperiode.totaltAntallDager
-        ? ukerOgDagerFellesperiode.totaltAntallDager
-        : fordeling.antallDagerSøker1;
+
+    return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
 };
 
 interface Props {
@@ -230,7 +229,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                     hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
-                                        lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
+                                        lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
                                     }}
                                 >
                                     {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(

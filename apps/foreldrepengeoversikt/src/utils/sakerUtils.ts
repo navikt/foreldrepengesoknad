@@ -64,18 +64,17 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
 
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
-    const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
+    const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
-    const pdlBarnMedSammeFødselsdato =
-        fødselsdatoFraSak !== undefined
-            ? registrerteBarn.filter(
-                  (barn) =>
-                      getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
-                      !pdlBarnMedSammeFnr?.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
-              )
-            : [];
+    const pdlBarnMedSammeFødselsdato = fødselsdatoFraSak
+        ? registrerteBarn.filter(
+              (barn) =>
+                  getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
+                  !pdlBarnMedSammeFnr?.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
+          )
+        : [];
 
     const alleBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
     alleBarn.sort(sorterPersonEtterEldstOgNavn);
@@ -129,7 +128,7 @@ export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'
                     saker: [sak],
                     type,
                     ytelse: sak.ytelse,
-                    barn: type !== 'termin' ? getBarnGrupperingFraSak(sak, registrerteBarn) : undefined,
+                    barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
                 };
 
                 result.push(gruppertSak);
@@ -255,18 +254,20 @@ const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined): stri
     if (fødselsdatoer === undefined) {
         return undefined;
     }
+
     const unikeFødselsdatoer = [] as Date[];
-    fødselsdatoer.forEach((f) => {
+
+    for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
         if (finnesIUnikeFødselsdatoer === undefined) {
             unikeFødselsdatoer.push(f);
         }
-    });
+    }
 
     if (unikeFødselsdatoer.length > 1) {
         const fødselsdatoerTekst = unikeFødselsdatoer.map((fd) => formatDate(fd));
         const førsteFødselsdaoer = fødselsdatoerTekst.slice(0, -1).join(', ');
-        const sisteFødselsdato = fødselsdatoerTekst[fødselsdatoerTekst.length - 1];
+        const sisteFødselsdato = fødselsdatoerTekst.at(-1);
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
     return formatDate(unikeFødselsdatoer[0]);
@@ -327,7 +328,7 @@ export const getNavnPåBarna = (fornavn: string[]): string => {
             .map((n) => n.trim())
             .slice(0, -1)
             .join(', ');
-        const sisteFornavn = fornavn[fornavn.length - 1];
+        const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     } else {
         return `${fornavn[0]}`;

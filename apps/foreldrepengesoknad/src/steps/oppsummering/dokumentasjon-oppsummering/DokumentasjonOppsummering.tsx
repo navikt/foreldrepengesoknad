@@ -20,7 +20,7 @@ interface Props {
 const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
     // Sjekk om det er noen gyldige answers å vise
     return Object.values(alleVedlegg ?? {})
-        .flatMap((vedleggListe) => vedleggListe)
+        .flat()
         .some((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK);
 };
 
@@ -38,7 +38,7 @@ export const DokumentasjonOppsummering = ({
     }
 
     const harSendSenereDokument = Object.values(alleVedlegg)
-        .flatMap((vedlegg) => vedlegg)
+        .flat()
         .some(
             (v) =>
                 v.innsendingsType === InnsendingsType.SEND_SENERE &&
@@ -60,9 +60,6 @@ export const DokumentasjonOppsummering = ({
                             <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
                         )}
                     </FormSummary.Heading>
-                    <FormSummary.EditLink onClick={onVilEndreSvar}>
-                        <FormattedMessage id="Oppsummering.EndreSvar" />
-                    </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     {alleVedlegg &&
@@ -114,6 +111,11 @@ export const DokumentasjonOppsummering = ({
                                 </FormSummary.Answer>
                             ))}
                 </FormSummary.Answers>
+                <FormSummary.Footer>
+                    <FormSummary.EditLink onClick={onVilEndreSvar}>
+                        <FormattedMessage id="Oppsummering.EndreSvar" />
+                    </FormSummary.EditLink>
+                </FormSummary.Footer>
             </FormSummary>
             {harSendSenereDokument && (
                 <Alert variant="info">

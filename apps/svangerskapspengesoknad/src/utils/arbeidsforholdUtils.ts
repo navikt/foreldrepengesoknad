@@ -33,10 +33,10 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
 ): number => {
     if (skjæringstidspunkt) {
         const perioderISkjæringstidspunktet = stillinger.filter((p) => {
-            if (!p.tom) {
-                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
-            } else {
+            if (p.tom) {
                 return dayjs(skjæringstidspunkt).isBetween(dayjs(p.fom), dayjs(p.tom), 'day', '[]');
+            } else {
+                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
             }
         });
 

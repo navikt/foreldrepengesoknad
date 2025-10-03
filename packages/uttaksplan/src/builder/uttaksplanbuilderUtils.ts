@@ -402,13 +402,12 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     const perioderTidsperioder: SplittetDatoType[] = perioder
         .filter((per) => isValidTidsperiodeString(per.tidsperiode))
         .reduce((res, p) => {
-            res.push({ dato: p.tidsperiode.fom, erFom: true });
-            res.push({ dato: p.tidsperiode.tom, erFom: false });
+            res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
+
             return res;
         }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
+        res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
 
@@ -434,15 +433,15 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     const normaliserteEgnePerioder: Periode[] = [];
     const normaliserteAnnenPartsPerioder: Periode[] = [];
 
-    perioder.forEach((p) => {
+    for (const p of perioder) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteEgnePerioder.push(...oppsplittetPeriode);
-    });
+    }
 
-    annenPartsUttak.forEach((p) => {
+    for (const p of annenPartsUttak) {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
         normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
-    });
+    }
 
     return {
         normaliserteEgnePerioder,
@@ -491,8 +490,7 @@ export const settInnAnnenPartsUttak = (
         }
 
         if (isUttaksperiodeAnnenpartEøs(overlappendePeriode)) {
-            res.push(p);
-            res.push({ ...overlappendePeriode, visPeriodeIPlan: false } as Periode);
+            res.push(p, { ...overlappendePeriode, visPeriodeIPlan: false } as Periode);
             return res;
         }
 
@@ -517,7 +515,7 @@ export const settInnAnnenPartsUttak = (
         dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day'),
     );
 
-    const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
+    const sistePeriodeSluttdato = perioder.at(-1)!.tidsperiode.tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day'),
     );

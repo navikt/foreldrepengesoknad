@@ -130,7 +130,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
 
     // TODO FIX string => number
     const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
-    const antallDagerSøker1 = antallDagerSøker1Temp ? parseInt(antallDagerSøker1Temp.toString(), 10) : undefined;
+    const antallDagerSøker1 = antallDagerSøker1Temp ? Number.parseInt(antallDagerSøker1Temp.toString(), 10) : undefined;
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);

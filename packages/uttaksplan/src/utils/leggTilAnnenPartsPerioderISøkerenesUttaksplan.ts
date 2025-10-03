@@ -19,7 +19,7 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
         annenPartsPerioder,
     );
     if (normaliserteAnnenPartsPerioder.length > 0) {
-        normaliserteEgnePerioder.forEach((p) => {
+        for (const p of normaliserteEgnePerioder) {
             if (isUttaksperiode(p)) {
                 const overlappendePerioderAnnenPart =
                     Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
@@ -39,7 +39,7 @@ export const leggTilAnnenPartsPerioderISøkerenesUttaksplan = (
                     }
                 }
             }
-        });
+        }
         return finnOgSettInnHull(
             settInnAnnenPartsUttak(
                 normaliserteEgnePerioder,

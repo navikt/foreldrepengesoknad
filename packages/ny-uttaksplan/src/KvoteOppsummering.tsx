@@ -31,6 +31,7 @@ type Props = {
     familiehendelse?: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
+    erMedmorDelAvSøknaden?: boolean;
 };
 const KvoteContext = createContext<Props | null>(null);
 
@@ -549,7 +550,7 @@ const FellesKvoter = () => {
                                 { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvAnnenPart, intl),
-                                    forelder: forelder !== 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                                    forelder: forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
                                 },
                             ),
                             ubrukteDager > 0
@@ -569,7 +570,7 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner, familiehendelse } = useKvote();
+    const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
     if (!konto) {
         return null;
@@ -599,7 +600,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
             <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
-                    <VisningsnavnForKvote kontoType={konto.konto} />
+                    <VisningsnavnForKvote kontoType={konto.konto} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
                 </BodyShort>
@@ -665,12 +666,22 @@ const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: Saks
     );
 };
 
-const VisningsnavnForKvote = ({ kontoType }: { kontoType: KontoDto['konto'] }) => {
+const VisningsnavnForKvote = ({
+    kontoType,
+    erMedmorDelAvSøknaden,
+}: {
+    kontoType: KontoDto['konto'];
+    erMedmorDelAvSøknaden?: boolean;
+}) => {
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
             return <FormattedMessage id="kvote.konto.Aktivitetsfrikvote" />;
         case 'FEDREKVOTE':
-            return <FormattedMessage id="kvote.konto.Fedrekvote" />;
+            return erMedmorDelAvSøknaden ? (
+                <FormattedMessage id="kvote.konto.Medmorkvote" />
+            ) : (
+                <FormattedMessage id="kvote.konto.Fedrekvote" />
+            );
         case 'MØDREKVOTE':
             return <FormattedMessage id="kvote.konto.Mødrekvote" />;
         case 'FORELDREPENGER_FØR_FØDSEL':
@@ -719,7 +730,7 @@ const FordelingSegment = ({
     if (erOvertrukket) {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-danger-400 border-ax-danger-400`}
+                className={`bg-ax-danger-400 border-ax-danger-400 h-4 border-2 first:rounded-l-lg last:rounded-r-lg`}
             />
         );
     }
@@ -727,7 +738,7 @@ const FordelingSegment = ({
     if (erUtløpt) {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-neutral-400 border-ax-neutral-400`}
+                className={`bg-ax-neutral-400 border-ax-neutral-400 h-4 border-2 first:rounded-l-lg last:rounded-r-lg`}
             />
         );
     }
@@ -741,14 +752,14 @@ const FordelingSegment = ({
         ) {
             return (
                 <div
-                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-accent-500' : 'bg-ax-bg-default'} border-ax-accent-500`}
+                    className={`h-4 border-2 first:rounded-l-lg last:rounded-r-lg ${erFyllt ? 'bg-ax-accent-500' : 'bg-ax-bg-default'} border-ax-accent-500`}
                 />
             );
         }
         if (kontoType === 'FEDREKVOTE') {
             return (
                 <div
-                    className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-success-300' : 'bg-ax-bg-default'} border-ax-success-300`}
+                    className={`h-4 border-2 first:rounded-l-lg last:rounded-r-lg ${erFyllt ? 'bg-ax-success-300' : 'bg-ax-bg-default'} border-ax-success-300`}
                 />
             );
         }
@@ -763,14 +774,14 @@ const FordelingSegment = ({
     ) {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${erFyllt ? 'bg-ax-success-500' : 'bg-ax-bg-default'} border-ax-success-500`}
+                className={`h-4 border-2 first:rounded-l-lg last:rounded-r-lg ${erFyllt ? 'bg-ax-success-500' : 'bg-ax-bg-default'} border-ax-success-500`}
             />
         );
     }
     if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
             <div
-                className={`first:rounded-l-lg last:rounded-r-lg h-4 border-2 ${
+                className={`h-4 border-2 first:rounded-l-lg last:rounded-r-lg ${
                     erFyllt ? 'bg-ax-brand-blue-300' : 'bg-ax-bg-default'
                 } border-ax-brand-blue-300`}
             />
@@ -778,13 +789,13 @@ const FordelingSegment = ({
     }
 
     return (
-        <div className="first:rounded-l-lg last:rounded-r-lg h-4 border-2 bg-ax-bg-default border-ax-bg-neutral-strong-hover" />
+        <div className="bg-ax-bg-default border-ax-bg-neutral-strong-hover h-4 border-2 first:rounded-l-lg last:rounded-r-lg" />
     );
 };
 
 type IkonProps = { size: 'stor' | 'liten' };
 const AllTidIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-ax-bg-success-moderate">
+    <div className="bg-ax-bg-success-moderate rounded-full">
         <CheckmarkIcon
             fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
             className="text-ax-text-success-decoration p-1"
@@ -794,7 +805,7 @@ const AllTidIPlanIkon = ({ size }: IkonProps) => (
 );
 
 const MerTidÅBrukeIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-ax-bg-accent-moderate">
+    <div className="bg-ax-bg-accent-moderate rounded-full">
         <CircleBrokenIcon
             fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
             className="text-ax-text-accent-subtle p-1"
@@ -804,7 +815,7 @@ const MerTidÅBrukeIPlanIkon = ({ size }: IkonProps) => (
 );
 
 const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
-    <div className="rounded-full bg-ax-bg-danger-moderate">
+    <div className="bg-ax-bg-danger-moderate rounded-full">
         <ExclamationmarkIcon
             fontSize={size === 'stor' ? '2.5rem' : '1.5rem'}
             className="text-ax-text-danger-subtle p-05"

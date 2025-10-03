@@ -527,20 +527,24 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const nyePerioder = [] as Periode[];
-    perioder.forEach((p) => {
+    for (const p of perioder) {
         if (tidperiodeOverlapperDato(p.tidsperiode, familiehendelsesdato) && isUttaksperiode(p)) {
             const splittedePerioder = splittUttaksperiodePåFamiliehendelsesdato(p, familiehendelsesdato);
-            splittedePerioder.forEach((periode) => nyePerioder.push(periode));
+            for (const periode of splittedePerioder) {
+                nyePerioder.push(periode);
+            }
         } else if (
             førsteUttaksdagNesteBarnsSak !== undefined &&
             tidperiodeOverlapperDato(p.tidsperiode, førsteUttaksdagNesteBarnsSak)
         ) {
             const splittedePerioder = splittPeriodePåDato(p, førsteUttaksdagNesteBarnsSak);
-            splittedePerioder.forEach((periode) => nyePerioder.push(periode));
+            for (const periode of splittedePerioder) {
+                nyePerioder.push(periode);
+            }
         } else {
             nyePerioder.push(p);
         }
-    });
+    }
     return nyePerioder;
 };
 

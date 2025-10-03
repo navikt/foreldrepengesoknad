@@ -65,15 +65,15 @@ export const stillingsprosentIsLessThan100 = (stillingsprosent: string): boolean
 };
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
-    pst !== undefined && isNaN(parseFloat(pst)) === false;
+    pst !== undefined && Number.isNaN(Number.parseFloat(pst)) === false;
 
 const prettifyProsent = (pst: string | undefined): number | undefined => {
     if (pst === undefined) {
         return undefined;
     }
 
-    const nbr = parseFloat(pst);
-    if (isNaN(nbr)) {
+    const nbr = Number.parseFloat(pst);
+    if (Number.isNaN(nbr)) {
         return undefined;
     }
     if (Math.round(nbr) === nbr) {
@@ -323,7 +323,7 @@ export const getSamtidigUttaksprosent = (
     gradertPeriode: boolean | undefined,
     stillingsprosent: string | undefined,
 ): string => {
-    return gradertPeriode && stillingsprosent ? (100 - parseInt(stillingsprosent, 10)).toString() : '100';
+    return gradertPeriode && stillingsprosent ? (100 - Number.parseInt(stillingsprosent, 10)).toString() : '100';
 };
 
 export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {

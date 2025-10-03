@@ -22,9 +22,6 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="AndreInntektskilderOppsummering.AndreInntekter" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             {andreInntektskilder.map((annenInntektskilde, index) => (
                 <FormSummary.Answers key={`${annenInntektskilde.type}-${annenInntektskilde.fom}`}>
@@ -158,6 +155,11 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                     </FormSummary.Answer>
                 </FormSummary.Answers>
             ))}
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

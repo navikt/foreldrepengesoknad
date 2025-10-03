@@ -118,8 +118,7 @@ export const getStønadskontoParams = ({
         annenForelder,
     );
 
-    const førsteUttaksdagNesteBarnsSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
 
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
         annenPartsVedtak,

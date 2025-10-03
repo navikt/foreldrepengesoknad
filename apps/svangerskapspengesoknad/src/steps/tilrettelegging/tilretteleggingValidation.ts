@@ -275,7 +275,7 @@ const finnFeilmeldingForPåkrevd = (intl: IntlShape, type: Arbeidsforholdstype) 
     if (type === Arbeidsforholdstype.VIRKSOMHET) {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.virksomhet.påkrevd' });
     }
-    throw Error('Ingen påkrevd-tekst for type: ' + type);
+    throw new Error('Ingen påkrevd-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForOverMakslengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
@@ -285,7 +285,7 @@ const finnFeilmeldingForOverMakslengde = (intl: IntlShape, type: Arbeidsforholds
     if (type === Arbeidsforholdstype.SELVSTENDIG) {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forLang' });
     }
-    throw Error('Ingen makslengde-tekst for type: ' + type);
+    throw new Error('Ingen makslengde-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
@@ -295,7 +295,7 @@ const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholds
     if (type === Arbeidsforholdstype.SELVSTENDIG) {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forKort' });
     }
-    throw Error('Ingen tekst for type: ' + type);
+    throw new Error('Ingen tekst for type: ' + type);
 };
 
 export const validateRisikofaktorer = (intl: IntlShape, type: Arbeidsforholdstype) => (value: string) => {

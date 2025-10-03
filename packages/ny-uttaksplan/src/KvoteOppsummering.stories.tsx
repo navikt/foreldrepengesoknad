@@ -224,7 +224,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 fom: '2024-12-09',
                 tom: '2025-03-14',
                 kontoType: StønadskontoType.Mødrekvote,
-                samtidigUttak: 60.0,
+                samtidigUttak: 60,
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -235,7 +235,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 tom: '2025-05-16',
                 kontoType: StønadskontoType.Fellesperiode,
                 gradering: {
-                    arbeidstidprosent: 50.0,
+                    arbeidstidprosent: 50,
                     aktivitet: {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
                     },
@@ -683,5 +683,16 @@ export const AleneomsorgFarForMangeDager: Story = {
         ],
         rettighetType: RettighetType.ALENEOMSORG,
         forelder: Forelder.farMedmor,
+    },
+};
+
+export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        erMedmorDelAvSøknaden: true,
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Maria',
+        },
     },
 };

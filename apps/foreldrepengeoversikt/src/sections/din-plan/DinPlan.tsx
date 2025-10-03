@@ -78,7 +78,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                         className="mt-4"
                         size={isDesktop ? 'small' : 'medium'}
                         variant="secondary"
-                        onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
+                        onClick={() => (globalThis.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
                     >
                         <FormattedMessage id="DinPlan.EndrePlan" />
                     </Button>

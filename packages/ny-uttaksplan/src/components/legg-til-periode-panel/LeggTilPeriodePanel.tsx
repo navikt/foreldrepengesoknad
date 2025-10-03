@@ -34,8 +34,8 @@ export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode, erBarnetFødt,
     };
 
     return (
-        <VStack gap="space-8" className="w-full p-4 border border-border-subtle rounded-xl bg-surface-default">
-            <HStack gap="space-8" align="center" className="-m-4 p-4 mb-0 bg-ax-bg-neutral-soft rounded-t-xl">
+        <VStack gap="space-8" className="border-border-subtle bg-surface-default w-full rounded-xl border p-4">
+            <HStack gap="space-8" align="center" className="bg-ax-bg-neutral-soft -m-4 mb-0 rounded-t-xl p-4">
                 <PencilIcon aria-hidden={true} width={24} height={24} />
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />

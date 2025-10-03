@@ -8,8 +8,8 @@ export const useBeforeUnload = (fn: () => void) => {
     }, [fn]);
 
     useEffect(() => {
-        window.addEventListener('beforeunload', cb.current);
+        globalThis.addEventListener('beforeunload', cb.current);
 
-        return () => window.removeEventListener('beforeunload', cb.current);
+        return () => globalThis.removeEventListener('beforeunload', cb.current);
     }, []);
 };

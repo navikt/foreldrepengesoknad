@@ -58,7 +58,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
                     p.id !== periode.id,
             );
 
-        return samtidigUttak !== undefined ? samtidigUttak : undefined;
+        return samtidigUttak;
     }
 
     return undefined;

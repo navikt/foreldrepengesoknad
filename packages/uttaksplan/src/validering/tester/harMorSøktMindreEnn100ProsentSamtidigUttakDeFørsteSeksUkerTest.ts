@@ -17,7 +17,7 @@ export const harMorSøktMindreEnn100ProsentSamtidigUttakDeFørsteSeksUkerTest: R
                 dayjs(p.tidsperiode.fom).isSameOrBefore(sisteUttaksdagEtterSeksUker, 'day') &&
                 p.ønskerSamtidigUttak === true &&
                 p.samtidigUttakProsent !== undefined &&
-                parseInt(p.samtidigUttakProsent, 10) < 100,
+                Number.parseInt(p.samtidigUttakProsent, 10) < 100,
         );
 
         return {

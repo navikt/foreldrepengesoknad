@@ -36,7 +36,6 @@ import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
-    Forelder,
     Periode,
     isAnnenForelderOppgitt,
     isUfødtBarn,
@@ -130,7 +129,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
-    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
@@ -147,15 +145,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             ? annenForelder.fnr
             : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
-    const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
+    const annenForelderFnrNesteSak = barnFraNesteSak ? barnFraNesteSak.annenForelderFnr : undefined;
     const førsteBarnFraNesteSakFnr =
         barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
             ? barnFraNesteSak.fnr[0]
             : undefined;
-    const familieHendelseDatoNesteSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const førsteUttaksdagNesteBarnsSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const familieHendelseDatoNesteSak = barnFraNesteSak ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const bareFarMedmorHarRett =
         !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
@@ -166,8 +162,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const eksisterendeSakAnnenPartRequestIsSuspended =
         søkerErAleneOmOmsorg || !annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
 
-    const startStønadsperiodeNyttBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const startStønadsperiodeNyttBarn = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const debouncedState = useDebounce(useContextComplete(), 3000);
     const initialRender = useRef(true);
     useEffect(() => {
@@ -284,7 +279,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             !uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
-            opprinneligPlan.forEach((p) => {
+            for (const p of opprinneligPlan) {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
                         eksisterendeVedtakAnnenPart.uttaksplan,
@@ -302,7 +297,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                         }
                     }
                 }
-            });
+            }
 
             const uttaksplanMedAnnenPart = finnOgSettInnHull(
                 settInnAnnenPartsUttak(
@@ -595,7 +590,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                             <VStack gap="space-8">
                                 <Uttaksplan
                                     foreldreSituasjon={foreldreSituasjon}
-                                    forelderVedAleneomsorg={forelderVedAleneomsorg}
                                     erDeltUttak={erDeltUttak}
                                     uttaksplan={uttaksplan}
                                     familiehendelsesdato={familiehendelsesdato}
@@ -631,7 +625,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     handleResetUttaksplan={handleResetUttaksplan}
                                     termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                     barn={barn}
-                                    visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                                     barnFraNesteSak={barnFraNesteSak}
                                     familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                                     førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}

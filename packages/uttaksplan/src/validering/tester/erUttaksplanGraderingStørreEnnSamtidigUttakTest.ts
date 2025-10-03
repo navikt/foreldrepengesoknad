@@ -12,8 +12,7 @@ const uttaksplanGraderingStørreEnnSamtidigUttak = (uttaksplan: Periode[]) => {
         .filter(
             (periode) =>
                 isUttaksperiode(periode) &&
-                getFloatFromString(periode.stillingsprosent)! + getFloatFromString(periode.samtidigUttakProsent)! >
-                    100.0,
+                getFloatFromString(periode.stillingsprosent)! + getFloatFromString(periode.samtidigUttakProsent)! > 100,
         );
 
     return result.length > 0;

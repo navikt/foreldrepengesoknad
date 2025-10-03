@@ -36,7 +36,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
 
     const formValues = formMethods.watch();
     if (!erAnnenForelderOppgitt(formValues)) {
-        throw Error('Annen forelder skal alltid være oppgitt her');
+        throw new Error('Annen forelder skal alltid være oppgitt her');
     }
 
     return (

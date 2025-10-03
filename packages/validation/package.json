@@ -12,12 +12,12 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "dayjs": "1.11.13"
+        "dayjs": "1.11.18"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "eslint": "9.33.0",
+        "eslint": "9.36.0",
         "typescript": "5.9.2"
     },
     "packageManager": "pnpm@9.1.4"

@@ -64,14 +64,15 @@ export const DokumentasjonSendSenereLabel = ({
 }: Props) => {
     const tidsperioder = attachment.dokumenterer?.perioder;
 
-    const morErForSykEllerInnlagtFørsteSeksUker =
-        uttaksperioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse).find((p) => {
+    const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
+        .filter(isPeriodeMedMorInnleggelse)
+        .some((p) => {
             if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === StønadskontoType.Fedrekvote) {
                 return true;
             }
 
             return false;
-        }) !== undefined;
+        });
 
     switch (attachment.skjemanummer) {
         case Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG:

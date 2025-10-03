@@ -39,12 +39,15 @@ const slåSammenPerioder = (periods: Period[]) => {
     }
 
     return periods.reduce((res, period, index) => {
+        const sisteRes = res.at(-1);
+
         if (
             index !== 0 &&
-            period.color === res[res.length - 1].color &&
-            dayjs(UttaksdagenString(res[res.length - 1].tom).neste()).isSame(dayjs(period.fom), 'day')
+            sisteRes &&
+            period.color === sisteRes.color &&
+            dayjs(UttaksdagenString(sisteRes.tom).neste()).isSame(dayjs(period.fom), 'day')
         ) {
-            res[res.length - 1].tom = period.tom;
+            sisteRes.tom = period.tom;
             return res;
         } else {
             res.push(period);
@@ -300,7 +303,7 @@ const getKalenderFargeForPeriodeType = (
 
 const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
     const førsteDag = periods[0].fom;
-    const sisteDag = periods[periods.length - 1].tom;
+    const sisteDag = periods.at(-1)!.tom;
     if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
         return true;
     }
@@ -351,8 +354,8 @@ export const UttaksplanKalender = ({
     );
 
     const foreldrepengerHarAktivitetskrav =
-        allePerioder.find((p) => p.kontoType === StønadskontoType.Foreldrepenger) !== undefined &&
-        allePerioder.find((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote) !== undefined;
+        allePerioder.some((p) => p.kontoType === StønadskontoType.Foreldrepenger) &&
+        allePerioder.some((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote);
 
     const søkersHullPerioder = finnOgSettInnHull(
         allePerioder as Planperiode[],

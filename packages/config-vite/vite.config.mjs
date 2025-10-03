@@ -83,6 +83,7 @@ const createConfig = (setupFileDirName) =>
                         ],
                         setupFiles: setupFileDirName,
                         browser: {
+                            headless: false,
                             enabled: true,
                             provider: 'playwright',
                             instances: [{ browser: 'chromium' }],

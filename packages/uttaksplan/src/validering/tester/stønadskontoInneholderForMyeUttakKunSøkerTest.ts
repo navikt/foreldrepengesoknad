@@ -49,8 +49,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         søkerErFarEllerMedmor,
         søkerErAleneOmOmsorg,
     } = grunnlag;
-    const harSelvSøktOmFellesperiode =
-        perioder.find((p) => harSøktOmFellesperiode(p, søkerErFarEllerMedmor)) !== undefined;
+    const harSelvSøktOmFellesperiode = perioder.some((p) => harSøktOmFellesperiode(p, søkerErFarEllerMedmor));
     const perioderSomSkalBrukes = perioder.filter((p) => {
         if (harSelvSøktOmFellesperiode) {
             return true;

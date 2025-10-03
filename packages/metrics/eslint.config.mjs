@@ -1,3 +1,1 @@
-import commonConfig from '@navikt/fp-config-eslint';
-
-export default commonConfig;
+export { default } from '@navikt/fp-config-eslint';

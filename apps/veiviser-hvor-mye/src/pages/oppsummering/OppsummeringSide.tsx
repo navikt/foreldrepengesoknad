@@ -50,7 +50,9 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønnPerMåned = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
+    const gjennomsnittslønnPerMåned = Number.parseFloat(
+        notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))),
+    );
     const årslønn = gjennomsnittslønnPerMåned * 12;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -224,7 +226,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned1)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned1, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned1, 10)
                                                             : 0,
                                                     )}
                                                 </BodyShort>
@@ -238,7 +240,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned2)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned2, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned2, 10)
                                                             : 0,
                                                     )}
                                                 </BodyShort>
@@ -250,7 +252,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned3)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned3, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned3, 10)
                                                             : 0,
                                                     )}
                                                 </BodyShort>

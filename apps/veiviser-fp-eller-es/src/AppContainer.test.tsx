@@ -9,6 +9,13 @@ import * as stories from './AppContainer.stories';
 const { FpEllerEsVeiviserMockaStønadskontoerOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
+    beforeEach(() => {
+        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+            setAvailableLanguages: vi.fn(),
+            onLanguageSelect: vi.fn(),
+        }));
+    });
+
     it(
         'FP eller ES veiviser: skal gå gjennom app og så tilbake',
         mswWrapper(async ({ setHandlers }) => {

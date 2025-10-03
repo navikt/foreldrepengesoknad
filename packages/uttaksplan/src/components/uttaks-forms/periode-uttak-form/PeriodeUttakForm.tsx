@@ -200,8 +200,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
             : intl.formatMessage({ id: 'annen.forelder' });
-    const harAktivitetsfriKvote =
-        stønadskontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
+    const harAktivitetsfriKvote = stønadskontoer.some((st) => st.konto === StønadskontoType.AktivitetsfriKvote);
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

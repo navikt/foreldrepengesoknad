@@ -23,7 +23,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
     const { control } = useFormContext<AndreInntekterFormValues>();
 
     if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
-        throw Error('Inntektskilde ikke av type MILITÆRTJENESTE');
+        throw new Error('Inntektskilde ikke av type MILITÆRTJENESTE');
     }
 
     return (

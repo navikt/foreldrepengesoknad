@@ -8,8 +8,7 @@ import { RegelTestresultat } from '../utils/types/regelTypes';
 export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(grunnlag: Søknadsinfo): RegelTestresultat {
     const { perioder, søkerErFarEllerMedmor, stønadskontoer } = grunnlag;
     const gjenståendeDager = beregnGjenståendeUttaksdager(stønadskontoer, perioder, false);
-    const sistePeriodeErIkkeUtsettelse =
-        perioder.length > 0 ? !isUtsettelsesperiode(perioder[perioder.length - 1]) : false;
+    const sistePeriodeErIkkeUtsettelse = perioder.length > 0 ? !isUtsettelsesperiode(perioder.at(-1)!) : false;
 
     const resterendeFellesperiode = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Fellesperiode);
     const resterendeMødrekvote = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Mødrekvote);

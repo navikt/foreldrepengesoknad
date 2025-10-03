@@ -233,7 +233,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     }
 
     const toggleFocusAndOpen = () => {
-        const headerButton = window.document.getElementById(periode.id);
+        const headerButton = globalThis.document.getElementById(periode.id);
 
         if (headerButton) {
             setTimeout(() => {
