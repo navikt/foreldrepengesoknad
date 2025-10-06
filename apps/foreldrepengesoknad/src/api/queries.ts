@@ -77,11 +77,11 @@ type StønadskontoParams = {
     rettighetstype: string;
     brukerrolle: string;
     antallBarn: string;
-    fødselsdato: string | undefined;
-    termindato: string | undefined;
-    omsorgsovertakelseDato: string | undefined;
+    fødselsdato?: string;
+    termindato?: string;
+    omsorgsovertakelseDato?: string;
     morHarUføretrygd: boolean;
-    familieHendelseDatoNesteSak: Date | undefined;
+    familieHendelseDatoNesteSak?: Date;
 };
 
 export type DokumentereMorsArbeidParams = {
