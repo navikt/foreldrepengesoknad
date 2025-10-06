@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -152,7 +153,7 @@ const meta = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
+                    API_URLS.sendVedlegg,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -353,7 +354,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -419,7 +420,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(true), { status: 200 }),
                 ),
             ],
@@ -519,7 +520,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],

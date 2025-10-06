@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -350,11 +351,7 @@ export const FarFødselMorHarVedtak: Story = {
     },
     parameters: {
         msw: {
-            handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
-            ],
+            handlers: [http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak))],
         },
     },
 };

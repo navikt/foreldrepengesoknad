@@ -17,6 +17,7 @@ export const API_URLS = {
     trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/fpoversikt/trengerDokumentereMorsArbeid`,
     sendSøknad: `${import.meta.env.BASE_URL}/fpsoknad/foreldrepenger`,
     endreSøknad: `${import.meta.env.BASE_URL}/fpsoknad/foreldrepenger/endre`,
+    sendVedlegg: `${import.meta.env.BASE_URL}/fpsoknad/storage/foreldrepenger/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>
