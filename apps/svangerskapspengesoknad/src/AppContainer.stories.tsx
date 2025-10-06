@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -76,23 +77,11 @@ const KVITTERING = {
 };
 
 const HANDLERS = [
-    http.post(`${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`, () => HttpResponse.json(KVITTERING)),
-    http.post(
-        `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
-    http.post(
-        `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
-    http.get(
-        `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
-    http.delete(
-        `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
+    http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),
+    http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+    http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+    http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+    http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
 ];
 
 const meta = {
@@ -112,9 +101,7 @@ type Story = StoryObj<typeof meta>;
 export const VisAppKvinneMedArbeid: Story = {
     parameters: {
         msw: {
-            handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(defaultSøkerinfo)),
-            ]),
+            handlers: HANDLERS.concat([http.get(søkerinfo, () => HttpResponse.json(defaultSøkerinfo))]),
         },
     },
 };
@@ -123,7 +110,7 @@ export const VisAppKvinneUtenArbeid: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
+                http.get(søkerinfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         arbeidsforhold: [],
@@ -138,7 +125,7 @@ export const VisAppMann: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
+                http.get(søkerinfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
@@ -153,7 +140,7 @@ export const VisAppUmyndig: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
+                http.get(søkerinfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },

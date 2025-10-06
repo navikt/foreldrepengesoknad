@@ -29,7 +29,7 @@ export const useMellomlagreSøknad = (
     const promiseRef = useRef<() => void>(null);
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export const useMellomlagreSøknad = (
                             søkerInfo,
                             ...state,
                         } satisfies SvpDataMapAndMetaData;
-                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`, { json: data });
+                        await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {

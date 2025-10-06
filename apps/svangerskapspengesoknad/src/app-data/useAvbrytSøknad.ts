@@ -11,7 +11,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
     const reset = useContextReset();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const avbrytSøknadHandler = async () => {

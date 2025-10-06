@@ -42,9 +42,7 @@ export const Default: Story = {
     },
     parameters: {
         msw: {
-            handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(ingenSaker)),
-            ],
+            handlers: [http.get(saker, () => HttpResponse.json(ingenSaker))],
         },
     },
 };
@@ -57,7 +55,7 @@ export const MedEksisterendeSøknad: Story = {
     },
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [http.get(saker, () => HttpResponse.json(saker))],
         },
     },
 };
