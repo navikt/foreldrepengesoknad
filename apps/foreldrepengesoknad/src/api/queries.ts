@@ -9,15 +9,15 @@ import { AnnenPartSak, Saker, Søkerinfo, Tidsperiode, TilgjengeligeStønadskont
 import { notEmpty } from '@navikt/fp-validation';
 
 export const API_URLS = {
-    søkerInfo: `${import.meta.env.BASE_URL}/fpoversikt/api/person/info-med-arbeidsforhold`,
-    saker: `${import.meta.env.BASE_URL}/fpoversikt/api/saker`,
-    mellomlagring: `${import.meta.env.BASE_URL}/fpsoknad/api/storage/FORELDREPENGER`,
+    søkerInfo: `${import.meta.env.BASE_URL}/rest/sokerinfo`,
+    saker: `${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`,
+    mellomlagring: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
     annenPartVedtak: `${import.meta.env.BASE_URL}/fpoversikt/annenPartVedtak`,
-    konto: `${import.meta.env.BASE_URL}/fpoversikt/konto`,
-    trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/fpoversikt/trengerDokumentereMorsArbeid`,
-    sendSøknad: `${import.meta.env.BASE_URL}/fpsoknad/foreldrepenger`,
-    endreSøknad: `${import.meta.env.BASE_URL}/fpsoknad/foreldrepenger/endre`,
-    sendVedlegg: `${import.meta.env.BASE_URL}/fpsoknad/storage/foreldrepenger/vedlegg`,
+    konto: `${import.meta.env.BASE_URL}/rest/konto`,
+    trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+    sendSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
+    endreSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
+    sendVedlegg: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>
