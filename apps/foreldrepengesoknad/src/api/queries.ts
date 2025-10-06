@@ -12,7 +12,7 @@ export const API_URLS = {
     søkerInfo: `${import.meta.env.BASE_URL}/rest/sokerinfo`,
     saker: `${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`,
     mellomlagring: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-    annenPartVedtak: `${import.meta.env.BASE_URL}/fpoversikt/annenPartVedtak`,
+    annenPartVedtak: `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${import.meta.env.BASE_URL}/rest/konto`,
     trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
     sendSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
