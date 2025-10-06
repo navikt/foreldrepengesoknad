@@ -4,11 +4,13 @@ import ky from 'ky';
 
 import { PersonFrontend } from '@navikt/fp-types';
 
+export const urlPrefiks = import.meta.env.BASE_URL;
+
 export const API_URLS = {
-    personInfo: `${import.meta.env.BASE_URL}/rest/personinfo`,
-    mellomlagring: `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
-    sendSøknad: `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
-    sendVedlegg: `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
+    personInfo: `${urlPrefiks}/rest/personinfo`,
+    mellomlagring: `${urlPrefiks}/rest/storage/engangsstonad`,
+    sendSøknad: `${urlPrefiks}/rest/soknad/engangsstonad`,
+    sendVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
 } as const;
 
 export const personOptions = () =>

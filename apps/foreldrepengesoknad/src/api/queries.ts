@@ -8,16 +8,18 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import { AnnenPartSak, Saker, Søkerinfo, Tidsperiode, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+export const urlPrefiks = import.meta.env.BASE_URL;
+
 export const API_URLS = {
-    søkerInfo: `${import.meta.env.BASE_URL}/rest/sokerinfo`,
-    saker: `${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`,
-    mellomlagring: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-    annenPartVedtak: `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
-    konto: `${import.meta.env.BASE_URL}/rest/konto`,
-    trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-    sendSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
-    endreSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
+    søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
+    saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
+    mellomlagring: `${urlPrefiks}/rest/storage/foreldrepenger`,
+    annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
+    konto: `${urlPrefiks}/rest/konto`,
+    trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+    sendSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger`,
+    endreSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger/endre`,
+    sendVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>
