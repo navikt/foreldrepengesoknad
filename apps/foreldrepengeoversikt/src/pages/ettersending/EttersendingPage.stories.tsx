@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { EttersendingPage } from './EttersendingPage';
@@ -38,7 +39,7 @@ export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`, () => {
+                http.post(API_URLS.lastOppESVedlegg, () => {
                     return new HttpResponse(null, { status: 200 });
                 }),
             ],
@@ -69,7 +70,7 @@ export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`, () => {
+                http.post(API_URLS.lastOppESVedlegg, () => {
                     return new HttpResponse(null, { status: 400 });
                 }),
             ],

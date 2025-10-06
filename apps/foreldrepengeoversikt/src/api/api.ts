@@ -24,18 +24,20 @@ import { InntektsmeldingDtoSchema } from './zodSchemas';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${import.meta.env.BASE_URL}/rest/sokerinfo`,
-    saker: `${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`,
-    minidialog: `${import.meta.env.BASE_URL}/rest/minidialog`,
-    annenPartVedtak: `${import.meta.env.BASE_URL}/fpoversikt/annenPartVedtak`,
-    konto: `${import.meta.env.BASE_URL}/rest/konto`,
-    trengerDokumentereMorsArbeid: `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-    sendSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
-    endreSøknad: `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
+    søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
+    saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
+    minidialog: `${urlPrefiks}/rest/minidialog`,
+    annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
+    konto: `${urlPrefiks}/rest/konto`,
     dokumenter: `${urlPrefiks}/rest/dokument/alle`,
     inntektsmelding: `${urlPrefiks}/rest/innsyn/inntektsmeldinger`,
     satser: `${urlPrefiks}/rest/satser`,
+    ettersend: `${urlPrefiks}/rest/soknad/ettersend`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    manglendeVedlegg: `${urlPrefiks}/rest/historikk/vedlegg`,
+    tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
+    lastOppFPVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
+    lastOppESVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
 } as const;
 
 export const søkerInfoOptions = () =>
@@ -102,30 +104,26 @@ export const hentSatserOptions = () =>
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () => ky.post<AnnenPartSak>(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, { json: body }).json(),
+        queryFn: () => ky.post<AnnenPartSak>(API_URLS.annenPartVedtak, { json: body }).json(),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['TIDSLINJEHENDELSER', saksnummer],
-        queryFn: () =>
-            ky
-                .get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } })
-                .json<TidslinjeHendelseDto[]>(),
+        queryFn: () => ky.get(API_URLS.tidslinje, { searchParams: { saksnummer } }).json<TidslinjeHendelseDto[]>(),
     });
 
 export const hentManglendeVedleggOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
-        queryFn: () =>
-            ky.get(`${urlPrefiks}/rest/historikk/vedlegg`, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
+        queryFn: () => ky.get(API_URLS.manglendeVedlegg, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
 export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: string) => {
     // Det funker ikke å bruke ky.post() her.
     // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
     // Undersøke videre senere, gjør det slik for nå for å rette feil.
-    const response = await fetch(`${urlPrefiks}/rest/soknad/ettersend`, {
+    const response = await fetch(API_URLS.ettersend, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -145,5 +143,5 @@ export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: str
 export const erSakOppdatertOptions = () =>
     queryOptions({
         queryKey: ['SAK_OPPDATERT'],
-        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`).json<boolean>(),
+        queryFn: () => ky.get(API_URLS.erOppdatert).json<boolean>(),
     });
