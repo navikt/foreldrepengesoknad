@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ export const useEsMellomlagring = (personinfo: PersonFrontend, setVelkommen: (er
     const promiseRef = useRef<() => void>(null);
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export const useEsMellomlagring = (personinfo: PersonFrontend, setVelkommen: (er
                             personinfo,
                             ...state,
                         } satisfies EsDataMapAndMetaData;
-                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, { json: data });
+                        await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {
