@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'api/queries';
 import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +18,7 @@ export const useAvbrytSøknad = (
     const reset = useContextReset();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const avbrytSøknadHandler = useCallback(async () => {

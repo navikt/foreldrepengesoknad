@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -227,14 +228,8 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
+                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
             ],
         },
     },
@@ -471,13 +466,8 @@ export const FarMedMorSomHarVedtak: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },
@@ -902,7 +892,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -953,7 +943,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -1000,7 +990,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(true), { status: 200 }),
                 ),
             ],

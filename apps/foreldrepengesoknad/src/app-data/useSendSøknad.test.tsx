@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
+import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -219,7 +220,7 @@ describe('useFpSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
+            API_URLS.sendSøknad,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
@@ -309,7 +310,7 @@ describe('useFpSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
+            API_URLS.endreSøknad,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
