@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser';
+import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -133,7 +134,7 @@ export const useMellomlagreSøknad = (
                 );
 
                 try {
-                    await ky.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`, {
+                    await ky.post(API_URLS.mellomlagring, {
                         json: data,
                         headers: {
                             fnr: søkerInfo.søker.fnr,

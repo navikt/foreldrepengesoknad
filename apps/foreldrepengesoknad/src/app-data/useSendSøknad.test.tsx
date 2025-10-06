@@ -219,7 +219,7 @@ describe('useFpSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger`,
+            `${import.meta.env.BASE_URL}/fpsoknad/soknad/foreldrepenger`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
@@ -309,7 +309,7 @@ describe('useFpSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/foreldrepenger/endre`,
+            `${import.meta.env.BASE_URL}/fpsoknad/soknad/foreldrepenger/endre`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',

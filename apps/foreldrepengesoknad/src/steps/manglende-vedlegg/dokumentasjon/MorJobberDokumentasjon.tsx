@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'appData/api';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
