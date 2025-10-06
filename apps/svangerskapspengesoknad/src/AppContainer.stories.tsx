@@ -101,7 +101,7 @@ type Story = StoryObj<typeof meta>;
 export const VisAppKvinneMedArbeid: Story = {
     parameters: {
         msw: {
-            handlers: HANDLERS.concat([http.get(søkerinfo, () => HttpResponse.json(defaultSøkerinfo))]),
+            handlers: HANDLERS.concat([http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo))]),
         },
     },
 };
@@ -110,7 +110,7 @@ export const VisAppKvinneUtenArbeid: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(søkerinfo, () =>
+                http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         arbeidsforhold: [],
@@ -125,7 +125,7 @@ export const VisAppMann: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(søkerinfo, () =>
+                http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
@@ -140,7 +140,7 @@ export const VisAppUmyndig: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(søkerinfo, () =>
+                http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
                         søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },

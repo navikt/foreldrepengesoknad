@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useNavigate } from 'react-router-dom';
 
