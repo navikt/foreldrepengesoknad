@@ -10,6 +10,7 @@ import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHe
 import { Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { mapSakerDTOToSaker } from '../../utils/sakerUtils';

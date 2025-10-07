@@ -8,6 +8,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { TidslinjeHendelseDto } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
