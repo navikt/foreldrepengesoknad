@@ -23,15 +23,15 @@ import { InntektsmeldingDtoSchema } from './zodSchemas';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
-    saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
-    minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
-    dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
-    inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`,
-    tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
-    manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`,
-    erOppdatert: `${urlPrefiks}/fpoversikt/api/erOppdatert`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`, //DONE
+    saker: `${urlPrefiks}/fpoversikt/api/saker`, //DONE
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`, //DONE
+    minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`, //DONE
+    dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`, //DONE
+    inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`, //???
+    tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`, //DONE,
+    manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`, //DONE
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`, //DONE
 
     konto: `${urlPrefiks}/rest/konto`, // TODO HVOR??
 
