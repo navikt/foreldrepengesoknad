@@ -14,8 +14,8 @@ import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 const defaultHandlers = {
     msw: {
         handlers: [
-            http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-            http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
         ],
     },
 };
@@ -67,10 +67,8 @@ export const ForForeldrepengerForTidligSøknad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
-                    HttpResponse.json(sakerTidligFPSøknad),
-                ),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(sakerTidligFPSøknad)),
             ],
         },
     },
@@ -81,10 +79,8 @@ export const ForForeldrepengerVenterPåInntektsmelding: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
-                    HttpResponse.json(sakerVenterPåFpInntektsmelding),
-                ),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(sakerVenterPåFpInntektsmelding)),
             ],
         },
     },
@@ -95,8 +91,8 @@ export const ForForeldrepengerEndringsøknad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(endringFPSøknad)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(endringFPSøknad)),
             ],
         },
     },
@@ -110,10 +106,8 @@ export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
-                    HttpResponse.json(søkerinfoUtenArbeidsforhold),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
     },
@@ -205,10 +199,8 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
-                    HttpResponse.json(søkerinfoUtenArbeidsforhold),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
     },

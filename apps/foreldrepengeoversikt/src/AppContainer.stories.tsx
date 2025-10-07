@@ -10,6 +10,7 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { AppContainer } from './AppContainer';
+import { API_URLS } from './api/api.ts';
 
 const meta = {
     title: 'AppContainer',
@@ -24,23 +25,15 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.get(`${import.meta.env.BASE_URL}/rest/minidialog`, () => HttpResponse.json(miniDialog)),
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
-                http.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`, () =>
-                    HttpResponse.json({}),
-                ),
+                http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
+                http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.post(API_URLS.lastOppFPVedlegg, () => HttpResponse.json({})),
             ],
         },
     },

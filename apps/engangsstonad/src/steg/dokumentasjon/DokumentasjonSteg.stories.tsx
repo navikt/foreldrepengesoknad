@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -47,7 +48,7 @@ export const Terminbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
+                    API_URLS.sendVedlegg,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -69,7 +70,7 @@ export const Adopsjonsbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
+                    API_URLS.sendVedlegg,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -90,12 +91,7 @@ export const Adopsjonsbekreftelse: Story = {
 export const FeilerOpplastinger: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: {

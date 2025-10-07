@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 
@@ -18,7 +19,7 @@ export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, 
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const send = async () => {
@@ -27,7 +28,7 @@ export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, 
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(`${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`, {
+            const response = await ky.post(API_URLS.sendSøknad, {
                 json: søknadForInnsending,
                 signal,
             });
