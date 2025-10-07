@@ -11,12 +11,13 @@ import { notEmpty } from '@navikt/fp-validation';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
-    saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    saker: `${urlPrefiks}/fpoversikt/api/saker`,
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
+
     mellomlagring: `${urlPrefiks}/rest/storage/foreldrepenger`,
-    annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${urlPrefiks}/rest/konto`,
-    trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
     sendSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger`,
     endreSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger/endre`,
     sendVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,

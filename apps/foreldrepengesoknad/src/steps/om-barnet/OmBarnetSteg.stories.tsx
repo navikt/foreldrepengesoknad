@@ -20,7 +20,7 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -125,7 +125,7 @@ export const MorFødsel: Story = {
 export const FarFødsel: Story = {
     args: {
         ...MorFødsel.args,
-        søkerInfo: { ...defaultSøkerinfo, søker: { ...defaultSøkerinfo.søker, kjønn: 'M' } },
+        søkerInfo: { ...defaultSøkerinfo, person: { ...defaultSøkerinfo.person, kjønn: 'M' } },
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -219,7 +219,7 @@ export const RegistrertBarnTrillingerDerEnErDød: Story = {
             type: BarnType.FØDT,
         },
         søkerInfo: {
-            søker: {
+            person: {
                 fnr: '21430354032',
                 fornavn: 'Hes',
                 etternavn: 'Mandagsbil',
@@ -303,7 +303,7 @@ export const SøknadPåUregistrertBarnSomErFødt: Story = {
             fødselsdatoer: ['2023-01-02'],
             type: BarnType.FØDT,
         },
-        søkerInfo: { ...defaultSøkerinfo, søker: { ...defaultSøkerinfo.søker, barn: [] } },
+        søkerInfo: { ...defaultSøkerinfo, person: { ...defaultSøkerinfo.person, barn: [] } },
     },
 };
 
@@ -329,8 +329,8 @@ export const FarFødselMorHarVedtak: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfo,
-            søker: {
-                ...defaultSøkerinfo.søker,
+            person: {
+                ...defaultSøkerinfo.person,
                 barn: [
                     {
                         fnr: '19522278338',

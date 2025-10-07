@@ -163,7 +163,7 @@ function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; re
         return null;
     }
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.person.barn ?? [], saker);
     const sakIGrupperteSaker = sak
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;

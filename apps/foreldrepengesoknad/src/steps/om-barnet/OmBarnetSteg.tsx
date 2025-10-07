@@ -112,14 +112,14 @@ const OmBarnetStegInner = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, søker } = søkerInfo;
+    const { arbeidsforhold, person } = søkerInfo;
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? søker.barn.filter(
+            ? person.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -127,7 +127,7 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? søker.barn
+            ? person.barn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;

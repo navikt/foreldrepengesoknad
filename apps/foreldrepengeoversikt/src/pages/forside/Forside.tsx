@@ -43,7 +43,7 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.person.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
 
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -60,7 +60,7 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={undefined}
-                        bankkonto={søkerinfo.søker.bankkonto}
+                        bankkonto={søkerinfo.person.bankkonto}
                         ytelse={undefined}
                         manglendeVedlegg={[]}
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}

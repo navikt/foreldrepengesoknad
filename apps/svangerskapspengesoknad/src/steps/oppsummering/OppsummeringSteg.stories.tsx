@@ -66,7 +66,7 @@ const DEFAULT_SØKERINFO = {
             stillingsprosent: 0,
         },
     ],
-    søker: {
+    person: {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
         fnr: '30088930610',

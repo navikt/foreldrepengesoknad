@@ -119,7 +119,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 

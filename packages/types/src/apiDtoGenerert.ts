@@ -945,7 +945,7 @@ export type SivilstandType =
     | 'GJENLEVENDE_PARTNER';
 
 export type Søkerinfo = {
-    søker: PersonFrontend;
+    person: PersonFrontend;
     arbeidsforhold: Arbeidsforhold[];
 };
 

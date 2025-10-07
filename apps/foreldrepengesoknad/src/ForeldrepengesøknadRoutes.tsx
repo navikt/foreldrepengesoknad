@@ -42,7 +42,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
+    if (!erMyndig(søkerInfo.person.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -94,7 +94,7 @@ const renderSøknadRoutes = (
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        kjønn={søkerInfo.søker.kjønn}
+                        kjønn={søkerInfo.person.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -135,7 +135,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.FORDELING}
                 element={
                     <FordelingSteg
-                        søker={søkerInfo.søker}
+                        person={søkerInfo.person}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -277,7 +277,7 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.person.fnr, erEndringssøknad, setKvittering);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         foreldrepengerSaker,
@@ -288,7 +288,7 @@ export const ForeldrepengesøknadRoutes = ({
     );
 
     const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.søker.fnr,
+        søkerInfo.person.fnr,
         setErEndringssøknad,
         setHarGodkjentVilkår,
         setSøknadGjelderNyttBarn,
@@ -302,7 +302,12 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.person.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp
+        ) {
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
@@ -312,7 +317,7 @@ export const ForeldrepengesøknadRoutes = ({
         }
     }, [
         currentRoute,
-        søkerInfo.søker.fødselsdato,
+        søkerInfo.person.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,

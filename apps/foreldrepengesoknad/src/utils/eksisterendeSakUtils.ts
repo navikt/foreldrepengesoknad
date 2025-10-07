@@ -295,9 +295,9 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (søker: PersonFrontend, grunnlag: Saksgrunnlag): Søkerrolle => {
+const getSøkerrolleFromSaksgrunnlag = (person: PersonFrontend, grunnlag: Saksgrunnlag): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
-    const søkerErKvinne = søker.kjønn === 'K';
+    const søkerErKvinne = person.kjønn === 'K';
     if (søkerErKvinne) {
         return søkerErFarEllerMedmor ? 'medmor' : 'mor';
     }
@@ -557,7 +557,7 @@ export const lagSøknadFraValgteBarnMedSak = (
 };
 
 export const lagEndringsSøknad = (
-    søker: PersonFrontend,
+    person: PersonFrontend,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: Person | undefined,
@@ -567,13 +567,13 @@ export const lagEndringsSøknad = (
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
-    const rolle = getSøkerrolleFromSaksgrunnlag(søker, grunnlag);
+    const rolle = getSøkerrolleFromSaksgrunnlag(person, grunnlag);
 
     const annenForelder = opprettAnnenForelderFraEksisterendeSak(
         intl,
         annenPartFraSak,
         grunnlag,
-        søker.barn,
+        person.barn,
         situasjon,
         valgteBarn?.fnr,
     );

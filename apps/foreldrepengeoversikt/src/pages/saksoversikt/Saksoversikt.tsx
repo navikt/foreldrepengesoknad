@@ -128,7 +128,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 {nettoppSendtInnSøknad && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.søker.bankkonto}
+                        bankkonto={søkerinfo.person.bankkonto}
                         ytelse={undefined}
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -155,7 +155,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                    bankkonto={søkerinfo.søker.bankkonto}
+                    bankkonto={søkerinfo.person.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -176,7 +176,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         visHeleTidslinjen={false}
-                        søkersBarn={søkerinfo.søker.barn ?? []}
+                        søkersBarn={søkerinfo.person.barn ?? []}
                     />
                 </ContentSection>
                 <section className="mb-12">
@@ -212,7 +212,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                                 annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.søker.fornavn,
+                                    søkerinfo.person.fornavn,
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak),
                                 )}
                             />
@@ -244,11 +244,11 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                                             />
                                         </Heading>
                                     )}
-                                    {søkerinfo.søker.bankkonto?.kontonummer && (
+                                    {søkerinfo.person.bankkonto?.kontonummer && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="saksoversikt.utbetales"
-                                                values={{ kontonr: søkerinfo.søker.bankkonto.kontonummer }}
+                                                values={{ kontonr: søkerinfo.person.bankkonto.kontonummer }}
                                             />
                                         </BodyShort>
                                     )}

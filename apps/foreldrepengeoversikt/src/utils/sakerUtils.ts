@@ -17,7 +17,7 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
+function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['person']['barn'][0], p2: Søkerinfo['person']['barn'][0]) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
@@ -62,7 +62,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['person']['barn']): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
@@ -97,7 +97,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['s
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['person']['barn'], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -232,8 +232,8 @@ export const getNavnAnnenForelder = (
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
-        søkerinfo.søker.barn && fødselsdatoFraSak
-            ? søkerinfo.søker.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
+        søkerinfo.person.barn && fødselsdatoFraSak
+            ? søkerinfo.person.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
     const annenForelderNavn = barn?.annenForelder ? barn.annenForelder.fornavn : undefined;
     return annenForelderNavn !== undefined && annenForelderNavn.trim() !== '' ? annenForelderNavn : 'Annen forelder';

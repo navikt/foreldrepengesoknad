@@ -21,8 +21,8 @@ import { AnnenForelderFormData } from './AnnenForelderFormData';
 import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
 import { OppgiPersonalia } from './OppgiPersonalia';
 
-const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: PersonFrontend) => {
-    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
+const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, person: PersonFrontend) => {
+    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, person.barn);
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
             ? undefined
@@ -48,7 +48,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
 
-    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.søker);
+    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.person);
 
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
@@ -119,7 +119,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {skalOppgiPersonalia && (
-                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
+                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.person.fnr} />
                         )}
                         {!skalOppgiPersonalia && (
                             <RegistrertePersonalia

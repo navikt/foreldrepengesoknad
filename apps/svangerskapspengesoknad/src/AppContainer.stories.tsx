@@ -8,7 +8,7 @@ import { Søkerinfo } from '@navikt/fp-types';
 import { AppContainer } from './AppContainer';
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '30088930610',
         fornavn: 'ERLINGA-MASK',
         etternavn: 'ORAVAKANGAS',
@@ -128,7 +128,7 @@ export const VisAppMann: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+                        person: { ...defaultSøkerinfo.person, kjønn: 'M' },
                     }),
                 ),
             ]),
@@ -143,7 +143,7 @@ export const VisAppUmyndig: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+                        person: { ...defaultSøkerinfo.person, kjønn: 'K', fødselsdato: '2023-08-30' },
                     }),
                 ),
             ]),

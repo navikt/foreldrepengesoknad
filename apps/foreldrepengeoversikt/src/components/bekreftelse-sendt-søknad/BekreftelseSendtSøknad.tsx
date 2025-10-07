@@ -20,7 +20,7 @@ import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
     relevantNyTidslinjehendelse: TidslinjeHendelseDto | undefined;
-    bankkonto: Søkerinfo['søker']['bankkonto'];
+    bankkonto: Søkerinfo['person']['bankkonto'];
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
     manglendeVedlegg: Skjemanummer[];

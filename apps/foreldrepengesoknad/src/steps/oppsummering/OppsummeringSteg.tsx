@@ -33,7 +33,7 @@ import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepeng
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
-    søker: PersonFrontend,
+    person: PersonFrontend,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,
@@ -43,7 +43,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderFar =
         !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
-    const erSøkerIkkeGift = søker.sivilstand?.type !== SivilstandType.GIFT;
+    const erSøkerIkkeGift = person.sivilstand?.type !== SivilstandType.GIFT;
 
     return (
         (rolle === 'far' ||
@@ -87,7 +87,7 @@ export const OppsummeringSteg = (props: Props) => {
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -114,7 +114,7 @@ export const OppsummeringSteg = (props: Props) => {
     );
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo.søker,
+        søkerInfo.person,
         søkersituasjon.rolle,
         annenForelder,
         isUfødtBarn(barn),

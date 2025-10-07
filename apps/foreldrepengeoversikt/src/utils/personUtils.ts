@@ -19,6 +19,6 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getLeverPerson = (person: Søkerinfo['søker']['barn'][0]) => {
+export const getLeverPerson = (person: Søkerinfo['person']['barn'][0]) => {
     return !person.dødsdato;
 };

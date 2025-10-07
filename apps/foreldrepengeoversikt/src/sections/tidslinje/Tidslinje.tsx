@@ -25,7 +25,7 @@ import styles from './tidslinje.module.css';
 interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
-    søkersBarn: Søkerinfo['søker']['barn'];
+    søkersBarn: Søkerinfo['person']['barn'];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto[];
 }

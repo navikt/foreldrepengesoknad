@@ -96,7 +96,7 @@ export const AnnenForelderFraOppgittBarn: Story = {
             antallBarn: 1,
             fnr: ['21091981146'],
         },
-        søkerInfo: { søker: defaultSøker, arbeidsforhold: [] },
+        søkerInfo: { person: defaultSøker, arbeidsforhold: [] },
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
     },
@@ -111,7 +111,7 @@ export const SkalOppgiPersonalia: Story = {
             antallBarn: 1,
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -127,7 +127,7 @@ export const SkalOppgiPersonaliaNavnMangler: Story = {
     args: {
         ...SkalOppgiPersonalia.args,
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -144,7 +144,7 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
     args: {
         ...SkalOppgiPersonalia.args,
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [
                     {
@@ -186,7 +186,7 @@ export const ForFar: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 fornavn: 'LEALAUS',
                 etternavn: 'BÆREPOSE',
@@ -225,7 +225,7 @@ export const MorUfødtBarn: Story = {
             kanIkkeOppgis: false,
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -242,7 +242,7 @@ export const MedmorUfødtBarn: Story = {
             rolle: 'medmor',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 kjønn: 'K',
                 barn: [],
@@ -260,7 +260,7 @@ export const FarUfødtBarn: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 fornavn: 'LEALAUS',
                 etternavn: 'BÆREPOSE',
@@ -280,7 +280,7 @@ export const FarGiftUfødtBarn: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 fornavn: 'LEALAUS',
                 etternavn: 'BÆREPOSE',

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Søkerinfo } from '@navikt/fp-types';
 
 export const søkerinfo = {
-    søker: {
+    person: {
         fnr: '26430359419',
         fornavn: 'Hardhudet',
         etternavn: 'Bokstav',
@@ -41,7 +41,7 @@ export const søkerinfo = {
 } satisfies Søkerinfo;
 
 export const søkerinfoUtenArbeidsforhold = {
-    søker: {
+    person: {
         fnr: '26430359419',
         fornavn: 'Hardhudet',
         etternavn: 'Bokstav',

@@ -41,7 +41,7 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfoMor = {
-    søker: {
+    person: {
         fnr: '02520489226',
         fornavn: 'MOR',
         etternavn: 'MYGG',
@@ -69,7 +69,7 @@ const defaultSøkerinfoMor = {
     arbeidsforhold: [],
 };
 const defaultSøkerinfoFar = {
-    søker: {
+    person: {
         fnr: '08099017784',
         fornavn: 'FAR',
         etternavn: 'MYGG',
@@ -320,8 +320,8 @@ export const MorMedAnnenForelderUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoMor,
-            søker: {
-                ...defaultSøkerinfoMor.søker,
+            person: {
+                ...defaultSøkerinfoMor.person,
                 sivilstand: {
                     type: SivilstandType.UGIFT,
                 },
@@ -388,8 +388,8 @@ export const FarMedUførMorUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
-            søker: {
-                ...defaultSøkerinfoFar.søker,
+            person: {
+                ...defaultSøkerinfoFar.person,
                 sivilstand: {
                     type: SivilstandType.UGIFT,
                 },
@@ -533,7 +533,7 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
             erAleneOmOmsorg: false,
         },
         søkerInfo: {
-            søker: defaultSøkerinfoMor.søker,
+            person: defaultSøkerinfoMor.person,
             arbeidsforhold: [
                 {
                     arbeidsgiverId: '1',

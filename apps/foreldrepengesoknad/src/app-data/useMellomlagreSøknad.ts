@@ -137,7 +137,7 @@ export const useMellomlagreSøknad = (
                     await ky.post(API_URLS.mellomlagring, {
                         json: data,
                         headers: {
-                            fnr: søkerInfo.søker.fnr,
+                            fnr: søkerInfo.person.fnr,
                         },
                     });
                 } catch (error: unknown) {

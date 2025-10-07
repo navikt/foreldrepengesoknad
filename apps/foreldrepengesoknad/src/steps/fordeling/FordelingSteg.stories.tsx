@@ -107,7 +107,7 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    søker: PersonFrontend;
+    person: PersonFrontend;
     dekningsgrad: Dekningsgrad;
     arbeidsforhold: Arbeidsforhold[];
 } & ComponentProps<typeof FordelingSteg>;
@@ -177,7 +177,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -237,7 +237,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -289,7 +289,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -337,7 +337,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -389,7 +389,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -441,7 +441,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -493,7 +493,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -548,7 +548,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -600,7 +600,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -669,7 +669,7 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -736,7 +736,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -798,7 +798,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -864,7 +864,7 @@ export const MorDeltUttakTvillingerFødt: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -927,7 +927,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -989,7 +989,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1056,7 +1056,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1119,7 +1119,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1185,7 +1185,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1248,7 +1248,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1307,7 +1307,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1366,7 +1366,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1432,7 +1432,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1492,7 +1492,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1547,7 +1547,7 @@ export const BareMorHarRettTermin: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1597,7 +1597,7 @@ export const BareMorHarRettAdopsjon: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1652,7 +1652,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1707,7 +1707,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1759,7 +1759,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1815,7 +1815,7 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',

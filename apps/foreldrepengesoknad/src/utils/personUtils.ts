@@ -75,12 +75,12 @@ export const getFarMedmorErAleneOmOmsorg = (
 };
 
 export const getNavnPåForeldre = (
-    søker: PersonFrontend,
+    person: PersonFrontend,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): NavnPåForeldre => {
-    const navnSøker = søker.fornavn;
+    const navnSøker = person.fornavn;
     const navnAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn

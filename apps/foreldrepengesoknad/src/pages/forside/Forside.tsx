@@ -52,8 +52,8 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => [...getSelectableBarnOptions(saker, søkerInfo.søker.barn)].sort(sorterSelectableBarnEtterYngst),
-        [saker, søkerInfo.søker.barn],
+        () => [...getSelectableBarnOptions(saker, søkerInfo.person.barn)].sort(sorterSelectableBarnEtterYngst),
+        [saker, søkerInfo.person.barn],
     );
 
     const onSubmit = (values: ForsideFormValues) => {
@@ -94,7 +94,7 @@ export const Forside = ({
             );
 
             const søknad = lagEndringsSøknad(
-                søkerInfo.søker,
+                søkerInfo.person,
                 eksisterendeSak,
                 intl,
                 valgtEksisterendeSak.annenPart,
@@ -112,8 +112,8 @@ export const Forside = ({
             const søknad = lagSøknadFraValgteBarnMedSak(
                 { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
-                søkerInfo.søker.barn,
-                søkerInfo.søker.fnr,
+                søkerInfo.person.barn,
+                søkerInfo.person.fnr,
             );
             oppdaterSøknadIState(søknad);
         }

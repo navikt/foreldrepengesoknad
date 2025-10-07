@@ -20,7 +20,7 @@ import { Sak } from '../../types/Sak';
 import styles from './tidslinje-page.module.css';
 
 type OuterProps = {
-    søkersBarn: Søkerinfo['søker']['barn'];
+    søkersBarn: Søkerinfo['person']['barn'];
 };
 type InnerProps = OuterProps & {
     sak?: Sak;

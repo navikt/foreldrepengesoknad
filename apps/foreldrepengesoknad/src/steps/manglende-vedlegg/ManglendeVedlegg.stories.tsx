@@ -32,7 +32,7 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',
@@ -103,7 +103,7 @@ const defaultArbeidsforholdOgInntekt = {
 };
 
 const defaultSøkerinfoFar = {
-    søker: {
+    person: {
         fnr: '08099017784',
         fornavn: 'FAR',
         etternavn: 'MYGG',

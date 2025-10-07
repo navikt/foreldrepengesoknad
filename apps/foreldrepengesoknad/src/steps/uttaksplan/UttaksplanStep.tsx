@@ -131,7 +131,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -439,7 +439,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        søkerInfo.søker.kjønn,
+        søkerInfo.person.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,

@@ -12,7 +12,7 @@ import { Søkerinfo } from '@navikt/fp-types';
 import { AppContainer } from './AppContainer';
 
 const søkerinfo = {
-    søker: {
+    person: {
         fnr: '06499121154',
         fornavn: 'Tapper',
         etternavn: 'Konvolutt',
