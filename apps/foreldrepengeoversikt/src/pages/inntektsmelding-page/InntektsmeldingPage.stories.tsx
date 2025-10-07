@@ -9,7 +9,6 @@ import { medRefusjonsPerioder } from 'storybookData/inntektsmeldinger/medRefusjo
 import { utenRefusjon } from 'storybookData/inntektsmeldinger/utenRefusjon';
 import { saker } from 'storybookData/saker/saker';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -40,10 +39,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const HANDLERS = [
-    http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-    http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
-];
+const HANDLERS = [http.get(API_URLS.saker, () => HttpResponse.json(saker))];
 
 export const EnBortfaltNaturalytelse: Story = {
     parameters: {

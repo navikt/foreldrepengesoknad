@@ -8,7 +8,7 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
+import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
@@ -16,7 +16,6 @@ import {
     erSakOppdatertOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
-    hentSatserOptions,
     hentTidslinjehendelserOptions,
 } from '../../api/api';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
@@ -104,10 +103,8 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
-    const ENGANGSTØNAD = useQuery({
-        ...hentSatserOptions(),
-        select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
-    }).data;
+
+    const ENGANGSTØNAD = finnEngangstønadForSøknadstidspunkt(DEFAULT_SATSER, søknadstidspunkt);
 
     const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 

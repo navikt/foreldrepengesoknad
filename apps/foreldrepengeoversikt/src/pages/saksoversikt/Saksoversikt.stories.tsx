@@ -10,7 +10,6 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -114,7 +113,6 @@ export const Engangsstønad: Story = {
                 ),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
                 http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
-                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },

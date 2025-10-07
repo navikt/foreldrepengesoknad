@@ -4,7 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
@@ -78,11 +78,6 @@ const meta = {
                     const json = await response.json();
                     return HttpResponse.json(json);
                 }),
-                http.get(API_URLS.satser, async () => {
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
-                    const json = await response.json();
-                    return HttpResponse.json(json);
-                }),
             ],
         },
     },
@@ -105,10 +100,7 @@ export const HvorMyeVeiviser: Story = {};
 export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER)),
-                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
-            ],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
         },
     },
 };

@@ -55,19 +55,3 @@ router.post('/rest/konto', async (req, res) => {
         console.log(err);
     }
 });
-
-router.get('/rest/satser', async (_req, res) => {
-    try {
-        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
-            method: 'GET',
-            headers: {
-                accept: 'application/json, text/plain, */*',
-                'content-type': 'application/json',
-            },
-        });
-        const jsonResponse = await data.json();
-        res.send(jsonResponse);
-    } catch (err) {
-        console.log(err);
-    }
-});

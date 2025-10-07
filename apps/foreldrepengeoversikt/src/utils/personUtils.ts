@@ -12,6 +12,7 @@ export const getNavnPåForeldre = (
     navnPåSøker: string,
     navnAnnenForelder: string,
 ): NavnPåForeldre => {
+    console.log(navnAnnenForelder, navnPåSøker);
     const søkerErFarEllerMedmor = !sak.sakTilhørerMor;
     return {
         farMedmor: søkerErFarEllerMedmor ? navnPåSøker : navnAnnenForelder,

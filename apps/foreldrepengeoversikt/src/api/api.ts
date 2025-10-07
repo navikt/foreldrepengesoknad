@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 import { z } from 'zod';
 
-import { DEFAULT_SATSER, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import {
     AnnenPartSak,
     AnnenPartSakIdentifikator,
@@ -13,7 +13,6 @@ import {
     Kvittering,
     MinidialogInnslag,
     Saker,
-    Satser,
     Søkerinfo,
     TidslinjeHendelseDto,
 } from '@navikt/fp-types';
@@ -24,18 +23,19 @@ import { InntektsmeldingDtoSchema } from './zodSchemas';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
-    saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    minidialog: `${urlPrefiks}/rest/minidialog`,
-    annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
-    konto: `${urlPrefiks}/rest/konto`,
-    dokumenter: `${urlPrefiks}/rest/dokument/alle`,
-    inntektsmelding: `${urlPrefiks}/rest/innsyn/inntektsmeldinger`,
-    satser: `${urlPrefiks}/rest/satser`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    saker: `${urlPrefiks}/fpoversikt/api/saker`,
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
+    dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
+    inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`,
+    tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
+    manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`,
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/erOppdatert`,
+
+    konto: `${urlPrefiks}/rest/konto`, // TODO HVOR??
+
     ettersend: `${urlPrefiks}/rest/soknad/ettersend`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
-    manglendeVedlegg: `${urlPrefiks}/rest/historikk/vedlegg`,
-    tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
     lastOppFPVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
     lastOppESVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
 } as const;
@@ -91,14 +91,6 @@ export const hentInntektsmelding = (saksnummer: string) =>
                     arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(im.arbeidsgiverNavn) ?? '',
                 }));
         },
-    });
-
-export const hentSatserOptions = () =>
-    queryOptions({
-        queryKey: ['SATSER'],
-        queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
-        staleTime: Infinity,
-        initialData: DEFAULT_SATSER,
     });
 
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartSakIdentifikator) =>
