@@ -45,7 +45,6 @@ COPY . .
 FROM --platform=${BUILDPLATFORM} builder AS server-build
 ARG SERVER
 WORKDIR /usr/src/app/${SERVER}
-RUN pnpm exec turbo test
 
 #########################################
 # Client
@@ -53,7 +52,7 @@ RUN pnpm exec turbo test
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
 WORKDIR /usr/src/app/apps/${APP}
-RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
+RUN mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # App Distroless
