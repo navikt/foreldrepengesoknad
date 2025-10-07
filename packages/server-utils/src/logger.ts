@@ -1,8 +1,6 @@
 import morgan from 'morgan';
 import winston from 'winston';
 
-import config from './config.js';
-
 const { format } = winston;
 const { combine, json, timestamp } = format;
 
@@ -15,7 +13,8 @@ const levels = {
 };
 
 const level = () => {
-    return config.app.env === 'dev' ? 'debug' : 'info';
+    const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+    return isDevelopment ? 'debug' : 'info';
 };
 
 const colors = {
@@ -28,44 +27,52 @@ const colors = {
 
 winston.addColors(colors);
 
+const uppercaseLevel = format((info) => {
+    info.level = info.level.toUpperCase();
+    return info;
+});
+
 const stdoutLogger = winston.createLogger({
     level: level(),
     levels,
     transports: [
         new winston.transports.Console({
-            format: combine(timestamp(), json()),
+            format: combine(timestamp(), uppercaseLevel(), json()),
         }),
     ],
 });
 
-const debug = (msg: any) => {
-    stdoutLogger.debug(msg.replace(/[\n\r]/g, ''));
+const debug = (msg: string) => {
+    stdoutLogger.debug(msg.replaceAll(/[\n\r]/g, ''));
 };
 
-const info = (msg: any) => {
-    stdoutLogger.info(msg.replace(/[\n\r]/g, ''));
+const info = (msg: string) => {
+    stdoutLogger.info(msg.replaceAll(/[\n\r]/g, ''));
 };
 
-const warning = (msg: any) => {
-    stdoutLogger.warn(msg.replace(/[\n\r]/g, ''));
+const warning = (msg: string) => {
+    stdoutLogger.warn(msg.replaceAll(/[\n\r]/g, ''));
 };
 
-const error = (msg: any, err: any) => {
-    if (err) {
+const error = (msg: string, err?: unknown) => {
+    if (err instanceof Error) {
         stdoutLogger.error(msg, { message: `: ${err.message}` });
     } else {
         stdoutLogger.error(msg, { message: `: ${err}` });
     }
 };
 
-const stream = {
-    // Use the http severity
-    write: (message: any) => stdoutLogger.http(message),
-};
+const skip = () => process.env.NODE_ENV === 'production';
 
 const vanligFormat = ':method :url :status :res[content-length] - :response-time ms';
 
-const morganMiddleware = morgan(vanligFormat, { stream });
+const morganMiddleware = morgan(vanligFormat, {
+    stream: {
+        // Use the http severity
+        write: (message) => stdoutLogger.http(message),
+    },
+    skip,
+});
 
 // eslint-disable-next-line import/no-default-export
 export default {
