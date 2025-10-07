@@ -1,4 +1,4 @@
-import logger from './logger.js';
+import logger from './logger';
 
 const envVar = (name: string) => {
     if (!process.env[name]) {
