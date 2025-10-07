@@ -7,7 +7,7 @@ import { PersonFrontend } from '@navikt/fp-types';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    personInfo: `${urlPrefiks}/rest/personinfo`,
+    personInfo: `${urlPrefiks}/fpoversikt/api/person/info`,
     mellomlagring: `${urlPrefiks}/rest/storage/engangsstonad`,
     sendSøknad: `${urlPrefiks}/rest/soknad/engangsstonad`,
     sendVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
