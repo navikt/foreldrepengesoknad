@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
-import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
+import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions, søkerinfoOptions1 } from 'api/queries';
 import { FpDataContext } from 'appData/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagretDataTilAppData';
 import { SøknadRoutes } from 'appData/routes';
@@ -33,6 +33,7 @@ export const Foreldrepengesøknad = () => {
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
     const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const a = useQuery(søkerinfoOptions1());
 
     const sakerQuery = useQuery(sakerOptions());
 

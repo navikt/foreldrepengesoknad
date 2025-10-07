@@ -12,6 +12,8 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    søkerInfo1: `${urlPrefiks}/rest/sokerinfo`,
+
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
@@ -34,6 +36,13 @@ export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<Søkerinfo>(),
+        staleTime: Infinity,
+    });
+
+export const søkerinfoOptions1 = () =>
+    queryOptions({
+        queryKey: ['SØKERINFO1'],
+        queryFn: () => ky.get(API_URLS.søkerInfo1, { timeout: 30000 }).json<Søkerinfo>(),
         staleTime: Infinity,
     });
 
