@@ -7,7 +7,7 @@ import {
     Periodetype,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 

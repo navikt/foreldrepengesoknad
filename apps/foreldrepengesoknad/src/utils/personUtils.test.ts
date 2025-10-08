@@ -1,7 +1,7 @@
 import { createIntl, createIntlCache } from 'react-intl';
 
 import { AnnenForelder } from '@navikt/fp-common';
-import { PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import messages from '../intl/nb_NO.json';
@@ -119,8 +119,10 @@ describe('personUtils', () => {
 
     it('skal returnere navn på foreldre der far er søker', () => {
         const person = {
-            fornavn: 'Espen',
-        } as PersonFrontend;
+            navn: {
+                fornavn: 'Espen',
+            },
+        } as PersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Olga',
@@ -135,8 +137,10 @@ describe('personUtils', () => {
 
     it('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
-            fornavn: 'Olga',
-        } as PersonFrontend;
+            navn: {
+                fornavn: 'Olga',
+            },
+        } as PersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Espen',

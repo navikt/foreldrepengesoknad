@@ -15,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 
 import {
     BarnetFormValues,
