@@ -16,7 +16,7 @@ export function useAnnenPartsVedtak(sak: Sak | undefined) {
 
     return useQuery({
         ...hentAnnenPartsVedtakOptions({
-            annenPartFødselsnummer,
+            annenPartFødselsnummer, // TODO
             barnFødselsnummer,
             familiehendelse,
         }),

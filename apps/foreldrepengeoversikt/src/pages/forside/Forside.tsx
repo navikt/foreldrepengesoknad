@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { erSakOppdatertOptions } from '../../api/api';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
@@ -26,7 +26,7 @@ import './forside.css';
 interface Props {
     saker: SakOppslag;
     isFirstRender: React.MutableRefObject<boolean>;
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 }
 
 export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {

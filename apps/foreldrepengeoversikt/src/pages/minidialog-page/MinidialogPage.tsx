@@ -26,7 +26,7 @@ export const MinidialogPage = ({ fnr }: Props) => {
     const minidialog = useQuery({
         ...minidialogOptions(),
         select: (data) =>
-            data.find(({ saksnr, dialogId }) => saksnr === params.saksnummer && dialogId === params.oppgaveId),
+            data.find(({ saksnummer, dialogId }) => saksnummer === params.saksnummer && dialogId === params.oppgaveId),
     }).data;
     const sak = useGetSelectedSak();
 

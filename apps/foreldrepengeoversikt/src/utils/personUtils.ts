@@ -1,4 +1,4 @@
-import { Søkerinfo } from '@navikt/fp-types';
+import { BarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { Foreldrepengesak } from '../types/Sak';
 
@@ -12,7 +12,6 @@ export const getNavnPåForeldre = (
     navnPåSøker: string,
     navnAnnenForelder: string,
 ): NavnPåForeldre => {
-    console.log(navnAnnenForelder, navnPåSøker);
     const søkerErFarEllerMedmor = !sak.sakTilhørerMor;
     return {
         farMedmor: søkerErFarEllerMedmor ? navnPåSøker : navnAnnenForelder,
@@ -20,6 +19,6 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getLeverPerson = (person: Søkerinfo['person']['barn'][0]) => {
+export const getLeverPerson = (person: BarnDto_fpoversikt) => {
     return !person.dødsdato;
 };

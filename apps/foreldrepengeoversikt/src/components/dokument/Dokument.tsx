@@ -2,16 +2,16 @@ import { FileIcon } from '@navikt/aksel-icons';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
-import { DokumentDto, DokumentKategori } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt, JournalpostType_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
 import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
-    readonly dokument: DokumentDto;
+    readonly dokument: DokumentDto_fpoversikt;
 }
 
-function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
+function DokumentLenke({ dokument }: { dokument: DokumentDto_fpoversikt }) {
     const url = lagUrl(dokument);
 
     return (
@@ -24,7 +24,7 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentKategori }) {
+function DokumentAvsender({ dokumentType }: { dokumentType: JournalpostType_fpoversikt }) {
     const text = (() => {
         switch (dokumentType) {
             case 'UTGÅENDE_DOKUMENT':

@@ -1,5 +1,5 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, RettighetType, Saker } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak, RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -231,7 +231,7 @@ export const saker = {
             oppdatertTidspunkt: '2024-10-24T09:33:39.69',
         },
     ],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;
 
 export const sakerTidligFPSøknad = {
     foreldrepenger: [
@@ -265,7 +265,7 @@ export const sakerTidligFPSøknad = {
     ],
     engangsstønad: [],
     svangerskapspenger: [],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;
 
 export const sakerVenterPåFpInntektsmelding = {
     foreldrepenger: [
@@ -299,7 +299,7 @@ export const sakerVenterPåFpInntektsmelding = {
     ],
     engangsstønad: [],
     svangerskapspenger: [],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;
 
 export const endringFPSøknad = {
     foreldrepenger: [
@@ -334,4 +334,4 @@ export const endringFPSøknad = {
     ],
     engangsstønad: [],
     svangerskapspenger: [],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;

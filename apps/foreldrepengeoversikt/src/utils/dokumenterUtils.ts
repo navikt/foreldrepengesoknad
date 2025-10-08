@@ -1,11 +1,13 @@
 import dayjs from 'dayjs';
 
-import { DokumentDto, TidslinjeHendelseDto } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 import { urlPrefiks } from '../api/api';
 
-export const grupperDokumenterPåTidspunkt = (dokumenter: DokumentDto[]): Record<string, DokumentDto[]> => {
-    const gruppert: Record<string, DokumentDto[]> = {};
+export const grupperDokumenterPåTidspunkt = (
+    dokumenter: DokumentDto_fpoversikt[],
+): Record<string, DokumentDto_fpoversikt[]> => {
+    const gruppert: Record<string, DokumentDto_fpoversikt[]> = {};
 
     for (const dokument of dokumenter) {
         const mottattTidspunkt = dayjs(dokument.mottatt).format();
@@ -20,6 +22,6 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: DokumentDto[]): Record
     return gruppert;
 };
 
-export const lagUrl = (dokument: DokumentDto | TidslinjeHendelseDto['dokumenter'][0]): string => {
+export const lagUrl = (dokument: DokumentDto_fpoversikt | TidslinjeHendelseDto_fpoversikt['dokumenter'][0]): string => {
     return `${urlPrefiks}/rest/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 };

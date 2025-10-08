@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import ky from 'ky';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -18,7 +19,7 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EttersendelseDto, MinidialogInnslag, Ytelse } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -42,7 +43,7 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
 interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
-    minidialog: MinidialogInnslag;
+    minidialog: TilbakekrevingUttalelseOppgave_fpoversikt;
     onSubmit: (ettersendelse: EttersendelseDto) => void;
     sakstype: Ytelse;
     ettersendelseError: string | undefined;
@@ -72,13 +73,11 @@ export const MinidialogSkjema = ({
         setAvventerVedlegg(hasPendingUploads);
     };
 
-    useQuery<MinidialogInnslag[]>({
+    useQuery({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
-            return await fetch(`${urlPrefiks}/rest/minidialog`, { credentials: 'include' }).then((response) =>
-                response.json(),
-            );
+            return ky.get(`${urlPrefiks}/rest/minidialog`).json<TilbakekrevingUttalelseOppgave_fpoversikt[]>();
         },
         refetchInterval: (query) => {
             const data = query.state.data;

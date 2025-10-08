@@ -1,5 +1,5 @@
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { AnnenPartSak, PeriodeResultatÅrsak } from '@navikt/fp-types';
+import { AnnenPartSak_fpoversikt, PeriodeResultatÅrsak } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
     perioder: [
@@ -20,4 +20,4 @@ export const annenPartVedtak = {
     termindato: '2022-08-17',
     dekningsgrad: 'HUNDRE',
     antallBarn: 1,
-} satisfies AnnenPartSak;
+} satisfies AnnenPartSak_fpoversikt;

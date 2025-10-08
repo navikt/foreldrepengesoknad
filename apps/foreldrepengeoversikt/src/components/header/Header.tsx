@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { Søkerinfo, Ytelse } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
@@ -34,7 +34,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     return 'Din sak';
 };
 
-function HeaderWrapper({ children }: { readonly children: ReactNode }) {
+function HeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default border-ax-brand-blue-300 mb-8 border-b-2`}>
             <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
@@ -42,7 +42,7 @@ function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     );
 }
 
-function SimpleHeaderWrapper({ children }: { readonly children: ReactNode }) {
+function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default`}>
             <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
@@ -54,7 +54,7 @@ function BlueDot() {
     return <div className="bg-ax-brand-blue-400 h-[4px] w-[4px] rounded-[50%]" />;
 }
 
-function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
+function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     const YtelseIkon = (() => {
         switch (ytelse) {
             case 'FORELDREPENGER':
@@ -130,7 +130,7 @@ export function EttersendingHeader() {
     );
 }
 
-export const InntektsmeldingHeader = ({ inntektsmelding }: { readonly inntektsmelding: InntektsmeldingDto }) => {
+export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
@@ -151,7 +151,13 @@ export const InntektsmeldingOversiktHeader = () => {
     );
 };
 
-function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: Søkerinfo }) {
+function FamiliehendelseDescription({
+    sak,
+    søkerinfo,
+}: {
+    sak: Sak;
+    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
+}) {
     const intl = useIntl();
 
     const saker = useQuery({
@@ -186,7 +192,7 @@ function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; re
     );
 }
 
-export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
+export function DinSakHeader({ sak }: { sak?: Sak }) {
     const søkerinfo = useQuery(søkerInfoOptions()).data;
 
     if (!sak) {

@@ -5,7 +5,7 @@ import { endringFPSøknad, saker, sakerTidligFPSøknad, sakerVenterPåFpInntekts
 import { søkerinfo, søkerinfoUtenArbeidsforhold } from 'storybookData/sokerinfo/sokerinfo';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -55,7 +55,7 @@ export const ForForeldrepenger: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
@@ -134,7 +134,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
@@ -155,7 +155,7 @@ export const ForEngangsstønad: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
@@ -184,7 +184,7 @@ export const ForSvangerskapspenger: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
@@ -221,7 +221,7 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,

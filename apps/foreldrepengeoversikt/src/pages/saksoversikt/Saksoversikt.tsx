@@ -9,7 +9,12 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
+import {
+    PersonMedArbeidsforholdDto_fpoversikt,
+    SaksperiodeNy,
+    Satser,
+    TidslinjeHendelseDto_fpoversikt,
+} from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -45,11 +50,11 @@ import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/Inntektsmeldi
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
+const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
@@ -209,7 +214,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                                 annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.person.fornavn,
+                                    søkerinfo.person.navn.fornavn!, // TODO
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak),
                                 )}
                             />

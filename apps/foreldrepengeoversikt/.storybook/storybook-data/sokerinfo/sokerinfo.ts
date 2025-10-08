@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 export const søkerinfo = {
     person: {
         fnr: '26430359419',
-        fornavn: 'Hardhudet',
-        etternavn: 'Bokstav',
+        navn: {
+            fornavn: 'Hardhudet',
+            etternavn: 'Bokstav',
+        },
         kjønn: 'K',
         fødselsdato: '2003-03-26',
         bankkonto: {
@@ -16,14 +18,18 @@ export const søkerinfo = {
         barn: [
             {
                 fnr: '01472254177',
-                fornavn: 'Magnífico',
-                etternavn: 'Fattigmannskost',
+                navn: {
+                    fornavn: 'Magnífico',
+                    etternavn: 'Fattigmannskost',
+                },
                 kjønn: 'M',
                 fødselsdato: dayjs().subtract(2, 'months').format('YYYY-MM-DD'),
-                annenForelder: {
+                annenPart: {
                     fnr: '03506715317',
-                    fornavn: 'Aritmetisk',
-                    etternavn: 'Okse',
+                    navn: {
+                        fornavn: 'Aritmetisk',
+                        etternavn: 'Okse',
+                    },
                     fødselsdato: '1967-10-03',
                 },
             },
@@ -35,16 +41,18 @@ export const søkerinfo = {
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
             stillingsprosent: 50,
-            fom: dayjs().subtract(2, 'year').format('YYYY-MM-DD'),
+            from: dayjs().subtract(2, 'year').format('YYYY-MM-DD'),
         },
     ],
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 export const søkerinfoUtenArbeidsforhold = {
     person: {
         fnr: '26430359419',
-        fornavn: 'Hardhudet',
-        etternavn: 'Bokstav',
+        navn: {
+            fornavn: 'Hardhudet',
+            etternavn: 'Bokstav',
+        },
         kjønn: 'K',
         fødselsdato: '2003-03-26',
         bankkonto: {
@@ -54,18 +62,22 @@ export const søkerinfoUtenArbeidsforhold = {
         barn: [
             {
                 fnr: '01472254177',
-                fornavn: 'Magnífico',
-                etternavn: 'Fattigmannskost',
+                navn: {
+                    fornavn: 'Magnífico',
+                    etternavn: 'Fattigmannskost',
+                },
                 kjønn: 'M',
                 fødselsdato: dayjs().subtract(2, 'months').format('YYYY-MM-DD'),
-                annenForelder: {
+                annenPart: {
                     fnr: '03506715317',
-                    fornavn: 'Aritmetisk',
-                    etternavn: 'Okse',
+                    navn: {
+                        fornavn: 'Aritmetisk',
+                        etternavn: 'Okse',
+                    },
                     fødselsdato: '1967-10-03',
                 },
             },
         ],
     },
     arbeidsforhold: [],
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
