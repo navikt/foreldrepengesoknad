@@ -8,9 +8,9 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/rest/personinfo`,
-    mellomlagring: `${urlPrefiks}/rest/storage/engangsstonad`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/engangsstonad`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/storage/engangsstonad`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/engangsstonad`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/engangsstonad/vedlegg`,
 } as const;
 
 export const personOptions = () =>

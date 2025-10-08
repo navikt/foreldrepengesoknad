@@ -12,6 +12,8 @@ const envVar = (name: string) => {
 const proxy = {
     FPOVERSIKT_API_URL: envVar('FPOVERSIKT_API_URL'),
     FPOVERSIKT_API_SCOPE: envVar('FPOVERSIKT_API_SCOPE'),
+    FPSOKNAD_API_SCOPE: envVar('FPSOKNAD_API_SCOPE'),
+    FPSOKNAD_API_URL: envVar('FPSOKNAD_API_URL'),
     API_URL: envVar('FORELDREPENGER_API_URL'),
     API_SCOPE: envVar('FORELDREPENGER_API_SCOPE'),
 } as const;

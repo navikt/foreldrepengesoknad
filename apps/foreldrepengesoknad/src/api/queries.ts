@@ -17,9 +17,10 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger`,
-    endreSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
+
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
+    endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/foreldrepenger/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>

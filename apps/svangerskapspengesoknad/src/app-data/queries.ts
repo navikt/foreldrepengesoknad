@@ -10,10 +10,11 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    mellomlagring: `${urlPrefiks}/rest/storage/svangerskapspenger`,
     satser: `${urlPrefiks}/rest/satser`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/svangerskapspenger`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/svangerskapspenger/vedlegg`,
+
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/svangerskapspenger`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/svangerskapspenger/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>

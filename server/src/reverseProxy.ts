@@ -18,6 +18,12 @@ export function configureReverseProxyApi(router: Router) {
     });
 
     addProxyHandler(router, {
+        ingoingUrl: '/fpsoknad',
+        outgoingUrl: serverConfig.proxy.FPSOKNAD_API_URL,
+        scope: serverConfig.proxy.FPSOKNAD_API_SCOPE,
+    });
+
+    addProxyHandler(router, {
         ingoingUrl: '/rest',
         outgoingUrl: serverConfig.proxy.API_URL,
         scope: serverConfig.proxy.API_SCOPE,
