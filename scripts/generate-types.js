@@ -9,113 +9,138 @@ const __dirname = path.dirname(__filename);
 
 const isLokal = process.argv.includes('lokal');
 
-const URL = 'https://fpoversikt.intern.dev.nav.no/fpoversikt/api/openapi.json';
-const URL_LOKALT = 'http://localhost:8889/api/openapi.json';
+const SOURCES = [
+    {
+        name: 'fpoversikt',
+        url: 'https://fpoversikt.intern.dev.nav.no/fpoversikt/api/openapi.json',
+        localUrl: 'http://localhost:8889/api/openapi.json',
+        aud: 'dev-gcp:teamforeldrepenger:fpoversikt',
+    },
+    {
+        name: 'fpsoknad',
+        url: 'https://fpsoknad.intern.dev.nav.no/fpsoknad/api/openapi.json',
+        localUrl: 'http://localhost:8999/api/openapi.json',
+        aud: 'dev-gcp:teamforeldrepenger:fpsoknad',
+    },
+];
+
+async function fetchOpenApi({ name, url, localUrl, aud }) {
+    const swaggerPath = path.resolve(`${name}.json`);
+
+    if (isLokal) {
+        console.log(`\n==> [${name}] Kjører i lokal modus. Henter token fra VTP.`);
+        const tokenResponse = execFileSync(
+            'curl',
+            [
+                '-X',
+                'POST',
+                'http://localhost:8060/rest/azuread/token',
+                '-H',
+                'Content-Type: application/x-www-form-urlencoded',
+                '--data-urlencode',
+                'grant_type=authorization_code',
+                '--data-urlencode',
+                'code=S123456',
+                '--data-urlencode',
+                'client_id=autotest',
+                '--data-urlencode',
+                'scope=api://vtp.teamforeldrepenger.vtp/.default',
+            ],
+            { encoding: 'utf-8' },
+        );
+
+        const tokenMatch = tokenResponse.match(/"id_token":"([^"]+)"/);
+        if (!tokenMatch) throw new Error('Could not extract token from response');
+        const tokenLokalt = tokenMatch[1];
+
+        console.log(`Henter OpenAPI fra: ${localUrl}`);
+        const openApiResponse = execFileSync(
+            'curl',
+            [
+                '-s',
+                '-X',
+                'GET',
+                localUrl,
+                '-H',
+                `Authorization: Bearer ${tokenLokalt}`,
+                '-H',
+                'Accept: application/json',
+                '-H',
+                'User-Agent: fp-frontend-script/1.0',
+            ],
+            { encoding: 'utf-8' },
+        );
+
+        fs.writeFileSync(swaggerPath, openApiResponse);
+    } else {
+        console.log(`\n==> [${name}] Kjører i remote modus. Henter token og OpenAPI.`);
+        const token = execFileSync(
+            'curl',
+            ['-s', '-X', 'POST', 'https://azure-token-generator.intern.dev.nav.no/api/public/m2m', '-d', `aud=${aud}`],
+            { encoding: 'utf-8' },
+        ).trim();
+
+        console.log(`Henter OpenAPI fra: ${url}`);
+        const openApiResponse = execFileSync(
+            'curl',
+            [
+                '-s',
+                '-X',
+                'GET',
+                url,
+                '-H',
+                `Authorization: Bearer ${token}`,
+                '-H',
+                'Accept: application/json',
+                '-H',
+                'User-Agent: fp-frontend-script/1.0',
+            ],
+            { encoding: 'utf-8' },
+        );
+
+        fs.writeFileSync(swaggerPath, openApiResponse);
+    }
+
+    console.log(`Swagger lagret: ${swaggerPath}`);
+    return swaggerPath;
+}
 
 async function generateTypes() {
     try {
-        if (isLokal) {
-            console.log('Kjører i lokal modus. Henter token fra VTP.');
-
-            const tokenResponse = execFileSync(
-                'curl',
-                [
-                    '-X',
-                    'POST',
-                    'http://localhost:8060/rest/azuread/token',
-                    '-H',
-                    'Content-Type: application/x-www-form-urlencoded',
-                    '--data-urlencode',
-                    'grant_type=authorization_code',
-                    '--data-urlencode',
-                    'code=S123456',
-                    '--data-urlencode',
-                    'client_id=autotest',
-                    '--data-urlencode',
-                    'scope=api://vtp.teamforeldrepenger.vtp/.default',
-                ],
-                { encoding: 'utf-8' },
-            );
-
-            const tokenMatch = tokenResponse.match(/"id_token":"([^"]+)"/);
-
-            if (!tokenMatch) throw new Error('Could not extract token from response');
-            const tokenLokalt = tokenMatch[1];
-
-            console.log(`Henter OpenAPI fra: ${URL_LOKALT}`);
-
-            const openApiResponse = execFileSync(
-                'curl',
-                [
-                    '-X',
-                    'GET',
-                    URL_LOKALT,
-                    '-H',
-                    `Authorization: Bearer ${tokenLokalt}`,
-                    '-H',
-                    'Accept: application/json',
-                    '-H',
-                    'User-Agent: fp-frontend-script/1.0',
-                ],
-                { encoding: 'utf-8' },
-            );
-
-            console.log('Oppdaterer swagger.json');
-            fs.writeFileSync('swagger.json', openApiResponse);
-        } else {
-            console.log('Kjører i remote modus. Henter remote token og OpenAPI.');
-
-            const token = execFileSync(
-                'curl',
-                [
-                    '-s',
-                    '-X',
-                    'POST',
-                    'https://azure-token-generator.intern.dev.nav.no/api/public/m2m',
-                    '-d',
-                    'aud=dev-fss:teamforeldrepenger:fpsak',
-                ],
-                { encoding: 'utf-8' },
-            ).trim();
-
-            console.log(`Henter OpenAPI fra: ${URL}`);
-
-            const openApiResponse = execFileSync(
-                'curl',
-                [
-                    '-X',
-                    'GET',
-                    URL,
-                    '-H',
-                    `Authorization: Bearer ${token}`,
-                    '-H',
-                    'Accept: application/json',
-                    '-H',
-                    'User-Agent: fp-frontend-script/1.0',
-                ],
-                { encoding: 'utf-8' },
-            );
-
-            console.log('Oppdaterer swagger.json');
-            fs.writeFileSync('swagger.json', openApiResponse);
+        for (const source of SOURCES) {
+            await fetchOpenApi(source);
         }
 
-        console.log('Genererer TS-typer fra swagger.json');
         spawnSync('pnpm', ['run', 'openapi-ts'], { stdio: 'inherit' });
 
+        console.log('\n==> Kopierer genererte typer');
         const isWindows = process.platform === 'win32';
-        if (isWindows) {
-            spawnSync(
-                'cmd',
-                ['/c', 'copy', String.raw`temp-types\types.gen.ts`, String.raw`packages\types\src\apiDtoGenerert.ts`],
-                {
-                    stdio: 'inherit',
-                },
-            );
-            spawnSync('cmd', ['/c', 'rmdir', '/s', '/q', 'temp-types'], { stdio: 'inherit' });
-        } else {
-            spawnSync('cp', ['temp-types/types.gen.ts', 'packages/types/src/apiDtoGenerert.ts'], { stdio: 'inherit' });
-            spawnSync('rm', ['-rf', 'temp-types'], { stdio: 'inherit' });
+
+        for (const source of SOURCES) {
+            if (isWindows) {
+                spawnSync(
+                    'cmd',
+                    [
+                        '/c',
+                        'copy',
+                        String.raw`temp-${source.name}-types\types.gen.ts`,
+                        String.raw`packages\types\src\${source.name}DtoGenerert.ts`,
+                    ],
+                    {
+                        stdio: 'inherit',
+                    },
+                );
+                spawnSync('cmd', ['/c', 'rmdir', '/s', '/q', `temp-${source.name}-types`], { stdio: 'inherit' });
+            } else {
+                spawnSync(
+                    'cp',
+                    [`temp-${source.name}-types/types.gen.ts`, `packages/types/src/${source.name}DtoGenerert.ts`],
+                    {
+                        stdio: 'inherit',
+                    },
+                );
+                spawnSync('rm', ['-rf', `temp-${source.name}-types`], { stdio: 'inherit' });
+            }
         }
 
         process.chdir('packages/types');

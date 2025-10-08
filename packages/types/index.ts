@@ -69,5 +69,7 @@ export { OppholdÅrsakType } from './src/OppholdÅrsakType';
 export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
-export * from './src/apiDtoGenerert';
 export * from './src/Ytelse';
+
+export * from './src/fpsoknadDtoGenerert';
+export * from './src/fpoversiktDtoGenerert'; // TODO
