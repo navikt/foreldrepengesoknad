@@ -16,6 +16,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isPrematuruker,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
@@ -25,6 +26,7 @@ import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
 import { PeriodeUtenUttakContent } from './components/PeriodeUtenUttakContext';
+import { PrematurukerContent } from './components/PrematurukerContent';
 import { SkalJobbeContent } from './components/SkalJobbeContent';
 import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeContent';
 import { UttaksperiodeContent } from './components/UttaksperiodeContent';
@@ -143,6 +145,10 @@ const renderPeriode = (
 
     if (isUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={periode.id} periode={periode} />;
+    }
+
+    if (isPrematuruker(periode)) {
+        return <PrematurukerContent key={periode.id} />;
     }
 
     if (isUttaksperiode(periode)) {
