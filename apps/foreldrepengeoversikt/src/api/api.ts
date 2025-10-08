@@ -8,7 +8,7 @@ import {
     AnnenPartSak_fpoversikt,
     DokumentDto_fpoversikt,
     EttersendelseDto,
-    KontoBeregningDto,
+    KontoBeregningDto_fpoversikt,
     KontoBeregningGrunnlagDto,
     Kvittering,
     PersonMedArbeidsforholdDto_fpoversikt,
@@ -62,7 +62,9 @@ export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
         queryFn: () =>
-            ky.post(API_URLS.konto, { json: body }).json<{ '80': KontoBeregningDto; '100': KontoBeregningDto }>(),
+            ky
+                .post(API_URLS.konto, { json: body })
+                .json<{ '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt }>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>

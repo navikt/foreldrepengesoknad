@@ -10,8 +10,8 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import {
     BrukerRolleSak_fpoversikt,
     Familiehendelse_fpoversikt,
-    KontoBeregningDto,
-    KontoDto,
+    KontoBeregningDto_fpoversikt,
+    KontoDto_fpoversikt,
     OppholdÅrsakType,
     RettighetType_fpoversikt,
     SaksperiodeNy,
@@ -24,7 +24,7 @@ import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 type Props = {
-    konto: KontoBeregningDto;
+    konto: KontoBeregningDto_fpoversikt;
     perioder: Planperiode[];
     rettighetType: RettighetType_fpoversikt;
     forelder: BrukerRolleSak_fpoversikt;
@@ -569,7 +569,7 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({ konto, perioder }: { konto?: KontoDto_fpoversikt; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
     const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
@@ -671,7 +671,7 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
 }: {
-    kontoType: KontoDto['konto'];
+    kontoType: KontoDto_fpoversikt['konto'];
     erMedmorDelAvSøknaden?: boolean;
 }) => {
     switch (kontoType) {
@@ -710,7 +710,7 @@ const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }
 };
 
 type FordelingSegmentProps = {
-    kontoType?: KontoDto['konto'];
+    kontoType?: KontoDto_fpoversikt['konto'];
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
@@ -859,7 +859,7 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): S
     }
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
+const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto_fpoversikt[]) => {
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
             if (p.oppholdÅrsak) {
