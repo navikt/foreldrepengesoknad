@@ -18,7 +18,13 @@ import {
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
+    FRILANS_ID,
+    NæringDto,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -42,22 +48,20 @@ const ANNEN_ARBEIDSGIVER_ID = '9903232324';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
-        id: '86832061-1118-9701-6179-20647729409710',
         arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'ikke-orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2018-06-25T00:00:00.000Z',
+        from: '2018-06-25T00:00:00.000Z',
         stillingsprosent: 80,
     },
     {
-        id: '263929546-6215-9868-5127-161910165730101',
         arbeidsgiverId: ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-        fom: '2017-04-05T00:00:00.000Z',
+        from: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const BARNET = {
     erBarnetFødt: true,

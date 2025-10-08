@@ -12,7 +12,7 @@ import {
 } from 'utils/tilretteleggingUtils';
 
 import { AttachmentMetadataType } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, Frilans, LocaleNo, NæringDto } from '@navikt/fp-types';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, Frilans, LocaleNo, NæringDto } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

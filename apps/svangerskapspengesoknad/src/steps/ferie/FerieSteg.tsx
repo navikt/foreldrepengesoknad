@@ -20,7 +20,7 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,

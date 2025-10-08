@@ -5,6 +5,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { ArbeidIUtlandetSteg } from './ArbeidIUtlandetSteg';
 
 const promiseAction = () => () => {
@@ -14,14 +15,13 @@ const promiseAction = () => () => {
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
-        id: '0132715641-23932-19917-03900-809964087910',
         arbeidsgiverId: '995090910',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
-        fom: '2018-06-01T00:00:00.000Z',
+        from: '2018-06-01T00:00:00.000Z',
         stillingsprosent: 0,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;

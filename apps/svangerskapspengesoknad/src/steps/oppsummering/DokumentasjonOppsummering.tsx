@@ -4,7 +4,7 @@ import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtil
 import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({

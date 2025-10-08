@@ -15,9 +15,9 @@ import {
 import { ISO_DATE_FORMAT, TIDENES_MORGEN } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     Frilans,
     NæringDto,

@@ -11,7 +11,7 @@ import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 

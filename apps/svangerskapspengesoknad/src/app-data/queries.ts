@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
-import { Saker, Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -18,14 +18,14 @@ export const API_URLS = {
 export const sakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(API_URLS.saker).json<Saker>(),
+        queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
         staleTime: Infinity,
     });
 
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<Søkerinfo>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

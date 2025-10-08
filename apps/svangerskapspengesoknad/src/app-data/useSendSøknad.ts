@@ -5,7 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Arbeidsforhold, Kvittering } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Kvittering } from '@navikt/fp-types';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';

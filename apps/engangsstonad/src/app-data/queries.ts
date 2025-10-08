@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
-import { PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -16,7 +16,7 @@ export const API_URLS = {
 export const personOptions = () =>
     queryOptions({
         queryKey: ['PERSONINFO'],
-        queryFn: () => ky.get(API_URLS.personInfo).json<PersonFrontend>(),
+        queryFn: () => ky.get(API_URLS.personInfo).json<PersonDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

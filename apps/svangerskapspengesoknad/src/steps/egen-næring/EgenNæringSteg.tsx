@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, NæringDto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

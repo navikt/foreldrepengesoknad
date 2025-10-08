@@ -1,7 +1,6 @@
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { AnnenForelder } from './AnnenForelder';
-import { Arbeidsforhold } from './Arbeidsforhold';
 import { Barn } from './Barn';
 import { Dekningsgrad } from './Dekningsgrad';
 import { EksisterendeSak } from './EksisterendeSak';

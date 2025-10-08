@@ -6,19 +6,19 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
     {
-        id: '896929119',
         arbeidsgiverId: '896929119',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2014-05-22T00:00:00.000Z',
+        from: '2014-05-22T00:00:00.000Z',
         stillingsprosent: 32.63,
-        tom: '2019-05-31T00:00:00.000Z',
+        to: '2019-05-31T00:00:00.000Z',
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const meta = {
     title: 'steps/FerieSteg',

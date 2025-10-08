@@ -5,7 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
@@ -15,10 +15,13 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export type SvpDataMapAndMetaData = { version: number; søkerInfo: Søkerinfo } & ContextDataMap;
+export type SvpDataMapAndMetaData = {
+    version: number;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+} & ContextDataMap;
 
 export const useMellomlagreSøknad = (
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
     const navigate = useNavigate();

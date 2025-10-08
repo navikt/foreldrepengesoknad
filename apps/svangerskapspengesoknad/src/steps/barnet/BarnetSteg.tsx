@@ -16,7 +16,6 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     enMånedSiden,
@@ -33,6 +32,8 @@ import {
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
+
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
     erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());

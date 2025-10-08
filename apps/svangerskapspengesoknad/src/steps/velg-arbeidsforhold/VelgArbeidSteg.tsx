@@ -9,10 +9,10 @@ import { useIntl } from 'react-intl';
 import { Checkbox, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { FlereArbeidsforholdGuidePanel } from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
 

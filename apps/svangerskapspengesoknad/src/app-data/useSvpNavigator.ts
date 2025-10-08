@@ -1,5 +1,5 @@
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
 import { SøknadRoute } from './routes';

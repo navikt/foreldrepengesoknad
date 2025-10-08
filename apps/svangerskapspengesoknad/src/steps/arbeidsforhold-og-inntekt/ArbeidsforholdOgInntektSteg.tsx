@@ -10,9 +10,9 @@ import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';

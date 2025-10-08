@@ -72,4 +72,7 @@ export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/Ytelse';
 
 export * from './src/fpsoknadDtoGenerert';
+// @ts-expect-error -- finn ut senere
 export * from './src/fpoversiktDtoGenerert'; // TODO
+
+export type Kvittering = unknown; // TODO

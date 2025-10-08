@@ -7,7 +7,7 @@ import { FormSummary, List } from '@navikt/ds-react';
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
-import { Arbeidsforhold } from '../../../../../packages/types';
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 
 export function FerieOppsummering({
     onVilEndreSvar,

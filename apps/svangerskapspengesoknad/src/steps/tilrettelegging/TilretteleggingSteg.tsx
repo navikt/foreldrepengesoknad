@@ -34,11 +34,11 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
+import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { Bedriftsbanner } from '../Bedriftsbanner';
 import { DelvisTilretteleggingPanel } from './DelvisTilretteleggingPanel';
 import { IngenTilretteleggingPanel } from './IngenTilretteleggingPanel';
