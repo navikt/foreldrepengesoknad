@@ -19,7 +19,7 @@
         "react-intl": "7.1.11"
     },
     "devDependencies": {
-        "@navikt/ds-react": "7.31.0",
+        "@navikt/ds-react": "7.32.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@testing-library/jest-dom": "6.7.0",
