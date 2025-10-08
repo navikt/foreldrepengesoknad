@@ -31,7 +31,7 @@ import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
     person: PersonFrontend;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };

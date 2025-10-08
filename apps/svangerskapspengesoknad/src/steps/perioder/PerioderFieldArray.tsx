@@ -47,7 +47,7 @@ interface Props {
     valgtTilretteleggingId: string;
     kanHaSVPFremTilTreUkerFørTermin: boolean;
     behovForTilretteleggingFom: string;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     egenNæring?: NæringDto;
     frilans?: Frilans;
 }

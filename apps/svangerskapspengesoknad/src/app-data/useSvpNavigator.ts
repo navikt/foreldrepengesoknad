@@ -5,7 +5,10 @@ import { ContextDataType, useContextSaveData } from './SvpDataContext';
 import { SøknadRoute } from './routes';
 import { useStepConfig } from './useStepConfig';
 
-export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforhold: Arbeidsforhold[]) => {
+export const useSvpNavigator = (
+    mellomlagreOgNaviger: () => Promise<void>,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 

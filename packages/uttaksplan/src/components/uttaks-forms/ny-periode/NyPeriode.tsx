@@ -25,7 +25,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     isUtsettelse: boolean;
     handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;

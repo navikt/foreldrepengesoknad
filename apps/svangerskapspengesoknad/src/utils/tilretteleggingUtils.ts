@@ -166,7 +166,7 @@ export const getOpprinneligStillingsprosent = (
 };
 
 export const getTilretteleggingId = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
     valgteArbeidsforhold?: string[],
@@ -206,7 +206,7 @@ export const getNesteTilretteleggingId = (
 export const getArbeidsgiverNavnForTilrettelegging = (
     intl: IntlShape,
     tilretteleggingId: string,
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ): string => {
     if (tilretteleggingId === EGEN_NÆRING_ID) {
         return intl.formatMessage({ id: 'egenNæring' }).toLowerCase();
@@ -223,7 +223,7 @@ export const getArbeidsgiverNavnForTilrettelegging = (
 export const getArbeidsgiverStillingerForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     egenNæring?: NæringDto,
     frilans?: Frilans,
 ): Stilling[] => {
@@ -240,7 +240,10 @@ export const getArbeidsgiverStillingerForTilrettelegging = (
     return arbeidsforhold.stillinger;
 };
 
-export const getTypeArbeidForTilrettelegging = (tilretteleggingId: string, alleArbeidsforhold: Arbeidsforhold[]) => {
+export const getTypeArbeidForTilrettelegging = (
+    tilretteleggingId: string,
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+) => {
     if (tilretteleggingId === EGEN_NÆRING_ID) {
         return Arbeidsforholdstype.SELVSTENDIG;
     } else if (tilretteleggingId === FRILANS_ID) {
@@ -256,7 +259,7 @@ export const getTypeArbeidForTilrettelegging = (tilretteleggingId: string, alleA
 export const getPeriodeForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     egenNæring?: NæringDto,
     frilans?: Frilans,
 ): { fom: string; tom?: string } => {
@@ -275,7 +278,7 @@ export const getPeriodeForTilrettelegging = (
 
 export const getRuteVelgArbeidEllerSkjema = (
     termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
 ): SøknadRoute | string => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);

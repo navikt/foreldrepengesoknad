@@ -35,7 +35,7 @@ interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     handleDeletePeriode: (periodeId: string) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;

@@ -109,7 +109,7 @@ type StoryArgs = {
     erAleneOmOmsorg?: boolean;
     person: PersonFrontend;
     dekningsgrad: Dekningsgrad;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FordelingSteg>;
 
 const meta = {

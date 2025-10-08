@@ -44,7 +44,7 @@ interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     handleDeletePeriode: (periodeId: string) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
@@ -72,7 +72,7 @@ const renderPeriodeListeInnhold = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     toggleIsOpen: (id: string) => void,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     handleDeletePeriode: (periodeId: string) => void,
     erFarEllerMedmor: boolean,
     erFlerbarnssøknad: boolean,

@@ -32,7 +32,7 @@ const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean =
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     søknadGjelderEtNyttBarn?: boolean;
 }
 

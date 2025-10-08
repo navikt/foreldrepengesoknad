@@ -41,7 +41,7 @@ import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 
 //TODO (TOR) temp-mapping. Fjern
-const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[]): OldArbeidsforhold[] => {
+const mapNewToOldArbeidsforhold = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): OldArbeidsforhold[] => {
     if (!arbeidsforhold) {
         return [];
     }
@@ -67,7 +67,7 @@ interface Props {
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erEndringssøknad: boolean;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;

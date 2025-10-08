@@ -22,9 +22,11 @@ export type MorArbeidRequest_fpoversikt = {
 
 export type PeriodeRequest_fpoversikt = {
     fom: string;
-    periodeType?: 'UTTAK' | 'UTSETTELSE';
+    periodeType?: PeriodeMedAktivitetskravType_fpoversikt;
     tom: string;
 };
+
+export type PeriodeMedAktivitetskravType_fpoversikt = 'UTTAK' | 'UTSETTELSE';
 
 export type DokumentDto_fpoversikt = {
     dokumentId?: string;
@@ -32,8 +34,10 @@ export type DokumentDto_fpoversikt = {
     mottatt: string;
     saksnummer?: string;
     tittel?: string;
-    type: 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
+    type: JournalpostType_fpoversikt;
 };
+
+export type JournalpostType_fpoversikt = 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
 
 export type ProsessTaskDataDto_fpoversikt = {
     gruppe: string;
@@ -73,6 +77,8 @@ export type FeiletProsessTaskDataDto_fpoversikt = {
     sisteKjøringServerProsess?: string;
 };
 
+export type IkkeFerdigProsessTaskStatusEnum_fpoversikt = 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT' | 'VETO' | 'KLAR';
+
 /**
  * Resultatet av asynkron-restart av en eksisterende prosesstask
  */
@@ -87,6 +93,8 @@ export type ProsessTaskRestartResultatDto_fpoversikt = {
      */
     prosessTaskStatus: string;
 };
+
+export type FeiletProsessTaskStatusEnum_fpoversikt = 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT';
 
 /**
  * Resultatet av asynkron-restart av feilede prosesstasks
@@ -108,26 +116,7 @@ export type BortfaltNaturalytelse_fpoversikt = {
     beløpPerMnd?: number;
     fomDato?: string;
     tomDato?: string;
-    type?:
-        | 'ELEKTRISK_KOMMUNIKASJON'
-        | 'AKSJER_GRUNNFONDSBEVIS_TIL_UNDERKURS'
-        | 'LOSJI'
-        | 'KOST_DØGN'
-        | 'BESØKSREISER_HJEMMET_ANNET'
-        | 'KOSTBESPARELSE_I_HJEMMET'
-        | 'RENTEFORDEL_LÅN'
-        | 'BIL'
-        | 'KOST_DAGER'
-        | 'BOLIG'
-        | 'SKATTEPLIKTIG_DEL_FORSIKRINGER'
-        | 'FRI_TRANSPORT'
-        | 'OPSJONER'
-        | 'TILSKUDD_BARNEHAGEPLASS'
-        | 'ANNET'
-        | 'BEDRIFTSBARNEHAGEPLASS'
-        | 'YRKEBIL_TJENESTLIGBEHOV_KILOMETER'
-        | 'YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS'
-        | 'INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING';
+    type?: NaturalytelseType_fpoversikt;
 };
 
 export type FpOversiktInntektsmeldingDto_fpoversikt = {
@@ -145,10 +134,99 @@ export type FpOversiktInntektsmeldingDto_fpoversikt = {
     versjon?: number;
 };
 
+export type NaturalytelseType_fpoversikt =
+    | 'ELEKTRISK_KOMMUNIKASJON'
+    | 'AKSJER_GRUNNFONDSBEVIS_TIL_UNDERKURS'
+    | 'LOSJI'
+    | 'KOST_DØGN'
+    | 'BESØKSREISER_HJEMMET_ANNET'
+    | 'KOSTBESPARELSE_I_HJEMMET'
+    | 'RENTEFORDEL_LÅN'
+    | 'BIL'
+    | 'KOST_DAGER'
+    | 'BOLIG'
+    | 'SKATTEPLIKTIG_DEL_FORSIKRINGER'
+    | 'FRI_TRANSPORT'
+    | 'OPSJONER'
+    | 'TILSKUDD_BARNEHAGEPLASS'
+    | 'ANNET'
+    | 'BEDRIFTSBARNEHAGEPLASS'
+    | 'YRKEBIL_TJENESTLIGBEHOV_KILOMETER'
+    | 'YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS'
+    | 'INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING';
+
 export type Refusjon_fpoversikt = {
     fomDato?: string;
     refusjonsbeløpMnd?: number;
 };
+
+export type DokumentType_fpoversikt =
+    | 'I000001'
+    | 'I000002'
+    | 'I000003'
+    | 'I000004'
+    | 'I000005'
+    | 'I000006'
+    | 'I000050'
+    | 'I000027'
+    | 'I500027'
+    | 'I000114'
+    | 'I000119'
+    | 'I000067'
+    | 'I000007'
+    | 'I000023'
+    | 'I000026'
+    | 'I000032'
+    | 'I000036'
+    | 'I000037'
+    | 'I000038'
+    | 'I000039'
+    | 'I000041'
+    | 'I000042'
+    | 'I000043'
+    | 'I000044'
+    | 'I000045'
+    | 'I000047'
+    | 'I000049'
+    | 'I000051'
+    | 'I000060'
+    | 'I000061'
+    | 'I000062'
+    | 'I000063'
+    | 'I000064'
+    | 'I000065'
+    | 'I000066'
+    | 'I000107'
+    | 'I000108'
+    | 'I000109'
+    | 'I000110'
+    | 'I000111'
+    | 'I000112'
+    | 'I000116'
+    | 'I000117'
+    | 'I000118'
+    | 'I000120'
+    | 'I000121'
+    | 'I000122'
+    | 'I000123'
+    | 'I000124'
+    | 'I000130'
+    | 'I000131'
+    | 'I000132'
+    | 'I000133'
+    | 'I000140'
+    | 'I000141'
+    | 'I000143'
+    | 'I000144'
+    | 'I000145'
+    | 'I000146'
+    | 'I500001'
+    | 'I500002'
+    | 'I500003'
+    | 'I500004'
+    | 'I500005'
+    | 'I500006'
+    | 'I500050';
 
 export type TilbakekrevingUttalelseOppgave_fpoversikt = {
     frist?: string;
@@ -167,19 +245,25 @@ export type Bankkonto_fpoversikt = {
     kontonummer?: string;
 };
 
+export type Kjønn_fpoversikt = 'M' | 'K' | 'U';
+
 export type Sivilstand_fpoversikt = {
-    type?:
-        | 'UOPPGITT'
-        | 'UGIFT'
-        | 'GIFT'
-        | 'ENKE_ELLER_ENKEMANN'
-        | 'SKILT'
-        | 'SEPARERT'
-        | 'REGISTRERT_PARTNER'
-        | 'SEPARERT_PARTNER'
-        | 'SKILT_PARTNER'
-        | 'GJENLEVENDE_PARTNER';
+    type?: SivilstandType_fpoversikt;
 };
+
+export type SivilstandType_fpoversikt =
+    | 'UOPPGITT'
+    | 'UGIFT'
+    | 'GIFT'
+    | 'ENKE_ELLER_ENKEMANN'
+    | 'SKILT'
+    | 'SEPARERT'
+    | 'REGISTRERT_PARTNER'
+    | 'SEPARERT_PARTNER'
+    | 'SKILT_PARTNER'
+    | 'GJENLEVENDE_PARTNER';
+
+export type Målform_fpoversikt = 'NB' | 'NN' | 'EN' | 'E';
 
 export type PersonDto_fpoversikt = {
     aktørid?: string;
@@ -187,8 +271,8 @@ export type PersonDto_fpoversikt = {
     barn: BarnDto_fpoversikt[];
     fnr: string;
     fødselsdato: string;
-    kjønn: 'M' | 'K' | 'U';
-    målform?: 'NB' | 'NN' | 'EN' | 'E';
+    kjønn: Kjønn_fpoversikt;
+    målform?: Målform_fpoversikt;
     navn: Navn_fpoversikt;
     sivilstand?: Sivilstand_fpoversikt;
 };
@@ -204,7 +288,7 @@ export type BarnDto_fpoversikt = {
     dødsdato?: string;
     fnr: string;
     fødselsdato: string;
-    kjønn: 'M' | 'K' | 'U';
+    kjønn: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;
 };
 
@@ -222,77 +306,110 @@ export type AnnenPartRequest_fpoversikt = {
 export type Aktivitet_fpoversikt = {
     arbeidsgiver?: Arbeidsgiver_fpoversikt;
     arbeidsgiverNavn?: string;
-    type: 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
+    type: AktivitetType_fpoversikt;
 };
+
+export type AktivitetType_fpoversikt = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
 
 export type AnnenPartSak_fpoversikt = {
     antallBarn: number;
-    dekningsgrad: 'ÅTTI' | 'HUNDRE';
+    dekningsgrad: DekningsgradSak_fpoversikt;
     perioder: UttakPeriode_fpoversikt[];
     termindato?: string;
 };
 
 export type Arbeidsgiver_fpoversikt = {
     id?: string;
-    type?: 'PRIVAT' | 'ORGANISASJON';
+    type?: ArbeidsgiverType_fpoversikt;
 };
+
+export type ArbeidsgiverType_fpoversikt = 'PRIVAT' | 'ORGANISASJON';
+
+export type BrukerRolleSak_fpoversikt = 'MOR' | 'FAR_MEDMOR';
+
+export type DekningsgradSak_fpoversikt = 'ÅTTI' | 'HUNDRE';
 
 export type Gradering_fpoversikt = {
     aktivitet: Aktivitet_fpoversikt;
     arbeidstidprosent: number;
 };
 
+export type KontoType_fpoversikt =
+    | 'MØDREKVOTE'
+    | 'FEDREKVOTE'
+    | 'FELLESPERIODE'
+    | 'FORELDREPENGER'
+    | 'FORELDREPENGER_FØR_FØDSEL';
+
+export type MorsAktivitet_fpoversikt =
+    | 'ARBEID'
+    | 'UTDANNING'
+    | 'KVALPROG'
+    | 'INTROPROG'
+    | 'TRENGER_HJELP'
+    | 'INNLAGT'
+    | 'ARBEID_OG_UTDANNING'
+    | 'UFØRE'
+    | 'IKKE_OPPGITT';
+
+export type UttakOppholdÅrsak_fpoversikt =
+    | 'MØDREKVOTE_ANNEN_FORELDER'
+    | 'FEDREKVOTE_ANNEN_FORELDER'
+    | 'FELLESPERIODE_ANNEN_FORELDER'
+    | 'FORELDREPENGER_ANNEN_FORELDER';
+
+export type UttakOverføringÅrsak_fpoversikt =
+    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
+    | 'SYKDOM_ANNEN_FORELDER'
+    | 'IKKE_RETT_ANNEN_FORELDER'
+    | 'ALENEOMSORG';
+
 export type UttakPeriode_fpoversikt = {
     flerbarnsdager?: boolean;
     fom: string;
-    forelder?: 'MOR' | 'FAR_MEDMOR';
+    forelder?: BrukerRolleSak_fpoversikt;
     gradering?: Gradering_fpoversikt;
-    kontoType?: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
-    morsAktivitet?:
-        | 'ARBEID'
-        | 'UTDANNING'
-        | 'KVALPROG'
-        | 'INTROPROG'
-        | 'TRENGER_HJELP'
-        | 'INNLAGT'
-        | 'ARBEID_OG_UTDANNING'
-        | 'UFØRE'
-        | 'IKKE_OPPGITT';
-    oppholdÅrsak?:
-        | 'MØDREKVOTE_ANNEN_FORELDER'
-        | 'FEDREKVOTE_ANNEN_FORELDER'
-        | 'FELLESPERIODE_ANNEN_FORELDER'
-        | 'FORELDREPENGER_ANNEN_FORELDER';
-    overføringÅrsak?:
-        | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
-        | 'SYKDOM_ANNEN_FORELDER'
-        | 'IKKE_RETT_ANNEN_FORELDER'
-        | 'ALENEOMSORG';
+    kontoType?: KontoType_fpoversikt;
+    morsAktivitet?: MorsAktivitet_fpoversikt;
+    oppholdÅrsak?: UttakOppholdÅrsak_fpoversikt;
+    overføringÅrsak?: UttakOverføringÅrsak_fpoversikt;
     resultat?: UttakPeriodeResultat_fpoversikt;
     samtidigUttak?: number;
     tom: string;
-    utsettelseÅrsak?:
-        | 'HV_ØVELSE'
-        | 'ARBEID'
-        | 'LOVBESTEMT_FERIE'
-        | 'SØKER_SYKDOM'
-        | 'SØKER_INNLAGT'
-        | 'BARN_INNLAGT'
-        | 'NAV_TILTAK'
-        | 'FRI';
+    utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
 };
 
 export type UttakPeriodeResultat_fpoversikt = {
     innvilget?: boolean;
     trekkerDager?: boolean;
     trekkerMinsterett?: boolean;
-    årsak?:
-        | 'ANNET'
-        | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
-        | 'AVSLAG_FRATREKK_PLEIEPENGER'
-        | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
-        | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
+    årsak?: UttakPeriodeResultatÅrsak_fpoversikt;
 };
+
+export type UttakPeriodeResultatÅrsak_fpoversikt =
+    | 'ANNET'
+    | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
+    | 'AVSLAG_FRATREKK_PLEIEPENGER'
+    | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
+    | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
+
+export type UttakUtsettelseÅrsak_fpoversikt =
+    | 'HV_ØVELSE'
+    | 'ARBEID'
+    | 'LOVBESTEMT_FERIE'
+    | 'SØKER_SYKDOM'
+    | 'SØKER_INNLAGT'
+    | 'BARN_INNLAGT'
+    | 'NAV_TILTAK'
+    | 'FRI';
+
+export type BehandlingTilstand_fpoversikt =
+    | 'UNDER_BEHANDLING'
+    | 'VENT_TIDLIG_SØKNAD'
+    | 'VENT_MELDEKORT'
+    | 'VENT_DOKUMENTASJON'
+    | 'VENT_INNTEKTSMELDING'
+    | 'PROSESSERER';
 
 export type EsSak_fpoversikt = {
     familiehendelse: Familiehendelse_fpoversikt;
@@ -304,13 +421,7 @@ export type EsSak_fpoversikt = {
 };
 
 export type EsÅpenBehandling_fpoversikt = {
-    tilstand:
-        | 'UNDER_BEHANDLING'
-        | 'VENT_TIDLIG_SØKNAD'
-        | 'VENT_MELDEKORT'
-        | 'VENT_DOKUMENTASJON'
-        | 'VENT_INNTEKTSMELDING'
-        | 'PROSESSERER';
+    tilstand: BehandlingTilstand_fpoversikt;
 };
 
 export type Familiehendelse_fpoversikt = {
@@ -323,16 +434,16 @@ export type Familiehendelse_fpoversikt = {
 export type FpSak_fpoversikt = {
     annenPart?: Person_fpoversikt;
     barn?: Person_fpoversikt[];
-    dekningsgrad?: 'ÅTTI' | 'HUNDRE';
+    dekningsgrad?: DekningsgradSak_fpoversikt;
     familiehendelse: Familiehendelse_fpoversikt;
-    forelder?: 'MOR' | 'FAR_MEDMOR';
+    forelder?: BrukerRolleSak_fpoversikt;
     gjeldendeVedtak?: FpVedtak_fpoversikt;
     gjelderAdopsjon: boolean;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
     kanSøkeOmEndring: boolean;
     morUføretrygd: boolean;
     oppdatertTidspunkt: string;
-    rettighetType: 'ALENEOMSORG' | 'BEGGE_RETT' | 'BARE_SØKER_RETT';
+    rettighetType: RettighetType_fpoversikt;
     sakAvsluttet: boolean;
     sakTilhørerMor: boolean;
     saksnummer: string;
@@ -347,19 +458,15 @@ export type FpVedtak_fpoversikt = {
 
 export type FpÅpenBehandling_fpoversikt = {
     søknadsperioder: UttakPeriode_fpoversikt[];
-    tilstand:
-        | 'UNDER_BEHANDLING'
-        | 'VENT_TIDLIG_SØKNAD'
-        | 'VENT_MELDEKORT'
-        | 'VENT_DOKUMENTASJON'
-        | 'VENT_INNTEKTSMELDING'
-        | 'PROSESSERER';
+    tilstand: BehandlingTilstand_fpoversikt;
 };
 
 export type Person_fpoversikt = {
     aktørId?: string;
     fnr?: string;
 };
+
+export type RettighetType_fpoversikt = 'ALENEOMSORG' | 'BEGGE_RETT' | 'BARE_SØKER_RETT';
 
 export type Saker_fpoversikt = {
     engangsstønad: EsSak_fpoversikt[];
@@ -369,34 +476,42 @@ export type Saker_fpoversikt = {
 
 export type UttakPeriodeAnnenpartEøs_fpoversikt = {
     fom: string;
-    kontoType: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
+    kontoType: KontoType_fpoversikt;
     tom: string;
     trekkdager: number;
-    trekkonto: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
+    trekkonto: KontoType_fpoversikt;
 };
+
+export type AvslutningÅrsak_fpoversikt =
+    | 'NORMAL'
+    | 'TILBAKE_I_HEL_STILLING'
+    | 'AVSLAG_OVERGANG_FORELDREPENGER'
+    | 'AVSLAG_FØDSEL'
+    | 'AVSLAG_TIDSPERIODE_FØR_TERMIN'
+    | 'AVSLAG_ANNET'
+    | 'AVSLAG_INNGANGSVILKÅR';
 
 export type OppholdPeriode_fpoversikt = {
     fom: string;
-    oppholdKilde: 'SAKSBEHANDLER' | 'INNTEKTSMELDING' | 'SØKNAD';
+    oppholdKilde: OppholdKilde_fpoversikt;
     tom: string;
-    årsak: 'SYKEPENGER' | 'FERIE';
+    årsak: OppholdÅrsak_fpoversikt;
 };
 
+export type OppholdKilde_fpoversikt = 'SAKSBEHANDLER' | 'INNTEKTSMELDING' | 'SØKNAD';
+
+export type OppholdÅrsak_fpoversikt = 'SYKEPENGER' | 'FERIE';
+
 export type PeriodeResultat_fpoversikt = {
-    resultatType?: 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
+    resultatType?: ResultatType_fpoversikt;
     utbetalingsgrad?: number;
 };
 
+export type ResultatType_fpoversikt = 'INNVILGET' | 'AVSLAG_SØKNADSFRIST' | 'AVSLAG_ANNET';
+
 export type SvpArbeidsforhold_fpoversikt = {
     aktivitet: Aktivitet_fpoversikt;
-    avslutningÅrsak?:
-        | 'NORMAL'
-        | 'TILBAKE_I_HEL_STILLING'
-        | 'AVSLAG_OVERGANG_FORELDREPENGER'
-        | 'AVSLAG_FØDSEL'
-        | 'AVSLAG_TIDSPERIODE_FØR_TERMIN'
-        | 'AVSLAG_ANNET'
-        | 'AVSLAG_INNGANGSVILKÅR';
+    avslutningÅrsak?: AvslutningÅrsak_fpoversikt;
     behovFrom?: string;
     oppholdsperioder: OppholdPeriode_fpoversikt[];
     risikofaktorer?: string;
@@ -415,13 +530,7 @@ export type SvpSak_fpoversikt = {
 
 export type SvpÅpenBehandling_fpoversikt = {
     søknad: Søknad_fpoversikt;
-    tilstand:
-        | 'UNDER_BEHANDLING'
-        | 'VENT_TIDLIG_SØKNAD'
-        | 'VENT_MELDEKORT'
-        | 'VENT_DOKUMENTASJON'
-        | 'VENT_INNTEKTSMELDING'
-        | 'PROSESSERER';
+    tilstand: BehandlingTilstand_fpoversikt;
 };
 
 export type Søknad_fpoversikt = {
@@ -433,40 +542,48 @@ export type Tilrettelegging_fpoversikt = {
     fom: string;
     resultat?: PeriodeResultat_fpoversikt;
     tom: string;
-    type?: 'HEL' | 'DELVIS' | 'INGEN';
+    type?: TilretteleggingType_fpoversikt;
 };
+
+export type TilretteleggingType_fpoversikt = 'HEL' | 'DELVIS' | 'INGEN';
 
 export type Vedtak_fpoversikt = {
     arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
-    avslagÅrsak?:
-        | 'ARBEIDSGIVER_KAN_TILRETTELEGGE'
-        | 'SØKER_ER_INNVILGET_SYKEPENGER'
-        | 'MANGLENDE_DOKUMENTASJON'
-        | 'ANNET';
+    avslagÅrsak?: AvslagÅrsak_fpoversikt;
 };
 
+export type AvslagÅrsak_fpoversikt =
+    | 'ARBEIDSGIVER_KAN_TILRETTELEGGE'
+    | 'SØKER_ER_INNVILGET_SYKEPENGER'
+    | 'MANGLENDE_DOKUMENTASJON'
+    | 'ANNET';
+
 export type TidslinjeHendelseDto_fpoversikt = {
-    aktørType: 'BRUKER' | 'NAV' | 'ARBEIDSGIVER';
+    aktørType: AktørType_fpoversikt;
     dokumenter: Dokument_fpoversikt[];
     opprettet: string;
-    tidslinjeHendelseType:
-        | 'FØRSTEGANGSSØKNAD'
-        | 'FØRSTEGANGSSØKNAD_NY'
-        | 'ETTERSENDING'
-        | 'ENDRINGSSØKNAD'
-        | 'INNTEKTSMELDING'
-        | 'VEDTAK'
-        | 'UTGÅENDE_INNHENT_OPPLYSNINGER'
-        | 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING'
-        | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
-        | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
+    tidslinjeHendelseType: TidslinjeHendelseType_fpoversikt;
 };
+
+export type AktørType_fpoversikt = 'BRUKER' | 'NAV' | 'ARBEIDSGIVER';
 
 export type Dokument_fpoversikt = {
     dokumentId?: string;
     journalpostId: string;
     tittel: string;
 };
+
+export type TidslinjeHendelseType_fpoversikt =
+    | 'FØRSTEGANGSSØKNAD'
+    | 'FØRSTEGANGSSØKNAD_NY'
+    | 'ETTERSENDING'
+    | 'ENDRINGSSØKNAD'
+    | 'INNTEKTSMELDING'
+    | 'VEDTAK'
+    | 'UTGÅENDE_INNHENT_OPPLYSNINGER'
+    | 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING'
+    | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
+    | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
 
 export type HentMineFrilansoppdragData = {
     body?: never;
@@ -656,7 +773,7 @@ export type FinnProsessTasksData = {
         /**
          * Task status som skal hentes.
          */
-        prosessTaskStatus: 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT' | 'VETO' | 'KLAR';
+        prosessTaskStatus: IkkeFerdigProsessTaskStatusEnum_fpoversikt;
     };
     query?: never;
     url: '/api/prosesstask/list/{prosessTaskStatus}';
@@ -675,7 +792,7 @@ export type RestartProsessTaskData = {
     body?: never;
     path: {
         prosessTaskId: number;
-        prosessTaskStatus: 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT';
+        prosessTaskStatus: FeiletProsessTaskStatusEnum_fpoversikt;
     };
     query?: never;
     url: '/api/prosesstask/launch/{prosessTaskId}/{prosessTaskStatus}';
@@ -743,7 +860,7 @@ export type SetFeiletProsessTaskFerdigData = {
     body?: never;
     path: {
         prosessTaskId: number;
-        prosessTaskStatus: 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT' | 'VETO' | 'KLAR';
+        prosessTaskStatus: IkkeFerdigProsessTaskStatusEnum_fpoversikt;
     };
     query?: never;
     url: '/api/prosesstask/setferdig/{prosessTaskId}/{prosessTaskStatus}';
@@ -794,74 +911,7 @@ export type ManglendeVedleggResponses = {
     /**
      * default response
      */
-    default: Array<
-        | 'I000001'
-        | 'I000002'
-        | 'I000003'
-        | 'I000004'
-        | 'I000005'
-        | 'I000006'
-        | 'I000050'
-        | 'I000027'
-        | 'I500027'
-        | 'I000114'
-        | 'I000119'
-        | 'I000067'
-        | 'I000007'
-        | 'I000023'
-        | 'I000026'
-        | 'I000032'
-        | 'I000036'
-        | 'I000037'
-        | 'I000038'
-        | 'I000039'
-        | 'I000041'
-        | 'I000042'
-        | 'I000043'
-        | 'I000044'
-        | 'I000045'
-        | 'I000047'
-        | 'I000049'
-        | 'I000051'
-        | 'I000060'
-        | 'I000061'
-        | 'I000062'
-        | 'I000063'
-        | 'I000064'
-        | 'I000065'
-        | 'I000066'
-        | 'I000107'
-        | 'I000108'
-        | 'I000109'
-        | 'I000110'
-        | 'I000111'
-        | 'I000112'
-        | 'I000116'
-        | 'I000117'
-        | 'I000118'
-        | 'I000120'
-        | 'I000121'
-        | 'I000122'
-        | 'I000123'
-        | 'I000124'
-        | 'I000130'
-        | 'I000131'
-        | 'I000132'
-        | 'I000133'
-        | 'I000140'
-        | 'I000141'
-        | 'I000143'
-        | 'I000144'
-        | 'I000145'
-        | 'I000146'
-        | 'I500001'
-        | 'I500002'
-        | 'I500003'
-        | 'I500004'
-        | 'I500005'
-        | 'I500006'
-        | 'I500050'
-    >;
+    default: DokumentType_fpoversikt[];
 };
 
 export type ManglendeVedleggResponse = ManglendeVedleggResponses[keyof ManglendeVedleggResponses];

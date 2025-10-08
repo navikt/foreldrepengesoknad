@@ -114,7 +114,7 @@ const getBareFarMedmorHarRett = (
 };
 
 const harIngenAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
 ) => {
@@ -130,7 +130,7 @@ const harIngenAktiveArbeidsforhold = (
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
@@ -176,7 +176,7 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
-export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
+export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 

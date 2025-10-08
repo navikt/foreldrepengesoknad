@@ -35,7 +35,7 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     erFarEllerMedmor: boolean;
     søknadGjelderEtNyttBarn: boolean;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelderEtNyttBarn, arbeidsforhold }: Props) => {

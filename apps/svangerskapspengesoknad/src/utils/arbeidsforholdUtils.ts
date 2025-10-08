@@ -13,7 +13,10 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
+export const getAktiveArbeidsforhold = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    termindato?: string,
+): EksternArbeidsforholdDto_fpoversikt[] => {
     if (termindato === undefined) {
         return arbeidsforhold;
     }
@@ -54,7 +57,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     return 100;
 };
 
-const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
             fom: p.fom,
@@ -66,7 +69,7 @@ const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]
 };
 
 export const getUnikeArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[] | undefined,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined,
     termindato: string,
 ): UnikArbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
@@ -107,7 +110,7 @@ export const getUnikeArbeidsforhold = (
 
 export const søkerHarKunEtAktivtArbeid = (
     termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erFrilanser: boolean,
     harEgenNæring: boolean,
 ) => {

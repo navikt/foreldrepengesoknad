@@ -3,13 +3,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, Arbeidsforhold } from '@navikt/fp-types';
+import { AppName, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { HarArbeidsforhold } from './HarArbeidsforhold';
 import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
 
 interface Props {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     visManglerInfo?: boolean;
     appOrigin: AppName;
 }

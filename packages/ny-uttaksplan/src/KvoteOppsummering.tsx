@@ -8,11 +8,12 @@ import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-reac
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
-    Familiehendelse,
-    FpSak,
+    BrukerRolleSak_fpoversikt,
+    Familiehendelse_fpoversikt,
     KontoBeregningDto,
     KontoDto,
     OppholdÅrsakType,
+    RettighetType_fpoversikt,
     SaksperiodeNy,
     UttaksplanModus,
 } from '@navikt/fp-types';
@@ -25,10 +26,10 @@ import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 type Props = {
     konto: KontoBeregningDto;
     perioder: Planperiode[];
-    rettighetType: FpSak['rettighetType'];
-    forelder: FpSak['forelder'];
+    rettighetType: RettighetType_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
     visStatusIkoner: boolean;
-    familiehendelse?: Familiehendelse;
+    familiehendelse?: Familiehendelse_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
     erMedmorDelAvSøknaden?: boolean;

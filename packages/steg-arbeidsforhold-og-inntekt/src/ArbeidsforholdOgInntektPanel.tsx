@@ -6,7 +6,7 @@ import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
+import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -20,7 +20,7 @@ import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
 
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
-    aktiveArbeidsforhold: Arbeidsforhold[];
+    aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;

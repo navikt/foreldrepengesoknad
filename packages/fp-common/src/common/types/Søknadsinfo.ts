@@ -11,7 +11,7 @@ import { Søkersituasjon } from './Søkersituasjon';
 
 export interface Søknadsinfo {
     søkersituasjon: Søkersituasjon;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     dekningsgrad: Dekningsgrad;
     erEndringssøknad: boolean;
     antallBarn: number;

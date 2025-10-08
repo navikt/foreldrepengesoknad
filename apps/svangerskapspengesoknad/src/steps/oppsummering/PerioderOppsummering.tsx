@@ -21,7 +21,7 @@ export function PerioderOppsummering({
     alleArbeidsforhold,
 }: {
     readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -56,7 +56,7 @@ function VirksomhetSummary({
     sisteDagForSvangerskapspenger,
     termindato,
 }: {
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     readonly sisteDagForSvangerskapspenger: string;
     readonly termindato: string;
 }) {

@@ -7,7 +7,7 @@ import { ContextDataType, useContextSaveData } from './FpDataContext';
 import { useStepConfig } from './useStepConfig';
 
 export const useFpNavigator = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
 ) => {

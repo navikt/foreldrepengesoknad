@@ -19,7 +19,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
 
 const finnTilretteleggingsbehov = (
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
     tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
@@ -58,7 +58,7 @@ const finnTilretteleggingsbehov = (
 
 const finnVedlegg = (
     tilretteleggingerVedlegg: Record<string, Attachment[]>,
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ): AttachmentDTO[] => {
     const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
         const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
@@ -78,7 +78,7 @@ const finnVedlegg = (
 };
 
 export const getSøknadForInnsending = (
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): SøknadDTO => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);

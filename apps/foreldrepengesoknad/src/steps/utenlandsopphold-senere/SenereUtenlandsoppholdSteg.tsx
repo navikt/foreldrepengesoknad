@@ -8,7 +8,7 @@ import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };

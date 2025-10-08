@@ -14,7 +14,7 @@ export function DokumentasjonOppsummering({
 }: {
     readonly tilretteleggingerVedlegg: Record<string, Attachment[]>;
     readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     return (
         <FormSummary>
@@ -62,7 +62,7 @@ function DokumentasjonLabel({
     alleArbeidsforhold,
 }: {
     readonly tilretteleggingId: string;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const intl = useIntl();
     switch (tilretteleggingId) {

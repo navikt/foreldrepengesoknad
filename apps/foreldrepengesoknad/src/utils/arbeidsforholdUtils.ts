@@ -99,11 +99,11 @@ const getFraDatoForAktiveArbeidsforhold = (
 };
 
 export const getAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     familiehendelsesdato?: string,
-): Arbeidsforhold[] => {
+): EksternArbeidsforholdDto_fpoversikt[] => {
     const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>

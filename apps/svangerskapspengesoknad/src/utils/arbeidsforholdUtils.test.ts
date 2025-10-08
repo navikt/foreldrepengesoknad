@@ -28,7 +28,7 @@ describe('getUnikeArbeidsforhold', () => {
                 stillingsprosent: 100,
                 fom: '2020-02-01',
             },
-        ] as Arbeidsforhold[];
+        ] as EksternArbeidsforholdDto_fpoversikt[];
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold, '2024-02-15');
         expect(unike.length).toEqual(2);
@@ -64,7 +64,7 @@ describe('getUnikeArbeidsforhold', () => {
                 fom: '2023-07-31',
                 tom: '2023-12-01',
             },
-        ] as Arbeidsforhold[];
+        ] as EksternArbeidsforholdDto_fpoversikt[];
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold2, '2024-02-15');
         expect(unike.length).toEqual(1);

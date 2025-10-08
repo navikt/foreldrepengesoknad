@@ -12,7 +12,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;

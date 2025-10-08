@@ -32,7 +32,7 @@ const getFrilansTilretteleggingOption = (): VelgArbeidsforholdOptions => ({
 });
 
 const getArbeidsforholdTilretteleggingOptions = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     intl: IntlShape,
 ): VelgArbeidsforholdOptions[] =>
@@ -48,7 +48,7 @@ const getArbeidsforholdTilretteleggingOptions = (
 
 export const mapArbeidsforholdToVelgArbeidOptions = (
     inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     intl: IntlShape,
     frilans?: Frilans,

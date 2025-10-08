@@ -14,7 +14,10 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, arbeidsforhold: Arbeidsforhold[]) => {
+export const useSendSøknad = (
+    setKvittering: (kvittering: Kvittering) => void,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 

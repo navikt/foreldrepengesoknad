@@ -16,7 +16,7 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-const containsDuplicates = (arbeidsforhold: Arbeidsforhold[]): boolean => {
+const containsDuplicates = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): boolean => {
     if (arbeidsforhold.length > 1) {
         const arbeidsgiverIds = arbeidsforhold.map((a) => a.arbeidsgiverId);
         const uniqueIds = new Set(arbeidsgiverIds);
@@ -32,9 +32,9 @@ const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
 };
 
 const getKunArbeidsforholdForValgtTidsperiode = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     tidsperiode: TidsperiodeDate,
-): Arbeidsforhold[] => {
+): EksternArbeidsforholdDto_fpoversikt[] => {
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
             if (a.tom === undefined) {
@@ -64,11 +64,14 @@ const getKunArbeidsforholdForValgtTidsperiode = (
 
 interface Props {
     graderingsprosentVisible: boolean;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     tidsperiode: TidsperiodeDate;
 }
 
-const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[], tidsperiode: TidsperiodeDate): FormikRadioProp[] => {
+const getArbeidsOptions = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    tidsperiode: TidsperiodeDate,
+): FormikRadioProp[] => {
     const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode);
 
     const defaultOptions: FormikRadioProp[] = [

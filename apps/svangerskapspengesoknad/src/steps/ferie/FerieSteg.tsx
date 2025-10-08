@@ -36,7 +36,7 @@ import styles from './feriesteg.module.css';
 type Props = {
     readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
     readonly avbrytSøknad: () => Promise<void>;
-    readonly arbeidsforhold: Arbeidsforhold[];
+    readonly arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 const DEFAULT_FERIE_VALUES = {

@@ -10,7 +10,7 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: UttaksperiodeBase;
-    registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     periodeErNyEllerEndret: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;
