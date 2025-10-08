@@ -4,7 +4,7 @@ import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 import { FormSummary } from '@navikt/ds-react';
 
 import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 

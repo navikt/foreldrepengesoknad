@@ -6,7 +6,6 @@ import { Accordion } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
@@ -18,7 +17,7 @@ import {
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
 } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import Block from '../../common/block/Block';
 import planBemUtils from '../../utils/planBemUtils';

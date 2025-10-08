@@ -22,7 +22,11 @@ import {
 } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    Periode as PeriodeType,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
@@ -51,9 +55,9 @@ const mapNewToOldArbeidsforhold = (arbeidsforhold: EksternArbeidsforholdDto_fpov
             arbeidsgiverId: arbforhold.arbeidsgiverId,
             arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
             arbeidsgiverNavn: arbforhold.arbeidsgiverNavn ?? '',
-            fom: dayjs.utc(arbforhold.fom).toDate(),
+            fom: dayjs.utc(arbforhold.from).toDate(),
             stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
+            tom: arbforhold.to ? dayjs.utc(arbforhold.to).toDate() : undefined,
         };
     });
 };

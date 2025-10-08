@@ -5,7 +5,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Frilans } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

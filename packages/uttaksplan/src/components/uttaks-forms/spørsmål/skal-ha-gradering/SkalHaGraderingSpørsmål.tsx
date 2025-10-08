@@ -5,7 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Arbeidsform, TidsperiodeDate } from '@navikt/fp-common';
+import { Arbeidsform, TidsperiodeDate } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
@@ -27,25 +28,21 @@ const containsDuplicates = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[
     return false;
 };
 
-const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
-    return arbeidsforhold.arbeidsgiverId;
-};
-
 const getKunArbeidsforholdForValgtTidsperiode = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     tidsperiode: TidsperiodeDate,
 ): EksternArbeidsforholdDto_fpoversikt[] => {
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
-            if (a.tom === undefined) {
-                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom), 'day')) {
+            if (a.to === undefined) {
+                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.from), 'day')) {
                     return true;
                 }
 
                 return false;
             }
 
-            if (dateIsBetween(tidsperiode.fom, a.fom, a.tom) || dateIsBetween(tidsperiode.tom, a.fom, a.tom)) {
+            if (dateIsBetween(tidsperiode.fom, a.from, a.to) || dateIsBetween(tidsperiode.tom, a.from, a.to)) {
                 return true;
             }
 
@@ -53,7 +50,7 @@ const getKunArbeidsforholdForValgtTidsperiode = (
         });
 
         if (containsDuplicates(kunArbeidsforholdForValgtTidsperiode)) {
-            return uniqBy(kunArbeidsforholdForValgtTidsperiode, getArbeidsgiverId);
+            return uniqBy(kunArbeidsforholdForValgtTidsperiode, (a) => a.arbeidsgiverId);
         }
 
         return kunArbeidsforholdForValgtTidsperiode;

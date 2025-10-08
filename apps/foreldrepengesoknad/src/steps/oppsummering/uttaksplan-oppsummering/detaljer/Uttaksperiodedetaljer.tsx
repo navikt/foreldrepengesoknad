@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { MorsAktivitet } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';

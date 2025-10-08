@@ -5,7 +5,13 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
-import { AnnenPartSak, Saker, Søkerinfo, Tidsperiode, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import {
+    AnnenPartSak_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Saker_fpoversikt,
+    Tidsperiode,
+    TilgjengeligeStønadskontoer,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
@@ -28,14 +34,14 @@ export const API_URLS = {
 export const sakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(API_URLS.saker).json<Saker>(),
+        queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
         staleTime: Infinity,
     });
 
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<Søkerinfo>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
         staleTime: Infinity,
     });
 
@@ -52,7 +58,7 @@ export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
         queryFn: async () => {
             const vedtakEllerTomStrengForIngenVedtak = await ky
                 .post(API_URLS.annenPartVedtak, { json: data })
-                .json<AnnenPartSak | ''>();
+                .json<AnnenPartSak_fpoversikt | ''>();
             if (vedtakEllerTomStrengForIngenVedtak === '') {
                 return null;
             }

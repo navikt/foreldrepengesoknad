@@ -1,5 +1,5 @@
 import { Arbeidsform, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
-import { FpSak } from '@navikt/fp-types';
+import { FpSak_fpoversikt } from '@navikt/fp-types';
 
 import {
     getArbeidsformFromUttakArbeidstype,
@@ -54,7 +54,7 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'HUNDRE',
-    } as FpSak;
+    } as FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorTermin = {
         erAnnenPartsSak: false,
@@ -196,7 +196,7 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'ÅTTI',
-    } as FpSak;
+    } as FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {
         erAnnenPartsSak: false,
@@ -292,7 +292,7 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-    } as FpSak;
+    } as FpSak_fpoversikt;
 
     const forventetResultatFar = {
         ...forventetMappetEksisterendeSakMorTermin,
@@ -369,7 +369,7 @@ describe('eksisterendeSakUtils', () => {
             ...eksisterendeSakMedØnsketJusteringFarFødsel.familiehendelse,
             fødselsdato: undefined,
         },
-    } as FpSak;
+    } as FpSak_fpoversikt;
 
     const forventetResultatFarTermin = {
         ...forventetResultatFar,

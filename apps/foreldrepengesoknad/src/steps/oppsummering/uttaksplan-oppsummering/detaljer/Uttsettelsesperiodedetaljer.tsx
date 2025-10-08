@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';

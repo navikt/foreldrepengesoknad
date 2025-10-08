@@ -15,7 +15,7 @@ import {
     Uttaksperiode,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,

@@ -11,8 +11,8 @@ import { action } from 'storybook/actions';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
 import {
-    Arbeidsforhold,
-    PersonFrontend,
+    EksternArbeidsforholdDto_fpoversikt,
+    PersonDto_fpoversikt,
     SøkersituasjonFp,
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
@@ -80,19 +80,25 @@ const vedtakMor = {
 
 const søkerInfoKvinne = {
     fnr: '19047815714',
-    fornavn: 'Hanne',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hanne',
+        etternavn: 'Mygg',
+    },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const søkerInfoMann = {
     fnr: '19047815715',
-    fornavn: 'Hans',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hans',
+        etternavn: 'Mygg',
+    },
     kjønn: 'M',
     fødselsdato: '1972-06-07',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -107,7 +113,7 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    person: PersonFrontend;
+    person: PersonDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FordelingSteg>;

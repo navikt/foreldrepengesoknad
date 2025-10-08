@@ -6,7 +6,6 @@ import { Alert } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
     NavnPåForeldre,
@@ -17,7 +16,7 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';

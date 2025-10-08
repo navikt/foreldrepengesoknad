@@ -5,7 +5,6 @@ import { Heading } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
@@ -13,7 +12,7 @@ import {
     Situasjon,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import Block from '../../../common/block/Block';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';

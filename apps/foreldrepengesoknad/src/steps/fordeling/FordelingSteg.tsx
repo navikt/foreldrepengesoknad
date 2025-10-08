@@ -19,7 +19,7 @@ import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -30,7 +30,7 @@ import { getFordelingFraKontoer, getSisteUttaksdagAnnenForelder } from './fordel
 import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
-    person: PersonFrontend;
+    person: PersonDto_fpoversikt;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;

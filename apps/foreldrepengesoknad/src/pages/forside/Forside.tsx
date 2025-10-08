@@ -16,7 +16,7 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@nav
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
-import { FpSak, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
@@ -26,9 +26,9 @@ import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerMod
 import { ForsideFormValues } from './types/ForsideFormValues';
 
 interface Props {
-    saker: FpSak[];
+    saker: FpSak_fpoversikt[];
     harGodkjentVilkår: boolean;
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;

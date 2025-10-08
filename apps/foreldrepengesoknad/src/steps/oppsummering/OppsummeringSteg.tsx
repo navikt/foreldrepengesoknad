@@ -20,7 +20,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonFrontend, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
+import { PersonFrontend, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -54,7 +54,7 @@ const skalViseInfoOmFarskapsportal = (
 };
 
 interface Props {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;

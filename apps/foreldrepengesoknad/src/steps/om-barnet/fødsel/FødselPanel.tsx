@@ -6,7 +6,7 @@ import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
 import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';

@@ -5,7 +5,6 @@ import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -19,7 +18,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { Stønadskonto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Stønadskonto } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';

@@ -1,9 +1,9 @@
 import { ForeldreparSituasjon, SituasjonForelderSvg, Søkerrolle } from '@navikt/fp-common';
-import { PersonFrontend } from '@navikt/fp-types';
+import { Kjønn_fpoversikt } from '@navikt/fp-types';
 
 export const getForeldreparSituasjon = (
-    søkerKjønn: PersonFrontend['kjønn'],
-    annenForelderKjønn: PersonFrontend['kjønn'] | undefined,
+    søkerKjønn: Kjønn_fpoversikt,
+    annenForelderKjønn: Kjønn_fpoversikt | undefined,
     erDeltUttak: boolean,
     morErAleneOmOmsorg: boolean,
     farMedmorErAleneOmOmsorg: boolean,

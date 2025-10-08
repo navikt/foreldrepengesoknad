@@ -5,7 +5,6 @@ import { Button, Heading } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
     NavnPåForeldre,
@@ -16,7 +15,7 @@ import {
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';

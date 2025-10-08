@@ -4,11 +4,11 @@ import { formaterNavn } from 'utils/personUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { AnnenForelderFrontend, BarnFrontend } from '@navikt/fp-types';
+import { AnnenForelderFrontend, BarnDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
-    person: AnnenForelderFrontend | BarnFrontend;
+    person: AnnenForelderFrontend | BarnDto_fpoversikt;
     visEtternavn: boolean;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;

@@ -25,14 +25,14 @@ import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSte
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
-import { FpSak, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: () => Promise<void>,
     avbrytSøknad: () => void,
@@ -252,8 +252,8 @@ const renderSøknadRoutes = (
 
 interface Props {
     currentRoute: SøknadRoutes;
-    søkerInfo: Søkerinfo;
-    foreldrepengerSaker: FpSak[];
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;

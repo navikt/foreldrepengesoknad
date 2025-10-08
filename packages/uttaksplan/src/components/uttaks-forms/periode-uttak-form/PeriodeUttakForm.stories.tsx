@@ -54,7 +54,7 @@ const defaultInput = {
             arbeidsgiverNavn: 'Fabrikk AS',
             arbeidsgiverId: '12313',
             arbeidsgiverIdType: '123',
-            fom: new Date('2000-01-01'),
+            from: '2000-01-01',
             stillingsprosent: 100,
         },
     ],

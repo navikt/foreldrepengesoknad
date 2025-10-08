@@ -23,11 +23,11 @@ import {
 } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
+    EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
-    PersonFrontend,
+    PersonMedArbeidsforholdDto_fpoversikt,
     Sivilstand,
-    Søkerinfo,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -43,59 +43,53 @@ const promiseAction = () => () => {
 const defaultSøkerinfoMor = {
     person: {
         fnr: '02520489226',
-        fornavn: 'MOR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'MOR', etternavn: 'MYGG' },
         kjønn: 'K',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '21091981146',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '08099017784',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
         ],
         sivilstand: {
             type: SivilstandType.GIFT,
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 const defaultSøkerinfoFar = {
     person: {
         fnr: '08099017784',
-        fornavn: 'FAR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
         kjønn: 'M',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '19047815714',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'K',
             },
         ],
         sivilstand: {
             type: SivilstandType.UGIFT,
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const defaultBarn = {
     type: BarnType.FØDT,
@@ -201,12 +195,12 @@ const arbeidsforholdMorJobber80Prosent = [
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Mors Arbeidsplass AS',
         stillingsprosent: 80,
-        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+        from: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 type StoryArgs = {
-    søkerinfo?: Søkerinfo;
+    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Utenlandsopphold;
@@ -540,15 +534,15 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Auto Joachim Bilpleie',
                     stillingsprosent: 80,
-                    fom: '2015-01-01',
+                    from: '2015-01-01',
                 },
                 {
                     arbeidsgiverId: '2',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Taco Express',
                     stillingsprosent: 20,
-                    fom: '2019-01-01',
-                    tom: '2021-01-01',
+                    from: '2019-01-01',
+                    to: '2021-01-01',
                 },
             ],
         },

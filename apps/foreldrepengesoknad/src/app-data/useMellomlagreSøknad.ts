@@ -8,7 +8,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { FpSak, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -16,8 +16,8 @@ import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
-    søkerInfo: Søkerinfo;
-    foreldrepengerSaker: FpSak[];
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
@@ -36,8 +36,8 @@ const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 const getDataForMellomlagring = (
-    foreldrepengerSaker: FpSak[],
-    søkerInfo: Søkerinfo,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -102,8 +102,8 @@ const getDataForMellomlagring = (
 };
 
 export const useMellomlagreSøknad = (
-    foreldrepengerSaker: FpSak[],
-    søkerInfo: Søkerinfo,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,

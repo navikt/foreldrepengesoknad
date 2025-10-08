@@ -5,7 +5,7 @@ import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';

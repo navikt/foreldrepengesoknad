@@ -27,7 +27,14 @@ import {
 } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { AnnenForelderFrontend, AnnenPartSak, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
+import {
+    AnnenForelderDto_fpoversikt,
+    AnnenPartSak_fpoversikt,
+    BarnDto_fpoversikt,
+    FpSak_fpoversikt,
+    PersonDto_fpoversikt,
+    Person_fpoversikt,
+} from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -142,7 +149,9 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartSak | undefined): Date | undefined => {
+export const getStartdatoFørstePeriodeAnnenPart = (
+    annenPartsSak: AnnenPartSak_fpoversikt | undefined,
+): Date | undefined => {
     if (!annenPartsSak || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
@@ -150,7 +159,7 @@ export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartSak 
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartSak | undefined,
+    eksisterendeSakAnnenPart: AnnenPartSak_fpoversikt | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -221,7 +230,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
-    eksisterendeSak: FpSak,
+    eksisterendeSak: FpSak_fpoversikt,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
     valgtBarnFødselsdatoer: Date[] | undefined,
 ): EksisterendeSak => {
@@ -295,7 +304,7 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (person: PersonFrontend, grunnlag: Saksgrunnlag): Søkerrolle => {
+const getSøkerrolleFromSaksgrunnlag = (person: PersonDto_fpoversikt, grunnlag: Saksgrunnlag): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = person.kjønn === 'K';
     if (søkerErKvinne) {
@@ -344,16 +353,16 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
     }
 };
 
-const finnFornavn = (annenPart: AnnenForelderFrontend, intl: IntlShape) => {
-    return annenPart.fornavn !== undefined && annenPart.fornavn !== ''
-        ? annenPart.fornavn
+const finnFornavn = (annenPart: AnnenForelderDto_fpoversikt, intl: IntlShape) => {
+    return annenPart.navn.fornavn !== undefined && annenPart.navn.fornavn !== ''
+        ? annenPart.navn.fornavn
         : intl.formatMessage({ id: 'annen.forelder' });
 };
 
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
-    annenPart: AnnenForelderFrontend,
+    annenPart: AnnenForelderDto_fpoversikt,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): AnnenForelder => {
@@ -363,7 +372,7 @@ const getAnnenForelderFromSaksgrunnlag = (
             if (erFarEllerMedmor) {
                 return {
                     fornavn: finnFornavn(annenPart, intl),
-                    etternavn: annenPart.etternavn,
+                    etternavn: annenPart.navn.etternavn,
                     erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge:
                         !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -375,7 +384,7 @@ const getAnnenForelderFromSaksgrunnlag = (
             }
             return {
                 fornavn: finnFornavn(annenPart, intl),
-                etternavn: annenPart.etternavn,
+                etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepengerINorge:
                     !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
@@ -389,7 +398,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 };
 
 const finnAnnenForelderForSaken = (
-    barn: BarnFrontend[],
+    barn: BarnDto_fpoversikt[],
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
@@ -401,20 +410,20 @@ const finnAnnenForelderForSaken = (
         return undefined;
     }
     const barnMedGittFnr = valgtBarnFnr
-        ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenForelder !== undefined)
+        ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenPart !== undefined)
         : undefined;
     const barnMedGittFødselsdato = fødselsdato
-        ? barn.find((b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenForelder !== undefined)
+        ? barn.find((b) => getErDatoInnenEnDagFraAnnenDato(b.fødselsdato, fødselsdato) && b.annenPart !== undefined)
         : undefined;
 
     const barnet = barnMedGittFnr ?? barnMedGittFødselsdato;
 
-    if (barnet !== undefined && barnet.annenForelder?.fnr === annenForeldersFnrFraSaken) {
-        const annenForelder = barnet.annenForelder;
-        const { fornavn } = annenForelder;
+    if (barnet !== undefined && barnet.annenPart?.fnr === annenForeldersFnrFraSaken) {
+        const annenForelder = barnet.annenPart;
+        const { fornavn } = annenForelder.navn;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
-        const annenPart: AnnenForelderFrontend = { ...annenForelder, fornavn: fornavnAnnenForelder };
+        const annenPart: AnnenForelderDto_fpoversikt = { ...annenForelder, navn: { fornavn: fornavnAnnenForelder } };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 
@@ -455,8 +464,8 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
 const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder => {
     if (valgteBarn.annenForelder !== undefined) {
         return {
-            fornavn: valgteBarn.annenForelder.fornavn,
-            etternavn: valgteBarn.annenForelder.etternavn,
+            fornavn: valgteBarn.annenForelder.navn.fornavn,
+            etternavn: valgteBarn.annenForelder.navn.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
             kanIkkeOppgis: false,
         };
@@ -492,9 +501,9 @@ export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
 
 const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
-    annenPartFraSak: Person | undefined,
+    annenPartFraSak: Person_fpoversikt | undefined,
     grunnlag: Saksgrunnlag,
-    barn: BarnFrontend[],
+    barn: BarnDto_fpoversikt[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelder => {
@@ -525,9 +534,9 @@ const opprettAnnenForelderFraEksisterendeSak = (
 };
 
 export const lagSøknadFraValgteBarnMedSak = (
-    valgteBarn: ValgtBarn & { sak: FpSak },
+    valgteBarn: ValgtBarn & { sak: FpSak_fpoversikt },
     intl: IntlShape,
-    registrerteBarn: BarnFrontend[],
+    registrerteBarn: BarnDto_fpoversikt[],
     søkerFnr: string,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
@@ -557,10 +566,10 @@ export const lagSøknadFraValgteBarnMedSak = (
 };
 
 export const lagEndringsSøknad = (
-    person: PersonFrontend,
+    person: PersonDto_fpoversikt,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
-    annenPartFraSak: Person | undefined,
+    annenPartFraSak: Person_fpoversikt | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
