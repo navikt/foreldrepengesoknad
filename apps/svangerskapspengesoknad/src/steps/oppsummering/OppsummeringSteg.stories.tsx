@@ -141,6 +141,7 @@ const meta = {
                                     filename: 'vedlegg – Kopi (7).png',
                                     filesize: 7477,
                                     uploaded: true,
+                                    innsendingsType: 'LASTET_OPP',
                                     pending: false,
                                     type: AttachmentType.TILRETTELEGGING,
                                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,

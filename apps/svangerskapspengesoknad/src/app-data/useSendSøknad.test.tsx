@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { AvtaltFerieDto, AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
+import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
+import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
@@ -16,7 +16,14 @@ import {
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    Attachment,
+    AvtaltFerieDto,
+    FRILANS_ID,
+    NæringDto,
+    Søkerinfo,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -38,24 +45,32 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const ARBEIDSGIVER_ID = '990322244';
 const ANNEN_ARBEIDSGIVER_ID = '9903232324';
 
-const DEFAULT_ARBEIDSFORHOLD = [
-    {
-        id: '86832061-1118-9701-6179-20647729409710',
-        arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
-        arbeidsgiverIdType: 'ikke-orgnr',
-        arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2018-06-25T00:00:00.000Z',
-        stillingsprosent: 80,
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: ARBEIDSGIVER_ID,
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    søker: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
+        fnr: '30088930610',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
     },
-    {
-        id: '263929546-6215-9868-5127-161910165730101',
-        arbeidsgiverId: ARBEIDSGIVER_ID,
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-        fom: '2017-04-05T00:00:00.000Z',
-        stillingsprosent: 100,
-    },
-];
+} satisfies Søkerinfo;
 
 const BARNET = {
     erBarnetFødt: true,
@@ -105,7 +120,8 @@ const VEDLEGG = {
     uploaded: true,
     url: 'test.com',
     uuid: 'uuid-test',
-};
+    innsendingsType: 'LASTET_OPP',
+} satisfies Attachment;
 
 const ARBEID_I_UTLANDET = {
     arbeidIUtlandet: [
@@ -118,7 +134,7 @@ const ARBEID_I_UTLANDET = {
             land: 'UK',
         },
     ],
-};
+} satisfies ArbeidIUtlandet;
 
 const getWrapper =
     (
@@ -160,7 +176,6 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -206,13 +221,12 @@ describe('useSendSøknad', () => {
             },
         } satisfies AvtaltFeriePerArbeidsgiver;
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
@@ -296,7 +310,6 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging for næring og frilans', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -327,13 +340,12 @@ describe('useSendSøknad', () => {
             [FRILANS_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, []), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
@@ -411,7 +423,6 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging med mange perioder', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -454,13 +465,12 @@ describe('useSendSøknad', () => {
             [ARBEIDSGIVER_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,

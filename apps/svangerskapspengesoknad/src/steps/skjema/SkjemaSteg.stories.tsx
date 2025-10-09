@@ -136,6 +136,7 @@ export const MedVedlegg: Story = {
                     filename: file1.name,
                     filesize: file1.size,
                     file: file1,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
@@ -202,6 +203,7 @@ export const KanMaxHaToVedlegg: Story = {
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
                     url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
                 {
                     id: 'V134300149934973076055420920289127101',
@@ -214,6 +216,7 @@ export const KanMaxHaToVedlegg: Story = {
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
                     url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
             ],
         },

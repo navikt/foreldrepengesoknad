@@ -12,9 +12,9 @@ export const API_URLS = {
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
     satser: `${urlPrefiks}/rest/satser`,
 
-    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/svangerskapspenger`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
-    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/svangerskapspenger/vedlegg`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
 } as const;
 
 export const sakerOptions = () =>

@@ -18,7 +18,6 @@ import {
     FRILANS_ID,
     Frilans,
     NæringDto,
-    TilretteleggingbehovDto,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -62,12 +61,18 @@ const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjon, p2: PeriodeMedV
     return 1;
 };
 
-type UtvidetTilrettelegging = TilretteleggingbehovDto['tilrettelegginger'] & { tom: string; stillingsprosent: number };
+// TODO
+export type UtvidetTilrettelegging = {
+    fom: string;
+    stillingsprosent: number;
+    tom: string;
+    type: 'hel' | 'delvis' | 'ingen';
+};
 export const mapEnTilretteleggingPeriode = (
     tilrettelegging: DelvisTilrettelegging | IngenTilrettelegging,
     sisteDagForSvangerskapspenger: string,
     stillinger: Stilling[],
-): UtvidetTilrettelegging => {
+): UtvidetTilrettelegging[] => {
     const opprinneligStillingsprosent = getTotalStillingsprosentPåSkjæringstidspunktet(
         stillinger,
         tilrettelegging.enPeriodeMedTilretteleggingFom,
@@ -77,7 +82,7 @@ export const mapEnTilretteleggingPeriode = (
 
     const stillingsprosent =
         tilrettelegging.type === 'delvis'
-            ? getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent)
+            ? getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent)! //TODO
             : 0;
 
     const fom = notEmpty(tilrettelegging.enPeriodeMedTilretteleggingFom);
@@ -118,7 +123,7 @@ export const mapFlereTilretteleggingPerioder = (
     tilretteleggingerPerioder: PeriodeMedVariasjon[],
     sisteDagForSvangerskapspenger: string,
     stillinger: Stilling[],
-): TilretteleggingbehovDto['tilrettelegginger'] => {
+): UtvidetTilrettelegging[] => {
     const opprinneligStillingsprosent = getOpprinneligStillingsprosent(tilretteleggingerPerioder, stillinger);
 
     const allePerioder = tilretteleggingerPerioder.map((periode) => {

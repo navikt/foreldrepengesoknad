@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
+    UtvidetTilrettelegging,
     getArbeidsgiverStillingerForTilrettelegging,
     mapEnTilretteleggingPeriode,
     mapFlereTilretteleggingPerioder,
@@ -12,7 +13,7 @@ import {
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID, TilretteleggingbehovDto } from '@navikt/fp-types';
+import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -63,6 +64,7 @@ function VirksomhetSummary({
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
 
+    console.log(tilrettelegginger, tilretteleggingerPerioder);
     const tilretteleggingIder = Object.keys(tilrettelegginger).filter(
         (tilretteleggingId) => tilretteleggingId !== FRILANS_ID && tilretteleggingId !== EGEN_NÆRING_ID,
     );
@@ -85,7 +87,7 @@ function VirksomhetSummary({
         const mappedPerioder = perioder
             ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
             : mapEnTilretteleggingPeriode(tilrettelegging, sisteDagForSvangerskapspenger, stillinger);
-
+        console.log(mappedPerioder);
         return (
             <FormSummary.Answer key={tilretteleggingId}>
                 <FormSummary.Label>
@@ -233,7 +235,7 @@ function SelvstendigNæringsdrivendeSummary({
     );
 }
 
-function KunEnPeriode({ periode }: { periode: TilretteleggingbehovDto['tilrettelegginger'][0] }) {
+function KunEnPeriode({ periode }: { periode: UtvidetTilrettelegging }) {
     return (
         <>
             <FormSummary.Answer>
@@ -264,7 +266,7 @@ function KunEnPeriode({ periode }: { periode: TilretteleggingbehovDto['tilrettel
     );
 }
 
-function FlerePerioder({ perioder }: { perioder: TilretteleggingbehovDto['tilrettelegginger'] }) {
+function FlerePerioder({ perioder }: { perioder: UtvidetTilrettelegging[] }) {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -287,7 +289,7 @@ function FlerePerioder({ perioder }: { perioder: TilretteleggingbehovDto['tilret
     );
 }
 
-function SvpPeriodeDatoTekst({ periode }: { periode: TilretteleggingbehovDto['tilrettelegginger'][0] }) {
+function SvpPeriodeDatoTekst({ periode }: { periode: UtvidetTilrettelegging }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);

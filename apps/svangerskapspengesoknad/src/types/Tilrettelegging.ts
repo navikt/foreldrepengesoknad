@@ -18,13 +18,6 @@ export enum TilOgMedDatoType {
     SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
 }
 
-export type TilretteleggingPeriode = {
-    type: Tilretteleggingstype;
-    fom: string;
-    tom: string;
-    stillingsprosent?: number;
-};
-
 export type PeriodeMedVariasjon = {
     tomType: TilOgMedDatoType;
     fom: string;
