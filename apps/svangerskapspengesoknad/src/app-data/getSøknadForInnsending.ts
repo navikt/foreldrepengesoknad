@@ -98,6 +98,19 @@ export const getSøknadForInnsending = (
     const ferie = hentData(ContextDataType.FERIE);
 
     return {
+        søkerinfo: {
+            fnr: søkerinfo.søker.fnr,
+            navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
+                .filter((a) => !!a)
+                .join(' '),
+            arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
+                navn: af.arbeidsgiverNavn,
+                orgnummer: af.arbeidsgiverId,
+                stillingsprosent: af.stillingsprosent,
+                fom: af.fom,
+                tom: af.tom,
+            })),
+        },
         språkkode: getDecoratorLanguageCookie('decorator-language') as Målform,
         barn,
         frilans,

@@ -1,8 +1,10 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
+import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAbortSignal } from '@navikt/fp-api';
 import { Søkerinfo } from '@navikt/fp-types';
@@ -15,6 +17,7 @@ const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useSendSøknad = (søkerinfo: Søkerinfo) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -34,6 +37,7 @@ export const useSendSøknad = (søkerinfo: Søkerinfo) => {
             });
 
             slettMellomlagring();
+            navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 Sentry.captureMessage(error.message);

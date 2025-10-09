@@ -12,6 +12,7 @@ export const API_URLS = {
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
     satser: `${urlPrefiks}/rest/satser`,
 
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
     sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
@@ -44,4 +45,12 @@ export const satserOptions = () =>
         queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
         staleTime: Infinity,
         initialData: DEFAULT_SATSER,
+    });
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: () =>
+            ky.get(API_URLS.status).json<{ status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number }>(),
+        staleTime: Infinity,
     });

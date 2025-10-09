@@ -10,6 +10,7 @@ import { Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 
 import { Forside } from './pages/forside/Forside';
+import { KvitteringPage } from './pages/kvittering/KvitteringPage';
 import { ArbeidIUtlandetSteg } from './steps/arbeid-i-utlandet/ArbeidIUtlandetSteg';
 import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { BarnetSteg } from './steps/barnet/BarnetSteg';
@@ -188,6 +189,7 @@ const renderSøknadRoutes = (
                     />
                 }
             />
+            <Route path={SøknadRoute.KVITTERING} element={<KvitteringPage />} />
         </>
     );
 };

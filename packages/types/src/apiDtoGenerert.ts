@@ -448,6 +448,11 @@ export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
 };
 
 export type SvangerskapspengesøknadDto = {
+    søkerinfo: {
+        fnr: string;
+        navn: string;
+        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+    };
     mottattdato?: string;
     barn: BarnSvpDto;
     rolle?: BrukerRolle;
