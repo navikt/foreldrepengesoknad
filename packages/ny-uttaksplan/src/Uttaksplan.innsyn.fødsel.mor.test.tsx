@@ -31,13 +31,10 @@ describe('<Uttaksplan - innsyn - fødsel mor >', () => {
 
         await userEvent.click(screen.getByText('13. Aug - 10. Oct'));
 
-        expect(
-            screen.getByText('I denne perioden har du pleiepenger i stedet for foreldrepenger.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Denne perioden er endret fra foreldrepenger til pleiepenger.')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hele eller deler av den ekstra tiden med foreldrepenger du får i forbindelse med prematur' +
-                    ' fødsel blir da omgjort til pleiepenger og kan ikke brukes som fellesperiode. Dette påvirker ikke den totale mengden dager du har fått.',
+                'Endringen påvirker ikke hvor mye tid du har fått - bare hvilken ytelse som gjelder i denne perioden.',
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Denne perioden kan ikke endres eller slettes.')).toBeInTheDocument();
