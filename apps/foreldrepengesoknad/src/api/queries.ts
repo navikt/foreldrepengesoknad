@@ -13,11 +13,11 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    mellomlagring: `${urlPrefiks}/rest/storage/foreldrepenger`,
     annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
 
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
     endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
