@@ -59,18 +59,6 @@ export const Foreldrepengesøknad = () => {
         ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
         : undefined;
 
-    // if (kvittering) {
-    //     if (Environment.INNSYN) {
-    //         redirect(
-    //             kvittering.saksNr
-    //                 ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-    //                 : `${Environment.INNSYN}/redirectFromSoknad`,
-    //         );
-    //         return <Spinner />;
-    //     }
-    //     return <div>Redirected to Innsyn</div>;
-    // }
-
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }

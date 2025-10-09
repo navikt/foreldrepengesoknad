@@ -49,11 +49,13 @@ const GåTilInnsynKnapp = ({ status }: { status?: Status }) => {
 
     const erIDev = window.location.pathname.includes('.dev.nav.');
     const url = erIDev
-        ? 'https://www.intern.dev.nav.no/foreldrepenger/oversikt/'
-        : 'https://www.nav.no/foreldrepenger/oversikt/';
+        ? 'https://www.intern.dev.nav.no/foreldrepenger/oversikt'
+        : `https://www.nav.no/foreldrepenger/oversikt`;
+
+    const direkteTilSak = status.saksnummer === undefined ? '' : `sak/${status.saksnummer}`;
 
     return (
-        <Button as="a" href={url}>
+        <Button as="a" href={`${url}/${direkteTilSak}`}>
             Se saken din
         </Button>
     );
