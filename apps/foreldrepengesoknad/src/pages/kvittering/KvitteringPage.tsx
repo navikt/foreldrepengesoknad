@@ -28,7 +28,7 @@ export const KvitteringPage = () => {
 };
 
 const GåTilMinSideKnapp = ({ status }: { status?: Status }) => {
-    if (status?.status !== 'GOSYS') {
+    if (status?.status !== 'MIDLERTIDIG') {
         return null;
     }
 
