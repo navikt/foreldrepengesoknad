@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { statusOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
@@ -18,7 +18,8 @@ export const KvitteringPage = () => {
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <VStack gap="4">
-                Status: {a?.status}
+                <BodyShort>Her skriver vi noe lurt</BodyShort>
+                Vi poller på saken. Status er: {a?.status}
                 <GåTilInnsynKnapp status={a} />
                 <GåTilMinSideKnapp status={a} />
             </VStack>
