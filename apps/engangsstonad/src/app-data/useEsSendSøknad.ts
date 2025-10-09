@@ -17,7 +17,6 @@ import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    const vedleggreferanser = dokumentasjon?.vedlegg.map((v) => v.id) || [];
     if (erAdopsjon(omBarnet)) {
         return {
             type: 'adopsjon' as const,
@@ -25,7 +24,6 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
             fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
             adopsjonsdato: omBarnet.adopsjonsdato,
             adopsjonAvEktefellesBarn: omBarnet.adopsjonAvEktefellesBarn,
-            vedleggreferanser,
         };
     }
     if (erBarnetFødt(omBarnet)) {
@@ -34,7 +32,6 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
             antallBarn: omBarnet.antallBarn,
             fødselsdato: omBarnet.fødselsdato,
             termindato: omBarnet.termindato,
-            vedleggreferanser: [],
         };
     }
 
@@ -44,7 +41,6 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
             antallBarn: omBarnet.antallBarn,
             termindato: omBarnet.termindato,
             terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
-            vedleggreferanser,
         };
     }
 
@@ -61,10 +57,6 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(API_URLS.mellomlagring),
-    });
-
     const send = async () => {
         const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
         const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
@@ -76,7 +68,7 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
                 fnr: personinfo.fnr,
                 navn: [personinfo.fornavn, personinfo.mellomnavn, personinfo.etternavn].filter((a) => !!a).join(' '),
             },
-            språkkode: getDecoratorLanguageCookie('decorator-language') as Målform,
+            språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform, //TODO: sketchy
             barn: mapBarn(omBarnet, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
@@ -96,7 +88,7 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
                 signal,
             });
 
-            slettMellomlagring();
+            ky.delete(API_URLS.mellomlagring);
             navigate(Path.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {

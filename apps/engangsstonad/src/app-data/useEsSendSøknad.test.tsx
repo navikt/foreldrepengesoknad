@@ -2,13 +2,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
-import { ReactNode } from 'react';
+import { ReactNode, act } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { PersonFrontend, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EngangsstønadDto, PersonFrontend, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -120,7 +120,9 @@ describe('useEsSendSøknad', () => {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
-        result.current.sendSøknad();
+        await act(async () => {
+            await result.current.sendSøknad();
+        });
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -128,26 +130,28 @@ describe('useEsSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: 'Henrikke Ibsen',
+                    },
                     barn: {
                         type: 'adopsjon',
                         adopsjonAvEktefellesBarn: true,
                         adopsjonsdato: '2024-01-02',
                         antallBarn: 1,
                         fødselsdatoer: ['2024-01-01'],
-                        vedleggreferanser: ['1'],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0],
                             dokumenterer: {
-                                type: 'barn',
+                                type: 'BARN',
                             },
                         },
                     ],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });
@@ -165,12 +169,13 @@ describe('useEsSendSøknad', () => {
             fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
         };
-        //TODO: oppdater testene!!
         const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
-        result.current.sendSøknad();
+        await act(async () => {
+            await result.current.sendSøknad();
+        });
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -178,18 +183,20 @@ describe('useEsSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: 'Henrikke Ibsen',
+                    },
                     barn: {
                         type: 'fødsel',
                         fødselsdato: '2024-01-01',
                         termindato: '2024-01-01',
                         antallBarn: 1,
-                        vedleggreferanser: [],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });
@@ -212,7 +219,9 @@ describe('useEsSendSøknad', () => {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 
-        result.current.sendSøknad();
+        await act(async () => {
+            await result.current.sendSøknad();
+        });
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -220,25 +229,27 @@ describe('useEsSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: 'Henrikke Ibsen',
+                    },
                     barn: {
                         type: 'termin',
                         antallBarn: 1,
                         terminbekreftelseDato: '2024-01-01',
                         termindato: '2024-01-01',
-                        vedleggreferanser: ['1'],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0],
                             dokumenterer: {
-                                type: 'barn',
+                                type: 'BARN',
                             },
                         },
                     ],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });
