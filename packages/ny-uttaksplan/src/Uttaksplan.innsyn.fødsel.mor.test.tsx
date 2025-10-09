@@ -36,7 +36,8 @@ describe('<Uttaksplan - innsyn - fødsel mor >', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Du får derfor ikke den ekstra tiden med foreldrepenger som du kan få ved prematur fødsel.',
+                'Hele eller deler av den ekstra tiden med foreldrepenger du får i forbindelse med prematur' +
+                    ' fødsel blir da omgjort til pleiepenger og kan ikke brukes som fellesperiode. Dette påvirker ikke den totale mengden dager du har fått.',
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Denne perioden kan ikke endres eller slettes.')).toBeInTheDocument();
