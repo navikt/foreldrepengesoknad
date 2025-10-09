@@ -4,7 +4,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
+import { AttachmentType } from '@navikt/fp-constants';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
@@ -21,7 +21,7 @@ const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
     // Sjekk om det er noen gyldige answers å vise
     return Object.values(alleVedlegg ?? {})
         .flat()
-        .some((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK);
+        .some((vedlegg) => vedlegg.innsendingsType !== 'AUTOMATISK');
 };
 
 export const DokumentasjonOppsummering = ({
@@ -39,11 +39,7 @@ export const DokumentasjonOppsummering = ({
 
     const harSendSenereDokument = Object.values(alleVedlegg)
         .flat()
-        .some(
-            (v) =>
-                v.innsendingsType === InnsendingsType.SEND_SENERE &&
-                v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-        );
+        .some((v) => v.innsendingsType === 'SEND_SENERE' && v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON);
 
     if (!skalViseVedlegg(alleVedlegg)) {
         return null;
@@ -71,7 +67,7 @@ export const DokumentasjonOppsummering = ({
                                 }
                                 const vedlegg = idOgVedlegg[1][0];
 
-                                if (vedlegg.innsendingsType === InnsendingsType.AUTOMATISK) {
+                                if (vedlegg.innsendingsType === 'AUTOMATISK') {
                                     return false;
                                 }
                                 return true;
@@ -79,7 +75,7 @@ export const DokumentasjonOppsummering = ({
                             .map((idOgVedlegg) => (
                                 <FormSummary.Answer key={idOgVedlegg[1][0].id}>
                                     <FormSummary.Label>
-                                        {idOgVedlegg[1][0].innsendingsType === InnsendingsType.SEND_SENERE ? (
+                                        {idOgVedlegg[1][0].innsendingsType === 'SEND_SENERE' ? (
                                             <DokumentasjonSendSenereLabel
                                                 attachment={idOgVedlegg[1][0]}
                                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
@@ -93,10 +89,7 @@ export const DokumentasjonOppsummering = ({
                                     <FormSummary.Value>
                                         <VStack gap="space-8">
                                             {idOgVedlegg[1]
-                                                .filter(
-                                                    (vedlegg) =>
-                                                        vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE,
-                                                )
+                                                .filter((vedlegg) => vedlegg.innsendingsType !== 'SEND_SENERE')
                                                 .map((vedlegg) => {
                                                     return vedlegg.url ? (
                                                         <Link key={vedlegg.id} href={vedlegg.url} target="_blank">

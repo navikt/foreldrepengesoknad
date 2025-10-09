@@ -355,7 +355,7 @@ export const getSøknadsdataForInnsending = (
     endringstidspunkt?: Date,
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     if (erEndringssøknad) {
-        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, søkerinfo, endringstidspunkt);
     } else {
         return cleanSøknad(hentData, familiehendelsesdato, søkerinfo);
     }
@@ -388,19 +388,7 @@ export const cleanSøknad = (
         annenForelder,
     );
     return {
-        søkerinfo: {
-            fnr: søkerinfo.søker.fnr,
-            navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
-                .filter((a) => !!a)
-                .join(' '),
-            arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
-                navn: af.arbeidsgiverNavn,
-                orgnummer: af.arbeidsgiverId,
-                stillingsprosent: af.stillingsprosent,
-                fom: af.fom,
-                tom: af.tom,
-            })),
-        },
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
         frilans: frilans,
@@ -415,26 +403,27 @@ export const cleanSøknad = (
     };
 };
 
-// const mapSøkerInfoTilSøknadDto = (søkerinfo: Søkerinfo,): ForeldrepengesøknadDto["søkerinfo"]  => {
-//     return {
-//         fnr: søkerinfo.søker.fnr,
-//             navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
-//             .filter((a) => !!a)
-//             .join(' '),
-//             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
-//             navn: af.arbeidsgiverNavn,
-//             orgnummer: af.arbeidsgiverId,
-//             stillingsprosent: af.stillingsprosent,
-//             fom: af.fom,
-//             tom: af.tom,
-//         })),
-//     },
-// }
+const mapSøkerInfoTilSøknadDto = (søkerinfo: Søkerinfo): ForeldrepengesøknadDto['søkerinfo'] => {
+    return {
+        fnr: søkerinfo.søker.fnr,
+        navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
+            .filter((a) => !!a)
+            .join(' '),
+        arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
+            navn: af.arbeidsgiverNavn,
+            orgnummer: af.arbeidsgiverId,
+            stillingsprosent: af.stillingsprosent,
+            fom: af.fom,
+            tom: af.tom,
+        })),
+    };
+};
 
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
+    søkerinfo: Søkerinfo,
     endringstidspunkt?: Date,
 ): EndringssøknadForeldrepengerDto => {
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
@@ -445,6 +434,8 @@ export const cleanEndringssøknad = (
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
     return {
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
+
         saksnummer: eksisterendeSak.saksnummer,
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
