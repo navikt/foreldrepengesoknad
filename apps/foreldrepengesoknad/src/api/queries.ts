@@ -27,7 +27,7 @@ export const API_URLS = {
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () => ky.get(API_URLS.status).json<{ status: 'PENDING' | 'GOSYS' | 'FPSAK' }>(),
+        queryFn: () => ky.get(API_URLS.status).json<{ status: 'PENDING' | 'GOSYS' | 'FPSAK'; saksnummer?: number }>(),
         staleTime: Infinity,
     });
 

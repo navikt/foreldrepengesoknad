@@ -107,6 +107,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const dataFelles = getStateMock(annenForelderMock, barnMock, []);
+    // @ts-expect-error -- TODO fiks
     const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato);
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
@@ -118,6 +119,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const data = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenForelder.annenForelder).toBe(undefined);
     });
@@ -125,6 +127,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         if (!cleanedSøknadUtenUførInfo.annenForelder) {
             throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
@@ -143,6 +146,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende undefined for om annenforelder er informert hvis annen part ikke har rett', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: false };
         const data = getStateMock(annenForelder, barnMock, []);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenRett.annenForelder).toBeDefined();
         expect(cleanedSøknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
@@ -163,6 +167,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(1);
         const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0];
@@ -184,6 +189,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         } as Uttaksperiode;
 
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(0);
     });

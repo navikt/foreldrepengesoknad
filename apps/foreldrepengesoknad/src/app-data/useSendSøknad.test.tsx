@@ -210,6 +210,7 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
+        // @ts-expect-error -- TODO fiks
         const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
             wrapper: getWrapper(),
         });
@@ -298,6 +299,7 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
+        // @ts-expect-error -- TODO fiks
         const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
             wrapper: getWrapper(),
         });

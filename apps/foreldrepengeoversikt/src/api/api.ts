@@ -10,7 +10,6 @@ import {
     EttersendelseDto,
     KontoBeregningDto,
     KontoBeregningGrunnlagDto,
-    Kvittering,
     MinidialogInnslag,
     Saker,
     Satser,
