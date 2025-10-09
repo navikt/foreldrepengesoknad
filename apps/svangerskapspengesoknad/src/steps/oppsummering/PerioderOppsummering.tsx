@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { TilretteleggingPeriode, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverStillingerForTilrettelegging,
@@ -12,7 +12,7 @@ import {
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
+import { Arbeidsforhold, FRILANS_ID, TilretteleggingbehovDto } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -20,8 +20,8 @@ export function PerioderOppsummering({
     onVilEndreSvar,
     alleArbeidsforhold,
 }: {
-    readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    onVilEndreSvar: () => void;
+    alleArbeidsforhold: Arbeidsforhold[];
 }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -56,9 +56,9 @@ function VirksomhetSummary({
     sisteDagForSvangerskapspenger,
     termindato,
 }: {
-    readonly alleArbeidsforhold: Arbeidsforhold[];
-    readonly sisteDagForSvangerskapspenger: string;
-    readonly termindato: string;
+    alleArbeidsforhold: Arbeidsforhold[];
+    sisteDagForSvangerskapspenger: string;
+    termindato: string;
 }) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
@@ -105,7 +105,7 @@ function VirksomhetSummary({
     });
 }
 
-function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagForSvangerskapspenger: string }) {
+function FrilansSummary({ sisteDagForSvangerskapspenger }: { sisteDagForSvangerskapspenger: string }) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -165,7 +165,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagFo
 function SelvstendigNæringsdrivendeSummary({
     sisteDagForSvangerskapspenger,
 }: {
-    readonly sisteDagForSvangerskapspenger: string;
+    sisteDagForSvangerskapspenger: string;
 }) {
     const intl = useIntl();
 
@@ -233,7 +233,7 @@ function SelvstendigNæringsdrivendeSummary({
     );
 }
 
-function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function KunEnPeriode({ periode }: { periode: TilretteleggingbehovDto['tilrettelegginger'][0] }) {
     return (
         <>
             <FormSummary.Answer>
@@ -242,17 +242,17 @@ function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode })
                 </FormSummary.Label>
                 <FormSummary.Value>
                     <StillingProsentTekst
-                        stillingsprosent={periode.stillingsprosent}
+                        stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
                         tilretteleggingstype={periode.type}
                     />
                 </FormSummary.Value>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
-                    {periode.type === Tilretteleggingstype.INGEN && (
+                    {periode.type === 'ingen' && (
                         <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen" />
                     )}
-                    {periode.type === Tilretteleggingstype.DELVIS && (
+                    {periode.type === 'delvis' && (
                         <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis" />
                     )}
                 </FormSummary.Label>
@@ -264,7 +264,7 @@ function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode })
     );
 }
 
-function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode[] }) {
+function FlerePerioder({ perioder }: { perioder: TilretteleggingbehovDto['tilrettelegginger'] }) {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -276,7 +276,7 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
                         <List.Item key={periode.fom}>
                             <SvpPeriodeDatoTekst periode={periode} />:{' '}
                             <StillingProsentTekst
-                                stillingsprosent={periode.stillingsprosent}
+                                stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
                                 tilretteleggingstype={periode.type}
                             />
                         </List.Item>
@@ -287,10 +287,11 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
     );
 }
 
-function SvpPeriodeDatoTekst({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function SvpPeriodeDatoTekst({ periode }: { periode: TilretteleggingbehovDto['tilrettelegginger'][0] }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+
     const varerTilSisteDagMedSvp = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
 
     if (!varerTilSisteDagMedSvp) {
@@ -327,17 +328,17 @@ function StillingProsentTekst({
     tilretteleggingstype,
     stillingsprosent,
 }: {
-    readonly stillingsprosent?: number;
-    readonly tilretteleggingstype: Tilretteleggingstype;
+    stillingsprosent?: number;
+    tilretteleggingstype: Tilretteleggingstype;
 }) {
-    if (tilretteleggingstype === Tilretteleggingstype.HEL) {
+    if (tilretteleggingstype === 'hel') {
         return <FormattedMessage id="oppsummering.periode.tilbakeIFullJobb" />;
     }
-    if (tilretteleggingstype === Tilretteleggingstype.INGEN) {
+    if (tilretteleggingstype === 'ingen') {
         return <FormattedMessage id="oppsummering.periode.ikkeJobbe" />;
     }
 
-    if (tilretteleggingstype === Tilretteleggingstype.DELVIS && stillingsprosent === undefined) {
+    if (tilretteleggingstype === 'delvis' && stillingsprosent === undefined) {
         throw new Error('Stillingsprosent ikke satt for delvis tilrettelegging');
     }
 

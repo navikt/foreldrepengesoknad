@@ -6,7 +6,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
@@ -96,13 +96,13 @@ const meta = {
                     initialState={{
                         [ContextDataType.TILRETTELEGGINGER]: {
                             [ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.INGEN,
+                                type: 'ingen',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',
                             },
                             [ANNEN_ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 enPeriodeMedTilretteleggingStillingsprosent: '50',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
@@ -111,13 +111,13 @@ const meta = {
                                     DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                             },
                             [TREDJE_ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
                             },
                             [EGEN_NÆRING_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',
@@ -125,7 +125,7 @@ const meta = {
                                     DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                             },
                             [FRILANS_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',

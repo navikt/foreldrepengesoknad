@@ -314,7 +314,7 @@ export type CountryCode =
     | 'ZW';
 
 export type Del = TilretteleggingDto & {
-    type: 'Del';
+    type: 'delvis';
 } & {
     fom: string;
     stillingsprosent: number;
@@ -402,17 +402,17 @@ export type FrilansDto = {
 };
 
 export type FrilanserDto = ArbeidsforholdDto & {
-    type: 'FrilanserDto';
+    type: 'frilanser';
 };
 
 export type Hel = TilretteleggingDto & {
-    type: 'Hel';
+    type: 'hel'; //TODO: verify
 } & {
     fom: string;
 };
 
 export type Ingen = TilretteleggingDto & {
-    type: 'Ingen';
+    type: 'ingen';
 } & {
     fom: string;
 };
@@ -438,13 +438,13 @@ export type NæringDto = {
 };
 
 export type PrivatArbeidsgiverDto = ArbeidsforholdDto & {
-    type: 'PrivatArbeidsgiverDto';
+    type: 'privat';
 } & {
     id: string;
 };
 
 export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
-    type: 'SelvstendigNæringsdrivendeDto';
+    type: 'selvstendig';
 };
 
 export type SvangerskapspengesøknadDto = {
@@ -470,7 +470,7 @@ export type TilretteleggingbehovDto = {
     behovForTilretteleggingFom: string;
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
-    tilrettelegginger?: Array<Del | Hel | Ingen>;
+    tilrettelegginger: Array<Del | Hel | Ingen>;
     risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
 };
 
@@ -492,7 +492,7 @@ export type VedleggDto = {
 export type VedleggInnsendingType = 'LASTET_OPP' | 'SEND_SENERE' | 'AUTOMATISK';
 
 export type VirksomhetDto = ArbeidsforholdDto & {
-    type: 'VirksomhetDto';
+    type: 'virksomhet';
 } & {
     id: string;
 };

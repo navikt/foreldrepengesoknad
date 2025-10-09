@@ -8,7 +8,7 @@ export const getSaveAttachmentFetch = (sti: string) => async (attachment: Attach
     formData.append('id', attachment.id);
     formData.append('vedlegg', attachment.file, attachment.filename);
 
-    const response = await ky.post(sti, {
+    const response = await ky.post<string>(sti, {
         body: formData,
     });
 

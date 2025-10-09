@@ -5,7 +5,6 @@ import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
@@ -78,7 +77,7 @@ const createTilretteleggingSteps = ({
     });
 
     if (
-        tilrettelegging?.type === Tilretteleggingstype.DELVIS &&
+        tilrettelegging?.type === 'delvis' &&
         tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         const perioderPath = addTilretteleggingIdToRoute(SøknadRoute.PERIODER, tilretteleggingId);

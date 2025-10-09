@@ -21,7 +21,7 @@ export const API_URLS = {
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
     endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/foreldrepenger/vedlegg`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
 } as const;
 
 export const statusOptions = () =>
