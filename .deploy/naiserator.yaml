@@ -63,7 +63,7 @@ spec:
    - name: FORELDREPENGER_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:foreldrepengesoknad-api"
    - name: FPSOKNAD_API_URL
-     value: "http://fpsoknad"
+     value: "http://fpsoknad/api"
    - name: FPSOKNAD_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:fpsoknad"
    - name: APP_VERSION
