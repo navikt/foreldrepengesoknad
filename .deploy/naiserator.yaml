@@ -50,6 +50,7 @@ spec:
   accessPolicy:
     outbound:
       rules:
+        - application: fpsoknad
         - application: foreldrepengesoknad-api
         - application: nav-dekoratoren
           namespace: personbruker
