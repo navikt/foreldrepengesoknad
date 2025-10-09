@@ -1,7 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 
@@ -14,6 +16,16 @@ const meta = {
     component: UttaksplanNy,
     args: {
         handleOnPlanChange: action('button-click'),
+    },
+    render: (args) => {
+        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.søkersPerioder);
+
+        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+            setPerioder(oppdatertePerioder);
+            args.handleOnPlanChange(oppdatertePerioder);
+        };
+
+        return <UttaksplanNy {...args} søkersPerioder={perioder} handleOnPlanChange={handleOnPlanChange} />;
     },
 } satisfies Meta<typeof UttaksplanNy>;
 export default meta;
