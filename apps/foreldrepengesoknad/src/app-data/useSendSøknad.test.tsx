@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
@@ -201,8 +201,8 @@ describe('useFpSendSøknad', () => {
         vi.restoreAllMocks();
     });
 
+    // TODO: sjekk navigering
     it('skal sende inn korrekt søknad', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -210,13 +210,12 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
+        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
@@ -292,7 +291,6 @@ describe('useFpSendSøknad', () => {
     });
 
     it('skal sende inn korrekt endringssøknad', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -300,13 +298,12 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
+        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,

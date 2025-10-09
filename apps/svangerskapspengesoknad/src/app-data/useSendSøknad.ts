@@ -35,7 +35,7 @@ export const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, 
 
             slettMellomlagring();
 
-            setKvittering((await response.json()) as Kvittering);
+            setKvittering(await response.json());
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 Sentry.captureMessage(error.message);

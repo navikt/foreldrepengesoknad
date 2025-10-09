@@ -18,10 +18,18 @@ export const API_URLS = {
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
 
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
     endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
     sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/foreldrepenger/vedlegg`,
 } as const;
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: () => ky.get(API_URLS.status).json<{ status: 'PENDING' | 'GOSYS' | 'FPSAK' }>(),
+        staleTime: Infinity,
+    });
 
 export const sakerOptions = () =>
     queryOptions({

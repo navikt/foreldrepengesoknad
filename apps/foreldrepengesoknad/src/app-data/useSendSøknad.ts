@@ -2,20 +2,19 @@ import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
+import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
-import { Kvittering } from 'types/Kvittering';
+import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
 import { useAbortSignal } from '@navikt/fp-api';
+import { Søkerinfo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (
-    fødselsnr: string,
-    erEndringssøknad: boolean,
-    setKvittering: (kvittering: Kvittering) => void,
-) => {
+export const useSendSøknad = (søkerinfo: Søkerinfo, erEndringssøknad: boolean) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -32,6 +31,7 @@ export const useSendSøknad = (
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
             getFamiliehendelsedato(barn),
+            søkerinfo,
             uttaksplanMetadata.endringstidspunkt,
         );
 
@@ -44,18 +44,13 @@ export const useSendSøknad = (
 
         try {
             const url = erEndringssøknad ? API_URLS.endreSøknad : API_URLS.sendSøknad;
-            const response = await ky.post(url, {
+            await ky.post<never>(url, {
                 json: cleanedSøknad,
                 signal: abortSignal,
                 timeout: 120 * 1000,
-                headers: {
-                    fnr: fødselsnr,
-                },
             });
-
             slettMellomlagring();
-
-            setKvittering((await response.json()) as Kvittering);
+            navigate(SøknadRoutes.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {

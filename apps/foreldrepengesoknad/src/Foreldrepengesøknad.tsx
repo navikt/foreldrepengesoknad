@@ -6,15 +6,13 @@ import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagr
 import { SøknadRoutes } from 'appData/routes';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { Kvittering } from 'types/Kvittering';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { redirect, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Environment from './Environment';
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
@@ -37,8 +35,6 @@ export const Foreldrepengesøknad = () => {
     const sakerQuery = useQuery(sakerOptions());
 
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
-
-    const [kvittering, setKvittering] = useState<Kvittering>();
 
     useEffect(() => {
         if (søkerinfoQuery.error) {
@@ -63,17 +59,17 @@ export const Foreldrepengesøknad = () => {
         ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
         : undefined;
 
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
-    }
+    // if (kvittering) {
+    //     if (Environment.INNSYN) {
+    //         redirect(
+    //             kvittering.saksNr
+    //                 ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
+    //                 : `${Environment.INNSYN}/redirectFromSoknad`,
+    //         );
+    //         return <Spinner />;
+    //     }
+    //     return <div>Redirected to Innsyn</div>;
+    // }
 
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
@@ -110,7 +106,6 @@ export const Foreldrepengesøknad = () => {
                     lagretSøknadGjelderNyttBarn={
                         skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
                     }
-                    setKvittering={setKvittering}
                 />
             </FpDataContext>
         </ErrorBoundary>

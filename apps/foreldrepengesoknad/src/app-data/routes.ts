@@ -19,6 +19,7 @@ export enum SøknadRoutes {
     DOKUMENTASJON = '/dokumentasjon',
     OPPSUMMERING = '/oppsummering',
     IKKE_MYNDIG = 'ikke-myndig',
+    KVITTERING = '/kitttering',
 }
 
 export const ROUTES_ORDER = [

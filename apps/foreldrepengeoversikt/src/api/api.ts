@@ -137,7 +137,7 @@ export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: str
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return (await response.json()) as Kvittering;
+    return await response.json();
 };
 
 export const erSakOppdatertOptions = () =>

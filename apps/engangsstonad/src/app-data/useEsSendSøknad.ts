@@ -92,7 +92,7 @@ export const useEsSendSøknad = (setKvittering: (kvittering: Kvittering) => void
 
             slettMellomlagring();
 
-            setKvittering((await response.json()) as Kvittering);
+            setKvittering(await response.json());
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
