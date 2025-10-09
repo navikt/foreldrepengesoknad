@@ -64,7 +64,6 @@ function VirksomhetSummary({
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
 
-    console.log(tilrettelegginger, tilretteleggingerPerioder);
     const tilretteleggingIder = Object.keys(tilrettelegginger).filter(
         (tilretteleggingId) => tilretteleggingId !== FRILANS_ID && tilretteleggingId !== EGEN_NÆRING_ID,
     );
@@ -87,7 +86,7 @@ function VirksomhetSummary({
         const mappedPerioder = perioder
             ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
             : mapEnTilretteleggingPeriode(tilrettelegging, sisteDagForSvangerskapspenger, stillinger);
-        console.log(mappedPerioder);
+
         return (
             <FormSummary.Answer key={tilretteleggingId}>
                 <FormSummary.Label>
