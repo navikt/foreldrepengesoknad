@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { statusOptions } from 'api/queries';
+import { statusOptions } from 'appData/queries';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-// TODO: generaliser mellom søknader???
 //TODO: autogenerer
 type Status = { status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number };
 
@@ -17,7 +16,7 @@ export const KvitteringPage = () => {
     }).data;
 
     return (
-        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="Søknad.Pageheading" />}>
             <VStack gap="4">
                 <BodyShort>Her skriver vi noe lurt</BodyShort>
                 Vi poller på saken. Status er: {a?.status}

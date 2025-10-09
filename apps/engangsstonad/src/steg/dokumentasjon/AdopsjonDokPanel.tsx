@@ -1,3 +1,4 @@
+import { API_URLS } from 'appData/queries';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
@@ -20,7 +21,7 @@ export const AdopsjonDokPanel = ({ attachments, updateAttachments }: Props) => {
             skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
             existingAttachments={attachments}
             updateAttachments={updateAttachments}
-            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'engangsstonad')}
+            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
         />
     );
 };

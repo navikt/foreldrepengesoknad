@@ -726,6 +726,10 @@ export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØN
 
 export type EngangsstønadDto = {
     mottattdato?: string;
+    søkerinfo: {
+        fnr: string;
+        navn: string;
+    };
     språkkode: Målform;
     rolle?: BrukerRolle;
     barn: AdopsjonDto | FødselDto | OmsorgsovertakelseDto | TerminDto;

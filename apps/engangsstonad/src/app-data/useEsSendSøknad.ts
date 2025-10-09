@@ -1,13 +1,15 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Kvittering } from '@navikt/fp-types';
+import { EngangsstønadDto, Målform, PersonFrontend } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -18,7 +20,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     const vedleggreferanser = dokumentasjon?.vedlegg.map((v) => v.id) || [];
     if (erAdopsjon(omBarnet)) {
         return {
-            type: 'adopsjon',
+            type: 'adopsjon' as const,
             antallBarn: omBarnet.antallBarn,
             fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
             adopsjonsdato: omBarnet.adopsjonsdato,
@@ -28,7 +30,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     }
     if (erBarnetFødt(omBarnet)) {
         return {
-            type: 'fødsel',
+            type: 'fødsel' as const,
             antallBarn: omBarnet.antallBarn,
             fødselsdato: omBarnet.fødselsdato,
             termindato: omBarnet.termindato,
@@ -38,7 +40,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 
     if (harBarnetTermindato(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
         return {
-            type: 'termin',
+            type: 'termin' as const,
             antallBarn: omBarnet.antallBarn,
             termindato: omBarnet.termindato,
             terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
@@ -54,7 +56,8 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (setKvittering: (kvittering: Kvittering) => void) => {
+export const useEsSendSøknad = (personinfo: PersonFrontend) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -69,30 +72,32 @@ export const useEsSendSøknad = (setKvittering: (kvittering: Kvittering) => void
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
         const søknad = {
-            type: 'engangsstønad',
-            språkkode: getDecoratorLanguageCookie('decorator-language'),
+            søkerinfo: {
+                fnr: personinfo.fnr,
+                navn: [personinfo.fornavn, personinfo.mellomnavn, personinfo.etternavn].filter((a) => !!a).join(' '),
+            },
+            språkkode: getDecoratorLanguageCookie('decorator-language') as Målform,
             barn: mapBarn(omBarnet, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
                     ...vedlegg,
                     dokumenterer: {
-                        type: 'barn',
+                        type: 'BARN',
                     },
                 })) ?? [],
-        };
+        } satisfies EngangsstønadDto;
 
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(API_URLS.sendSøknad, {
+            await ky.post(API_URLS.sendSøknad, {
                 json: søknad,
                 signal,
             });
 
             slettMellomlagring();
-
-            setKvittering(await response.json());
+            navigate(Path.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
