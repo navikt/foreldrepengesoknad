@@ -6,6 +6,8 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
+import { PersonFrontend } from '@navikt/fp-types';
+
 import { AppContainer } from './AppContainer';
 
 const KVITTERING = {
@@ -26,7 +28,7 @@ const DEFAULT_PERSONINFO = {
         banknavn: 'Storebank',
     },
     barn: [],
-};
+} satisfies PersonFrontend;
 
 const HANDLERS = [
     http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),

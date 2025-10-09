@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
@@ -8,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { PersonFrontend, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -60,6 +60,19 @@ const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     },
 ];
 
+const DEFAULT_PERSONINFO = {
+    fnr: '11111111111',
+    fornavn: 'Henrikke',
+    etternavn: 'Ibsen',
+    kjønn: 'K',
+    fødselsdato: '1979-01-28',
+    bankkonto: {
+        kontonummer: '49875234987',
+        banknavn: 'Storebank',
+    },
+    barn: [],
+} satisfies PersonFrontend;
+
 const getWrapper =
     (barnet: OmBarnet, dokumentasjon?: Dokumentasjon) =>
     ({ children }: { children: ReactNode }) => (
@@ -89,7 +102,6 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data ved adopsjon', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -104,13 +116,12 @@ describe('useEsSendSøknad', () => {
             adopsjonAvEktefellesBarn: true,
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
@@ -142,7 +153,6 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når barnet er født', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -155,14 +165,13 @@ describe('useEsSendSøknad', () => {
             fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
         };
-
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        //TODO: oppdater testene!!
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
@@ -186,7 +195,6 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når en venter på fødsel', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -200,13 +208,12 @@ describe('useEsSendSøknad', () => {
             termindato: '2024-01-01',
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 
         result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
