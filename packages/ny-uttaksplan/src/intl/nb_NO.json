@@ -99,6 +99,8 @@
     "uttaksplan.periodeListeHeader.dagerDuKanTape": "Dager du kan tape",
     "uttaksplan.periodeListeHeader.periodeUtenUttak": "Uten foreldrepenger",
     "uttaksplan.periodeListeHeader.samtidigUttak": "Dere har foreldrepenger",
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepenger",
+    "uttaksplan.periodeListeHeader.pleiepenger": "Pleiepenger",
     "uttaksplan.slettPeriode.tittel": "Slett periode",
     "uttaksplan.slettPeriode.hvilkePerioder": "Hvilke perioder vil du slette?",
     "uttaksplan.ingenPerioder.tittel": "Alle perioder er fjernet fra planen.",
@@ -167,6 +169,5 @@
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "KontotypeSpørsmål.velgKontotype": "Velg kontotype",
     "KontotypeSpørsmål.hvemGjelder": "Hvem gjelder fellesperioden?",
-    "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?",
-    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepenger"
+    "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?"
 }

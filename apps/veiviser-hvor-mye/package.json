@@ -19,7 +19,7 @@
         "lint:tsc": "tsc --noEmit",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
-        "storybook": "storybook dev --quiet -p 9001",
+        "storybook": "storybook dev --quiet -p 7003",
         "extract": "formatjs extract",
         "compiler": "tsc --noEmit --watch"
     },

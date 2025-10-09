@@ -143,7 +143,7 @@ export const getTekst = (
     }
 
     if (erPrematuruker) {
-        return 'Avslåtte foreldrepenger';
+        return 'Pleiepenger';
     }
 
     if (erHull) {
