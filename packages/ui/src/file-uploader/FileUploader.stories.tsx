@@ -39,6 +39,7 @@ export const Default: Story = {
         existingAttachments: [
             {
                 id: '1',
+                innsendingsType: 'LASTET_OPP',
                 filename: file1.name,
                 filesize: file1.size,
                 file: file1,
@@ -53,6 +54,7 @@ export const Default: Story = {
                 filename: file2.name,
                 filesize: file2.size,
                 file: file2,
+                innsendingsType: 'LASTET_OPP',
                 pending: true,
                 uploaded: false,
                 type: AttachmentType.TERMINBEKREFTELSE,
@@ -76,6 +78,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: true,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                innsendingsType: 'LASTET_OPP',
                 url: null,
             },
             {
@@ -87,6 +90,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: false,
                 type: AttachmentType.ALENEOMSORG,
                 skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                innsendingsType: 'LASTET_OPP',
                 url: null,
             },
         ],

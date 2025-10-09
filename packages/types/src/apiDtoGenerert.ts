@@ -484,7 +484,7 @@ export type UtenlandsoppholdsperiodeDto = {
 export type VedleggDto = {
     uuid?: string;
     skjemanummer: DokumentType;
-    innsendingsType?: VedleggInnsendingType;
+    innsendingsType: VedleggInnsendingType;
     beskrivelse?: string;
     dokumenterer?: Dokumenterer;
 };
@@ -704,6 +704,11 @@ export type EndringssøknadForeldrepengerDto = {
     annenForelder?: NorskForelderDto | UtenlandskForelderDto;
     uttaksplan: UttaksplanDto;
     saksnummer: string;
+    søkerinfo: {
+        fnr: string;
+        navn: string;
+        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+    };
     vedlegg?: VedleggDto[];
 };
 

@@ -39,8 +39,9 @@ const DOKUMENTASJON = {
             type: AttachmentType.TERMINBEKREFTELSE,
             uploaded: true,
             url: 'test.com',
+            innsendingsType: 'LASTET_OPP',
             uuid: 'uuid-test',
-        },
+        } as const,
     ],
 };
 

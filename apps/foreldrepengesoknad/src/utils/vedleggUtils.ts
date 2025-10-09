@@ -1,5 +1,5 @@
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadata } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, AttachmentMetadata, VedleggInnsendingType } from '@navikt/fp-types';
 
 import { guid } from './guid';
 
@@ -9,7 +9,7 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType,
+    innsendingsType: VedleggInnsendingType,
     dokumenterer?: AttachmentMetadata,
 ): Attachment => ({
     id: generateAttachmentId(),
@@ -33,7 +33,7 @@ export const lagSendSenereDokument = (
     skjemanummer: Skjemanummer,
     dokumenterer?: AttachmentMetadata,
 ) => {
-    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.SEND_SENERE, dokumenterer);
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'SEND_SENERE', dokumenterer);
 };
 
 export const lagAutomatiskDokument = (
@@ -41,7 +41,7 @@ export const lagAutomatiskDokument = (
     skjemanummer: Skjemanummer,
     dokumenterer?: AttachmentMetadata,
 ) => {
-    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.AUTOMATISK, dokumenterer);
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'AUTOMATISK', dokumenterer);
 };
 
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {

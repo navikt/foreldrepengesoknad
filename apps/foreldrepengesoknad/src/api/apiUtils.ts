@@ -415,6 +415,22 @@ export const cleanSøknad = (
     };
 };
 
+// const mapSøkerInfoTilSøknadDto = (søkerinfo: Søkerinfo,): ForeldrepengesøknadDto["søkerinfo"]  => {
+//     return {
+//         fnr: søkerinfo.søker.fnr,
+//             navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
+//             .filter((a) => !!a)
+//             .join(' '),
+//             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
+//             navn: af.arbeidsgiverNavn,
+//             orgnummer: af.arbeidsgiverId,
+//             stillingsprosent: af.stillingsprosent,
+//             fom: af.fom,
+//             tom: af.tom,
+//         })),
+//     },
+// }
+
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],

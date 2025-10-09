@@ -100,6 +100,7 @@ export const AdopsjonAvEktefellesBarn: Story = {
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
@@ -125,6 +126,7 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
                 {
                     id: '1',
                     filename: 'filnavn.pdf',
+                    innsendingsType: 'LASTET_OPP',
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
@@ -156,6 +158,7 @@ export const BarnetErIkkeFodt: Story = {
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.TERMINBEKREFTELSE,
                     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
