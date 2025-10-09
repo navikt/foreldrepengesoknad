@@ -54,7 +54,6 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {
-        console.log(attachments);
         setAvventerVedlegg(hasPendingUploads);
         formMethods.setValue('vedlegg', attachments, { shouldDirty: true, shouldTouch: true });
         formMethods.clearErrors('vedlegg');
