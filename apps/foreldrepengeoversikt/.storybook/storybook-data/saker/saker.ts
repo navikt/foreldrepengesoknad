@@ -5,7 +5,7 @@ export const saker = {
     foreldrepenger: [
         {
             oppdatertTidspunkt: '2024-02-28T21:19:08.911',
-            saksnummer: '352011079',
+            saksnummer: '1',
             sakAvsluttet: false,
             kanSøkeOmEndring: true,
             sakTilhørerMor: true,

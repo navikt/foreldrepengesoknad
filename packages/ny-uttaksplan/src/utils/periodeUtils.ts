@@ -3,7 +3,14 @@ import isoWeekday from 'dayjs/plugin/isoWeek';
 import { IntlShape } from 'react-intl';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { OppholdÅrsakType, SaksperiodeNy, Tidsperiode, UtsettelseÅrsakType, UttaksplanModus } from '@navikt/fp-types';
+import {
+    OppholdÅrsakType,
+    PeriodeResultatÅrsak,
+    SaksperiodeNy,
+    Tidsperiode,
+    UtsettelseÅrsakType,
+    UttaksplanModus,
+} from '@navikt/fp-types';
 import {
     TidsperiodenString,
     UttaksdagenString,
@@ -38,6 +45,12 @@ export const isUttaksperiode = (periode: Planperiode | SaksperiodeNy) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
 };
 
+export const isPrematuruker = (periode: Planperiode | SaksperiodeNy) => {
+    return (
+        periode.kontoType !== undefined && periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER
+    );
+};
+
 export const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
     if (!periode.readOnly) {
         return false;
@@ -51,7 +64,10 @@ export const isForeldrepengerFørFødselPeriode = (periode: Planperiode) => {
 };
 
 export const isUtsettelsesperiode = (periode: Planperiode) => {
-    return periode.utsettelseÅrsak !== undefined;
+    return (
+        periode.utsettelseÅrsak !== undefined &&
+        periode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER
+    );
 };
 
 export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
@@ -255,7 +271,17 @@ export const mapSaksperiodeTilPlanperiode = (
     modus: UttaksplanModus,
 ) => {
     const result: Planperiode[] = [];
-    const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.innvilget : true));
+    const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => {
+        if (p.resultat) {
+            if (p.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER) {
+                return true;
+            }
+
+            return p.resultat.innvilget;
+        }
+
+        return true;
+    });
 
     for (const p of saksperioderUtenAvslåttePerioder) {
         const tidsperiodenKrysserFamdato =

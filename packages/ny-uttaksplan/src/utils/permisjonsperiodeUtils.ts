@@ -10,6 +10,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isPrematuruker,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './periodeUtils';
@@ -178,6 +179,24 @@ export const mapPerioderToPermisjonsperiode = (
                     tom: formatDateIso(periode.tom),
                 },
                 erUtsettelse: true,
+            };
+
+            permisjonsPerioder.push(nyPermisjonsperiode);
+            forelderForrigePeriode = undefined;
+            nyPermisjonsperiode = undefined;
+        }
+
+        if (isPrematuruker(periode)) {
+            const forelderType = periode.forelder;
+
+            nyPermisjonsperiode = {
+                forelder: forelderType,
+                perioder: [{ ...periode }],
+                tidsperiode: {
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
+                },
+                erUtsettelse: false,
             };
 
             permisjonsPerioder.push(nyPermisjonsperiode);

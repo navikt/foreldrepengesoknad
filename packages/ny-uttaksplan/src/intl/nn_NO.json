@@ -85,6 +85,9 @@
     "uttaksplan.periodeListeContent.morsAktivitet.Utdanning": "Mor er i utdanning",
     "uttaksplan.periodeListeContent.morsAktivitet.UtenAktivitetsKrav": "Mor har ikkje aktivitetskrav i denne perioden",
     "uttaksplan.periodeListeContent.morsAktivitet.Uføre": "Mor er ufør",
+    "uttaksplan.periodeListeContent.prematuruker1": "Denne perioden er endra frå foreldrepengar til pleiepengar.",
+    "uttaksplan.periodeListeContent.prematuruker2": "Endringa påverkar ikkje kor mykje tid du har fått - berre kva for pengestøtte som gjeld i denne perioden.",
+    "uttaksplan.periodeListeContent.prematuruker3": "Denne perioden kan ikkje endrast eller slettast.",
     "uttaksplan.periodeListeHeader.adopsjon": "Omsorgsovertaking",
     "uttaksplan.periodeListeHeader.fødsel": "Fødsel",
     "uttaksplan.periodeListeHeader.termin": "Termin",
@@ -99,6 +102,8 @@
     "uttaksplan.periodeListeHeader.dagerDuKanTape": "Dagar du kan tape",
     "uttaksplan.periodeListeHeader.periodeUtenUttak": "Utan foreldrepengar",
     "uttaksplan.periodeListeHeader.samtidigUttak": "De har foreldrepengar",
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar",
+    "uttaksplan.periodeListeHeader.pleiepenger": "Pleiepengar",
     "uttaksplan.slettPeriode.tittel": "Slett periode",
     "uttaksplan.slettPeriode.hvilkePerioder": "Kva periodar vil du slette?",
     "uttaksplan.ingenPerioder.tittel": "Alle periodar er fjerna frå planen.",
@@ -167,6 +172,5 @@
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "KontotypeSpørsmål.velgKontotype": "Vel kontotype",
     "KontotypeSpørsmål.hvemGjelder": "Kven gjeld fellesperioden?",
-    "GraderingSpørsmål.HvorMangeProsent": "Kor mange prosent skal du jobbe?",
-    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar"
+    "GraderingSpørsmål.HvorMangeProsent": "Kor mange prosent skal du jobbe?"
 }

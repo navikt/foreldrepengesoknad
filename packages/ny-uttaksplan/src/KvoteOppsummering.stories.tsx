@@ -9,6 +9,7 @@ import {
     OppholdÅrsakType,
     PeriodeResultatÅrsak,
     TilgjengeligeStønadskontoerForDekningsgrad,
+    UtsettelseÅrsakType,
     UttakArbeidType,
 } from '@navikt/fp-types';
 
@@ -694,5 +695,77 @@ export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
             mor: 'Helga',
             farMedmor: 'Maria',
         },
+    },
+};
+
+export const MorHarPrematuruker: Story = {
+    name: 'Mor har prematuruker',
+    args: {
+        navnPåForeldre,
+        modus: 'innsyn',
+        visStatusIkoner: true,
+        konto: {
+            kontoer: [
+                {
+                    konto: 'FELLESPERIODE',
+                    dager: 128,
+                },
+                {
+                    konto: 'MØDREKVOTE',
+                    dager: 75,
+                },
+                {
+                    konto: 'FEDREKVOTE',
+                    dager: 75,
+                },
+                {
+                    konto: 'FORELDREPENGER_FØR_FØDSEL',
+                    dager: 15,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                flerbarn: 0,
+                prematur: 48,
+            },
+        },
+        perioder: [
+            {
+                id: 'whatever',
+                readOnly: true,
+                fom: '2025-08-13',
+                tom: '2025-10-10',
+                kontoType: StønadskontoType.Fellesperiode,
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+                },
+                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                id: 'whatever',
+                readOnly: true,
+                fom: '2025-10-11',
+                tom: '2025-11-25',
+                kontoType: StønadskontoType.Mødrekvote,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
     },
 };
