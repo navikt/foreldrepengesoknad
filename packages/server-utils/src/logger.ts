@@ -1,4 +1,5 @@
 import morgan from 'morgan';
+import * as util from 'node:util';
 import winston from 'winston';
 
 const { format } = winston;
@@ -54,12 +55,17 @@ const warning = (msg: string) => {
     stdoutLogger.warn(msg.replaceAll(/[\n\r]/g, ''));
 };
 
-const error = (msg: string, err?: unknown) => {
-    if (err instanceof Error) {
-        stdoutLogger.error(msg, { message: `: ${err.message}` });
-    } else {
-        stdoutLogger.error(msg, { message: `: ${err}` });
-    }
+const error = (...args: unknown[]) => {
+    const formattedArg = args.map((arg) => {
+        if (arg instanceof Error) {
+            return arg.message;
+        } else {
+            return arg;
+        }
+    });
+
+    const msg = util.format(...formattedArg).replaceAll(/[\n\r]/g, '');
+    stdoutLogger.error(msg);
 };
 
 const skip = () => process.env.NODE_ENV === 'production';
