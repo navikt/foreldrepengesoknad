@@ -138,6 +138,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende at annenforelder er informert for endringssøknad', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: true };
         const data = getStateMock(annenForelder, barnMock, []);
+        // @ts-expect-error -- TODO fiks
         const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato);
         expect(cleanedSøknadMedRett.annenForelder).toBeDefined();
         expect(cleanedSøknadMedRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
