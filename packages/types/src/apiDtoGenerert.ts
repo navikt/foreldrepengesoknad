@@ -532,6 +532,11 @@ export type BarnDto = {
 export type Dekningsgrad = '80' | '100';
 
 export type ForeldrepengesøknadDto = {
+    søkerinfo: {
+        fnr: string;
+        navn: string;
+        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+    };
     mottattdato?: string;
     rolle?: BrukerRolle;
     språkkode?: Målform;
