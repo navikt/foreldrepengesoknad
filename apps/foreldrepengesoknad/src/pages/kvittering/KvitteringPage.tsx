@@ -7,7 +7,7 @@ import { BodyShort, Button, VStack } from '@navikt/ds-react';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 //TODO: autogenerer
-type Status = { status: 'PENDING' | 'GOSYS' | 'FPSAK'; saksnummer?: number };
+type Status = { status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number };
 
 export const KvitteringPage = () => {
     const a = useQuery({

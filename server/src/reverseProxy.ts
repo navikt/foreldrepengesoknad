@@ -11,11 +11,11 @@ type ProxyOptions = {
 };
 
 export function configureReverseProxyApi(router: Router) {
-    addProxyHandler(router, {
-        ingoingUrl: '/fpoversikt',
-        outgoingUrl: serverConfig.proxy.FPOVERSIKT_API_URL,
-        scope: serverConfig.proxy.FPOVERSIKT_API_SCOPE,
-    });
+    // addProxyHandler(router, {
+    //     ingoingUrl: '/fpoversikt',
+    //     outgoingUrl: serverConfig.proxy.FPOVERSIKT_API_URL,
+    //     scope: serverConfig.proxy.FPOVERSIKT_API_SCOPE,
+    // });
 
     addProxyHandler(router, {
         ingoingUrl: '/fpsoknad',
