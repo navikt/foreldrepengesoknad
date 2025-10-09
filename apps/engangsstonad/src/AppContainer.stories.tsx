@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { API_URLS } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
@@ -28,16 +29,10 @@ const DEFAULT_PERSONINFO = {
 };
 
 const HANDLERS = [
-    http.post(`${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`, () => HttpResponse.json(KVITTERING)),
-    http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, () => new HttpResponse(null, { status: 200 })),
-    http.delete(
-        `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
-    http.post(
-        `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
-        () => new HttpResponse(null, { status: 200 }),
-    ),
+    http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),
+    http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+    http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+    http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
 ];
 
 const meta = {
@@ -59,11 +54,8 @@ export const SøkerErKvinne: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
+                http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
             ]),
         },
     },
@@ -73,8 +65,8 @@ export const SøkerErKvinneMedMellomlagretData: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, () =>
+                http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get(API_URLS.mellomlagring, () =>
                     HttpResponse.json({
                         version: VERSJON_MELLOMLAGRING,
                         locale: 'nb',
@@ -93,7 +85,7 @@ export const SøkerErMann: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () =>
+                http.get(API_URLS.personInfo, () =>
                     HttpResponse.json({
                         fnr: '1231111111',
                         fornavn: 'Espen',
@@ -107,10 +99,7 @@ export const SøkerErMann: Story = {
                         barn: [],
                     }),
                 ),
-                http.get(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
             ]),
         },
     },

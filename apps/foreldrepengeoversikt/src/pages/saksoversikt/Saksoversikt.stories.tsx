@@ -14,6 +14,7 @@ import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
 
@@ -49,18 +50,12 @@ export const Foreldrepenger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },
@@ -74,7 +69,7 @@ export const Engangsstønad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [
@@ -96,7 +91,7 @@ export const Engangsstønad: Story = {
                         svangerskapspenger: [],
                     } satisfies Saker),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                http.get(API_URLS.tidslinje, () =>
                     HttpResponse.json([
                         {
                             type: 'søknad',
@@ -117,9 +112,9 @@ export const Engangsstønad: Story = {
                         },
                     ]),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () => HttpResponse.json()),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
+                http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
+                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },
@@ -133,24 +128,18 @@ export const Svangerskapspenger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [],
                         svangerskapspenger: [SAK_1],
                     }),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },

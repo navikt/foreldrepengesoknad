@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -13,8 +14,8 @@ import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
-const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
+const UTTAKSPLAN_ANNEN_URL = API_URLS.annenPartVedtak;
+const STØNADSKONTO_URL = API_URLS.konto;
 
 const promiseAction = () => () => {
     action('button-click')();

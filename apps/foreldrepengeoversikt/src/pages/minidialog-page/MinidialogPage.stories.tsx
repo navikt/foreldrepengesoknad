@@ -5,6 +5,7 @@ import { saker } from 'storybookData/saker/saker';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from './../../routes/routes';
 import { MinidialogPage } from './MinidialogPage';
 
@@ -33,7 +34,7 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/minidialog`, () =>
+                http.get(API_URLS.minidialog, () =>
                     HttpResponse.json([
                         {
                             saksnr: '352011079',
@@ -42,7 +43,7 @@ export const Default: Story = {
                         },
                     ]),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
     },

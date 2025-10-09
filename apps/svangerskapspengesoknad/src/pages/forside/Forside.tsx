@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextSaveData } from 'appData/SvpDataContext';
+import { sakerOptions, satserOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
-import ky from 'ky';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
-import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import { Saker, Satser } from '@navikt/fp-types';
+import { links } from '@navikt/fp-constants';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
@@ -24,10 +23,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const minimumOpptjening = useQuery({
-        queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
-        staleTime: Infinity,
-        initialData: DEFAULT_SATSER,
+        ...satserOptions(),
         select: (satser) => satser.grunnbeløp[0].verdi * 0.5,
     }).data;
 
@@ -149,8 +145,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
 const EksisterendeSøknad = () => {
     const harÅpenBehandling =
         useQuery({
-            queryKey: ['SAKER'],
-            queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
+            ...sakerOptions(),
             select: (saker) => {
                 return saker.svangerskapspenger.some((sak) => sak.åpenBehandling !== undefined);
             },

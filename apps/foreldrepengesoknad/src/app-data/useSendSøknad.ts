@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { Kvittering } from 'types/Kvittering';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -19,7 +20,7 @@ export const useSendSøknad = (
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const send = async () => {
@@ -42,8 +43,8 @@ export const useSendSøknad = (
         const abortSignal = initAbortSignal();
 
         try {
-            const url = erEndringssøknad ? '/rest/soknad/foreldrepenger/endre' : '/rest/soknad/foreldrepenger';
-            const response = await ky.post(`${import.meta.env.BASE_URL}${url}`, {
+            const url = erEndringssøknad ? API_URLS.endreSøknad : API_URLS.sendSøknad;
+            const response = await ky.post(url, {
                 json: cleanedSøknad,
                 signal: abortSignal,
                 timeout: 120 * 1000,

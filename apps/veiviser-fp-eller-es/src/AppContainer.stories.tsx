@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -13,7 +14,7 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, async () => {
+                http.get(API_URLS.satser, async () => {
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
                     const json = await response.json();
                     return HttpResponse.json(json);
@@ -40,7 +41,7 @@ export const FpEllerEsVeiviser: Story = {};
 export const FpEllerEsVeiviserMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(DEFAULT_SATSER))],
+            handlers: [http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER))],
         },
     },
 };

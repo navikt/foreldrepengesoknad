@@ -10,6 +10,7 @@ import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHe
 import { Søkerinfo } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
@@ -45,13 +46,9 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
             ],
         },
     },

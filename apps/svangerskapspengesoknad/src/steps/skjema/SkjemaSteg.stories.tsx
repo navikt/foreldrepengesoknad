@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -95,7 +96,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
+                    API_URLS.sendVedlegg,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -118,12 +119,7 @@ export const SkalIkkeFeileOpplasting: Story = {
 export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: SkalIkkeFeileOpplasting.args,

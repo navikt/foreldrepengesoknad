@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
+import { API_URLS, hentSatserOptions } from 'appData/queries';
 import ky from 'ky';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -8,8 +9,8 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { HvemPlanleggerType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
@@ -55,7 +56,7 @@ const getStønadskontoer = async (
         morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
     };
 
-    return ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
+    return ky.post(API_URLS.konto, { json: params }).json<TilgjengeligeStønadskontoer>();
 };
 
 export const PlanleggerDataFetcher = () => {
@@ -65,12 +66,7 @@ export const PlanleggerDataFetcher = () => {
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const satserData = useQuery({
-        queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
-        staleTime: Infinity,
-        initialData: DEFAULT_SATSER,
-    });
+    const satserData = useQuery(hentSatserOptions());
 
     const stønadskontoerData = useQuery({
         queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],

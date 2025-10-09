@@ -4,6 +4,7 @@ import { action } from 'storybook/actions';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { MinidialogSkjema } from './MinidialogSkjema';
 
 const meta = {
@@ -25,12 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 }))],
         },
     },
     args: {
@@ -50,12 +46,7 @@ export const SkalIkkeFeileOpplasting: Story = {
 export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/storage/foreldrepenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: SkalIkkeFeileOpplasting.args,

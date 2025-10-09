@@ -7,6 +7,7 @@ import { Forelder, MorsAktivitet, StønadskontoType } from '@navikt/fp-constants
 import { OverføringÅrsakType, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/api.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from './DinPlan';
 
@@ -31,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
         },
     },
     args: {
@@ -55,7 +56,7 @@ export const FarSøker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [
                             {
