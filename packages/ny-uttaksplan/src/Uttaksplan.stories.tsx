@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 
@@ -100,5 +100,44 @@ export const MorOgMedmor: Story = {
             mor: 'Olga Utvikler',
             farMedmor: 'Helga Utvikler',
         },
+    },
+};
+
+export const MorOgFarMedFerieopphold: Story = {
+    name: 'Mor og far, uten felles med ferieopphold',
+    args: {
+        ...Default.args,
+        søkersPerioder: [
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                fom: '2025-04-18',
+                tom: '2025-05-08',
+            },
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Mødrekvote,
+                fom: '2025-05-09',
+                tom: '2025-08-21',
+            },
+            {
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Fellesperiode,
+                fom: '2025-08-22',
+                tom: '2025-12-11',
+            },
+            {
+                forelder: Forelder.mor,
+                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                fom: '2025-12-12',
+                tom: '2025-12-15',
+            },
+            {
+                forelder: Forelder.farMedmor,
+                kontoType: StønadskontoType.Fedrekvote,
+                fom: '2025-12-16',
+                tom: '2026-03-30',
+            },
+        ],
     },
 };
