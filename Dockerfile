@@ -45,7 +45,7 @@ COPY . .
 FROM --platform=${BUILDPLATFORM} builder AS server-build
 ARG SERVER
 WORKDIR /usr/src/app/${SERVER}
-RUN pnpm exec turbo build
+RUN pnpm exec turbo test
 
 #########################################
 # Client
