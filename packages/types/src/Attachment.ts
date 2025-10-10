@@ -1,10 +1,9 @@
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { AttachmentMetadata } from './AttachmentMetadata';
-import { VedleggInnsendingType } from './apiDtoGenerert';
+import { Dokumenterer, VedleggInnsendingType } from './apiDtoGenerert';
 
 export type Attachment = {
-    dokumenterer?: AttachmentMetadata;
+    dokumenterer?: Dokumenterer;
     id: string;
     filename: string;
     filesize: number;
