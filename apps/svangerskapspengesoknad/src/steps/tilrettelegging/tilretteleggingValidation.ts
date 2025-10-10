@@ -77,7 +77,7 @@ export const validateSammePeriodeFremTilTerminFom =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = tilretteleggingstype === Tilretteleggingstype.DELVIS;
+        const erDelvis = tilretteleggingstype === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -146,7 +146,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = type === Tilretteleggingstype.DELVIS;
+        const erDelvis = type === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -249,7 +249,7 @@ export const validateBehovForTilretteleggingFom =
 export const validerTilretteleggingTomType =
     (intl: IntlShape, tilretteleggingType: Tilretteleggingstype, kanHaSVPFremTilTreUkerFørTermin: boolean) =>
     (value: string | number | boolean): string | undefined => {
-        const erDelvis = tilretteleggingType === Tilretteleggingstype.DELVIS;
+        const erDelvis = tilretteleggingType === 'delvis';
         if (!hasValue(value)) {
             if (erDelvis) {
                 return kanHaSVPFremTilTreUkerFørTermin
@@ -266,33 +266,33 @@ export const validerTilretteleggingTomType =
     };
 
 const finnFeilmeldingForPåkrevd = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.påkrevd' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.påkrevd' });
     }
-    if (type === Arbeidsforholdstype.VIRKSOMHET) {
+    if (type === 'virksomhet') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.virksomhet.påkrevd' });
     }
     throw new Error('Ingen påkrevd-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForOverMakslengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forLang' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forLang' });
     }
     throw new Error('Ingen makslengde-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forKort' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forKort' });
     }
     throw new Error('Ingen tekst for type: ' + type);

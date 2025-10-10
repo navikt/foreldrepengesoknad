@@ -1,3 +1,4 @@
+import { API_URLS } from 'appData/queries';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { useFormContext } from 'react-hook-form';
@@ -66,7 +67,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'engangsstonad')}
+                saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
             />
         </>
     );

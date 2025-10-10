@@ -26,7 +26,7 @@ import {
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
 } from '@navikt/fp-common';
-import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
@@ -191,7 +191,7 @@ export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
 };
 
 const isSendSenereVedlegg = (attachment: Attachment) => {
-    return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
+    return attachment.innsendingsType === 'SEND_SENERE';
 };
 
 const fjernSendSenereVedlegg = (attachments: Attachment[]) => {

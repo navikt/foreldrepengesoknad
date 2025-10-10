@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
 import { hasValue } from 'utils/validationUtils';
 
@@ -108,6 +108,6 @@ export const getUferdigPeriodeInput = (
         tom: '',
         stillingsprosent: '',
         tomType: undefined!,
-        type: Tilretteleggingstype.DELVIS,
+        type: 'delvis',
     } as PeriodeMedVariasjon;
 };

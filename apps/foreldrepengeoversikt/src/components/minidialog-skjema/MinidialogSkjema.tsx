@@ -22,21 +22,21 @@ import { Attachment, EttersendelseDto, MinidialogInnslag, Ytelse } from '@navikt
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
-import { urlPrefiks } from '../../api/api';
+import { API_URLS, urlPrefiks } from '../../api/api';
 import { validateFritekstFelt } from '../../utils/validationUtils';
 import { ScrollToTop } from '../scroll-to-top/ScrollToTop';
 import { HvaLeggerNAVVektPå } from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
 import { MinidialogVenterPåSvar } from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 
-const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+const mapYtelse = (sakstype: Ytelse) => {
     if (sakstype === 'ENGANGSSTØNAD') {
-        return 'engangsstonad';
+        return API_URLS.lastOppESVedlegg;
     }
     if (sakstype === 'FORELDREPENGER') {
-        return 'foreldrepenger';
+        return API_URLS.lastOppFPVedlegg;
     }
-    return 'svangerskapspenger';
+    return API_URLS.lastOppSVPVedlegg;
 };
 
 interface Props {
@@ -177,7 +177,7 @@ export const MinidialogSkjema = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachmentFetch(mapYtelse(sakstype))}
                         />
                     </>
                 )}

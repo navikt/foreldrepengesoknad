@@ -9,7 +9,6 @@ import {
     IngenTilrettelegging,
     Stilling,
     TilOgMedDatoType,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
@@ -48,8 +47,7 @@ export const DelvisTilretteleggingPanel = ({
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
-    const harSkjema =
-        arbeidsforholdType === Arbeidsforholdstype.VIRKSOMHET || arbeidsforholdType === Arbeidsforholdstype.PRIVAT;
+    const harSkjema = arbeidsforholdType === 'virksomhet' || arbeidsforholdType === 'privat';
     const minDatoBehovFom =
         dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startdatoArbeid)) || undefined;
     const maxDatoBehovFom = sluttdatoArbeid
@@ -157,7 +155,7 @@ export const DelvisTilretteleggingPanel = ({
                             intl,
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
-                            Tilretteleggingstype.DELVIS,
+                            'delvis',
                             arbeidsforholdNavn || '',
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
@@ -173,13 +171,7 @@ export const DelvisTilretteleggingPanel = ({
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis',
                     })}
-                    validate={[
-                        validerTilretteleggingTomType(
-                            intl,
-                            Tilretteleggingstype.DELVIS,
-                            kanHaSVPFremTilTreUkerFørTermin,
-                        ),
-                    ]}
+                    validate={[validerTilretteleggingTomType(intl, 'delvis', kanHaSVPFremTilTreUkerFørTermin)]}
                 >
                     <Radio value={TilOgMedDatoType.VALGFRI_DATO}>
                         <FormattedMessage id="perioder.varierende.tomType.valgfriDato" />
@@ -219,7 +211,7 @@ export const DelvisTilretteleggingPanel = ({
                                 behovForTilretteleggingFom,
                                 sisteDagForSvangerskapspenger,
                                 enPeriodeMedTilretteleggingFom,
-                                Tilretteleggingstype.DELVIS,
+                                'delvis',
                                 arbeidsforholdNavn || '',
                                 sluttdatoArbeid,
                                 kanHaSVPFremTilTreUkerFørTermin,

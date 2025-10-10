@@ -1,3 +1,4 @@
+import { API_URLS } from 'api/queries';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -102,7 +103,7 @@ export const UttakUploader = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
         />
     );
 };

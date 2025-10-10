@@ -16,7 +16,7 @@ const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
 // TODO typen som blir returnert er ikkje komplett. Ikkje dra inn ky-avhengighet her
-type SaveAttachment = (attachment: Attachment) => Promise<{ headers: { location: string | null }; data: string }>;
+type SaveAttachment = (attachment: Attachment) => Promise<{ data: string }>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -40,7 +40,6 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
     try {
         const response = await saveAttachment(attachment);
         attachment.pending = false;
-        attachment.url = response.headers.location; // TODELETE
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } catch (error) {

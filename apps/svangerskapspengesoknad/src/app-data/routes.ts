@@ -14,6 +14,7 @@ export enum SøknadRoute {
     PERIODER = '/perioder',
     FERIE = '/ferie',
     OPPSUMMERING = '/oppsummering',
+    KVITTERING = '/kittering',
 }
 
 export type RouteParams = {

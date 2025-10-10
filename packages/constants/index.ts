@@ -15,7 +15,6 @@ export { BarnType } from './src/barnType';
 export { StønadskontoType } from './src/stønadskontoType';
 export { MinsterettType } from './src/minsterettType';
 export { KontoTilleggType } from './src/kontoTilleggType';
-export { InnsendingsType } from './src/innsendingsType';
 export { AttachmentMetadataType } from './src/attachmentMetadataType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
 export { SivilstandType } from './src/sivilstandType';

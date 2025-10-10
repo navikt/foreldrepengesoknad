@@ -12,7 +12,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, Søkerinfo } from '@navikt/fp-types';
 
 import {
     UttaksplanPeriode,
@@ -21,6 +21,33 @@ import {
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
 } from './apiUtils';
+
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '9903232324',
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: '990322244',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    søker: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
+        fnr: '02343434',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
+    },
+} satisfies Søkerinfo;
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -34,7 +61,7 @@ const getAnnenForelderUførMock = (
         erForSyk: erForSykInput,
         kanIkkeOppgis: false,
         datoForAleneomsorg: datoForAleneomsorgInput,
-    } as AnnenForelder;
+    };
 };
 
 const getAnnenForelderMock = (): AnnenForelder => {
@@ -42,13 +69,13 @@ const getAnnenForelderMock = (): AnnenForelder => {
         fornavn: 'Mor',
         etternavn: 'UtenUførInfo',
         kanIkkeOppgis: false,
-    } as AnnenForelder;
+    };
 };
 
 const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
     return {
         kanIkkeOppgis: true,
-    } as AnnenForelder;
+    };
 };
 
 const getBarnMock = () => {
@@ -57,7 +84,8 @@ const getBarnMock = () => {
         fødselsdatoer: ['2022-01-01'],
         termindato: '2022-02-01',
         fnr: ['01010111111'],
-    } as FødtBarn;
+        antallBarn: 1,
+    } satisfies FødtBarn;
 };
 
 // TODO (TOR) Dette er midlertidig logikk
@@ -89,7 +117,7 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 harHattAndreInntektskilder: false,
                 harJobbetSomFrilans: false,
                 harJobbetSomSelvstendigNæringsdrivende: false,
-            } as ArbeidsforholdOgInntektFp;
+            } satisfies ArbeidsforholdOgInntektFp;
         }
         if (type === ContextDataType.SØKERSITUASJON) {
             return {
@@ -107,7 +135,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     const fødselsdato = barnMock.fødselsdatoer[0];
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const dataFelles = getStateMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato);
+
+    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato, DEFAULT_SØKER_INFO);
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
         if (!cleanedSøknad.annenForelder) {
@@ -118,14 +147,16 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const data = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenForelder.annenForelder).toBe(undefined);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         if (!cleanedSøknadUtenUførInfo.annenForelder) {
             throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
         }
@@ -135,7 +166,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende at annenforelder er informert for endringssøknad', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: true };
         const data = getStateMock(annenForelder, barnMock, []);
-        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato);
+
+        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadMedRett.annenForelder).toBeDefined();
         expect(cleanedSøknadMedRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
     });
@@ -143,7 +175,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende undefined for om annenforelder er informert hvis annen part ikke har rett', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: false };
         const data = getStateMock(annenForelder, barnMock, []);
-        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenRett.annenForelder).toBeDefined();
         expect(cleanedSøknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
     });
@@ -163,7 +196,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
         } as PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(1);
         const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0];
         if (uttaksperiodeInnsending.type !== 'uttak') {
@@ -184,7 +218,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         } as Uttaksperiode;
 
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(0);
     });
 

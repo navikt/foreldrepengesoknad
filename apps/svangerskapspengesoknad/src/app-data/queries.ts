@@ -10,10 +10,13 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    mellomlagring: `${urlPrefiks}/rest/storage/svangerskapspenger`,
     satser: `${urlPrefiks}/rest/satser`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/svangerskapspenger`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/svangerskapspenger/vedlegg`,
+
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
+    lastnedVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/${uuid}`,
 } as const;
 
 export const sakerOptions = () =>
@@ -43,4 +46,12 @@ export const satserOptions = () =>
         queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
         staleTime: Infinity,
         initialData: DEFAULT_SATSER,
+    });
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: () =>
+            ky.get(API_URLS.status).json<{ status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number }>(),
+        staleTime: Infinity,
     });

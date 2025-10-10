@@ -8,6 +8,7 @@ export enum Path {
     TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
     SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
     OPPSUMMERING = '/soknad/oppsummering',
+    KVITTERING = '/soknad/kvittering',
 }
 
 export const PATH_ORDER = [
