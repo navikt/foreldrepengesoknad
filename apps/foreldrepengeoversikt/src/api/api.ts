@@ -25,8 +25,8 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    minidialog: `${urlPrefiks}/rest/minidialog`,
     annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
+    minidialog: `${urlPrefiks}/rest/minidialog`,
     konto: `${urlPrefiks}/rest/konto`,
     dokumenter: `${urlPrefiks}/rest/dokument/alle`,
     inntektsmelding: `${urlPrefiks}/rest/innsyn/inntektsmeldinger`,
@@ -35,9 +35,10 @@ export const API_URLS = {
     erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
     manglendeVedlegg: `${urlPrefiks}/rest/historikk/vedlegg`,
     tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
-    lastOppFPVedlegg: `${urlPrefiks}/rest/storage/FORELDREPENGER/vedlegg`,
-    lastOppESVedlegg: `${urlPrefiks}/rest/storage/ENGANGSSTONAD/vedlegg`,
-    lastOppSVPVedlegg: `${urlPrefiks}/rest/storage/SVANGERSKAPSPENGER/vedlegg`,
+
+    lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
+    lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api//storage/ENGANGSSTONAD/vedlegg`,
+    lastOppSVPVedlegg: `${urlPrefiks}/fpsoknad/api//storage/SVANGERSKAPSPENGER/vedlegg`,
 } as const;
 
 export const søkerInfoOptions = () =>
