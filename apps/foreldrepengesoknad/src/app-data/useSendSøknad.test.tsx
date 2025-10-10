@@ -20,7 +20,15 @@ import {
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { Dekningsgrad, NæringDto, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    Dekningsgrad,
+    EndringssøknadForeldrepengerDto,
+    ForeldrepengesøknadDto,
+    NæringDto,
+    Søkerinfo,
+    SøkersituasjonFp,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -34,6 +42,33 @@ const queryClient = new QueryClient({
         },
     },
 });
+
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '9903232324',
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: '990322244',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    søker: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
+        fnr: '02343434',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
+    },
+} satisfies Søkerinfo;
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,
@@ -136,6 +171,17 @@ const UTTAKSPLAN_METADATA = {
     endringstidspunkt: new Date('2024-01-02'),
 } as UttaksplanMetaData;
 
+const EXPECTED_SØKER_INFO = {
+    fnr: DEFAULT_SØKER_INFO.søker.fnr,
+    navn: 'Erlinga-Mask Oravakangas',
+    arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+        navn: af.arbeidsgiverNavn,
+        orgnummer: af.arbeidsgiverId,
+        stillingsprosent: af.stillingsprosent,
+        fom: af.fom,
+    })),
+};
+
 const getWrapper =
     () =>
     ({ children }: { children: ReactNode }) => (
@@ -210,22 +256,19 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
-        // @ts-expect-error -- TODO fiks
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
             expect.objectContaining({
-                headers: {
-                    fnr: '02343434',
-                },
                 json: {
+                    søkerinfo: EXPECTED_SØKER_INFO,
                     rolle: 'MOR',
                     språkkode: 'NB',
                     andreInntekterSiste10Mnd: [
@@ -286,7 +329,7 @@ describe('useFpSendSøknad', () => {
                         uttaksperioder: [],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
-                },
+                } satisfies ForeldrepengesøknadDto,
             }),
         );
     });
@@ -299,22 +342,19 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
-        // @ts-expect-error -- TODO fiks
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.endreSøknad,
             expect.objectContaining({
-                headers: {
-                    fnr: '02343434',
-                },
                 json: {
+                    søkerinfo: EXPECTED_SØKER_INFO,
                     saksnummer: '1',
                     rolle: 'MOR',
                     språkkode: 'NB',
@@ -350,7 +390,7 @@ describe('useFpSendSøknad', () => {
                         ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
-                },
+                } satisfies EndringssøknadForeldrepengerDto,
             }),
         );
     });

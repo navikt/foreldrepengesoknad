@@ -119,7 +119,6 @@ const VEDLEGG = {
     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
     type: AttachmentType.TERMINBEKREFTELSE,
     uploaded: true,
-    url: 'test.com',
     uuid: 'uuid-test',
     innsendingsType: 'LASTET_OPP',
 } satisfies Attachment;
