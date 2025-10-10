@@ -157,7 +157,6 @@ const meta = {
                     () =>
                         new HttpResponse(JSON.stringify('uuid-test'), {
                             status: 200,
-                            headers: { location: 'test.com' },
                         }),
                 ),
             ],

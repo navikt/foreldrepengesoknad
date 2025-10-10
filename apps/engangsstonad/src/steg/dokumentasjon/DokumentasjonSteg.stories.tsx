@@ -52,7 +52,6 @@ export const Terminbekreftelse: Story = {
                     () =>
                         new HttpResponse(JSON.stringify('uuid-test'), {
                             status: 200,
-                            headers: { location: 'test.com' },
                         }),
                 ),
             ],
@@ -78,7 +77,6 @@ export const Adopsjonsbekreftelse: Story = {
                     () =>
                         new HttpResponse(JSON.stringify('uuid-test'), {
                             status: 200,
-                            headers: { location: 'test.com' },
                         }),
                 ),
             ],
