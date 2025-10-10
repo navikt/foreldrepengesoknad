@@ -22,6 +22,7 @@ export const API_URLS = {
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
     endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
     sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
+    lastnedVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg/${uuid}`,
 } as const;
 
 export const statusOptions = () =>

@@ -22,7 +22,6 @@ export const mapFilTilVedlegg = (
     skjemanummer,
     innsendingsType,
     dokumenterer,
-    url: null,
 });
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>

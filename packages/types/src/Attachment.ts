@@ -9,7 +9,6 @@ export type Attachment = {
     filename: string;
     filesize: number;
     file: File;
-    url: string | null;
     uuid?: string;
     pending: boolean;
     uploaded: boolean;

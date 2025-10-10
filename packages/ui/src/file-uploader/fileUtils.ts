@@ -31,7 +31,6 @@ export const mapFileToAttachment = (
             innsendingsType: 'LASTET_OPP', // Overskrives senere hvis av annen type
             type,
             skjemanummer,
-            url: null,
         },
         fileObject,
     };

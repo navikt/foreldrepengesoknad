@@ -105,15 +105,15 @@ const VEDLEGG = {
             file: {} as File,
             filename: 'hello.png',
             filesize: 5,
+            innsendingsType: 'LASTET_OPP',
             pending: false,
             skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
             type: AttachmentType.TERMINBEKREFTELSE,
             uploaded: true,
-            url: 'test.com',
             uuid: 'uuid-test',
         },
     ],
-} as VedleggDataType;
+} satisfies VedleggDataType;
 
 const PERIODE = {
     id: '1',

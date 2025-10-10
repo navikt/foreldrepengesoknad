@@ -1,3 +1,4 @@
+import { API_URLS } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -91,8 +92,13 @@ export const DokumentasjonOppsummering = ({
                                             {idOgVedlegg[1]
                                                 .filter((vedlegg) => vedlegg.innsendingsType !== 'SEND_SENERE')
                                                 .map((vedlegg) => {
-                                                    return vedlegg.url ? (
-                                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                                    return vedlegg.uuid ? (
+                                                        <Link
+                                                            key={vedlegg.id}
+                                                            download={vedlegg.filename}
+                                                            href={`${API_URLS.lastnedVedlegg(vedlegg.uuid)}`}
+                                                            target="_blank"
+                                                        >
                                                             {vedlegg.filename}
                                                         </Link>
                                                     ) : (
