@@ -22,7 +22,7 @@ import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { sendEttersending, urlPrefiks } from '../../api/api';
+import { API_URLS, sendEttersending } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -34,14 +34,14 @@ import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
-const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+const mapYtelse = (sakstype: Ytelse) => {
     if (sakstype === 'ENGANGSSTØNAD') {
-        return 'engangsstonad';
+        return API_URLS.lastOppESVedlegg;
     }
     if (sakstype === 'FORELDREPENGER') {
-        return 'foreldrepenger';
+        return API_URLS.lastOppFPVedlegg;
     }
-    return 'svangerskapspenger';
+    return API_URLS.lastOppSVPVedlegg;
 };
 
 const DEFAULT_OPTION = 'default';
@@ -183,7 +183,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachmentFetch(mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

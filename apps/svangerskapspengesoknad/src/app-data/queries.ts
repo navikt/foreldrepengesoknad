@@ -16,6 +16,7 @@ export const API_URLS = {
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
     sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
+    lastnedVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/${uuid}`,
 } as const;
 
 export const sakerOptions = () =>

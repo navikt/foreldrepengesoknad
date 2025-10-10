@@ -145,7 +145,6 @@ const meta = {
                                     pending: false,
                                     type: AttachmentType.TILRETTELEGGING,
                                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                                     uuid: 'Created',
                                 },
                             ],

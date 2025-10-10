@@ -35,8 +35,9 @@ export const API_URLS = {
     erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
     manglendeVedlegg: `${urlPrefiks}/rest/historikk/vedlegg`,
     tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
-    lastOppFPVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
-    lastOppESVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
+    lastOppFPVedlegg: `${urlPrefiks}/rest/storage/FORELDREPENGER/vedlegg`,
+    lastOppESVedlegg: `${urlPrefiks}/rest/storage/ENGANGSSTONAD/vedlegg`,
+    lastOppSVPVedlegg: `${urlPrefiks}/rest/storage/SVANGERSKAPSPENGER/vedlegg`,
 } as const;
 
 export const søkerInfoOptions = () =>
