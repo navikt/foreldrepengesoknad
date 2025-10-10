@@ -11,19 +11,20 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import {
     Barn,
     BarnType,
+    EksisterendeSak,
     FamiliehendelseType,
     Forelder,
     Periode,
     PeriodeInfoType,
     Periodetype,
-    Saksgrunnlag,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     Dekningsgrad,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    Frilans,
     NæringDto,
     Søkerinfo,
     SøkersituasjonFp,
@@ -77,13 +78,13 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const SØKERSITUASJON = {
     situasjon: 'fødsel',
     rolle: 'mor',
-} as SøkersituasjonFp;
+} satisfies SøkersituasjonFp;
 
 const BARNET = {
     antallBarn: 1,
     fødselsdatoer: ['2024-01-01'],
     type: BarnType.FØDT,
-} as Barn;
+} satisfies Barn;
 
 const ANNEN_FORELDER = {
     kanIkkeOppgis: false,
@@ -92,25 +93,25 @@ const ANNEN_FORELDER = {
     fnr: '1223232',
 };
 
-const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
+const TIDLIGERE_UTENLANDSOPPHOLD = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
         landkode: 'SE',
     },
-];
-const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
+] satisfies UtenlandsoppholdPeriode[];
+const SENERE_UTENLANDSOPPHOLD = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
         landkode: 'SE',
     },
-];
+] satisfies UtenlandsoppholdPeriode[];
 
 const FRILANS = {
     jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
-};
+} satisfies Frilans;
 
 const EGEN_NÆRING = {
     næringstype: 'FISKE',
@@ -130,7 +131,7 @@ const ANDRE_INNTEKTSKILDER = [
         type: AnnenInntektType.SLUTTPAKKE,
         fom: '2023-01-01',
         tom: '2024-01-01',
-    } as SluttpakkeInntekt,
+    } satisfies SluttpakkeInntekt,
 ];
 
 const VEDLEGG = {
@@ -158,18 +159,18 @@ const PERIODE = {
         tom: new Date('2024-10-10'),
     },
     type: Periodetype.Info,
-    konto: StønadskontoType.Fedrekvote,
+    // konto: StønadskontoType.Fedrekvote,
     forelder: Forelder.mor,
     infotype: PeriodeInfoType.utsettelseAnnenPart,
     overskrives: true,
     visPeriodeIPlan: false,
-} as Periode;
+} satisfies Periode;
 
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
     perioderSomSkalSendesInn: [PERIODE],
     endringstidspunkt: new Date('2024-01-02'),
-} as UttaksplanMetaData;
+} satisfies UttaksplanMetaData;
 
 const EXPECTED_SØKER_INFO = {
     fnr: DEFAULT_SØKER_INFO.søker.fnr,
@@ -227,10 +228,11 @@ const getWrapper =
                                     erBarnetFødt: true,
                                     familiehendelseDato: '2024-01-01',
                                     familiehendelseType: FamiliehendelseType.FØDSEL,
-                                } as Saksgrunnlag,
+                                    ønskerJustertUttakVedFødsel: undefined,
+                                },
                                 saksperioder: [],
                                 uttaksplan: [],
-                            },
+                            } satisfies EksisterendeSak,
                         }}
                     >
                         {children}
