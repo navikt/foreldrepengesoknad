@@ -21,6 +21,7 @@ import {
     AvtaltFerieDto,
     FRILANS_ID,
     NæringDto,
+    SvangerskapspengesøknadDto,
     Søkerinfo,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -225,7 +226,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -233,7 +234,17 @@ describe('useSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: 'Erlinga-Mask Oravakangas',
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: ferie[ARBEIDSGIVER_ID].feriePerioder,
@@ -250,6 +261,7 @@ describe('useSendSøknad', () => {
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 50,
                                     type: 'delvis',
@@ -267,12 +279,14 @@ describe('useSendSøknad', () => {
                             tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-09',
                                     stillingsprosent: 0,
                                     type: 'ingen',
                                 },
                                 {
                                     fom: '2024-10-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 80,
                                     type: 'hel',
@@ -304,7 +318,7 @@ describe('useSendSøknad', () => {
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });
@@ -344,7 +358,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -352,7 +366,17 @@ describe('useSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: 'Erlinga-Mask Oravakangas',
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
@@ -362,6 +386,7 @@ describe('useSendSøknad', () => {
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
+                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: EGEN_NÆRING_ID,
                                 type: 'selvstendig',
                             },
@@ -369,6 +394,7 @@ describe('useSendSøknad', () => {
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 50,
                                     type: 'delvis',
@@ -379,6 +405,7 @@ describe('useSendSøknad', () => {
                         },
                         {
                             arbeidsforhold: {
+                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: FRILANS_ID,
                                 type: 'frilanser',
                             },
@@ -386,6 +413,7 @@ describe('useSendSøknad', () => {
                             tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 0,
                                     type: 'ingen',
@@ -400,6 +428,7 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: EGEN_NÆRING_ID,
                                     type: 'selvstendig',
                                 },
@@ -410,6 +439,7 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: FRILANS_ID,
                                     type: 'frilanser',
                                 },
@@ -417,7 +447,7 @@ describe('useSendSøknad', () => {
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });
@@ -469,7 +499,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -477,7 +507,17 @@ describe('useSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: 'Erlinga-Mask Oravakangas',
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
@@ -494,24 +534,28 @@ describe('useSendSøknad', () => {
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-06-01',
                                     stillingsprosent: 50,
                                     type: 'delvis',
                                 },
                                 {
                                     fom: '2024-06-02',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-08-01',
                                     stillingsprosent: 0,
                                     type: 'ingen',
                                 },
                                 {
                                     fom: '2024-08-02',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-09-25',
                                     stillingsprosent: 70,
                                     type: 'delvis',
                                 },
                                 {
                                     fom: '2024-09-26',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 100,
                                     type: 'hel',
@@ -533,7 +577,7 @@ describe('useSendSøknad', () => {
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });

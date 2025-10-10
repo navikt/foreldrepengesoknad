@@ -97,7 +97,11 @@ export const SkalIkkeFeileOpplasting: Story = {
             handlers: [
                 http.post(
                     API_URLS.sendVedlegg,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                            headers: { location: 'test.com' },
+                        }),
                 ),
             ],
         },
