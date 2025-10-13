@@ -143,7 +143,7 @@ export const getTekst = (
     }
 
     if (erPrematuruker) {
-        return 'Pleiepenger';
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
     }
 
     if (erHull) {
