@@ -3,12 +3,12 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { Forelder, StønadskontoType, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { UttakArbeidType } from '@navikt/fp-types';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 
 import * as stories from './Uttaksplan.stories';
 
-const { Default, MorOgMedmor } = composeStories(stories);
+const { Default, MorOgMedmor, MorOgFarMedFerieopphold } = composeStories(stories);
 
 describe('Uttaksplan', () => {
     it('skal legge til ny periode - ferie', async () => {
@@ -224,6 +224,35 @@ describe('Uttaksplan', () => {
                 tom: '2026-03-26',
             },
         ]);
+    });
+
+    it('Skal endre datoer for ferieperiode', async () => {
+        const handleOnPlanChange = vi.fn();
+
+        render(<MorOgFarMedFerieopphold handleOnPlanChange={handleOnPlanChange} />);
+        expect(await screen.findByText('12. Dec - 15. Dec')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('12. Dec - 15. Dec'));
+        const datoElement = screen.getByText('12. Dec - 15. Dec');
+        const periodeContainer = datoElement.closest('.aksel-stack') as HTMLElement;
+        const endreKnapp = within(periodeContainer).getByRole('button', { name: /endre/i });
+
+        await userEvent.click(endreKnapp);
+        expect(await screen.findByText('Endre periode')).toBeInTheDocument();
+
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, dayjs('2025-12-15').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, dayjs('2025-12-17').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(await screen.findByText('15. Dec - 17. Dec')).toBeInTheDocument();
+        expect(screen.queryByText('12. Dec - 15. Dec')).not.toBeInTheDocument();
     });
 
     it('Skal slette periode', async () => {

@@ -10,7 +10,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
@@ -123,23 +123,20 @@ export const EndrePeriodePanelStep = ({
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            handleAddPeriode({
-                id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
+            const ferieperiode = {
+                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: Forelder.mor,
                 utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
-            });
-        } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-            handleAddPeriode({
-                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                readOnly: false,
-                fom: fomValue,
-                tom: tomValue,
-                forelder: Forelder.mor,
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-            });
+            };
+
+            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+                handleUpdatePeriode(ferieperiode);
+            } else {
+                handleAddPeriode(ferieperiode);
+            }
         } else {
             const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
 
@@ -154,7 +151,6 @@ export const EndrePeriodePanelStep = ({
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }
-
         closePanel();
     };
 
