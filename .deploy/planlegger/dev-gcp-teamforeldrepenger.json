@@ -2,6 +2,16 @@
     "app": "planlegger",
     "autentisering": false,
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/planlegger",
+    "minReplicas": "1",
+    "maxReplicas": "1",
+    "limits": {
+        "cpu": "100m",
+        "mem": "256Mi"
+    },
+    "requests": {
+        "cpu": "15m",
+        "mem": "160Mi"
+    },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "dev"
