@@ -3,8 +3,8 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { Forelder, MorsAktivitet, StønadskontoType } from '@navikt/fp-constants';
+import { OverføringÅrsakType, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -17,7 +17,7 @@ const meta = {
     decorators: [withQueryClient],
     render: (props) => {
         return (
-            <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/1`]}>
                 <Routes>
                     <Route element={<DinPlan {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
                 </Routes>
@@ -61,7 +61,7 @@ export const FarSøker: Story = {
                         foreldrepenger: [
                             {
                                 oppdatertTidspunkt: '2024-02-28T21:19:08.911',
-                                saksnummer: '352011079',
+                                saksnummer: '1',
                                 sakAvsluttet: false,
                                 kanSøkeOmEndring: true,
                                 sakTilhørerMor: false,
@@ -155,6 +155,162 @@ export const FarSøker: Story = {
                 tom: '2025-04-22',
                 kontoType: StønadskontoType.Fellesperiode,
                 forelder: Forelder.mor,
+            },
+        ],
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Espen',
+        },
+    },
+};
+
+export const MorOgFarOgFarGraderer: Story = {
+    name: 'Mor og far søker - far graderer',
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                    HttpResponse.json({
+                        foreldrepenger: [
+                            {
+                                saksnummer: '1',
+                                sakAvsluttet: false,
+                                kanSøkeOmEndring: true,
+                                sakTilhørerMor: true,
+                                gjelderAdopsjon: false,
+                                morUføretrygd: false,
+                                harAnnenForelderTilsvarendeRettEØS: false,
+                                ønskerJustertUttakVedFødsel: false,
+                                rettighetType: 'BEGGE_RETT',
+                                annenPart: {
+                                    fnr: '29459848930',
+                                },
+                                familiehendelse: {
+                                    fødselsdato: '2025-03-25',
+                                    termindato: '2025-03-25',
+                                    antallBarn: 1,
+                                },
+                                gjeldendeVedtak: {
+                                    perioder: [
+                                        {
+                                            fom: '2025-03-04',
+                                            tom: '2025-03-24',
+                                            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                                            resultat: {
+                                                innvilget: true,
+                                                trekkerMinsterett: true,
+                                                trekkerDager: true,
+                                                årsak: 'ANNET',
+                                            },
+                                            flerbarnsdager: false,
+                                            forelder: 'MOR',
+                                        },
+                                        {
+                                            fom: '2025-03-25',
+                                            tom: '2025-07-07',
+                                            kontoType: 'MØDREKVOTE',
+                                            resultat: {
+                                                innvilget: true,
+                                                trekkerMinsterett: true,
+                                                trekkerDager: true,
+                                                årsak: 'ANNET',
+                                            },
+                                            flerbarnsdager: false,
+                                            forelder: 'MOR',
+                                        },
+                                        {
+                                            fom: '2025-07-08',
+                                            tom: '2025-09-01',
+                                            kontoType: 'FELLESPERIODE',
+                                            resultat: {
+                                                innvilget: true,
+                                                trekkerMinsterett: true,
+                                                trekkerDager: true,
+                                                årsak: 'ANNET',
+                                            },
+                                            flerbarnsdager: false,
+                                            forelder: 'MOR',
+                                        },
+                                    ],
+                                    perioderAnnenpartEøs: [],
+                                },
+                                barn: [
+                                    {
+                                        fnr: '22442356029',
+                                    },
+                                ],
+                                dekningsgrad: 'HUNDRE',
+                                oppdatertTidspunkt: '2025-09-16T14:09:43.208',
+                                forelder: 'MOR',
+                            },
+                        ],
+                        engangsstønad: [],
+                        svangerskapspenger: [],
+                    }),
+                ),
+            ],
+        },
+    },
+    args: {
+        annenPartsPerioder: [
+            {
+                fom: '2025-09-23',
+                tom: '2025-11-17',
+                kontoType: StønadskontoType.Fellesperiode,
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: false,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+                gradering: {
+                    arbeidstidprosent: 50,
+                    aktivitet: {
+                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                    },
+                },
+                morsAktivitet: MorsAktivitet.Arbeid,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-11-18',
+                tom: '2026-01-12',
+                kontoType: StønadskontoType.Fellesperiode,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+                gradering: {
+                    arbeidstidprosent: 50,
+                    aktivitet: {
+                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                    },
+                },
+                morsAktivitet: MorsAktivitet.Arbeid,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2026-03-17',
+                tom: '2026-10-12',
+                kontoType: StønadskontoType.Fedrekvote,
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: PeriodeResultatÅrsak.ANNET,
+                },
+                gradering: {
+                    arbeidstidprosent: 50,
+                    aktivitet: {
+                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                    },
+                },
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
             },
         ],
         navnPåForeldre: {

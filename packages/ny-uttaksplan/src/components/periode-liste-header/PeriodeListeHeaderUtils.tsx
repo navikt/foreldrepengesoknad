@@ -13,7 +13,7 @@ import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { Familiesituasjon, PeriodeResultatÅrsak, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
@@ -103,6 +103,8 @@ export const getTekst = (
 
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
     const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+    const erPrematuruker =
+        permisjonsperiode.perioder[0].resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER;
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
@@ -140,6 +142,10 @@ export const getTekst = (
         }
     }
 
+    if (erPrematuruker) {
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
+    }
+
     if (erHull) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.dagerDuKanTape' });
     }
@@ -168,6 +174,8 @@ export const getIkon = (
     const { erUtsettelse, erHull } = permisjonsperiode;
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+    const isPrematuruker =
+        permisjonsperiode.perioder[0].resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER;
     const erPeriodeUtenUttak =
         permisjonsperiode.forelder === undefined &&
         !!permisjonsperiode.samtidigUttak === false &&
@@ -179,7 +187,7 @@ export const getIkon = (
         return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erHull) {
+    if (erHull || isPrematuruker) {
         return <InformationSquareFillIcon className={ikonfarge} width={24} height={24} />;
     }
 

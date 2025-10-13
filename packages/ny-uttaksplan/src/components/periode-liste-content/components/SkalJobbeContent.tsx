@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HStack } from '@navikt/ds-react';
 
 import { Permisjonsperiode } from '../../../types/Permisjonsperiode';
-import { isHull, isOppholdsperiode, isUttaksperiode } from '../../../utils/periodeUtils';
+import { isHull, isOppholdsperiode, isPrematuruker, isUttaksperiode } from '../../../utils/periodeUtils';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
@@ -16,11 +16,20 @@ export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
     const samtidigUttak = !!permisjonsperiode.samtidigUttak;
     const erOpphold = permisjonsperiode.perioder.some(isOppholdsperiode);
     const erHull = permisjonsperiode.perioder.some(isHull);
+    const erPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
     const skalJobbeIPermisjonsperioden = permisjonsperiode.perioder.some(
         (p) => isUttaksperiode(p) && p.gradering !== undefined,
     );
 
-    if (erUtsettelse || skalJobbeIPermisjonsperioden || erOpphold || erPeriodeUtenUttak || samtidigUttak || erHull) {
+    if (
+        erUtsettelse ||
+        erPrematuruker ||
+        skalJobbeIPermisjonsperioden ||
+        erOpphold ||
+        erPeriodeUtenUttak ||
+        samtidigUttak ||
+        erHull
+    ) {
         return null;
     }
 
