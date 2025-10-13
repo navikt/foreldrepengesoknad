@@ -13,9 +13,6 @@ export const getSaveAttachmentFetch = (sti: string) => async (attachment: Attach
     });
 
     return {
-        headers: {
-            location: response.headers.get('Location'),
-        },
         data: await response.json(),
     };
 };
