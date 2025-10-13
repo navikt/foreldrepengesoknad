@@ -53,7 +53,7 @@ RUN pnpm exec turbo test
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
 WORKDIR /usr/src/app/apps/${APP}
-RUN pnpm exec turbo build && mv /usr/src/app/apps/${APP}/dist /public
+RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # App Distroless
