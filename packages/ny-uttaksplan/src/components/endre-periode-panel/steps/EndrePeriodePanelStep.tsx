@@ -10,7 +10,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
-import { Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
@@ -115,6 +115,14 @@ export const EndrePeriodePanelStep = ({
             return handleAddPeriode;
         }
 
+        if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_FERIE) {
+            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+                return handleUpdatePeriode;
+            }
+
+            return handleAddPeriode;
+        }
+
         return handleAddPeriode;
     };
 
@@ -123,20 +131,25 @@ export const EndrePeriodePanelStep = ({
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            const ferieperiode = {
+            const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
+
+            handleFunc({
                 id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: Forelder.mor,
                 utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
-            };
-
-            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
-                handleUpdatePeriode(ferieperiode);
-            } else {
-                handleAddPeriode(ferieperiode);
-            }
+            });
+        } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+            handleAddPeriode({
+                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
+                readOnly: false,
+                fom: fomValue,
+                tom: tomValue,
+                forelder: Forelder.mor,
+                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+            });
         } else {
             const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
 
