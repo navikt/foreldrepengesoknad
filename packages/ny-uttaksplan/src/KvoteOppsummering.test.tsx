@@ -15,6 +15,7 @@ const {
     BeggeRettMorForMangeDagerBrukt,
     BeggeRettMorOgMedmorMorIngenDagerBrukt,
     BeggeRettMorIngenDagerBrukt,
+    MorHarPrematuruker,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
@@ -109,6 +110,21 @@ describe('<KvoteOppsummering >', () => {
         const expandButton = screen.getByRole('button', { expanded: false });
         await userEvent.click(expandButton);
         expect(screen.getAllByText('Fedrekvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+    });
+
+    it('<MorHarPrematuruker - 8 uker og 3 dager av fellesperioden skal være brukt opp av pleiepenger >', async () => {
+        render(<MorHarPrematuruker />);
+        expect(screen.getByText('Det er 43 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+        expect(screen.getAllByText('25 uker og 3 dager for å dele, fellesperiode')).toHaveLength(1);
+        expect(
+            screen.getAllByText(
+                '8 uker og 3 dager er lagt til for Helga, 0 dager er lagt til for Espen og 17 uker gjenstår',
+            ),
+        ).toHaveLength(1);
         expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
     });
 });
