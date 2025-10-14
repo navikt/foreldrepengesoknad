@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './Kvittering.stories';
 
-const { MedSaksnummer } = composeStories(stories);
+const { Endelig } = composeStories(stories);
 
 describe('<MedSaksnummer>', () => {
     it('TODO', async () => {
-        render(<MedSaksnummer />);
+        render(<Endelig />);
 
         await userEvent.click(screen.getByText('Se saken din'));
 
