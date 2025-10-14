@@ -9,18 +9,6 @@
     padding: 1rem 2rem;
 }
 
-.lenkepanel {
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
-}
-
-.panel {
-    text-decoration: none;
-    width: 100%;
-    padding: 12px;
-}
-
 @media (max-width: 768px) {
     .button {
         width: 100%;
