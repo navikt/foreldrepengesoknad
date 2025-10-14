@@ -1,3 +1,5 @@
+import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+
 import { BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -37,14 +39,19 @@ const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Status 
 const SakenProsesseres = () => {
     return (
         <VStack gap="2">
-            <Heading size="large" level="2">
+            <CheckmarkCircleFillIcon
+                className="text-ax-text-success-decoration self-center"
+                aria-hidden
+                fontSize="2.5rem"
+            />
+            <Heading size="large" level="2" align="center" spacing>
                 Søknaden din er mottatt
             </Heading>
-            <BodyShort>
-                Vi har mottatt søknaden din og alt er i orden. Vi henter nå status på saken din. Dette tar som regel
-                under &ldquo;ett minutt&ldquo;. Du trenger ikke gjøre noe – siden oppdateres automatisk.
+            <BodyShort spacing>
+                Vi henter nå status på saken din. Dette tar som regel under &ldquo;ett minutt&ldquo;. Du trenger ikke
+                gjøre noe – siden oppdateres automatisk.
             </BodyShort>
-            <BodyShort>
+            <BodyShort spacing>
                 Henter status på saken … <Loader />
             </BodyShort>
         </VStack>
@@ -57,11 +64,22 @@ const GåTilMinSide = () => {
 
     return (
         <VStack gap="2">
-            <Heading size="large" level="2">
+            <CheckmarkCircleFillIcon
+                className="text-ax-text-success-decoration self-center"
+                aria-hidden
+                fontSize="2.5rem"
+            />
+            <Heading size="large" level="2" align="center" spacing>
                 Søknaden din er mottatt
             </Heading>
             <BodyShort>Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.</BodyShort>
-            <Button as="a" href={url} className="w-fit self-center">
+            <Button
+                as="a"
+                href={url}
+                className="mt-8 w-fit self-center"
+                iconPosition="right"
+                icon={<ChevronRightIcon />}
+            >
                 Se søknaden din på Min side
             </Button>
         </VStack>
@@ -80,14 +98,23 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
 
     return (
         <VStack gap="2">
-            <Heading size="large" level="2">
+            <CheckmarkCircleFillIcon
+                className="text-ax-text-success-decoration self-center"
+                aria-hidden
+                fontSize="2.5rem"
+            />
+            <Heading size="large" level="2" align="center" spacing>
                 Søknaden din er mottatt
             </Heading>
-            <BodyShort>
-                Vi har mottatt søknaden din og alt er i orden. Saken er registrert hos Nav og har fått et saksnummer. Du
-                kan følge behandlingen og se dokumentene dine på Min side
-            </BodyShort>
-            <Button as="a" href={url} className="w-fit self-center">
+            <BodyShort spacing>Saken er registrert hos Nav og har fått et saksnummer.</BodyShort>
+            <BodyShort spacing>Du kan følge behandlingen og se dokumentene dine på Min side</BodyShort>
+            <Button
+                as="a"
+                href={url}
+                className="mt-4 w-fit self-center"
+                iconPosition="right"
+                icon={<ChevronRightIcon />}
+            >
                 Se søknaden din på Min side
             </Button>
         </VStack>
