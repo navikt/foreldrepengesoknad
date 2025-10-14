@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, BabyWrappedIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
@@ -7,7 +7,7 @@ import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
@@ -151,50 +151,30 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                     <Heading level="2" size="medium">
                         <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
-                    <Link
-                        inlineText
-                        href={links.hvorMye}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.lenkepanel}
-                    >
-                        <Box.New
-                            padding="4"
-                            background="default"
-                            borderRadius="xlarge"
-                            shadow="dialog"
-                            className={styles.panel}
-                        >
-                            <HStack gap="5" align="center">
+                    <LinkCard size="small">
+                        <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                            <LinkCard.Icon>
                                 <WalletIcon height={43} width={43} />
-                                <Heading level="3" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
-                                </Heading>
-                            </HStack>
-                        </Box.New>
-                    </Link>
-                    <Link
-                        inlineText
-                        href={links.veiviser}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.lenkepanel}
-                    >
-                        <Box.New
-                            padding="4"
-                            background="default"
-                            borderRadius="xlarge"
-                            shadow="dialog"
-                            className={styles.panel}
-                        >
-                            <HStack gap="space-20" align="center">
-                                <BabyWrappedIcon height={43} width={43} />
-                                <Heading level="3" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.VeiviserFpEllerEs" />
-                                </Heading>
-                            </HStack>
-                        </Box.New>
-                    </Link>
+                            </LinkCard.Icon>
+                        </Box>
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={links.hvorMye} target="_blank" rel="noreferrer">
+                                <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                    </LinkCard>
+                    <LinkCard size="small">
+                        <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                            <LinkCard.Icon>
+                                <WalletIcon height={43} width={43} />
+                            </LinkCard.Icon>
+                        </Box>
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={links.veiviser} target="_blank" rel="noreferrer">
+                                <FormattedMessage id="OppsummeringSteg.VeiviserFpEllerEs" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                    </LinkCard>
                 </VStack>
             </div>
         </>

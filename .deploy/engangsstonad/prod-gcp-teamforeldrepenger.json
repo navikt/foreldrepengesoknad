@@ -2,6 +2,16 @@
     "app": "engangsstonad",
     "autentisering": true,
     "ingress": "https://www.nav.no/engangsstonad/soknad",
+    "minReplicas": "2",
+    "maxReplicas": "2",
+    "limits": {
+        "cpu": "200m",
+        "mem": "256Mi"
+    },
+    "requests": {
+        "cpu": "20m",
+        "mem": "160Mi"
+    },
     "redirect": {
         "host": "engangsstonad.nav.no",
         "ingressClassName": "nais-ingress-external"

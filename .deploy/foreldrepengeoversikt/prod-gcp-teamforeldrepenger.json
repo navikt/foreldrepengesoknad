@@ -2,6 +2,16 @@
     "app": "foreldrepengeoversikt",
     "autentisering": true,
     "ingress": "https://www.nav.no/foreldrepenger/oversikt",
+    "minReplicas": "2",
+    "maxReplicas": "2",
+    "limits": {
+        "cpu": "200m",
+        "mem": "360Mi"
+    },
+    "requests": {
+        "cpu": "50m",
+        "mem": "230Mi"
+    },
     "redirect": {
         "host": "foreldrepenger.nav.no",
         "ingressClassName": "nais-ingress-external"

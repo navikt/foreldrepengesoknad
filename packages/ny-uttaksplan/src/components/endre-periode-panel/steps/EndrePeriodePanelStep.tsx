@@ -115,6 +115,14 @@ export const EndrePeriodePanelStep = ({
             return handleAddPeriode;
         }
 
+        if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_FERIE) {
+            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+                return handleUpdatePeriode;
+            }
+
+            return handleAddPeriode;
+        }
+
         return handleAddPeriode;
     };
 
@@ -123,8 +131,10 @@ export const EndrePeriodePanelStep = ({
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            handleAddPeriode({
-                id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
+            const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
+
+            handleFunc({
+                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
@@ -154,7 +164,6 @@ export const EndrePeriodePanelStep = ({
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
         }
-
         closePanel();
     };
 

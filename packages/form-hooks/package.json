@@ -19,8 +19,8 @@
     },
     "dependencies": {
         "@hookform/error-message": "2.0.1",
-        "@navikt/ds-css": "7.31.0",
-        "@navikt/ds-react": "7.31.0",
+        "@navikt/ds-css": "7.32.1",
+        "@navikt/ds-react": "7.32.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
@@ -35,7 +35,7 @@
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.6.6",
-        "@navikt/ds-tailwind": "7.31.0",
+        "@navikt/ds-tailwind": "7.32.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",

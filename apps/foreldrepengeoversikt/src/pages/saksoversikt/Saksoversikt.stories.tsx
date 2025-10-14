@@ -60,7 +60,7 @@ export const Foreldrepenger: Story = {
     },
     args: {
         søkerinfo: søkerinfo,
-        saksnummer: '352011079',
+        saksnummer: '1',
     },
 };
 

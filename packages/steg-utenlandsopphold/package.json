@@ -18,9 +18,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "7.31.0",
-        "@navikt/ds-css": "7.31.0",
-        "@navikt/ds-react": "7.31.0",
+        "@navikt/aksel-icons": "7.32.1",
+        "@navikt/ds-css": "7.32.1",
+        "@navikt/ds-react": "7.32.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -36,7 +36,7 @@
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.6.6",
-        "@navikt/ds-tailwind": "7.31.0",
+        "@navikt/ds-tailwind": "7.32.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",

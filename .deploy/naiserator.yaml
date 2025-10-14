@@ -10,10 +10,6 @@ metadata:
 spec:
   image: {{image}}
   port: 8080
-  replicas:
-      min: 2
-      max: 2
-      disableAutoScaling: true
   liveness:
       path: /internal/health/isAlive
       initialDelay: 10
@@ -29,13 +25,17 @@ spec:
       runtime: nodejs
   ingresses:
     - {{ingress}}
+  replicas:
+    min: {{minReplicas}}
+    max: {{maxReplicas}}
+    disableAutoScaling: true
   resources:
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: "{{limits.cpu}}"
+      memory: "{{limits.mem}}"
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: "{{requests.cpu}}"
+      memory: "{{requests.mem}}"
   {{#if autentisering}}
   tokenx:
     enabled: true
