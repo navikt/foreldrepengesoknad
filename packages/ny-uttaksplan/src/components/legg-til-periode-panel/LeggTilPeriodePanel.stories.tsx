@@ -17,6 +17,7 @@ const meta = {
     parameters: {
         context: {
             [UttaksplanContextDataType.UTTAKSPLAN]: [],
+            [UttaksplanContextDataType.ALENE_OM_OMSORG]: false,
             [UttaksplanContextDataType.VALGT_STØNADSKONTO]: {
                 kontoer: [
                     {
