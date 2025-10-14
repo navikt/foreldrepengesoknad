@@ -61,7 +61,7 @@ const GåTilMinSide = () => {
                 Søknaden din er mottatt
             </Heading>
             <BodyShort>Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.</BodyShort>
-            <Button as="a" href={url}>
+            <Button as="a" href={url} className="w-fit self-center">
                 Se søknaden din på Min side
             </Button>
         </VStack>
@@ -87,7 +87,7 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
                 Vi har mottatt søknaden din og alt er i orden. Saken er registrert hos Nav og har fått et saksnummer. Du
                 kan følge behandlingen og se dokumentene dine på Min side
             </BodyShort>
-            <Button as="a" href={url}>
+            <Button as="a" href={url} className="w-fit self-center">
                 Se søknaden din på Min side
             </Button>
         </VStack>
