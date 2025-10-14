@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { statusOptions } from 'app-data/queries';
+import { statusOptions } from 'appData/queries';
 import { FormattedMessage } from 'react-intl';
 
 import { Kvittering } from '@navikt/fp-steg-kvittering';
