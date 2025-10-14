@@ -85,6 +85,9 @@
     "uttaksplan.periodeListeContent.morsAktivitet.Utdanning": "Mother is studying",
     "uttaksplan.periodeListeContent.morsAktivitet.UtenAktivitetsKrav": "Mother has no activity requirements during this period",
     "uttaksplan.periodeListeContent.morsAktivitet.Uføre": "Mother is disabled",
+    "uttaksplan.periodeListeContent.prematuruker1": "This period has been changed from parental benefits to attendance allowance.",
+    "uttaksplan.periodeListeContent.prematuruker2": "The change does not affect the amount of time you have been given - only which benefit applies in this period.",
+    "uttaksplan.periodeListeContent.prematuruker3": "This period cannot be changed or deleted.",
     "uttaksplan.periodeListeHeader.adopsjon": "Child adoption",
     "uttaksplan.periodeListeHeader.fødsel": "Birth",
     "uttaksplan.periodeListeHeader.termin": "Term",
@@ -99,6 +102,8 @@
     "uttaksplan.periodeListeHeader.dagerDuKanTape": "Days you may lose",
     "uttaksplan.periodeListeHeader.periodeUtenUttak": "No parental benefits",
     "uttaksplan.periodeListeHeader.samtidigUttak": "You have parental benefits",
+    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit",
+    "uttaksplan.periodeListeHeader.pleiepenger": "Attendance allowance",
     "uttaksplan.slettPeriode.tittel": "Delete period",
     "uttaksplan.slettPeriode.hvilkePerioder": "Which periods would you like to delete?",
     "uttaksplan.ingenPerioder.tittel": "All periods have been removed from the plan.",
@@ -168,6 +173,5 @@
     "TidsperiodeSpørsmål.tom": "To date",
     "KontotypeSpørsmål.velgKontotype": "Select account type",
     "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
-    "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?",
-    "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefit"
+    "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?"
 }
