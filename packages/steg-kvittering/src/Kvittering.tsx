@@ -1,55 +1,95 @@
-import { FormattedMessage } from 'react-intl';
-
-import { BodyShort, Button, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 //TODO: autogenerer
 type Status = { status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number };
 
-export const Kvittering = ({ forsendelseStatus }: { forsendelseStatus: Status }) => {
+export const Kvittering = ({
+    forsendelseStatus,
+    pageTitle,
+}: {
+    pageTitle: React.ReactNode;
+    forsendelseStatus?: Status;
+}) => {
     return (
-        <SkjemaRotLayout pageTitle={<FormattedMessage id="Søknad.Pageheading" />}>
+        <SkjemaRotLayout pageTitle={pageTitle}>
             <VStack gap="4">
-                <BodyShort>Her skriver vi noe lurt</BodyShort>
-                Vi poller på saken. Status er: {forsendelseStatus?.status}
-                <GåTilInnsynKnapp forsendelseStatus={forsendelseStatus} />
-                <GåTilMinSideKnapp forsendelseStatus={forsendelseStatus} />
+                <KvitteringsInnhold forsendelseStatus={forsendelseStatus} />
             </VStack>
         </SkjemaRotLayout>
     );
 };
 
-const GåTilMinSideKnapp = ({ forsendelseStatus }: { forsendelseStatus?: Status }) => {
-    if (forsendelseStatus?.status !== 'MIDLERTIDIG') {
-        return null;
-    }
+const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Status }) => {
+    const status = forsendelseStatus?.status ?? 'PENDING';
 
+    switch (status) {
+        case 'PENDING':
+            return <SakenProsesseres />;
+        case 'MIDLERTIDIG':
+            return <GåTilMinSide />;
+        case 'ENDELIG':
+            return <GåTilInnsyn saksnummer={forsendelseStatus?.saksnummer} />;
+    }
+};
+
+const SakenProsesseres = () => {
+    return (
+        <VStack gap="2">
+            <Heading size="large" level="2">
+                Søknaden din er mottatt
+            </Heading>
+            <BodyShort>
+                Vi har mottatt søknaden din og alt er i orden. Vi henter nå status på saken din. Dette tar som regel
+                under &ldquo;ett minutt&ldquo;. Du trenger ikke gjøre noe – siden oppdateres automatisk.
+            </BodyShort>
+            <BodyShort>
+                Henter status på saken … <Loader />
+            </BodyShort>
+        </VStack>
+    );
+};
+
+const GåTilMinSide = () => {
     const erIDev = window.location.pathname.includes('.dev.nav.');
     const url = erIDev ? 'https://www.ansatt.dev.nav.no/minside' : 'https://www.nav.no/minside';
 
     return (
-        <Button as="a" href={url}>
-            Se saken din
-        </Button>
+        <VStack gap="2">
+            <Heading size="large" level="2">
+                Søknaden din er mottatt
+            </Heading>
+            <BodyShort>Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.</BodyShort>
+            <Button as="a" href={url}>
+                Se søknaden din på Min side
+            </Button>
+        </VStack>
     );
 };
 
-const GåTilInnsynKnapp = ({ forsendelseStatus }: { forsendelseStatus?: Status }) => {
-    if (!forsendelseStatus?.saksnummer) {
-        return null;
+const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
+    if (saksnummer === undefined) {
+        throw new Error('Udefinert saksnummer for status ENDELIG');
     }
 
     const erIDev = window.location.pathname.includes('.dev.nav.');
     const url = erIDev
-        ? 'https://www.intern.dev.nav.no/foreldrepenger/oversikt'
-        : `https://www.nav.no/foreldrepenger/oversikt`;
-
-    const direkteTilSak = forsendelseStatus.saksnummer === undefined ? '' : `sak/${forsendelseStatus.saksnummer}`;
+        ? `https://www.intern.dev.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`
+        : `https://www.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`;
 
     return (
-        <Button as="a" href={`${url}/${direkteTilSak}`}>
-            Se saken din
-        </Button>
+        <VStack gap="2">
+            <Heading size="large" level="2">
+                Søknaden din er mottatt
+            </Heading>
+            <BodyShort>
+                Vi har mottatt søknaden din og alt er i orden. Saken er registrert hos Nav og har fått et saksnummer. Du
+                kan følge behandlingen og se dokumentene dine på Min side
+            </BodyShort>
+            <Button as="a" href={url}>
+                Se søknaden din på Min side
+            </Button>
+        </VStack>
     );
 };

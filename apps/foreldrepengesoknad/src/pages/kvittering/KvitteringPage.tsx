@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { statusOptions } from 'api/queries';
+import { FormattedMessage } from 'react-intl';
 
 import { Kvittering } from '@navikt/fp-steg-kvittering';
 
@@ -9,5 +10,7 @@ export const KvitteringPage = () => {
         refetchInterval: (query) => (query.state.data?.status === 'PENDING' ? 1000 : false),
     }).data;
 
-    return <Kvittering forsendelseStatus={forsendelseStatus} />;
+    return (
+        <Kvittering forsendelseStatus={forsendelseStatus} pageTitle={<FormattedMessage id="søknad.pageheading" />} />
+    );
 };

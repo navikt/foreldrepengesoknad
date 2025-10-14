@@ -9,20 +9,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const MedSaksnummer: Story = {
-    args: {
-        forsendelseStatus: {
-            status: 'ENDELIG',
-            saksnummer: 1,
-        },
-    },
-};
-
-export const Pending: Story = {
+export const VenterPåSvar: Story = {
     args: {
         forsendelseStatus: {
             status: 'PENDING',
         },
+        pageTitle: 'Foreldrepengesøknad',
     },
 };
 
@@ -31,13 +23,15 @@ export const Midlertidig: Story = {
         forsendelseStatus: {
             status: 'MIDLERTIDIG',
         },
+        pageTitle: 'Foreldrepengesøknad',
     },
 };
-
-export const EndeligUtenSaksnummer: Story = {
+export const Endelig: Story = {
     args: {
         forsendelseStatus: {
             status: 'ENDELIG',
+            saksnummer: 1,
         },
+        pageTitle: 'Foreldrepengesøknad',
     },
 };

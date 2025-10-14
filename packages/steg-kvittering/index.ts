@@ -8,4 +8,4 @@ export const kvitteringMessages = {
     en: enMessages,
 };
 
-export { Kvittering } from 'src/Kvittering';
+export { Kvittering } from './src/Kvittering';
