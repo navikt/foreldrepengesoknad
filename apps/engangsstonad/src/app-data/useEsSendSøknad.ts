@@ -68,7 +68,7 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
                 fnr: personinfo.fnr,
                 navn: [personinfo.fornavn, personinfo.mellomnavn, personinfo.etternavn].filter((a) => !!a).join(' '),
             },
-            språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform, //TODO: sketchy
+            språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(omBarnet, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:

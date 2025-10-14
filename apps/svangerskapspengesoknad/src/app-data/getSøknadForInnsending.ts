@@ -111,7 +111,7 @@ export const getSøknadForInnsending = (
                 tom: af.tom,
             })),
         },
-        språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform, // TODO
+        språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
         barn,
         frilans,
         egenNæring,

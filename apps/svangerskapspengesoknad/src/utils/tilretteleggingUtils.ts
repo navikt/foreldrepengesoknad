@@ -61,7 +61,10 @@ const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjon, p2: PeriodeMedV
     return 1;
 };
 
-// TODO
+/**
+ * Type som tillater å sende med mer data enn backend krever. Dette gjør vi for å gjøre oppsummeringsvisningen enklere.
+ * Backend bryr seg blandt annet ikke om "tom" og stillingsprosent er bare relevant for "delvis"-type.
+ */
 export type UtvidetTilrettelegging = {
     fom: string;
     stillingsprosent: number;
@@ -82,7 +85,7 @@ export const mapEnTilretteleggingPeriode = (
 
     const stillingsprosent =
         tilrettelegging.type === 'delvis'
-            ? getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent)! //TODO
+            ? (getFloatFromString(tilrettelegging.enPeriodeMedTilretteleggingStillingsprosent) ?? 0)
             : 0;
 
     const fom = notEmpty(tilrettelegging.enPeriodeMedTilretteleggingFom);

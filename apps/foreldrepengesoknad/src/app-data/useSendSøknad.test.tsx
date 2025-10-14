@@ -249,7 +249,6 @@ describe('useFpSendSøknad', () => {
         vi.restoreAllMocks();
     });
 
-    // TODO: sjekk navigering
     it('skal sende inn korrekt søknad', async () => {
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
