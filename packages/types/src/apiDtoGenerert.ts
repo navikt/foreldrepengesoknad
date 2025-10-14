@@ -406,7 +406,7 @@ export type FrilanserDto = ArbeidsforholdDto & {
 };
 
 export type Hel = TilretteleggingDto & {
-    type: 'hel'; //TODO: verify
+    type: 'hel';
 } & {
     fom: string;
 };

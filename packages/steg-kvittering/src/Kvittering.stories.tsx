@@ -18,7 +18,7 @@ export const VenterPåSvar: Story = {
     },
 };
 
-export const Midlertidig: Story = {
+export const KreverGoSysHandlingGåTilMinSide: Story = {
     args: {
         forsendelseStatus: {
             status: 'MIDLERTIDIG',
@@ -26,7 +26,7 @@ export const Midlertidig: Story = {
         pageTitle: 'Foreldrepengesøknad',
     },
 };
-export const Endelig: Story = {
+export const JournalførtGåTilInnsyn: Story = {
     args: {
         forsendelseStatus: {
             status: 'ENDELIG',
