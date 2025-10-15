@@ -40,7 +40,7 @@ export const StepButtons = ({
                 onClick={goToPreviousStep}
                 icon={<ArrowLeftIcon aria-hidden />}
                 iconPosition="left"
-                className="order-2 sm:order-1"
+                className="ax-sm:order-1 order-2"
             >
                 {useSimplifiedTexts ? (
                     <FormattedMessage id="StepButtons.ForrigeSimple" />
@@ -56,7 +56,7 @@ export const StepButtons = ({
                     onClick={nextButtonOnClick}
                     disabled={isDisabled || isDisabledAndLoading}
                     loading={isLoading || isDisabledAndLoading}
-                    className="order-1 sm:order-2"
+                    className="ax-sm:order-2 order-1"
                 >
                     {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
                     {!isSendButton && !useSimplifiedTexts && !isJumpToEndButton && (

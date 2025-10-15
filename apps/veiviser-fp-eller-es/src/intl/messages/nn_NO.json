@@ -91,5 +91,6 @@
     "HvorMyeOgHvaSkjerNåLinkPanel.HvorMye": "Kor mykje?",
     "HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger": "Planlegg foreldrepengar",
     "valideringsfeil.lønn.ikkeTall": "Du har skrive noko som ikkje er eit tal",
-    "valideringsfeil.lønn.desimaler": "Du har skrive for mange desimalar. Skriv inn eit tal med maks 2 desimalar"
+    "valideringsfeil.lønn.desimaler": "Du har skrive for mange desimalar. Skriv inn eit tal med maks 2 desimalar",
+    "HvorMyeOgHvaSkjerNåLinkPanel.AndreVeivisere": "Andre vegvisarar:"
 }
