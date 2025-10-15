@@ -59,7 +59,7 @@ const SakenProsesseres = () => {
 };
 
 const GåTilMinSide = () => {
-    const erIDev = globalThis.location.pathname.includes('.dev.nav.');
+    const erIDev = globalThis.location.hostname.includes('.dev.nav.');
     const url = erIDev ? 'https://www.ansatt.dev.nav.no/minside' : 'https://www.nav.no/minside';
 
     return (
@@ -91,7 +91,7 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
         throw new Error('Udefinert saksnummer for status ENDELIG');
     }
 
-    const erIDev = globalThis.location.pathname.includes('.dev.nav.');
+    const erIDev = globalThis.location.hostname.includes('.dev.nav.');
     const url = erIDev
         ? `https://www.intern.dev.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`
         : `https://www.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`;
