@@ -42,6 +42,45 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
+export const getNavnPåForeldre = (
+    hvemPlanlegger: HvemPlanlegger,
+    intl: IntlShape,
+): {
+    mor: string;
+    farMedmor: string;
+} => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
+        return {
+            farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
+        return {
+            farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: hvemPlanlegger.navnPåMedfar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        };
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+        return {
+            farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return {
+            farMedmor: hvemPlanlegger.navnPåMedmor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    return {
+        farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+    };
+};
+
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
