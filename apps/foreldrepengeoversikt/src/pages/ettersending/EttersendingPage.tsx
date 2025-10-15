@@ -1,5 +1,5 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -21,8 +21,9 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, sendEttersending } from '../../api/api';
+import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -91,7 +92,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 };
 
 type Props = {
-    readonly saker: SakOppslag;
+    saker: SakOppslag;
 };
 
 const EttersendingPageInner = ({ saker }: Props) => {
@@ -102,6 +103,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
     );
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     const { search } = useLocation();
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
@@ -133,6 +135,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutate({
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
+            fnr: notEmpty(søkerInfo).søker.fnr,
             vedlegg,
         });
     };

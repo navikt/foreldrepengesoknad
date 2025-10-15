@@ -725,10 +725,10 @@ export type BrukerTekstDto = {
 
 export type EttersendelseDto = {
     mottattdato?: string;
-    type: YtelseType;
     saksnummer: string;
+    fnr: string;
+    type: YtelseType;
     brukerTekst?: BrukerTekstDto;
-    dialogId?: string;
     vedlegg: VedleggDto[];
 };
 
