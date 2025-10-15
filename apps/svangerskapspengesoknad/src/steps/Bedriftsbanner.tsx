@@ -6,8 +6,6 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import styles from './bedriftsbanner.module.css';
-
 interface Props {
     arbeidsforholdType: Arbeidsforholdstype;
     arbeidsforholdNavn?: string;
@@ -32,14 +30,14 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
             ? intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' })
             : intl.formatMessage({ id: 'bedriftsbanner.detail' });
     return (
-        <div className={styles.bedriftsbanner}>
+        <div className="bg-ax-accent-200 border-ax-accent-400 rounded-[2px] border-2 p-4">
             <HStack gap="space-20" align="center">
-                <Buildings3Icon aria-hidden={true} height="24px" width="24px" className={styles.ikon} />
+                <Buildings3Icon aria-hidden={true} height="24px" width="24px" className="text-ax-accent-600" />
                 <VStack gap="space-4">
-                    <BodyShort size="small" className={styles.bold}>
+                    <BodyShort size="small" className="font-bold">
                         {detailTekst}
                     </BodyShort>
-                    <BodyShort size="medium" className={styles.bold}>
+                    <BodyShort size="medium" className="font-bold">
                         {navn}
                     </BodyShort>
                 </VStack>
