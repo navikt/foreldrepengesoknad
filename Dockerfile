@@ -29,8 +29,9 @@ RUN apk fix \
     && rm -rf /var/cache/apk/*
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
+ENV PNPM_VERSION="10.18.3"
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION="10.18.3" sh -
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 COPY --from=prepare /usr/src/app ./
 
 RUN --mount=type=secret,id=PACKAGES_AUTH_TOKEN \
