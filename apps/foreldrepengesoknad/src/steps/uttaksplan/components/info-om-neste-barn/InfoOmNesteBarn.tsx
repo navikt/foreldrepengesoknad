@@ -10,8 +10,6 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import styles from './info-om-neste-barn.module.css';
-
 interface Props {
     minsterettUkerToTette?: number;
 }
@@ -30,7 +28,7 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
         : undefined;
 
     return (
-        <Box.New padding="4" background="brand-blue-moderate" className={styles.infoOmNesteBarn}>
+        <Box.New padding="4" background="brand-blue-moderate" className="mb-6 p-4">
             <HStack justify="space-between" align="start">
                 <VStack gap="space-8" style={{ width: '85%' }}>
                     <Heading size="xsmall">

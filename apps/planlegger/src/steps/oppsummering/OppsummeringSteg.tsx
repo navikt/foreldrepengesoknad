@@ -23,7 +23,6 @@ import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import styles from './oppsummeringSteg.module.css';
 
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
@@ -146,8 +145,8 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                     </VStack>
                 </VStack>
             </OppsummeringHeader>
-            <div className={styles.background}>
-                <VStack gap="space-16" className={styles.content}>
+            <div className="bg-ax-neutral-200 pb-4">
+                <VStack gap="space-16" className="mx-auto max-w-[560px] px-8 py-4">
                     <Heading level="2" size="medium">
                         <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>

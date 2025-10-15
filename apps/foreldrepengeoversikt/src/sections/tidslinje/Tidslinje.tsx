@@ -20,7 +20,6 @@ import {
 } from '../../utils/tidslinjeUtils';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import { TidslinjeHendelse } from './TidslinjeHendelse';
-import styles from './tidslinje.module.css';
 
 interface Props {
     sak: Sak;
@@ -126,7 +125,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                             {hendelse.utvidetTidslinjeHendelseType === 'VENT_DOKUMENTASJON' &&
                                 manglendeVedlegg &&
                                 manglendeVedlegg.length > 1 && (
-                                    <div className={styles.manglendeVedlegg}>
+                                    <div className="text-ax-font-size-medium mb-4">
                                         <div>
                                             {intl.formatMessage({
                                                 id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
@@ -144,21 +143,21 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                                     </div>
                                 )}
                             {hendelse.merInformasjon && (
-                                <BodyShort size="small" className={styles.merInformasjon}>
+                                <BodyShort size="small" className="mb-4">
                                     {hendelse.merInformasjon}
                                 </BodyShort>
                             )}
                             {alleDokumenter.length > 0 && alleDokumenter.length <= 3 && alleDokumenter}
                             {alleDokumenter.length > 0 && alleDokumenter.length > 3 && (
                                 <ReadMore
-                                    className={styles.mediumFont}
+                                    className="text-ax-font-size-medium"
                                     header={`Du sendte ${hendelse.dokumenter.length} dokumenter`}
                                 >
                                     {alleDokumenter}
                                 </ReadMore>
                             )}
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
-                                <Link href={hendelse.eksternalUrl} className={styles.link}>
+                                <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700">
                                     <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
                                     <ExternalLinkIcon aria-hidden={true} />
                                 </Link>

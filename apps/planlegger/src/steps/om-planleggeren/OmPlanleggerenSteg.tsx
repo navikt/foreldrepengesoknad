@@ -7,7 +7,6 @@ import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { PlanleggerForside } from './PlanleggerForside';
-import styles from './omPlanleggerenSteg.module.css';
 
 export const OmPlanleggerenSteg = () => {
     const navigator = usePlanleggerNavigator();
@@ -45,7 +44,7 @@ export const OmPlanleggerenSteg = () => {
                             onClick={navigator.goToNextDefaultStep}
                             icon={<ArrowRightIcon aria-hidden height={24} width={24} />}
                             iconPosition="right"
-                            className={styles.button}
+                            className="w-full md:w-[100px]"
                             autoFocus
                         >
                             <FormattedMessage id="OmPlanleggerenSteg.Start.Planlegger" />
