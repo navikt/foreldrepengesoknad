@@ -150,7 +150,7 @@ export const MinidialogSkjema = ({
                         <Chat.Bubble>
                             <FormattedMessage
                                 id="miniDialog.tilbakekreving.tittel"
-                                values={{ sakstype: mapYtelse(sakstype) }}
+                                values={{ sakstype: sakstype.toLocaleLowerCase() }}
                             />
                         </Chat.Bubble>
                     </Chat>
