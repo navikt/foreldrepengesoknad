@@ -30,7 +30,7 @@ RUN apk fix \
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
-RUN npm install -g pnpm@9.1.4 \
+RUN npm install -g pnpm@10.18.3 \
     && pnpm install -g pnpm \
     && npm uninstall -g pnpm
 COPY --from=prepare /usr/src/app ./
