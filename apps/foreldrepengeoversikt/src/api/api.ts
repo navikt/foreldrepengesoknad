@@ -37,8 +37,8 @@ export const API_URLS = {
     tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
 
     lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
-    lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api//storage/ENGANGSSTONAD/vedlegg`,
-    lastOppSVPVedlegg: `${urlPrefiks}/fpsoknad/api//storage/SVANGERSKAPSPENGER/vedlegg`,
+    lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
+    lastOppSVPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
 } as const;
 
 export const søkerInfoOptions = () =>
