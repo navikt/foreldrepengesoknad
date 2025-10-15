@@ -44,7 +44,7 @@ export const useSendSøknad = (søkerinfo: Søkerinfo, erEndringssøknad: boolea
 
         try {
             const url = erEndringssøknad ? API_URLS.endreSøknad : API_URLS.sendSøknad;
-            await ky.post<never>(url, {
+            await ky.post(url, {
                 json: cleanedSøknad,
                 signal: abortSignal,
                 timeout: 120 * 1000,
