@@ -102,7 +102,9 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                         prosentSvangerskapspenger={prosentSvangerskapspengerHvisInnvilget}
                                     />
                                 )}
-                                {p.årsak === undefined && <DuHarArbeid prosentArbeid={prosentJobb} />}
+                                {p.årsak === undefined && !skalViseSomSvp && (
+                                    <DuHarArbeid prosentArbeid={prosentJobb} />
+                                )}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
                                 {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
                             </div>
@@ -121,7 +123,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                     <BodyShort>{`${prosentJobb} % jobb`}</BodyShort>
                                 </VStack>
                                 {skalViseSomSvp && <GravidIkon />}
-                                {p.årsak === undefined && <JobbIkon />}
+                                {p.årsak === undefined && !skalViseSomSvp && <JobbIkon />}
                                 {p.årsak === 'FERIE' && <ParasollIkon />}
                                 {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
                             </div>
