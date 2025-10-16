@@ -7,7 +7,6 @@ import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-rea
 import { BlueHeading } from '../../boxes/BlueHeading';
 import { IconCircleWrapper } from '../../icon-circle/IconCircleWrapper';
 import { Page } from '../../page/Page';
-import styles from './frontPage.module.css';
 
 interface Props {
     children?: ReactElement | ReactElement[];
@@ -77,7 +76,7 @@ export const FrontPage = ({
                         onClick={goToNextDefaultStep}
                         icon={<ArrowRightIcon aria-hidden height={24} width={24} />}
                         iconPosition="right"
-                        className={styles.button}
+                        className="w-[100px] max-[768px]:w-full"
                         autoFocus
                     >
                         <FormattedMessage id="FrontPage.Start" />

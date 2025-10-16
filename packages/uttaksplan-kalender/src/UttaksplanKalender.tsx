@@ -35,7 +35,6 @@ import {
 } from '@navikt/fp-utils';
 
 import { UttaksplanLegend } from './UttaksplanLegend';
-import styles from './uttaksplanKalender.module.css';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
@@ -246,12 +245,12 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
     return (
         <>
             {harAvslåttePerioderSomIkkeGirTapteDager && (
-                <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
+                <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div className={styles.legend} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
+                <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
                         barn={barn}
@@ -262,7 +261,7 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
                 </div>
                 <Calendar periods={periods} />
             </div>
-            <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
+            <Button className="mt-8 print:hidden" variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </>

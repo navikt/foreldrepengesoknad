@@ -17,7 +17,6 @@ import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
 import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
-import styles from './arbeidssituasjonSide.module.css';
 
 export type Arbeidssituasjon = {
     erArbeidstakerEllerFrilanser: boolean;
@@ -95,7 +94,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                         <Label>
                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
                         </Label>
-                        <BodyShort className={styles.description}>
+                        <BodyShort className="text-ax-text-neutral-subtle">
                             <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
                         </BodyShort>
                         <RhfCheckbox
@@ -150,7 +149,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 <Label>
                                                     <FormattedMessage id="ArbeidssituasjonSide.TreSisteMåneder" />
                                                 </Label>
-                                                <BodyShort className={styles.description}>
+                                                <BodyShort className="text-ax-text-neutral-subtle">
                                                     <FormattedMessage id="ArbeidssituasjonSide.LønnFørSkatt" />
                                                 </BodyShort>
                                             </div>
@@ -165,7 +164,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 <Label>
                                                     <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
                                                 </Label>
-                                                <BodyShort className={styles.description}>
+                                                <BodyShort className="text-ax-text-neutral-subtle">
                                                     <FormattedMessage id="ArbeidssituasjonSide.LønnOgUtbetaling" />
                                                 </BodyShort>
                                             </div>
@@ -178,7 +177,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
@@ -191,7 +190,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
@@ -202,7 +201,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 name="lønnMåned3"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),

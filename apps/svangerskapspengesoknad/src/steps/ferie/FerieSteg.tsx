@@ -30,8 +30,6 @@ import {
     notEmpty,
 } from '@navikt/fp-validation';
 
-import styles from './feriesteg.module.css';
-
 type Props = {
     readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
     readonly avbrytSøknad: () => Promise<void>;
@@ -260,7 +258,7 @@ function FeriePerioder() {
             <Button
                 onClick={() => append({ fom: undefined, tom: undefined })}
                 size="small"
-                className={styles.leggTilFerieperiodeButton}
+                className="mt-[var(--ax-space-16)] w-fit"
                 type="button"
                 variant="secondary"
                 icon={<PlusIcon />}

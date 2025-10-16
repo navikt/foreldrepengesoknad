@@ -36,7 +36,6 @@ import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
-import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
@@ -310,7 +309,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                 <VStack gap="space-20">
                     {visningsmodus === 'kalender' && (
-                        <div className={styles.calendar}>
+                        <div className="p-6 max-[479px]:p-0">
                             <UttaksplanKalender
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
