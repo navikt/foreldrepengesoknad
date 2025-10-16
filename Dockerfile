@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_BUILD_IMG=node:22-alpine
-ARG NODE_DEPLOY_IMG=gcr.io/distroless/nodejs22-debian12
+ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
 
@@ -58,7 +58,6 @@ RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 #########################################
 FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
-USER nonroot
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
 COPY --from=client /public ./public
