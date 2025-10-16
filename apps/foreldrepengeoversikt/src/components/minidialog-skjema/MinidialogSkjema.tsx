@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
     Alert,
@@ -10,6 +10,7 @@ import {
     ErrorSummary,
     GuidePanel,
     HStack,
+    Link,
     Radio,
     RadioGroup,
     Textarea,
@@ -147,7 +148,7 @@ export const MinidialogSkjema = ({
             <VStack gap="space-16">
                 <ScrollToTop />
                 <Alert variant="error"> {ettersendelseError}</Alert>
-                <Link to={`/sak/${minidialog.saksnr}`}>
+                <Link as={RouterLink} to={`/sak/${minidialog.saksnr}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
             </VStack>
