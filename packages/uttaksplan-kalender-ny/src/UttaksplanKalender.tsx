@@ -26,7 +26,6 @@ import {
     isAvslåttPeriodeFørsteSeksUkerMor,
     isUttaksperiode,
 } from './helpers/uttaksplanHelpers';
-import styles from './uttaksplanKalender.module.css';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
 type KalenderPeriode = {
@@ -404,7 +403,7 @@ export const UttaksplanKalender = ({
         page: {
             margin: Margin.MEDIUM,
         },
-    } as Options;
+    } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
     const harAvslåttePerioderSomIkkeGirTapteDager = allePerioderInklHull.some(
@@ -414,12 +413,12 @@ export const UttaksplanKalender = ({
     return (
         <div>
             {harAvslåttePerioderSomIkkeGirTapteDager && (
-                <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
+                <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div className={styles.legend} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
+                <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     {planleggerLegend !== undefined ? (
                         <>{planleggerLegend}</>
                     ) : (
@@ -435,7 +434,7 @@ export const UttaksplanKalender = ({
                 <Calendar periods={perioderForKalendervisning} />
             </div>
             <Button
-                className={styles.button}
+                className="mt-8 print:hidden"
                 variant="tertiary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => toPDF()}

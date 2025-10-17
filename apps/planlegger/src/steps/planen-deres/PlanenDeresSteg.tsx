@@ -30,7 +30,6 @@ import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
-import styles from './planenDeresSteg.module.css';
 import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
@@ -254,7 +253,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     </VStack>
 
                     <VStack gap="space-20">
-                        <div className={styles.calendar}>
+                        <div className="p-[24px] max-[479px]:p-0">
                             <UttaksplanKalender
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
