@@ -1,6 +1,6 @@
 import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 
-import { BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { ForsendelseStatus } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -14,9 +14,7 @@ export const Kvittering = ({
 }) => {
     return (
         <SkjemaRotLayout pageTitle={pageTitle}>
-            <VStack gap="4">
-                <KvitteringsInnhold forsendelseStatus={forsendelseStatus} />
-            </VStack>
+            <KvitteringsInnhold forsendelseStatus={forsendelseStatus} />
         </SkjemaRotLayout>
     );
 };
@@ -37,18 +35,11 @@ const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Forsend
 // TODO: språk inn i intl
 const SakenProsesseres = () => {
     return (
-        <VStack gap="2">
-            <CheckmarkCircleFillIcon
-                className="text-ax-text-success-decoration self-center"
-                aria-hidden
-                fontSize="2.5rem"
-            />
-            <Heading size="large" level="2" align="center" spacing>
-                Søknaden din er mottatt
-            </Heading>
+        <VStack>
+            <KvitteringHeader />
             <BodyShort spacing>
-                Vi henter nå status på saken din. Dette tar som regel under “ett minutt”. Du trenger ikke
-                gjøre noe – siden oppdateres automatisk.
+                Vi henter nå status på saken din. Dette tar som regel under “ett minutt”. Du trenger ikke gjøre noe –
+                siden oppdateres automatisk.
             </BodyShort>
             <BodyShort spacing>
                 Henter status på saken … <Loader />
@@ -62,15 +53,8 @@ const GåTilMinSide = () => {
     const url = erIDev ? 'https://www.ansatt.dev.nav.no/minside' : 'https://www.nav.no/minside';
 
     return (
-        <VStack gap="2">
-            <CheckmarkCircleFillIcon
-                className="text-ax-text-success-decoration self-center"
-                aria-hidden
-                fontSize="2.5rem"
-            />
-            <Heading size="large" level="2" align="center" spacing>
-                Søknaden din er mottatt
-            </Heading>
+        <VStack>
+            <KvitteringHeader />
             <BodyShort>Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.</BodyShort>
             <Button
                 as="a"
@@ -96,15 +80,8 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
         : `https://www.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`;
 
     return (
-        <VStack gap="2">
-            <CheckmarkCircleFillIcon
-                className="text-ax-text-success-decoration self-center"
-                aria-hidden
-                fontSize="2.5rem"
-            />
-            <Heading size="large" level="2" align="center" spacing>
-                Søknaden din er mottatt
-            </Heading>
+        <VStack>
+            <KvitteringHeader />
             <BodyShort spacing>Saken er registrert hos Nav og har fått et saksnummer.</BodyShort>
             <BodyShort spacing>Du kan følge behandlingen og se dokumentene dine på Min side</BodyShort>
             <Button
@@ -117,5 +94,20 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
                 Se søknaden din på Min side
             </Button>
         </VStack>
+    );
+};
+
+const KvitteringHeader = () => {
+    return (
+        <HStack gap="space-16" align="center" className="mb-6">
+            <CheckmarkCircleFillIcon
+                className="text-ax-text-success-decoration self-center"
+                aria-hidden
+                fontSize="2.5rem"
+            />
+            <Heading size="large" level="2" align="center">
+                Søknaden din er mottatt
+            </Heading>
+        </HStack>
     );
 };
