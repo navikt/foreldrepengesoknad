@@ -36,6 +36,7 @@ const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Status 
     }
 };
 
+// TODO: språk inn i intl
 const SakenProsesseres = () => {
     return (
         <VStack gap="2">

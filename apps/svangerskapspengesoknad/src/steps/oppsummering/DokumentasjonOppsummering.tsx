@@ -40,7 +40,7 @@ export function DokumentasjonOppsummering({
                                         <Link
                                             key={vedlegg.id}
                                             download={vedlegg.filename}
-                                            href={`${API_URLS.lastnedVedlegg(vedlegg.uuid)}`}
+                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
                                             target="_blank"
                                         >
                                             {vedlegg.filename}
