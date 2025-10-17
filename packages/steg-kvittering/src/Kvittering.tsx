@@ -47,7 +47,7 @@ const SakenProsesseres = () => {
                 Søknaden din er mottatt
             </Heading>
             <BodyShort spacing>
-                Vi henter nå status på saken din. Dette tar som regel under &ldquo;ett minutt&ldquo;. Du trenger ikke
+                Vi henter nå status på saken din. Dette tar som regel under “ett minutt”. Du trenger ikke
                 gjøre noe – siden oppdateres automatisk.
             </BodyShort>
             <BodyShort spacing>
