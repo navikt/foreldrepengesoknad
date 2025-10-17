@@ -5,7 +5,14 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
-import { AnnenPartSak, Saker, Søkerinfo, Tidsperiode, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import {
+    AnnenPartSak,
+    ForsendelseStatus,
+    Saker,
+    Søkerinfo,
+    Tidsperiode,
+    TilgjengeligeStønadskontoer,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
@@ -28,8 +35,7 @@ export const API_URLS = {
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () =>
-            ky.get(API_URLS.status).json<{ status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number }>(),
+        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
         staleTime: Infinity,
     });
 

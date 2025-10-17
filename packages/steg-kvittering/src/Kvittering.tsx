@@ -2,17 +2,15 @@ import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 
 import { BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
 
+import { ForsendelseStatus } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-
-//TODO: autogenerer
-type Status = { status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number };
 
 export const Kvittering = ({
     forsendelseStatus,
     pageTitle,
 }: {
     pageTitle: React.ReactNode;
-    forsendelseStatus?: Status;
+    forsendelseStatus?: ForsendelseStatus;
 }) => {
     return (
         <SkjemaRotLayout pageTitle={pageTitle}>
@@ -23,7 +21,7 @@ export const Kvittering = ({
     );
 };
 
-const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Status }) => {
+const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: ForsendelseStatus }) => {
     const status = forsendelseStatus?.status ?? 'PENDING';
 
     switch (status) {

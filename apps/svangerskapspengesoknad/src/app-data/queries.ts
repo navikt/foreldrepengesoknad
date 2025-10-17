@@ -3,7 +3,7 @@ import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { Saker, Satser, Søkerinfo } from '@navikt/fp-types';
+import { ForsendelseStatus, Saker, Satser, Søkerinfo } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -51,7 +51,6 @@ export const satserOptions = () =>
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () =>
-            ky.get(API_URLS.status).json<{ status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number }>(),
+        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
         staleTime: Infinity,
     });

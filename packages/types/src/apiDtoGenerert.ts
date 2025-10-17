@@ -968,6 +968,11 @@ export type Søkerinfo = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
+export type ForsendelseStatus = {
+    status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG';
+    saksnummer?: number;
+};
+
 export type MinidialogInnslag = {
     saksnr: string;
     opprettet: string;

@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
-import { PersonFrontend } from '@navikt/fp-types';
+import { ForsendelseStatus, PersonFrontend } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -31,7 +31,6 @@ export const mellomlagretInfoOptions = () =>
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () =>
-            ky.get(API_URLS.status).json<{ status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG'; saksnummer?: number }>(),
+        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
         staleTime: Infinity,
     });
