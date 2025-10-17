@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
-import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { TilOgMedDatoType } from 'types/Tilrettelegging';
 
 import * as stories from './VelgArbeidSteg.stories';
 
@@ -89,13 +89,13 @@ describe('<VelgArbeidSteg>', () => {
                 tilrettelegginger={{
                     '975326209': {
                         behovForTilretteleggingFom: '2024-01-01',
-                        type: Tilretteleggingstype.INGEN,
+                        type: 'ingen',
                         enPeriodeMedTilretteleggingFom: '2024-01-01',
                         enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                     },
                     '990322244': {
                         behovForTilretteleggingFom: '2024-10-01',
-                        type: Tilretteleggingstype.INGEN,
+                        type: 'ingen',
                         enPeriodeMedTilretteleggingFom: '2024-11-01',
                         enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                     },
@@ -120,7 +120,7 @@ describe('<VelgArbeidSteg>', () => {
             data: {
                 '990322244': {
                     behovForTilretteleggingFom: '2024-10-01',
-                    type: Tilretteleggingstype.INGEN,
+                    type: 'ingen',
                     enPeriodeMedTilretteleggingFom: '2024-11-01',
                     enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                 },

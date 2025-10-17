@@ -2,12 +2,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import {
-    Arbeidsforholdstype,
-    IngenTilrettelegging,
-    TilOgMedDatoType,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, IngenTilrettelegging, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
 import { Radio } from '@navikt/ds-react';
@@ -41,8 +36,7 @@ export const IngenTilretteleggingPanel = ({
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
-    const harSkjema =
-        arbeidsforholdType === Arbeidsforholdstype.VIRKSOMHET || arbeidsforholdType === Arbeidsforholdstype.PRIVAT;
+    const harSkjema = arbeidsforholdType === 'virksomhet' || arbeidsforholdType === 'privat';
     const minDatoBehovFom =
         dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startdatoArbeid)) || undefined;
     const maxDatoBehovFom = sluttdatoArbeid
@@ -89,7 +83,7 @@ export const IngenTilretteleggingPanel = ({
                         intl,
                         behovForTilretteleggingFom,
                         sisteDagForSvangerskapspenger,
-                        Tilretteleggingstype.INGEN,
+                        'ingen',
                         arbeidsforholdNavn || '',
                         sluttdatoArbeid,
                         kanHaSVPFremTilTreUkerFørTermin,
@@ -103,9 +97,7 @@ export const IngenTilretteleggingPanel = ({
                 label={intl.formatMessage({
                     id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen',
                 })}
-                validate={[
-                    validerTilretteleggingTomType(intl, Tilretteleggingstype.INGEN, kanHaSVPFremTilTreUkerFørTermin),
-                ]}
+                validate={[validerTilretteleggingTomType(intl, 'ingen', kanHaSVPFremTilTreUkerFørTermin)]}
             >
                 <Radio value={TilOgMedDatoType.VALGFRI_DATO}>
                     <FormattedMessage id="perioder.varierende.tomType.valgfriDato" />
@@ -143,7 +135,7 @@ export const IngenTilretteleggingPanel = ({
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
                             enPeriodeMedTilretteleggingFom,
-                            Tilretteleggingstype.INGEN,
+                            'ingen',
                             arbeidsforholdNavn || '',
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,

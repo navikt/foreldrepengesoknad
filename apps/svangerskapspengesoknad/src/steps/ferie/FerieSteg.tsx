@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
@@ -20,7 +19,7 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, AvtaltFerieDto } from '@navikt/fp-types';
 import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
@@ -70,7 +69,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             arbeidsforhold: {
                 id: arbeidsgiverId,
                 type: getTypeArbeidForTilrettelegging(arbeidsgiverId, arbeidsforhold),
-            },
+            } as const,
         }));
         const nyeFerieVerdier = {
             ...ferie,

@@ -47,10 +47,7 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                                 path={OversiktRoutes.TIDSLINJEN}
                                 element={<TidslinjePage søkersBarn={søkerinfo.søker.barn} />}
                             />
-                            <Route
-                                path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                                element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
-                            />
+                            <Route path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
                             <Route

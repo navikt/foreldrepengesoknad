@@ -1,3 +1,4 @@
+import { API_URLS } from 'appData/queries';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtils';
 
@@ -35,8 +36,13 @@ export function DokumentasjonOppsummering({
                         <FormSummary.Value>
                             <VStack>
                                 {tilretteleggingerVedlegg[tilretteleggingId].map((vedlegg) => {
-                                    return vedlegg.url ? (
-                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                    return vedlegg.uuid ? (
+                                        <Link
+                                            key={vedlegg.id}
+                                            download={vedlegg.filename}
+                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
+                                            target="_blank"
+                                        >
                                             {vedlegg.filename}
                                         </Link>
                                     ) : (

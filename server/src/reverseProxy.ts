@@ -11,13 +11,16 @@ type ProxyOptions = {
 };
 
 export function configureReverseProxyApi(router: Router) {
-    if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
-        throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
-    }
+    addProxyHandler(router, {
+        ingoingUrl: '/fpsoknad',
+        outgoingUrl: serverConfig.proxy.FPSOKNAD_API_URL,
+        scope: serverConfig.proxy.FPSOKNAD_API_SCOPE,
+    });
+
     addProxyHandler(router, {
         ingoingUrl: '/rest',
-        outgoingUrl: serverConfig.proxy.apiUrl,
-        scope: serverConfig.proxy.apiScope,
+        outgoingUrl: serverConfig.proxy.API_URL,
+        scope: serverConfig.proxy.API_SCOPE,
     });
 }
 

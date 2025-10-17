@@ -1,13 +1,4 @@
-import { Arbeidsforholdstype } from 'types/Tilrettelegging';
-
-export type AvtaltFerieDto = {
-    arbeidsforhold: {
-        type: Arbeidsforholdstype;
-        id: string;
-    };
-    fom: string;
-    tom: string;
-};
+import { AvtaltFerieDto } from '@navikt/fp-types';
 
 export type AvtaltFeriePerArbeidsgiver = {
     [arbeidsgiverId: string]: {

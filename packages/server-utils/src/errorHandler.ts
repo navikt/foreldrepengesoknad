@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import logger from './log';
+import logger from './logger';
 
 export function errorHandling(
     error: Error,

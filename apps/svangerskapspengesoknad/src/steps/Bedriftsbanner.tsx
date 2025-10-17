@@ -12,10 +12,10 @@ interface Props {
 }
 
 const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'bedriftsbanner.tittel.frilansarbeid' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {
+    if (type === 'selvstendig' && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return capitalizeFirstLetterInEveryWordOnly(navn);
@@ -26,7 +26,7 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
 
     const detailTekst =
-        arbeidsforholdType === Arbeidsforholdstype.FRILANSER
+        arbeidsforholdType === 'frilanser'
             ? intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' })
             : intl.formatMessage({ id: 'bedriftsbanner.detail' });
     return (

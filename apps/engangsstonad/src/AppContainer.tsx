@@ -9,6 +9,7 @@ import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
@@ -28,6 +29,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...oppsummeringMessages.nb,
         ...utilsMessages.nb,
         ...formHookMessages.nb,
+        ...kvitteringMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -36,6 +38,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...oppsummeringMessages.nn,
         ...utilsMessages.nn,
         ...formHookMessages.nn,
+        ...kvitteringMessages.nn,
     },
     en: {
         ...enMessages,
@@ -44,6 +47,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...oppsummeringMessages.en,
         ...utilsMessages.en,
         ...formHookMessages.en,
+        ...kvitteringMessages.en,
     },
 };
 

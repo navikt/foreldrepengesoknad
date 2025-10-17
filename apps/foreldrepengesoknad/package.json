@@ -37,6 +37,7 @@
         "@navikt/fp-steg-arbeidsforhold-og-inntekt": "workspace:*",
         "@navikt/fp-steg-egen-naering": "workspace:*",
         "@navikt/fp-steg-frilans": "workspace:*",
+        "@navikt/fp-steg-kvittering": "workspace:*",
         "@navikt/fp-steg-oppsummering": "workspace:*",
         "@navikt/fp-steg-utenlandsopphold": "workspace:*",
         "@navikt/fp-types": "workspace:*",

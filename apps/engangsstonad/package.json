@@ -32,6 +32,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
+        "@navikt/fp-steg-kvittering": "workspace:*",
         "@navikt/fp-steg-oppsummering": "workspace:*",
         "@navikt/fp-steg-utenlandsopphold": "workspace:*",
         "@navikt/fp-types": "workspace:*",

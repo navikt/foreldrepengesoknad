@@ -39,6 +39,7 @@ export const Default: Story = {
         existingAttachments: [
             {
                 id: '1',
+                innsendingsType: 'LASTET_OPP',
                 filename: file1.name,
                 filesize: file1.size,
                 file: file1,
@@ -46,18 +47,17 @@ export const Default: Story = {
                 uploaded: true,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                url: null,
             },
             {
                 id: '2',
                 filename: file2.name,
                 filesize: file2.size,
                 file: file2,
+                innsendingsType: 'LASTET_OPP',
                 pending: true,
                 uploaded: false,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                url: null,
             },
         ],
     },
@@ -76,7 +76,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: true,
                 type: AttachmentType.TERMINBEKREFTELSE,
                 skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                url: null,
+                innsendingsType: 'LASTET_OPP',
             },
             {
                 id: '2',
@@ -87,7 +87,7 @@ export const VisEksisterendeVedleggGruppert: Story = {
                 uploaded: false,
                 type: AttachmentType.ALENEOMSORG,
                 skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
-                url: null,
+                innsendingsType: 'LASTET_OPP',
             },
         ],
         //@ts-expect-error fiks

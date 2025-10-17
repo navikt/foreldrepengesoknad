@@ -2,15 +2,16 @@ import { queryOptions } from '@tanstack/react-query';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
-import { PersonFrontend } from '@navikt/fp-types';
+import { ForsendelseStatus, PersonFrontend } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/rest/personinfo`,
-    mellomlagring: `${urlPrefiks}/rest/storage/engangsstonad`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/engangsstonad`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD`,
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/engangsstonad`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
 } as const;
 
 export const personOptions = () =>
@@ -24,5 +25,12 @@ export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () => ky.get(API_URLS.mellomlagring).json<EsDataMapAndMetaData>(),
+        staleTime: Infinity,
+    });
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
         staleTime: Infinity,
     });

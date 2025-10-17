@@ -13,14 +13,11 @@ const meta = {
     title: 'MinidialogPage',
     component: MinidialogPage,
     decorators: [withQueryClient],
-    render: (props) => {
+    render: () => {
         return (
             <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079/1111111112`]}>
                 <Routes>
-                    <Route
-                        element={<MinidialogPage {...props} />}
-                        path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer/:oppgaveId`}
-                    />
+                    <Route element={<MinidialogPage />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer/:oppgaveId`} />
                 </Routes>
             </MemoryRouter>
         );
@@ -46,8 +43,5 @@ export const Default: Story = {
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
-    },
-    args: {
-        fnr: '12434',
     },
 };
