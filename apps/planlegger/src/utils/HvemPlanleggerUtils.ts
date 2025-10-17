@@ -46,38 +46,52 @@ export const getNavnPåForeldre = (
     hvemPlanlegger: HvemPlanlegger,
     intl: IntlShape,
 ): {
-    mor: string;
-    farMedmor: string;
+    mor?: string;
+    farMedmor?: string;
 } => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return {
-            farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
-            mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
         };
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return {
-            farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
-            mor: hvemPlanlegger.navnPåMedfar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMedfar)
+                ? hvemPlanlegger.navnPåMedfar!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
         };
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
         return {
-            farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
-            mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         };
     }
 
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return {
-            farMedmor: hvemPlanlegger.navnPåMedmor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
-            mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
+                ? hvemPlanlegger.navnPåMedmor!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor!
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         };
     }
 
     return {
-        farMedmor: hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
-        mor: hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+            ? hvemPlanlegger.navnPåFar!
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+            ? hvemPlanlegger.navnPåMor!
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
     };
 };
 
@@ -197,4 +211,8 @@ export const getErFarEllerMedmor = (hvemPlanlegger: HvemPlanlegger, hvemHarRett:
     }
 
     return false;
+};
+
+const erGyldigNavn = (navn: string | undefined): boolean => {
+    return Boolean(navn && navn.trim().length > 0);
 };

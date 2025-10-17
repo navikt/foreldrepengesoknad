@@ -27,7 +27,6 @@ describe('getNavnPåForeldre', () => {
 
         expect(resultat).toEqual({
             farMedmor: 'Ola Nordmann',
-            mor: 'mor',
         });
     });
 
@@ -55,7 +54,6 @@ describe('getNavnPåForeldre', () => {
         const resultat = getNavnPåForeldre(hvemPlanlegger, mockIntl);
 
         expect(resultat).toEqual({
-            farMedmor: 'far',
             mor: 'Kari Nordmann',
         });
     });
@@ -159,7 +157,6 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'far',
-                mor: 'mor',
             });
         });
 
