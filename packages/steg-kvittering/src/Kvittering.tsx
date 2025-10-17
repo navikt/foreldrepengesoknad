@@ -1,4 +1,5 @@
 import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
@@ -32,17 +33,15 @@ const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Forsend
     }
 };
 
-// TODO: språk inn i intl
 const SakenProsesseres = () => {
     return (
         <VStack>
             <KvitteringHeader />
             <BodyShort spacing>
-                Vi henter nå status på saken din. Dette tar som regel under “ett minutt”. Du trenger ikke gjøre noe –
-                siden oppdateres automatisk.
+                <FormattedMessage id="sakenProsesseres.info" />
             </BodyShort>
             <BodyShort spacing>
-                Henter status på saken … <Loader />
+                <FormattedMessage id="sakenProsesseres.loader" /> <Loader />
             </BodyShort>
         </VStack>
     );
@@ -55,7 +54,9 @@ const GåTilMinSide = () => {
     return (
         <VStack>
             <KvitteringHeader />
-            <BodyShort>Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.</BodyShort>
+            <BodyShort>
+                <FormattedMessage id="minSide.info" />
+            </BodyShort>
             <Button
                 as="a"
                 href={url}
@@ -63,7 +64,7 @@ const GåTilMinSide = () => {
                 iconPosition="right"
                 icon={<ChevronRightIcon />}
             >
-                Se søknaden din på Min side
+                <FormattedMessage id="minSide.button" />
             </Button>
         </VStack>
     );
@@ -82,8 +83,12 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
     return (
         <VStack>
             <KvitteringHeader />
-            <BodyShort spacing>Saken er registrert hos Nav og har fått et saksnummer.</BodyShort>
-            <BodyShort spacing>Du kan følge behandlingen og se dokumentene dine på Min side</BodyShort>
+            <BodyShort spacing>
+                <FormattedMessage id="innsyn.info" />
+            </BodyShort>
+            <BodyShort spacing>
+                <FormattedMessage id="innsyn.followup" />
+            </BodyShort>
             <Button
                 as="a"
                 href={url}
@@ -91,7 +96,7 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
                 iconPosition="right"
                 icon={<ChevronRightIcon />}
             >
-                Se søknaden din på Min side
+                <FormattedMessage id="minSide.button" />
             </Button>
         </VStack>
     );
@@ -106,7 +111,7 @@ const KvitteringHeader = () => {
                 fontSize="2.5rem"
             />
             <Heading size="large" level="2" align="center">
-                Søknaden din er mottatt
+                <FormattedMessage id="header.title" />
             </Heading>
         </HStack>
     );

@@ -5,7 +5,7 @@ import en from './messages/en_US.json';
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
 
-describe('fp-ui intl messages', () => {
+describe('fp-steg-kvittering intl messages', () => {
     it('Check that bokmål og nynorsk language files contain the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
