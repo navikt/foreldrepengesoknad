@@ -425,16 +425,14 @@
 
 @media (max-width: 630px) {
     .days {
-        height: 15px;
-        padding: 2px 0px;
+        height: 20px;
+        padding: 1.5rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 2px 0 2px 0;
-        font-size: 10px;
+        font-size: 15px;
         font-style: normal;
         font-weight: 600;
         line-height: 13px;
-        letter-spacing: 0.06px;
     }
 }

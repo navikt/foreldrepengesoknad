@@ -31,14 +31,14 @@
         width: 170px;
     }
     .weeknr {
-        font-size: 10px;
+        font-size: 15px;
     }
 }
 
 @media (max-width: 400px) {
     .box {
         padding-top: 2px;
-        width: 130px;
+        width: 100%;
     }
 }
 

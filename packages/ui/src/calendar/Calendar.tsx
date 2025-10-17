@@ -137,7 +137,6 @@ export const Calendar = ({
                 </div>
             )}
             <HGrid
-                gap={{ xs: '2', sm: '4', md: '8' }}
                 columns={
                     useSmallerWidth
                         ? { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' }
