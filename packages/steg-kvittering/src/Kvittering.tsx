@@ -104,7 +104,7 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
 
 const KvitteringHeader = () => {
     return (
-        <HStack gap="space-16" align="center" className="mb-6">
+        <HStack gap="space-16" align="center" className="mb-6" wrap={false}>
             <CheckmarkCircleFillIcon
                 className="text-ax-text-success-decoration self-center"
                 aria-hidden
