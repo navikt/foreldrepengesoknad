@@ -130,7 +130,10 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: 'Henrikke Ibsen',
+                        navn: {
+                            fornavn: DEFAULT_PERSONINFO.fornavn,
+                            etternavn: DEFAULT_PERSONINFO.etternavn,
+                        },
                     },
                     barn: {
                         type: 'adopsjon',
@@ -181,7 +184,10 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: 'Henrikke Ibsen',
+                        navn: {
+                            fornavn: DEFAULT_PERSONINFO.fornavn,
+                            etternavn: DEFAULT_PERSONINFO.etternavn,
+                        },
                     },
                     barn: {
                         type: 'fødsel',
@@ -225,7 +231,10 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: 'Henrikke Ibsen',
+                        navn: {
+                            fornavn: DEFAULT_PERSONINFO.fornavn,
+                            etternavn: DEFAULT_PERSONINFO.etternavn,
+                        },
                     },
                     barn: {
                         type: 'termin',

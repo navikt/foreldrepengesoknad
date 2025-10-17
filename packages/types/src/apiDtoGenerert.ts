@@ -450,8 +450,14 @@ export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
 export type SvangerskapspengesøknadDto = {
     søkerinfo: {
         fnr: string;
-        navn: string;
-        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
+        arbeidsforhold: Array<{
+            navn: string;
+            orgnummer: string;
+            stillingsprosent: number;
+            fom: string;
+            tom?: string;
+        }>;
     };
     mottattdato?: string;
     barn: BarnSvpDto;
@@ -539,7 +545,7 @@ export type Dekningsgrad = '80' | '100';
 export type ForeldrepengesøknadDto = {
     søkerinfo: {
         fnr: string;
-        navn: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
         arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
     };
     mottattdato?: string;
@@ -711,7 +717,7 @@ export type EndringssøknadForeldrepengerDto = {
     saksnummer: string;
     søkerinfo: {
         fnr: string;
-        navn: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
         arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
     };
     vedlegg?: VedleggDto[];
@@ -738,7 +744,7 @@ export type EngangsstønadDto = {
     mottattdato?: string;
     søkerinfo: {
         fnr: string;
-        navn: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
     };
     språkkode: Målform;
     rolle?: BrukerRolle;

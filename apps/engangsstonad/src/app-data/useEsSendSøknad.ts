@@ -66,7 +66,11 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
         const søknad = {
             søkerinfo: {
                 fnr: personinfo.fnr,
-                navn: [personinfo.fornavn, personinfo.mellomnavn, personinfo.etternavn].filter((a) => !!a).join(' '),
+                navn: {
+                    fornavn: personinfo.fornavn,
+                    mellomnavn: personinfo.mellomnavn,
+                    etternavn: personinfo.etternavn,
+                },
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(omBarnet, dokumentasjon),

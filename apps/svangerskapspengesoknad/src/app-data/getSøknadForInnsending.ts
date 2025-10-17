@@ -100,9 +100,11 @@ export const getSøknadForInnsending = (
     return {
         søkerinfo: {
             fnr: søkerinfo.søker.fnr,
-            navn: [søkerinfo.søker.fornavn, søkerinfo.søker.mellomnavn, søkerinfo.søker.etternavn]
-                .filter((a) => !!a)
-                .join(' '),
+            navn: {
+                fornavn: søkerinfo.søker.fornavn,
+                mellomnavn: søkerinfo.søker.mellomnavn,
+                etternavn: søkerinfo.søker.etternavn,
+            },
             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
                 navn: af.arbeidsgiverNavn,
                 orgnummer: af.arbeidsgiverId,

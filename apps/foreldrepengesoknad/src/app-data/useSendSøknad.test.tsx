@@ -174,7 +174,10 @@ const UTTAKSPLAN_METADATA = {
 
 const EXPECTED_SØKER_INFO = {
     fnr: DEFAULT_SØKER_INFO.søker.fnr,
-    navn: 'Erlinga-Mask Oravakangas',
+    navn: {
+        fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
+        etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
+    },
     arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
         navn: af.arbeidsgiverNavn,
         orgnummer: af.arbeidsgiverId,
