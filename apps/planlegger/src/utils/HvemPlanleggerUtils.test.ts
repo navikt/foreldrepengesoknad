@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
+import { FarFarMockaStønadskontoerOgSatser } from '../Planlegger.stories';
 import { HvemPlanlegger } from '../types/HvemPlanlegger';
 import { getNavnPåForeldre } from './HvemPlanleggerUtils';
 
@@ -27,6 +28,7 @@ describe('getNavnPåForeldre', () => {
 
         expect(resultat).toEqual({
             farMedmor: 'Ola Nordmann',
+            mor: 'mor',
         });
     });
 
@@ -55,6 +57,7 @@ describe('getNavnPåForeldre', () => {
 
         expect(resultat).toEqual({
             mor: 'Kari Nordmann',
+            farMedmor: 'far',
         });
     });
 
@@ -99,6 +102,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'far',
+                mor: 'mor',
             });
         });
 
@@ -112,6 +116,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'mor',
+                farMedmor: 'far',
             });
         });
 
@@ -157,6 +162,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'far',
+                mor: 'mor',
             });
         });
 
@@ -170,6 +176,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'mor',
+                farMedmor: 'far',
             });
         });
     });
