@@ -3,16 +3,13 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
+import messages from '../intl/messages/nb_NO.json';
 import { HvemPlanlegger } from '../types/HvemPlanlegger';
 import { getNavnPåForeldre } from './HvemPlanleggerUtils';
 
 const mockIntl: IntlShape = {
     formatMessage: vi.fn(({ id }) => {
-        const messages: Record<string, string> = {
-            'HvemPlanlegger.DefaultFarNavn': 'far',
-            'HvemPlanlegger.DefaultMorNavn': 'mor',
-        };
-        return messages[id] || id;
+        return messages[id as keyof typeof messages] || id;
     }),
 } as any;
 
