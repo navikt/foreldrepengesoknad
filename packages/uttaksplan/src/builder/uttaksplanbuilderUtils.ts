@@ -402,12 +402,30 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
     const perioderTidsperioder: SplittetDatoType[] = perioder
         .filter((per) => isValidTidsperiodeString(per.tidsperiode))
         .reduce((res, p) => {
-            res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
+            res.push(
+                {
+                    dato: typeof p.tidsperiode.fom === 'string' ? new Date(p.tidsperiode.fom) : p.tidsperiode.fom,
+                    erFom: true,
+                },
+                {
+                    dato: typeof p.tidsperiode.tom === 'string' ? new Date(p.tidsperiode.tom) : p.tidsperiode.tom,
+                    erFom: false,
+                },
+            );
 
             return res;
         }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true }, { dato: p.tidsperiode.tom, erFom: false });
+        res.push(
+            {
+                dato: typeof p.tidsperiode.fom === 'string' ? new Date(p.tidsperiode.fom) : p.tidsperiode.fom,
+                erFom: true,
+            },
+            {
+                dato: typeof p.tidsperiode.tom === 'string' ? new Date(p.tidsperiode.tom) : p.tidsperiode.tom,
+                erFom: false,
+            },
+        );
         return res;
     }, [] as SplittetDatoType[]);
 
