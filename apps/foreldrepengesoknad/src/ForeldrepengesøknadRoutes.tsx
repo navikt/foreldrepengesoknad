@@ -83,6 +83,7 @@ const renderSøknadRoutes = (
                         />
                     }
                 />
+                <Route path={SøknadRoutes.KVITTERING} element={<KvitteringPage />} />
             </>
         );
     }
