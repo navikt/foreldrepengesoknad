@@ -23,6 +23,7 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
@@ -35,7 +36,18 @@ export const API_URLS = {
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
         staleTime: Infinity,
     });
 
