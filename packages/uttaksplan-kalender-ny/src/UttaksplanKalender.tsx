@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -47,6 +47,7 @@ export const UttaksplanKalender = ({
     barnehagestartdato,
 }: Props) => {
     const intl = useIntl();
+
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = barn.type === BarnType.ADOPTERT_ANNET_BARN || barn.type === BarnType.ADOPTERT_STEBARN;
     const erIPlanleggerModus = planleggerLegend !== undefined;
@@ -82,16 +83,18 @@ export const UttaksplanKalender = ({
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(allePerioderInklHull);
 
-    const perioderForKalendervisning = getPerioderForKalendervisning(
-        allePerioderInklHull,
-        erFarEllerMedmor,
-        barn,
-        navnAnnenPart,
-        unikeUtsettelseÅrsaker,
-        intl,
-        erIPlanleggerModus,
-        foreldrepengerHarAktivitetskrav,
-        barnehagestartdato,
+    const [perioderForKalendervisning, setPerioderForKalendervisning] = useState(
+        getPerioderForKalendervisning(
+            allePerioderInklHull,
+            erFarEllerMedmor,
+            barn,
+            navnAnnenPart,
+            unikeUtsettelseÅrsaker,
+            intl,
+            erIPlanleggerModus,
+            foreldrepengerHarAktivitetskrav,
+            barnehagestartdato,
+        ),
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
@@ -138,6 +141,15 @@ export const UttaksplanKalender = ({
                     periods={perioderForKalendervisning}
                     useSmallerWidth={true}
                     dateClickCallback={(clickedDate) => {
+                        const kalenderCopy = [...perioderForKalendervisning];
+
+                        for (const p of kalenderCopy) {
+                            if (dayjs(clickedDate).isBetween(p.fom, p.tom, null, '[]')) {
+                                p.isSelected = !p.isSelected;
+                            }
+                        }
+
+                        setPerioderForKalendervisning(kalenderCopy);
                         console.log(clickedDate);
                     }}
                 />
