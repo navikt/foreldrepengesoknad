@@ -11,7 +11,7 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
     satser: `${urlPrefiks}/rest/satser`,
-
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
@@ -51,6 +51,17 @@ export const satserOptions = () =>
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
         staleTime: Infinity,
     });

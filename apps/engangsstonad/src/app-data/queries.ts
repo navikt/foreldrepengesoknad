@@ -8,6 +8,7 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/rest/personinfo`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/engangsstonad`,
@@ -31,6 +32,17 @@ export const mellomlagretInfoOptions = () =>
 export const statusOptions = () =>
     queryOptions({
         queryKey: ['STATUS'],
-        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
         staleTime: Infinity,
     });
