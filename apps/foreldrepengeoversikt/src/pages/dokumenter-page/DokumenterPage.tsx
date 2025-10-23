@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table, VStack } from '@navikt/ds-react';
 
+import { DokumentDto } from '@navikt/fp-types';
 import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from '../../api/api';
@@ -34,11 +35,11 @@ export const DokumenterPage = () => {
     );
 };
 
-const DokumenterPageInner = () => {
-    interface ScopedSortState extends SortState {
-        orderBy: keyof (typeof dokumenter)[0];
-    }
+interface ScopedSortState extends SortState {
+    orderBy: keyof DokumentDto;
+}
 
+const DokumenterPageInner = () => {
     const params = useParams();
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState<ScopedSortState | undefined>();
@@ -65,7 +66,7 @@ const DokumenterPageInner = () => {
         );
     };
 
-    function comparator(a: string, b: string): number {
+    const comparator = (a: string, b: string): number => {
         if (dayjs(a).isBefore(b)) {
             return -1;
         }
@@ -73,9 +74,9 @@ const DokumenterPageInner = () => {
             return 1;
         }
         return 0;
-    }
+    };
 
-    const sortedDokumenter = dokumenter.slice().sort((a, b) => {
+    const sortedDokumenter = [...dokumenter].sort((a, b) => {
         if (sort) {
             return sort.direction === 'ascending' ? comparator(b.mottatt, a.mottatt) : comparator(a.mottatt, b.mottatt);
         }
@@ -114,9 +115,9 @@ const DokumenterPageInner = () => {
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {paginatedSortedDokumenter.map((dokument, i) => {
+                                    {paginatedSortedDokumenter.map((dokument) => {
                                         return (
-                                            <Table.Row key={i + (dokument.tittel ?? '')}>
+                                            <Table.Row key={dokument.dokumentId}>
                                                 <Table.DataCell className="max-w-70" scope="row">
                                                     <DokumentLenke dokument={dokument} />
                                                 </Table.DataCell>
