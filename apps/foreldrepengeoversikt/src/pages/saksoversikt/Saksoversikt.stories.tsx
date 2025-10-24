@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
@@ -27,15 +26,11 @@ const meta = {
     title: 'Saksoversikt',
     decorators: [withQueryClient],
     render: ({ saksnummer, ...props }) => {
-        const isFirstRender = useRef(false);
         return (
             <div className="bg-ax-brand-blue-100">
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
                     <Routes>
-                        <Route
-                            element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
-                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
-                        />
+                        <Route element={<Saksoversikt {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
                     </Routes>
                 </MemoryRouter>
             </div>
