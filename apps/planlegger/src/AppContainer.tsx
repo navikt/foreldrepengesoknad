@@ -11,7 +11,6 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import { PlanleggerDataInit } from './Planlegger';
@@ -24,7 +23,6 @@ const allNbMessages = {
     ...uiMessages.nb,
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
-    ...uttaksplanKalenderMessages.nb,
     ...formHookMessages.nb,
 };
 
@@ -52,7 +50,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nn,
         ...utilsMessages.nn,
         ...nyUttaksplanMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
         ...formHookMessages.nn,
     },
     en: {
@@ -60,7 +57,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.en,
         ...utilsMessages.en,
         ...nyUttaksplanMessages.en,
-        ...uttaksplanKalenderMessages.en,
         ...formHookMessages.en,
     },
 };

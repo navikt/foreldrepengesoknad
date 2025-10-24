@@ -19,7 +19,6 @@ import { LocaleAll, LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
 import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
@@ -33,7 +32,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...oppsummeringMessages.nb,
         ...uttaksplanMessages.nb,
         ...utilsMessages.nb,
-        ...uttaksplanKalenderMessages.nb,
         ...arbeidsforholdOgInntektMessages.nb,
         ...egenNæringMessages.nb,
         ...frilansMessages.nb,
@@ -47,7 +45,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...oppsummeringMessages.nn,
         ...uttaksplanMessages.nn,
         ...utilsMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
         ...arbeidsforholdOgInntektMessages.nn,
         ...egenNæringMessages.nn,
         ...frilansMessages.nn,

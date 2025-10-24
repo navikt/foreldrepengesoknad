@@ -55,31 +55,26 @@ const isDaysWithPeriode = (periodeColor: PeriodeColor) =>
 type Props = {
     day: number;
     periodeColor: PeriodeColor;
-    dayType: DayType;
     isSelected: boolean;
     dateTooltipCallback?: () => React.ReactElement | string;
     dateClickCallback?: () => void;
 };
 
-export const Day = ({ day, periodeColor, dayType, isSelected, dateTooltipCallback, dateClickCallback }: Props) => {
-    const isStart = dayType === DayType.FIRST_DAY;
-    const isEnd = dayType === DayType.LAST_DAY;
-    const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
-
+export const Day = ({ day, periodeColor, isSelected, dateTooltipCallback, dateClickCallback }: Props) => {
     const buttonRef = useRef<HTMLDivElement>(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
     return (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div
-            data-testid={`day:${day};dayColor:${periodeColor};dayType:${dayType}`}
+            data-testid={`day:${day};dayColor:${periodeColor};`}
             // eslint-disable-next-line max-len
-            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay} ${!!dateClickCallback && styles.cursor}`}
+            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
             ref={buttonRef}
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
             onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
             onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
-            onClick={dateClickCallback && isDaysWithPeriode(periodeColor) ? () => dateClickCallback() : undefined}
+            onClick={dateClickCallback ? () => dateClickCallback() : undefined}
         >
             {day}
             {dateTooltipCallback && isDaysWithPeriode(periodeColor) && (

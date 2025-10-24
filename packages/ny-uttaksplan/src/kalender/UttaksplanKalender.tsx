@@ -1,13 +1,22 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert, Button, Checkbox, HStack } from '@navikt/ds-react';
 
 import { BarnType, PeriodeColor } from '@navikt/fp-constants';
-import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import {
+    Barn,
+    Familiesituasjon,
+    NavnPåForeldre,
+    SaksperiodeNy,
+    UttakUtsettelseÅrsak_fpoversikt,
+    UttaksplanModus,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
     UttaksdagenString,
@@ -15,9 +24,15 @@ import {
     getFamiliehendelsedato,
     getForelderFarge,
     getUttaksperiodeFarge,
+    omitMany,
+    useMedia,
 } from '@navikt/fp-utils';
-import { PeriodeHullType, Planperiode, finnOgSettInnHull } from '@navikt/fp-uttaksplan-ny';
 
+import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
+import { UttaksplanDataContext } from '../context/UttaksplanDataContext';
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from '../utils/periodeUtils';
+import { RedigeringPanel } from './RedigeringPanel';
 import { UttaksplanLegend } from './UttaksplanLegend';
 import {
     getAnnenForelderSamtidigUttakPeriode,
@@ -27,10 +42,6 @@ import {
     isUttaksperiode,
 } from './helpers/uttaksplanHelpers';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
-
-type KalenderPeriode = {
-    periodeHullÅrsak?: PeriodeHullType;
-} & SaksperiodeNy;
 
 const slåSammenPerioder = (periods: Period[]) => {
     if (periods.length <= 1) {
@@ -56,7 +67,7 @@ const slåSammenPerioder = (periods: Period[]) => {
 };
 
 const getPerioderForKalendervisning = (
-    allePerioder: KalenderPeriode[],
+    allePerioder: Planperiode[],
     erFarEllerMedmor: boolean,
     barn: Barn,
     navnAnnenPart: string,
@@ -80,7 +91,7 @@ const getPerioderForKalendervisning = (
             (p) => p.fom === periode.fom && p.tom === periode.tom,
         );
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
-    }, [] as KalenderPeriode[]);
+    }, [] as Planperiode[]);
 
     const barnehageperiode = { fom: barnehagestartdato, tom: barnehagestartdato, color: PeriodeColor.PURPLE } as Period;
 
@@ -152,8 +163,8 @@ const getPerioderForKalendervisning = (
 };
 
 const getKalenderFargeForUttaksperiode = (
-    periode: KalenderPeriode,
-    allePerioder: KalenderPeriode[],
+    periode: Planperiode,
+    allePerioder: Planperiode[],
     erFarEllerMedmor: boolean,
 ): PeriodeColor => {
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
@@ -181,7 +192,7 @@ const getKalenderFargeForUttaksperiode = (
     return getUttaksperiodeFarge(periode.kontoType, periode.forelder, erFarEllerMedmor);
 };
 
-const getKalenderFargeForPeriodeUtenUttak = (periode: KalenderPeriode, barn: Barn): PeriodeColor => {
+const getKalenderFargeForPeriodeUtenUttak = (periode: Planperiode, barn: Barn): PeriodeColor => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFødsel = isFødtBarn(barn) || isUfødtBarn(barn);
     const treUkerFørFamhendelse = dayjs(familiehendelsesdato).subtract(3, 'weeks');
@@ -191,7 +202,7 @@ const getKalenderFargeForPeriodeUtenUttak = (periode: KalenderPeriode, barn: Bar
     return PeriodeColor.NONE;
 };
 
-const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor: boolean): PeriodeColor => {
+const getKalenderFargeForAnnenPart = (periode: Planperiode, erFarEllerMedmor: boolean): PeriodeColor => {
     if (periode.utsettelseÅrsak) {
         return erFarEllerMedmor ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
     }
@@ -202,13 +213,14 @@ const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor
     return PeriodeColor.NONE;
 };
 
-const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean) =>
-    (periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor);
+const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
+    (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
+    (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
-    periode: KalenderPeriode,
+    periode: Planperiode,
     erFarEllerMedmor: boolean,
-    allePerioder: KalenderPeriode[],
+    allePerioder: Planperiode[],
     foreldrepengerHarAktivitetskrav: boolean,
 ): PeriodeColor => {
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
@@ -260,9 +272,9 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
 };
 
 const getKalenderFargeForPeriodeType = (
-    periode: KalenderPeriode,
+    periode: Planperiode,
     erFarEllerMedmor: boolean,
-    allePerioder: KalenderPeriode[],
+    allePerioder: Planperiode[],
     barn: Barn,
 ): PeriodeColor => {
     if (isAvslåttPeriode(periode)) {
@@ -310,7 +322,7 @@ const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
     return sisteDagNr < førsteDagNr;
 };
 
-const getUnikeUtsettelsesårsaker = (allePerioderInklHull: KalenderPeriode[]) => {
+const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
     const utsettelseÅrsaker = allePerioderInklHull
         .map((u) => u.utsettelseÅrsak)
         .filter((utsettelseÅrsak): utsettelseÅrsak is UttakUtsettelseÅrsak_fpoversikt => !!utsettelseÅrsak);
@@ -323,11 +335,19 @@ interface Props {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erFarEllerMedmor: boolean;
     bareFarMedmorHarRett: boolean;
+    familiesituasjon: Familiesituasjon;
     barn: Barn;
     navnAnnenPart: string;
+    modus: UttaksplanModus;
     førsteUttaksdagNesteBarnsSak?: string;
     planleggerLegend?: ReactElement<any>;
     barnehagestartdato?: string;
+    handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void;
+    familiehendelsedato: string;
+    navnPåForeldre: NavnPåForeldre;
+    valgtStønadskonto: KontoBeregningDto;
+    erAleneOmOmsorg: boolean;
+    erMedmorDelAvSøknaden?: boolean;
 }
 
 export const UttaksplanKalender = ({
@@ -336,50 +356,66 @@ export const UttaksplanKalender = ({
     harAktivitetskravIPeriodeUtenUttak,
     erFarEllerMedmor,
     bareFarMedmorHarRett,
+    familiesituasjon,
     barn,
     navnAnnenPart,
     førsteUttaksdagNesteBarnsSak,
     planleggerLegend,
     barnehagestartdato,
+    handleOnPlanChange,
+    familiehendelsedato,
+    modus,
+    navnPåForeldre,
+    valgtStønadskonto,
+    erAleneOmOmsorg,
+    erMedmorDelAvSøknaden,
 }: Props) => {
     const intl = useIntl();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = barn.type === BarnType.ADOPTERT_ANNET_BARN || barn.type === BarnType.ADOPTERT_STEBARN;
     const erIPlanleggerModus = planleggerLegend !== undefined;
 
-    const allePerioder = [...søkersPerioder.concat(annenPartsPerioder || [])].sort((p1, p2) =>
-        dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1,
-    );
+    const isDesktop = useMedia('screen and (min-width: 768px)');
 
-    const foreldrepengerHarAktivitetskrav =
-        allePerioder.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        allePerioder.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
+    const [isRangeSelectorMode, setRangeSelectorMode] = useState(false);
+    const [valgtePerioder, setSelectedPeriods] = useState<Period[]>([]);
 
-    const søkersHullPerioder = finnOgSettInnHull(
-        allePerioder as Planperiode[],
+    const komplettPlan = utledKomplettPlan({
+        familiehendelsedato,
+        erFarEllerMedmor,
+        søkersPerioder,
+        annenPartsPerioder,
+        gjelderAdopsjon: erAdopsjon,
+        bareFarMedmorHarRett,
         harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsesdato,
-        erAdopsjon,
+        førsteUttaksdagNesteBarnsSak,
+        modus,
+    });
+
+    const annenPartsPlanperioder = annenPartsPerioder
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
+        : undefined;
+
+    const builder = Uttaksplanbuilder({
+        perioder: komplettPlan,
+        familiehendelsedato,
+        harAktivitetskravIPeriodeUtenUttak,
+        gjelderAdopsjon: erAdopsjon,
         bareFarMedmorHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
-    )
-        .filter((p) => !!p.periodeHullÅrsak)
-        .map<KalenderPeriode>((p) => ({
-            fom: p.fom,
-            tom: p.tom,
-            forelder: søkersPerioder[0].forelder,
-            periodeHullÅrsak: p.periodeHullÅrsak,
-        }));
+        opprinneligPlan: annenPartsPlanperioder,
+        erIPlanleggerModus: true,
+    });
 
-    const allePerioderInklHull = [...allePerioder.concat(søkersHullPerioder)].sort((p1, p2) =>
-        dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1,
-    );
+    const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(komplettPlan);
 
-    const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(allePerioderInklHull);
+    const foreldrepengerHarAktivitetskrav =
+        komplettPlan.some((p) => p.kontoType === 'FORELDREPENGER') &&
+        komplettPlan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
 
     const perioderForKalendervisning = getPerioderForKalendervisning(
-        allePerioderInklHull,
+        komplettPlan,
         erFarEllerMedmor,
         barn,
         navnAnnenPart,
@@ -405,12 +441,58 @@ export const UttaksplanKalender = ({
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = allePerioderInklHull.some(
+    const harAvslåttePerioderSomIkkeGirTapteDager = komplettPlan.some(
         (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
     );
 
+    const dateClickCallback = (selectedDate: string) => {
+        if (isRangeSelectorMode) {
+            setSelectedPeriods((old) =>
+                old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
+                    ? []
+                    : [
+                          {
+                              color: PeriodeColor.BLUE,
+                              fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
+                              tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
+                              isSelected: true,
+                              srText: '',
+                          },
+                      ],
+            );
+        } else {
+            setSelectedPeriods((old) =>
+                valgtePerioder.some((p) => p.fom === selectedDate)
+                    ? old.filter((p) => p.fom !== selectedDate)
+                    : [
+                          ...old,
+                          {
+                              color: PeriodeColor.BLUE,
+                              fom: selectedDate,
+                              tom: selectedDate,
+                              isSelected: true,
+                              srText: '',
+                          },
+                      ].sort(sortPeriods),
+            );
+        }
+    };
+
     return (
-        <div>
+        <UttaksplanDataContext
+            initialState={{
+                BARN: barn,
+                ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
+                FAMILIEHENDELSEDATO: familiehendelsedato,
+                NAVN_PÅ_FORELDRE: navnPåForeldre,
+                UTTAKSPLAN: komplettPlan,
+                FAMILIESITUASJON: familiesituasjon,
+                MODUS: modus,
+                VALGT_STØNADSKONTO: valgtStønadskonto,
+                ALENE_OM_OMSORG: erAleneOmOmsorg,
+                ER_MEDMOR_DEL_AV_SØKNADEN: erMedmorDelAvSøknaden,
+            }}
+        >
             {harAvslåttePerioderSomIkkeGirTapteDager && (
                 <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
@@ -430,7 +512,41 @@ export const UttaksplanKalender = ({
                         />
                     )}
                 </div>
-                <Calendar periods={perioderForKalendervisning} />
+                <Checkbox
+                    className="mb-4 print:hidden"
+                    checked={isRangeSelectorMode}
+                    onChange={() => {
+                        setSelectedPeriods([]);
+                        setRangeSelectorMode(!isRangeSelectorMode);
+                    }}
+                >
+                    <FormattedMessage id="kalender.velgRange" />
+                </Checkbox>
+
+                <HStack gap="space-4">
+                    <Calendar
+                        periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
+                        lastSelectedDate={valgtePerioder.at(-1)?.tom}
+                        dateClickCallback={dateClickCallback}
+                    >
+                        {!isDesktop && handleOnPlanChange && (
+                            <RedigeringPanel
+                                valgtePerioder={valgtePerioder}
+                                komplettPlan={komplettPlan}
+                                handleOnPlanChange={getModifyPlan(builder, handleOnPlanChange)}
+                                familiehendelsedato={familiehendelsedato}
+                            />
+                        )}
+                    </Calendar>
+                    {isDesktop && handleOnPlanChange && valgtePerioder.length > 0 && (
+                        <RedigeringPanel
+                            valgtePerioder={valgtePerioder}
+                            komplettPlan={komplettPlan}
+                            handleOnPlanChange={getModifyPlan(builder, handleOnPlanChange)}
+                            familiehendelsedato={familiehendelsedato}
+                        />
+                    )}
+                </HStack>
             </div>
             <Button
                 className="mt-8 print:hidden"
@@ -440,6 +556,28 @@ export const UttaksplanKalender = ({
             >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
-        </div>
+        </UttaksplanDataContext>
     );
 };
+
+const findFomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date1 : date2);
+
+const findTomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date2 : date1);
+
+const sortPeriods = (a: Period, b: Period) => dayjs(a.fom).diff(dayjs(b.fom));
+
+const getModifyPlan =
+    (
+        uttaksplanBuilder: ReturnType<typeof Uttaksplanbuilder>,
+        handleOnPlanChange: (perioder: SaksperiodeNy[]) => void,
+    ) =>
+    (oppdatertPeriode: Planperiode, leggTil: boolean) => {
+        const planperioder = leggTil
+            ? uttaksplanBuilder.leggTilPeriode(oppdatertPeriode)
+            : uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode);
+        const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+        handleOnPlanChange(
+            resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
+        );
+    };

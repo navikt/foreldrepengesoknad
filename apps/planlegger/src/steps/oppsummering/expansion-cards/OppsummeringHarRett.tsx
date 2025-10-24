@@ -35,7 +35,7 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
@@ -279,6 +279,12 @@ export const OppsummeringHarRett = ({
                                 />
                             }
                             barnehagestartdato={barnehagestartdato}
+                            familiehendelsedato={familiehendelsedato}
+                            modus="innsyn"
+                            familiesituasjon={familiesituasjon}
+                            navnPåForeldre={navnPåForeldre}
+                            valgtStønadskonto={{} as any}
+                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                     </VStack>
                 </ExpansionCard.Content>

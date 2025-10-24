@@ -1,13 +1,37 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
 
+const MINSTERETTER = {
+    farRundtFødsel: 10,
+    toTette: 0,
+};
+
 const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
+    args: {
+        familiehendelsedato: '2024-04-04',
+        modus: 'planlegger',
+        handleOnPlanChange: action('button-click'),
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: StønadskontoType.Mødrekvote, dager: 95 },
+                { konto: StønadskontoType.Fedrekvote, dager: 95 },
+                { konto: StønadskontoType.Fellesperiode, dager: 101 },
+                { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erAleneOmOmsorg: false,
+        erMedmorDelAvSøknaden: false,
+        familiesituasjon: 'fødsel',
+        navnPåForeldre: { mor: 'Mamma', farMedmor: 'Pappa' },
+    },
 } satisfies Meta<typeof UttaksplanKalender>;
 export default meta;
 
