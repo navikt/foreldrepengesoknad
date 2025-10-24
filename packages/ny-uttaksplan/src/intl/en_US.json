@@ -174,7 +174,10 @@
     "TidsperiodeSpørsmål.tom": "To date",
     "KontotypeSpørsmål.velgKontotype": "Select account type",
     "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
+<<<<<<< HEAD
     "KontotypeSpørsmål.ugyldigKontotype": "Invalid account type selected for the day(s) you have chosen",
+=======
+>>>>>>> a22b4c4c3f (Editering av kelender)
     "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?",
     "kalender.fødsel": "Birth",
     "kalender.termin": "Due date",
@@ -188,7 +191,10 @@
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} postpones parental benefits",
     "kalender.helg": "Weekend (not days with parental allowance)",
     "kalender.tapteDager": "Days you can lose",
+<<<<<<< HEAD
     "kalender.pleiepenger": "Deduction for attendance allowance",
+=======
+>>>>>>> a22b4c4c3f (Editering av kelender)
     "kalender.utsettelse": "You postpone parental benefits due to {reason}",
     "kalender.utsettelse.ARBEID": "because you are working",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "because the child is hospitalized",
@@ -200,27 +206,6 @@
     "kalender.lastNed": "Download the calendar as PDF",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
-    "kalender.velgRange": "Range selection",
-    "kalender.barnehageplass": "Kindergarten",
-    "kalender.ferie": "Vacation",
-    "RedigeringPanel.SlettAlle": "Delete all",
-    "RedigeringPanel.LeggInnFerie": "Add vacation",
-    "RedigeringPanel.RedigerUttaksplan": "Add/change",
-    "RedigeringPanel.ValgteDager": "{antall} days",
-    "RedigeringPanel.EksisterendePerioder": "Selected dates contain existing period(s)",
-    "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Parental benefits before birth",
-    "RedigeringPanel.Far": "Father",
-    "RedigeringPanel.Mor": "Mother",
-    "RedigeringPanel.SlettPeriode": "Remove days from period",
-    "RedigeringPanel.Felles": "Both parents",
-    "RedigeringPanel.Fellesperiode": "Shared period",
-    "RedigeringPanel.Ferie": "Vacation",
-    "RedigeringPanel.Foreldrepenger": "Parental benefits",
-    "RedigeringPanel.Dager": "{dato} {antall} days",
-    "RedigeringPanel.KanIkkeLeggeTilFerie": "Vacation cannot be added before due date/birth",
-    "RedigeringPanel.NyeDagerForklaring": "You have marked days that are not yet included in the plan. Select 'Add' to create a new period.",
-    "UttaksplanKalender.VelgEnkeltDager": "Single days",
-    "UttaksplanKalender.VelgPeriode": "Period (from - to)",
-    "UttaksplanKalender.VelgDagEllerPeriode": "Select days or period",
-    "LeggTilPeriodePanel.Dager": "Selected days:"
+    "kalender.velgRange": "Turn on range selection",
+    "RedigeringPanel.RedigerUttaksplan": "Edit"
 }

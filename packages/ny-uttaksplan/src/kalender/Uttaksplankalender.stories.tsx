@@ -1,5 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+<<<<<<< HEAD
 import { ComponentProps, useState } from 'react';
+=======
+>>>>>>> a22b4c4c3f (Editering av kelender)
 import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -17,6 +20,7 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
+<<<<<<< HEAD
         modus: 'søknad',
         handleOnPlanChange: action('button-click'),
         readOnly: false,
@@ -60,6 +64,26 @@ const meta = {
         );
     },
 } satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanKalender>>;
+=======
+        familiehendelsedato: '2024-04-04',
+        modus: 'planlegger',
+        handleOnPlanChange: action('button-click'),
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: StønadskontoType.Mødrekvote, dager: 95 },
+                { konto: StønadskontoType.Fedrekvote, dager: 95 },
+                { konto: StønadskontoType.Fellesperiode, dager: 101 },
+                { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erAleneOmOmsorg: false,
+        erMedmorDelAvSøknaden: false,
+        familiesituasjon: 'fødsel',
+        navnPåForeldre: { mor: 'Mamma', farMedmor: 'Pappa' },
+    },
+} satisfies Meta<typeof UttaksplanKalender>;
+>>>>>>> a22b4c4c3f (Editering av kelender)
 export default meta;
 
 type Story = StoryObj<typeof meta>;

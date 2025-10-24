@@ -1,6 +1,5 @@
 .days {
-    height: 30px;
-    width: 30px;
+    height: 40px;
     padding: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
@@ -11,10 +10,8 @@
     font-weight: 600;
     line-height: 40px;
     letter-spacing: 0.06px;
+    cursor: default;
     border-radius: 4px;
-    user-select: none;
-    all: 'unset';
-    display: 'block';
 }
 
 .cursorAndHoover {
@@ -257,12 +254,20 @@
 }
 
 .pinkDay {
-    background-color: var(--ax-danger-200) !important;
+    background-color: var(--ax-meta-purple-400) !important;
     padding: 10px 10px 10px 10px;
     print-color-adjust: exact;
 }
 
 .purpleDay {
     background-color: var(--ax-meta-purple-400) !important;
+    print-color-adjust: exact;
+}
+
+.purpleDaySelected {
+    border-top: 2px solid var(--ax-meta-purple-400);
+    border-bottom: 2px solid var(--ax-meta-purple-400);
+    border-left: 1px solid var(--ax-meta-purple-400);
+    border-right: 1px solid var(--ax-meta-purple-400);
     print-color-adjust: exact;
 }

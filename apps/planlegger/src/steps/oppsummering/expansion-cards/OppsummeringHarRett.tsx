@@ -28,7 +28,7 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
@@ -254,24 +254,26 @@ export const OppsummeringHarRett = ({
                         )}
                         <UttaksplanDataProvider
                             barn={mapOmBarnetTilBarn(barnet)}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
-                            modus="planlegger"
+                            planleggerLegend={
+                                <CalendarLabels
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    barnet={barnet}
+                                    hvemHarRett={hvemHarRett}
+                                    uttaksplan={
+                                        tilpassPlan
+                                            ? gjeldendeUttaksplan
+                                            : [...planforslag.søker1, ...planforslag.søker2]
+                                    }
+                                />
+                            }
+                            barnehagestartdato={barnehagestartdato}
+                            familiehendelsedato={familiehendelsedato}
+                            modus="innsyn"
+                            familiesituasjon={familiesituasjon}
+                            navnPåForeldre={navnPåForeldre}
                             valgtStønadskonto={{} as any}
-                            aleneOmOmsorg={erAleneOmOmsorg}
-                            erMedmorDelAvSøknaden={false}
-                            bareFarMedmorHarRett={bareFarMedmorHarRett}
-                            harAktivitetskravIPeriodeUtenUttak={false}
-                            erDeltUttak={erDeltUttak}
-                        >
-                            <UttaksplanKalender
-                                saksperioder={
-                                    tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
-                                }
-                                barnehagestartdato={barnehagestartdato}
-                                readOnly
-                            />
-                        </UttaksplanDataProvider>
+                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
+                        />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

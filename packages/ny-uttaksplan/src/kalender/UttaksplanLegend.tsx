@@ -1,86 +1,68 @@
 import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, HStack } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
-import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { PeriodeColor } from '@navikt/fp-constants';
+import { Barn, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { CalendarLabel } from '@navikt/fp-ui';
 
-import { LegendLabel } from '../types/LegendLabel';
-import { UttaksplanKalenderLegendInfo } from '../types/UttaksplanKalenderLegendInfo';
+import { getFamiliehendelseKalendarLabel, getKalenderPeriodenavn } from './uttaksplanKalenderUtils';
 
 const getCalendarLabel = (
-    label: LegendLabel,
+    color: PeriodeColor,
+    barn: Barn,
     navnAnnenPart: string,
+    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): ReactNode => {
-    switch (label) {
-        case 'HELG':
-            return intl.formatMessage({ id: 'kalender.helg' });
-        case 'FERIE':
-            return intl.formatMessage({ id: 'kalender.ferie' });
-        case 'TERMIN':
-            return intl.formatMessage({ id: 'kalender.termin' });
-        case 'FØDSEL':
-            return intl.formatMessage({ id: 'kalender.fødsel' });
-        case 'ADOPSJON':
-            return intl.formatMessage({ id: 'kalender.adopsjon' });
-        case 'BARNEHAGEPLASS':
-            return intl.formatMessage({ id: 'kalender.barnehageplass' });
-        case 'MORS_DEL':
-            return erFarEllerMedmor
-                ? intl.formatMessage(
-                      { id: 'kalender.annenPartPeriode' },
-                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
-                  )
-                : intl.formatMessage({ id: 'kalender.dinPeriode' });
-        case 'FARS_DEL':
-            return erFarEllerMedmor
-                ? intl.formatMessage({ id: 'kalender.dinPeriode' })
-                : intl.formatMessage(
-                      { id: 'kalender.annenPartPeriode' },
-                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
-                  );
-        case 'TAPTE_DAGER':
-            return intl.formatMessage({ id: 'kalender.tapteDager' });
+    switch (color) {
+        case PeriodeColor.PINK:
+            return getFamiliehendelseKalendarLabel(barn, intl);
+        case PeriodeColor.BLUE:
+        case PeriodeColor.GREEN:
+        case PeriodeColor.BLUESTRIPED:
+        case PeriodeColor.GREENSTRIPED:
+        case PeriodeColor.LIGHTBLUE:
+        case PeriodeColor.LIGHTGREEN:
+        case PeriodeColor.LIGHTBLUEGREEN:
+        case PeriodeColor.LIGHTGREENBLUE:
+        case PeriodeColor.GREENOUTLINE:
+        case PeriodeColor.BLUEOUTLINE:
+        case PeriodeColor.BLACK:
+        case PeriodeColor.GRAY:
+            return getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl);
         default:
-            return label;
+            return null;
     }
 };
 
 interface Props {
+    uniqueColors: PeriodeColor[];
+    barn: Barn;
     navnAnnenPart: string;
+    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[];
     erFarEllerMedmor: boolean;
-    selectLegend: (color: CalendarPeriodColor) => void;
-    legendInfo: UttaksplanKalenderLegendInfo[];
 }
 
-export const UttaksplanLegend = ({ navnAnnenPart, erFarEllerMedmor, selectLegend, legendInfo }: Props) => {
+export const UttaksplanLegend = ({
+    uniqueColors,
+    barn,
+    navnAnnenPart,
+    unikeUtsettelseÅrsaker,
+    erFarEllerMedmor,
+}: Props) => {
     const intl = useIntl();
-
-    return (
-        <HStack gap="space-16" align="center">
-            {legendInfo
-                .filter((info) => info.color !== 'NONE')
-                .map((info) => (
-                    <button
-                        key={info.color}
-                        onClick={
-                            info.color !== 'PINK' && info.color !== 'PURPLE' && info.color !== 'BLACKOUTLINE'
-                                ? () => selectLegend(info.color)
-                                : undefined
-                        }
-                        type="button"
-                        className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"
-                    >
-                        <CalendarLabel color={info.color}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
-                            </BodyShort>
-                        </CalendarLabel>
-                    </button>
-                ))}
-        </HStack>
-    );
+    return uniqueColors
+        .filter((c) => c !== PeriodeColor.NONE)
+        .map((color) => (
+            <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.46rem', width: 'fit-content' }}>
+                <CalendarLabel iconType={color}>
+                    <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                        {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
+                    </BodyShort>
+                </CalendarLabel>
+            </div>
+        ));
 };

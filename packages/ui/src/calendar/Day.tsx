@@ -29,103 +29,35 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
 };
 
 type Props = {
-    isoDate: string;
-    periodeColor: CalendarPeriodColor;
-    isFocused: boolean;
-    dateTooltipCallback?: (date: string) => React.ReactElement | string;
-    dateClickCallback?: (date: string) => void;
-    setFocusedDate: (date: Dayjs) => void;
+    day: number;
+    periodeColor: PeriodeColor;
+    isSelected: boolean;
+    dateTooltipCallback?: () => React.ReactElement | string;
+    dateClickCallback?: () => void;
 };
 
-export const Day = React.memo(
-    ({ isoDate, periodeColor, isFocused, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
-        const date = dayjs(isoDate);
-        const day = date.date();
+export const Day = ({ day, periodeColor, isSelected, dateTooltipCallback, dateClickCallback }: Props) => {
+    const buttonRef = useRef<HTMLDivElement>(null);
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
-        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
-
-        const buttonRef = useRef<HTMLButtonElement>(null);
-
-        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
-        useEffect(() => {
-            if (isFocused) {
-                buttonRef.current?.focus();
-            }
-        }, [isFocused]);
-
-        const isClickable = !!dateClickCallback && !isWeekend(date);
-
-        return (
-            <button
-                ref={buttonRef}
-                type="button"
-                data-testid={`day:${day};dayColor:${periodeColor}`}
-                tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover}`}
-                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
-                onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
-                onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
-                onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
-                onKeyDown={
-                    dateClickCallback
-                        ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
-                        : undefined
-                }
-            >
-                {day}
-                {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
-                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                        <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
-                    </Popover>
-                )}
-            </button>
-        );
-    },
-);
-
-const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
-    periodeColor !== 'NONE' && periodeColor !== 'GRAY';
-
-export const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
-
-export const logOnLocalhost = (message: string) => {
-    if (globalThis.location.hostname === 'localhost') {
-        // eslint-disable-next-line no-console -- Logg rendring av Month og Day på localhost for å enkelt avdekke ytelsesproblem
-        console.log(message);
-    }
-};
-
-const handleKeyNavigationAndSelection = (
-    e: React.KeyboardEvent,
-    date: Dayjs,
-    dateClickCallback: (date: string) => void,
-    setFocusedDate: (date: Dayjs) => void,
-) => {
-    e.preventDefault();
-    const isClickable = !!dateClickCallback && !isWeekend(date);
-
-    switch (e.key) {
-        case 'ArrowLeft':
-            setFocusedDate(date.subtract(1, 'day'));
-            break;
-        case 'ArrowRight':
-            setFocusedDate(date.add(1, 'day'));
-            break;
-        case 'ArrowUp':
-            setFocusedDate(date.subtract(7, 'day'));
-            break;
-        case 'ArrowDown':
-            setFocusedDate(date.add(7, 'day'));
-            break;
-        case 'Enter':
-            if (isClickable) {
-                dateClickCallback(date.format(ISO_DATE_FORMAT));
-            }
-            break;
-        case ' ':
-            if (isClickable) {
-                dateClickCallback(date.format(ISO_DATE_FORMAT));
-            }
-    }
+    return (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+        <div
+            data-testid={`day:${day};dayColor:${periodeColor};`}
+            // eslint-disable-next-line max-len
+            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
+            ref={buttonRef}
+            // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+            onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
+            onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
+            onClick={dateClickCallback ? () => dateClickCallback() : undefined}
+        >
+            {day}
+            {dateTooltipCallback && isDaysWithPeriode(periodeColor) && (
+                <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
+                    <Popover.Content>{dateTooltipCallback()}</Popover.Content>
+                </Popover>
+            )}
+        </div>
+    );
 };
