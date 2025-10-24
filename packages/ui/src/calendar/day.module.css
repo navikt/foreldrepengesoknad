@@ -12,6 +12,7 @@
     letter-spacing: 0.06px;
     cursor: default;
     border-radius: 4px;
+    user-select: none;
 }
 
 .cursor {
@@ -23,11 +24,9 @@
     print-color-adjust: exact;
 }
 
-.blueDaySelected {
-    border-top: 2px solid var(--ax-accent-400);
-    border-bottom: 2px solid var(--ax-accent-400);
-    border-left: 1px solid var(--ax-accent-400);
-    border-right: 1px solid var(--ax-accent-400);
+.darkblueDay {
+    background-color: var(--ax-accent-500) !important;
+    color: var(--ax-bg-default);
     print-color-adjust: exact;
 }
 
@@ -35,14 +34,6 @@
     background-color: var(--ax-accent-300) !important;
     border-top: 2px solid var(--ax-accent-500);
     border-bottom: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
-
-.lightblueDaySelected {
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
-    border-left: 1px solid var(--ax-accent-500);
-    border-right: 1px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -66,14 +57,6 @@
     print-color-adjust: exact;
 }
 
-.lightgreenSelected {
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
-    border-left: 1px solid var(--ax-success-400);
-    border-right: 1px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
-
 .lightgreenDay.firstDay {
     border-left: 2px solid var(--ax-success-400);
 }
@@ -89,14 +72,6 @@
 
 .greenDay {
     background-color: var(--ax-success-400) !important;
-    print-color-adjust: exact;
-}
-
-.greenDaySelected {
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
-    border-left: 1px solid var(--ax-success-400);
-    border-right: 1px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -119,30 +94,6 @@
     ) !important;
     border-top: 2px solid var(--ax-success-400);
     border-bottom: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
-
-.greenStripedDaySelected {
-    background: linear-gradient(
-        45deg,
-        var(--ax-success-400) 0%,
-        var(--ax-success-400) 15%,
-        var(--ax-bg-default) 15%,
-        var(--ax-bg-default) 30%,
-        var(--ax-success-400) 30%,
-        var(--ax-success-400) 45%,
-        var(--ax-bg-default) 45%,
-        var(--ax-bg-default) 60%,
-        var(--ax-success-400) 60%,
-        var(--ax-success-400) 75%,
-        var(--ax-bg-default) 75%,
-        var(--ax-bg-default) 90%,
-        var(--ax-success-400) 90%
-    ) !important;
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
-    border-left: 1px solid var(--ax-success-400);
-    border-right: 1px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -181,30 +132,6 @@
     print-color-adjust: exact;
 }
 
-.blueStripedDaySelected {
-    background: linear-gradient(
-        45deg,
-        var(--ax-accent-400) 0%,
-        var(--ax-accent-400) 15%,
-        var(--ax-bg-default) 15%,
-        var(--ax-bg-default) 30%,
-        var(--ax-accent-400) 30%,
-        var(--ax-accent-400) 45%,
-        var(--ax-bg-default) 45%,
-        var(--ax-bg-default) 60%,
-        var(--ax-accent-400) 60%,
-        var(--ax-accent-400) 75%,
-        var(--ax-bg-default) 75%,
-        var(--ax-bg-default) 90%,
-        var(--ax-accent-400) 90%
-    ) !important;
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
-    border-left: 1px solid var(--ax-accent-500);
-    border-right: 1px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
-
 .blueStripedDay.firstDay {
     border-left: 2px solid var(--ax-accent-500);
 }
@@ -219,7 +146,7 @@
 }
 
 .grayDay {
-    background-color: var(--ax-neutral-200);
+    background-color: var(--ax-neutral-100);
     print-color-adjust: exact;
     cursor: default;
 }
@@ -230,25 +157,9 @@
     print-color-adjust: exact;
 }
 
-.blackDaySelected {
-    border-top: 2px solid var(--ax-bg-neutral-strong);
-    border-bottom: 2px solid var(--ax-bg-neutral-strong);
-    border-left: 1px solid var(--ax-bg-neutral-strong);
-    border-right: 1px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
-
 .blueOutlineDay {
     border-top: 2px solid var(--ax-accent-500);
     border-bottom: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
-
-.blueOutlineSelected {
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
-    border-left: 1px solid var(--ax-accent-500);
-    border-right: 1px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -268,14 +179,6 @@
 .greenOutlineDay {
     border-top: 2px solid var(--ax-success-400);
     border-bottom: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
-
-.greenOutlineDaySelected {
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
-    border-left: 1px solid var(--ax-success-400);
-    border-right: 1px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -306,22 +209,6 @@
     print-color-adjust: exact;
 }
 
-.lightgreenBlueDaySelected {
-    background: linear-gradient(
-        to top,
-        var(--ax-accent-400),
-        var(--ax-accent-400) 50%,
-        var(--ax-success-200) 50%,
-        var(--ax-success-200) 75%,
-        var(--ax-success-200) 100%
-    ) !important;
-    border-top: 2px solid var(--ax-accent-400);
-    border-bottom: 2px solid var(--ax-accent-400);
-    border-left: 1px solid var(--ax-accent-400);
-    border-right: 1px solid var(--ax-accent-400);
-    print-color-adjust: exact;
-}
-
 .lightgreenBlueDay.firstDay {
     border-left: 2px solid var(--ax-accent-500);
 }
@@ -348,21 +235,6 @@
     print-color-adjust: exact;
 }
 
-.lightblueGreenDaySelected {
-    background: linear-gradient(
-        to top,
-        var(--ax-success-400),
-        var(--ax-success-400) 50%,
-        var(--ax-accent-300) 50%,
-        var(--ax-accent-300) 100%
-    ) !important;
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
-    border-left: 1px solid var(--ax-success-400);
-    border-right: 1px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
-
 .lightblueGreenDay.firstDay {
     border-left: 2px solid var(--ax-success-400);
 }
@@ -383,20 +255,12 @@
 }
 
 .pinkDay {
-    background-color: var(--ax-meta-purple-400) !important;
+    background-color: var(--ax-danger-200) !important;
     padding: 10px 10px 10px 10px;
     print-color-adjust: exact;
 }
 
 .purpleDay {
     background-color: var(--ax-meta-purple-400) !important;
-    print-color-adjust: exact;
-}
-
-.purpleDaySelected {
-    border-top: 2px solid var(--ax-meta-purple-400);
-    border-bottom: 2px solid var(--ax-meta-purple-400);
-    border-left: 1px solid var(--ax-meta-purple-400);
-    border-right: 1px solid var(--ax-meta-purple-400);
     print-color-adjust: exact;
 }

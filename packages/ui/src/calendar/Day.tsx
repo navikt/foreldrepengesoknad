@@ -16,6 +16,7 @@ export enum DayType {
 const DAY_STYLE = {
     [PeriodeColor.NONE]: styles.none,
     [PeriodeColor.BLUE]: styles.blueDay,
+    [PeriodeColor.DARKBLUE]: styles.darkblueDay,
     [PeriodeColor.LIGHTGREEN]: styles.lightgreenDay,
     [PeriodeColor.GRAY]: styles.grayDay,
     [PeriodeColor.PINK]: styles.pinkDay,
@@ -31,36 +32,17 @@ const DAY_STYLE = {
     [PeriodeColor.BLUESTRIPED]: styles.blueStripedDay,
 };
 
-const SELECTED_DAY_STYLE = {
-    [PeriodeColor.NONE]: styles.none,
-    [PeriodeColor.BLUE]: styles.blueDaySelected,
-    [PeriodeColor.LIGHTGREEN]: styles.lightgreenSelected,
-    [PeriodeColor.GRAY]: styles.grayDay,
-    [PeriodeColor.PINK]: styles.pinkDay,
-    [PeriodeColor.PURPLE]: styles.purpleDaySelected,
-    [PeriodeColor.BLACK]: styles.blackDaySelected,
-    [PeriodeColor.BLUEOUTLINE]: styles.blueOutlineSelected,
-    [PeriodeColor.GREENOUTLINE]: styles.greenOutlineDaySelected,
-    [PeriodeColor.LIGHTBLUE]: styles.lightblueDaySelected,
-    [PeriodeColor.GREEN]: styles.greenDaySelected,
-    [PeriodeColor.LIGHTBLUEGREEN]: styles.lightblueGreenDaySelected,
-    [PeriodeColor.LIGHTGREENBLUE]: styles.lightgreenBlueDaySelected,
-    [PeriodeColor.GREENSTRIPED]: styles.greenStripedDaySelected,
-    [PeriodeColor.BLUESTRIPED]: styles.blueStripedDaySelected,
-};
-
 const isDaysWithPeriode = (periodeColor: PeriodeColor) =>
     periodeColor !== PeriodeColor.NONE && periodeColor !== PeriodeColor.GRAY;
 
 type Props = {
     day: number;
     periodeColor: PeriodeColor;
-    isSelected: boolean;
     dateTooltipCallback?: () => React.ReactElement | string;
     dateClickCallback?: () => void;
 };
 
-export const Day = ({ day, periodeColor, isSelected, dateTooltipCallback, dateClickCallback }: Props) => {
+export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback }: Props) => {
     const buttonRef = useRef<HTMLDivElement>(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
@@ -68,8 +50,7 @@ export const Day = ({ day, periodeColor, isSelected, dateTooltipCallback, dateCl
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div
             data-testid={`day:${day};dayColor:${periodeColor};`}
-            // eslint-disable-next-line max-len
-            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
+            className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
             ref={buttonRef}
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
             onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}

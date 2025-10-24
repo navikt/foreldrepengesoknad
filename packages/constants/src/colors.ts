@@ -4,6 +4,7 @@ export enum PeriodeColor {
     PURPLE = 'PURPLE',
     LIGHTBLUE = 'LIGHTBLUE',
     BLUE = 'BLUE',
+    DARKBLUE = 'DARKßBLUE',
     GREEN = 'GREEN',
     LIGHTGREEN = 'LIGHTGREEN',
     GRAY = 'GRAY',

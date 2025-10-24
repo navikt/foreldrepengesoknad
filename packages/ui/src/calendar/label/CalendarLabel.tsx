@@ -81,7 +81,7 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
                 </HStack>
             </div>
         );
-    } else {
+    } else if (iconType !== PeriodeColor.DARKBLUE) {
         return (
             <div className={`${PANEL_STYLE[iconType]}`}>
                 <HStack gap="space-8" align="end" wrap={false}>
@@ -91,4 +91,5 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
             </div>
         );
     }
+    return null;
 };

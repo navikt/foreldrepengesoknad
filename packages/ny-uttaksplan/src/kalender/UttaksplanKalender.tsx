@@ -28,6 +28,7 @@ import {
     omitMany,
     useMedia,
 } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
 import { UttaksplanDataContext } from '../context/UttaksplanDataContext';
@@ -453,7 +454,7 @@ export const UttaksplanKalender = ({
                     ? []
                     : [
                           {
-                              color: PeriodeColor.BLUE,
+                              color: PeriodeColor.DARKBLUE,
                               fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
                               tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
                               isSelected: true,
@@ -468,7 +469,7 @@ export const UttaksplanKalender = ({
                     : [
                           ...old,
                           {
-                              color: PeriodeColor.BLUE,
+                              color: PeriodeColor.DARKBLUE,
                               fom: selectedDate,
                               tom: selectedDate,
                               isSelected: true,
@@ -510,6 +511,22 @@ export const UttaksplanKalender = ({
                             navnAnnenPart={navnAnnenPart}
                             unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                             erFarEllerMedmor={erFarEllerMedmor}
+                            selectLegend={(color: PeriodeColor) => {
+                                const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
+                                setSelectedPeriods((old) =>
+                                    old.some((p) => p.fom === periode.fom || p.tom === periode.tom)
+                                        ? []
+                                        : [
+                                              {
+                                                  color: PeriodeColor.DARKBLUE,
+                                                  fom: periode?.fom,
+                                                  tom: periode?.tom,
+                                                  isSelected: true,
+                                                  srText: '',
+                                              },
+                                          ],
+                                );
+                            }}
                         />
                     )}
                 </div>
