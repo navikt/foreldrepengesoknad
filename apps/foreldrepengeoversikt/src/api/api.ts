@@ -31,10 +31,8 @@ export const API_URLS = {
     dokumenter: `${urlPrefiks}/rest/dokument/alle`,
     inntektsmelding: `${urlPrefiks}/rest/innsyn/inntektsmeldinger`,
     satser: `${urlPrefiks}/rest/satser`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
     manglendeVedlegg: `${urlPrefiks}/rest/historikk/vedlegg`,
     tidslinje: `${urlPrefiks}/rest/innsyn/tidslinje`,
-
     ettersend: `${urlPrefiks}/fpsoknad/api/soknad/ettersend`,
     lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
     lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
@@ -124,9 +122,3 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
 export const sendEttersending = async (ettersending: EttersendelseDto) => {
     return ky.post(API_URLS.ettersend, { json: ettersending }).json();
 };
-
-export const erSakOppdatertOptions = () =>
-    queryOptions({
-        queryKey: ['SAK_OPPDATERT'],
-        queryFn: () => ky.get(API_URLS.erOppdatert).json<boolean>(),
-    });

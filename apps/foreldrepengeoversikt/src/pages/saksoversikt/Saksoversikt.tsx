@@ -4,16 +4,15 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
-    erSakOppdatertOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
     hentSatserOptions,
@@ -100,8 +99,6 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
-    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
-    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
     const ENGANGSTØNAD = useQuery({
@@ -121,30 +118,6 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
 
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
-
-    if (harIkkeOppdatertSak) {
-        return (
-            <VStack gap="space-8">
-                {nettoppSendtInnSøknad && (
-                    <BekreftelseSendtSøknad
-                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.søker.bankkonto}
-                        ytelse={undefined}
-                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        saksnummer={params.saksnummer}
-                    />
-                )}
-                <Alert variant="warning">
-                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
-                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                </Alert>
-                <Link as={RouterLink} to={`${OversiktRoutes.HOVEDSIDE}`}>
-                    {intl.formatMessage({ id: 'saksoversikt' })}
-                </Link>
-            </VStack>
-        );
-    }
 
     if (!gjeldendeSak) {
         return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;

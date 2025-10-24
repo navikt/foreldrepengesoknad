@@ -1,11 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { Søkerinfo } from '@navikt/fp-types';
 
-import { erSakOppdatertOptions } from '../../api/api';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
 import { HarSaker } from '../../components/har-saker/HarSaker';
@@ -33,9 +31,6 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
-
-    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
-    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const navigate = useNavigate();
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
@@ -66,16 +61,10 @@ export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     />
                 )}
-                {harIkkeOppdatertSak && (
-                    <Alert variant="warning">
-                        Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
-                        kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                    </Alert>
-                )}
                 {alleYtelser.length > 0 ? (
                     <HarSaker grupperteSaker={grupperteSaker} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                 ) : (
-                    <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
+                    <HarIkkeSaker harOppdatertSak />
                 )}
                 {avslåttSvangerskapspengesak && (
                     <SakLink sak={avslåttSvangerskapspengesak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
