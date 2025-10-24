@@ -6,8 +6,7 @@ import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanKalender, UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
@@ -127,12 +126,18 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 {visKalender && (
                     <UttaksplanKalender
                         bareFarMedmorHarRett={bareFarMedmorHarRett}
+                        familiehendelsedato={familiehendelseDato}
                         barn={barn}
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         søkersPerioder={relevantePerioder}
                         annenPartsPerioder={relevanteAnnenPartsPerioder}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
+                        modus="innsyn"
+                        familiesituasjon={familiesituasjon}
+                        navnPåForeldre={navnPåForeldre}
+                        valgtStønadskonto={{} as any}
+                        erAleneOmOmsorg={søkerErAleneOmOmsorg}
                     />
                 )}
             </VStack>

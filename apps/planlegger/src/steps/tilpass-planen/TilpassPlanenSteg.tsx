@@ -15,10 +15,10 @@ import { Forelder } from '@navikt/fp-constants';
 import { Dekningsgrad, KontoBeregningDto, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import {
     KvoteOppsummering,
     Planperiode,
+    UttaksplanKalender,
     UttaksplanNy,
     finnOgSettInnHull,
     utledKomplettPlan,
@@ -305,6 +305,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
+                                familiehendelsedato={familiehendelsedato}
                                 søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
                                 annenPartsPerioder={getAnnenpartsPerioder(
                                     erDeltUttak,
@@ -323,6 +324,13 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}
+                                handleOnPlanChange={handleOnPlanChange}
+                                modus="planlegger"
+                                valgtStønadskonto={valgtStønadskonto}
+                                erAleneOmOmsorg={erAleneOmOmsorg}
+                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
+                                familiesituasjon={familiesituasjon}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </div>
                     )}

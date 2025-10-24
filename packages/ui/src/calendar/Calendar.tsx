@@ -3,12 +3,12 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React from 'react';
 
-import { HGrid } from '@navikt/ds-react';
+import { HGrid, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import { formatDateIso } from '@navikt/fp-utils';
 
-import { Day, DayType } from './Day';
+import { Day } from './Day';
 import { Month } from './Month';
 import styles from './calendar.module.css';
 
@@ -48,44 +48,6 @@ const findDayColor = (date: Dayjs, periods: Period[]) => {
     return period?.color ?? PeriodeColor.NONE;
 };
 
-const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
-    return (
-        date.isoWeekday() === 6 ||
-        date.isoWeekday() === 1 ||
-        day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.subtract(1, 'day'), 'day'))
-    );
-};
-
-const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
-    return (
-        date.isoWeekday() === 7 ||
-        date.isoWeekday() === 5 ||
-        day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.add(1, 'day'), 'day'))
-    );
-};
-
-const findDayType = (date: Dayjs, day: number, periods: Period[]) => {
-    const firstDay = isFirstDay(date, day, periods);
-    const lastDay = isLastDay(date, day, periods);
-
-    if (firstDay && lastDay) {
-        return DayType.FIRST_AND_LAST_DAY;
-    }
-    if (firstDay) {
-        return DayType.FIRST_DAY;
-    }
-    if (lastDay) {
-        return DayType.LAST_DAY;
-    }
-    return DayType.BETWEEN_DAY;
-};
-
 const monthDiff = (d1: Date, d2: Date) => {
     let months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
@@ -115,6 +77,8 @@ interface Props {
     showWeekNumbers?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
+    children?: React.ReactNode;
+    lastSelectedDate?: string;
 }
 
 export const Calendar = ({
@@ -123,6 +87,8 @@ export const Calendar = ({
     showWeekNumbers = true,
     dateTooltipCallback,
     dateClickCallback,
+    children,
+    lastSelectedDate,
 }: Props) => {
     const months = findMonths(periods[0].fom, periods.at(-1)!.tom);
 
@@ -140,21 +106,21 @@ export const Calendar = ({
                 gap={{ xs: '2', sm: '4', md: '8' }}
                 columns={
                     useSmallerWidth
-                        ? { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' }
-                        : { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }
+                        ? { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
+                        : { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
                 }
             >
-                {months.map((monthData, index) => (
-                    <Month
-                        key={monthData.year + '-' + monthData.month}
-                        year={monthData.year}
-                        month={monthData.month}
-                        showYear={index > 0 && months[index - 1].year !== monthData.year}
-                        headerLevel={useSmallerWidth ? '5' : '4'}
-                        showWeekNumbers={showWeekNumbers}
-                    >
-                        {[...new Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
-                            (day) => {
+                {months.map((monthData) => (
+                    <VStack gap="space-4" key={monthData.year + '-' + monthData.month}>
+                        <Month
+                            year={monthData.year}
+                            month={monthData.month}
+                            headerLevel={useSmallerWidth ? '5' : '4'}
+                            showWeekNumbers={showWeekNumbers}
+                        >
+                            {[
+                                ...new Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys(),
+                            ].map((day) => {
                                 const date = dayjs()
                                     .year(monthData.year)
                                     .month(monthData.month)
@@ -166,7 +132,6 @@ export const Calendar = ({
                                         key={monthData.year + monthData.month + day}
                                         day={day + 1}
                                         periodeColor={findDayColor(date, periods)}
-                                        dayType={findDayType(date, day + 1, periods)}
                                         isSelected={
                                             periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'))
                                                 ?.isSelected || false
@@ -179,9 +144,13 @@ export const Calendar = ({
                                         }
                                     />
                                 );
-                            },
-                        )}
-                    </Month>
+                            })}
+                        </Month>
+                        {children &&
+                            dayjs(lastSelectedDate).month() === monthData.month &&
+                            dayjs(lastSelectedDate).year() === monthData.year &&
+                            children}
+                    </VStack>
                 ))}
             </HGrid>
         </>

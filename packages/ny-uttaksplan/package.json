@@ -26,6 +26,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
@@ -37,6 +38,7 @@
         "react": "19.1.1",
         "react-hook-form": "7.63.0",
         "react-intl": "7.1.11",
+        "react-to-pdf": "2.0.1",
         "typescript": "5.9.2"
     },
     "devDependencies": {

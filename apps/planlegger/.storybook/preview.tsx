@@ -7,7 +7,6 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
@@ -30,21 +29,18 @@ const withIntlProvider = getIntlDecorator({
     nb: {
         ...nbMessages,
         ...uiMessages.nb,
-        ...uttaksplanKalenderMessages.nb,
         ...nyUttaksplanMessages.nb,
         ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
         ...uiMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
         ...nyUttaksplanMessages.nn,
         ...formHookMessages.nn,
     },
     en: {
         ...enMessages,
         ...uiMessages.en,
-        ...uttaksplanKalenderMessages.en,
         ...nyUttaksplanMessages.en,
         ...formHookMessages.en,
     },

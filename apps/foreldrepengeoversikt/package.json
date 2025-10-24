@@ -37,7 +37,6 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@navikt/fp-uttaksplan-kalender-ny": "workspace:*",
         "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "3.4.0",

@@ -10,7 +10,14 @@ import {
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
-import { erAlenesøker, getErFarEllerMedmor, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker,
+    erMedmorDelAvSøknaden,
+    getErFarEllerMedmor,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnPåForeldre,
+} from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
@@ -22,13 +29,13 @@ import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerRoutes } from '../../app-data/routes';
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
@@ -271,6 +278,13 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}
+                                familiehendelsedato={familiehendelsedato}
+                                modus="planlegger"
+                                erAleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
+                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
+                                familiesituasjon={getFamiliesituasjon(omBarnet)}
+                                navnPåForeldre={getNavnPåForeldre(hvemPlanlegger, intl)}
+                                valgtStønadskonto={valgtStønadskonto}
                             />
                         </div>
                     </VStack>

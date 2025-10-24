@@ -1,27 +1,21 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { Box, HGrid, Heading } from '@navikt/ds-react';
+import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
 import styles from './month.module.css';
 
 dayjs.extend(isoWeek);
 
-const getMonthName = (monthDate: Dayjs, template: string = 'MMMM') => {
-    const monthName = monthDate.format(template);
-    return monthName.charAt(0).toUpperCase() + monthName.slice(1);
-};
-
 type Props = {
     year: number;
     month: number;
-    showYear: boolean;
     children: React.ReactNode[];
     headerLevel: '4' | '5';
     showWeekNumbers: boolean;
 };
 
-export const Month = ({ year, month, showYear, children, headerLevel, showWeekNumbers }: Props) => {
+export const Month = ({ year, month, children, headerLevel, showWeekNumbers }: Props) => {
     const monthDate = dayjs().year(year).month(month).startOf('month');
 
     const startWeekDay = monthDate.isoWeekday();
@@ -36,32 +30,59 @@ export const Month = ({ year, month, showYear, children, headerLevel, showWeekNu
     const nrOfColumns = showWeekNumbers ? 8 : 7;
 
     return (
-        <Box.New className={styles.box} data-testid={`year:${year};month:${month}`} aria-hidden>
-            <Heading size="small" level={headerLevel}>
-                {showYear ? `${getMonthName(monthDate, 'MMM')} (${year})` : getMonthName(monthDate)}
-            </Heading>
-            {nrOfWeeks.map((weeknr) => (
-                <HGrid key={weeknr} columns={nrOfColumns}>
-                    {[...new Array(nrOfColumns).keys()].map((index) => {
-                        if (showWeekNumbers && index === 0) {
+        <Box.New
+            borderWidth="1"
+            width="300px"
+            padding="5"
+            borderRadius="4"
+            borderColor="neutral-subtle"
+            data-testid={`year:${year};month:${month}`}
+            aria-hidden
+        >
+            <VStack gap="space-12">
+                <Heading size="small" level={headerLevel} align="center">
+                    {`${monthDate.format('MMMM')} ${year}`}
+                </Heading>
+                <div>
+                    <HGrid columns={nrOfColumns}>
+                        {[...new Array(nrOfColumns).keys()].map((index) => {
+                            if (showWeekNumbers && index === 0) {
+                                return <div key={8} className={styles.weeknr}></div>;
+                            }
+
                             return (
-                                <div key={8} className={styles.weeknr}>
-                                    {firstWeekNrOfMonth + weeknr}
+                                <div key={index} className={styles.weekday}>
+                                    {dayjs()
+                                        .isoWeekday(showWeekNumbers ? index : index + 1)
+                                        .format('dd')}
                                 </div>
                             );
-                        }
+                        })}
+                    </HGrid>
+                    {nrOfWeeks.map((weeknr) => (
+                        <HGrid key={weeknr} columns={nrOfColumns}>
+                            {[...new Array(nrOfColumns).keys()].map((index) => {
+                                if (showWeekNumbers && index === 0) {
+                                    return (
+                                        <div key={8} className={styles.weeknr}>
+                                            {firstWeekNrOfMonth + weeknr}
+                                        </div>
+                                    );
+                                }
 
-                        const day = showWeekNumbers ? index - 1 : index;
-                        if (weeknr === 0 && day < startWeekDay - 1) {
-                            return <div key={day} />;
-                        }
-                        if (weeknr + 1 === nrOfWeeks.length && day >= endWeekday) {
-                            return <div key={day} />;
-                        }
-                        return children[arrayCounter++];
-                    })}
-                </HGrid>
-            ))}
+                                const day = showWeekNumbers ? index - 1 : index;
+                                if (weeknr === 0 && day < startWeekDay - 1) {
+                                    return <div key={day} />;
+                                }
+                                if (weeknr + 1 === nrOfWeeks.length && day >= endWeekday) {
+                                    return <div key={day} />;
+                                }
+                                return children[arrayCounter++];
+                            })}
+                        </HGrid>
+                    ))}
+                </div>
+            </VStack>
         </Box.New>
     );
 };
