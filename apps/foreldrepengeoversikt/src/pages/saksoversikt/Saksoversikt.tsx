@@ -99,9 +99,8 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
 
-    // TODO: når vise denne??
-    const nettoppSendtInnSøknad = relevantNyTidslinjehendelse !== undefined;
-    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
+    const visBekreftelsePåSendtSøknad =
+        relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
