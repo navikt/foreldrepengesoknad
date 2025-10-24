@@ -6,8 +6,11 @@ import { TidsperiodeDate } from '@navikt/fp-common';
 const holidays = new DateHolidays('no');
 
 export const getOffentligeFridager = (tidsperiode: TidsperiodeDate): HolidaysTypes.Holiday[] => {
-    const fraÅr = tidsperiode.fom.getFullYear();
-    const tilÅr = tidsperiode.tom.getFullYear();
+    const fraÅr =
+        typeof tidsperiode.fom === 'string' ? new Date(tidsperiode.fom).getFullYear() : tidsperiode.fom.getFullYear();
+    const tilÅr =
+        typeof tidsperiode.tom === 'string' ? new Date(tidsperiode.tom).getFullYear() : tidsperiode.tom.getFullYear();
+
     let days = [] as HolidaysTypes.Holiday[];
     if (fraÅr === tilÅr) {
         days = holidays.getHolidays(fraÅr);
