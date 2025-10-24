@@ -98,7 +98,7 @@
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "Dette er hvis {kunEnPartSkalHa, select, true {du} other {dere}} har foreldrepenger sammenhengende fra omsorgsovertagelsen den {dato}.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker": "<b>{uker} uker {dager, select, 0 {} 1 {+ {dager} dag} other {+ {dager} dager}} av de {uker2} ukene {dager2, select, 0 {} 1 {+ {dager2} dag} other {+ {dager2} dager}}</b> kan {hvem} bruke uten aktivitetskrav til {hvemPart1}.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker": "<b>{uker} uker {dager, select, 0 {} 1 {+ {dager} dag} other {+ {dager} dager}} av de {uker2} ukene {dager2, select, 0 {} 1 {+ {dager2} dag} other {+ {dager2} dager}}</b> kan {hvem} bruke hvis {hvemPart1} er i <a>godkjent aktivitet</a>.",
-    "OmBarnetSteg.HvorMange": "Hvor mange barn venter {erAlenesøker, select, true {du} other {dere}}?",
+    "OmBarnetSteg.HvorMange": "Hvor mange barn skal {erAlenesøker, select, true {du} other {dere}} planlegge foreldrepenger for?",
     "OmBarnetSteg.HvorMange.Required": "Du må svare på hvor mange barn {erAlenesøker, select, true {du} other {dere}} {erFødsel, select, true {venter} other {skal ta over omsorgen for}} før du går videre.",
     "OmBarnetSteg.Adopsjon.HvorMange": "Hvor mange barn skal {erAlenesøker, select, true {du} other {dere}} ta over omsorgen for?",
     "OmBarnetSteg.Tittel": "Barnet",

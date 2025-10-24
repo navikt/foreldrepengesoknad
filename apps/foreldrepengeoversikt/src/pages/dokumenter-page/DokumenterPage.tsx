@@ -1,23 +1,24 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
-import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table, VStack } from '@navikt/ds-react';
 
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { DokumentDto } from '@navikt/fp-types';
+import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from '../../api/api';
-import { Dokument } from '../../components/dokument/Dokument';
-import { GrupperteDokumenter } from '../../components/grupperte-dokumenter/GrupperteDokumenter';
 import { DokumenterHeader } from '../../components/header/Header';
 import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { grupperDokumenterPåTidspunkt } from '../../utils/dokumenterUtils';
-import { guid } from '../../utils/guid';
+import { DokumentAvsender } from './components/DokumentAvsender';
+import { DokumentLenke } from './components/DokumentLenke';
 
 export const DokumenterPage = () => {
     useSetBackgroundColor('white');
@@ -34,15 +35,54 @@ export const DokumenterPage = () => {
     );
 };
 
+interface ScopedSortState extends SortState {
+    orderBy: keyof DokumentDto;
+}
+
 const DokumenterPageInner = () => {
     const params = useParams();
+    const [page, setPage] = useState(1);
+    const [sort, setSort] = useState<ScopedSortState | undefined>();
     const dokumenterQuery = useQuery(hentDokumenterOptions(params.saksnummer!));
 
     if (dokumenterQuery.isPending) {
         return <Loader size="large" aria-label="Henter dokumenter" />;
     }
 
-    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterQuery.data ?? []);
+    const rowsPerPage = 6;
+    const dokumenter = dokumenterQuery.data ?? [];
+
+    const handleSort = (sortKey: ScopedSortState['orderBy']) => {
+        setSort(
+            sort && sortKey === sort.orderBy && sort.direction === 'descending'
+                ? undefined
+                : {
+                      orderBy: sortKey,
+                      direction:
+                          sort && sortKey === sort.orderBy && sort.direction === 'ascending'
+                              ? 'descending'
+                              : 'ascending',
+                  },
+        );
+    };
+
+    const comparator = (a: string, b: string): number => {
+        if (dayjs(a).isBefore(b)) {
+            return -1;
+        }
+        if (dayjs(a).isAfter(b)) {
+            return 1;
+        }
+        return 0;
+    };
+
+    const sortedDokumenter = [...dokumenter].sort((a, b) => {
+        if (sort) {
+            return sort.direction === 'ascending' ? comparator(b.mottatt, a.mottatt) : comparator(a.mottatt, b.mottatt);
+        }
+        return 1;
+    });
+    const paginatedSortedDokumenter = sortedDokumenter.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     return (
         <>
@@ -59,15 +99,46 @@ const DokumenterPageInner = () => {
             {!dokumenterQuery.isError && (
                 <>
                     <div className="mb-10">
-                        {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
-                            const dokumenter = dokument[1];
-
-                            if (dokumenter.length === 1) {
-                                return <Dokument key={guid()} dokument={dokumenter[0]} />;
-                            } else {
-                                return <GrupperteDokumenter key={guid()} dokumenter={dokumenter} />;
-                            }
-                        })}
+                        <VStack gap="4">
+                            <Table
+                                size="medium"
+                                sort={sort}
+                                onSortChange={(sortKey) => handleSort(sortKey as ScopedSortState['orderBy'])}
+                            >
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell scope="col">Navn</Table.HeaderCell>
+                                        <Table.ColumnHeader sortKey="mottatt" sortable={true} scope="col">
+                                            Mottatt
+                                        </Table.ColumnHeader>
+                                        <Table.HeaderCell scope="col">Avsender</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {paginatedSortedDokumenter.map((dokument) => {
+                                        return (
+                                            <Table.Row key={dokument.dokumentId}>
+                                                <Table.DataCell className="max-w-70" scope="row">
+                                                    <DokumentLenke dokument={dokument} />
+                                                </Table.DataCell>
+                                                <Table.DataCell scope="row">
+                                                    {formatDateExtended(dokument.mottatt)}
+                                                </Table.DataCell>
+                                                <Table.DataCell scope="row">
+                                                    <DokumentAvsender dokumentType={dokument.type} />
+                                                </Table.DataCell>
+                                            </Table.Row>
+                                        );
+                                    })}
+                                </Table.Body>
+                            </Table>
+                            <Pagination
+                                page={page}
+                                onPageChange={setPage}
+                                count={Math.ceil(dokumenter.length / rowsPerPage)}
+                                size="small"
+                            />
+                        </VStack>
                     </div>
                     <Alert variant="info" className="mb-8">
                         <Heading level="3" size="small">
