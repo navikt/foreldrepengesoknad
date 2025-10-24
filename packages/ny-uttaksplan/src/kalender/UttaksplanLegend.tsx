@@ -44,6 +44,7 @@ interface Props {
     navnAnnenPart: string;
     unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[];
     erFarEllerMedmor: boolean;
+    selectLegend: (color: PeriodeColor) => void;
 }
 
 export const UttaksplanLegend = ({
@@ -52,17 +53,25 @@ export const UttaksplanLegend = ({
     navnAnnenPart,
     unikeUtsettelseÅrsaker,
     erFarEllerMedmor,
+    selectLegend,
 }: Props) => {
     const intl = useIntl();
     return uniqueColors
         .filter((c) => c !== PeriodeColor.NONE)
         .map((color) => (
-            <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.46rem', width: 'fit-content' }}>
+            <button
+                key={color}
+                onClick={
+                    color !== PeriodeColor.PINK && color !== PeriodeColor.PURPLE ? () => selectLegend(color) : undefined
+                }
+                type="button"
+                className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"
+            >
                 <CalendarLabel iconType={color}>
                     <BodyShort style={{ whiteSpace: 'nowrap' }}>
                         {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
                     </BodyShort>
                 </CalendarLabel>
-            </div>
+            </button>
         ));
 };

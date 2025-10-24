@@ -12,6 +12,7 @@
     letter-spacing: 0.06px;
     cursor: default;
     border-radius: 4px;
+    user-select: none;
 }
 
 .cursorAndHoover {
@@ -35,7 +36,8 @@
 
 .lightblueDay {
     background-color: var(--ax-accent-300) !important;
-    border: 2px solid var(--ax-accent-500);
+    border-top: 2px solid var(--ax-accent-500);
+    border-bottom: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -54,7 +56,8 @@
 
 .lightgreenDay {
     background-color: var(--ax-success-400) !important;
-    border: 2px solid var(--ax-success-400);
+    border-top: 2px solid var(--ax-success-400);
+    border-bottom: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -93,7 +96,8 @@
         var(--ax-bg-default) 90%,
         var(--ax-success-400) 90%
     ) !important;
-    border: 2px solid var(--ax-success-400);
+    border-top: 2px solid var(--ax-success-400);
+    border-bottom: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -127,7 +131,8 @@
         var(--ax-bg-default) 90%,
         var(--ax-accent-400) 90%
     ) !important;
-    border: 2px solid var(--ax-accent-500);
+    border-top: 2px solid var(--ax-accent-500);
+    border-bottom: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -156,13 +161,9 @@
     print-color-adjust: exact;
 }
 
-.blackOutlineDay {
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
-
 .blueOutlineDay {
-    border: 2px solid var(--ax-accent-500);
+    border-top: 2px solid var(--ax-accent-500);
+    border-bottom: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -180,7 +181,8 @@
 }
 
 .greenOutlineDay {
-    border: 2px solid var(--ax-success-400);
+    border-top: 2px solid var(--ax-success-400);
+    border-bottom: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -206,7 +208,8 @@
         var(--ax-success-200) 75%,
         var(--ax-success-200) 100%
     ) !important;
-    border: 2px solid var(--ax-accent-400);
+    border-top: 2px solid var(--ax-accent-400);
+    border-bottom: 2px solid var(--ax-accent-400);
     print-color-adjust: exact;
 }
 
@@ -231,7 +234,8 @@
         var(--ax-accent-300) 50%,
         var(--ax-accent-300) 100%
     ) !important;
-    border: 2px solid var(--ax-success-400);
+    border-top: 2px solid var(--ax-success-400);
+    border-bottom: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -254,20 +258,12 @@
 }
 
 .pinkDay {
-    background-color: var(--ax-meta-purple-400) !important;
+    background-color: var(--ax-danger-200) !important;
     padding: 10px 10px 10px 10px;
     print-color-adjust: exact;
 }
 
 .purpleDay {
     background-color: var(--ax-meta-purple-400) !important;
-    print-color-adjust: exact;
-}
-
-.purpleDaySelected {
-    border-top: 2px solid var(--ax-meta-purple-400);
-    border-bottom: 2px solid var(--ax-meta-purple-400);
-    border-left: 1px solid var(--ax-meta-purple-400);
-    border-right: 1px solid var(--ax-meta-purple-400);
     print-color-adjust: exact;
 }

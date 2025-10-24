@@ -1,8 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-<<<<<<< HEAD
-import { ComponentProps, useState } from 'react';
-=======
->>>>>>> a22b4c4c3f (Editering av kelender)
 import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -20,51 +16,6 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
-<<<<<<< HEAD
-        modus: 'søknad',
-        handleOnPlanChange: action('button-click'),
-        readOnly: false,
-        valgtStønadskonto: {
-            kontoer: [
-                { konto: 'MØDREKVOTE', dager: 95 },
-                { konto: 'FEDREKVOTE', dager: 95 },
-                { konto: 'FELLESPERIODE', dager: 101 },
-                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-            ],
-            minsteretter: MINSTERETTER,
-        },
-        aleneOmOmsorg: false,
-        erMedmorDelAvSøknaden: false,
-        navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
-        children: null,
-    },
-    render: (args) => {
-        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
-
-        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
-            setPerioder(oppdatertePerioder);
-            args.handleOnPlanChange?.(oppdatertePerioder);
-        };
-
-        return (
-            <UttaksplanDataProvider
-                barn={args.barn}
-                erFarEllerMedmor={args.erFarEllerMedmor}
-                navnPåForeldre={args.navnPåForeldre}
-                modus={args.modus}
-                valgtStønadskonto={args.valgtStønadskonto}
-                aleneOmOmsorg={args.aleneOmOmsorg || false}
-                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
-                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
-                harAktivitetskravIPeriodeUtenUttak={false}
-                erDeltUttak={args.erDeltUttak || false}
-            >
-                <UttaksplanKalender {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
-            </UttaksplanDataProvider>
-        );
-    },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanKalender>>;
-=======
         familiehendelsedato: '2024-04-04',
         modus: 'planlegger',
         handleOnPlanChange: action('button-click'),
@@ -83,7 +34,6 @@ const meta = {
         navnPåForeldre: { mor: 'Mamma', farMedmor: 'Pappa' },
     },
 } satisfies Meta<typeof UttaksplanKalender>;
->>>>>>> a22b4c4c3f (Editering av kelender)
 export default meta;
 
 type Story = StoryObj<typeof meta>;

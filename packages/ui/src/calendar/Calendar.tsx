@@ -24,15 +24,20 @@ export type Period = {
     isSelected?: boolean;
 };
 
+const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
+
 const findDayColor = (date: Dayjs, periods: Period[]) => {
     const fomFirstPeriod = periods[0].fom;
     const tomLastPeriod = periods.at(-1)!.tom;
 
     if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
-        return PeriodeColor.NONE;
+        return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
     }
 
-    const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
+    // Kan ha en vanlig periode og en valgt periode på samme dag
+    const filteredPeriods = periods.filter((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
+    // Valgt periode skal ha prioritet
+    const period = filteredPeriods.find((p) => p.isSelected) || filteredPeriods[0];
 
     if (period?.color === PeriodeColor.PINK) {
         return PeriodeColor.PINK;
@@ -42,7 +47,7 @@ const findDayColor = (date: Dayjs, periods: Period[]) => {
         return PeriodeColor.PURPLE;
     }
 
-    if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+    if (isWeekend(date)) {
         return PeriodeColor.GRAY;
     }
 
@@ -136,15 +141,13 @@ export const Calendar = ({
                                         key={monthData.year + monthData.month + day}
                                         day={day + 1}
                                         periodeColor={findDayColor(date, periods)}
-                                        isSelected={
-                                            periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'))
-                                                ?.isSelected || false
-                                        }
                                         dateTooltipCallback={
                                             dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
                                         }
                                         dateClickCallback={
-                                            dateClickCallback ? () => dateClickCallback(isoDate) : undefined
+                                            dateClickCallback && !isWeekend(date)
+                                                ? () => dateClickCallback(isoDate)
+                                                : undefined
                                         }
                                     />
                                 );
