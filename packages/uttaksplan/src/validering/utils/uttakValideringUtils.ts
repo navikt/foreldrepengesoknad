@@ -6,7 +6,6 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
@@ -136,7 +135,7 @@ export const getUgyldigUttakMor = (
 
     const fellesPerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.konto === StønadskontoType.Fellesperiode);
+        .filter((p) => p.forelder === Forelder.mor && p.konto === 'FELLESPERIODE');
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
@@ -161,7 +160,7 @@ const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: 
             return true;
         }
 
-        if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
+        if (periode.konto === 'FELLESPERIODE' || periode.konto === 'FORELDREPENGER') {
             return (
                 periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
                 periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
@@ -169,7 +168,7 @@ const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: 
             );
         }
 
-        if (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.AktivitetsfriKvote) {
+        if (periode.konto === 'FEDREKVOTE' || periode.konto === 'AKTIVITETSFRI_KVOTE') {
             return periode.erMorForSyk === true;
         }
 

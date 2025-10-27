@@ -4,7 +4,6 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
-    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
@@ -21,7 +20,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-04-29'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -31,7 +30,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-08-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -41,7 +40,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-10-07'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -54,7 +53,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             tom: new Date('2021-12-15'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
     {
         id: '2',
@@ -64,7 +63,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             tom: new Date('2022-01-05'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '3',
@@ -74,7 +73,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             tom: new Date('2022-05-18'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '4',
@@ -84,7 +83,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             tom: new Date('2022-07-01'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
     {
         id: '5',
@@ -102,7 +101,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             tom: new Date('2022-09-23'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -115,7 +114,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             tom: new Date('2021-09-03'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -134,7 +133,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             tom: new Date('2021-12-10'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '4',
@@ -153,7 +152,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             tom: new Date('2022-01-07'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '6',
@@ -163,7 +162,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             tom: new Date('2022-04-29'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
     {
         id: '7',
@@ -278,7 +277,7 @@ describe('Uttaksplanbuilder tester', () => {
                 tom: new Date('2022-11-11'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Mødrekvote,
+            konto: 'MØDREKVOTE',
         };
         const result = Uttaksplanbuilder(
             perioderMedToPerioderFørFødsel,

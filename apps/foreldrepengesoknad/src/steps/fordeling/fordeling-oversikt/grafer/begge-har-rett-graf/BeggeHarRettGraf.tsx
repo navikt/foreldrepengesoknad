@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
-import { FordelingEier, FordelingFargekode, FordelingGrafInfo } from 'types/FordelingOversikt';
+import { FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getFamiliehendelseNavn } from 'utils/familiehendelseUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { getBeggeHarRettGrafFordeling } from '../../fordelingOversiktUtils';
@@ -44,7 +44,7 @@ export const getFargeClass = (fargekode: FordelingFargekode): string => {
 };
 
 interface Props {
-    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    kontoer: KontoBeregningDto;
     erFarEllerMedmor: boolean;
     erAdopsjon: boolean;
     erBarnetFødt: boolean;
@@ -87,7 +87,7 @@ export const BeggeHarRettGraf = ({
     const famiHendelseFieldWidth = (widthFamiliehendelse / sumBredde) * 100;
     return (
         <div className={styles.graf} aria-hidden={true}>
-            {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
+            {fordelingList.map((fordeling, index) => {
                 const width = (fordeling.antallDager / sumBredde) * 100;
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
                 const finalWidth = index === indexForFamiliehendelse ? width + famiHendelseFieldWidth : width;

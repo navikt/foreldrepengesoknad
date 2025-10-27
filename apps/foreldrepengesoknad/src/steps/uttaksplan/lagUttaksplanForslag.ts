@@ -19,7 +19,7 @@ import {
     isAdoptertAnnetBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import {
     finnOgSettInnHull,
@@ -30,7 +30,7 @@ import {
 const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     annenForelder: AnnenForelder,
     annenPartsPerioder: Periode[] | undefined,
     fordeling: Fordeling,
@@ -98,6 +98,7 @@ const getSøkerensUttaksplanForslag = (
         });
 
         return finnOgSettInnHull(
+            // @ts-expect-error (TOR): Fiks type
             forslag,
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
@@ -182,7 +183,7 @@ const oppdaterPlanForslagMedAnnenPartsPerioder = (
 };
 
 export const lagUttaksplanForslag = (
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     annenPartsPerioder: Periode[] | undefined,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,

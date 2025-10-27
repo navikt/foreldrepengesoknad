@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -32,6 +32,7 @@ type StønadskontoParams = {
 export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
-        queryFn: () => ky.post(API_URLS.konto, { json: data }).json<TilgjengeligeStønadskontoer>(),
+        queryFn: () =>
+            ky.post(API_URLS.konto, { json: data }).json<{ '100': KontoBeregningDto; '80': KontoBeregningDto }>(),
         staleTime: Infinity,
     });

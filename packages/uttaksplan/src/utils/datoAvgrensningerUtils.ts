@@ -1,4 +1,5 @@
-import { StønadskontoType, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
@@ -43,7 +44,7 @@ export const getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB = (
 };
 
 export const getDatoavgrensningerForStønadskonto = (
-    konto: StønadskontoType | undefined,
+    konto: KontoTypeUttak | undefined,
     familiehendelsesdato: Date,
     tidsperiode: Partial<TidsperiodeDate> | undefined,
     ugyldigeTidsperioder: Tidsperiode[] | undefined,
@@ -58,7 +59,7 @@ export const getDatoavgrensningerForStønadskonto = (
             termindato,
         );
     }
-    if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (konto === 'FORELDREPENGER_FØR_FØDSEL') {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato);
     }
     if (isValidTidsperiodeString(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(familiehendelsesdato)) {

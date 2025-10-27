@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, StønadskontoType, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { Periodetype, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 
@@ -10,7 +11,7 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     tidsperiode: TidsperiodeDate,
-    stønadskontoType: StønadskontoType,
+    stønadskontoType: KontoTypeUttak,
     bareFarHarRett: boolean,
     antallBarn: number,
     erAleneOmOmsorg: boolean,
@@ -21,10 +22,7 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
         return false;
     }
 
-    if (
-        stønadskontoType === StønadskontoType.AktivitetsfriKvote ||
-        uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk
-    ) {
+    if (stønadskontoType === 'AKTIVITETSFRI_KVOTE' || uttakRundtFødselÅrsak === UttakRundtFødselÅrsak.morErForSyk) {
         return false;
     }
     if (søkerErFarEllerMedmor && (bareFarHarRett || erAleneOmOmsorg) && antallBarn > 1) {
@@ -33,7 +31,7 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
         }
         return true;
     }
-    if (!erDeltUttakINorge && stønadskontoType !== StønadskontoType.Fellesperiode) {
+    if (!erDeltUttakINorge && stønadskontoType !== 'FELLESPERIODE') {
         return false;
     }
     return periodetype === Periodetype.Uttak && erFlerbarnssøknad && søkerErFarEllerMedmor;

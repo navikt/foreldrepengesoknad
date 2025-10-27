@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType, Forelder } from '@navikt/fp-constants';
 import { PeriodeResultatÅrsak, SaksperiodeNy, UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -19,13 +19,13 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
             },
             {
@@ -44,13 +44,13 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
             },
             {
                 fom: '2024-06-14',
                 tom: '2024-06-27',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 gradering: {
                     aktivitet: {
                         type: UttakArbeidType.ANNET,
@@ -62,7 +62,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 samtidigUttak: 50,
             },
         ] satisfies SaksperiodeNy[],
@@ -70,14 +70,14 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 forelder: Forelder.farMedmor,
                 samtidigUttak: 50,
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 forelder: Forelder.farMedmor,
             },
         ] satisfies SaksperiodeNy[],
@@ -100,7 +100,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
             },
             {
                 fom: '2021-06-29',
@@ -128,7 +128,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
             },
             {
                 fom: '2021-06-15',
@@ -161,20 +161,20 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 samtidigUttak: 100,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
             },
             {
                 fom: '2024-06-14',
                 tom: '2024-07-02',
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 gradering: {
                     aktivitet: {
                         type: UttakArbeidType.FRILANS,
@@ -187,19 +187,19 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-04-19',
                 tom: '2024-05-16',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
             },
             {
@@ -211,7 +211,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             {
                 fom: '2024-05-24',
                 tom: '2024-05-30',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
             },
         ],
@@ -444,12 +444,12 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             },
             {
                 fom: '2023-07-03',
                 tom: '2023-07-07',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 forelder: Forelder.mor,
                 resultat: {
                     innvilget: false,
@@ -461,7 +461,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
             {
                 fom: '2023-07-10',
                 tom: '2024-05-17',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 forelder: Forelder.mor,
             },
         ] satisfies SaksperiodeNy[],
@@ -483,19 +483,19 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
             {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2023-07-03',
                 tom: '2024-05-17',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-05-18',
                 tom: '2024-07-07',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 forelder: Forelder.mor,
                 resultat: {
                     innvilget: false,
@@ -523,7 +523,7 @@ export const KortPeriodeMedHelg: Story = {
                 fom: '2024-05-24',
                 tom: '2024-05-27',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -546,7 +546,7 @@ export const KortPeriodeUtenHelg: Story = {
                 fom: '2024-05-22',
                 tom: '2024-05-24',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -568,19 +568,19 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
             },
             {
                 fom: '2024-05-28',
                 tom: '2024-06-06',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
             },
             {
                 fom: '2024-06-07',
                 tom: '2024-06-12',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -603,7 +603,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 samtidigUttak: 50,
             },
         ] satisfies SaksperiodeNy[],
@@ -627,7 +627,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
                 fom: '2025-05-21',
                 tom: '2025-05-27',
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 samtidigUttak: 70,
             },
         ] satisfies SaksperiodeNy[],

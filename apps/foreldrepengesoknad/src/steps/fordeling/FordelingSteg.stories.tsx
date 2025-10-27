@@ -9,13 +9,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import {
-    Arbeidsforhold,
-    PersonFrontend,
-    SøkersituasjonFp,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-} from '@navikt/fp-types';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Arbeidsforhold, KontoBeregningDto, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
@@ -145,7 +140,7 @@ type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
-const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad;
+const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as KontoBeregningDto;
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
@@ -157,11 +152,11 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 280,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -169,7 +164,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -214,11 +209,11 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 294,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -230,7 +225,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -274,7 +269,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -282,7 +277,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -322,7 +317,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 385,
                                 },
                             ],
@@ -330,7 +325,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -374,7 +369,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -382,7 +377,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -426,7 +421,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -434,7 +429,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -478,7 +473,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -486,7 +481,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -529,7 +524,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 273,
                                 },
                             ],
@@ -541,7 +536,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -585,7 +580,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -593,7 +588,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -638,19 +633,19 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 100,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -662,7 +657,7 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
                                 prematur: 65,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -704,19 +699,19 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 101,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -728,7 +723,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
                                 prematur: 0,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -771,19 +766,19 @@ export const MorDeltUttakEttBarnTermin: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -791,7 +786,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -833,19 +828,19 @@ export const MorDeltUttakTvillingerFødt: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 165,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -857,7 +852,7 @@ export const MorDeltUttakTvillingerFødt: Story = {
                                 prematur: 0,
                                 flerbarn: 85,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -900,19 +895,19 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -920,7 +915,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -962,19 +957,19 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -982,7 +977,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1025,19 +1020,19 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1049,7 +1044,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
                                 prematur: 0,
                                 flerbarn: 230,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1092,19 +1087,19 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1112,7 +1107,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1154,19 +1149,19 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 100,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1178,7 +1173,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
                                 flerbarn: 0,
                                 prematur: 64,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1221,19 +1216,19 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1241,7 +1236,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1284,15 +1279,15 @@ export const FarSøkerAdopsjonToBarn: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                             ],
@@ -1300,7 +1295,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1342,15 +1337,15 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                             ],
@@ -1358,7 +1353,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1404,19 +1399,19 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1424,7 +1419,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1469,15 +1464,15 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                             ],
@@ -1485,7 +1480,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1532,7 +1527,7 @@ export const BareMorHarRettTermin: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -1540,7 +1535,7 @@ export const BareMorHarRettTermin: Story = {
                                 farRundtFødsel: 15,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1582,7 +1577,7 @@ export const BareMorHarRettAdopsjon: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -1590,7 +1585,7 @@ export const BareMorHarRettAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1633,11 +1628,11 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 155,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 375,
                                 },
                             ],
@@ -1645,7 +1640,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1688,11 +1683,11 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 210,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 40,
                                 },
                             ],
@@ -1700,7 +1695,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1744,7 +1739,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 285,
                                 },
                             ],
@@ -1752,7 +1747,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
@@ -1796,11 +1791,11 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 125,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 75,
                                 },
                             ],
@@ -1808,7 +1803,7 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],

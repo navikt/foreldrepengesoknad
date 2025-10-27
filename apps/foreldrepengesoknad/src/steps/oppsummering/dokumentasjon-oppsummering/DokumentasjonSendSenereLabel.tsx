@@ -12,7 +12,7 @@ import {
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
 } from '@navikt/fp-common';
-import { Periodetype, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
+import { Periodetype, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -67,7 +67,7 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter(isPeriodeMedMorInnleggelse)
         .some((p) => {
-            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === StønadskontoType.Fedrekvote) {
+            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
                 return true;
             }
 

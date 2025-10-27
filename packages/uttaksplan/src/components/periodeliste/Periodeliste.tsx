@@ -17,7 +17,7 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -32,7 +32,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];

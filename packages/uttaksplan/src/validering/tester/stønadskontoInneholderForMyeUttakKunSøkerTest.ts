@@ -5,7 +5,6 @@ import {
     OppholdÅrsakType,
     Periode,
     PeriodeInfoType,
-    StønadskontoType,
     Søknadsinfo,
     isInfoPeriodeAnnenPart,
     isUttaksperiode,
@@ -18,19 +17,11 @@ import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/ty
 
 const harSøktOmFellesperiode = (periode: Periode, søkerErFarEllerMedmor: boolean) => {
     if (isUttaksperiode(periode)) {
-        if (
-            søkerErFarEllerMedmor &&
-            periode.forelder === Forelder.farMedmor &&
-            periode.konto === StønadskontoType.Fellesperiode
-        ) {
+        if (søkerErFarEllerMedmor && periode.forelder === Forelder.farMedmor && periode.konto === 'FELLESPERIODE') {
             return true;
         }
 
-        if (
-            !søkerErFarEllerMedmor &&
-            periode.forelder === Forelder.mor &&
-            periode.konto === StønadskontoType.Fellesperiode
-        ) {
+        if (!søkerErFarEllerMedmor && periode.forelder === Forelder.mor && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }

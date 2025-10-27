@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
@@ -57,9 +57,9 @@ export const getFomValidators = ({
     const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
-        case StønadskontoType.AktivitetsfriKvote:
-        case StønadskontoType.Mødrekvote:
-        case StønadskontoType.Foreldrepenger:
+        case 'AKTIVITETSFRI_KVOTE':
+        case 'MØDREKVOTE':
+        case 'FORELDREPENGER':
             validators.push(
                 isAfterOrSame(
                     erBarnetFødt
@@ -69,7 +69,7 @@ export const getFomValidators = ({
                 ),
             );
             break;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             if (samtidigUttak) {
                 validators.push(
                     isAfterOrSame(
@@ -90,7 +90,7 @@ export const getFomValidators = ({
                 );
             }
             break;
-        case StønadskontoType.ForeldrepengerFørFødsel:
+        case 'FORELDREPENGER_FØR_FØDSEL':
             validators.push(
                 isDateWithinRange(
                     intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
@@ -99,7 +99,7 @@ export const getFomValidators = ({
                 ),
             );
             break;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             validators.push(
                 (fomValue: string) => {
                     if (dayjs(fomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
@@ -169,9 +169,9 @@ export const getFomValidators = ({
 
     if (skalDuJobbe && !gjelderAdopsjon) {
         if (
-            kontoType === StønadskontoType.Mødrekvote ||
-            (kontoType === StønadskontoType.Fellesperiode && forelder === Forelder.mor) ||
-            (kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor)
+            kontoType === 'MØDREKVOTE' ||
+            (kontoType === 'FELLESPERIODE' && forelder === Forelder.mor) ||
+            (kontoType === 'FORELDREPENGER' && forelder === Forelder.mor)
         ) {
             validators.push((date) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
@@ -237,9 +237,9 @@ export const getTomValidators = ({
     const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
-        case StønadskontoType.AktivitetsfriKvote:
-        case StønadskontoType.Mødrekvote:
-        case StønadskontoType.Foreldrepenger:
+        case 'AKTIVITETSFRI_KVOTE':
+        case 'MØDREKVOTE':
+        case 'FORELDREPENGER':
             validators.push(
                 isAfterOrSame(
                     erBarnetFødt
@@ -249,7 +249,7 @@ export const getTomValidators = ({
                 ),
             );
             break;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             if (samtidigUttak) {
                 validators.push(
                     isAfterOrSame(
@@ -270,7 +270,7 @@ export const getTomValidators = ({
                 );
             }
             break;
-        case StønadskontoType.ForeldrepengerFørFødsel:
+        case 'FORELDREPENGER_FØR_FØDSEL':
             validators.push(
                 isDateWithinRange(
                     intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
@@ -279,7 +279,7 @@ export const getTomValidators = ({
                 ),
             );
             break;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             validators.push(
                 (tomValue: string) => {
                     if (dayjs(tomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
@@ -349,14 +349,14 @@ export const getTomValidators = ({
 
     if (skalDuJobbe && !gjelderAdopsjon) {
         if (
-            kontoType === StønadskontoType.Mødrekvote ||
-            (kontoType === StønadskontoType.Fellesperiode && forelder === Forelder.mor) ||
-            (kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor)
+            kontoType === 'MØDREKVOTE' ||
+            (kontoType === 'FELLESPERIODE' && forelder === Forelder.mor) ||
+            (kontoType === 'FORELDREPENGER' && forelder === Forelder.mor)
         ) {
             validators.push((date) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
                     const feilmelding =
-                        kontoType === StønadskontoType.Foreldrepenger && forelder === Forelder.mor
+                        kontoType === 'FORELDREPENGER' && forelder === Forelder.mor
                             ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
                             : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
 
