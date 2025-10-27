@@ -19,7 +19,7 @@ const SOURCES = [
     {
         name: 'fpsoknad',
         url: 'https://fpsoknad.intern.dev.nav.no/fpsoknad/api/openapi.json',
-        localUrl: 'http://localhost:8999/api/openapi.json',
+        localUrl: 'http://localhost:8999/fpsoknad/api/openapi.json',
         aud: 'dev-gcp:teamforeldrepenger:fpsoknad',
     },
 ];

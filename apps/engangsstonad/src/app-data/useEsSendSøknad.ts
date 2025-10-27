@@ -9,7 +9,7 @@ import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { EngangsstønadDto, Målform, PersonFrontend } from '@navikt/fp-types';
+import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -52,7 +52,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (personinfo: PersonFrontend) => {
+export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -66,11 +66,7 @@ export const useEsSendSøknad = (personinfo: PersonFrontend) => {
         const søknad = {
             søkerinfo: {
                 fnr: personinfo.fnr,
-                navn: {
-                    fornavn: personinfo.fornavn,
-                    mellomnavn: personinfo.mellomnavn,
-                    etternavn: personinfo.etternavn,
-                },
+                navn: personinfo.navn,
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(omBarnet, dokumentasjon),

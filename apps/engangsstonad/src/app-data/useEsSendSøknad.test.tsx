@@ -8,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { EngangsstønadDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EngangsstønadDto, PersonDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -62,8 +62,10 @@ const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
 
 const DEFAULT_PERSONINFO = {
     fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
+    navn: {
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+    },
     kjønn: 'K',
     fødselsdato: '1979-01-28',
     bankkonto: {
@@ -71,7 +73,7 @@ const DEFAULT_PERSONINFO = {
         banknavn: 'Storebank',
     },
     barn: [],
-} satisfies PersonFrontend;
+} satisfies PersonDto_fpoversikt;
 
 const getWrapper =
     (barnet: OmBarnet, dokumentasjon?: Dokumentasjon) =>
@@ -130,10 +132,7 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: {
-                            fornavn: DEFAULT_PERSONINFO.fornavn,
-                            etternavn: DEFAULT_PERSONINFO.etternavn,
-                        },
+                        navn: DEFAULT_PERSONINFO.navn,
                     },
                     barn: {
                         type: 'adopsjon',
@@ -184,10 +183,7 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: {
-                            fornavn: DEFAULT_PERSONINFO.fornavn,
-                            etternavn: DEFAULT_PERSONINFO.etternavn,
-                        },
+                        navn: DEFAULT_PERSONINFO.navn,
                     },
                     barn: {
                         type: 'fødsel',
@@ -231,10 +227,7 @@ describe('useEsSendSøknad', () => {
                 json: {
                     søkerinfo: {
                         fnr: DEFAULT_PERSONINFO.fnr,
-                        navn: {
-                            fornavn: DEFAULT_PERSONINFO.fornavn,
-                            etternavn: DEFAULT_PERSONINFO.etternavn,
-                        },
+                        navn: DEFAULT_PERSONINFO.navn,
                     },
                     barn: {
                         type: 'termin',

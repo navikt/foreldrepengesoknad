@@ -235,10 +235,10 @@ export type TilbakekrevingUttalelseOppgave_fpoversikt = {
 };
 
 export type Navn_fpoversikt = {
-    fornavn?: string;
+    fornavn: string;
     mellomnavn?: string;
-    etternavn?: string;
-};
+    etternavn: string;
+}; //TODO
 
 export type Bankkonto_fpoversikt = {
     banknavn?: string;
@@ -589,50 +589,6 @@ export type TidslinjeHendelseType_fpoversikt =
     | 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING'
     | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
     | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
-
-export type KontoBeregningDto_fpoversikt = {
-    kontoer: KontoDto_fpoversikt[];
-    minsteretter: Minsteretter_fpoversikt;
-    tillegg?: Tillegg_fpoversikt;
-};
-
-export type KontoDto_fpoversikt = {
-    dager: number;
-    konto: KontoTypeUttak_fpoversikt;
-};
-
-export type KontoTypeUttak_fpoversikt =
-    | 'MØDREKVOTE'
-    | 'FEDREKVOTE'
-    | 'FELLESPERIODE'
-    | 'FORELDREPENGER'
-    | 'FORELDREPENGER_FØR_FØDSEL'
-    | 'AKTIVITETSFRI_KVOTE';
-
-export type Minsteretter_fpoversikt = {
-    farRundtFødsel: number;
-    toTette: number;
-};
-
-export type Tillegg_fpoversikt = {
-    flerbarn: number;
-    prematur: number;
-};
-
-export type KontoBeregningGrunnlagDto_fpoversikt = {
-    antallBarn: number;
-    brukerrolle: Brukerrolle_fpoversikt;
-    familieHendelseDatoNesteSak?: string;
-    fødselsdato?: string;
-    morHarUføretrygd?: boolean;
-    omsorgsovertakelseDato?: string;
-    rettighetstype: Rettighetstype_fpoversikt;
-    termindato?: string;
-};
-
-export type Brukerrolle_fpoversikt = 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
-
-export type Rettighetstype_fpoversikt = 'ALENEOMSORG' | 'BARE_SØKER_RETT' | 'BEGGE_RETT';
 
 export type HentMineFrilansoppdragData = {
     body?: never;
@@ -1112,21 +1068,3 @@ export type HentTidslinjeResponses = {
 };
 
 export type HentTidslinjeResponse = HentTidslinjeResponses[keyof HentTidslinjeResponses];
-
-export type Personinfo1Data = {
-    body: KontoBeregningGrunnlagDto_fpoversikt;
-    path?: never;
-    query?: never;
-    url: '/api/konto';
-};
-
-export type Personinfo1Responses = {
-    /**
-     * default response
-     */
-    default: {
-        [key: string]: KontoBeregningDto_fpoversikt;
-    };
-};
-
-export type Personinfo1Response = Personinfo1Responses[keyof Personinfo1Responses];
