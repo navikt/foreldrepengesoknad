@@ -1,4 +1,5 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 export enum HvaVilDuGjøre {
     LEGG_TIL_PERIODE = 'leggTilPeriode',
@@ -7,7 +8,7 @@ export enum HvaVilDuGjøre {
 }
 
 export type LeggTilPeriodePanelFormValues = {
-    kontoType?: StønadskontoType;
+    kontoType?: KontoTypeUttak;
     forelder: Forelder;
     fom: string;
     tom: string;

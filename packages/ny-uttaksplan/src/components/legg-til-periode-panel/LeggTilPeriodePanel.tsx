@@ -3,7 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { Planperiode } from '../../types/Planperiode';
 import { LeggTilPeriodePanelStep } from './steps/LeggTilPeriodePanelStep';
@@ -13,7 +14,7 @@ export interface PanelData {
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
     fom?: string;
     tom?: string;
-    kontoType?: StønadskontoType;
+    kontoType?: KontoTypeUttak;
     forelder?: Forelder;
 }
 

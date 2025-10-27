@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { StønadskontoType } from '@navikt/fp-constants';
 import { RhfNumericField, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -19,7 +18,7 @@ export const GraderingSpørsmål = () => {
     const kontoTypeValue = watch('kontoType');
     const samtidigUttaksprosentValue = watch('samtidigUttaksprosent');
 
-    if (kontoTypeValue === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (kontoTypeValue === 'FORELDREPENGER_FØR_FØDSEL') {
         return null;
     }
 

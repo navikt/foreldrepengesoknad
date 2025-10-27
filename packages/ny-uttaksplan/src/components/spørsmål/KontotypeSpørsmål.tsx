@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -38,7 +38,7 @@ export const KontotypeSpørsmål = () => {
                     );
                 })}
             </RhfRadioGroup>
-            {kontoTypeValue === StønadskontoType.Fellesperiode && (
+            {kontoTypeValue === 'FELLESPERIODE' && (
                 <RhfRadioGroup
                     name="forelder"
                     control={control}

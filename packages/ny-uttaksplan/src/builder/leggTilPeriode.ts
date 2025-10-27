@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
@@ -46,11 +45,8 @@ export const splittSaksperiodePåDato = (periode: SaksperiodeNy, dato: string): 
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode, famDato: string): Planperiode[] => {
     const periodeFørFamDato: Planperiode = {
         ...periode,
-        kontoType:
-            periode.kontoType == StønadskontoType.Foreldrepenger
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.kontoType,
-        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
+        kontoType: periode.kontoType == 'FORELDREPENGER' ? 'AKTIVITETSFRI_KVOTE' : periode.kontoType,
+        morsAktivitet: periode.kontoType == 'FORELDREPENGER' ? undefined : periode.morsAktivitet,
         fom: periode.fom,
         tom: UttaksdagenString(famDato).forrige(),
     };
@@ -68,11 +64,8 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode,
 export const splittSaksperiodePåFamiliehendelsesdato = (periode: SaksperiodeNy, famDato: string): SaksperiodeNy[] => {
     const periodeFørFamDato: SaksperiodeNy = {
         ...periode,
-        kontoType:
-            periode.kontoType == StønadskontoType.Foreldrepenger
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.kontoType,
-        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
+        kontoType: periode.kontoType == 'FORELDREPENGER' ? 'AKTIVITETSFRI_KVOTE' : periode.kontoType,
+        morsAktivitet: periode.kontoType == 'FORELDREPENGER' ? undefined : periode.morsAktivitet,
         fom: periode.fom,
         tom: UttaksdagenString(famDato).forrige(),
     };

@@ -4,7 +4,7 @@ import { ComponentProps } from 'react';
 import { Accordion } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-common';
-import { BarnType, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType } from '@navikt/fp-constants';
 import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
@@ -97,7 +97,7 @@ export const UttaksperiodeMor: Story = {
                     fom: '2024-06-01',
                     tom: '2024-06-30',
                     forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
             ],
@@ -132,7 +132,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
                 {
@@ -140,7 +140,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
             ],
@@ -174,7 +174,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
                 {
@@ -182,7 +182,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
                 {
@@ -190,7 +190,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     fom: '2024-07-29',
                     tom: '2024-08-23',
                     forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    kontoType: 'FELLESPERIODE',
                     gradering: {
                         aktivitet: {
                             type: UttakArbeidType.ORDINÆRT_ARBEID,
@@ -236,7 +236,7 @@ export const UttaksperiodeFar: Story = {
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: Forelder.farMedmor,
-                    kontoType: StønadskontoType.Fedrekvote,
+                    kontoType: 'FEDREKVOTE',
                     readOnly: false,
                 },
             ],

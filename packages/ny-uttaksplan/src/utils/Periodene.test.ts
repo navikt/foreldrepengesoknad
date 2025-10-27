@@ -1,4 +1,4 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { OppholdÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
@@ -11,7 +11,7 @@ const førsteUttaksdagTidsperiode = getTidsperiodeString(førsteUttaksdag, 5);
 
 const uttakBase: Planperiode = {
     forelder: Forelder.farMedmor,
-    kontoType: StønadskontoType.Fellesperiode,
+    kontoType: 'FELLESPERIODE',
     fom: førsteUttaksdagTidsperiode.tom,
     tom: førsteUttaksdagTidsperiode.fom,
     id: '1',

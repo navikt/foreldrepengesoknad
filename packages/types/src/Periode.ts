@@ -8,12 +8,12 @@ import {
     PeriodeHullÅrsak,
     PeriodeInfoType,
     Periodetype,
-    StønadskontoType,
     UtsettelseÅrsakType,
 } from '@navikt/fp-constants';
 
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
+import { KontoTypeUttak } from './apiDtoGenerert';
 
 interface PeriodeBase {
     id: string;
@@ -22,13 +22,13 @@ interface PeriodeBase {
 }
 
 interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
-    konto: StønadskontoType.ForeldrepengerFørFødsel;
+    konto: 'FORELDREPENGER_FØR_FØDSEL';
     skalIkkeHaUttakFørTermin: boolean;
 }
 
 interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
-    konto: StønadskontoType;
+    konto: KontoTypeUttak;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
@@ -64,7 +64,7 @@ export interface Oppholdsperiode extends PeriodeBase {
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
-    konto: StønadskontoType;
+    konto: KontoTypeUttak;
     forelder: Forelder;
     årsak: OverføringÅrsakType;
 }
@@ -86,7 +86,7 @@ interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: StønadskontoType | undefined;
+    kontoType: KontoTypeUttak | undefined;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -147,7 +147,7 @@ export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
 export const isForeldrepengerFørFødselUttaksperiode = (
     periode: Periode,
 ): periode is ForeldrepengerFørFødselUttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+    return periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL';
 };
 
 export const isUtsettelsesperiode = (periode: Periode): periode is Utsettelsesperiode => {

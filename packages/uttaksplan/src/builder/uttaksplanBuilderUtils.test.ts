@@ -3,7 +3,6 @@ import {
     OppholdÅrsakType,
     Periode,
     Periodetype,
-    StønadskontoType,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
 } from '@navikt/fp-common';
@@ -19,7 +18,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-08-31'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.AktivitetsfriKvote,
+        konto: 'AKTIVITETSFRI_KVOTE',
         erMorForSyk: false,
         gradert: false,
         ønskerFlerbarnsdager: false,
@@ -33,7 +32,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-09-14'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.AktivitetsfriKvote,
+        konto: 'AKTIVITETSFRI_KVOTE',
         erMorForSyk: false,
         gradert: false,
         ønskerFlerbarnsdager: false,
@@ -62,7 +61,8 @@ describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig konto', () => {
-        const perioder4 = [perioder[0], { ...perioder[1], konto: StønadskontoType.Fedrekvote }];
+        const perioder4 = [perioder[0], { ...perioder[1], konto: 'FEDREKVOTE' }];
+        // @ts-expect-error (TOR): Fiks type
         const result = slåSammenLikePerioder(perioder4, new Date('2022-07-21'), undefined);
         expect(result.length).toEqual(2);
     });
@@ -104,7 +104,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-01-21'),
                     tom: new Date('2022-01-28'),
                 },
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
@@ -116,7 +116,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-01-31'),
                     tom: new Date('2022-02-25'),
                 },
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '50',
@@ -128,7 +128,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-02-28'),
                     tom: new Date('2022-04-22'),
                 },
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '70',
@@ -203,7 +203,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-01-21'),
                     tom: new Date('2022-01-28'),
                 },
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
@@ -215,7 +215,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-01-31'),
                     tom: new Date('2022-02-25'),
                 },
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
@@ -227,7 +227,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: new Date('2022-02-28'),
                     tom: new Date('2022-04-22'),
                 },
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '80',

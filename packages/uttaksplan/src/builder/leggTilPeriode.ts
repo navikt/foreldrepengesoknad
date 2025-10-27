@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 
 import {
     Periode,
-    StønadskontoType,
     Uttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
     isOverskrivbarPeriode,
@@ -83,13 +82,9 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (
 ): Uttaksperiode[] => {
     const periodeFørFamDato: Periode = {
         ...periode,
-        konto:
-            periode.konto == StønadskontoType.Foreldrepenger && harAktivitetsfriKvote
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.konto,
-        morsAktivitetIPerioden:
-            periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitetIPerioden,
-        erMorForSyk: periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.erMorForSyk,
+        konto: periode.konto == 'FORELDREPENGER' && harAktivitetsfriKvote ? 'AKTIVITETSFRI_KVOTE' : periode.konto,
+        morsAktivitetIPerioden: periode.konto == 'FORELDREPENGER' ? undefined : periode.morsAktivitetIPerioden,
+        erMorForSyk: periode.konto == 'FORELDREPENGER' ? undefined : periode.erMorForSyk,
         tidsperiode: {
             fom: periode.tidsperiode.fom,
             tom: Uttaksdagen(famDato).forrige(),

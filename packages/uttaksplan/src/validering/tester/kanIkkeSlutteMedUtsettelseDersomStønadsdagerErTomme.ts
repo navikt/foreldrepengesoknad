@@ -1,4 +1,4 @@
-import { StønadskontoType, Søknadsinfo, isUtsettelsesperiode } from '@navikt/fp-common';
+import { Søknadsinfo, isUtsettelsesperiode } from '@navikt/fp-common';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTestresultat } from '../utils/types/regelTypes';
@@ -10,10 +10,10 @@ export function kanIkkeSlutteMedUtsettelseDersomStønadsdagerErTomme(grunnlag: S
     const gjenståendeDager = beregnGjenståendeUttaksdager(stønadskontoer, perioder, false);
     const sistePeriodeErIkkeUtsettelse = perioder.length > 0 ? !isUtsettelsesperiode(perioder.at(-1)!) : false;
 
-    const resterendeFellesperiode = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Fellesperiode);
-    const resterendeMødrekvote = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Mødrekvote);
-    const resterendeFedrekvote = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Fedrekvote);
-    const resterendeForeldrepenger = gjenståendeDager.find((konto) => konto.konto === StønadskontoType.Foreldrepenger);
+    const resterendeFellesperiode = gjenståendeDager.find((konto) => konto.konto === 'FELLESPERIODE');
+    const resterendeMødrekvote = gjenståendeDager.find((konto) => konto.konto === 'MØDREKVOTE');
+    const resterendeFedrekvote = gjenståendeDager.find((konto) => konto.konto === 'FEDREKVOTE');
+    const resterendeForeldrepenger = gjenståendeDager.find((konto) => konto.konto === 'FORELDREPENGER');
 
     if (sistePeriodeErIkkeUtsettelse || perioder.length === 0) {
         return {

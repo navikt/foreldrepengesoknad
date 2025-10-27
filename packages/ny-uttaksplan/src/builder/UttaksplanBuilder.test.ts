@@ -1,5 +1,4 @@
 import { Forelder } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -11,7 +10,7 @@ const perioder: Planperiode[] = [
         fom: '2022-04-11',
         tom: '2022-04-29',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
     {
@@ -19,7 +18,7 @@ const perioder: Planperiode[] = [
         fom: '2022-05-02',
         tom: '2022-08-12',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -27,7 +26,7 @@ const perioder: Planperiode[] = [
         fom: '2022-08-15',
         tom: '2022-10-07',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
 ];
@@ -38,7 +37,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2021-12-06',
         tom: '2021-12-15',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
     {
@@ -46,7 +45,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2021-12-16',
         tom: '2022-01-05',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
     {
@@ -54,7 +53,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2022-01-06',
         tom: '2022-05-18',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -62,7 +61,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2022-05-19',
         tom: '2022-07-01',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
     {
@@ -77,7 +76,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2022-07-18',
         tom: '2022-09-23',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
 ];
@@ -88,7 +87,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2021-08-18',
         tom: '2021-09-03',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
     {
@@ -104,7 +103,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2021-09-13',
         tom: '2021-12-10',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -120,7 +119,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2022-01-03',
         tom: '2022-01-07',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -128,7 +127,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2022-01-10',
         tom: '2022-04-29',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
     {
@@ -144,7 +143,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2022-05-11',
         tom: '2022-07-08',
         forelder: Forelder.farMedmor,
-        kontoType: StønadskontoType.Fedrekvote,
+        kontoType: 'FEDREKVOTE',
         readOnly: true,
     },
     {
@@ -161,7 +160,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-09-13',
         forelder: Forelder.farMedmor,
         readOnly: true,
-        kontoType: StønadskontoType.Fedrekvote,
+        kontoType: 'FEDREKVOTE',
     },
 ];
 
@@ -228,7 +227,7 @@ describe('Uttaksplanbuilder tester', () => {
             fom: '2022-10-26',
             tom: '2022-11-11',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Mødrekvote,
+            kontoType: 'MØDREKVOTE',
             readOnly: false,
         };
         const result = Uttaksplanbuilder({

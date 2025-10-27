@@ -1,4 +1,4 @@
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { AnnenForelder } from './AnnenForelder';
 import { Arbeidsforhold } from './Arbeidsforhold';
@@ -26,7 +26,7 @@ export interface Søknadsinfo {
     erFlerbarnssøknad: boolean;
     familiehendelsesdato: Date;
     termindato: Date | undefined;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
     eksisterendeSak: EksisterendeSak | undefined;

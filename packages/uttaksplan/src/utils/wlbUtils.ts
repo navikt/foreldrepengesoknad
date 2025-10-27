@@ -6,12 +6,12 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Uttaksperiode,
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
@@ -35,7 +35,7 @@ export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: Per
     return (
         isUttaksperiode(periode) &&
         periode.forelder === Forelder.farMedmor &&
-        periode.konto === StønadskontoType.Fedrekvote &&
+        periode.konto === 'FEDREKVOTE' &&
         !!periode.erMorForSyk === false &&
         periode.morsAktivitetIPerioden === undefined &&
         !!periode.ønskerFlerbarnsdager === false &&
@@ -119,7 +119,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,
@@ -131,9 +131,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
         situasjon === 'fødsel' &&
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         periodetype === Periodetype.Uttak &&
-        (konto === StønadskontoType.Fedrekvote ||
-            konto === StønadskontoType.Foreldrepenger ||
-            konto === StønadskontoType.AktivitetsfriKvote) &&
+        (konto === 'FEDREKVOTE' || konto === 'FORELDREPENGER' || konto === 'AKTIVITETSFRI_KVOTE') &&
         starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato, termindato)
     );
 };

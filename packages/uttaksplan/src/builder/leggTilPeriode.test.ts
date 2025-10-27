@@ -5,7 +5,6 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
-    StønadskontoType,
     UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
@@ -21,7 +20,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-05-04'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -31,7 +30,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-08-17'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -41,7 +40,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -54,7 +53,7 @@ const perioderMedHull: Periode[] = [
             tom: new Date('2022-05-04'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -64,7 +63,7 @@ const perioderMedHull: Periode[] = [
             tom: new Date('2022-08-03'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -82,7 +81,7 @@ const perioderMedHull: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -95,7 +94,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             tom: new Date('2022-05-04'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -105,7 +104,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             tom: new Date('2022-08-03'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -123,7 +122,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -136,7 +135,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             tom: new Date('2022-05-04'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -146,7 +145,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             tom: new Date('2022-08-03'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -169,7 +168,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -182,7 +181,7 @@ const perioderMedFarsUttak: Periode[] = [
             tom: new Date('2022-12-12'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     },
 ];
 
@@ -212,7 +211,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -239,7 +238,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -264,7 +263,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -291,7 +290,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -316,7 +315,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -343,7 +342,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -368,7 +367,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -395,7 +394,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-07-22'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -422,7 +421,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-04-13'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -449,7 +448,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-04-07'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -477,7 +476,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-10-26'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -504,7 +503,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-11-08'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -562,7 +561,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-05-06'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -588,7 +587,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-10-14'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fedrekvote,
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -621,7 +620,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                     tom: new Date('2022-10-14'),
                 },
                 forelder: Forelder.mor,
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
             };
 
             const result = leggTilPeriode({
@@ -652,7 +651,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-10-14'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fedrekvote,
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -682,7 +681,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 tom: new Date('2022-08-10'),
             },
             forelder: Forelder.farMedmor,
-            konto: StønadskontoType.Fedrekvote,
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -713,7 +712,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                     tom: new Date('2023-09-19'),
                 },
                 forelder: Forelder.mor,
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
             };
 
             const result = leggTilPeriode({
@@ -746,7 +745,7 @@ describe('Test av split periode i uttaksplan', () => {
             tom: new Date('2022-05-02'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     } as Uttaksperiode;
     const splitPeriodeBFHRMedAktivitetskrav = {
         id: '157',
@@ -756,7 +755,7 @@ describe('Test av split periode i uttaksplan', () => {
             tom: new Date('2022-05-02'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Foreldrepenger,
+        konto: 'FORELDREPENGER',
         morsAktivitetIPerioden: MorsAktivitet.Arbeid,
         erMorForSyk: false,
     } as Uttaksperiode;

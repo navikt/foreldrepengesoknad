@@ -1,4 +1,4 @@
-import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, Periode, Periodetype } from '@navikt/fp-common';
 
 import { SøknadRoutes, isRouteAvailable } from './routes';
 
@@ -17,12 +17,12 @@ describe('<routes>', () => {
         const uttaksplan = [
             {
                 type: Periodetype.Uttak,
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 forelder: Forelder.farMedmor,
             },
             {
                 type: Periodetype.Uttak,
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 forelder: Forelder.farMedmor,
             },
         ] as Periode[];
@@ -33,7 +33,7 @@ describe('<routes>', () => {
         const uttaksplan = [
             {
                 type: Periodetype.Uttak,
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 forelder: Forelder.farMedmor,
             },
             {

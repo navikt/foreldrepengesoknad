@@ -6,7 +6,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { BarnType, Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType, Forelder, PeriodeColor } from '@navikt/fp-constants';
 import { Barn, SaksperiodeNy, UtsettelseÅrsakType, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
@@ -233,15 +233,15 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return PeriodeColor.NONE;
     }
 
-    if (periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return PeriodeColor.BLUE;
     }
 
-    if (periode.kontoType === StønadskontoType.AktivitetsfriKvote) {
+    if (periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
         return PeriodeColor.BLUE;
     }
 
-    if (periode.kontoType === StønadskontoType.Foreldrepenger) {
+    if (periode.kontoType === 'FORELDREPENGER') {
         if (foreldrepengerHarAktivitetskrav) {
             return erFarEllerMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.BLUE;
         }
@@ -353,8 +353,8 @@ export const UttaksplanKalender = ({
     );
 
     const foreldrepengerHarAktivitetskrav =
-        allePerioder.some((p) => p.kontoType === StønadskontoType.Foreldrepenger) &&
-        allePerioder.some((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote);
+        allePerioder.some((p) => p.kontoType === 'FORELDREPENGER') &&
+        allePerioder.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
 
     const søkersHullPerioder = finnOgSettInnHull(
         allePerioder as Planperiode[],

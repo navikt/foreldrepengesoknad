@@ -2,30 +2,30 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { IntlShape } from 'react-intl';
 
 import { Periode, Periodetype, Situasjon } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
+import { KontoDto } from '@navikt/fp-types';
 
 import PeriodeUttakForm from './PeriodeUttakForm';
 
 const stønadskonto100MorFar = [
-    { konto: StønadskontoType.Mødrekvote, dager: 75 },
-    { konto: StønadskontoType.Fedrekvote, dager: 75 },
-    { konto: StønadskontoType.Fellesperiode, dager: 80 },
-    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-];
+    { konto: 'MØDREKVOTE', dager: 75 },
+    { konto: 'FEDREKVOTE', dager: 75 },
+    { konto: 'FELLESPERIODE', dager: 80 },
+    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+] satisfies KontoDto[];
 
 const stønadskonto100BFHR = [
-    { konto: StønadskontoType.Foreldrepenger, dager: 75 },
-    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
-];
+    { konto: 'FORELDREPENGER', dager: 75 },
+    { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
+] satisfies KontoDto[];
 
-const stønadskonto100BFHRToBarnFørWLB = [{ konto: StønadskontoType.Foreldrepenger, dager: 285 }];
+const stønadskonto100BFHRToBarnFørWLB = [{ konto: 'FORELDREPENGER', dager: 285 }] satisfies KontoDto[];
 
 const stønadskonto100BFHRToBarnEtterWLB = [
-    { konto: StønadskontoType.Foreldrepenger, dager: 200 },
-    { konto: StønadskontoType.AktivitetsfriKvote, dager: 85 },
-];
+    { konto: 'FORELDREPENGER', dager: 200 },
+    { konto: 'AKTIVITETSFRI_KVOTE', dager: 85 },
+] satisfies KontoDto[];
 
-const stønadskonto100Aleneomsorg = [{ konto: StønadskontoType.Foreldrepenger, dager: 150 }];
+const stønadskonto100Aleneomsorg = [{ konto: 'FORELDREPENGER', dager: 150 }] satisfies KontoDto[];
 
 const meta = {
     title: 'components/PeriodeUttakForm',

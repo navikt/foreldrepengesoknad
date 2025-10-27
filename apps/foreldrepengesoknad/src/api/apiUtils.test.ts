@@ -9,7 +9,6 @@ import {
     Periode,
     PeriodeHull,
     Periodetype,
-    StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, Søkerinfo } from '@navikt/fp-types';
@@ -186,7 +185,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             id: '0',
             type: Periodetype.Uttak,
             erMorForSyk: true,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
             samtidigUttakProsent: undefined,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
         } as Uttaksperiode;
@@ -207,7 +206,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         expect(uttaksperiodeInnsending.type).toBe(Periodetype.Uttak);
         expect(uttaksperiodeInnsending.fom).toBe(dateToISOString(periodeUttak.tidsperiode.fom));
         expect(uttaksperiodeInnsending.tom).toBe(dateToISOString(periodeUttak.tidsperiode.tom));
-        expect(uttaksperiodeInnsending.konto).toBe(StønadskontoType.Fellesperiode);
+        expect(uttaksperiodeInnsending.konto).toBe('FELLESPERIODE');
     });
     it('skal fjerne periode uten konto', () => {
         const periodeUttakUtenKonto = {
@@ -249,7 +248,7 @@ const fraDato_1 = '2022-01-25';
 const tilDato_1 = '2022-01-28';
 const periode_1: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_1,
     tom: tilDato_1,
 };
@@ -259,7 +258,7 @@ const fraDato_2 = '2022-01-31';
 const tilDato_2 = '2022-02-07';
 const periode_2: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_2,
     tom: tilDato_2,
 };
@@ -269,7 +268,7 @@ const fraDato_3 = '2022-02-11';
 const tilDato_3 = '2022-02-11';
 const periode_3: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_3,
     tom: tilDato_3,
 };
@@ -279,7 +278,7 @@ const fraDato_4 = '2022-02-14';
 const tilDato_4 = '2022-02-24';
 const periode_4: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_4,
     tom: tilDato_4,
 };
@@ -289,7 +288,7 @@ const fraDato_5 = '2022-02-28';
 const tilDato_5 = '2022-02-28';
 const periode_5: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_5,
     tom: tilDato_5,
 };
@@ -299,7 +298,7 @@ const fraDato_6 = '2022-03-01';
 const tilDato_6 = '2022-03-07';
 const periode_6: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_6,
     tom: tilDato_6,
 };
@@ -309,7 +308,7 @@ const fraDato_7 = '2024-03-01';
 const tilDato_7 = '2024-03-07';
 const periode_7: UttaksplanPeriode = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_7,
     tom: tilDato_7,
 };

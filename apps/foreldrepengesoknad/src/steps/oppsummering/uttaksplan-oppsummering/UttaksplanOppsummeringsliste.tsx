@@ -10,12 +10,11 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Uttaksperiode,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, KontoTypeUttak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
@@ -57,7 +56,7 @@ export const UttaksplanOppsummeringsliste = ({
 }: Props) => {
     const intl = useIntl();
 
-    const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
+    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     };
 

@@ -7,7 +7,6 @@ import {
     Periode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
-    StønadskontoType,
     Søknadsinfo,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
@@ -178,7 +177,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                 }
 
                 if (isUttaksperiode(periode)) {
-                    if (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true) {
+                    if (periode.konto === 'FEDREKVOTE' && periode.erMorForSyk === true) {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -202,7 +201,7 @@ const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean 
 
     return (
         (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== MorsAktivitet.Uføre) ||
-        (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)
+        (periode.konto === 'FEDREKVOTE' && periode.erMorForSyk === true)
     );
 };
 

@@ -1,4 +1,4 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { mapPerioderToPermisjonsperiode } from './permisjonsperiodeUtils';
@@ -7,7 +7,7 @@ const perioder1: Planperiode[] = [
     {
         id: '1791107651-23530-4156-5672-8510082949258',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2024-04-12',
         tom: '2024-05-02',
         readOnly: false,
@@ -15,7 +15,7 @@ const perioder1: Planperiode[] = [
     {
         id: '09238903-7649-00572-15237-195982427421289',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         fom: '2024-05-03',
         tom: '2024-08-15',
         readOnly: false,
@@ -23,7 +23,7 @@ const perioder1: Planperiode[] = [
     {
         id: '089661209-7068-02331-5876-8543970929124',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         fom: '2024-08-16',
         tom: '2024-09-26',
         readOnly: false,
@@ -38,7 +38,7 @@ const perioder1: Planperiode[] = [
     {
         id: '19249909-1513-07778-7453-3721234202253',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         fom: '2024-10-11',
         tom: '2024-10-24',
         readOnly: false,

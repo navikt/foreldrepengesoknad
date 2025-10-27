@@ -5,14 +5,7 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
-import {
-    AnnenPartSak,
-    ForsendelseStatus,
-    Saker,
-    Søkerinfo,
-    Tidsperiode,
-    TilgjengeligeStønadskontoer,
-} from '@navikt/fp-types';
+import { AnnenPartSak, ForsendelseStatus, KontoBeregningDto, Saker, Søkerinfo, Tidsperiode } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
@@ -125,7 +118,8 @@ export type DokumentereMorsArbeidParams = {
 export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
-        queryFn: () => ky.post(API_URLS.konto, { json: data }).json<TilgjengeligeStønadskontoer>(),
+        queryFn: () =>
+            ky.post(API_URLS.konto, { json: data }).json<{ '100': KontoBeregningDto; '80': KontoBeregningDto }>(),
         staleTime: Infinity,
     });
 

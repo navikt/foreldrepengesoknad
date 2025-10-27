@@ -14,7 +14,6 @@ import {
     PeriodeInfoType,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
@@ -87,7 +86,7 @@ const getPeriodeIkon = (
         case Periodetype.Opphold:
             return (
                 <StønadskontoIkon
-                    konto={StønadskontoType.Foreldrepenger}
+                    konto={'FORELDREPENGER'}
                     forelder={periode.forelder}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
@@ -110,7 +109,7 @@ const getPeriodeIkon = (
 
                 return (
                     <StønadskontoIkon
-                        konto={StønadskontoType.Foreldrepenger}
+                        konto={'FORELDREPENGER'}
                         forelder={periode.forelder}
                         navnPåForeldre={navnPåForeldre}
                         erFarEllerMedmor={erFarEllerMedmor}

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types';
+import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
 
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 import kontoSkalBesvares from './kontoSkalBesvarer';
@@ -10,7 +10,7 @@ import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFøds
 export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    konto: StønadskontoType | undefined,
+    konto: KontoTypeUttak | undefined,
     erMorForSyk: boolean | undefined,
     tidsperiode: TidsperiodeDate,
     situasjon: Situasjon,
@@ -18,7 +18,7 @@ export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkke
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(famDato);
     return (
         erFarEllerMedmor &&
-        konto === StønadskontoType.Foreldrepenger &&
+        konto === 'FORELDREPENGER' &&
         erMorForSyk === false &&
         situasjon === 'fødsel' &&
         dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day')
@@ -30,7 +30,7 @@ export const aktivitetskravMorSkalBesvares = (
     samtidigUttak: boolean | undefined,
     erMorForSyk: boolean | undefined,
     periodetype: Periodetype,
-    kontotype: StønadskontoType | undefined,
+    kontotype: KontoTypeUttak | undefined,
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
@@ -39,7 +39,7 @@ export const aktivitetskravMorSkalBesvares = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    stønadskontoer: Stønadskonto[],
+    stønadskontoer: KontoDto[],
     bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (
@@ -50,7 +50,7 @@ export const aktivitetskravMorSkalBesvares = (
         søkerHarMidlertidigOmsorg ||
         uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             periodetype,
-            kontotype as StønadskontoType,
+            kontotype as KontoTypeUttak,
             tidsperiode,
             !søkerErMor,
             erAleneOmOmsorg,
@@ -74,11 +74,8 @@ export const aktivitetskravMorSkalBesvares = (
         return false;
     }
 
-    if (
-        !erAleneOmOmsorg &&
-        (kontotype === StønadskontoType.Fellesperiode || kontotype === StønadskontoType.Foreldrepenger)
-    ) {
-        if (ønskerFlerbarnsdager || samtidigUttak || (erMorForSyk && kontotype === StønadskontoType.Fellesperiode)) {
+    if (!erAleneOmOmsorg && (kontotype === 'FELLESPERIODE' || kontotype === 'FORELDREPENGER')) {
+        if (ønskerFlerbarnsdager || samtidigUttak || (erMorForSyk && kontotype === 'FELLESPERIODE')) {
             return false;
         }
 

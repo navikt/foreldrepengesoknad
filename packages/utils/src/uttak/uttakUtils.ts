@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
-import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor } from '@navikt/fp-constants';
 import {
+    KontoTypeUttak,
     Oppholdsperiode,
     Periode,
     Tidsperiode,
@@ -71,17 +72,17 @@ export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean):
     return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
 };
 
-export const getKontoFarge = (konto: StønadskontoType, erFarEllerMedmor: boolean): PeriodeColor => {
+export const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): PeriodeColor => {
     switch (konto) {
-        case StønadskontoType.Fedrekvote:
-        case StønadskontoType.AktivitetsfriKvote:
+        case 'FEDREKVOTE':
+        case 'AKTIVITETSFRI_KVOTE':
             return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
-        case StønadskontoType.ForeldrepengerFørFødsel:
-        case StønadskontoType.Mødrekvote:
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
             return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
-        case StønadskontoType.Foreldrepenger:
+        case 'FORELDREPENGER':
             return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
         default:
             return PeriodeColor.NONE;
@@ -89,7 +90,7 @@ export const getKontoFarge = (konto: StønadskontoType, erFarEllerMedmor: boolea
 };
 
 export const getUttaksperiodeFarge = (
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     forelder: Forelder | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
