@@ -1,6 +1,6 @@
 import { Forelder } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { OppholdÅrsakType } from '@navikt/fp-types';
+import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -357,8 +357,9 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
-            forelder: Forelder.farMedmor,
+            forelder: Forelder.mor,
             readOnly: false,
+            utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
@@ -378,6 +379,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             '2020-12-21',
             førsteUttaksdagNesteBarnsSak,
         );
+
         expect(result.length).toBe(2);
         expect(result[0].fom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0].fom);
         expect(result[0].tom).toEqual('2021-01-01');
