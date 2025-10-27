@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface MinDateProps {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    kontoType?: StønadskontoType;
+    kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
     gjelderAdopsjon: boolean;
 }
@@ -24,15 +24,15 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
         return UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     }
 
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     }
 
-    if (kontoType === StønadskontoType.Fellesperiode) {
+    if (kontoType === 'FELLESPERIODE') {
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(60);
     }
 
-    if (kontoType === StønadskontoType.Fedrekvote && !gjelderAdopsjon) {
+    if (kontoType === 'FEDREKVOTE' && !gjelderAdopsjon) {
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
     }
 
@@ -41,12 +41,12 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
 
 interface MaxDateProps {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    kontoType?: StønadskontoType;
+    kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
 }
 
 export const getMaxDate = ({ kontoType, familiehendelsedato, årsak }: MaxDateProps) => {
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel && !årsak) {
+    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !årsak) {
         return UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
     }
 

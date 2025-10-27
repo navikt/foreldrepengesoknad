@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType, Forelder } from '@navikt/fp-constants';
 import { PeriodeResultatÅrsak, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
@@ -45,7 +45,7 @@ export const MorAleneOmOmsorg: Story = {
             {
                 fom: '2025-09-16',
                 tom: '2025-09-29',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
@@ -58,7 +58,7 @@ export const MorAleneOmOmsorg: Story = {
             {
                 fom: '2025-09-30',
                 tom: '2026-01-19',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
@@ -71,7 +71,7 @@ export const MorAleneOmOmsorg: Story = {
             {
                 fom: '2026-02-24',
                 tom: '2026-06-15',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
@@ -112,7 +112,7 @@ export const PrematurUker: Story = {
             {
                 fom: '2025-08-13',
                 tom: '2025-10-10',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 resultat: {
                     innvilget: false,
                     trekkerMinsterett: true,
@@ -126,7 +126,7 @@ export const PrematurUker: Story = {
             {
                 fom: '2025-10-11',
                 tom: '2025-11-25',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,

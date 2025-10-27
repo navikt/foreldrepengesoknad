@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Loader } from '@navikt/ds-react';
 
-import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
+import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';
@@ -15,22 +15,10 @@ export const Foreldrepengeoversikt = () => {
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
     useQuery(minidialogOptions());
 
-    const oppdatertQuery = useQuery({
-        ...erSakOppdatertOptions(),
-        refetchInterval: (query) => {
-            if (query.state.data) {
-                return false;
-            }
-
-            return 15000;
-        },
-    });
-
     const søkerInfoQuery = useQuery(søkerInfoOptions());
 
     const sakerQuery = useQuery({
         ...hentSakerOptions(),
-        enabled: oppdatertQuery.data,
         select: mapSakerDTOToSaker,
     });
 

@@ -18,7 +18,7 @@ import {
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
 } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import Block from '../../common/block/Block';
 import planBemUtils from '../../utils/planBemUtils';
@@ -41,7 +41,7 @@ interface Props {
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
@@ -68,7 +68,7 @@ const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: Date,
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void,
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    stønadskontoer: KontoBeregningDto,
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     toggleIsOpen: (id: string) => void,

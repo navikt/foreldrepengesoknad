@@ -5,7 +5,6 @@ import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
@@ -23,10 +22,10 @@ const getStepLabels = (
     erFlereTilrettelegginger?: boolean,
     navn?: string,
 ): Record<SøknadRoute, string> => ({
+    [SøknadRoute.FORSIDE]: '',
     [SøknadRoute.BARNET]: intl.formatMessage({ id: 'steps.label.barnet' }),
     [SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]: intl.formatMessage({ id: 'steps.label.arbeid' }),
     [SøknadRoute.ARBEID_I_UTLANDET]: intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' }),
-    [SøknadRoute.FORSIDE]: '',
     [SøknadRoute.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
     [SøknadRoute.HAR_BODD_I_UTLANDET]: intl.formatMessage({ id: 'steps.label.boIUtlandetIFortid' }),
     [SøknadRoute.NÆRING]: intl.formatMessage({ id: 'steps.label.næring' }),
@@ -46,6 +45,7 @@ const getStepLabels = (
     [SøknadRoute.FERIE]: erFlereTilrettelegginger
         ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
         : intl.formatMessage({ id: 'steps.label.ferie.en' }),
+    [SøknadRoute.KVITTERING]: '',
 });
 
 const createTilretteleggingSteps = ({
@@ -78,7 +78,7 @@ const createTilretteleggingSteps = ({
     });
 
     if (
-        tilrettelegging?.type === Tilretteleggingstype.DELVIS &&
+        tilrettelegging?.type === 'delvis' &&
         tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         const perioderPath = addTilretteleggingIdToRoute(SøknadRoute.PERIODER, tilretteleggingId);

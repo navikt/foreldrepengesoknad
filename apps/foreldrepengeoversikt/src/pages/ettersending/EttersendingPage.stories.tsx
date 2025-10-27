@@ -40,7 +40,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(API_URLS.lastOppESVedlegg, () => {
-                    return new HttpResponse(null, { status: 200 });
+                    return new HttpResponse(JSON.stringify('test-uuid'), { status: 200 });
                 }),
             ],
         },

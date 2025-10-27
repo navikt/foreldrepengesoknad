@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, Periode, Periodetype } from '@navikt/fp-common';
 
 import { slettPeriode } from './slettPeriode';
 
@@ -13,7 +13,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-05-04'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -23,7 +23,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-08-17'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -33,7 +33,7 @@ const perioder: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -46,7 +46,7 @@ const perioder2: Periode[] = [
             tom: new Date('2022-05-31'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -56,7 +56,7 @@ const perioder2: Periode[] = [
             tom: new Date('2022-08-09'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -66,7 +66,7 @@ const perioder2: Periode[] = [
             tom: new Date('2022-08-23'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
     {
         id: '4',
@@ -76,7 +76,7 @@ const perioder2: Periode[] = [
             tom: new Date('2022-08-30'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        konto: 'MØDREKVOTE',
     },
     {
         id: '5',
@@ -86,7 +86,7 @@ const perioder2: Periode[] = [
             tom: new Date('2022-10-12'),
         },
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -141,7 +141,7 @@ const perioderFar: Periode[] = [
             tom: new Date('2022-08-01'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     },
     {
         id: '2',
@@ -151,7 +151,7 @@ const perioderFar: Periode[] = [
             tom: new Date('2022-08-08'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     },
     {
         id: '3',
@@ -169,7 +169,7 @@ const perioderFar: Periode[] = [
             tom: new Date('2022-09-19'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     },
     {
         id: '5',
@@ -179,7 +179,7 @@ const perioderFar: Periode[] = [
             tom: new Date('2022-10-25'),
         },
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        konto: 'FEDREKVOTE',
     },
 ];
 

@@ -9,7 +9,6 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     Uttaksperiode,
@@ -17,6 +16,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -37,24 +37,24 @@ const getInitialKonto = (
     erMorUfør: boolean,
     periodenStarterFørFamdato: boolean,
     erFarEllerMedmor: boolean,
-) => {
+): KontoTypeUttak | '' => {
     if (erDeltUttak) {
         if (periodenStarterFørFamdato && erFarEllerMedmor) {
-            return StønadskontoType.Fedrekvote;
+            return 'FEDREKVOTE';
         }
 
         return '';
     }
 
     if (erFarEllerMedmor && periodenStarterFørFamdato) {
-        return StønadskontoType.AktivitetsfriKvote;
+        return 'AKTIVITETSFRI_KVOTE';
     }
 
     if (erMorUfør) {
         return '';
     }
 
-    return StønadskontoType.Foreldrepenger;
+    return 'FORELDREPENGER';
 };
 
 const getHvemSkalTaUttak = (
@@ -309,12 +309,12 @@ const getKontoVerdi = (
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
     startDato: Date,
-    inputKonto: StønadskontoType,
+    inputKonto: KontoTypeUttak,
     familiehendelsesdato: Date,
     harAktivitetsfriKvote: boolean,
-): StønadskontoType => {
+): KontoTypeUttak => {
     if (samtidigWLBUttakFørFødselFarMedmor) {
-        return StønadskontoType.Fedrekvote;
+        return 'FEDREKVOTE';
     }
     if (
         !erDeltUttak &&
@@ -322,7 +322,7 @@ const getKontoVerdi = (
         dayjs(startDato).isBefore(familiehendelsesdato, 'day') &&
         harAktivitetsfriKvote
     ) {
-        return StønadskontoType.AktivitetsfriKvote;
+        return 'AKTIVITETSFRI_KVOTE';
     }
 
     return inputKonto;
@@ -373,7 +373,7 @@ export const mapPeriodeUttakFormToPeriode = (
                 erDeltUttak,
                 familiehendelsesdato,
             ),
-            konto: values.konto as StønadskontoType,
+            konto: values.konto as KontoTypeUttak,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -389,7 +389,7 @@ export const mapPeriodeUttakFormToPeriode = (
             id,
             type,
             forelder: values.hvemSkalTaUttak as Forelder,
-            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as StønadskontoType)!,
+            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak)!,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -444,7 +444,7 @@ export const mapPeriodeUttakFormToPeriode = (
         erFarEllerMedmor,
         erDeltUttak,
         values.fom!,
-        values.konto as StønadskontoType,
+        values.konto as KontoTypeUttak,
         familiehendelsesdato,
         harAktivitetsfriKvote,
     );
@@ -471,7 +471,7 @@ export const mapPeriodeUttakFormToPeriode = (
         ),
         erMorForSyk: morErForSyk,
         gradert: convertYesOrNoOrUndefinedToBoolean(values.skalHaGradering),
-        harIkkeAktivitetskrav: values.konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+        harIkkeAktivitetskrav: values.konto === 'AKTIVITETSFRI_KVOTE' ? true : undefined,
         orgnumre: getOrgnummer(hasValue(values.arbeidsformer) ? [values.arbeidsformer as Arbeidsform] : []),
         stillingsprosent: hasValue(values.stillingsprosent) ? trimNumberValue(values.stillingsprosent!) : undefined,
         ønskerFlerbarnsdager: convertYesOrNoOrUndefinedToBoolean(values.ønskerFlerbarnsdager),

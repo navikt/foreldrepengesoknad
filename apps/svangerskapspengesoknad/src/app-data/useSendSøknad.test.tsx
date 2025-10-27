@@ -1,24 +1,30 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { AvtaltFerieDto, AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
+import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
+import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import {
-    Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
     PeriodeMedVariasjon,
     TilOgMedDatoType,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Attachment, FRILANS_ID, NæringDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    Attachment,
+    AvtaltFerieDto,
+    FRILANS_ID,
+    NæringDto,
+    SvangerskapspengesøknadDto,
+    Søkerinfo,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -40,24 +46,32 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const ARBEIDSGIVER_ID = '990322244';
 const ANNEN_ARBEIDSGIVER_ID = '9903232324';
 
-const DEFAULT_ARBEIDSFORHOLD = [
-    {
-        id: '86832061-1118-9701-6179-20647729409710',
-        arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
-        arbeidsgiverIdType: 'ikke-orgnr',
-        arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2018-06-25T00:00:00.000Z',
-        stillingsprosent: 80,
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: ARBEIDSGIVER_ID,
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    søker: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
+        fnr: '30088930610',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
     },
-    {
-        id: '263929546-6215-9868-5127-161910165730101',
-        arbeidsgiverId: ARBEIDSGIVER_ID,
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-        fom: '2017-04-05T00:00:00.000Z',
-        stillingsprosent: 100,
-    },
-];
+} satisfies Søkerinfo;
 
 const BARNET = {
     erBarnetFødt: true,
@@ -105,9 +119,9 @@ const VEDLEGG = {
     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
     type: AttachmentType.TERMINBEKREFTELSE,
     uploaded: true,
-    url: 'test.com',
     uuid: 'uuid-test',
-};
+    innsendingsType: 'LASTET_OPP',
+} satisfies Attachment;
 
 const ARBEID_I_UTLANDET = {
     arbeidIUtlandet: [
@@ -120,7 +134,7 @@ const ARBEID_I_UTLANDET = {
             land: 'UK',
         },
     ],
-};
+} satisfies ArbeidIUtlandet;
 
 const getWrapper =
     (
@@ -162,7 +176,6 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -172,7 +185,7 @@ describe('useSendSøknad', () => {
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {
                 behovForTilretteleggingFom: '2024-05-10',
-                type: Tilretteleggingstype.DELVIS,
+                type: 'delvis',
                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                 enPeriodeMedTilretteleggingStillingsprosent: '50',
@@ -180,7 +193,7 @@ describe('useSendSøknad', () => {
             } satisfies DelvisTilrettelegging,
             [ANNEN_ARBEIDSGIVER_ID]: {
                 behovForTilretteleggingFom: '2024-09-10',
-                type: Tilretteleggingstype.INGEN,
+                type: 'ingen',
                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.VALGFRI_DATO,
                 enPeriodeMedTilretteleggingFom: '2024-09-10',
                 enPeriodeMedTilretteleggingTilbakeIJobbDato: '2024-10-10',
@@ -198,7 +211,7 @@ describe('useSendSøknad', () => {
                 feriePerioder: [
                     {
                         arbeidsforhold: {
-                            type: Arbeidsforholdstype.VIRKSOMHET,
+                            type: 'virksomhet',
                             id: ARBEIDSGIVER_ID,
                         },
                         fom: '2024-09-10',
@@ -208,20 +221,32 @@ describe('useSendSøknad', () => {
             },
         } satisfies AvtaltFeriePerArbeidsgiver;
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: {
+                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
+                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
+                        },
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: ferie[ARBEIDSGIVER_ID].feriePerioder,
@@ -232,15 +257,16 @@ describe('useSendSøknad', () => {
                         {
                             arbeidsforhold: {
                                 id: ARBEIDSGIVER_ID,
-                                type: Arbeidsforholdstype.VIRKSOMHET,
+                                type: 'virksomhet',
                             },
                             behovForTilretteleggingFom: '2024-05-10',
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 50,
-                                    type: Tilretteleggingstype.DELVIS,
+                                    type: 'delvis',
                                 },
                             ],
                             risikofaktorer: undefined,
@@ -249,21 +275,23 @@ describe('useSendSøknad', () => {
                         {
                             arbeidsforhold: {
                                 id: ANNEN_ARBEIDSGIVER_ID,
-                                type: Arbeidsforholdstype.PRIVAT,
+                                type: 'privat',
                             },
                             behovForTilretteleggingFom: '2024-09-10',
                             tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-09',
                                     stillingsprosent: 0,
-                                    type: Tilretteleggingstype.INGEN,
+                                    type: 'ingen',
                                 },
                                 {
                                     fom: '2024-10-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 80,
-                                    type: Tilretteleggingstype.HEL,
+                                    type: 'hel',
                                 },
                             ],
                             risikofaktorer: undefined,
@@ -276,7 +304,7 @@ describe('useSendSøknad', () => {
                             dokumenterer: {
                                 arbeidsforhold: {
                                     id: ARBEIDSGIVER_ID,
-                                    type: Arbeidsforholdstype.VIRKSOMHET,
+                                    type: 'virksomhet',
                                 },
                                 type: AttachmentMetadataType.TILRETTELEGGING,
                             },
@@ -286,19 +314,18 @@ describe('useSendSøknad', () => {
                             dokumenterer: {
                                 arbeidsforhold: {
                                     id: ANNEN_ARBEIDSGIVER_ID,
-                                    type: Arbeidsforholdstype.PRIVAT,
+                                    type: 'privat',
                                 },
                                 type: AttachmentMetadataType.TILRETTELEGGING,
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });
 
     it('skal sende inn tilrettelegging for næring og frilans', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -308,7 +335,7 @@ describe('useSendSøknad', () => {
         const tilrettelegginger = {
             [EGEN_NÆRING_ID]: {
                 behovForTilretteleggingFom: '2024-05-10',
-                type: Tilretteleggingstype.DELVIS,
+                type: 'delvis',
                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                 enPeriodeMedTilretteleggingStillingsprosent: '50',
@@ -316,7 +343,7 @@ describe('useSendSøknad', () => {
             } satisfies DelvisTilrettelegging,
             [FRILANS_ID]: {
                 behovForTilretteleggingFom: '2024-09-10',
-                type: Tilretteleggingstype.INGEN,
+                type: 'ingen',
                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                 enPeriodeMedTilretteleggingFom: '2024-09-10',
                 risikofaktorer: 'Dette er en risikofaktor',
@@ -329,20 +356,32 @@ describe('useSendSøknad', () => {
             [FRILANS_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, []), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: {
+                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
+                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
+                        },
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
@@ -352,16 +391,18 @@ describe('useSendSøknad', () => {
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
+                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: EGEN_NÆRING_ID,
-                                type: Arbeidsforholdstype.SELVSTENDIG,
+                                type: 'selvstendig',
                             },
                             behovForTilretteleggingFom: '2024-05-10',
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 50,
-                                    type: Tilretteleggingstype.DELVIS,
+                                    type: 'delvis',
                                 },
                             ],
                             risikofaktorer: undefined,
@@ -369,16 +410,18 @@ describe('useSendSøknad', () => {
                         },
                         {
                             arbeidsforhold: {
+                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: FRILANS_ID,
-                                type: Arbeidsforholdstype.FRILANSER,
+                                type: 'frilanser',
                             },
                             behovForTilretteleggingFom: '2024-09-10',
                             tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 0,
-                                    type: Tilretteleggingstype.INGEN,
+                                    type: 'ingen',
                                 },
                             ],
                             risikofaktorer: 'Dette er en risikofaktor',
@@ -390,8 +433,9 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: EGEN_NÆRING_ID,
-                                    type: Arbeidsforholdstype.SELVSTENDIG,
+                                    type: 'selvstendig',
                                 },
                                 type: AttachmentMetadataType.TILRETTELEGGING,
                             },
@@ -400,20 +444,20 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: FRILANS_ID,
-                                    type: Arbeidsforholdstype.FRILANSER,
+                                    type: 'frilanser',
                                 },
                                 type: AttachmentMetadataType.TILRETTELEGGING,
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });
 
     it('skal sende inn tilrettelegging med mange perioder', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -423,7 +467,7 @@ describe('useSendSøknad', () => {
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {
                 behovForTilretteleggingFom: '2024-05-10',
-                type: Tilretteleggingstype.DELVIS,
+                type: 'delvis',
                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
             } satisfies DelvisTilrettelegging,
@@ -456,20 +500,32 @@ describe('useSendSøknad', () => {
             [ARBEIDSGIVER_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(setKvittering, DEFAULT_ARBEIDSFORHOLD), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    språkkode: 'nb',
+                    søkerinfo: {
+                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
+                        navn: {
+                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
+                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
+                        },
+                        arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+                            navn: af.arbeidsgiverNavn,
+                            orgnummer: af.arbeidsgiverId,
+                            stillingsprosent: af.stillingsprosent,
+                            fom: af.fom,
+                        })),
+                    },
+                    språkkode: 'NB',
                     barn: BARNET,
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
@@ -480,33 +536,37 @@ describe('useSendSøknad', () => {
                         {
                             arbeidsforhold: {
                                 id: ARBEIDSGIVER_ID,
-                                type: Arbeidsforholdstype.VIRKSOMHET,
+                                type: 'virksomhet',
                             },
                             behovForTilretteleggingFom: '2024-05-10',
                             tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-06-01',
                                     stillingsprosent: 50,
-                                    type: Tilretteleggingstype.DELVIS,
+                                    type: 'delvis',
                                 },
                                 {
                                     fom: '2024-06-02',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-08-01',
                                     stillingsprosent: 0,
-                                    type: Tilretteleggingstype.INGEN,
+                                    type: 'ingen',
                                 },
                                 {
                                     fom: '2024-08-02',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-09-25',
                                     stillingsprosent: 70,
-                                    type: Tilretteleggingstype.DELVIS,
+                                    type: 'delvis',
                                 },
                                 {
                                     fom: '2024-09-26',
+                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     tom: '2024-10-11',
                                     stillingsprosent: 100,
-                                    type: Tilretteleggingstype.HEL,
+                                    type: 'hel',
                                 },
                             ],
                             risikofaktorer: undefined,
@@ -519,13 +579,13 @@ describe('useSendSøknad', () => {
                             dokumenterer: {
                                 arbeidsforhold: {
                                     id: ARBEIDSGIVER_ID,
-                                    type: Arbeidsforholdstype.VIRKSOMHET,
+                                    type: 'virksomhet',
                                 },
                                 type: AttachmentMetadataType.TILRETTELEGGING,
                             },
                         },
                     ],
-                },
+                } satisfies SvangerskapspengesøknadDto,
             }),
         );
     });

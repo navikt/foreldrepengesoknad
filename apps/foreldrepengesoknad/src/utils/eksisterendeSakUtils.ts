@@ -17,7 +17,6 @@ import {
     Saksperiode,
     SaksperiodeDTO,
     Situasjon,
-    StønadskontoType,
     Søkerrolle,
     UttakArbeidType,
     isAdoptertBarn,
@@ -27,7 +26,15 @@ import {
 } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { AnnenForelderFrontend, AnnenPartSak, BarnFrontend, FpSak, Person, PersonFrontend } from '@navikt/fp-types';
+import {
+    AnnenForelderFrontend,
+    AnnenPartSak,
+    BarnFrontend,
+    FpSak,
+    KontoTypeUttak,
+    Person,
+    PersonFrontend,
+} from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
@@ -54,14 +61,14 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): KontoTypeUttak | undefined => {
     switch (årsak) {
         case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
-            return StønadskontoType.Fedrekvote;
+            return 'FEDREKVOTE';
         case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
-            return StønadskontoType.Fellesperiode;
+            return 'FELLESPERIODE';
         case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
-            return StønadskontoType.Mødrekvote;
+            return 'MØDREKVOTE';
         default:
             return undefined;
     }

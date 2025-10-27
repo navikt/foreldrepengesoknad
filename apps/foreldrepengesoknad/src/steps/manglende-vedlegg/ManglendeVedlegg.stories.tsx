@@ -18,7 +18,6 @@ import {
     Periode,
     Periodetype,
     SivilstandType,
-    StønadskontoType,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonFrontend, Situasjon, Søkerinfo } from '@navikt/fp-types';
@@ -154,7 +153,10 @@ const meta = {
             handlers: [
                 http.post(
                     API_URLS.sendVedlegg,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
@@ -321,7 +323,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
             {
                 id: '08499121-6620-16419-3321-0027063089154',
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
@@ -336,7 +338,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
             {
                 id: '0700701673-1838-30857-30810-219862607326',
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
@@ -387,7 +389,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             {
                 id: '08499121-6620-16419-3321-0027063089154',
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
@@ -402,7 +404,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             {
                 id: '0700701673-1838-30857-30810-219862607326',
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
@@ -445,7 +447,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
             {
                 id: '0700701673-1838-30857-30810-219862607326',
                 forelder: Forelder.mor,
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
@@ -490,7 +492,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
             {
                 id: '0700701673-1838-30857-30810-219862607326',
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Foreldrepenger,
+                konto: 'FORELDREPENGER',
                 tidsperiode: {
                     fom: new Date('2025-01-01'),
                     tom: new Date('2025-02-01'),

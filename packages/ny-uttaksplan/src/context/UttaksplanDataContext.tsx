@@ -1,7 +1,7 @@
 import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { Barn, NavnPåForeldre } from '@navikt/fp-common';
-import { Familiesituasjon, TilgjengeligeStønadskontoerForDekningsgrad, UttaksplanModus } from '@navikt/fp-types';
+import { Familiesituasjon, KontoBeregningDto, UttaksplanModus } from '@navikt/fp-types';
 
 import { Planperiode } from '../types/Planperiode';
 
@@ -26,7 +26,7 @@ export type UttaksplanContextDataMap = {
     [UttaksplanContextDataType.BARN]?: Barn;
     [UttaksplanContextDataType.FAMILIESITUASJON]?: Familiesituasjon;
     [UttaksplanContextDataType.MODUS]?: UttaksplanModus;
-    [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: TilgjengeligeStønadskontoerForDekningsgrad;
+    [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: KontoBeregningDto;
     [UttaksplanContextDataType.ALENE_OM_OMSORG]?: boolean;
     [UttaksplanContextDataType.ER_MEDMOR_DEL_AV_SØKNADEN]?: boolean;
 };

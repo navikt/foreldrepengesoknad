@@ -97,7 +97,10 @@ export const SkalIkkeFeileOpplasting: Story = {
             handlers: [
                 http.post(
                     API_URLS.sendVedlegg,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
@@ -136,11 +139,11 @@ export const MedVedlegg: Story = {
                     filename: file1.name,
                     filesize: file1.size,
                     file: file1,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
                 },
             ],
@@ -200,8 +203,8 @@ export const KanMaxHaToVedlegg: Story = {
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
                 {
                     id: 'V134300149934973076055420920289127101',
@@ -212,8 +215,8 @@ export const KanMaxHaToVedlegg: Story = {
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
             ],
         },

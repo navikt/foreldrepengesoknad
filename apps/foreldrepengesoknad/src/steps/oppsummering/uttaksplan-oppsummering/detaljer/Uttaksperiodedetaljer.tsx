@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { MorsAktivitet } from '@navikt/fp-constants';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
@@ -50,7 +50,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
                     verdi={ønskerSamtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {konto !== StønadskontoType.ForeldrepengerFørFødsel && ønskerSamtidigUttak !== true && (
+            {konto !== 'FORELDREPENGER_FØR_FØDSEL' && ønskerSamtidigUttak !== true && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeid' })}
                     verdi={gradert ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}

@@ -12,14 +12,13 @@ import {
     PeriodeValidState,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { Stønadskonto } from '@navikt/fp-types';
+import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
@@ -68,7 +67,7 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: Stønadskonto[];
+    stønadskontoer: KontoDto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
@@ -97,17 +96,17 @@ const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forel
     return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
 };
 
-const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {
+const erUttakAvAnnenForeldersKvote = (konto: KontoTypeUttak | '', søkerErFarEllerMedmor: boolean): boolean => {
     return (
-        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor === true) ||
-        (konto === StønadskontoType.Fedrekvote && søkerErFarEllerMedmor === false)
+        (konto === 'MØDREKVOTE' && søkerErFarEllerMedmor === true) ||
+        (konto === 'FEDREKVOTE' && søkerErFarEllerMedmor === false)
     );
 };
 
 const getPeriodeType = (
     periodenGjelder: Forelder | '',
     erFarEllerMedmor: boolean,
-    konto: StønadskontoType | '',
+    konto: KontoTypeUttak | '',
     familiehendelsedato: Date,
     termindato: Date | undefined,
     tidsperiode: TidsperiodeDate,
@@ -200,7 +199,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
             : intl.formatMessage({ id: 'annen.forelder' });
-    const harAktivitetsfriKvote = stønadskontoer.some((st) => st.konto === StønadskontoType.AktivitetsfriKvote);
+    const harAktivitetsfriKvote = stønadskontoer.some((st) => st.konto === 'AKTIVITETSFRI_KVOTE');
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

@@ -25,7 +25,6 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
                 http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
                 http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),

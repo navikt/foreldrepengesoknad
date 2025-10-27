@@ -314,7 +314,7 @@ export type CountryCode =
     | 'ZW';
 
 export type Del = TilretteleggingDto & {
-    type: 'Del';
+    type: 'delvis';
 } & {
     fom: string;
     stillingsprosent: number;
@@ -402,17 +402,17 @@ export type FrilansDto = {
 };
 
 export type FrilanserDto = ArbeidsforholdDto & {
-    type: 'FrilanserDto';
+    type: 'frilanser';
 };
 
 export type Hel = TilretteleggingDto & {
-    type: 'Hel';
+    type: 'hel';
 } & {
     fom: string;
 };
 
 export type Ingen = TilretteleggingDto & {
-    type: 'Ingen';
+    type: 'ingen';
 } & {
     fom: string;
 };
@@ -438,16 +438,27 @@ export type NæringDto = {
 };
 
 export type PrivatArbeidsgiverDto = ArbeidsforholdDto & {
-    type: 'PrivatArbeidsgiverDto';
+    type: 'privat';
 } & {
     id: string;
 };
 
 export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
-    type: 'SelvstendigNæringsdrivendeDto';
+    type: 'selvstendig';
 };
 
 export type SvangerskapspengesøknadDto = {
+    søkerinfo: {
+        fnr: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
+        arbeidsforhold: Array<{
+            navn: string;
+            orgnummer: string;
+            stillingsprosent: number;
+            fom: string;
+            tom?: string;
+        }>;
+    };
     mottattdato?: string;
     barn: BarnSvpDto;
     rolle?: BrukerRolle;
@@ -470,7 +481,7 @@ export type TilretteleggingbehovDto = {
     behovForTilretteleggingFom: string;
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
-    tilrettelegginger?: Array<Del | Hel | Ingen>;
+    tilrettelegginger: Array<Del | Hel | Ingen>;
     risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
 };
 
@@ -484,7 +495,7 @@ export type UtenlandsoppholdsperiodeDto = {
 export type VedleggDto = {
     uuid?: string;
     skjemanummer: DokumentType;
-    innsendingsType?: VedleggInnsendingType;
+    innsendingsType: VedleggInnsendingType;
     beskrivelse?: string;
     dokumenterer?: Dokumenterer;
 };
@@ -492,7 +503,7 @@ export type VedleggDto = {
 export type VedleggInnsendingType = 'LASTET_OPP' | 'SEND_SENERE' | 'AUTOMATISK';
 
 export type VirksomhetDto = ArbeidsforholdDto & {
-    type: 'VirksomhetDto';
+    type: 'virksomhet';
 } & {
     id: string;
 };
@@ -532,6 +543,11 @@ export type BarnDto = {
 export type Dekningsgrad = '80' | '100';
 
 export type ForeldrepengesøknadDto = {
+    søkerinfo: {
+        fnr: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
+        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+    };
     mottattdato?: string;
     rolle?: BrukerRolle;
     språkkode?: Målform;
@@ -699,6 +715,11 @@ export type EndringssøknadForeldrepengerDto = {
     annenForelder?: NorskForelderDto | UtenlandskForelderDto;
     uttaksplan: UttaksplanDto;
     saksnummer: string;
+    søkerinfo: {
+        fnr: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
+        arbeidsforhold: Array<{ navn: string; orgnummer: string; stillingsprosent: number; fom: string; tom?: string }>;
+    };
     vedlegg?: VedleggDto[];
 };
 
@@ -710,10 +731,10 @@ export type BrukerTekstDto = {
 
 export type EttersendelseDto = {
     mottattdato?: string;
-    type: YtelseType;
     saksnummer: string;
+    fnr: string;
+    type: YtelseType;
     brukerTekst?: BrukerTekstDto;
-    dialogId?: string;
     vedlegg: VedleggDto[];
 };
 
@@ -721,6 +742,10 @@ export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØN
 
 export type EngangsstønadDto = {
     mottattdato?: string;
+    søkerinfo: {
+        fnr: string;
+        navn: { fornavn: string; mellomnavn?: string; etternavn: string };
+    };
     språkkode: Målform;
     rolle?: BrukerRolle;
     barn: AdopsjonDto | FødselDto | OmsorgsovertakelseDto | TerminDto;
@@ -947,6 +972,11 @@ export type SivilstandType =
 export type Søkerinfo = {
     søker: PersonFrontend;
     arbeidsforhold: Arbeidsforhold[];
+};
+
+export type ForsendelseStatus = {
+    status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG';
+    saksnummer?: number;
 };
 
 export type MinidialogInnslag = {

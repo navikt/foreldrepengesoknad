@@ -3,9 +3,9 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -52,14 +52,14 @@ export const LeggTilPeriodePanelStep = ({
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
     const getForelderFromKontoType = (
-        ktValue: StønadskontoType | undefined,
+        ktValue: KontoTypeUttak | undefined,
         fValue: Forelder | undefined,
     ): Forelder | undefined => {
         switch (ktValue) {
-            case StønadskontoType.Fedrekvote:
+            case 'FEDREKVOTE':
                 return Forelder.farMedmor;
-            case StønadskontoType.Mødrekvote:
-            case StønadskontoType.ForeldrepengerFørFødsel:
+            case 'MØDREKVOTE':
+            case 'FORELDREPENGER_FØR_FØDSEL':
                 return Forelder.mor;
             default:
                 return fValue;

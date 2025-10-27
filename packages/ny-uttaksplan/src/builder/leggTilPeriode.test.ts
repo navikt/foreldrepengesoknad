@@ -1,4 +1,4 @@
-import { Forelder, MorsAktivitet, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
 import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
@@ -11,7 +11,7 @@ const perioder: Planperiode[] = [
         fom: '2022-04-14',
         tom: '2022-05-04',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
     {
@@ -19,7 +19,7 @@ const perioder: Planperiode[] = [
         fom: '2022-05-05',
         tom: '2022-08-17',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -27,7 +27,7 @@ const perioder: Planperiode[] = [
         fom: '2022-08-18',
         tom: '2022-10-12',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
 ];
@@ -38,7 +38,7 @@ const perioderMedHull: Planperiode[] = [
         fom: '2022-03-01',
         tom: '2022-03-31',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -53,7 +53,7 @@ const perioderMedHull: Planperiode[] = [
         fom: '2022-05-02',
         tom: '2022-05-31',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
 ];
@@ -64,7 +64,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         fom: '2024-04-01',
         tom: '2024-04-30',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
     {
@@ -72,7 +72,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         fom: '2024-05-01',
         tom: '2024-05-31',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -102,7 +102,7 @@ const toPerioder: Planperiode[] = [
         fom: '2024-05-01',
         tom: '2024-05-31',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Mødrekvote,
+        kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
     {
@@ -110,7 +110,7 @@ const toPerioder: Planperiode[] = [
         fom: '2024-06-03',
         tom: '2024-06-28',
         forelder: Forelder.mor,
-        kontoType: StønadskontoType.Fellesperiode,
+        kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
 ];
@@ -125,7 +125,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: '2022-07-11',
                 tom: '2022-07-22',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 readOnly: false,
             };
 
@@ -156,7 +156,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-03-15',
             tom: '2022-04-15',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -182,9 +182,9 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result[3].tom).toEqual(perioderMedHull[1].tom);
         expect(result[4]).toEqual(perioderMedHull[2]);
         const nyPeriodeDel1 = result[1];
-        expect(nyPeriodeDel1.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(nyPeriodeDel1.kontoType).toEqual('FELLESPERIODE');
         const nyPeriodeDel2 = result[2];
-        expect(nyPeriodeDel2.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(nyPeriodeDel2.kontoType).toEqual('FELLESPERIODE');
     });
 
     it('Burde legge legge til ny periode korrekt som skal delvis overlappe et hull i slutten', () => {
@@ -193,7 +193,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-04-15',
             tom: '2022-05-12',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -225,7 +225,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-04-01',
             tom: '2022-04-29',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -252,7 +252,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2024-05-15',
             tom: '2024-05-22',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -281,7 +281,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2024-05-23',
             tom: '2024-05-24',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -306,7 +306,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-07-11',
             tom: '2022-07-22',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -331,7 +331,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-03-31',
             tom: '2022-04-13',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -356,7 +356,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-03-31',
             tom: '2022-04-07',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -382,7 +382,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-10-13',
             tom: '2022-10-26',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -407,7 +407,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-10-26',
             tom: '2022-11-08',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -460,7 +460,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-05-03',
             tom: '2022-05-06',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -483,7 +483,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-09-12',
             tom: '2022-10-14',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Mødrekvote,
+            kontoType: 'MØDREKVOTE',
             readOnly: false,
         };
 
@@ -516,7 +516,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: '2023-05-12',
                 tom: '2023-09-19',
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 readOnly: false,
             };
 
@@ -548,7 +548,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2024-04-15',
             tom: '2024-07-15',
             forelder: Forelder.mor,
-            kontoType: StønadskontoType.Fellesperiode,
+            kontoType: 'FELLESPERIODE',
             readOnly: false,
         };
 
@@ -567,19 +567,19 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result[0].fom).toEqual(nyPeriode.fom);
         expect(result[0].tom).toEqual('2024-04-30');
         const periode1 = result[0];
-        expect(periode1.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode1.kontoType).toEqual('FELLESPERIODE');
         expect(result[1].fom).toEqual(toPerioder[0].fom);
         expect(result[1].tom).toEqual(toPerioder[0].tom);
         const periode2 = result[1];
-        expect(periode2.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode2.kontoType).toEqual('FELLESPERIODE');
         expect(result[2].fom).toEqual(toPerioder[1].fom);
         expect(result[2].tom).toEqual(toPerioder[1].tom);
         const periode3 = result[2];
-        expect(periode3.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode3.kontoType).toEqual('FELLESPERIODE');
         expect(result[3].fom).toEqual('2024-07-01');
         expect(result[3].tom).toEqual(nyPeriode.tom);
         const periode4 = result[2];
-        expect(periode4.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode4.kontoType).toEqual('FELLESPERIODE');
     });
 });
 
@@ -589,7 +589,7 @@ describe('Test av split periode i uttaksplan', () => {
         fom: '2022-04-14',
         tom: '2022-05-02',
         forelder: Forelder.farMedmor,
-        kontoType: StønadskontoType.Fedrekvote,
+        kontoType: 'FEDREKVOTE',
         readOnly: false,
     };
 
@@ -598,7 +598,7 @@ describe('Test av split periode i uttaksplan', () => {
         fom: '2022-04-14',
         tom: '2022-05-02',
         forelder: Forelder.farMedmor,
-        kontoType: StønadskontoType.Foreldrepenger,
+        kontoType: 'FORELDREPENGER',
         morsAktivitet: MorsAktivitet.Arbeid,
         readOnly: false,
     };

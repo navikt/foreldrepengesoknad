@@ -1,5 +1,5 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -21,8 +21,9 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
-import { sendEttersending, urlPrefiks } from '../../api/api';
+import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -34,14 +35,14 @@ import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
-const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+const mapYtelse = (sakstype: Ytelse) => {
     if (sakstype === 'ENGANGSSTØNAD') {
-        return 'engangsstonad';
+        return API_URLS.lastOppESVedlegg;
     }
     if (sakstype === 'FORELDREPENGER') {
-        return 'foreldrepenger';
+        return API_URLS.lastOppFPVedlegg;
     }
-    return 'svangerskapspenger';
+    return API_URLS.lastOppSVPVedlegg;
 };
 
 const DEFAULT_OPTION = 'default';
@@ -91,7 +92,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 };
 
 type Props = {
-    readonly saker: SakOppslag;
+    saker: SakOppslag;
 };
 
 const EttersendingPageInner = ({ saker }: Props) => {
@@ -102,6 +103,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
     );
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     const { search } = useLocation();
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
@@ -133,6 +135,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutate({
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
+            fnr: notEmpty(søkerInfo).søker.fnr,
             vedlegg,
         });
     };
@@ -183,7 +186,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachmentFetch(mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

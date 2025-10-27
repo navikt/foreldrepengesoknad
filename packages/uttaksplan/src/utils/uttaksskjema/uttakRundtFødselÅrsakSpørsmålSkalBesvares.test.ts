@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Periodetype } from '@navikt/fp-common';
 
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
@@ -16,7 +16,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor velger å bruke fedrekvote rundt fødsel', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -32,7 +32,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis kun far/medmor har rett', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -48,7 +48,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor ikke velger å bruke fedrekvote', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fellesperiode,
+            'FELLESPERIODE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -64,7 +64,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor setter perioden mer enn 6 uker etter fødsel', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-09-14T00:00:00.000Z'), tom: new Date('2022-09-15T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -80,7 +80,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis søker er mor', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             false, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -97,7 +97,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor har aleneomsorg', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             true, //erAleneOmOmsorg
@@ -113,7 +113,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor søker og annen forelder kan ikke oppgis', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -129,7 +129,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () 
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis barnet er adoptert', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg
@@ -156,7 +156,7 @@ describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB ikke gjelder'
     it('Skal ikke måtte besvare spørsmål om type uttak rundt fødsel hvis far/medmor velger å bruke fedrekvote rundt fødsel', () => {
         const result = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             true, //søkerErFarEllerMedmor
             false, //erAleneOmOmsorg

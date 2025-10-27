@@ -9,12 +9,13 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
+
+type TilgjengeligeStønadskontoer = { '80': KontoBeregningDto; '100': KontoBeregningDto };
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -92,7 +93,7 @@ export const PlanleggerDataFetcher = () => {
                     const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
                     // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen
                     stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
+                        .filter((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE')
                         .map((konto) => ({ ...konto, dager: totalDager }));
                 }
             }

@@ -3,7 +3,6 @@ import {
     Periode,
     PeriodeUtenUttak,
     Periodetype,
-    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
@@ -20,7 +19,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 tom: new Date('2022-05-01'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
         },
         {
             id: '2',
@@ -30,7 +29,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 tom: new Date('2022-08-01'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Mødrekvote,
+            konto: 'MØDREKVOTE',
         },
         {
             id: '3',
@@ -40,7 +39,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 tom: new Date('2022-10-01'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
         },
     ];
     const nyPlan: Periode[] = [
@@ -53,7 +52,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 tom: new Date('2022-11-01'),
             },
             forelder: Forelder.mor,
-            konto: StønadskontoType.Mødrekvote,
+            konto: 'MØDREKVOTE',
         },
     ];
     const erFarEllerMedmor = true;
@@ -158,7 +157,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         tom: new Date('2022-11-08'),
                     },
                     forelder: Forelder.farMedmor,
-                    konto: StønadskontoType.Fellesperiode,
+                    konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
             const endringstidspunkt = opprinneligPlan[2].tidsperiode.fom;
@@ -202,7 +201,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         tom: new Date('2022-1-31'),
                     },
                     forelder: Forelder.farMedmor,
-                    konto: StønadskontoType.Fellesperiode,
+                    konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
             const endringstidspunkt = opprinneligPlan[2].tidsperiode.fom;

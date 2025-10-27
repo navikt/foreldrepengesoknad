@@ -13,7 +13,7 @@ import {
     Situasjon,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import Block from '../../../common/block/Block';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
@@ -21,7 +21,7 @@ import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 
 interface Props {
     familiehendelsesdato: Date;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;

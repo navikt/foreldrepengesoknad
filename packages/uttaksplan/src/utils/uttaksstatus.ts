@@ -1,11 +1,11 @@
-import { Periode, StønadskontoType } from '@navikt/fp-common';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Periode } from '@navikt/fp-common';
+import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from './uttaksPlanStatus';
 
 export interface Uttaksstatus {
     gjelderDagerBrukt: boolean;
-    uttak: Stønadskonto[];
+    uttak: KontoDto[];
 }
 
 export const getUttaksstatus = ({
@@ -24,7 +24,7 @@ export const getUttaksstatus = ({
     return {
         gjelderDagerBrukt,
         uttak: erFarEllerMedmor
-            ? uttak.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel)
+            ? uttak.filter((kontouttak) => kontouttak.konto !== 'FORELDREPENGER_FØR_FØDSEL')
             : uttak,
     };
 };
@@ -34,6 +34,6 @@ interface UttaksstatusFuncParams {
     erEndringssøknad: boolean;
     harKomplettUttaksplan: boolean;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    tilgjengeligeStønadskontoer: KontoBeregningDto;
     uttaksplan: Periode[];
 }

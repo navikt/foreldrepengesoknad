@@ -20,3 +20,10 @@ body {
         flex-direction: column;
     }
 }
+
+@layer base {
+    img,
+    canvas {
+        @apply inline-block;
+    }
+}

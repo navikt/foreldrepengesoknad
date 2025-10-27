@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Forelder, MorsAktivitet, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
 import { OverføringÅrsakType, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -40,7 +40,7 @@ export const Default: Story = {
             {
                 fom: '2022-10-14',
                 tom: '2022-12-21',
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 forelder: Forelder.farMedmor,
                 samtidigUttak: 50,
             },
@@ -83,7 +83,7 @@ export const FarSøker: Story = {
                                         {
                                             fom: '2024-10-01',
                                             tom: '2024-10-14',
-                                            kontoType: StønadskontoType.Fedrekvote,
+                                            kontoType: 'FEDREKVOTE',
                                             forelder: Forelder.farMedmor,
                                             samtidigUttak: 100,
                                         },
@@ -91,7 +91,7 @@ export const FarSøker: Story = {
                                             fom: '2025-01-01',
                                             tom: '2025-02-04',
                                             forelder: Forelder.farMedmor,
-                                            kontoType: StønadskontoType.Mødrekvote,
+                                            kontoType: 'MØDREKVOTE',
                                             overføringÅrsak: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
                                         },
                                     ],
@@ -116,32 +116,32 @@ export const FarSøker: Story = {
             {
                 fom: '2024-09-10',
                 tom: '2024-09-30',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-10-01',
                 tom: '2024-10-14',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 samtidigUttak: 100,
             },
             {
                 fom: '2024-10-15',
                 tom: '2024-12-09',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2024-12-10',
                 tom: '2024-12-31',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
             },
             {
                 fom: '2025-02-05',
                 tom: '2025-03-11',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 gradering: {
                     arbeidstidprosent: 50,
@@ -153,7 +153,7 @@ export const FarSøker: Story = {
             {
                 fom: '2025-03-19',
                 tom: '2025-04-22',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
             },
         ],
@@ -256,7 +256,7 @@ export const MorOgFarOgFarGraderer: Story = {
             {
                 fom: '2025-09-23',
                 tom: '2025-11-17',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 resultat: {
                     innvilget: false,
                     trekkerMinsterett: false,
@@ -276,7 +276,7 @@ export const MorOgFarOgFarGraderer: Story = {
             {
                 fom: '2025-11-18',
                 tom: '2026-01-12',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
@@ -296,7 +296,7 @@ export const MorOgFarOgFarGraderer: Story = {
             {
                 fom: '2026-03-17',
                 tom: '2026-10-12',
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,

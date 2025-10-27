@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -31,7 +31,7 @@ import {
 import { validatePeriodeFom, validatePeriodeTom, validateStillingsprosentPåPerioder } from './perioderValidation';
 
 export const NEW_PERIODE = {
-    type: Tilretteleggingstype.DELVIS,
+    type: 'delvis',
     fom: '',
     tom: '',
     stillingsprosent: '',

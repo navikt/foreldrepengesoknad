@@ -1,5 +1,4 @@
 import { Forelder } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
 import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
@@ -12,7 +11,7 @@ const perioder: Planperiode[] = [
         fom: '2022-07-21',
         tom: '2022-08-31',
         forelder: Forelder.farMedmor,
-        kontoType: StønadskontoType.AktivitetsfriKvote,
+        kontoType: 'AKTIVITETSFRI_KVOTE',
         readOnly: false,
     },
     {
@@ -20,7 +19,7 @@ const perioder: Planperiode[] = [
         fom: '2022-09-01',
         tom: '2022-09-14',
         forelder: Forelder.farMedmor,
-        kontoType: StønadskontoType.AktivitetsfriKvote,
+        kontoType: 'AKTIVITETSFRI_KVOTE',
         readOnly: false,
     },
 ];
@@ -43,7 +42,7 @@ describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellig konto', () => {
-        const perioder4 = [perioder[0], { ...perioder[1], konto: StønadskontoType.Fedrekvote }];
+        const perioder4 = [perioder[0], { ...perioder[1], konto: 'FEDREKVOTE' }];
         const result = slåSammenLikePerioder(perioder4, '2022-07-21', undefined);
         expect(result.length).toEqual(2);
     });
@@ -82,7 +81,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 samtidigUttak: 100,
                 readOnly: false,
@@ -91,7 +90,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 samtidigUttak: 50,
                 readOnly: false,
@@ -100,7 +99,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 samtidigUttak: 70,
                 readOnly: false,
@@ -165,7 +164,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 samtidigUttak: 100,
                 readOnly: false,
@@ -174,7 +173,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 samtidigUttak: 100,
                 readOnly: false,
@@ -183,7 +182,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 forelder: Forelder.mor,
                 samtidigUttak: 80,
                 readOnly: false,

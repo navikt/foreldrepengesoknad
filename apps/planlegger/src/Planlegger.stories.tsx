@@ -5,8 +5,8 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -16,19 +16,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -40,19 +40,19 @@ const STØNADSKONTOER = {
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -61,7 +61,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies TilgjengeligeStønadskontoer;
+} satisfies { '80': KontoBeregningDto; '100': KontoBeregningDto };
 
 const meta = {
     title: 'PlanleggerDataFetcher',
@@ -137,7 +137,7 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 75,
                                 },
                             ],
@@ -149,7 +149,7 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 95,
                                 },
                             ],
@@ -158,7 +158,7 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                                 toTette: 0,
                             },
                         },
-                    } as TilgjengeligeStønadskontoer),
+                    } satisfies { '80': KontoBeregningDto; '100': KontoBeregningDto }),
                 ),
                 http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
             ],

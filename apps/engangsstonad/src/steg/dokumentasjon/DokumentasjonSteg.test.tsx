@@ -5,7 +5,8 @@ import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { AttachmentType, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DokumentasjonSteg.stories';
@@ -56,12 +57,14 @@ describe('<DokumentasjonSteg>', () => {
                             filename: 'hello.png',
                             filesize: 5,
                             pending: false,
-                            skjemanummer: 'I000141',
-                            type: 'terminbekreftelse',
+                            skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                            type: AttachmentType.TERMINBEKREFTELSE,
                             uploaded: true,
-                            url: 'test.com',
                             uuid: 'uuid-test',
-                        }),
+                            innsendingsType: 'LASTET_OPP',
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                        } satisfies Attachment),
                     ],
                 },
                 key: ContextDataType.DOKUMENTASJON,
@@ -112,12 +115,14 @@ describe('<DokumentasjonSteg>', () => {
                             filename: 'hello.png',
                             filesize: 5,
                             pending: false,
-                            skjemanummer: 'I000042',
-                            type: 'omsorgsovertakelse',
+                            skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                            type: AttachmentType.OMSORGSOVERTAKELSE,
                             uploaded: true,
-                            url: 'test.com',
+                            innsendingsType: 'LASTET_OPP',
                             uuid: 'uuid-test',
-                        }),
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                        } satisfies Attachment),
                     ],
                 },
                 key: 'DOKUMENTASJON',

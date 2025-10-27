@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { BarnType, Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType, Forelder } from '@navikt/fp-constants';
 import { SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
@@ -49,25 +49,25 @@ export const Default: Story = {
         søkersPerioder: [
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
             },
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
             {
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
             },
@@ -80,10 +80,10 @@ export const Default: Story = {
         modus: 'planlegger',
         valgtStønadskonto: {
             kontoer: [
-                { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
             ],
             minsteretter: MINSTERETTER,
         },
@@ -110,19 +110,19 @@ export const MorOgFarMedFerieopphold: Story = {
         søkersPerioder: [
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
             },
             {
                 forelder: Forelder.mor,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
@@ -134,7 +134,7 @@ export const MorOgFarMedFerieopphold: Story = {
             },
             {
                 forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 fom: '2025-12-16',
                 tom: '2026-03-30',
             },

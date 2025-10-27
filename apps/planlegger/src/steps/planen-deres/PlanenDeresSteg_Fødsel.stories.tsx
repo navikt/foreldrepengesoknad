@@ -11,7 +11,6 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { StønadskontoType } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { PlanenDeresSteg } from './PlanenDeresSteg';
@@ -90,19 +89,19 @@ export const MorOgFarBeggeHarRett: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                    { konto: 'MØDREKVOTE', dager: 95 },
+                    { konto: 'FEDREKVOTE', dager: 95 },
+                    { konto: 'FELLESPERIODE', dager: 101 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
             },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                    { konto: 'MØDREKVOTE', dager: 75 },
+                    { konto: 'FEDREKVOTE', dager: 75 },
+                    { konto: 'FELLESPERIODE', dager: 80 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
             },
@@ -121,15 +120,15 @@ export const MorOgFarKunMorHarRett: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 291 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                    { konto: 'FORELDREPENGER', dager: 291 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
             },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 230 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                    { konto: 'FORELDREPENGER', dager: 230 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
             },
@@ -148,8 +147,8 @@ export const MorOgFarKunFarHarRettMorUfør: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 166 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                    { konto: 'FORELDREPENGER', dager: 166 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
                 ],
                 minsteretter: {
                     farRundtFødsel: 10,
@@ -158,8 +157,8 @@ export const MorOgFarKunFarHarRettMorUfør: Story = {
             },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
+                    { konto: 'FORELDREPENGER', dager: 125 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
                 ],
                 minsteretter: {
                     farRundtFødsel: 10,
@@ -181,8 +180,8 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 211 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
+                    { konto: 'FORELDREPENGER', dager: 211 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
                 ],
                 minsteretter: {
                     farRundtFødsel: 10,
@@ -191,8 +190,8 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
             },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 150 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
+                    { konto: 'FORELDREPENGER', dager: 150 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
                 ],
                 minsteretter: {
                     farRundtFødsel: 10,
@@ -277,11 +276,11 @@ export const BareFarSøkerOgHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
                 minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                kontoer: [{ konto: 'FORELDREPENGER', dager: 230 }],
                 minsteretter: MINSTERETTER,
             },
         },
@@ -299,14 +298,14 @@ export const FarOgFarBeggeHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
@@ -326,14 +325,14 @@ export const FarOgFarKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
@@ -353,14 +352,14 @@ export const FarOgFarKunMedfarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 291 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 230 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
