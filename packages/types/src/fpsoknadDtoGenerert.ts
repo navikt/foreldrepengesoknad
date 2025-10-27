@@ -482,7 +482,7 @@ export type SelvstendigNæringsdrivendeDto = ArbeidsforholdDto & {
 
 export type SøkerDto = {
     fnr: string;
-    navn: string;
+    navn: { fornavn: string; mellomnavn?: string; etternavn: string };
     arbeidsforhold?: Arbeidsforhold[];
 };
 

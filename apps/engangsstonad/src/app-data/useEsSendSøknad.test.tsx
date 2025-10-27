@@ -8,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { EngangsstønadDto, PersonFrontend, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EngangsstønadDto, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
