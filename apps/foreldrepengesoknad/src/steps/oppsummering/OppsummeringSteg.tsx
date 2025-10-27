@@ -20,7 +20,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonFrontend, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -33,7 +33,7 @@ import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepeng
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
-    person: PersonFrontend,
+    person: PersonDto_fpoversikt,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,

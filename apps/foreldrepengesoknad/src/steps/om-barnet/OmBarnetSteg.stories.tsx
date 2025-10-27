@@ -22,48 +22,53 @@ const promiseAction = () => () => {
 const defaultSøkerinfo = {
     person: {
         fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
+        navn: {
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+        },
         kjønn: 'K',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '21091981146',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: {
+                    fornavn: 'KLØKTIG',
+                    etternavn: 'MIDTPUNKT',
+                },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981146',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'SNILT',
-                etternavn: 'MIDTPUNKT',
+                navn: {
+                    fornavn: 'SNILT',
+                    etternavn: 'MIDTPUNKT',
+                },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981147',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'LYST',
-                etternavn: 'MIDTPUNKT',
+                navn: {
+                    fornavn: 'LYST',
+                    etternavn: 'MIDTPUNKT',
+                },
                 kjønn: 'M',
             },
         ],
@@ -221,8 +226,10 @@ export const RegistrertBarnTrillingerDerEnErDød: Story = {
         søkerInfo: {
             person: {
                 fnr: '21430354032',
-                fornavn: 'Hes',
-                etternavn: 'Mandagsbil',
+                navn: {
+                    fornavn: 'Hes',
+                    etternavn: 'Mandagsbil',
+                },
                 kjønn: 'K',
                 fødselsdato: '2003-03-21',
                 bankkonto: { kontonummer: '', banknavn: '' },
@@ -230,41 +237,44 @@ export const RegistrertBarnTrillingerDerEnErDød: Story = {
                     {
                         fnr: '21091981146',
                         fødselsdato: '2023-03-01',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '12038517080',
                             fødselsdato: '1985-03-12',
-                            fornavn: 'LEALAUS',
-                            etternavn: 'BÆREPOSE',
+                            navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                         },
-                        fornavn: 'KLØKTIG',
-                        etternavn: 'MIDTPUNKT',
+                        navn: {
+                            fornavn: 'KLØKTIG',
+                            etternavn: 'MIDTPUNKT',
+                        },
                         kjønn: 'M',
                     },
                     {
                         fnr: '31091981147',
                         fødselsdato: '2023-03-02',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '12038517080',
                             fødselsdato: '1985-03-12',
-                            fornavn: 'LEALAUS',
-                            etternavn: 'BÆREPOSE',
+                            navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                         },
-                        fornavn: 'SNILT',
-                        etternavn: 'MIDTPUNKT',
+                        navn: {
+                            fornavn: 'SNILT',
+                            etternavn: 'MIDTPUNKT',
+                        },
                         kjønn: 'M',
                     },
                     {
                         fnr: '31091981148',
                         fødselsdato: '2023-03-01',
                         dødsdato: '2023-03-02',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '12038517080',
                             fødselsdato: '1985-03-12',
-                            fornavn: 'LEALAUS',
-                            etternavn: 'BÆREPOSE',
+                            navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                         },
-                        fornavn: 'LYST',
-                        etternavn: 'MIDTPUNKT',
+                        navn: {
+                            fornavn: 'LYST',
+                            etternavn: 'MIDTPUNKT',
+                        },
                         kjønn: 'M',
                     },
                 ],
@@ -275,14 +285,14 @@ export const RegistrertBarnTrillingerDerEnErDød: Story = {
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'SAUEFABRIKK',
                     stillingsprosent: 100,
-                    fom: '2017-03-24',
+                    from: '2017-03-24',
                 },
                 {
                     arbeidsgiverId: '896929119',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'SAUEFABRIKK',
                     stillingsprosent: 100,
-                    fom: '2017-03-24',
+                    from: '2017-03-24',
                 },
             ],
         },
@@ -334,14 +344,18 @@ export const FarFødselMorHarVedtak: Story = {
                 barn: [
                     {
                         fnr: '19522278338',
-                        fornavn: 'Ole',
-                        etternavn: 'Duck',
+                        navn: {
+                            fornavn: 'Ole',
+                            etternavn: 'Duck',
+                        },
                         kjønn: 'M',
                         fødselsdato: '2022-08-17',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '27438445248',
-                            fornavn: 'Eline',
-                            etternavn: 'Ilder',
+                            navn: {
+                                fornavn: 'Eline',
+                                etternavn: 'Ilder',
+                            },
                             fødselsdato: '1993-06-13',
                         },
                     },

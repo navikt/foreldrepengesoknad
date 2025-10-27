@@ -9,6 +9,7 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-10-05', '2021-10-06'],
             termindato: '2021-09-05',
+            antallBarn: 2,
         } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
@@ -20,6 +21,7 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.UFØDT,
             termindato: '2021-09-05',
+            antallBarn: 1,
         } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
@@ -30,6 +32,9 @@ describe('barnUtils', () => {
     it('skal returnere undefined når barn er adoptert', () => {
         const barn = {
             type: BarnType.ADOPTERT_STEBARN,
+            antallBarn: 1,
+            fødselsdatoer: ['2021-01-01'],
+            adopsjonsdato: '2021-01-01',
         } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
@@ -42,11 +47,18 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
             fnr: ['123'],
+            antallBarn: 1,
         } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
         ] satisfies BarnDto_fpoversikt[];
 
@@ -58,11 +70,19 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når barn er ufødt', () => {
         const barn = {
             type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2021-09-05',
         } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
         ] satisfies BarnDto_fpoversikt[];
 
@@ -75,11 +95,18 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
+            antallBarn: 1,
         } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2017-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
         ] satisfies BarnDto_fpoversikt[];
 
@@ -92,6 +119,7 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
+            antallBarn: 1,
         } satisfies Barn;
         const registrerteBarn = [] satisfies BarnDto_fpoversikt[];
 

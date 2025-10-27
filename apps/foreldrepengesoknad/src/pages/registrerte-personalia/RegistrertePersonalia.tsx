@@ -4,11 +4,11 @@ import { formaterNavn } from 'utils/personUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { AnnenForelderFrontend, BarnDto_fpoversikt } from '@navikt/fp-types';
+import { AnnenForelderDto_fpoversikt, BarnDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
-    person: AnnenForelderFrontend | BarnDto_fpoversikt;
+    person: AnnenForelderDto_fpoversikt | BarnDto_fpoversikt;
     visEtternavn: boolean;
     fødselsnummerForVisning?: string;
     fødselsdatoForVisning?: string;
@@ -28,7 +28,7 @@ export const RegistrertePersonalia = ({
             header={
                 <>
                     {altTekstHvisUkjentNavn ??
-                        formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
+                        formaterNavn(person.navn.fornavn, person.navn.etternavn, visEtternavn, person.navn.mellomnavn)}
                 </>
             }
             icon={<BabyWrappedIcon height={24} width={24} color="#005B82" />}

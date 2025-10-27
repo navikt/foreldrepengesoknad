@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -10,7 +9,6 @@ import {
     EksisterendeSak,
     ForeldreparSituasjon,
     NavnPåForeldre,
-    Arbeidsforhold as OldArbeidsforhold,
     Periode,
     Situasjon,
     Søkersituasjon,
@@ -43,24 +41,6 @@ import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from './util
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
-
-//TODO (TOR) temp-mapping. Fjern
-const mapNewToOldArbeidsforhold = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): OldArbeidsforhold[] => {
-    if (!arbeidsforhold) {
-        return [];
-    }
-
-    return arbeidsforhold.map((arbforhold) => {
-        return {
-            arbeidsgiverId: arbforhold.arbeidsgiverId,
-            arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
-            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn ?? '',
-            fom: dayjs.utc(arbforhold.from).toDate(),
-            stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.to ? dayjs.utc(arbforhold.to).toDate() : undefined,
-        };
-    });
-};
 
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
@@ -232,11 +212,10 @@ const Uttaksplan = ({
         }
     };
 
-    const oldFormatArbeidsforhold = mapNewToOldArbeidsforhold(arbeidsforhold);
-
+    // TODO: finn ut om det var riktig å slette oldArbeidsforhold mapping
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
-        arbeidsforhold: oldFormatArbeidsforhold,
+        arbeidsforhold,
         dekningsgrad: dekningsgrad,
         erEndringssøknad: erEndringssøknad,
         antallBarn: antallBarn,
@@ -311,7 +290,7 @@ const Uttaksplan = ({
                             stønadskontoer={stønadskontoer}
                             navnPåForeldre={navnPåForeldre}
                             annenForelder={annenForelder}
-                            arbeidsforhold={oldFormatArbeidsforhold}
+                            arbeidsforhold={arbeidsforhold}
                             handleDeletePeriode={handleDeletePeriode}
                             handleAddPeriode={handleAddPeriode}
                             erFarEllerMedmor={erFarEllerMedmor}

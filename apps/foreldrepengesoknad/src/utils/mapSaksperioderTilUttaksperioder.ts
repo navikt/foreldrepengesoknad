@@ -26,7 +26,7 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoType, UttakPeriodeAnnenpartEøs } from '@navikt/fp-types/src/apiDtoGenerert';
+import { KontoType, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -563,7 +563,7 @@ const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): OppholdÅrsakType =
 
 const mapUttaksperiodeAnnenpartEøs = (
     søkerErFarEllerMedmor: boolean,
-    p: UttakPeriodeAnnenpartEøs,
+    p: UttakPeriodeAnnenpartEøs_fpoversikt,
 ): UttakAnnenPartEØSInfoPeriode => {
     return {
         id: guid(),
@@ -584,7 +584,7 @@ const mapUttaksperiodeAnnenpartEøs = (
 const annnepartsUttak = (
     søkerErFarEllerMedmor: boolean,
     sammenslåddePerioder: Periode[],
-    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs_fpoversikt[] | undefined,
 ): InfoPeriode[] => {
     const uttakAnnenPart = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
 
@@ -602,7 +602,7 @@ const annnepartsUttak = (
 export const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs_fpoversikt[] | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const gyldigePerioder = saksperioder.filter((periode) => gyldigeSaksperioder(periode, grunnlag.termindato));

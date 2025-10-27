@@ -26,23 +26,18 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import {
-    AdopsjonDto,
+    AnnenForelderDto,
     Attachment,
+    BarnDto,
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
-    FødselDto,
     KontoType,
     Målform,
-    NorskForelderDto,
-    OppholdsPeriodeDto,
-    OverføringsPeriodeDto,
-    Søkerinfo,
-    TerminDto,
-    UtenlandskForelderDto,
-    UtsettelsesPeriodeDto,
-    UttaksPeriodeDto,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    SøkerDto,
     UttaksplanDto,
+    Uttaksplanperiode,
     isUfødtBarn,
 } from '@navikt/fp-types';
 import {
@@ -55,8 +50,6 @@ import {
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export type UttaksplanPeriode = UttaksPeriodeDto | OverføringsPeriodeDto | OppholdsPeriodeDto | UtsettelsesPeriodeDto;
-
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
@@ -66,7 +59,7 @@ const hentValgtSpråk = (): Målform => {
     return getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform;
 };
 
-const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): UttaksPeriodeDto => {
+const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): Uttaksplanperiode => {
     const uttaksperiode = {
         type: 'uttak' as const,
         fom: dateToISOString(uttaksperiodeBase.tidsperiode.fom),
@@ -117,7 +110,7 @@ const skalPeriodeSendesInn = (periode: Periode) => {
     );
 };
 
-const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
+const cleanBarn = (barn: Barn): BarnDto => {
     if (isUfødtBarn(barn)) {
         return {
             type: 'termin',
@@ -194,7 +187,7 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
     }
 };
 
-const getPeriodeForInnsending = (periode: any): OverføringsPeriodeDto | OppholdsPeriodeDto | UtsettelsesPeriodeDto => {
+const getPeriodeForInnsending = (periode: any): Uttaksplanperiode => {
     const { tidsperiode, ...periodeRest } = periode;
     return {
         ...periodeRest,
@@ -252,16 +245,16 @@ const cleanUttaksplan = (
 };
 
 export const getPeriodeVedTidspunkt = (
-    uttaksplan: UttaksplanPeriode[],
+    uttaksplan: Uttaksplanperiode[],
     tidspunkt: Date,
-): UttaksplanPeriode | undefined => {
+): Uttaksplanperiode | undefined => {
     return uttaksplan.find((periode) => dayjs(tidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'));
 };
 
 export const getUttaksplanMedFriUtsettelsesperiode = (
-    uttaksplan: UttaksplanPeriode[],
+    uttaksplan: Uttaksplanperiode[],
     endringstidspunkt: Date,
-): UttaksplanPeriode[] => {
+): Uttaksplanperiode[] => {
     const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
         dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
     );
@@ -269,7 +262,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
         ? Uttaksdagen(dayjs(førstePeriodeEtterEndringstidspunkt.fom).toDate()).forrige()
         : endringstidspunkt;
 
-    const endringsTidspunktPeriode: UtsettelsesPeriodeDto = {
+    const endringsTidspunktPeriode: Uttaksplanperiode = {
         type: Periodetype.Utsettelse,
         årsak: UtsettelseÅrsakType.Fri,
         fom: dateToISOString(endringstidspunkt),
@@ -302,9 +295,7 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
     return vedleggArray;
 };
 
-const cleanAnnenforelder = (
-    annenForelder: AnnenForelder | undefined,
-): UtenlandskForelderDto | NorskForelderDto | undefined => {
+const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenForelderDto | undefined => {
     if (annenForelder === undefined || isAnnenForelderIkkeOppgitt(annenForelder)) {
         return;
     }
@@ -351,7 +342,7 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    søkerinfo: Søkerinfo,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     endringstidspunkt?: Date,
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     if (erEndringssøknad) {
@@ -364,7 +355,7 @@ export const getSøknadsdataForInnsending = (
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: string,
-    søkerinfo: Søkerinfo,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -403,20 +394,16 @@ export const cleanSøknad = (
     };
 };
 
-const mapSøkerInfoTilSøknadDto = (søkerinfo: Søkerinfo): ForeldrepengesøknadDto['søkerinfo'] => {
+const mapSøkerInfoTilSøknadDto = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt): SøkerDto => {
     return {
-        fnr: søkerinfo.søker.fnr,
-        navn: {
-            fornavn: søkerinfo.søker.fornavn,
-            mellomnavn: søkerinfo.søker.mellomnavn,
-            etternavn: søkerinfo.søker.etternavn,
-        },
+        fnr: søkerinfo.person.fnr,
+        navn: søkerinfo.person.navn,
         arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
             navn: af.arbeidsgiverNavn,
             orgnummer: af.arbeidsgiverId,
             stillingsprosent: af.stillingsprosent,
-            fom: af.fom,
-            tom: af.tom,
+            fom: af.from,
+            tom: af.to,
         })),
     };
 };
@@ -425,7 +412,7 @@ export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    søkerinfo: Søkerinfo,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     endringstidspunkt?: Date,
 ): EndringssøknadForeldrepengerDto => {
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));

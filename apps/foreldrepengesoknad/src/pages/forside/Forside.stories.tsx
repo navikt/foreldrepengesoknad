@@ -58,6 +58,7 @@ const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
             antallBarn: sakinfo.antallBarn,
             termindato: sakinfo.termindato,
         },
+        forelder: 'MOR',
         gjeldendeVedtak: { perioder: [] },
         harAnnenForelderTilsvarendeRettEØS: false,
         gjelderAdopsjon: sakinfo.gjelderAdopsjon,

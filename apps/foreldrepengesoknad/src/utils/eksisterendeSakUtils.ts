@@ -423,7 +423,10 @@ const finnAnnenForelderForSaken = (
         const { fornavn } = annenForelder.navn;
         const fornavnAnnenForelder =
             fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
-        const annenPart: AnnenForelderDto_fpoversikt = { ...annenForelder, navn: { fornavn: fornavnAnnenForelder } };
+        const annenPart: AnnenForelderDto_fpoversikt = {
+            ...annenForelder,
+            navn: { ...annenForelder.navn, fornavn: fornavnAnnenForelder },
+        };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 

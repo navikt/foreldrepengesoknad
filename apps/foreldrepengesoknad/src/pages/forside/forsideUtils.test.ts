@@ -26,7 +26,8 @@ const sak = {
     åpenBehandling: undefined,
     annenPart: { fnr: '123456789' },
     barn: [{ fnr: '987654321' }],
-} as FpSak_fpoversikt;
+    forelder: 'MOR',
+} satisfies FpSak_fpoversikt;
 
 describe('forsideUtils - getSelectableBarnOptions', () => {
     const barnFraPDL = {
