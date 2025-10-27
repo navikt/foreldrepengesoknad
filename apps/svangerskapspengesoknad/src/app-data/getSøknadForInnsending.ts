@@ -99,18 +99,14 @@ export const getSøknadForInnsending = (
 
     return {
         søkerinfo: {
-            fnr: søkerinfo.søker.fnr,
-            navn: {
-                fornavn: søkerinfo.søker.fornavn,
-                mellomnavn: søkerinfo.søker.mellomnavn,
-                etternavn: søkerinfo.søker.etternavn,
-            },
+            fnr: søkerinfo.person.fnr,
+            navn: søkerinfo.person.navn,
             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
                 navn: af.arbeidsgiverNavn,
                 orgnummer: af.arbeidsgiverId,
                 stillingsprosent: af.stillingsprosent,
-                fom: af.fom,
-                tom: af.tom,
+                fom: af.from,
+                tom: af.to,
             })),
         },
         språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,

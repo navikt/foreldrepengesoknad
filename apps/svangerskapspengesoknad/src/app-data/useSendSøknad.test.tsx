@@ -21,8 +21,8 @@ import {
     AvtaltFerieDto,
     FRILANS_ID,
     NæringDto,
+    PersonMedArbeidsforholdDto_fpoversikt,
     SvangerskapspengesøknadDto,
-    Søkerinfo,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
@@ -63,15 +63,17 @@ const DEFAULT_SØKER_INFO = {
             stillingsprosent: 100,
         },
     ],
-    søker: {
-        etternavn: 'Oravakangas',
-        fornavn: 'Erlinga-Mask',
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
         fnr: '30088930610',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
     },
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const BARNET = {
     erBarnetFødt: true,
@@ -234,16 +236,13 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
-                        navn: {
-                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
-                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
-                        },
+                        fnr: DEFAULT_SØKER_INFO.person.fnr,
+                        navn: DEFAULT_SØKER_INFO.person.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,
                             stillingsprosent: af.stillingsprosent,
-                            fom: af.fom,
+                            fom: af.from,
                         })),
                     },
                     språkkode: 'NB',
@@ -369,16 +368,13 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
-                        navn: {
-                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
-                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
-                        },
+                        fnr: DEFAULT_SØKER_INFO.person.fnr,
+                        navn: DEFAULT_SØKER_INFO.person.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,
                             stillingsprosent: af.stillingsprosent,
-                            fom: af.fom,
+                            fom: af.from,
                         })),
                     },
                     språkkode: 'NB',
@@ -391,7 +387,6 @@ describe('useSendSøknad', () => {
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
-                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: EGEN_NÆRING_ID,
                                 type: 'selvstendig',
                             },
@@ -410,7 +405,6 @@ describe('useSendSøknad', () => {
                         },
                         {
                             arbeidsforhold: {
-                                // @ts-expect-error -- Har alltid sendt med ekstra data
                                 id: FRILANS_ID,
                                 type: 'frilanser',
                             },
@@ -433,7 +427,6 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
-                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: EGEN_NÆRING_ID,
                                     type: 'selvstendig',
                                 },
@@ -444,7 +437,6 @@ describe('useSendSøknad', () => {
                             ...VEDLEGG,
                             dokumenterer: {
                                 arbeidsforhold: {
-                                    // @ts-expect-error -- Har alltid sendt med ekstra data
                                     id: FRILANS_ID,
                                     type: 'frilanser',
                                 },
@@ -513,16 +505,13 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.søker.fnr,
-                        navn: {
-                            fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
-                            etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
-                        },
+                        fnr: DEFAULT_SØKER_INFO.person.fnr,
+                        navn: DEFAULT_SØKER_INFO.person.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,
                             stillingsprosent: af.stillingsprosent,
-                            fom: af.fom,
+                            fom: af.from,
                         })),
                     },
                     språkkode: 'NB',

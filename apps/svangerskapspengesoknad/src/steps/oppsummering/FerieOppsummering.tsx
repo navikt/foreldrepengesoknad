@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
-import { AvtaltFerieDto, SvpArbeidsforhold_fpoversikt } from '@navikt/fp-types';
+import { ArbeidsforholdDto, AvtaltFerieDto } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
@@ -120,7 +120,7 @@ const FlereArbeidsgivereFerieOppsummering = ({
     });
 };
 
-const getArbeidsforholdId = (arbeidsforhold: SvpArbeidsforhold_fpoversikt) => {
+const getArbeidsforholdId = (arbeidsforhold: ArbeidsforholdDto) => {
     switch (arbeidsforhold.type) {
         case 'frilanser':
             return 'frilanser';

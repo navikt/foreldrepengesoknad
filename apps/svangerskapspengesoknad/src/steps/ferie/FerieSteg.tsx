@@ -19,7 +19,7 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
@@ -31,9 +31,9 @@ import {
 } from '@navikt/fp-validation';
 
 type Props = {
-    readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
-    readonly avbrytSøknad: () => Promise<void>;
-    readonly arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => Promise<void>;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 const DEFAULT_FERIE_VALUES = {
