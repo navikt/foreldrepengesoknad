@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
@@ -8,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage, Spinner } from '@navikt/fp-ui';
-import { redirect } from '@navikt/fp-utils';
+import { ErrorPage } from '@navikt/fp-ui';
 
 import { Forside } from './pages/forside/Forside';
+import { KvitteringPage } from './pages/kvittering/KvitteringPage';
 import { ArbeidIUtlandetSteg } from './steps/arbeid-i-utlandet/ArbeidIUtlandetSteg';
 import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { BarnetSteg } from './steps/barnet/BarnetSteg';
@@ -190,6 +189,7 @@ const renderSøknadRoutes = (
                     />
                 }
             />
+            <Route path={SøknadRoute.KVITTERING} element={<KvitteringPage />} />
         </>
     );
 };
@@ -203,9 +203,8 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
     const navigate = useNavigate();
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
-    const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, søkerInfo.arbeidsforhold);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo);
     const mellomlagreOgNaviger = useMellomlagreSøknad(søkerInfo, setHarGodkjentVilkår);
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
@@ -215,18 +214,6 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
             navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }
     }, [mellomlagretData]);
-
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
-    }
 
     if (errorSendSøknad) {
         return <ApiErrorHandler error={errorSendSøknad} />;

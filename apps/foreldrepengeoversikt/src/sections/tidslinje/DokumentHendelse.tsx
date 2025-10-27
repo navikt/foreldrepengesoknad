@@ -9,7 +9,6 @@ import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { hentInntektsmelding } from '../../api/api';
 import { OversiktRoutes } from '../../routes/routes';
 import { lagUrl } from '../../utils/dokumenterUtils';
-import styles from './dokumentHendelse.module.css';
 
 interface Props {
     dokument: TidslinjeHendelseDto_fpoversikt['dokumenter'][0];
@@ -21,9 +20,15 @@ export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     const url = lagUrl(dokument);
 
     return (
-        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
-            <FileIcon className={styles.ikon} aria-hidden={true} />
-            <Link href={url} className={styles.ikon} target="_blank">
+        <li
+            className={
+                visesITidslinjen
+                    ? 'text-ax-font-size-medium flex items-center'
+                    : 'text-ax-font-size-large flex items-center'
+            }
+        >
+            <FileIcon className="text-ax-bg-accent-strong min-w-[24px]" aria-hidden={true} />
+            <Link href={url} className="text-ax-bg-accent-strong min-w-[24px]" target="_blank">
                 {tittel}
             </Link>
         </li>
@@ -39,12 +44,18 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
     )?.arbeidsgiverNavn;
 
     return (
-        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
-            <FileIcon className={styles.ikon} aria-hidden={true} />
+        <li
+            className={
+                visesITidslinjen
+                    ? 'text-ax-font-size-medium flex items-center'
+                    : 'text-ax-font-size-large flex items-center'
+            }
+        >
+            <FileIcon className="text-ax-bg-accent-strong min-w-[24px]" aria-hidden={true} />
             <Link
                 as={RouterLink}
                 to={`${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${dokument.journalpostId}`}
-                className={styles.ikon}
+                className="text-ax-bg-accent-strong min-w-[24px]"
             >
                 {tittel}
                 {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}

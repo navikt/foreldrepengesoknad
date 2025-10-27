@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
@@ -25,14 +24,10 @@ const meta = {
     title: 'Forside',
     decorators: [withQueryClient],
     render: (props) => {
-        const isFirstRender = useRef(false);
         return (
             <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
                 <Routes>
-                    <Route
-                        element={<Forside {...props} isFirstRender={isFirstRender} />}
-                        path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
-                    />
+                    <Route element={<Forside {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
                 </Routes>
             </MemoryRouter>
         );

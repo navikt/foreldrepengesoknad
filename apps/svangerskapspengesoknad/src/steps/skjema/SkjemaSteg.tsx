@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { RouteParams } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -150,7 +151,7 @@ export const SkjemaSteg = ({
                                 skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                                 existingAttachments={defaultValues?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
+                                saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
                             />
                         </VStack>
                         <StepButtonsHookForm

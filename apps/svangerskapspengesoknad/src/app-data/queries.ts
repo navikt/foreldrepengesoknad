@@ -2,17 +2,21 @@ import { queryOptions } from '@tanstack/react-query';
 import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
-import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { ForsendelseStatus, PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt, Satser } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-
-    mellomlagring: `${urlPrefiks}/rest/storage/svangerskapspenger`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/svangerskapspenger`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/svangerskapspenger/vedlegg`,
+    satser: `${urlPrefiks}/rest/satser`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
+    hentVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/${uuid}`,
 } as const;
 
 export const sakerOptions = () =>
@@ -33,5 +37,31 @@ export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () => ky.get(API_URLS.mellomlagring).json<SvpDataMapAndMetaData>(),
+        staleTime: Infinity,
+    });
+
+export const satserOptions = () =>
+    queryOptions({
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
+        staleTime: Infinity,
+        initialData: DEFAULT_SATSER,
+    });
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
         staleTime: Infinity,
     });

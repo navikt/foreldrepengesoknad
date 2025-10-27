@@ -4,7 +4,7 @@ import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { TilOgMedDatoType } from 'types/Tilrettelegging';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { FerieSteg } from './FerieSteg';
@@ -43,7 +43,7 @@ const meta = {
                         [ContextDataType.TILRETTELEGGINGER]: {
                             '896929119': {
                                 behovForTilretteleggingFom: '2024-10-01',
-                                type: Tilretteleggingstype.INGEN,
+                                type: 'ingen',
                                 enPeriodeMedTilretteleggingFom: '2024-10-01',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                             },

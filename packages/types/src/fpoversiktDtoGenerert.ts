@@ -519,6 +519,11 @@ export type SvpArbeidsforhold_fpoversikt = {
     tiltak?: string;
 };
 
+export type ForsendelseStatus = {
+    status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG';
+    saksnummer?: number;
+};
+
 export type SvpSak_fpoversikt = {
     familiehendelse: Familiehendelse_fpoversikt;
     gjeldendeVedtak?: Vedtak_fpoversikt;

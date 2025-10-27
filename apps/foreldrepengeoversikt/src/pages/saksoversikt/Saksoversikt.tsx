@@ -2,11 +2,10 @@ import { FilesIcon, FolderFileIcon, PencilIcon, WalletIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import {
@@ -17,12 +16,7 @@ import {
 } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
-import {
-    erSakOppdatertOptions,
-    hentDokumenterOptions,
-    hentManglendeVedleggOptions,
-    hentTidslinjehendelserOptions,
-} from '../../api/api';
+import { hentDokumenterOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
@@ -30,10 +24,6 @@ import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import {
-    useGetRedirectedFromSøknadsnummer,
-    useSetRedirectedFromSøknadsnummer,
-} from '../../hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
@@ -41,7 +31,6 @@ import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from '../../sections/din-plan/DinPlan';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
-import { RedirectSource } from '../../types/RedirectSource';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';
@@ -51,7 +40,6 @@ dayjs.extend(isSameOrBefore);
 
 interface Props {
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
-    isFirstRender: React.MutableRefObject<boolean>;
 }
 
 const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
@@ -72,25 +60,23 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
     return engangstønad.find((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))?.verdi;
 };
 
-export const Saksoversikt = ({ søkerinfo, isFirstRender }: Props) => {
+export const Saksoversikt = ({ søkerinfo }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
-            <SaksoversiktInner søkerinfo={søkerinfo} isFirstRender={isFirstRender} />
+            <SaksoversiktInner søkerinfo={søkerinfo} />
         </PageRouteLayout>
     );
 };
 
-const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
+const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const intl = useIntl();
-    const params = useParams<{ saksnummer: string; redirect?: string }>();
-    const navigate = useNavigate();
+    const params = useParams<{ saksnummer: string }>();
 
     // Gjør denne dataen klar i cachen slik at bruker slipper loader senere.
     useQuery(hentDokumenterOptions(params.saksnummer!));
 
-    useSetRedirectedFromSøknadsnummer(params.redirect, params.saksnummer, isFirstRender);
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
 
@@ -100,12 +86,8 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
         `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
 
-    const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
-
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
-    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
-    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
 
@@ -113,40 +95,12 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
 
     const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
-    if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
-        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
-    }
-
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
-    const nettoppSendtInnSøknad =
-        redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
-    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
+
+    const visBekreftelsePåSendtSøknad =
+        relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
-
-    if (harIkkeOppdatertSak) {
-        return (
-            <VStack gap="space-8">
-                {nettoppSendtInnSøknad && (
-                    <BekreftelseSendtSøknad
-                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.person.bankkonto}
-                        ytelse={undefined}
-                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        saksnummer={params.saksnummer}
-                    />
-                )}
-                <Alert variant="warning">
-                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
-                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                </Alert>
-                <Link as={RouterLink} to={`${OversiktRoutes.HOVEDSIDE}`}>
-                    {intl.formatMessage({ id: 'saksoversikt' })}
-                </Link>
-            </VStack>
-        );
-    }
 
     if (!gjeldendeSak) {
         return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;

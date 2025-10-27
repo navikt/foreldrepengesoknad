@@ -17,11 +17,7 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 
-interface Props {
-    fnr: string;
-}
-
-export const MinidialogPage = ({ fnr }: Props) => {
+export const MinidialogPage = () => {
     const params = useParams();
     const minidialog = useQuery({
         ...minidialogOptions(),
@@ -39,7 +35,7 @@ export const MinidialogPage = ({ fnr }: Props) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse, fnr),
+        mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),
     });
 
     if (!minidialog || !sak) {

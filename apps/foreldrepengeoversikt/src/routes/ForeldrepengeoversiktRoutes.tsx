@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -26,8 +26,6 @@ interface Props {
 }
 
 export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
-    const isFirstRender = useRef(true);
-
     return (
         <>
             <Routes>
@@ -35,22 +33,16 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                         <Route
                             path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
-                            element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
+                            element={<Forside saker={saker} søkerinfo={søkerinfo} />}
                         />
                         <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<Sak />}>
-                            <Route
-                                index
-                                element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
-                            />
+                            <Route index element={<Saksoversikt søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                             <Route
                                 path={OversiktRoutes.TIDSLINJEN}
                                 element={<TidslinjePage søkersBarn={søkerinfo.person.barn} />}
                             />
-                            <Route
-                                path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                                element={<MinidialogPage fnr={søkerinfo.person.fnr} />}
-                            />
+                            <Route path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
                             <Route
@@ -103,7 +95,7 @@ export function PageRouteLayout({ header, children }: { readonly header: ReactNo
     return (
         <>
             {header}
-            <LayoutWrapper className="pb-4 pl-4 pr-4 md:pb-28">{children}</LayoutWrapper>
+            <LayoutWrapper className="ax-md:pb-28 pb-4 pl-4 pr-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>

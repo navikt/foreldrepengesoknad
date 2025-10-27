@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import ky from 'ky';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
     Alert,
@@ -11,6 +11,7 @@ import {
     ErrorSummary,
     GuidePanel,
     HStack,
+    Link,
     Radio,
     RadioGroup,
     Textarea,
@@ -21,23 +22,24 @@ import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
-import { urlPrefiks } from '../../api/api';
+import { API_URLS, søkerInfoOptions, urlPrefiks } from '../../api/api';
+import { isAttachmentWithError } from '../../utils/attachmentUtils.ts';
 import { validateFritekstFelt } from '../../utils/validationUtils';
 import { ScrollToTop } from '../scroll-to-top/ScrollToTop';
 import { HvaLeggerNAVVektPå } from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
 import { MinidialogVenterPåSvar } from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
-import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 
-const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+const mapYtelse = (sakstype: Ytelse) => {
     if (sakstype === 'ENGANGSSTØNAD') {
-        return 'engangsstonad';
+        return API_URLS.lastOppESVedlegg;
     }
     if (sakstype === 'FORELDREPENGER') {
-        return 'foreldrepenger';
+        return API_URLS.lastOppFPVedlegg;
     }
-    return 'svangerskapspenger';
+    return API_URLS.lastOppSVPVedlegg;
 };
 
 interface Props {
@@ -58,6 +60,7 @@ export const MinidialogSkjema = ({
     onSubmit,
 }: Props) => {
     const intl = useIntl();
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
@@ -107,14 +110,24 @@ export const MinidialogSkjema = ({
         if (feilmelding) {
             setTilbakemeldingValideringsfeil(feilmelding);
         } else if (brukerØnskerÅUttaleSeg !== undefined) {
-            const submitData = mapMinidialogInputTilDTO(
-                minidialog.saksnr,
-                sakstype,
-                minidialog.dialogId,
-                brukerØnskerÅUttaleSeg,
-                vedlegg,
-                tilbakemelding,
-            );
+            const submitData = {
+                fnr: notEmpty(søkerInfo).søker.fnr,
+                vedlegg:
+                    brukerØnskerÅUttaleSeg && vedlegg
+                        ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a))
+                        : [],
+                saksnummer: minidialog.saksnr,
+                type: sakstype,
+                brukerTekst: {
+                    dokumentType: Skjemanummer.TILBAKEBETALING,
+                    overskrift: 'Svar på tilbakebetalingen',
+                    tekst:
+                        brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
+                            ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
+                            : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
+                },
+            } satisfies EttersendelseDto;
+
             onSubmit(submitData);
         }
     };
@@ -134,7 +147,7 @@ export const MinidialogSkjema = ({
             <VStack gap="space-16">
                 <ScrollToTop />
                 <Alert variant="error"> {ettersendelseError}</Alert>
-                <Link to={`/sak/${minidialog.saksnr}`}>
+                <Link as={RouterLink} to={`/sak/${minidialog.saksnr}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
             </VStack>
@@ -149,7 +162,7 @@ export const MinidialogSkjema = ({
                         <Chat.Bubble>
                             <FormattedMessage
                                 id="miniDialog.tilbakekreving.tittel"
-                                values={{ sakstype: mapYtelse(sakstype) }}
+                                values={{ sakstype: sakstype.toLocaleLowerCase() }}
                             />
                         </Chat.Bubble>
                     </Chat>
@@ -176,7 +189,7 @@ export const MinidialogSkjema = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachmentFetch(mapYtelse(sakstype))}
                         />
                     </>
                 )}

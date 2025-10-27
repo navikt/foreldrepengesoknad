@@ -5,12 +5,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Barn } from 'types/Barn';
-import {
-    DelivisTilretteleggingPeriodeType,
-    DelvisTilrettelegging,
-    IngenTilrettelegging,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 import { PerioderSteg } from './PerioderSteg';
@@ -147,7 +142,7 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
         tilrettelegging: {
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
         } as DelvisTilrettelegging,
     },
@@ -157,7 +152,7 @@ export const FremTilFødselsdato: Story = {
     args: {
         ...Default.args,
         tilrettelegging: {
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
         } as DelvisTilrettelegging,
         barn: {
@@ -175,7 +170,7 @@ export const FlereStillinger: Story = {
         valgteArbeidsforhold: [ANNEN_TILRETTELEGGING_ID],
         tilrettelegging: {
             behovForTilretteleggingFom: '2023-09-01',
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
         } as DelvisTilrettelegging,
     },

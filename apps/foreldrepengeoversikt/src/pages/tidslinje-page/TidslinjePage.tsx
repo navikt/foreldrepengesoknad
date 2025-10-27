@@ -17,7 +17,6 @@ import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { Sak } from '../../types/Sak';
-import styles from './tidslinje-page.module.css';
 
 type OuterProps = {
     søkersBarn: BarnDto_fpoversikt[];
@@ -52,7 +51,7 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
     }
 
     return (
-        <div className={styles.div}>
+        <div className="bg-ax-bg-default mb-10 rounded-[0.5rem] p-4 pb-8">
             <Heading spacing level="2" size="medium">
                 Dette skjer i saken
             </Heading>

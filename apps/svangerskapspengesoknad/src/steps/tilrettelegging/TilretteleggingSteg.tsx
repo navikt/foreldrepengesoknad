@@ -12,7 +12,6 @@ import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
@@ -49,7 +48,7 @@ import {
 } from './tilretteleggingValidation';
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
-    typeArbeid === Arbeidsforholdstype.FRILANSER
+    typeArbeid === 'frilanser'
         ? intl.formatMessage({ id: 'skjema.risikofaktorer.frilanser' })
         : intl.formatMessage({ id: 'skjema.risikofaktorer.selvstendig' });
 
@@ -60,7 +59,7 @@ const getLabel = (
     erFom: boolean,
     navnArbeidsgiver?: string,
 ) => {
-    if (erFlereTilrettelegginger && typeArbeid !== Arbeidsforholdstype.FRILANSER) {
+    if (erFlereTilrettelegginger && typeArbeid !== 'frilanser') {
         return erFom
             ? intl.formatMessage(
                   { id: 'tilrettelegging.tilrettelagtArbeidFom.label.flere' },
@@ -75,7 +74,7 @@ const getLabel = (
                   },
               );
     }
-    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+    if (typeArbeid === 'frilanser') {
         return erFom
             ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidFom.label.frilanser' })
             : intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.label.frilanser' });
@@ -129,8 +128,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeidsforhold);
 
     const labelTiltak = intl.formatMessage({ id: 'tilrettelegging.tilretteleggingstiltak.label' });
-    const harSkjema =
-        typeArbeidsforhold === Arbeidsforholdstype.VIRKSOMHET || typeArbeidsforhold === Arbeidsforholdstype.PRIVAT;
+    const harSkjema = typeArbeidsforhold === 'virksomhet' || typeArbeidsforhold === 'privat';
 
     const periode = getPeriodeForTilrettelegging(
         barnet.termindato,
@@ -151,7 +149,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
 
         const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
         if (
-            values.type === Tilretteleggingstype.DELVIS &&
+            values.type === 'delvis' &&
             values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
         ) {
             return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId));
@@ -219,15 +217,14 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                     periode.fom,
                                     periode.tom,
                                     kanHaSVPFremTilTreUkerFørTermin,
-                                    typeArbeidsforhold === Arbeidsforholdstype.FRILANSER,
+                                    typeArbeidsforhold === 'frilanser',
                                 ),
                             ]}
                             defaultMonth={
                                 minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined
                             }
                         />
-                        {(typeArbeidsforhold === Arbeidsforholdstype.FRILANSER ||
-                            typeArbeidsforhold === Arbeidsforholdstype.SELVSTENDIG) && (
+                        {(typeArbeidsforhold === 'frilanser' || typeArbeidsforhold === 'selvstendig') && (
                             <>
                                 <RhfTextarea
                                     name="risikofaktorer"
@@ -307,10 +304,10 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                     ),
                                 ]}
                             >
-                                <Radio value={Tilretteleggingstype.DELVIS}>
+                                <Radio value={'delvis'}>
                                     <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.delvis" />
                                 </Radio>
-                                <Radio value={Tilretteleggingstype.INGEN}>
+                                <Radio value={'ingen'}>
                                     <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.ingen" />
                                 </Radio>
                             </RhfRadioGroup>
@@ -333,7 +330,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                 </BodyShort>
                             </ReadMore>
                         </div>
-                        {type === Tilretteleggingstype.INGEN && (
+                        {type === 'ingen' && (
                             <IngenTilretteleggingPanel
                                 barnet={barnet}
                                 arbeidsforholdType={typeArbeidsforhold}
@@ -342,7 +339,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                 arbeidsforholdNavn={navnArbeidsgiver}
                             />
                         )}
-                        {type === Tilretteleggingstype.DELVIS && (
+                        {type === 'delvis' && (
                             <DelvisTilretteleggingPanel
                                 barnet={barnet}
                                 arbeidsforholdType={typeArbeidsforhold}

@@ -1,11 +1,13 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
+import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { EksternArbeidsforholdDto_fpoversikt, Kvittering } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
@@ -14,10 +16,8 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useSendSøknad = (
-    setKvittering: (kvittering: Kvittering) => void,
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -26,19 +26,18 @@ export const useSendSøknad = (
     });
 
     const send = async () => {
-        const søknadForInnsending = getSøknadForInnsending(arbeidsforhold, hentData);
+        const søknadForInnsending = getSøknadForInnsending(søkerinfo, hentData);
 
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(API_URLS.sendSøknad, {
+            await ky.post(API_URLS.sendSøknad, {
                 json: søknadForInnsending,
                 signal,
             });
 
             slettMellomlagring();
-
-            setKvittering((await response.json()) as Kvittering);
+            navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 Sentry.captureMessage(error.message);

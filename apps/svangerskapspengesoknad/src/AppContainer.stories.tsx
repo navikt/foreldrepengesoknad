@@ -80,7 +80,7 @@ const KVITTERING = {
 
 const HANDLERS = [
     http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),
-    http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+    http.post(API_URLS.sendVedlegg, () => new HttpResponse(JSON.stringify('uuid-test'), { status: 200 })),
     http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
     http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
     http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),

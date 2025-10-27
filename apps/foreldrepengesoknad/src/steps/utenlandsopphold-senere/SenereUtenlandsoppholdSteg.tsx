@@ -4,7 +4,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
-import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {

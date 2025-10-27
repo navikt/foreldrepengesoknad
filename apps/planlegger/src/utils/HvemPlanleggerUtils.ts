@@ -6,6 +6,10 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
+const erGyldigNavn = (navn: string | undefined): navn is string => {
+    return Boolean(navn && navn.trim().length > 0);
+};
+
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
@@ -40,6 +44,61 @@ export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
+};
+
+export const getNavnPåForeldre = (
+    hvemPlanlegger: HvemPlanlegger,
+    intl: IntlShape,
+): {
+    mor: string;
+    farMedmor: string;
+} => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMedfar)
+                ? hvemPlanlegger.navnPåMedfar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        };
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+        return {
+            farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
+                ? hvemPlanlegger.navnPåMedmor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    return {
+        farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+            ? hvemPlanlegger.navnPåFar
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+            ? hvemPlanlegger.navnPåMor
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+    };
 };
 
 export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {

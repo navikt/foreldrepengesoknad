@@ -10,7 +10,6 @@ import {
     EttersendelseDto,
     KontoBeregningDto_fpoversikt,
     KontoBeregningGrunnlagDto,
-    Kvittering,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
@@ -31,19 +30,17 @@ export const API_URLS = {
     inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`, //???
     tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`, //DONE,
     manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`, //DONE
-    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`, //DONE
-
-    konto: `${urlPrefiks}/rest/konto`, // TODO HVOR??
-
-    ettersend: `${urlPrefiks}/rest/soknad/ettersend`,
-    lastOppFPVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
-    lastOppESVedlegg: `${urlPrefiks}/rest/storage/engangsstonad/vedlegg`,
+    ettersend: `${urlPrefiks}/fpsoknad/api/soknad/ettersend`,
+    lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
+    lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
+    lastOppSVPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg`,
 } as const;
 
 export const søkerInfoOptions = () =>
     queryOptions({
-        queryKey: ['SØKER_INFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo).json<PersonMedArbeidsforholdDto_fpoversikt>(),
+        queryKey: ['SØKERINFO'],
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
+        staleTime: Infinity,
     });
 
 export const minidialogOptions = () =>
@@ -114,29 +111,6 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
         queryFn: () => ky.get(API_URLS.manglendeVedlegg, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
-export const sendEttersending = async (ettersending: EttersendelseDto, fnr?: string) => {
-    // Det funker ikke å bruke ky.post() her.
-    // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
-    // Undersøke videre senere, gjør det slik for nå for å rette feil.
-    const response = await fetch(API_URLS.ettersend, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...(fnr !== undefined && { fnr: fnr }),
-        },
-        signal: AbortSignal.timeout(30 * 1000),
-        body: JSON.stringify(ettersending),
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return (await response.json()) as Kvittering;
+export const sendEttersending = async (ettersending: EttersendelseDto) => {
+    return ky.post(API_URLS.ettersend, { json: ettersending }).json();
 };
-
-export const erSakOppdatertOptions = () =>
-    queryOptions({
-        queryKey: ['SAK_OPPDATERT'],
-        queryFn: () => ky.get(API_URLS.erOppdatert).json<boolean>(),
-    });

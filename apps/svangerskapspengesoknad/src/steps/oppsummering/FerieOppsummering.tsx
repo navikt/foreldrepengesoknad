@@ -1,10 +1,10 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import { FormattedMessage } from 'react-intl';
-import { AvtaltFerieDto } from 'types/AvtaltFerie';
 
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
+import { AvtaltFerieDto, SvpArbeidsforhold_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
@@ -13,8 +13,8 @@ export function FerieOppsummering({
     onVilEndreSvar,
     alleArbeidsforhold,
 }: {
-    readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    onVilEndreSvar: () => void;
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const ferie = useContextGetData(ContextDataType.FERIE);
     if (!ferie) {
@@ -22,7 +22,7 @@ export function FerieOppsummering({
     }
 
     const flatFerie = Object.values(ferie).flatMap((p) => p.feriePerioder);
-    const arbeidsforholdMedFerie = [...new Set(flatFerie.map((f) => f.arbeidsforhold.id))];
+    const arbeidsforholdMedFerie = [...new Set(flatFerie.map((f) => getArbeidsforholdId(f.arbeidsforhold)))];
 
     return (
         <FormSummary>
@@ -50,7 +50,7 @@ export function FerieOppsummering({
     );
 }
 
-const FeriePeriodeOppsummering = ({ avtaltFerie }: { readonly avtaltFerie: AvtaltFerieDto[] }) => {
+const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
     return (
         <>
             <FormSummary.Answer>
@@ -93,14 +93,14 @@ const FlereArbeidsgivereFerieOppsummering = ({
     avtaltFerie,
     alleArbeidsforhold,
 }: {
-    readonly avtaltFerie: AvtaltFerieDto[];
-    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    avtaltFerie: AvtaltFerieDto[];
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) => {
-    const arbeidsforholdMedFerie = [...new Set(avtaltFerie.map((f) => f.arbeidsforhold.id))];
+    const arbeidsforholdMedFerie = [...new Set(avtaltFerie.map((f) => getArbeidsforholdId(f.arbeidsforhold)))];
 
     return arbeidsforholdMedFerie.map((arbeidsforholdId) => {
         const perioderForDenneTilretteleggingen = avtaltFerie.filter(
-            (periode) => periode.arbeidsforhold.id === arbeidsforholdId,
+            (periode) => getArbeidsforholdId(periode.arbeidsforhold) === arbeidsforholdId,
         );
         return (
             <FormSummary.Answer key={arbeidsforholdId}>
@@ -118,4 +118,17 @@ const FlereArbeidsgivereFerieOppsummering = ({
             </FormSummary.Answer>
         );
     });
+};
+
+const getArbeidsforholdId = (arbeidsforhold: SvpArbeidsforhold_fpoversikt) => {
+    switch (arbeidsforhold.type) {
+        case 'frilanser':
+            return 'frilanser';
+        case 'selvstendig':
+            return 'selvstendig';
+        case 'privat':
+            return arbeidsforhold.id;
+        case 'virksomhet':
+            return arbeidsforhold.id;
+    }
 };

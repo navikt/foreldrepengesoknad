@@ -12,6 +12,7 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
+import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll, LocaleNo } from '@navikt/fp-types';
@@ -32,6 +33,7 @@ const allNbMessages = {
     ...egenNæringMessages.nb,
     ...arbeidsforholdOgInntektMessages.nb,
     ...formHookMessages.nb,
+    ...kvitteringMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -43,6 +45,7 @@ const allNnMessages = {
     ...egenNæringMessages.nn,
     ...arbeidsforholdOgInntektMessages.nn,
     ...formHookMessages.nn,
+    ...kvitteringMessages.nn,
 };
 
 declare global {

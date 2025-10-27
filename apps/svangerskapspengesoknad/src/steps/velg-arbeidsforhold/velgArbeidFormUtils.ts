@@ -19,7 +19,7 @@ type VelgArbeidsforholdOptions = {
 };
 
 export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string): string | undefined => {
-    if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {
+    if (type === 'selvstendig' && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return capitalizeFirstLetterInEveryWordOnly(navn);
@@ -27,13 +27,13 @@ export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?:
 
 const getNæringTilretteleggingOption = (næring: NæringDto): VelgArbeidsforholdOptions => ({
     id: EGEN_NÆRING_ID,
-    arbeidsforholdType: Arbeidsforholdstype.SELVSTENDIG,
+    arbeidsforholdType: 'selvstendig',
     arbeidsforholdNavn: næring.navnPåNæringen!,
 });
 
 const getFrilansTilretteleggingOption = (): VelgArbeidsforholdOptions => ({
     id: FRILANS_ID,
-    arbeidsforholdType: Arbeidsforholdstype.FRILANSER,
+    arbeidsforholdType: 'frilanser',
     arbeidsforholdNavn: FRILANS_ID,
 });
 
@@ -44,8 +44,7 @@ const getArbeidsforholdTilretteleggingOptions = (
 ): VelgArbeidsforholdOptions[] =>
     getUnikeArbeidsforhold(arbeidsforhold, termindato).map((forhold) => ({
         id: forhold.id,
-        arbeidsforholdType:
-            forhold.arbeidsgiverIdType === 'orgnr' ? Arbeidsforholdstype.VIRKSOMHET : Arbeidsforholdstype.PRIVAT,
+        arbeidsforholdType: forhold.arbeidsgiverIdType === 'orgnr' ? 'virksomhet' : 'privat',
         arbeidsforholdNavn:
             forhold.arbeidsgiverIdType === 'orgnr' || forhold.arbeidsgiverNavn
                 ? forhold.arbeidsgiverNavn

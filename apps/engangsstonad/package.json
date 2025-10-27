@@ -32,6 +32,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
+        "@navikt/fp-steg-kvittering": "workspace:*",
         "@navikt/fp-steg-oppsummering": "workspace:*",
         "@navikt/fp-steg-utenlandsopphold": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -86,5 +87,5 @@
         "vite": "7.1.3",
         "vitest": "3.2.4"
     },
-    "packageManager": "pnpm@9.1.4"
+    "packageManager": "pnpm@10.18.3"
 }

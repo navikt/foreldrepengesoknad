@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
@@ -11,16 +11,25 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import {
     Barn,
     BarnType,
+    EksisterendeSak,
     FamiliehendelseType,
     Forelder,
     Periode,
     PeriodeInfoType,
     Periodetype,
-    Saksgrunnlag,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
-import { Dekningsgrad, NæringDto, SøkersituasjonFp, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import {
+    Dekningsgrad,
+    EndringssøknadForeldrepengerDto,
+    ForeldrepengesøknadDto,
+    Frilans,
+    NæringDto,
+    Søkerinfo,
+    SøkersituasjonFp,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -35,6 +44,33 @@ const queryClient = new QueryClient({
     },
 });
 
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '9903232324',
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: '990322244',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    søker: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
+        fnr: '02343434',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
+    },
+} satisfies Søkerinfo;
+
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,
 };
@@ -42,13 +78,13 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const SØKERSITUASJON = {
     situasjon: 'fødsel',
     rolle: 'mor',
-} as SøkersituasjonFp;
+} satisfies SøkersituasjonFp;
 
 const BARNET = {
     antallBarn: 1,
     fødselsdatoer: ['2024-01-01'],
     type: BarnType.FØDT,
-} as Barn;
+} satisfies Barn;
 
 const ANNEN_FORELDER = {
     kanIkkeOppgis: false,
@@ -57,25 +93,25 @@ const ANNEN_FORELDER = {
     fnr: '1223232',
 };
 
-const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
+const TIDLIGERE_UTENLANDSOPPHOLD = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
         landkode: 'SE',
     },
-];
-const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
+] satisfies UtenlandsoppholdPeriode[];
+const SENERE_UTENLANDSOPPHOLD = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
         landkode: 'SE',
     },
-];
+] satisfies UtenlandsoppholdPeriode[];
 
 const FRILANS = {
     jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
-};
+} satisfies Frilans;
 
 const EGEN_NÆRING = {
     næringstype: 'FISKE',
@@ -95,7 +131,7 @@ const ANDRE_INNTEKTSKILDER = [
         type: AnnenInntektType.SLUTTPAKKE,
         fom: '2023-01-01',
         tom: '2024-01-01',
-    } as SluttpakkeInntekt,
+    } satisfies SluttpakkeInntekt,
 ];
 
 const VEDLEGG = {
@@ -105,15 +141,15 @@ const VEDLEGG = {
             file: {} as File,
             filename: 'hello.png',
             filesize: 5,
+            innsendingsType: 'LASTET_OPP',
             pending: false,
             skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
             type: AttachmentType.TERMINBEKREFTELSE,
             uploaded: true,
-            url: 'test.com',
             uuid: 'uuid-test',
         },
     ],
-} as VedleggDataType;
+} satisfies VedleggDataType;
 
 const PERIODE = {
     id: '1',
@@ -123,18 +159,32 @@ const PERIODE = {
         tom: new Date('2024-10-10'),
     },
     type: Periodetype.Info,
-    konto: StønadskontoType.Fedrekvote,
+    // konto: StønadskontoType.Fedrekvote,
     forelder: Forelder.mor,
     infotype: PeriodeInfoType.utsettelseAnnenPart,
     overskrives: true,
     visPeriodeIPlan: false,
-} as Periode;
+} satisfies Periode;
 
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
     perioderSomSkalSendesInn: [PERIODE],
     endringstidspunkt: new Date('2024-01-02'),
-} as UttaksplanMetaData;
+} satisfies UttaksplanMetaData;
+
+const EXPECTED_SØKER_INFO = {
+    fnr: DEFAULT_SØKER_INFO.søker.fnr,
+    navn: {
+        fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
+        etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
+    },
+    arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
+        navn: af.arbeidsgiverNavn,
+        orgnummer: af.arbeidsgiverId,
+        stillingsprosent: af.stillingsprosent,
+        fom: af.fom,
+    })),
+};
 
 const getWrapper =
     () =>
@@ -181,10 +231,11 @@ const getWrapper =
                                     erBarnetFødt: true,
                                     familiehendelseDato: '2024-01-01',
                                     familiehendelseType: FamiliehendelseType.FØDSEL,
-                                } as Saksgrunnlag,
+                                    ønskerJustertUttakVedFødsel: undefined,
+                                },
                                 saksperioder: [],
                                 uttaksplan: [],
-                            },
+                            } satisfies EksisterendeSak,
                         }}
                     >
                         {children}
@@ -202,7 +253,6 @@ describe('useFpSendSøknad', () => {
     });
 
     it('skal sende inn korrekt søknad', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -210,22 +260,19 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
             expect.objectContaining({
-                headers: {
-                    fnr: '02343434',
-                },
                 json: {
+                    søkerinfo: EXPECTED_SØKER_INFO,
                     rolle: 'MOR',
                     språkkode: 'NB',
                     andreInntekterSiste10Mnd: [
@@ -286,13 +333,12 @@ describe('useFpSendSøknad', () => {
                         uttaksperioder: [],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
-                },
+                } satisfies ForeldrepengesøknadDto,
             }),
         );
     });
 
     it('skal sende inn korrekt endringssøknad', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -300,22 +346,19 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
-        const { result } = renderHook(() => useSendSøknad('02343434', erEndringssøknad, setKvittering), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.endreSøknad,
             expect.objectContaining({
-                headers: {
-                    fnr: '02343434',
-                },
                 json: {
+                    søkerinfo: EXPECTED_SØKER_INFO,
                     saksnummer: '1',
                     rolle: 'MOR',
                     språkkode: 'NB',
@@ -351,7 +394,7 @@ describe('useFpSendSøknad', () => {
                         ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
-                },
+                } satisfies EndringssøknadForeldrepengerDto,
             }),
         );
     });

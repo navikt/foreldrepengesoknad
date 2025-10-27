@@ -1,3 +1,4 @@
+import { API_URLS } from 'api/queries';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
@@ -89,7 +90,7 @@ export const VedleggUploader = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
         />
     );
 };

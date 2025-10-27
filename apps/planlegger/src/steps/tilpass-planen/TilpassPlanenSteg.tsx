@@ -4,13 +4,7 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    erAlenesøker,
-    erMedmorDelAvSøknaden,
-    getErFarEllerMedmor,
-    getNavnPåSøker1,
-    getNavnPåSøker2,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { getFamiliesituasjon, mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
@@ -36,7 +30,6 @@ import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
-import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
@@ -119,10 +112,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
 
-    const navnPåForeldre = {
-        farMedmor: getNavnPåSøker2(hvemPlanlegger, intl),
-        mor: getNavnPåSøker1(hvemPlanlegger, intl),
-    };
+    const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
     const konverterTilPlanperiode = (periode: SaksperiodeNy): Planperiode => ({
         ...periode,
@@ -310,7 +300,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                 <VStack gap="space-20">
                     {visningsmodus === 'kalender' && (
-                        <div className={styles.calendar}>
+                        <div className="p-6 max-[479px]:p-0">
                             <UttaksplanKalender
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={erFarEllerMedmor}

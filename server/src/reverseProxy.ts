@@ -12,15 +12,15 @@ type ProxyOptions = {
 
 export function configureReverseProxyApi(router: Router) {
     addProxyHandler(router, {
-        ingoingUrl: '/fpoversikt',
-        outgoingUrl: serverConfig.proxy.FPOVERSIKT_API_URL,
-        scope: serverConfig.proxy.FPOVERSIKT_API_SCOPE,
+        ingoingUrl: '/fpsoknad',
+        outgoingUrl: serverConfig.proxy.FPSOKNAD_API_URL,
+        scope: serverConfig.proxy.FPSOKNAD_API_SCOPE,
     });
 
     addProxyHandler(router, {
-        ingoingUrl: '/rest',
-        outgoingUrl: serverConfig.proxy.API_URL,
-        scope: serverConfig.proxy.API_SCOPE,
+        ingoingUrl: '/fpoversikt',
+        outgoingUrl: serverConfig.proxy.FPOVERSIKT_API_URL,
+        scope: serverConfig.proxy.FPOVERSIKT_API_SCOPE,
     });
 }
 

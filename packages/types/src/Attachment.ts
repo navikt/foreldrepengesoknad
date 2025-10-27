@@ -1,20 +1,19 @@
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { AttachmentMetadata } from './AttachmentMetadata';
+import { Dokumenterer, VedleggInnsendingType } from './apiDtoGenerert';
 
 export type Attachment = {
-    dokumenterer?: AttachmentMetadata;
+    dokumenterer?: Dokumenterer;
     id: string;
     filename: string;
     filesize: number;
     file: File;
-    url: string | null;
     uuid?: string;
     pending: boolean;
     uploaded: boolean;
     type: AttachmentType;
     skjemanummer: Skjemanummer;
-    innsendingsType?: InnsendingsType;
+    innsendingsType: VedleggInnsendingType;
     error?: any;
     beskrivelse?: string;
 };

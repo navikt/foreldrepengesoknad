@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
@@ -30,8 +29,6 @@ import {
     isValidDate,
     notEmpty,
 } from '@navikt/fp-validation';
-
-import styles from './feriesteg.module.css';
 
 type Props = {
     readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -72,7 +69,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             arbeidsforhold: {
                 id: arbeidsgiverId,
                 type: getTypeArbeidForTilrettelegging(arbeidsgiverId, arbeidsforhold),
-            },
+            } as const,
         }));
         const nyeFerieVerdier = {
             ...ferie,
@@ -261,7 +258,7 @@ function FeriePerioder() {
             <Button
                 onClick={() => append({ fom: undefined, tom: undefined })}
                 size="small"
-                className={styles.leggTilFerieperiodeButton}
+                className="mt-[var(--ax-space-16)] w-fit"
                 type="button"
                 variant="secondary"
                 icon={<PlusIcon />}

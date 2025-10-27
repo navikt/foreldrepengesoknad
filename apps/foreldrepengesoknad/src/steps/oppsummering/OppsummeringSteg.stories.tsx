@@ -17,7 +17,6 @@ import {
     AttachmentMetadataType,
     AttachmentType,
     ISO_DATE_FORMAT,
-    InnsendingsType,
     SivilstandType,
     Skjemanummer,
 } from '@navikt/fp-constants';
@@ -669,7 +668,8 @@ const FIL_INFO = {
     file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
     pending: false,
     uploaded: true,
-};
+    innsendingsType: 'LASTET_OPP',
+} as const;
 
 const FIL_INFO_UTTAK_MED_PERIODE = {
     ...FIL_INFO,
@@ -695,6 +695,7 @@ export const VisAlleVedlegg: Story = {
                     filename: 'etterlønn.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                    innsendingsType: 'LASTET_OPP',
                     dokumenterer: {
                         type: AttachmentMetadataType.OPPTJENING,
                         perioder: [
@@ -709,6 +710,7 @@ export const VisAlleVedlegg: Story = {
                     ...FIL_INFO,
                     filename: 'etterlønn2.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
+                    innsendingsType: 'LASTET_OPP',
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                 },
             ],
@@ -717,6 +719,7 @@ export const VisAlleVedlegg: Story = {
                     ...FIL_INFO,
                     filename: 'siviltjeneste.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
+                    innsendingsType: 'LASTET_OPP',
                     skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
                     dokumenterer: {
                         type: AttachmentMetadataType.OPPTJENING,
@@ -839,7 +842,7 @@ export const VisSendInnSenereVedlegg: Story = {
                           ...result,
                           [entry[0]]: entry[1].map((value) => ({
                               ...value,
-                              innsendingsType: InnsendingsType.SEND_SENERE,
+                              innsendingsType: 'SEND_SENERE',
                           })),
                       }),
                       {},
@@ -872,7 +875,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.AUTOMATISK,
+                    innsendingsType: 'AUTOMATISK',
                 },
             ],
         },
@@ -914,7 +917,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.AUTOMATISK,
+                    innsendingsType: 'AUTOMATISK',
                 },
             ],
             [Skjemanummer.DOK_UTDANNING_MOR]: [
@@ -923,7 +926,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     filename: 'dok-utdanning-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },
@@ -970,7 +973,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },
@@ -1012,7 +1015,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },

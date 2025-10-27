@@ -7,6 +7,7 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 
 import {
     AnnenPartSak_fpoversikt,
+    ForsendelseStatus,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     Tidsperiode,
@@ -19,17 +20,36 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    søkerInfo1: `${urlPrefiks}/rest/sokerinfo`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
 
-    konto: `${urlPrefiks}/rest/konto`, //TODO
-
-    mellomlagring: `${urlPrefiks}/rest/storage/foreldrepenger`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger`,
-    endreSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
+    endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
+    hentVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg/${uuid}`,
 } as const;
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
+        staleTime: Infinity,
+    });
 
 export const sakerOptions = () =>
     queryOptions({
