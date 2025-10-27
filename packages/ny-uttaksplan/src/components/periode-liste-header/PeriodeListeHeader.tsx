@@ -25,7 +25,6 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
     const familiesituasjon = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIESITUASJON));
-    console.log(navnPåForeldre);
     const { tidsperiode } = permisjonsperiode;
 
     const antallDager = Tidsperioden({
