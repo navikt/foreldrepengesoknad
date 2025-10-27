@@ -9,7 +9,7 @@ import {
     DokumentDto_fpoversikt,
     EttersendelseDto,
     KontoBeregningDto_fpoversikt,
-    KontoBeregningGrunnlagDto,
+    KontoBeregningGrunnlagDto_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
@@ -22,14 +22,16 @@ import { InntektsmeldingDtoSchema } from './zodSchemas';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`, //DONE
-    saker: `${urlPrefiks}/fpoversikt/api/saker`, //DONE
-    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`, //DONE
-    minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`, //DONE
-    dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`, //DONE
-    inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`, //???
-    tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`, //DONE,
-    manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`, //DONE
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    saker: `${urlPrefiks}/fpoversikt/api/saker`,
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
+    dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
+    inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`,
+    konto: `${urlPrefiks}/fpoversikt/api/konto`,
+    tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
+    manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`,
+
     ettersend: `${urlPrefiks}/fpsoknad/api/soknad/ettersend`,
     lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
     lastOppESVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
@@ -55,7 +57,7 @@ export const hentSakerOptions = () =>
         queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
     });
 
-export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
+export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
         queryFn: () =>

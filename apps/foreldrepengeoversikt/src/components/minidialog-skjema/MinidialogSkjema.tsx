@@ -84,7 +84,7 @@ export const MinidialogSkjema = ({
         },
         refetchInterval: (query) => {
             const data = query.state.data;
-            if (!data || data?.find((innslag) => innslag.dialogId === minidialog?.dialogId)) {
+            if (!data || data?.find((innslag) => innslag.saksnummer === minidialog?.saksnummer)) {
                 return 1000;
             }
 
@@ -111,16 +111,15 @@ export const MinidialogSkjema = ({
             setTilbakemeldingValideringsfeil(feilmelding);
         } else if (brukerØnskerÅUttaleSeg !== undefined) {
             const submitData = {
-                fnr: notEmpty(søkerInfo).søker.fnr,
+                fnr: notEmpty(søkerInfo).person.fnr,
                 vedlegg:
                     brukerØnskerÅUttaleSeg && vedlegg
                         ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a))
                         : [],
-                saksnummer: minidialog.saksnr,
+                saksnummer: minidialog.saksnummer,
                 type: sakstype,
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst:
                         brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
                             ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
@@ -137,7 +136,7 @@ export const MinidialogSkjema = ({
             <MinidialogVenterPåSvar
                 fetchCounter={fetchCounter}
                 allowedToFetch={allowedToFetch}
-                saksnummer={minidialog.saksnr}
+                saksnummer={minidialog.saksnummer}
             />
         );
     }
@@ -147,7 +146,7 @@ export const MinidialogSkjema = ({
             <VStack gap="space-16">
                 <ScrollToTop />
                 <Alert variant="error"> {ettersendelseError}</Alert>
-                <Link as={RouterLink} to={`/sak/${minidialog.saksnr}`}>
+                <Link as={RouterLink} to={`/sak/${minidialog.saksnummer}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
             </VStack>

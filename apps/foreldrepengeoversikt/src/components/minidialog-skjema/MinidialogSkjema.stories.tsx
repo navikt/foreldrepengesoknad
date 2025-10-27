@@ -38,9 +38,8 @@ export const SkalIkkeFeileOpplasting: Story = {
         ettersendelseErSendt: false,
         isSendingEttersendelse: false,
         minidialog: {
-            dialogId: '1',
             opprettet: '2020-01-01',
-            saksnr: '1',
+            saksnummer: '1',
         },
         sakstype: 'FORELDREPENGER',
         ettersendelseError: undefined,

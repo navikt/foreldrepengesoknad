@@ -21,8 +21,7 @@ export const MinidialogPage = () => {
     const params = useParams();
     const minidialog = useQuery({
         ...minidialogOptions(),
-        select: (data) =>
-            data.find(({ saksnummer, dialogId }) => saksnummer === params.saksnummer && dialogId === params.oppgaveId),
+        select: (data) => data.find(({ saksnummer }) => saksnummer === params.saksnummer), //TODO: dropp oppgaveid i url
     }).data;
     const sak = useGetSelectedSak();
 

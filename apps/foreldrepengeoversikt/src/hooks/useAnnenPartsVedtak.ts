@@ -12,11 +12,11 @@ export function useAnnenPartsVedtak(sak: Sak | undefined) {
     const barnFødselsnummer =
         sak?.ytelse === 'FORELDREPENGER' ? sak.barn?.find((barn) => barn.fnr !== undefined)?.fnr : undefined;
 
-    const enabled = sak?.ytelse === 'FORELDREPENGER';
+    const enabled = sak?.ytelse === 'FORELDREPENGER' && !!annenPartFødselsnummer;
 
     return useQuery({
         ...hentAnnenPartsVedtakOptions({
-            annenPartFødselsnummer, // TODO
+            annenPartFødselsnummer: annenPartFødselsnummer!, // NOTE: er satt når query er enablet
             barnFødselsnummer,
             familiehendelse,
         }),
