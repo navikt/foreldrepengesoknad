@@ -1,0 +1,8 @@
+import{l as r,m,cX as l,M as v}from"./iframe-nuihC56X.js";import{b as S,c as y,C as n}from"./FpDataContext-CU9ax49h.js";import{a as c,b as f}from"./useFpNavigator-D7usOBgR.js";const b=({arbeidsforhold:t,mellomlagreSøknadOgNaviger:s,avbrytSøknad:a})=>{const o=c(t),e=f(t,s),i=S(n.UTENLANDSOPPHOLD_SENERE),d=y(n.UTENLANDSOPPHOLD_SENERE),u=g=>(d(g),e.goToNextDefaultStep()),p=()=>{};return r.jsx(m,{pageTitle:r.jsx(v,{id:"søknad.pageheading"}),children:r.jsx(l,{senereUtenlandsopphold:i??[],saveOnNext:u,saveOnPrevious:p,onAvsluttOgSlett:a,onFortsettSenere:e.fortsettSøknadSenere,goToPreviousStep:e.goToPreviousDefaultStep,stepConfig:o})})};b.__docgenInfo={description:"",methods:[],displayName:"SenereUtenlandsoppholdSteg",props:{arbeidsforhold:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    arbeidsgiverId: string;
+    arbeidsgiverIdType: string;
+    arbeidsgiverNavn: string;
+    stillingsprosent: number;
+    fom: string;
+    tom?: string;
+}`,signature:{properties:[{key:"arbeidsgiverId",value:{name:"string",required:!0}},{key:"arbeidsgiverIdType",value:{name:"string",required:!0}},{key:"arbeidsgiverNavn",value:{name:"string",required:!0}},{key:"stillingsprosent",value:{name:"number",required:!0}},{key:"fom",value:{name:"string",required:!0}},{key:"tom",value:{name:"string",required:!1}}]}}],raw:"Arbeidsforhold[]"},description:""},mellomlagreSøknadOgNaviger:{required:!0,tsType:{name:"signature",type:"function",raw:"() => Promise<void>",signature:{arguments:[],return:{name:"Promise",elements:[{name:"void"}],raw:"Promise<void>"}}},description:""},avbrytSøknad:{required:!0,tsType:{name:"signature",type:"function",raw:"() => void",signature:{arguments:[],return:{name:"void"}}},description:""}}};export{b as S};
