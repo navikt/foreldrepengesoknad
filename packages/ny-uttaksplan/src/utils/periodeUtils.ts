@@ -220,7 +220,7 @@ export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPer
     });
 
     const alleUnikeDatoer = alleDatoer.reduce((result, datoWrapper) => {
-        if (!result.some((d) => d.dato === datoWrapper.dato)) {
+        if (!result.some((d) => d.dato === datoWrapper.dato && d.erFom === datoWrapper.erFom)) {
             result.push(datoWrapper);
         }
         return result;
