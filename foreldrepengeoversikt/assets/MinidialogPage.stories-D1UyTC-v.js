@@ -1,0 +1,11 @@
+import{i as s,j as t}from"./iframe-BL1fXp3Z.js";import{h as o,H as e}from"./index-CtMjQgvb.js";import{s as a}from"./saker-eujSxlJW.js";import{A as i}from"./api-QlxCNsBs.js";import{O as p}from"./routes-C7yRzVAD.js";import{M as m}from"./ForeldrepengeoversiktRoutes-DdaGYbo6.js";import{M as n,R as d,a as l}from"./chunk-TMI4QPZX-B017oIpK.js";import"./preload-helper-D9Z9MdNV.js";import"./RettighetType-BD_oerVS.js";import"./useBackgroundColor-DNqCl1xt.js";import"./useSelectedSak-CgHp6Zaz.js";import"./useQuery-DRSe34mH.js";import"./sakerUtils-CWhnQUyi.js";import"./Snarveier-wXe9-G5_.js";import"./LenkePanel-CjQZjc_e.js";import"./index-BLdhdjp7.js";import"./Header-Caz774L4.js";import"./LayoutWrapper-BD9sgz2m.js";import"./StatusTag-FIffnT_r.js";import"./Tag-BBYKCuCF.js";import"./Stroller-r759M7JH.js";import"./NoeGikkGalt-BcyvNw_2.js";import"./MinidialogSkjema-gLEXvcBT.js";import"./skjemanummer-DLD4juAC.js";import"./HarIkkeSaker-Cyt0mYRA.js";import"./SøkelenkerPanel-CD8kOGYT.js";import"./HarSaker-DnKdMKF0.js";import"./SakLink-EhhX9t7d.js";import"./guid-CsArkN6i.js";import"./ContentSection-CN-rQiPY.js";import"./BekreftelseSendtSøknad-tZuUcB6P.js";import"./dokumenterUtils-DHPQPJjC.js";import"./KontonummerInfo-D1i_pgJ-.js";import"./Accordion-CMeu16a0.js";import"./Svangerskapspenger-ZAOnlef3.js";import"./DinPlan-DjDyWJ4x.js";import"./Oppgaver-Bi1QeTIy.js";import"./OppgaveLenkepanel-DZ4Ai8Cr.js";import"./KontaktOss-Bc2_DnlC.js";const X={title:"MinidialogPage",component:m,decorators:[s],render:()=>t.jsx(n,{initialEntries:[`/${p.DIN_PLAN}/352011079/1111111112`],children:t.jsx(d,{children:t.jsx(l,{element:t.jsx(m,{}),path:`/${p.DIN_PLAN}/:saksnummer/:oppgaveId`})})})},r={parameters:{msw:{handlers:[o.get(i.minidialog,()=>e.json([{saksnr:"352011079",opprettet:"2023-02-09",dialogId:"1111111112"}])),o.get(i.saker,()=>e.json(a))]}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  parameters: {
+    msw: {
+      handlers: [http.get(API_URLS.minidialog, () => HttpResponse.json([{
+        saksnr: '352011079',
+        opprettet: '2023-02-09',
+        dialogId: '1111111112'
+      }])), http.get(API_URLS.saker, () => HttpResponse.json(saker))]
+    }
+  }
+}`,...r.parameters?.docs?.source}}};const Y=["Default"];export{r as Default,Y as __namedExportsOrder,X as default};
