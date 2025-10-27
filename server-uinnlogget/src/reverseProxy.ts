@@ -1,17 +1,21 @@
+import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { serverConfig } from '@navikt/fp-server-utils';
-import { Router } from 'express';
+
+const proxy = {
+    FORELDREPENGER_API_URL: serverConfig.påkrevMiljøVariabel('FORELDREPENGER_API_URL'),
+} as const;
 
 export const configureReverseProxyApi = (router: Router) => {
-    if (!serverConfig.proxy.apiUrl) {
+    if (!proxy.FORELDREPENGER_API_URL) {
         throw new Error('Påkrevd miljøvariable URL ikke satt mot API');
     }
 
     router.use(
-        "/rest",
+        '/rest',
         createProxyMiddleware({
-            target: serverConfig.proxy.apiUrl,
+            target: proxy.FORELDREPENGER_API_URL,
             changeOrigin: true,
             logger: console,
         }),
