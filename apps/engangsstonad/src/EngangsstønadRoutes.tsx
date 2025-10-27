@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData, useEsMellomlagring } from 'appData/useEsMellomlagring';
@@ -6,10 +5,10 @@ import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { Kvittering, PersonFrontend } from '@navikt/fp-types';
-import { ErrorPage, Spinner } from '@navikt/fp-ui';
-import { redirect } from '@navikt/fp-utils';
+import { PersonFrontend } from '@navikt/fp-types';
+import { ErrorPage } from '@navikt/fp-ui';
 
+import { KvitteringPage } from './kvittering/KvitteringPage';
 import { DokumentasjonSteg } from './steg/dokumentasjon/DokumentasjonSteg';
 import { OmBarnetSteg } from './steg/om-barnet/OmBarnetSteg';
 import { OppsummeringSteg } from './steg/oppsummering/OppsummeringSteg';
@@ -32,9 +31,8 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
     const navigate = useNavigate();
 
     const [erVelkommen, setErVelkommen] = useState(false);
-    const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(setKvittering);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(personinfo);
     const mellomlagreOgNaviger = useEsMellomlagring(personinfo, setErVelkommen);
 
     useEffect(() => {
@@ -43,18 +41,6 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
             navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
     }, [mellomlagretData]);
-
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
-    }
 
     if (errorSendSøknad) {
         return <ApiErrorHandler error={errorSendSøknad} />;
@@ -109,6 +95,7 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
                             <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
                         }
                     />
+                    <Route path={Path.KVITTERING} element={<KvitteringPage />} />
                 </>
             )}
         </Routes>

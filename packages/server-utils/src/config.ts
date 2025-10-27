@@ -1,7 +1,20 @@
-const proxy = {
-    apiScope: process.env.FORELDREPENGER_API_SCOPE,
-    apiUrl: process.env.FORELDREPENGER_API_URL,
+import logger from './logger';
+
+const envVar = (name: string) => {
+    if (!process.env[name]) {
+        const errorMessage = `Missing required environment variable '${name}'`;
+        logger.error(errorMessage);
+        throw new Error(errorMessage);
+    }
+    return process.env[name];
 };
+
+const proxy = {
+    FPSOKNAD_API_SCOPE: envVar('FPSOKNAD_API_SCOPE'),
+    FPSOKNAD_API_URL: envVar('FPSOKNAD_API_URL'),
+    API_URL: envVar('FORELDREPENGER_API_URL'),
+    API_SCOPE: envVar('FORELDREPENGER_API_SCOPE'),
+} as const;
 
 const app = {
     port: Number(process.env.PORT) || 8080,

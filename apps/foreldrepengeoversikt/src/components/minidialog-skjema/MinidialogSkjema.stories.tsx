@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { action } from 'storybook/actions';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -26,7 +27,10 @@ type Story = StoryObj<typeof meta>;
 export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 }))],
+            handlers: [
+                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 })),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            ],
         },
     },
     args: {
@@ -46,7 +50,10 @@ export const SkalIkkeFeileOpplasting: Story = {
 export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 }))],
+            handlers: [
+                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 })),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            ],
         },
     },
     args: SkalIkkeFeileOpplasting.args,

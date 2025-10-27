@@ -5,7 +5,14 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
-import { AnnenPartSak, Saker, Søkerinfo, Tidsperiode, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import {
+    AnnenPartSak,
+    ForsendelseStatus,
+    Saker,
+    Søkerinfo,
+    Tidsperiode,
+    TilgjengeligeStønadskontoer,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
@@ -13,14 +20,36 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
     saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    mellomlagring: `${urlPrefiks}/rest/storage/foreldrepenger`,
     annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-    sendSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger`,
-    endreSøknad: `${urlPrefiks}/rest/soknad/foreldrepenger/endre`,
-    sendVedlegg: `${urlPrefiks}/rest/storage/foreldrepenger/vedlegg`,
+    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+
+    mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
+    status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
+    sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger`,
+    endreSøknad: `${urlPrefiks}/fpsoknad/api/soknad/foreldrepenger/endre`,
+    sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
+    hentVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg/${uuid}`,
 } as const;
+
+export const statusOptions = () =>
+    queryOptions({
+        queryKey: ['STATUS'],
+        queryFn: async () => {
+            const status = await ky.get(API_URLS.status).json<ForsendelseStatus>();
+            if (status.saksnummer !== undefined) {
+                const erOppdatert = await ky.get(API_URLS.erOppdatert).json<boolean>();
+                if (erOppdatert) {
+                    return status;
+                }
+                return { status: 'PENDING' } satisfies ForsendelseStatus;
+            }
+
+            return status;
+        },
+        staleTime: Infinity,
+    });
 
 export const sakerOptions = () =>
     queryOptions({

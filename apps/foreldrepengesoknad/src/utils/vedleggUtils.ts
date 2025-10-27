@@ -1,5 +1,5 @@
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadata } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, Dokumenterer, VedleggInnsendingType } from '@navikt/fp-types';
 
 import { guid } from './guid';
 
@@ -9,8 +9,8 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType,
-    dokumenterer?: AttachmentMetadata,
+    innsendingsType: VedleggInnsendingType,
+    dokumenterer?: Dokumenterer,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -22,7 +22,6 @@ export const mapFilTilVedlegg = (
     skjemanummer,
     innsendingsType,
     dokumenterer,
-    url: null,
 });
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
@@ -31,19 +30,19 @@ export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachmen
 export const lagSendSenereDokument = (
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    dokumenterer?: AttachmentMetadata,
+    dokumenterer?: Dokumenterer,
 ) => {
-    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.SEND_SENERE, dokumenterer);
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'SEND_SENERE', dokumenterer);
 };
 
 export const lagAutomatiskDokument = (
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    dokumenterer?: AttachmentMetadata,
+    dokumenterer?: Dokumenterer,
 ) => {
-    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, InnsendingsType.AUTOMATISK, dokumenterer);
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'AUTOMATISK', dokumenterer);
 };
 
-export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
+export const addMetadata = (attachment: Attachment, metadata: Dokumenterer): Attachment => {
     return { ...attachment, dokumenterer: metadata };
 };

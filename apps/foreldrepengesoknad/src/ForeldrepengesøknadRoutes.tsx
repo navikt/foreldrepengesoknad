@@ -6,6 +6,7 @@ import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
+import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
@@ -23,7 +24,6 @@ import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/Senere
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
-import { Kvittering } from 'types/Kvittering';
 
 import { FpSak, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -83,6 +83,7 @@ const renderSøknadRoutes = (
                         />
                     }
                 />
+                <Route path={SøknadRoutes.KVITTERING} element={<KvitteringPage />} />
             </>
         );
     }
@@ -246,6 +247,7 @@ const renderSøknadRoutes = (
                     />
                 }
             />
+            <Route path={SøknadRoutes.KVITTERING} element={<KvitteringPage />} />
         </>
     );
 };
@@ -257,7 +259,6 @@ interface Props {
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;
-    setKvittering: (kvittering: Kvittering) => void;
 }
 
 export const ForeldrepengesøknadRoutes = ({
@@ -267,7 +268,6 @@ export const ForeldrepengesøknadRoutes = ({
     lagretErEndringssøknad,
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
-    setKvittering,
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
@@ -277,7 +277,7 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         foreldrepengerSaker,
