@@ -458,7 +458,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                http.post(API_URLS.trengerDokumentereMorsArbeid, async () => {
                     return HttpResponse.json(true);
                 }),
             ],

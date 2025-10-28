@@ -2,15 +2,13 @@ import { queryOptions } from '@tanstack/react-query';
 import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { ForsendelseStatus, PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt, Satser } from '@navikt/fp-types';
+import { ForsendelseStatus, PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    satser: `${urlPrefiks}/rest/satser`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
@@ -39,14 +37,6 @@ export const mellomlagretInfoOptions = () =>
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () => ky.get(API_URLS.mellomlagring).json<SvpDataMapAndMetaData>(),
         staleTime: Infinity,
-    });
-
-export const satserOptions = () =>
-    queryOptions({
-        queryKey: ['SATSER'],
-        queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
-        staleTime: Infinity,
-        initialData: DEFAULT_SATSER,
     });
 
 export const statusOptions = () =>
