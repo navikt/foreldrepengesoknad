@@ -32,6 +32,7 @@ const getCalendarLabel = (
         case PeriodeColor.BLUEOUTLINE:
         case PeriodeColor.BLACK:
         case PeriodeColor.GRAY:
+        case PeriodeColor.BLACKOUTLINE:
             return getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl);
         default:
             return null;
@@ -62,7 +63,9 @@ export const UttaksplanLegend = ({
             <button
                 key={color}
                 onClick={
-                    color !== PeriodeColor.PINK && color !== PeriodeColor.PURPLE ? () => selectLegend(color) : undefined
+                    color !== PeriodeColor.PINK && color !== PeriodeColor.PURPLE && color !== PeriodeColor.BLACKOUTLINE
+                        ? () => selectLegend(color)
+                        : undefined
                 }
                 type="button"
                 className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"

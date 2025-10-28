@@ -81,7 +81,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: UtsettelseÅrsakType.HvØvelse,
+                kontoType: 'FELLESPERIODE',
                 forelder: Forelder.mor,
                 resultat: {
                     innvilget: false,
@@ -127,6 +127,40 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-07-15',
                 kontoType: 'FEDREKVOTE',
                 forelder: Forelder.farMedmor,
+            },
+        ] satisfies SaksperiodeNy[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarMedmorHarRett: false,
+    },
+};
+
+export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-03-15',
+                tom: '2024-04-03',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                kontoType: 'FELLESPERIODE',
+                forelder: Forelder.mor,
+                resultat: {
+                    innvilget: false,
+                    trekkerDager: false,
+                    trekkerMinsterett: false,
+                    årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+                },
             },
         ] satisfies SaksperiodeNy[],
         barn: {

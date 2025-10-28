@@ -48,6 +48,18 @@
     print-color-adjust: exact;
 }
 
+.blackOutlinePanel {
+    border-radius: 1.25rem;
+    border: 2px solid var(--ax-bg-neutral-strong) !important;
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+    print-color-adjust: exact;
+}
+
 .pinkPanel {
     border-radius: 1.25rem;
     border: 2px solid var(--ax-danger-200) !important;
@@ -161,6 +173,15 @@
     height: 16px;
     border-radius: 50%;
     border: 2px solid var(--ax-accent-500) !important;
+    margin-bottom: 50%;
+    print-color-adjust: exact;
+}
+
+.blackOutlineCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--ax-bg-neutral-strong) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }

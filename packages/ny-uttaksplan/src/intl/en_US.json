@@ -186,6 +186,7 @@
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} postpones parental benefits",
     "kalender.helg": "Weekend (not days with parental allowance)",
     "kalender.tapteDager": "Days you can lose",
+    "kalender.pleiepenger": "Deduction for attendance allowance",
     "kalender.utsettelse": "You postpone parental benefits due to {reason}",
     "kalender.utsettelse.ARBEID": "because you are working",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "because the child is hospitalized",

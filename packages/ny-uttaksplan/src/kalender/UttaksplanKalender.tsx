@@ -7,7 +7,14 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 import { Alert, Button, Checkbox, HStack } from '@navikt/ds-react';
 
 import { Forelder, PeriodeColor } from '@navikt/fp-constants';
-import { Barn, SaksperiodeNy, UtsettelseÅrsakType, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import {
+    Barn,
+    PeriodeResultatÅrsak,
+    SaksperiodeNy,
+    UtsettelseÅrsakType,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
     UttaksdagenString,
@@ -272,6 +279,9 @@ const getKalenderFargeForPeriodeType = (
     barn: Barn,
 ): PeriodeColor => {
     if (isAvslåttPeriode(periode)) {
+        if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER) {
+            return PeriodeColor.BLACKOUTLINE;
+        }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
         return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
             ? PeriodeColor.BLACK
@@ -383,8 +393,11 @@ export const UttaksplanKalender = ({
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = uttaksplan.some(
-        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+    const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
+        (p) =>
+            isAvslåttPeriode(p) &&
+            p.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER &&
+            (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     const dateClickCallback = (selectedDate: string) => {

@@ -106,6 +106,8 @@ export const getKalenderPeriodenavn = (
             return intl.formatMessage({ id: 'kalender.tapteDager' });
         case PeriodeColor.GRAY:
             return intl.formatMessage({ id: 'kalender.helg' });
+        case PeriodeColor.BLACKOUTLINE:
+            return intl.formatMessage({ id: 'kalender.pleiepenger' });
         default:
             return '';
     }
