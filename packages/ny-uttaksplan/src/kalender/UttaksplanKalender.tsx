@@ -272,6 +272,9 @@ const getKalenderFargeForPeriodeType = (
     barn: Barn,
 ): PeriodeColor => {
     if (isAvslåttPeriode(periode)) {
+        if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER) {
+            return PeriodeColor.BLACKOUTLINE;
+        }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
         return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
             ? PeriodeColor.BLACK
@@ -383,8 +386,11 @@ export const UttaksplanKalender = ({
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = uttaksplan.some(
-        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+    const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
+        (p) =>
+            isAvslåttPeriode(p) &&
+            p.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER &&
+            (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     const dateClickCallback = (selectedDate: string) => {
