@@ -68,6 +68,7 @@ const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): Ut
         ønskerSamtidigUttak: uttaksperiodeBase.ønskerSamtidigUttak,
         samtidigUttakProsent: toNumber(uttaksperiodeBase.samtidigUttakProsent) || undefined,
         ønskerFlerbarnsdager: uttaksperiodeBase.ønskerFlerbarnsdager,
+        ønskerGradering: uttaksperiodeBase.gradert,
     };
 
     if (uttaksperiodeBase.gradert) {
