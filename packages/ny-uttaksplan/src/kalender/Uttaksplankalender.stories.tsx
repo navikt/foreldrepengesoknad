@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { ComponentProps, useState } from 'react';
 import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
+import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
 
 const MINSTERETTER = {
@@ -15,31 +17,55 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
-        familiehendelsedato: '2024-04-04',
-        modus: 'planlegger',
+        modus: 'søknad',
         handleOnPlanChange: action('button-click'),
         valgtStønadskonto: {
             kontoer: [
-                { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
             ],
             minsteretter: MINSTERETTER,
         },
-        erAleneOmOmsorg: false,
+        aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
-        familiesituasjon: 'fødsel',
-        navnPåForeldre: { mor: 'Mamma', farMedmor: 'Pappa' },
+        navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+        children: null,
     },
-} satisfies Meta<typeof UttaksplanKalender>;
+    render: (args) => {
+        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
+
+        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+            setPerioder(oppdatertePerioder);
+            args.handleOnPlanChange?.(oppdatertePerioder);
+        };
+
+        return (
+            <UttaksplanDataProvider
+                barn={args.barn}
+                erFarEllerMedmor={args.erFarEllerMedmor}
+                navnPåForeldre={args.navnPåForeldre}
+                modus={args.modus}
+                valgtStønadskonto={args.valgtStønadskonto}
+                aleneOmOmsorg={args.aleneOmOmsorg || false}
+                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
+                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
+                harAktivitetskravIPeriodeUtenUttak={false}
+                erDeltUttak={args.erDeltUttak || false}
+            >
+                <UttaksplanKalender {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
+            </UttaksplanDataProvider>
+        );
+    },
+} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanKalender>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
@@ -89,8 +115,6 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 kontoType: 'FELLESPERIODE',
                 samtidigUttak: 50,
             },
-        ] satisfies SaksperiodeNy[],
-        annenPartsPerioder: [
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
@@ -110,16 +134,16 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
+        erDeltUttak: true,
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
     },
 };
 
 export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
@@ -139,15 +163,15 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
     },
 };
 
 export const MorSøkerMedFlereUtsettelser: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
@@ -175,12 +199,12 @@ export const MorSøkerMedFlereUtsettelser: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
@@ -206,8 +230,6 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                     arbeidstidprosent: 50,
                 },
             },
-        ],
-        annenPartsPerioder: [
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
@@ -247,13 +269,13 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseMorArbeid: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
@@ -269,13 +291,13 @@ export const UtsettelseMorArbeid: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
@@ -294,16 +316,16 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             fødselsdatoer: ['2021-06-14'],
             antallBarn: 1,
         },
+        erDeltUttak: true,
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
     },
 };
 
 export const UtsettelseMorFri: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
@@ -319,13 +341,13 @@ export const UtsettelseMorFri: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseMorInstitusjonBarnet: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
@@ -341,13 +363,13 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseMorInstitusjonSøker: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
@@ -363,13 +385,13 @@ export const UtsettelseMorInstitusjonSøker: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseMorNavTiltak: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
@@ -385,13 +407,13 @@ export const UtsettelseMorNavTiltak: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseFarSykdom: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
@@ -407,13 +429,13 @@ export const UtsettelseFarSykdom: Story = {
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseFarHvØvelse: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-06-11',
                 tom: '2024-06-24',
@@ -429,13 +451,13 @@ export const UtsettelseFarHvØvelse: Story = {
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };
 
 export const UtsettelseFarFlereÅrsaker: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2021-04-05',
                 tom: '2021-06-14',
@@ -457,13 +479,13 @@ export const UtsettelseFarFlereÅrsaker: Story = {
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };
 
 export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
@@ -497,13 +519,13 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const MorAvslåttPeriodeUtenTapteDager: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
@@ -537,12 +559,13 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
+
 export const KortPeriodeMedHelg: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-05-24',
                 tom: '2024-05-27',
@@ -559,13 +582,13 @@ export const KortPeriodeMedHelg: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const KortPeriodeUtenHelg: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-05-22',
                 tom: '2024-05-24',
@@ -582,12 +605,13 @@ export const KortPeriodeUtenHelg: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
+
 export const TreSammenhengendePerioderSlåttSammen: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
@@ -616,13 +640,13 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const MorOppgirSamtidigUttakMedFar: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
@@ -640,13 +664,13 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hans',
+        erDeltUttak: true,
     },
 };
 
 export const FarOppgirSamtidigUttakMedMor: Story = {
     args: {
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2025-05-21',
                 tom: '2025-05-27',
@@ -664,6 +688,6 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
         erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-        navnAnnenPart: 'Hanne',
+        erDeltUttak: true,
     },
 };

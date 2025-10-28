@@ -22,20 +22,14 @@ import {
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
 import { loggExpansionCardOpen } from 'utils/umamiUtils';
-import {
-    finnAntallUkerOgDagerMedForeldrepenger,
-    getAnnenpartsPerioder,
-    getFamiliehendelsedato,
-    getSøkersPerioder,
-    lagForslagTilPlan,
-} from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
@@ -85,18 +79,22 @@ export const OppsummeringHarRett = ({
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
 
+    const erAleneOmOmsorg =
+        hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR;
+
+    const erAdopsjon = erBarnetAdoptert(barnet);
+
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
         tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
-        erAdopsjon: erBarnetAdoptert(barnet),
+        erAdopsjon,
         erFarEllerMedmor: erFarEllerMedmor,
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg:
-            hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR,
+        erAleneOmOmsorg,
         farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
     });
 
@@ -114,9 +112,6 @@ export const OppsummeringHarRett = ({
     const tilpassPlan = notEmpty(useContextGetData(ContextDataType.TILPASS_PLAN));
     const gjeldendeUttaksplan = uttaksplan?.at(-1) ?? [];
     const erDeltUttak = fordeling !== undefined;
-
-    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
-    const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
 
     return (
         <VStack gap="space-40">
@@ -258,34 +253,37 @@ export const OppsummeringHarRett = ({
                                 </VStack>
                             </BluePanel>
                         )}
-                        <UttaksplanKalender
-                            bareFarMedmorHarRett={bareFarMedmorHarRett}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={tilpassPlan ? søkersPerioder : planforslag.søker1}
-                            annenPartsPerioder={tilpassPlan ? annenPartsPerioder : planforslag.søker2}
-                            navnAnnenPart="Test"
+                        <UttaksplanDataProvider
                             barn={mapOmBarnetTilBarn(barnet)}
-                            planleggerLegend={
-                                <CalendarLabels
-                                    hvemPlanlegger={hvemPlanlegger}
-                                    barnet={barnet}
-                                    hvemHarRett={hvemHarRett}
-                                    uttaksplan={
-                                        tilpassPlan
-                                            ? gjeldendeUttaksplan
-                                            : [...planforslag.søker1, ...planforslag.søker2]
-                                    }
-                                />
-                            }
-                            barnehagestartdato={barnehagestartdato}
-                            familiehendelsedato={familiehendelsedato}
-                            modus="innsyn"
-                            familiesituasjon={familiesituasjon}
-                            navnPåForeldre={navnPåForeldre}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
+                            modus="planlegger"
                             valgtStønadskonto={{} as any}
-                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                        />
+                            aleneOmOmsorg={erAleneOmOmsorg}
+                            erMedmorDelAvSøknaden={false}
+                            bareFarMedmorHarRett={bareFarMedmorHarRett}
+                            harAktivitetskravIPeriodeUtenUttak={false}
+                            erDeltUttak={erDeltUttak}
+                        >
+                            <UttaksplanKalender
+                                saksperioder={
+                                    tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
+                                }
+                                planleggerLegend={
+                                    <CalendarLabels
+                                        hvemPlanlegger={hvemPlanlegger}
+                                        barnet={barnet}
+                                        hvemHarRett={hvemHarRett}
+                                        uttaksplan={
+                                            tilpassPlan
+                                                ? gjeldendeUttaksplan
+                                                : [...planforslag.søker1, ...planforslag.søker2]
+                                        }
+                                    />
+                                }
+                                barnehagestartdato={barnehagestartdato}
+                            />
+                        </UttaksplanDataProvider>
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

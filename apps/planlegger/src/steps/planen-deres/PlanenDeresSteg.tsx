@@ -29,12 +29,12 @@ import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
@@ -257,31 +257,31 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
                     <VStack gap="space-20">
                         <div className="p-[24px] max-[479px]:p-0">
-                            <UttaksplanKalender
-                                bareFarMedmorHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={planforslag.søker1}
-                                annenPartsPerioder={planforslag.søker2}
-                                navnAnnenPart="Test"
+                            <UttaksplanDataProvider
                                 barn={mapOmBarnetTilBarn(omBarnet)}
-                                planleggerLegend={
-                                    <CalendarLabels
-                                        hvemPlanlegger={hvemPlanlegger}
-                                        barnet={omBarnet}
-                                        hvemHarRett={hvemHarRett}
-                                        uttaksplan={[...planforslag.søker1, ...planforslag.søker2]}
-                                    />
-                                }
-                                barnehagestartdato={barnehagestartdato}
-                                familiehendelsedato={familiehendelsedato}
-                                modus="planlegger"
-                                erAleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
-                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
-                                familiesituasjon={getFamiliesituasjon(omBarnet)}
+                                erFarEllerMedmor={erFarEllerMedmor}
                                 navnPåForeldre={getNavnPåForeldre(hvemPlanlegger, intl)}
+                                modus="planlegger"
                                 valgtStønadskonto={valgtStønadskonto}
-                            />
+                                aleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
+                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
+                                bareFarMedmorHarRett={bareFarMedmorHarRett}
+                                harAktivitetskravIPeriodeUtenUttak={false}
+                                erDeltUttak={fordeling !== undefined}
+                            >
+                                <UttaksplanKalender
+                                    saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
+                                    planleggerLegend={
+                                        <CalendarLabels
+                                            hvemPlanlegger={hvemPlanlegger}
+                                            barnet={omBarnet}
+                                            hvemHarRett={hvemHarRett}
+                                            uttaksplan={[...planforslag.søker1, ...planforslag.søker2]}
+                                        />
+                                    }
+                                    barnehagestartdato={barnehagestartdato}
+                                />
+                            </UttaksplanDataProvider>
                         </div>
                     </VStack>
                     <Infobox

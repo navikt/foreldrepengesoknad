@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Barn, BarnDto_fpoversikt, isFødtBarn } from '@navikt/fp-types';
+import { Barn, BarnDto_fpoversikt, Familiesituasjon, isFødtBarn } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-types/src/Barn';
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
@@ -25,4 +25,15 @@ export const sorterPersonEtterEldstOgNavn = (p1: BarnDto_fpoversikt, p2: BarnDto
 
         return fornavn1 < fornavn2 ? -1 : 1;
     }
+};
+
+export const getFamiliesituasjon = (barn: Barn): Familiesituasjon => {
+    if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
+        return 'fødsel';
+    }
+    if (isUfødtBarn(barn)) {
+        return 'termin';
+    }
+
+    return 'adopsjon';
 };

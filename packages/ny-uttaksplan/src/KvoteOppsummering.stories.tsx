@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import dayjs from 'dayjs';
 
 import { KontoBeregningDto, NavnPåForeldre } from '@navikt/fp-types';
 
-import { KvoteOppsummering } from '.';
+import { KvoteOppsummering } from './KvoteOppsummering';
 
 const meta = {
     component: KvoteOppsummering,
@@ -49,6 +48,7 @@ const kontoNårBeggeHarRett = {
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
@@ -61,6 +61,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
@@ -128,6 +129,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
@@ -196,6 +198,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
@@ -252,6 +255,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 export const BeggeRettMorLedigeDager: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
@@ -321,7 +325,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
         navnPåForeldre,
         modus: 'innsyn',
         visStatusIkoner: true,
-        familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
+        familiesituasjon: 'fødsel',
         konto: kontoNårBeggeHarRett,
         perioder: [
             {
@@ -410,6 +414,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
         navnPåForeldre,
         modus: 'innsyn',
         visStatusIkoner: true,
+        familiesituasjon: 'termin',
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -443,6 +448,7 @@ export const EnRettFarLedigeDager: Story = {
         navnPåForeldre,
         modus: 'planlegger',
         visStatusIkoner: true,
+        familiesituasjon: 'termin',
         konto: kontoNårBareFarHarRett,
         perioder: [
             {
@@ -495,6 +501,7 @@ const kontoNårBareMorHarRett = {
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
@@ -527,6 +534,7 @@ export const EnRettMorLedigeDager: Story = {
     args: {
         navnPåForeldre,
         modus: 'innsyn',
+        familiesituasjon: 'termin',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -558,6 +566,7 @@ export const AleneomsorgMorLedigeDager: Story = {
     args: {
         navnPåForeldre,
         modus: 'innsyn',
+        familiesituasjon: 'termin',
         visStatusIkoner: true,
         konto: kontoNårBareMorHarRett,
         perioder: [
@@ -589,6 +598,7 @@ export const AleneomsorgFarLedigeDager: Story = {
     args: {
         navnPåForeldre,
         modus: 'innsyn',
+        familiesituasjon: 'termin',
         visStatusIkoner: true,
         konto: {
             kontoer: [
@@ -636,6 +646,7 @@ export const AleneomsorgFarForMangeDager: Story = {
         navnPåForeldre,
         modus: 'innsyn',
         visStatusIkoner: true,
+        familiesituasjon: 'termin',
         konto: {
             kontoer: [
                 {
@@ -692,6 +703,7 @@ export const MorHarPrematuruker: Story = {
     name: 'Mor har prematuruker',
     args: {
         navnPåForeldre,
+        familiesituasjon: 'termin',
         modus: 'innsyn',
         visStatusIkoner: true,
         konto: {

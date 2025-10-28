@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
+import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,
@@ -16,25 +17,41 @@ const meta = {
     component: UttaksplanNy,
     args: {
         handleOnPlanChange: action('button-click'),
+        children: null,
+        erMedmorDelAvSøknaden: false,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.søkersPerioder);
+        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
 
         const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
             setPerioder(oppdatertePerioder);
             args.handleOnPlanChange(oppdatertePerioder);
         };
 
-        return <UttaksplanNy {...args} søkersPerioder={perioder} handleOnPlanChange={handleOnPlanChange} />;
+        return (
+            <UttaksplanDataProvider
+                barn={args.barn}
+                erFarEllerMedmor={args.erFarEllerMedmor}
+                navnPåForeldre={args.navnPåForeldre}
+                modus="planlegger"
+                valgtStønadskonto={args.valgtStønadskonto}
+                aleneOmOmsorg={args.aleneOmOmsorg || false}
+                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
+                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
+                harAktivitetskravIPeriodeUtenUttak={false}
+                erDeltUttak={args.erDeltUttak || false}
+            >
+                <UttaksplanNy {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
+            </UttaksplanDataProvider>
+        );
     },
-} satisfies Meta<typeof UttaksplanNy>;
+} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanNy>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        familiehendelsedato: '2025-05-09',
         erFarEllerMedmor: false,
         navnPåForeldre: {
             mor: 'Olga Utvikler',
@@ -46,7 +63,7 @@ export const Default: Story = {
             antallBarn: 1,
             termindato: '2025-05-09',
         },
-        søkersPerioder: [
+        saksperioder: [
             {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -72,11 +89,9 @@ export const Default: Story = {
                 tom: '2026-03-26',
             },
         ],
-        gjelderAdopsjon: false,
         bareFarMedmorHarRett: false,
+        erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        førsteUttaksdagNesteBarnsSak: undefined,
-        familiesituasjon: 'fødsel',
         modus: 'planlegger',
         valgtStønadskonto: {
             kontoer: [
@@ -87,7 +102,7 @@ export const Default: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
-        erAleneOmOmsorg: false,
+        aleneOmOmsorg: false,
     },
 };
 
@@ -100,6 +115,7 @@ export const MorOgMedmor: Story = {
             mor: 'Olga Utvikler',
             farMedmor: 'Helga Utvikler',
         },
+        erDeltUttak: true,
     },
 };
 
@@ -107,7 +123,7 @@ export const MorOgFarMedFerieopphold: Story = {
     name: 'Mor og far, uten felles med ferieopphold',
     args: {
         ...Default.args,
-        søkersPerioder: [
+        saksperioder: [
             {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -139,5 +155,6 @@ export const MorOgFarMedFerieopphold: Story = {
                 tom: '2026-03-30',
             },
         ],
+        erDeltUttak: true,
     },
 };

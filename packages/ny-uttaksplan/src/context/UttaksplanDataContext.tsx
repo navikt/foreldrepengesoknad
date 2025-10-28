@@ -1,85 +1,54 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
-import { Barn, NavnPåForeldre } from '@navikt/fp-common';
-import { Familiesituasjon, KontoBeregningDto, UttaksplanModus } from '@navikt/fp-types';
+import {
+    Barn,
+    Familiesituasjon,
+    KontoBeregningDto_fpoversikt,
+    NavnPåForeldre,
+    UttaksplanModus,
+} from '@navikt/fp-types';
+import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
-import { Planperiode } from '../types/Planperiode';
-
-export enum UttaksplanContextDataType {
-    UTTAKSPLAN = 'UTTAKSPLAN',
-    FAMILIEHENDELSEDATO = 'FAMILIEHENDELSEDATO',
-    ER_FAR_ELLER_MEDMOR = 'ER_FAR_ELLER_MEDMOR',
-    NAVN_PÅ_FORELDRE = 'NAVN_PÅ_FORELDRE',
-    BARN = 'BARN',
-    FAMILIESITUASJON = 'FAMILIESITUASJON',
-    MODUS = 'MODUS',
-    VALGT_STØNADSKONTO = 'VALGT_STØNADSKONTO',
-    ALENE_OM_OMSORG = 'ALENE_OM_OMSORG',
-    ER_MEDMOR_DEL_AV_SØKNADEN = 'ER_MEDMOR_DEL_AV_SØKNADEN',
-}
-
-export type UttaksplanContextDataMap = {
-    [UttaksplanContextDataType.UTTAKSPLAN]?: Planperiode[];
-    [UttaksplanContextDataType.FAMILIEHENDELSEDATO]?: string;
-    [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]?: boolean;
-    [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]?: NavnPåForeldre;
-    [UttaksplanContextDataType.BARN]?: Barn;
-    [UttaksplanContextDataType.FAMILIESITUASJON]?: Familiesituasjon;
-    [UttaksplanContextDataType.MODUS]?: UttaksplanModus;
-    [UttaksplanContextDataType.VALGT_STØNADSKONTO]?: KontoBeregningDto;
-    [UttaksplanContextDataType.ALENE_OM_OMSORG]?: boolean;
-    [UttaksplanContextDataType.ER_MEDMOR_DEL_AV_SØKNADEN]?: boolean;
+type Props = {
+    barn: Barn;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    modus: UttaksplanModus;
+    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    aleneOmOmsorg: boolean;
+    erMedmorDelAvSøknaden: boolean;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    bareFarMedmorHarRett: boolean;
+    erDeltUttak: boolean;
+    children: React.ReactNode[] | React.ReactNode;
 };
 
-const defaultInitialState = {} as UttaksplanContextDataMap;
+type ContextValues = Props & {
+    familiesituasjon: Familiesituasjon;
+    familiehendelsedato: string;
+};
 
-export type Action =
-    | { type: 'update'; key: UttaksplanContextDataType; data: UttaksplanContextDataMap[keyof UttaksplanContextDataMap] }
-    | { type: 'reset' };
-type Dispatch = (action: Action) => void;
+const UttaksplanDataContext = createContext<Omit<ContextValues, 'children'> | null>(null);
 
-const UttaksplanStateContext = createContext<UttaksplanContextDataMap>(defaultInitialState);
-const UttaksplanDispatchContext = createContext<Dispatch | undefined>(undefined);
+export const UttaksplanDataProvider = (props: Props) => {
+    const { children, ...otherProps } = props;
 
-interface Props {
-    children: ReactNode;
-    initialState?: UttaksplanContextDataMap;
-    onDispatch?: (action: Action) => void;
-}
-
-export const UttaksplanDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
-    const [state, dispatch] = useReducer((oldState: UttaksplanContextDataMap, action: Action) => {
-        switch (action.type) {
-            case 'update':
-                return {
-                    ...oldState,
-                    [action.key]: action.data,
-                };
-            case 'reset':
-                return {};
-            default:
-                throw new Error();
-        }
-    }, initialState || defaultInitialState);
-
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
-
-    return (
-        <UttaksplanStateContext.Provider value={state}>
-            <UttaksplanDispatchContext.Provider value={dispatchWrapper}>{children}</UttaksplanDispatchContext.Provider>
-        </UttaksplanStateContext.Provider>
+    const value = useMemo(
+        () => ({
+            ...otherProps,
+            familiehendelsedato: getFamiliehendelsedato(otherProps.barn),
+            familiesituasjon: getFamiliesituasjon(otherProps.barn),
+        }),
+        [otherProps],
     );
+
+    return <UttaksplanDataContext value={value}>{children}</UttaksplanDataContext>;
 };
 
-/** Hook returns data for one specific data type  */
-export const useContextGetData = <TYPE extends UttaksplanContextDataType>(
-    key: TYPE,
-): UttaksplanContextDataMap[TYPE] => {
-    const state = useContext(UttaksplanStateContext);
-    return state[key];
+export const useUttaksplanData = () => {
+    const context = useContext(UttaksplanDataContext);
+    if (!context) {
+        throw new Error('UttaksplanDataContext.Provider er ikke satt opp');
+    }
+    return context;
 };

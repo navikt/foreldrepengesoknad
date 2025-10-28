@@ -4,9 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HStack, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
 import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
@@ -18,15 +17,14 @@ import {
 
 type Props = {
     valgtPeriode?: Planperiode;
-    gjelderAdopsjon: boolean;
-    erBarnetFødt: boolean;
     hvaVilDuGjøre: HvaVilDuGjøre;
 };
 
-export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetFødt, hvaVilDuGjøre }: Props) => {
+export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) => {
     const intl = useIntl();
 
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
+
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
 
     const fomValue = watch('fom');
@@ -57,7 +55,7 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
         årsak,
         kontoType: kontoType ?? valgtPeriode?.kontoType,
         familiehendelsedato,
-        gjelderAdopsjon,
+        gjelderAdopsjon: familiesituasjon === 'adopsjon',
     });
     const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType, årsak });
 
@@ -79,11 +77,11 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                         intl,
                         watch,
                         familiehendelsedato,
-                        erBarnetFødt,
+                        erBarnetFødt: familiesituasjon === 'fødsel',
                         minDate,
                         maxDate,
                         årsak,
-                        gjelderAdopsjon,
+                        gjelderAdopsjon: familiesituasjon === 'adopsjon',
                     })}
                 />
                 <RhfDatepicker
@@ -93,11 +91,11 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                         intl,
                         watch,
                         familiehendelsedato,
-                        erBarnetFødt,
+                        erBarnetFødt: familiesituasjon === 'fødsel',
                         minDate,
                         maxDate,
                         årsak,
-                        gjelderAdopsjon,
+                        gjelderAdopsjon: familiesituasjon === 'adopsjon',
                     })}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
                     disableWeekends={true}

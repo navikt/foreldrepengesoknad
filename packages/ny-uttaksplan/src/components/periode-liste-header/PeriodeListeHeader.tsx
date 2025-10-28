@@ -5,9 +5,8 @@ import { useIntl } from 'react-intl';
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
 import { Tidsperioden, formatDateShortMonth } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
 import { finnBakgrunnsfarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
@@ -21,10 +20,8 @@ interface Props {
 export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpen }: Props) => {
     const intl = useIntl();
 
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
-    const familiesituasjon = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIESITUASJON));
+    const { familiehendelsedato, navnPåForeldre, erFarEllerMedmor, familiesituasjon } = useUttaksplanData();
+
     const { tidsperiode } = permisjonsperiode;
 
     const antallDager = Tidsperioden({

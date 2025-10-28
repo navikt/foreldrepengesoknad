@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { getFamiliesituasjon, mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
+import { getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
@@ -15,12 +15,12 @@ import { KontoBeregningResultatDto, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
-    KvoteOppsummering,
+    KvoteOppsummeringWrapper,
     Planperiode,
+    UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanNy,
     finnOgSettInnHull,
-    utledKomplettPlan,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -170,175 +170,137 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 </Modal.Footer>
             </Modal>
 
-            <VStack gap="space-24">
-                <Alert variant="info">
-                    <Heading size="medium" spacing level="2">
-                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tittel" />
-                    </Heading>
-                    <BodyLong>
-                        <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tekst" />
-                    </BodyLong>
-                </Alert>
-
-                <Heading size="medium" spacing level="2">
-                    <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger: erAleneOmOmsorg }} />
-                </Heading>
-
+            <UttaksplanDataProvider
+                barn={mapOmBarnetTilBarn(omBarnet)}
+                erFarEllerMedmor={erFarEllerMedmor}
+                navnPåForeldre={navnPåForeldre}
+                modus="planlegger"
+                valgtStønadskonto={valgtStønadskonto}
+                aleneOmOmsorg={erAleneOmOmsorg}
+                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
+                bareFarMedmorHarRett={bareFarMedmorHarRett}
+                harAktivitetskravIPeriodeUtenUttak={false}
+                erDeltUttak={erDeltUttak}
+            >
                 <VStack gap="space-24">
-                    <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
+                    <Alert variant="info">
+                        <Heading size="medium" spacing level="2">
+                            <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tittel" />
+                        </Heading>
+                        <BodyLong>
+                            <FormattedMessage id="TilpassPlanenSteg.SavnerDuNoe.Tekst" />
+                        </BodyLong>
+                    </Alert>
 
-                    <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-                    {visningsmodus === 'liste' && (
-                        <>
-                            <UttaksplanNy
-                                familiehendelsedato={familiehendelsedato}
-                                bareFarMedmorHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                familiesituasjon={familiesituasjon}
-                                gjelderAdopsjon={familiesituasjon === 'adopsjon'}
-                                navnPåForeldre={navnPåForeldre}
-                                førsteUttaksdagNesteBarnsSak={undefined}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
-                                annenPartsPerioder={getAnnenpartsPerioder(
-                                    erDeltUttak,
-                                    gjeldendeUttaksplan,
-                                    erFarEllerMedmor,
-                                )}
-                                barn={mapOmBarnetTilBarn(omBarnet)}
-                                handleOnPlanChange={handleOnPlanChange}
-                                modus="planlegger"
-                                valgtStønadskonto={valgtStønadskonto}
-                                erAleneOmOmsorg={erAleneOmOmsorg}
-                                isAllAccordionsOpen={isAllAccordionsOpen}
-                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                            />
-                            <HStack gap="space-16">
-                                <Button
-                                    size="small"
-                                    variant="secondary"
-                                    icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
-                                    onClick={() => {
-                                        setCurrentUttaksplanIndex(0);
-                                        lagreUttaksplan([originalUttaksplan]);
-                                    }}
-                                >
-                                    <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                                </Button>
-                                <Button
-                                    size="small"
-                                    variant="secondary"
-                                    icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
-                                    onClick={() => {
-                                        if (currentUttaksplanIndex > 0) {
-                                            setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+                    <Heading size="medium" spacing level="2">
+                        <FormattedMessage
+                            id="TilpassPlanenSteg.Tittel"
+                            values={{ erAleneforsørger: erAleneOmOmsorg }}
+                        />
+                    </Heading>
+
+                    <VStack gap="space-24">
+                        <HvaErMulig
+                            hvemPlanlegger={hvemPlanlegger}
+                            arbeidssituasjon={arbeidssituasjon}
+                            barnet={omBarnet}
+                        />
+
+                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
+                        {visningsmodus === 'liste' && (
+                            <>
+                                <UttaksplanNy
+                                    saksperioder={gjeldendeUttaksplan}
+                                    handleOnPlanChange={handleOnPlanChange}
+                                    isAllAccordionsOpen={isAllAccordionsOpen}
+                                />
+                                <HStack gap="space-16">
+                                    <Button
+                                        size="small"
+                                        variant="secondary"
+                                        icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
+                                        onClick={() => {
+                                            setCurrentUttaksplanIndex(0);
+                                            lagreUttaksplan([originalUttaksplan]);
+                                        }}
+                                    >
+                                        <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
+                                    </Button>
+                                    <Button
+                                        size="small"
+                                        variant="secondary"
+                                        icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
+                                        onClick={() => {
+                                            if (currentUttaksplanIndex > 0) {
+                                                setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+                                            }
+                                        }}
+                                    >
+                                        <FormattedMessage id="TilpassPlanenSteg.Angre" />
+                                    </Button>
+                                    <Button
+                                        size="small"
+                                        variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
+                                        icon={
+                                            isAllAccordionsOpen ? (
+                                                <XMarkIcon aria-hidden height={24} width={24} />
+                                            ) : (
+                                                <PencilIcon aria-hidden height={24} width={24} />
+                                            )
                                         }
-                                    }}
-                                >
-                                    <FormattedMessage id="TilpassPlanenSteg.Angre" />
-                                </Button>
-                                <Button
-                                    size="small"
-                                    variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
-                                    icon={
-                                        isAllAccordionsOpen ? (
-                                            <XMarkIcon aria-hidden height={24} width={24} />
+                                        onClick={handleToggleAllAccordions}
+                                    >
+                                        {isAllAccordionsOpen ? (
+                                            <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
                                         ) : (
-                                            <PencilIcon aria-hidden height={24} width={24} />
-                                        )
-                                    }
-                                    onClick={handleToggleAllAccordions}
-                                >
-                                    {isAllAccordionsOpen ? (
-                                        <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
-                                    ) : (
-                                        <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
-                                    )}
-                                </Button>
-                                <Button
-                                    size="small"
-                                    variant="secondary"
-                                    icon={<TrashIcon aria-hidden height={24} width={24} />}
-                                    onClick={() => setOpen(true)}
-                                >
-                                    <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                                </Button>
-                            </HStack>
-                            <KvoteOppsummering
-                                navnPåForeldre={navnPåForeldre}
-                                modus="planlegger"
-                                visStatusIkoner
-                                konto={valgtStønadskonto}
-                                perioder={utledKomplettPlan({
-                                    familiehendelsedato,
-                                    erFarEllerMedmor,
-                                    søkersPerioder: getSøkersPerioder(
-                                        erDeltUttak,
-                                        gjeldendeUttaksplan,
-                                        erFarEllerMedmor,
-                                    ),
-                                    annenPartsPerioder: getAnnenpartsPerioder(
-                                        erDeltUttak,
-                                        gjeldendeUttaksplan,
-                                        erFarEllerMedmor,
-                                    ),
-                                    gjelderAdopsjon: familiesituasjon === 'adopsjon',
-                                    bareFarMedmorHarRett,
-                                    harAktivitetskravIPeriodeUtenUttak: false,
-                                    førsteUttaksdagNesteBarnsSak: undefined,
-                                    modus: 'planlegger',
-                                })}
-                                rettighetType={utledRettighetType()}
-                                forelder={erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'}
-                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                            />
-                        </>
-                    )}
-                </VStack>
+                                            <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
+                                        )}
+                                    </Button>
+                                    <Button
+                                        size="small"
+                                        variant="secondary"
+                                        icon={<TrashIcon aria-hidden height={24} width={24} />}
+                                        onClick={() => setOpen(true)}
+                                    >
+                                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
+                                    </Button>
+                                </HStack>
+                                <KvoteOppsummeringWrapper
+                                    saksperioder={gjeldendeUttaksplan}
+                                    visStatusIkoner
+                                    rettighetType={utledRettighetType()}
+                                />
+                            </>
+                        )}
+                    </VStack>
 
-                <VStack gap="space-20">
-                    {visningsmodus === 'kalender' && (
-                        <div className="p-6 max-[479px]:p-0">
-                            <UttaksplanKalender
-                                bareFarMedmorHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                familiehendelsedato={familiehendelsedato}
-                                søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
-                                annenPartsPerioder={getAnnenpartsPerioder(
-                                    erDeltUttak,
-                                    gjeldendeUttaksplan,
-                                    erFarEllerMedmor,
-                                )}
-                                navnAnnenPart="Test" //TODO: fiks denne før prod?
-                                barn={mapOmBarnetTilBarn(omBarnet)}
-                                planleggerLegend={
-                                    <CalendarLabels
-                                        hvemPlanlegger={hvemPlanlegger}
-                                        barnet={omBarnet}
-                                        hvemHarRett={hvemHarRett}
-                                        uttaksplan={gjeldendeUttaksplan}
-                                        inneholderTapteDager={harTapteDager}
-                                    />
-                                }
-                                barnehagestartdato={barnehagestartdato}
-                                handleOnPlanChange={handleOnPlanChange}
-                                modus="planlegger"
-                                valgtStønadskonto={valgtStønadskonto}
-                                erAleneOmOmsorg={erAleneOmOmsorg}
-                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                                familiesituasjon={familiesituasjon}
-                                navnPåForeldre={navnPåForeldre}
-                            />
-                        </div>
-                    )}
+                    <VStack gap="space-20">
+                        {visningsmodus === 'kalender' && (
+                            <div className="p-6 max-[479px]:p-0">
+                                <UttaksplanKalender
+                                    saksperioder={gjeldendeUttaksplan}
+                                    planleggerLegend={
+                                        <CalendarLabels
+                                            hvemPlanlegger={hvemPlanlegger}
+                                            barnet={omBarnet}
+                                            hvemHarRett={hvemHarRett}
+                                            uttaksplan={gjeldendeUttaksplan}
+                                            inneholderTapteDager={harTapteDager}
+                                        />
+                                    }
+                                    barnehagestartdato={barnehagestartdato}
+                                    handleOnPlanChange={handleOnPlanChange}
+                                />
+                            </div>
+                        )}
+                    </VStack>
+                    <StepButtons
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonOnClick={navigator.goToNextDefaultStep}
+                        useSimplifiedTexts
+                    />
                 </VStack>
-                <StepButtons
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonOnClick={navigator.goToNextDefaultStep}
-                    useSimplifiedTexts
-                />
-            </VStack>
+            </UttaksplanDataProvider>
         </PlanleggerStepPage>
     );
 };

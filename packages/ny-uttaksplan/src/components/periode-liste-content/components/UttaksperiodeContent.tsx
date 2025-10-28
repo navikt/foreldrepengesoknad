@@ -6,9 +6,9 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { BrukerRolleSak_fpoversikt, MorsAktivitet } from '@navikt/fp-types';
 import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
-import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
+import { assertUnreachable } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
@@ -22,15 +22,14 @@ interface Props {
 
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-
-    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+    const { aleneOmOmsorg } = useUttaksplanData();
 
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
         periode.kontoType!,
         navnPåForeldre,
         erFarEllerMedmor,
-        erAleneOmOmsorg,
+        aleneOmOmsorg,
     );
 
     return (

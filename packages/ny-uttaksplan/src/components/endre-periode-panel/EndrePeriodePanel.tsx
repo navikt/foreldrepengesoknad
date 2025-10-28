@@ -20,8 +20,6 @@ interface Props {
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;
-    erBarnetFødt: boolean;
-    gjelderAdopsjon: boolean;
 }
 
 type PanelStep = 'step1' | 'step2';
@@ -45,8 +43,6 @@ export const EndrePeriodePanel = ({
     handleUpdatePeriode,
     handleAddPeriode,
     inneholderKunEnPeriode,
-    erBarnetFødt,
-    gjelderAdopsjon,
 }: Props) => {
     const kunEnPeriode = permisjonsperiode.perioder.length === 1;
 
@@ -96,8 +92,6 @@ export const EndrePeriodePanel = ({
                         closePanel={closePanelWrapper}
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
-                        erBarnetFødt={erBarnetFødt}
-                        gjelderAdopsjon={gjelderAdopsjon}
                         handleAddPeriode={handleAddPeriode}
                     />
                 )}
