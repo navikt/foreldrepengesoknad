@@ -80,18 +80,19 @@
     print-color-adjust: exact;
 }
 
-.blackOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
+.blackOutlineCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
     border: 2px solid var(--ax-bg-neutral-strong) !important;
+    margin-bottom: 50%;
     print-color-adjust: exact;
 }
 
-.greenOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
+.greenOutlineCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
     border: 2px solid var(--ax-success-400) !important;
     print-color-adjust: exact;
 }

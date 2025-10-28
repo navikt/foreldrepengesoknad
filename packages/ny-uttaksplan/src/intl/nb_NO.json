@@ -173,10 +173,6 @@
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "KontotypeSpørsmål.velgKontotype": "Velg kontotype",
     "KontotypeSpørsmål.hvemGjelder": "Hvem gjelder fellesperioden?",
-<<<<<<< HEAD
-    "KontotypeSpørsmål.ugyldigKontotype": "Denne kontotypen er ugyldig for dag(ene) du har valgt",
-=======
->>>>>>> a22b4c4c3f (Editering av kelender)
     "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?",
     "kalender.fødsel": "Fødsel",
     "kalender.termin": "Termin",
@@ -190,10 +186,7 @@
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} utsetter foreldrepenger",
     "kalender.helg": "Helg (er ikke dager med foreldrepenger)",
     "kalender.tapteDager": "Dager du kan tape",
-<<<<<<< HEAD
     "kalender.pleiepenger": "Fratrekk for pleiepenger",
-=======
->>>>>>> a22b4c4c3f (Editering av kelender)
     "kalender.utsettelse": "Du utsetter foreldrepenger {årsak}",
     "kalender.utsettelse.ARBEID": "fordi du skal jobbe",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "fordi barnet er innlagt",

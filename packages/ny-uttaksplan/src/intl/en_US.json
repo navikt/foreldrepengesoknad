@@ -174,10 +174,6 @@
     "TidsperiodeSpørsmål.tom": "To date",
     "KontotypeSpørsmål.velgKontotype": "Select account type",
     "KontotypeSpørsmål.hvemGjelder": "Who does the shared period apply to?",
-<<<<<<< HEAD
-    "KontotypeSpørsmål.ugyldigKontotype": "Invalid account type selected for the day(s) you have chosen",
-=======
->>>>>>> a22b4c4c3f (Editering av kelender)
     "GraderingSpørsmål.HvorMangeProsent": "What percentage will you be working?",
     "kalender.fødsel": "Birth",
     "kalender.termin": "Due date",
@@ -191,10 +187,7 @@
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} postpones parental benefits",
     "kalender.helg": "Weekend (not days with parental allowance)",
     "kalender.tapteDager": "Days you can lose",
-<<<<<<< HEAD
     "kalender.pleiepenger": "Deduction for attendance allowance",
-=======
->>>>>>> a22b4c4c3f (Editering av kelender)
     "kalender.utsettelse": "You postpone parental benefits due to {reason}",
     "kalender.utsettelse.ARBEID": "because you are working",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "because the child is hospitalized",

@@ -23,40 +23,36 @@ export const CalendarLabel = ({ children, color, onClick }: Props) => {
 
 const getRect = (color: CalendarPeriodColor) => {
     switch (color) {
-        case 'BLUE':
-            return <div className={styles.blueRect} />;
-        case 'GREEN':
-            return <div className={styles.greenRect} />;
-        case 'LIGHTBLUE':
-        case 'BLUEOUTLINE':
-            return <div className={styles.blueOutlineRect} />;
-        case 'BLACKOUTLINE':
-            return <div className={styles.blackOutlineRect} />;
-        case 'GREENOUTLINE':
-        case 'LIGHTGREEN':
-            return <div className={styles.greenOutlineRect} />;
-        case 'BLACK':
-            return <div className={styles.blackRect} />;
-        case 'LIGHTBLUEGREEN':
-            return <div className={styles.lightblueGreenRect} />;
-        case 'LIGHTGREENBLUE':
-            return <div className={styles.lightgreenBlueRect} />;
-        case 'BLUESTRIPED':
-            return <div className={styles.blueStripedRect} />;
-        case 'GREENSTRIPED':
-            return <div className={styles.greenStripedRect} />;
-        case 'GRAY':
-            return <div className={styles.grayRect} />;
-        case 'PURPLE':
-            return <div className={styles.purpleRect} />;
-        case 'PINK':
-            return <div className={styles.pinkRect} />;
+        case PeriodeColor.BLUE:
+            return <div className={styles.blueCircle} />;
+        case PeriodeColor.GREEN:
+            return <div className={styles.greenCircle} />;
+        case PeriodeColor.LIGHTBLUE:
+        case PeriodeColor.BLUEOUTLINE:
+            return <div className={styles.blueOutlineCircle} />;
+        case PeriodeColor.BLACKOUTLINE:
+            return <div className={styles.blackOutlineCircle} />;
+        case PeriodeColor.GREENOUTLINE:
+        case PeriodeColor.LIGHTGREEN:
+            return <div className={styles.greenOutlineCircle} />;
+        case PeriodeColor.BLACK:
+            return <div className={styles.blackCircle} />;
+        case PeriodeColor.LIGHTBLUEGREEN:
+            return <div className={styles.lightblueGreenCircle} />;
+        case PeriodeColor.LIGHTGREENBLUE:
+            return <div className={styles.lightgreenBlueCircle} />;
+        case PeriodeColor.BLUESTRIPED:
+            return <div className={styles.blueStripedCircle} />;
+        case PeriodeColor.GREENSTRIPED:
+            return <div className={styles.greenStripedCircle} />;
+        case PeriodeColor.GRAY:
+            return <div className={styles.grayCircle} />;
+        case PeriodeColor.PURPLE:
+            return <div className={styles.purpleCircle} />;
         default:
             return null;
     }
 };
-<<<<<<< HEAD
-=======
 
 const PANEL_STYLE = {
     [PeriodeColor.NONE]: styles.none,
@@ -74,6 +70,7 @@ const PANEL_STYLE = {
     [PeriodeColor.BLACK]: styles.grayPanel,
     [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
     [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,
+    [PeriodeColor.BLACKOUTLINE]: styles.blackOutlinePanel,
 };
 
 interface Props {
@@ -114,4 +111,3 @@ export const CalendarLabel = ({ children, iconType }: Props) => {
     }
     return null;
 };
->>>>>>> a54f07b0a8 (FIX)

@@ -159,6 +159,11 @@
     print-color-adjust: exact;
 }
 
+.blackOutlineDay {
+    border: 2px solid var(--ax-bg-neutral-strong);
+    print-color-adjust: exact;
+}
+
 .blueOutlineDay {
     border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
