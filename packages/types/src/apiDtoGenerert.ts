@@ -695,6 +695,7 @@ export type UttaksPeriodeDto = Uttaksplanperiode & {
     ønskerSamtidigUttak?: boolean;
     ønskerFlerbarnsdager?: boolean;
     samtidigUttakProsent?: number;
+    ønskerGradering?: boolean;
     gradering?: GraderingDto;
 };
 
