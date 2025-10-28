@@ -1,5 +1,6 @@
 .days {
-    height: 40px;
+    height: 30px;
+    width: 30px;
     padding: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
@@ -10,9 +11,10 @@
     font-weight: 600;
     line-height: 40px;
     letter-spacing: 0.06px;
-    cursor: default;
     border-radius: 4px;
     user-select: none;
+    all: 'unset';
+    display: 'block';
 }
 
 .cursor {
@@ -32,8 +34,7 @@
 
 .lightblueDay {
     background-color: var(--ax-accent-300) !important;
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -52,8 +53,7 @@
 
 .lightgreenDay {
     background-color: var(--ax-success-400) !important;
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -92,8 +92,7 @@
         var(--ax-bg-default) 90%,
         var(--ax-success-400) 90%
     ) !important;
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -127,8 +126,7 @@
         var(--ax-bg-default) 90%,
         var(--ax-accent-400) 90%
     ) !important;
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -158,8 +156,7 @@
 }
 
 .blueOutlineDay {
-    border-top: 2px solid var(--ax-accent-500);
-    border-bottom: 2px solid var(--ax-accent-500);
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -177,8 +174,7 @@
 }
 
 .greenOutlineDay {
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -204,8 +200,7 @@
         var(--ax-success-200) 75%,
         var(--ax-success-200) 100%
     ) !important;
-    border-top: 2px solid var(--ax-accent-400);
-    border-bottom: 2px solid var(--ax-accent-400);
+    border: 2px solid var(--ax-accent-400);
     print-color-adjust: exact;
 }
 
@@ -230,8 +225,7 @@
         var(--ax-accent-300) 50%,
         var(--ax-accent-300) 100%
     ) !important;
-    border-top: 2px solid var(--ax-success-400);
-    border-bottom: 2px solid var(--ax-success-400);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -251,7 +245,6 @@
 .none {
     padding-left: 2px;
     padding-right: 2px;
-    cursor: default;
 }
 
 .pinkDay {
