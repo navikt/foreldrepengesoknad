@@ -1,10 +1,40 @@
-const express = require('express');
+import dotenv from 'dotenv';
+import express from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const FILE_NAME = 'mellomlagretdata.json';
+
+const getFilePath = function () {
+    const directories = ['./mock-api/', FILE_NAME];
+    return directories.join(path.sep);
+};
+
+export const getMellomlagretData = function () {
+    if (!fs.existsSync(getFilePath())) {
+        return undefined;
+    } else {
+        try {
+            return JSON.parse(fs.readFileSync(getFilePath(), 'utf8'));
+        } catch {
+            return undefined;
+        }
+    }
+};
+
+export const lagreMellomlagretData = (soknadsdata: any) => {
+    fs.writeFileSync(getFilePath(), JSON.stringify(soknadsdata, null, 4));
+};
+
+export const deleteMellomlagretData = function () {
+    fs.openSync(getFilePath(), 'w');
+};
+
+dotenv.config();
 const app = express();
 const router = express.Router();
-require('dotenv').config();
-const MockStorage = require('./mock-storage.cjs');
 
-const allowCrossDomain = function (_req, res, next) {
+const allowCrossDomain = function (_req: any, res: any, next: any) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -13,8 +43,8 @@ const allowCrossDomain = function (_req, res, next) {
     next();
 };
 
-const delayAllResponses = function (millsec) {
-    return function (_req, _res, next) {
+const delayAllResponses = function (millsec: number) {
+    return (_req: any, _res: any, next: any) => {
         setTimeout(next, millsec);
     };
 };
@@ -51,16 +81,16 @@ router.post('/rest/soknad/engangsstonad', (_req, res) => {
 });
 
 router.get('/rest/storage/engangsstonad', (_req, res) => {
-    res.send(MockStorage.getMellomlagretData());
+    res.send(getMellomlagretData());
 });
 
 router.post('/rest/storage/engangsstonad', (req, res) => {
-    MockStorage.lagreMellomlagretData(req.body);
+    lagreMellomlagretData(req.body);
     return res.sendStatus(200);
 });
 
 router.delete('/rest/storage/engangsstonad', (_req, res) => {
-    MockStorage.deleteMellomlagretData();
+    deleteMellomlagretData();
     return res.sendStatus(200);
 });
 
@@ -77,5 +107,6 @@ app.use('', router);
 
 const port = process.env.PORT || 8888;
 app.listen(port, () => {
+    // eslint-disable-next-line no-console
     console.log(`Mock-api listening on port: ${port}`);
 });

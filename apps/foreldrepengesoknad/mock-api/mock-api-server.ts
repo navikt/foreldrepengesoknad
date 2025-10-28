@@ -1,29 +1,31 @@
-const path = require('node:path');
-const fs = require('node:fs');
+import dotenv from 'dotenv';
+import express from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const MELLOMLAGRET_DATA_FILNAVN = 'mellomlagretdata.json';
 
-const getFilePath = function (filnavn) {
+const getFilePath = (filnavn: string) => {
     const directories = ['./mock-api/', 'mock_data', filnavn];
     return directories.join(path.sep);
 };
 
-const getFilePathMellomlagretData = function () {
+const getFilePathMellomlagretData = () => {
     const directories = ['./mock-api/', MELLOMLAGRET_DATA_FILNAVN];
     return directories.join(path.sep);
 };
 
-const updateSoknad = function (soknadsdata) {
+export const updateSoknad = (soknadsdata: any) => {
     const fileName = getFilePathMellomlagretData();
     fs.writeFileSync(fileName, JSON.stringify(soknadsdata, null, 4));
 };
 
-const deleteSoknad = function () {
+export const deleteSoknad = () => {
     const fileName = getFilePathMellomlagretData();
     fs.openSync(fileName, 'w');
 };
 
-const getSoknad = function () {
+export const getSoknad = () => {
     const fileName = getFilePathMellomlagretData();
     if (!fs.existsSync(fileName)) {
         return {};
@@ -36,7 +38,7 @@ const getSoknad = function () {
     }
 };
 
-const getSokerInfo = function () {
+export const getSokerInfo = () => {
     const fileName = getFilePath('sokerinfo.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -49,7 +51,7 @@ const getSokerInfo = function () {
     }
 };
 
-const getStønadskontoer = async function (req) {
+export const getStønadskontoer = async (req: any) => {
     try {
         const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
             method: 'POST',
@@ -65,11 +67,12 @@ const getStønadskontoer = async function (req) {
 
         return jsonResponse;
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
     }
 };
 
-const getSoknadSendt = function () {
+export const getSoknadSendt = () => {
     const fileName = getFilePath('soknad_sendt.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -82,7 +85,7 @@ const getSoknadSendt = function () {
     }
 };
 
-const getSaker = function () {
+export const getSaker = () => {
     const fileName = getFilePath('saker.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -95,7 +98,7 @@ const getSaker = function () {
     }
 };
 
-const getAnnenPartVedtak = function () {
+export const getAnnenPartVedtak = () => {
     const fileName = getFilePath('annenPartVedtak.json');
     if (!fs.existsSync(fileName)) {
         return null;
@@ -109,7 +112,7 @@ const getAnnenPartVedtak = function () {
     }
 };
 
-const getUttaksplan = function () {
+export const getUttaksplan = () => {
     const fileName = getFilePath('uttaksplan.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -122,7 +125,7 @@ const getUttaksplan = function () {
     }
 };
 
-const getUttaksplanannen = function () {
+export const getUttaksplanannen = () => {
     const fileName = getFilePath('uttaksplanannen.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -135,7 +138,7 @@ const getUttaksplanannen = function () {
     }
 };
 
-const getStorageKvittering = function () {
+export const getStorageKvittering = () => {
     const fileName = getFilePath('storage_kvittering.json');
     if (!fs.existsSync(fileName)) {
         return {};
@@ -148,16 +151,89 @@ const getStorageKvittering = function () {
     }
 };
 
-module.exports = {
-    updateSoknad,
-    deleteSoknad,
-    getSoknad,
-    getSokerInfo,
-    getStønadskontoer,
-    getSoknadSendt,
-    getSaker,
-    getAnnenPartVedtak,
-    getStorageKvittering,
-    getUttaksplan,
-    getUttaksplanannen,
+dotenv.config();
+const app = express();
+const router = express.Router();
+
+app.disable('x-powered-by');
+
+const allowCrossDomain = (_req: any, res: any, next: any) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location,Fnr');
+    res.setHeader('Access-Control-Expose-Headers', 'Location');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
 };
+const delayAllResponses = (millis: number) => {
+    return (_req: any, _res: any, next: any) => {
+        setTimeout(next, millis);
+    };
+};
+
+app.use(allowCrossDomain);
+app.use(delayAllResponses(500));
+app.use(express.json());
+
+router.get(['/rest/sokerinfo'], (_req, res) => {
+    res.send(getSokerInfo());
+});
+
+router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
+
+router.get('/rest/storage/foreldrepenger', (_req, res) => {
+    res.send(getSoknad());
+});
+
+router.get('/rest/innsyn/v2/saker', (_req, res) => {
+    res.send(getSaker());
+});
+
+router.post('/rest/innsyn/v2/annenPartVedtak', (_req, res) => {
+    res.send(getAnnenPartVedtak());
+});
+
+router.get('/rest/innsyn/uttaksplan', (_req, res) => {
+    res.send(getUttaksplan());
+});
+
+router.get('/rest/innsyn/uttaksplanannen', (_req, res) => {
+    res.send(getUttaksplanannen());
+});
+
+router.post('/rest/konto', async (req, res) => {
+    const response = await getStønadskontoer(req);
+    res.send(response);
+});
+
+router.post('/rest/storage/foreldrepenger', (req, res) => {
+    updateSoknad(req.body);
+    return res.sendStatus(200);
+});
+
+router.delete('/rest/storage/foreldrepenger', (_req, res) => {
+    deleteSoknad();
+    return res.sendStatus(200);
+});
+
+router.post('/rest/soknad/foreldrepenger', (_req, res) => {
+    return res.send(getSoknadSendt());
+});
+
+router.post('/rest/soknad/foreldrepenger/endre', (_req, res) => {
+    return res.send(getSoknadSendt());
+});
+
+router.delete('/rest/storage/foreldrepenger/vedlegg', (_req, res) => {
+    deleteSoknad();
+    return res.sendStatus(200);
+});
+
+app.use('', router);
+
+const port = process.env.PORT || 8888;
+
+app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Mock-api listening on port: ${port}`);
+});

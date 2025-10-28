@@ -1,14 +1,18 @@
-const express = require('express');
+/* eslint-disable no-console */
+import dotenv from 'dotenv';
+import express from 'express';
+import morgan from 'morgan';
+
 const app = express();
 const router = express.Router();
-const morgan = require('morgan');
 
-require('dotenv').config();
+dotenv.config();
 
 app.disable('x-powered-by');
 
-const allowCrossDomain = function (req, res, next) {
-    const corsWhiteList = ['http://localhost:5173', 'http://localhost:8080', 'http://localhost:8880']; // 8080 dev server with decorator, 8880 dev server without decorator
+const allowCrossDomain = (req: any, res: any, next: any) => {
+    // 8080 dev server with decorator, 8880 dev server without decorator
+    const corsWhiteList = ['http://localhost:5173', 'http://localhost:8080', 'http://localhost:8880'];
 
     if (corsWhiteList.includes(req.headers.origin)) {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -20,8 +24,8 @@ const allowCrossDomain = function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 };
-const delayAllResponses = function (millis) {
-    return function (_req, _res, next) {
+const delayAllResponses = (millis: number) => {
+    return (_req: any, _res: any, next: any) => {
         setTimeout(next, millis);
     };
 };
@@ -38,7 +42,25 @@ app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
 
-router.get('/rest/satser', async (_req, res) => {
+router.post('/rest/konto', async (req: any, res: any) => {
+    try {
+        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+            method: 'POST',
+            headers: {
+                accept: 'application/json, text/plain, */*',
+                'content-type': 'application/json',
+            },
+            credentials: 'omit',
+            body: JSON.stringify(req.body),
+        });
+        const jsonResponse = await data.json();
+        res.send(jsonResponse);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.get('/rest/satser', async (_req: any, res: any) => {
     try {
         const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
             method: 'GET',
