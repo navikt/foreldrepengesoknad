@@ -45,12 +45,11 @@ type Props = {
 };
 
 export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback }: Props) => {
-    const buttonRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
     return (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div
+        <button
             data-testid={`day:${day};dayColor:${periodeColor}`}
             className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
             ref={buttonRef}
@@ -65,6 +64,6 @@ export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback 
                     <Popover.Content>{dateTooltipCallback()}</Popover.Content>
                 </Popover>
             )}
-        </div>
+        </button>
     );
 };

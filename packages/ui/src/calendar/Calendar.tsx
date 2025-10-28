@@ -26,9 +26,16 @@ export type Period = {
 
 const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 
+const findLastPeriodTom = (periods: Period[]): string => {
+    return periods.reduce(
+        (lastTom, currentPeriod) => (dayjs(currentPeriod.tom).isAfter(dayjs(lastTom)) ? currentPeriod.tom : lastTom),
+        periods[0].tom,
+    );
+};
+
 const findDayColor = (date: Dayjs, periods: Period[]) => {
     const fomFirstPeriod = periods[0].fom;
-    const tomLastPeriod = periods.at(-1)!.tom;
+    const tomLastPeriod = findLastPeriodTom(periods);
 
     if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
         return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
@@ -96,10 +103,7 @@ export const Calendar = ({
     children,
     lastSelectedDate,
 }: Props) => {
-    const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
-    const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
-
-    const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+    const months = findMonths(periods[0].fom, findLastPeriodTom(periods));
 
     return (
         <>
