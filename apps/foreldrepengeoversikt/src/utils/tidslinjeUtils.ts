@@ -689,18 +689,15 @@ export const getAlleTidslinjehendelser = (
 export const getRelevantNyTidslinjehendelse = (
     tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[],
 ): TidslinjeHendelseDto_fpoversikt | undefined => {
-    const søknadHendelser: Array<TidslinjeHendelseDto_fpoversikt['tidslinjeHendelseType']> = [
-        'FØRSTEGANGSSØKNAD',
-        'FØRSTEGANGSSØKNAD_NY',
-        'ENDRINGSSØKNAD',
-    ];
+    const søknadHendelser = new Set(['FØRSTEGANGSSØKNAD', 'FØRSTEGANGSSØKNAD_NY', 'ENDRINGSSØKNAD']);
+
     const sorterteHendelser = tidslinjehendelser
         ? [...tidslinjehendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).reverse()
         : undefined;
     const relevantNyHendelse = sorterteHendelser
         ? sorterteHendelser.find(
               (hendelse) =>
-                  søknadHendelser.includes(hendelse.tidslinjeHendelseType) &&
+                  søknadHendelser.has(hendelse.tidslinjeHendelseType) &&
                   hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
                   dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
           )

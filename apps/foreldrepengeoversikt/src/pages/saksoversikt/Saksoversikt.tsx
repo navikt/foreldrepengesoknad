@@ -168,7 +168,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                 annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.person.navn.fornavn!, // TODO
+                                    søkerinfo.person.navn.fornavn,
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak),
                                 )}
                             />

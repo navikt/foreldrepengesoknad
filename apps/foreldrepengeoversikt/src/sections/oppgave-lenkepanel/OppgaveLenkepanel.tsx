@@ -16,7 +16,7 @@ export const OppgaveLenkepanel = ({ tittel, minidialogInnslag }: Props) => {
         <LenkePanel
             undertittel={formatDate(minidialogInnslag.opprettet)}
             tittel={tittel}
-            to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.saksnummer}`} // TODO
+            to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.saksnummer}`}
             Ikon={ChatExclamationmarkIcon}
         />
     );

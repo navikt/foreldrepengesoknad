@@ -238,7 +238,7 @@ export type Navn_fpoversikt = {
     fornavn: string;
     mellomnavn?: string;
     etternavn: string;
-}; //TODO
+};
 
 export type Bankkonto_fpoversikt = {
     banknavn?: string;

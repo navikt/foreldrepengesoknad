@@ -6,10 +6,13 @@ import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
     BarnDto_fpoversikt,
+    EsSak_fpoversikt,
     Familiehendelse_fpoversikt,
     Familiesituasjon,
+    FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
+    SvpSak_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
@@ -31,7 +34,7 @@ function sorterPersonEtterEldstOgNavn(p1: BarnDto_fpoversikt, p2: BarnDto_fpover
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
         return -1;
     } else {
-        return p1.navn.fornavn! < p2.navn.fornavn! ? -1 : 1; // TODO
+        return p1.navn.fornavn < p2.navn.fornavn ? -1 : 1;
     }
 }
 
@@ -150,10 +153,7 @@ export const grupperSakerPåBarn = (registrerteBarn: BarnDto_fpoversikt[], saker
 };
 
 const addYtelseToSak = (
-    saker:
-        | Saker_fpoversikt['foreldrepenger']
-        | Saker_fpoversikt['engangsstønad']
-        | Saker_fpoversikt['svangerskapspenger'],
+    saker: EsSak_fpoversikt[] | FpSak_fpoversikt[] | SvpSak_fpoversikt[],
     ytelse: Ytelse,
 ): Sak[] => {
     if (ytelse === 'ENGANGSSTØNAD') {

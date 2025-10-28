@@ -80,7 +80,7 @@ export const getNavnPåForeldre = (
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): NavnPåForeldre => {
-    const navnSøker = person.navn.fornavn!; // TODO
+    const navnSøker = person.navn.fornavn;
     const navnAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn

@@ -170,6 +170,6 @@ export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: BarnDto_fpoversikt, b2
     } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
         return -1;
     } else {
-        return b1.navn.fornavn! < b2.navn.fornavn! ? -1 : 1; //TODO
+        return b1.navn.fornavn < b2.navn.fornavn ? -1 : 1;
     }
 };
