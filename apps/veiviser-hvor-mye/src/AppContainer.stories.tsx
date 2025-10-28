@@ -67,13 +67,16 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
-                        body: JSON.stringify(body),
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
+                    const response = await fetch(
+                        'https://foreldrepengesoknad-api.ekstern.dev.nav.no/fpoversikt/api/konto',
+                        {
+                            body: JSON.stringify(body),
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
                         },
-                    });
+                    );
                     const json = await response.json();
                     return HttpResponse.json(json);
                 }),

@@ -6,9 +6,8 @@ import { Link } from '@navikt/ds-react';
 
 import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
-import { hentInntektsmelding } from '../../api/api';
+import { API_URLS, hentInntektsmelding } from '../../api/api';
 import { OversiktRoutes } from '../../routes/routes';
-import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
     dokument: TidslinjeHendelseDto_fpoversikt['dokumenter'][0];
@@ -16,9 +15,6 @@ interface Props {
 }
 
 export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
-    const { tittel } = dokument;
-    const url = lagUrl(dokument);
-
     return (
         <li
             className={
@@ -28,8 +24,12 @@ export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
             }
         >
             <FileIcon className="text-ax-bg-accent-strong min-w-[24px]" aria-hidden={true} />
-            <Link href={url} className="text-ax-bg-accent-strong min-w-[24px]" target="_blank">
-                {tittel}
+            <Link
+                href={API_URLS.hentDokument(dokument.journalpostId, dokument.dokumentId ?? 'ukjent')}
+                className="text-ax-bg-accent-strong min-w-[24px]"
+                target="_blank"
+            >
+                {dokument.tittel}
             </Link>
         </li>
     );

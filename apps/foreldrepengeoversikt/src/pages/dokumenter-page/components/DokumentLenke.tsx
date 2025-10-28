@@ -2,11 +2,15 @@ import { Link } from '@navikt/ds-react';
 
 import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 
-import { lagUrl } from '../../../utils/dokumenterUtils';
+import { API_URLS } from '../../../api/api.ts';
 
 export const DokumentLenke = ({ dokument }: { dokument: DokumentDto_fpoversikt }) => {
     return (
-        <Link href={lagUrl(dokument)} target="_blank" className="block overflow-hidden overflow-ellipsis">
+        <Link
+            href={API_URLS.hentDokument(dokument.journalpostId ?? 'ukjent', dokument.dokumentId ?? 'ukjent')}
+            target="_blank"
+            className="block overflow-hidden overflow-ellipsis"
+        >
             {dokument.tittel}
         </Link>
     );

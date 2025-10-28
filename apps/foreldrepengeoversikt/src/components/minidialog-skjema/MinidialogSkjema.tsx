@@ -80,7 +80,7 @@ export const MinidialogSkjema = ({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
-            return ky.get(`${urlPrefiks}/rest/minidialog`).json<TilbakekrevingUttalelseOppgave_fpoversikt[]>();
+            return ky.get(API_URLS.minidialog).json<TilbakekrevingUttalelseOppgave_fpoversikt[]>();
         },
         refetchInterval: (query) => {
             const data = query.state.data;

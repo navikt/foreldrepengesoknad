@@ -5,19 +5,21 @@ import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 import { DokumentDto_fpoversikt, JournalpostType_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
-import { lagUrl } from '../../utils/dokumenterUtils';
+import { API_URLS } from '../../api/api.ts';
 
 interface Props {
     readonly dokument: DokumentDto_fpoversikt;
 }
 
 function DokumentLenke({ dokument }: { dokument: DokumentDto_fpoversikt }) {
-    const url = lagUrl(dokument);
-
     return (
         <>
             <FileIcon className="text-ax-text-accent-subtle" height={24} width={24} aria-hidden={true} />
-            <Link href={url} target="_blank" className="block overflow-hidden overflow-ellipsis whitespace-nowrap">
+            <Link
+                href={API_URLS.hentDokument(dokument.journalpostId ?? 'ukjent', dokument.dokumentId ?? 'ukjent')}
+                target="_blank"
+                className="block overflow-hidden overflow-ellipsis whitespace-nowrap"
+            >
                 {dokument.tittel}
             </Link>
         </>

@@ -27,6 +27,8 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
     minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
     dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
+    hentDokument: (journalpostId: string, dokumentId: string) =>
+        `${urlPrefiks}/fpoversikt/api/dokument?journalpostId=${journalpostId}&dokumentId=${dokumentId}`,
     inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`,
     konto: `${urlPrefiks}/fpoversikt/api/konto`,
     tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
