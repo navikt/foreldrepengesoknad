@@ -7,7 +7,7 @@ import { Forelder } from '@navikt/fp-common';
 import { BarnType } from '@navikt/fp-constants';
 import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
 
@@ -22,7 +22,6 @@ const customRenderer = ({
     erFarEllerMedmor,
     erFamiliehendelse,
     permisjonsperiode,
-    familiehendelsedato,
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
@@ -31,19 +30,20 @@ const customRenderer = ({
     barn,
 }: StoryArgs) => {
     return (
-        <UttaksplanDataContext
-            initialState={{
-                [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: erFarEllerMedmor,
-                [UttaksplanContextDataType.BARN]: barn,
-                [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
-                [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
-                [UttaksplanContextDataType.ALENE_OM_OMSORG]: erAleneOmOmsorg,
-                [UttaksplanContextDataType.MODUS]: 'planlegger',
-                [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
-                    farMedmor: 'Far',
-                    mor: 'Mor',
-                },
+        <UttaksplanDataProvider
+            erFarEllerMedmor={erFarEllerMedmor}
+            barn={barn}
+            aleneOmOmsorg={erAleneOmOmsorg}
+            modus="planlegger"
+            navnPåForeldre={{
+                farMedmor: 'Far',
+                mor: 'Mor',
             }}
+            valgtStønadskonto={{} as any}
+            erMedmorDelAvSøknaden
+            bareFarMedmorHarRett={false}
+            harAktivitetskravIPeriodeUtenUttak={false}
+            erDeltUttak
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
@@ -57,7 +57,7 @@ const customRenderer = ({
                     />
                 </Accordion>
             </div>
-        </UttaksplanDataContext>
+        </UttaksplanDataProvider>
     );
 };
 

@@ -5,9 +5,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
+import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
 import {
-    Familiehendelse,
+    Familiesituasjon,
     FpSak,
     KontoBeregningDto,
     KontoDto,
@@ -18,9 +18,37 @@ import {
 } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
+import { useUttaksplanData } from './context/UttaksplanDataContext';
+import { useUttaksplan } from './context/useUttaksplan';
 import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
+
+//TODO (TOR) Fjern denne wrapperen og skriv om story
+export const KvoteOppsummeringWrapper = (props: {
+    saksperioder: SaksperiodeNy[];
+    rettighetType: FpSak['rettighetType'];
+    visStatusIkoner: boolean;
+}) => {
+    const { familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus, erMedmorDelAvSøknaden } =
+        useUttaksplanData();
+
+    const uttaksplan = useUttaksplan(props.saksperioder);
+
+    return (
+        <KvoteOppsummering
+            konto={valgtStønadskonto}
+            perioder={uttaksplan}
+            rettighetType={props.rettighetType}
+            forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+            visStatusIkoner={props.visStatusIkoner}
+            familiesituasjon={familiesituasjon}
+            navnPåForeldre={navnPåForeldre}
+            modus={modus}
+            erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+        />
+    );
+};
 
 type Props = {
     konto: KontoBeregningDto;
@@ -28,7 +56,7 @@ type Props = {
     rettighetType: FpSak['rettighetType'];
     forelder: FpSak['forelder'];
     visStatusIkoner: boolean;
-    familiehendelse?: Familiehendelse;
+    familiesituasjon: Familiesituasjon;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
     erMedmorDelAvSøknaden?: boolean;
@@ -74,7 +102,7 @@ const OppsummeringsTittel = () => {
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiehendelse, modus } = useKvote();
+    const { konto, perioder, familiesituasjon, modus } = useKvote();
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
@@ -82,7 +110,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
             return null;
         }
 
-        const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
+        const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
         const brukteDager = summerDagerIPerioder(
             perioder.filter((p) => {
                 // Aktivitetsfri kvote har spesialhåndtering
@@ -178,7 +206,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 };
 
 const KvoteTittel = () => {
-    const { konto, perioder, familiehendelse, modus, navnPåForeldre, forelder } = useKvote();
+    const { konto, perioder, familiesituasjon, modus, navnPåForeldre, forelder } = useKvote();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -203,7 +231,7 @@ const KvoteTittel = () => {
         konto.kontoer,
     );
 
-    const barnetErFødt = !!familiehendelse?.fødselsdato;
+    const barnetErFødt = familiesituasjon === 'fødsel';
 
     const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -570,14 +598,14 @@ const FellesKvoter = () => {
 
 const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
-    const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
+    const { visStatusIkoner, familiesituasjon, erMedmorDelAvSøknaden } = useKvote();
 
     if (!konto) {
         return null;
     }
 
     // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
-    const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && !!familiehendelse?.fødselsdato;
+    const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
 
     const dagerBrukt = summerDagerIPerioder(perioder, [konto]);
     const ubrukteDager = konto.dager - dagerBrukt;

@@ -29,7 +29,7 @@ describe('<Calendar>', () => {
     it('skal vise korrekt familiehendelse den 21 februar', async () => {
         render(<Default />);
         expect(await screen.findByTestId('dayColor:PINK', { exact: false })).toBeInTheDocument();
-        expect(screen.getByTestId('day:21;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(screen.getByTestId('day:21;dayColor:PINK')).toBeInTheDocument();
     });
 
     it('skal vise korrekt navn på måneder når perioden går over to år', async () => {

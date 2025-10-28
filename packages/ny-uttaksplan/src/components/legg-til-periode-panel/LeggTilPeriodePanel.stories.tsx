@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { KontoBeregningDto } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType } from '../../context/UttaksplanDataContext';
 import { withUttaksplanContextDecorator } from '../../storybook/decorators/withUttaksplanContextDecorator';
 import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
@@ -16,9 +15,11 @@ const meta = {
     },
     parameters: {
         context: {
-            [UttaksplanContextDataType.UTTAKSPLAN]: [],
-            [UttaksplanContextDataType.ALENE_OM_OMSORG]: false,
-            [UttaksplanContextDataType.VALGT_STØNADSKONTO]: {
+            aleneOmOmsorg: false,
+            barn: {
+                fødselsdato: '2024-06-01',
+            },
+            valgtStønadskonto: {
                 kontoer: [
                     {
                         konto: 'MØDREKVOTE',
@@ -49,9 +50,4 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const LeggTilMødrekvote: Story = {
-    args: {
-        erBarnetFødt: true,
-        gjelderAdopsjon: false,
-    },
-};
+export const LeggTilMødrekvote: Story = {};

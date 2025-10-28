@@ -13,6 +13,7 @@ import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
 import nbMessages from '../src/intl/nb_NO.json';
@@ -33,6 +34,7 @@ const withIntlProvider = getIntlDecorator({
     nb: {
         ...nbMessages,
         ...uttaksplanMessages.nb,
+        ...nyUttaksplanMessages.nb,
         ...uiMessages.nb,
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,

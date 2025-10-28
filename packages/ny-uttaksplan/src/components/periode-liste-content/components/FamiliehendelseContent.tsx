@@ -3,17 +3,15 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType } from '@navikt/fp-common';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 
 interface Props {
     familiehendelseType: FamiliehendelseType;
 }
 
 export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const { erFarEllerMedmor, navnPåForeldre } = useUttaksplanData();
 
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (

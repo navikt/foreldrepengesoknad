@@ -5,9 +5,9 @@ import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { isRequired } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
@@ -15,8 +15,8 @@ import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/L
 export const KontotypeSpørsmål = () => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
-    const valgtStønadskonto = notEmpty(useContextGetData(UttaksplanContextDataType.VALGT_STØNADSKONTO));
-    const erMedmorDelAvSøknaden = notEmpty(useContextGetData(UttaksplanContextDataType.ER_MEDMOR_DEL_AV_SØKNADEN));
+    const { valgtStønadskonto, erMedmorDelAvSøknaden } = useUttaksplanData();
+
     const kontoTypeValue = watch('kontoType');
 
     return (

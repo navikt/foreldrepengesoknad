@@ -39,14 +39,14 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const oktober = screen.getByTestId('year:2024;month:9');
-        expect(within(oktober).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(oktober).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
         expect(within(oktober).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
 
@@ -69,13 +69,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
     });
 
@@ -95,13 +95,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
     });
 
@@ -121,13 +121,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
     });
 
@@ -149,14 +149,14 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const oktober = screen.getByTestId('year:2024;month:9');
-        expect(within(oktober).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(oktober).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
         expect(within(oktober).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
 
@@ -179,13 +179,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
     });
 
@@ -205,13 +205,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
     });
 
@@ -231,13 +231,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
     });
 
@@ -256,13 +256,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
     });
 
@@ -281,13 +281,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
     });
 
@@ -310,19 +310,19 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const oktober = screen.getByTestId('year:2024;month:9');
-        expect(within(oktober).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:21;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(oktober).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
         expect(within(oktober).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(17);
     });
 
@@ -342,13 +342,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:BLUE')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(9);
     });
 
@@ -368,13 +368,13 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:7;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:11;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(9);
     });
 
@@ -393,14 +393,14 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:5;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:7;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:BLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:5;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:7;dayColor:PINK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:8;dayColor:BLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(mai2025).getByTestId('day:26;dayColor:NONE;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(mai2025).getByTestId('day:26;dayColor:NONE')).toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
     });
 });

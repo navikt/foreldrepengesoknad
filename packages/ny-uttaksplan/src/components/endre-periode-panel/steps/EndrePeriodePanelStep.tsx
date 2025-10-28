@@ -7,9 +7,8 @@ import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
@@ -28,8 +27,6 @@ interface Props {
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
-    erBarnetFødt: boolean;
-    gjelderAdopsjon: boolean;
 }
 
 export interface EndrePeriodePanelStepFormValues {
@@ -51,13 +48,11 @@ export const EndrePeriodePanelStep = ({
     handleUpdatePeriode,
     handleAddPeriode,
     inneholderKunEnPeriode,
-    erBarnetFødt,
-    gjelderAdopsjon,
 }: Props) => {
     const intl = useIntl();
     const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
-    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+    const { aleneOmOmsorg } = useUttaksplanData();
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
@@ -172,12 +167,8 @@ export const EndrePeriodePanelStep = ({
                     erEndring={true}
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
-                <TidsperiodeSpørsmål
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
-                    hvaVilDuGjøre={hvaVilDuGjøre!}
-                />
-                {!erAleneOmOmsorg && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
+                <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre!} />
+                {!aleneOmOmsorg && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
                 <PanelButtons
                     onCancel={closePanel}
