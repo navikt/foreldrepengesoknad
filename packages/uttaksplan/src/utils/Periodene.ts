@@ -10,7 +10,6 @@ import {
     PeriodeHull,
     PeriodeUtenUttak,
     Periodetype,
-    StønadskontoType,
     Utsettelsesperiode,
     Uttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -319,7 +318,7 @@ function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder)
 
 function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFødselUttaksperiode | undefined {
     const periode: Periode | undefined = perioder.find(
-        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        (p) => isUttaksperiode(p) && p.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
     return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
 }
@@ -360,7 +359,7 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): 
     }
 
     return perioderUtenInfoPerioderEllerHull.every(
-        (periode) => periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        (periode) => periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
 };
 

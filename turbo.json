@@ -3,45 +3,26 @@
     "globalPassThroughEnv": ["PACKAGES_AUTH_TOKEN"],
     "tasks": {
         "test": {
-            "dependsOn": [
-                "build",
-                "lint"
-            ],
-            "inputs": [
-                "src/**/*.tsx",
-                "src/**/*.ts"
-            ]
+            "dependsOn": ["build", "lint", "^test"],
+            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
         },
         "build": {
-            "dependsOn": [
-                "^build",
-                "lint"
-            ],
-            "outputs": [
-                "dist/**",
-                "lib/**"
-            ]
+            "dependsOn": ["^build", "lint"],
+            "outputs": ["dist/**", "lib/**"]
         },
         "dev": {
             "persistent": true
         },
         "lint": {
-            "dependsOn": [
-                "lint:eslint",
-                "lint:tsc"
-            ]
+            "dependsOn": ["lint:eslint", "lint:tsc"]
         },
         "lint:eslint": {},
         "lint:tsc": {},
         "build-storybook": {
-            "dependsOn": [
-                "build"
-            ]
+            "dependsOn": ["build"]
         },
         "prettier": {
-            "dependsOn": [
-                "build"
-            ]
+            "dependsOn": ["build"]
         }
     },
     "globalEnv": [

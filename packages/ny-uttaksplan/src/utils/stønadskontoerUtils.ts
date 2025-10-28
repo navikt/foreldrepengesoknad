@@ -1,14 +1,15 @@
 import { IntlShape } from 'react-intl';
 
-import { NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 export const getStønadskontoNavnSimple = (
     intl: IntlShape,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak_fpoversikt,
     erMedmorDelAvSøknaden?: boolean,
 ) => {
-    if (konto === StønadskontoType.Fedrekvote && erMedmorDelAvSøknaden) {
+    if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MEDMORSKVOTE' });
     }
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
@@ -16,7 +17,7 @@ export const getStønadskontoNavnSimple = (
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
@@ -24,10 +25,10 @@ export const getStønadskontoNavn = (
     let navn;
 
     switch (konto) {
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             navn = navnPåForeldre.mor;
             break;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             navn = navnPåForeldre.farMedmor;
             break;
         default:
@@ -42,10 +43,10 @@ export const getStønadskontoNavn = (
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
-        if (konto === StønadskontoType.AktivitetsfriKvote) {
+        if (konto === 'AKTIVITETSFRI_KVOTE') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
-        if (konto === StønadskontoType.Foreldrepenger) {
+        if (konto === 'FORELDREPENGER') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
         }
     }

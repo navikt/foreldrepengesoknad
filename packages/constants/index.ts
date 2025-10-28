@@ -12,7 +12,6 @@ export { OppholdÅrsakType } from './src/oppholdÅrsakType';
 export { MorsAktivitet } from './src/morsAktivitet';
 export { Periodetype } from './src/periodetype';
 export { BarnType } from './src/barnType';
-export { StønadskontoType } from './src/stønadskontoType';
 export { MinsterettType } from './src/minsterettType';
 export { KontoTilleggType } from './src/kontoTilleggType';
 export { AttachmentMetadataType } from './src/attachmentMetadataType';

@@ -9,8 +9,7 @@ import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -19,28 +18,28 @@ import { FordelingSteg } from './FordelingSteg';
 const DEFAULT_STØNADSKONTO = {
     '100': {
         kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 75 },
-            { konto: StønadskontoType.Fedrekvote, dager: 75 },
-            { konto: StønadskontoType.Fellesperiode, dager: 80 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            { konto: 'MØDREKVOTE', dager: 75 },
+            { konto: 'FEDREKVOTE', dager: 75 },
+            { konto: 'FELLESPERIODE', dager: 80 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
         ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto_fpoversikt,
     '80': {
         kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 95 },
-            { konto: StønadskontoType.Fedrekvote, dager: 95 },
-            { konto: StønadskontoType.Fellesperiode, dager: 101 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            { konto: 'MØDREKVOTE', dager: 95 },
+            { konto: 'FEDREKVOTE', dager: 95 },
+            { konto: 'FELLESPERIODE', dager: 101 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
         ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto_fpoversikt,
 };
 
 type StoryArgs = {

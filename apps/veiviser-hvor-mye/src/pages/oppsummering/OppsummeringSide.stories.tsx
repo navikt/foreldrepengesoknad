@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { DEFAULT_SATSER, StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import { OppsummeringSide } from './OppsummeringSide';
@@ -12,19 +12,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -32,23 +32,23 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto_fpoversikt,
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -56,8 +56,8 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
-} as TilgjengeligeStønadskontoer;
+    } satisfies KontoBeregningDto_fpoversikt,
+};
 
 interface StoryArgs {
     arbeidssituasjon: Arbeidssituasjon;

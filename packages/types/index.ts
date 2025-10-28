@@ -33,12 +33,6 @@ export {
 } from './src/Periode';
 export { Dekningsgrad } from './src/Dekningsgrad';
 export type {
-    TilgjengeligeStønadskontoer,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-    TilgjengeligeMinsterettskontoer,
-    Stønadskonto,
-} from './src/TilgjengeligeStønadskontoer';
-export type {
     InformasjonOmUtenlandsoppholdDTO,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,

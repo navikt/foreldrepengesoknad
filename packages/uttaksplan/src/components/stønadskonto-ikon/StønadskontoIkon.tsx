@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
-import { StønadskontoType as StønadskontoTypeType } from '@navikt/fp-constants';
+import { Forelder, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getUttaksperiodeFarge } from '@navikt/fp-utils';
 
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
@@ -10,7 +10,7 @@ import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 interface Props {
-    konto: StønadskontoType;
+    konto: KontoTypeUttak_fpoversikt;
     forelder?: Forelder;
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;
@@ -33,12 +33,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     const intl = useIntl();
     return (
         <IconBox
-            color={getUttaksperiodeFarge(
-                konto as StønadskontoTypeType,
-                forelder,
-                erFarEllerMedmor,
-                harMidlertidigOmsorg,
-            )}
+            color={getUttaksperiodeFarge(konto, forelder, erFarEllerMedmor, harMidlertidigOmsorg)}
             stripes={gradert}
         >
             <UttaksplanIkon

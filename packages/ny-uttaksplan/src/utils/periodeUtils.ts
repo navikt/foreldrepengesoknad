@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import { IntlShape } from 'react-intl';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import {
     OppholdÅrsakType,
     PeriodeResultatÅrsak,
@@ -60,7 +60,7 @@ export const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
 };
 
 export const isForeldrepengerFørFødselPeriode = (periode: Planperiode) => {
-    return periode.kontoType !== undefined && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel;
+    return periode.kontoType !== undefined && periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL';
 };
 
 export const isUtsettelsesperiode = (periode: Planperiode) => {
@@ -220,7 +220,7 @@ export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPer
     });
 
     const alleUnikeDatoer = alleDatoer.reduce((result, datoWrapper) => {
-        if (!result.some((d) => d.dato === datoWrapper.dato)) {
+        if (!result.some((d) => d.dato === datoWrapper.dato && d.erFom === datoWrapper.erFom)) {
             result.push(datoWrapper);
         }
         return result;

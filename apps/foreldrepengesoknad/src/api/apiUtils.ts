@@ -13,7 +13,6 @@ import {
     MorsAktivitet,
     Periode,
     Periodetype,
-    StønadskontoType,
     Søkerrolle,
     UtsettelseÅrsakType,
     UttaksperiodeBase,
@@ -153,13 +152,8 @@ const changeClientonlyKontotype = (
     familiehendelsesdato: string,
 ) => {
     if (isUttaksperiode(periode)) {
-        if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto = !annenForelderHarRettPåForeldrepengerINorge
-                ? StønadskontoType.Foreldrepenger
-                : StønadskontoType.Fellesperiode;
-        }
-        if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
-            periode.konto = StønadskontoType.Foreldrepenger;
+        if (periode.konto === 'AKTIVITETSFRI_KVOTE') {
+            periode.konto = 'FORELDREPENGER';
             if (
                 søkerErFarEllerMedmor &&
                 !annenForelderHarRettPåForeldrepengerINorge &&

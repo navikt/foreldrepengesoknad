@@ -1,7 +1,7 @@
 import MockDate from 'mockdate';
 
-import { StønadskontoType, Uttaksperiode } from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types';
+import { Uttaksperiode } from '@navikt/fp-common';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
@@ -15,11 +15,11 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     });
     const fødselsdato = new Date('2022-08-08T00:00:00.000Z');
     const foreldrepenger = {
-        konto: StønadskontoType.Foreldrepenger,
+        konto: 'FORELDREPENGER',
         dager: 75,
-    };
-    const aktivitetsfriKonto = { konto: StønadskontoType.AktivitetsfriKvote, dager: 40 };
-    const stønadskontoer = [foreldrepenger, aktivitetsfriKonto] as Stønadskonto[];
+    } satisfies KontoDto_fpoversikt;
+    const aktivitetsfriKonto = { konto: 'AKTIVITETSFRI_KVOTE', dager: 40 };
+    const stønadskontoer = [foreldrepenger, aktivitetsfriKonto] as KontoDto_fpoversikt[];
     const morErUfør = true;
     const bareFarMedmorHarRett = true;
     const terminato = undefined;
@@ -40,10 +40,10 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-30T00:00:00.000Z'));
-        expect(perioder[0].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+        expect(perioder[0].konto).toEqual('AKTIVITETSFRI_KVOTE');
         expect(perioder[1].tidsperiode.fom).toEqual(new Date('2022-10-03T00:00:00.000Z'));
         expect(perioder[1].tidsperiode.tom).toEqual(new Date('2023-01-13T00:00:00.000Z'));
-        expect(perioder[1].konto).toEqual(StønadskontoType.Foreldrepenger);
+        expect(perioder[1].konto).toEqual('FORELDREPENGER');
     });
     it('skal legge til en periode på 1 uke før fødsel og en periode på 7 uker etter fødsel hvis WLB gjelder og situasjon er fødsel', () => {
         const startDato1UkeFørFødsel = new Date('2022-08-01T00:00:00.000Z');
@@ -61,13 +61,13 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(perioder.length).toEqual(3);
         expect(perioder[0].tidsperiode.fom).toEqual(startDato1UkeFørFødsel);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-08-05T00:00:00.000Z'));
-        expect(perioder[0].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+        expect(perioder[0].konto).toEqual('AKTIVITETSFRI_KVOTE');
         expect(perioder[1].tidsperiode.fom).toEqual(fødselsdato);
         expect(perioder[1].tidsperiode.tom).toEqual(new Date('2022-09-23T00:00:00.000Z'));
-        expect(perioder[1].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+        expect(perioder[1].konto).toEqual('AKTIVITETSFRI_KVOTE');
         expect(perioder[2].tidsperiode.fom).toEqual(new Date('2022-09-26T00:00:00.000Z'));
         expect(perioder[2].tidsperiode.tom).toEqual(new Date('2023-01-06T00:00:00.000Z'));
-        expect(perioder[2].konto).toEqual(StønadskontoType.Foreldrepenger);
+        expect(perioder[2].konto).toEqual('FORELDREPENGER');
     });
     it('skal legge til en periode på 8 uker etter fødsel hvis WLB gjelder og situasjon er fødsel og startdato blir satt til lørdag rett før fødsel', () => {
         const startDato1DagFørFødsel = new Date('2022-08-07T00:00:00.000Z');
@@ -85,10 +85,10 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(perioder.length).toEqual(2);
         expect(perioder[0].tidsperiode.fom).toEqual(fødselsdato);
         expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-30T00:00:00.000Z'));
-        expect(perioder[0].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+        expect(perioder[0].konto).toEqual('AKTIVITETSFRI_KVOTE');
         expect(perioder[1].tidsperiode.fom).toEqual(new Date('2022-10-03T00:00:00.000Z'));
         expect(perioder[1].tidsperiode.tom).toEqual(new Date('2023-01-13T00:00:00.000Z'));
-        expect(perioder[1].konto).toEqual(StønadskontoType.Foreldrepenger);
+        expect(perioder[1].konto).toEqual('FORELDREPENGER');
     });
 
     it(
@@ -110,13 +110,13 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             expect(perioder.length).toEqual(3);
             expect(perioder[0].tidsperiode.fom).toEqual(startDato1DagFørFødsel);
             expect(perioder[0].tidsperiode.tom).toEqual(startDato1DagFørFødsel);
-            expect(perioder[0].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+            expect(perioder[0].konto).toEqual('AKTIVITETSFRI_KVOTE');
             expect(perioder[1].tidsperiode.fom).toEqual(fødselsdato);
             expect(perioder[1].tidsperiode.tom).toEqual(new Date('2022-09-29T00:00:00.000Z'));
-            expect(perioder[1].konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+            expect(perioder[1].konto).toEqual('AKTIVITETSFRI_KVOTE');
             expect(perioder[2].tidsperiode.fom).toEqual(new Date('2022-09-30T00:00:00.000Z'));
             expect(perioder[2].tidsperiode.tom).toEqual(new Date('2023-01-12T00:00:00.000Z'));
-            expect(perioder[2].konto).toEqual(StønadskontoType.Foreldrepenger);
+            expect(perioder[2].konto).toEqual('FORELDREPENGER');
         },
     );
 });

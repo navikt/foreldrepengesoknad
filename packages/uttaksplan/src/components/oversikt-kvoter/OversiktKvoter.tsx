@@ -8,11 +8,10 @@ import {
     NavnPåForeldre,
     Periode,
     Situasjon,
-    StønadskontoType,
     Søkerrolle,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
@@ -30,10 +29,13 @@ import TilesList from './tilesList/TilesList';
 
 const bem = planBemUtils('oversiktKvoter');
 
-const filtrerBortAnnenPartsKonto = (uttakskontoer: Stønadskonto[], erFarEllerMedmor: boolean): Stønadskonto[] => {
+const filtrerBortAnnenPartsKonto = (
+    uttakskontoer: KontoDto_fpoversikt[],
+    erFarEllerMedmor: boolean,
+): KontoDto_fpoversikt[] => {
     return erFarEllerMedmor
-        ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
-        : uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Fedrekvote);
+        ? uttakskontoer.filter((uttak) => uttak.konto !== 'MØDREKVOTE')
+        : uttakskontoer.filter((uttak) => uttak.konto !== 'FEDREKVOTE');
 };
 interface PropsPerForelder {
     brukteDagerPerForelder: BrukteDager;
@@ -137,7 +139,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
 };
 
 interface Props {
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt;
     uttaksplan: Periode[];
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;

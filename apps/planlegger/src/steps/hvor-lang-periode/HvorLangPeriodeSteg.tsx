@@ -19,7 +19,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -28,7 +28,7 @@ import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettI
 import { ValgtDekningsgradInfoboks } from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoer;
+    stønadskontoer: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
 }
 
 export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {

@@ -161,7 +161,6 @@ const PERIODE = {
         tom: new Date('2024-10-10'),
     },
     type: Periodetype.Info,
-    // konto: StønadskontoType.Fedrekvote,
     forelder: Forelder.mor,
     infotype: PeriodeInfoType.utsettelseAnnenPart,
     overskrives: true,

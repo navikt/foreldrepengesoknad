@@ -1,13 +1,7 @@
 import dayjs from 'dayjs';
 
-import {
-    AnnenForelder,
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    TidsperiodeDate,
-    UttakRundtFødselÅrsak,
-} from '@navikt/fp-common';
+import { AnnenForelder, Periodetype, Situasjon, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
@@ -141,7 +135,7 @@ const skalViseSamtidigUttak = (regler: UttakSkjemaregler, values: PeriodeUttakFo
         return false;
     }
 
-    if (values.konto === StønadskontoType.Foreldrepenger) {
+    if (values.konto === 'FORELDREPENGER') {
         return false;
     }
 
@@ -165,7 +159,7 @@ const skalViseFlerbarnsdager = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    kontoValue: StønadskontoType | '',
+    kontoValue: KontoTypeUttak_fpoversikt | '',
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,
@@ -189,11 +183,7 @@ const skalViseFlerbarnsdager = (
         return false;
     }
 
-    return (
-        values.konto === StønadskontoType.Fellesperiode ||
-        values.konto === StønadskontoType.Fedrekvote ||
-        values.konto === StønadskontoType.Foreldrepenger
-    );
+    return values.konto === 'FELLESPERIODE' || values.konto === 'FEDREKVOTE' || values.konto === 'FORELDREPENGER';
 };
 
 const skalViseKonto = (

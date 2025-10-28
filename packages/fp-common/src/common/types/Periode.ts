@@ -1,4 +1,4 @@
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
@@ -7,7 +7,6 @@ import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
-import { StønadskontoType } from './StønadskontoType';
 import { TidsperiodeDate } from './TidsperiodeDate';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
@@ -28,13 +27,13 @@ export interface PeriodeBase {
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
-    konto: StønadskontoType.ForeldrepengerFørFødsel;
+    konto: 'FORELDREPENGER_FØR_FØDSEL';
     skalIkkeHaUttakFørTermin: boolean;
 }
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
-    konto: StønadskontoType;
+    konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
@@ -72,7 +71,7 @@ export interface Oppholdsperiode extends PeriodeBase {
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
-    konto: StønadskontoType;
+    konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
     årsak: OverføringÅrsakType;
 }
@@ -100,7 +99,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: StønadskontoType | undefined;
+    kontoType: KontoTypeUttak_fpoversikt | undefined;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -178,23 +177,19 @@ export const isHarMorsAktivitet = (periode: Periode): periode is Periode & { mor
 export const isForeldrepengerFørFødselUttaksperiode = (
     periode: Periode,
 ): periode is ForeldrepengerFørFødselUttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+    return periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL';
 };
 
 export const isUttakAvFellesperiode = (periode: Periode): periode is Uttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode;
+    return periode.type === Periodetype.Uttak && periode.konto === 'FELLESPERIODE';
 };
 
 export const isUttakAvForeldrepengerFørFødsel = (periode: Periode): periode is ForeldrepengerFørFødselUttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+    return periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL';
 };
 
 export const isUttakAvFedrekvoteMorForSyk = (periode: Periode): periode is Uttaksperiode => {
-    return (
-        periode.type === Periodetype.Uttak &&
-        periode.erMorForSyk === true &&
-        periode.konto === StønadskontoType.Fedrekvote
-    );
+    return periode.type === Periodetype.Uttak && periode.erMorForSyk === true && periode.konto === 'FEDREKVOTE';
 };
 
 export const isOverføringMorInnlagt = (periode: Periode) => {
@@ -296,7 +291,7 @@ export const isPeriodeUtenUttakMorKvalprogram = (periode: Periode) => {
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&
-        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.konto === 'FORELDREPENGER' &&
         periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
     );
 };
@@ -304,7 +299,7 @@ export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) =>
 export const isForeldrepengerMedAktivitetskravMorForSyk = (periode: Periode) => {
     return (
         isUttaksperiode(periode) &&
-        periode.konto === StønadskontoType.Foreldrepenger &&
+        periode.konto === 'FORELDREPENGER' &&
         periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
     );
 };

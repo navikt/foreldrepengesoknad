@@ -1,5 +1,4 @@
-import { StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { UttakUkerOgDager } from './uttakUtils';
 
@@ -9,7 +8,7 @@ export type UkerOgDager = {
     totaltAntallDager: number;
 };
 
-export const getAntallUkerOgDager = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): UttakUkerOgDager => {
+export const getAntallUkerOgDager = (stønadskontoer: KontoBeregningDto_fpoversikt): UttakUkerOgDager => {
     return Object.values(stønadskontoer.kontoer).reduce(
         (sum: UttakUkerOgDager, konto) => {
             const ukerOgDager = getUkerOgDager(konto.dager);
@@ -28,16 +27,16 @@ export const getUkerOgDager = (totaltAntallDager: number) => {
 };
 
 const getDagerForKonto = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-    stønadskontoType: StønadskontoType,
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
 ) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager : 0;
 };
 
 const getUkerOgDagerForKonto = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-    stønadskontoType: StønadskontoType,
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
 ): UkerOgDager => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
 
@@ -48,26 +47,22 @@ const getUkerOgDagerForKonto = (
     return { uker: 0, dager: 0, totaltAntallDager: 0 };
 };
 
-export const getAntallDagerForeldrepengerFørFødsel = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
-export const getAntallDagerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
+export const getAntallDagerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
+    getDagerForKonto(stønadskontoer, 'FORELDREPENGER_FØR_FØDSEL');
+export const getAntallDagerMødrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
+    getDagerForKonto(stønadskontoer, 'MØDREKVOTE');
 
-export const getAntallDagerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Fedrekvote);
+export const getAntallDagerFedrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
+    getDagerForKonto(stønadskontoer, 'FEDREKVOTE');
 
-export const getAntallUkerOgDagerAktivitetsfriKvote = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
+export const getAntallUkerOgDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
+    getUkerOgDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
-export const getAntallDagerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
+export const getAntallDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
+    getDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
-export const getAntallUkerOgDagerFellesperiode = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
+export const getAntallUkerOgDagerFellesperiode = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
+    getUkerOgDagerForKonto(stønadskontoer, 'FELLESPERIODE');
 
-export const getAntallUkerOgDagerForeldrepenger = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);
+export const getAntallUkerOgDagerForeldrepenger = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
+    getUkerOgDagerForKonto(stønadskontoer, 'FORELDREPENGER');

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { StønadskontoType } from '@navikt/fp-constants';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType } from '../../context/UttaksplanDataContext';
 import { withUttaksplanContextDecorator } from '../../storybook/decorators/withUttaksplanContextDecorator';
@@ -21,19 +21,19 @@ const meta = {
             [UttaksplanContextDataType.VALGT_STØNADSKONTO]: {
                 kontoer: [
                     {
-                        konto: StønadskontoType.Mødrekvote,
+                        konto: 'MØDREKVOTE',
                         dager: 75,
                     },
                     {
-                        konto: StønadskontoType.Fedrekvote,
+                        konto: 'FEDREKVOTE',
                         dager: 75,
                     },
                     {
-                        konto: StønadskontoType.Fellesperiode,
+                        konto: 'FELLESPERIODE',
                         dager: 80,
                     },
                     {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
+                        konto: 'FORELDREPENGER_FØR_FØDSEL',
                         dager: 15,
                     },
                 ],
@@ -41,7 +41,7 @@ const meta = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            },
+            } satisfies KontoBeregningDto_fpoversikt,
         },
     },
 } satisfies Meta<typeof LeggTilPeriodePanel>;

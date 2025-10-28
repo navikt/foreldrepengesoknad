@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from '../../utils/wlbUtils';
 
 export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak_fpoversikt,
     tidsperiode: TidsperiodeDate,
     søkerErFarEllerMedmor: boolean,
     erAleneOmOmsorg: boolean,

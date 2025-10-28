@@ -1,4 +1,4 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { PeriodeResultatÅrsak, RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
@@ -27,7 +27,7 @@ export const saker = {
                     {
                         fom: '2022-06-10',
                         tom: '2022-06-30',
-                        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -40,7 +40,7 @@ export const saker = {
                     {
                         fom: '2022-07-01',
                         tom: '2022-08-11',
-                        kontoType: StønadskontoType.Mødrekvote,
+                        kontoType: 'MØDREKVOTE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -53,7 +53,7 @@ export const saker = {
                     {
                         fom: '2022-08-12',
                         tom: '2022-10-13',
-                        kontoType: StønadskontoType.Mødrekvote,
+                        kontoType: 'MØDREKVOTE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -66,7 +66,7 @@ export const saker = {
                     {
                         fom: '2022-10-14',
                         tom: '2022-12-21',
-                        kontoType: StønadskontoType.Fellesperiode,
+                        kontoType: 'FELLESPERIODE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -112,7 +112,7 @@ export const saker = {
                     {
                         fom: '2022-12-20',
                         tom: '2023-01-09',
-                        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -125,7 +125,7 @@ export const saker = {
                     {
                         fom: '2023-01-10',
                         tom: '2023-02-20',
-                        kontoType: StønadskontoType.Mødrekvote,
+                        kontoType: 'MØDREKVOTE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -138,7 +138,7 @@ export const saker = {
                     {
                         fom: '2023-02-21',
                         tom: '2023-04-24',
-                        kontoType: StønadskontoType.Mødrekvote,
+                        kontoType: 'MØDREKVOTE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,
@@ -151,7 +151,7 @@ export const saker = {
                     {
                         fom: '2024-05-28',
                         tom: '2024-08-14',
-                        kontoType: StønadskontoType.Fellesperiode,
+                        kontoType: 'FELLESPERIODE',
                         resultat: {
                             innvilget: true,
                             trekkerMinsterett: true,

@@ -1,4 +1,4 @@
-import { StønadskontoType, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+import { Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
 
 import { andreAugust2022ReglerGjelder } from '../../../utils/dateUtils';
 import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from '../../../utils/wlbUtils';
@@ -24,7 +24,7 @@ export const periodeDeFørsteSeksUkeneHarUlovligUttakBFHR: RegelTest = (grunnlag
                 grunnlag.familiehendelsesdato,
                 grunnlag.termindato,
             ) &&
-            periode.konto === StønadskontoType.Foreldrepenger &&
+            periode.konto === 'FORELDREPENGER' &&
             periode.erMorForSyk === false,
     );
 

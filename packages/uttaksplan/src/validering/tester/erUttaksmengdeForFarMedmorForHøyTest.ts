@@ -3,19 +3,18 @@ import {
     OppholdÅrsakType,
     Periode,
     PeriodeInfoType,
-    StønadskontoType,
     Søknadsinfo,
     isInfoPeriodeAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const harSøktOmFellesperiode = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
-        if (periode.forelder === Forelder.farMedmor && periode.konto === StønadskontoType.Fellesperiode) {
+        if (periode.forelder === Forelder.farMedmor && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }
@@ -25,7 +24,7 @@ const harSøktOmFellesperiode = (periode: Periode) => {
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
     farEllerMedmor: boolean,
 ): boolean => {
     const harFarMedmorSøktOmFellesperiode = uttaksplan.some((p) => harSøktOmFellesperiode(p));

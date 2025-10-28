@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Barn, Forelder, Periode, Situasjon, StønadskontoType, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
+import { Barn, Forelder, Periode, Situasjon, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan';
 
@@ -15,7 +15,7 @@ const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termin
             'day',
         ) &&
         periodeRundtFødsel.forelder === Forelder.farMedmor &&
-        periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
+        periodeRundtFødsel.konto === 'FEDREKVOTE' &&
         periodeRundtFødsel.ønskerSamtidigUttak === true &&
         periodeRundtFødsel.ønskerFlerbarnsdager !== true
     );

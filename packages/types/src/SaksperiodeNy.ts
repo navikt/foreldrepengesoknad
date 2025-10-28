@@ -1,4 +1,4 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 
 import { Gradering } from './Gradering';
 import { MorsAktivitet } from './MorsAktivitet';
@@ -6,6 +6,7 @@ import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
+import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
 
 export interface SaksperiodeNy {
     fom: string;
@@ -13,7 +14,7 @@ export interface SaksperiodeNy {
     forelder?: Forelder;
     resultat?: PeriodeResultat;
     flerbarnsdager?: boolean;
-    kontoType?: StønadskontoType;
+    kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakType;
     utsettelseÅrsak?: UtsettelseÅrsakType;

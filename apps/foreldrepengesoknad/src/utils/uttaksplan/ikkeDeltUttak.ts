@@ -1,15 +1,7 @@
 import dayjs from 'dayjs';
 
-import {
-    Forelder,
-    Periode,
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    Uttaksperiode,
-    isUttaksperiode,
-} from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types';
+import { Forelder, Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
@@ -24,10 +16,10 @@ import { guid } from '../guid';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -41,7 +33,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 id: guid(),
                 type: Periodetype.Uttak,
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.AktivitetsfriKvote,
+                konto: 'AKTIVITETSFRI_KVOTE',
                 tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
                 vedlegg: [],
                 gradert: false,
@@ -90,7 +82,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
-            konto: StønadskontoType.AktivitetsfriKvote,
+            konto: 'AKTIVITETSFRI_KVOTE',
             tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
             vedlegg: [],
             gradert: false,
@@ -117,7 +109,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
-            konto: StønadskontoType.Foreldrepenger,
+            konto: 'FORELDREPENGER',
             tidsperiode: getTidsperiode(
                 Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
                 foreldrepengerKonto.dager,
@@ -148,7 +140,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 
 const ikkeDeltUttakAdopsjonMor = (
     famDato: Date,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -174,10 +166,10 @@ const ikkeDeltUttakAdopsjonMor = (
 const ikkeDeltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -198,9 +190,9 @@ const ikkeDeltUttakAdopsjon = (
 
 const ikkeDeltUttakFødselMor = (
     famDato: Date,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
-    foreldrePengerFørFødselKonto: Stønadskonto,
+    foreldrePengerFørFødselKonto: KontoDto_fpoversikt,
 ) => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
@@ -218,7 +210,7 @@ const ikkeDeltUttakFødselMor = (
                 id: guid(),
                 type: Periodetype.Uttak,
                 forelder: Forelder.mor,
-                konto: StønadskontoType.Foreldrepenger,
+                konto: 'FORELDREPENGER',
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
             };
@@ -244,7 +236,7 @@ const ikkeDeltUttakFødselMor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.mor,
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {
                 fom: Uttaksdagen(førsteUttaksdag).trekkFra(15),
@@ -256,9 +248,7 @@ const ikkeDeltUttakFødselMor = (
         perioder.push(periodeFørFødsel);
     }
 
-    const ekstraPermisjonFørFødsel = perioder.find(
-        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.Foreldrepenger,
-    );
+    const ekstraPermisjonFørFødsel = perioder.find((p) => isUttaksperiode(p) && p.konto === 'FORELDREPENGER');
 
     const antallDagerIForeldrepenger = ekstraPermisjonFørFødsel
         ? getTidsperiode(
@@ -284,10 +274,10 @@ const ikkeDeltUttakFødselMor = (
 
 const ikkeDeltUttakFødselFarMedmor = (
     famDato: Date,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
     bareFarMedmorHarRett: boolean,
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
@@ -303,7 +293,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 id: guid(),
                 type: Periodetype.Uttak,
                 forelder: Forelder.farMedmor,
-                konto: StønadskontoType.AktivitetsfriKvote,
+                konto: 'AKTIVITETSFRI_KVOTE',
                 tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
                 vedlegg: [],
                 harIkkeAktivitetskrav: true,
@@ -352,7 +342,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
-            konto: StønadskontoType.AktivitetsfriKvote,
+            konto: 'AKTIVITETSFRI_KVOTE',
             tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
             vedlegg: [],
             gradert: false,
@@ -380,7 +370,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.farMedmor,
-            konto: StønadskontoType.Foreldrepenger,
+            konto: 'FORELDREPENGER',
             tidsperiode: getTidsperiode(
                 Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
                 foreldrepengerKonto.dager,
@@ -397,11 +387,11 @@ const ikkeDeltUttakFødselFarMedmor = (
 const ikkeDeltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto_fpoversikt,
     startdatoPermisjon: Date | undefined,
-    foreldrePengerFørFødselKonto: Stønadskonto | undefined,
+    foreldrePengerFørFødselKonto: KontoDto_fpoversikt | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
     bareFarMedmorHarRett: boolean,
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
@@ -426,22 +416,18 @@ export const ikkeDeltUttak = (
     situasjon: Situasjon,
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: Stønadskonto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     bareFarMedmorHarRett: boolean,
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
-    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Foreldrepenger,
-    );
+    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'FORELDREPENGER');
     const foreldrePengerFørFødselKonto = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        (konto) => konto.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
-    const aktivitetsfriKvote = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote,
-    );
+    const aktivitetsfriKvote = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
 
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon(

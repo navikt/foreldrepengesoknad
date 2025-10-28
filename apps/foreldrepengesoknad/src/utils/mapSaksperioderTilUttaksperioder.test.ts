@@ -11,7 +11,6 @@ import {
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
-    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     UtsettelseÅrsakTypeDTO,
@@ -30,11 +29,11 @@ describe('getKontotypeBareFarHarRett', () => {
 
     it('skal returnere konto med aktivitetskrav for bare far har rett når perioden er innvilget med årsak 2004', () => {
         const konto = getKontotypeBareFarHarRett(periodeTrekkerIkkeMinsterett);
-        expect(konto).toEqual(StønadskontoType.Foreldrepenger);
+        expect(konto).toEqual('FORELDREPENGER');
     });
     it('skal returnere konto uten aktivitetskrav for bare far har rett når perioden', () => {
         const konto = getKontotypeBareFarHarRett(periodeTrekkerMinsterett);
-        expect(konto).toEqual(StønadskontoType.AktivitetsfriKvote);
+        expect(konto).toEqual('AKTIVITETSFRI_KVOTE');
     });
 });
 
@@ -68,7 +67,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 flerbarnsdager: false,
                 oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
                 guid: '0',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: false,
@@ -107,7 +106,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
                     guid: '0',
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                 },
                 {
                     periode: {
@@ -126,7 +125,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     arbeidstidprosent: 100,
                     oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
                     guid: '1',
-                    kontoType: StønadskontoType.Fellesperiode,
+                    kontoType: 'FELLESPERIODE',
                 },
                 {
                     periode: {
@@ -142,7 +141,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gjelderAnnenPart: false,
                     samtidigUttak: 50,
                     flerbarnsdager: false,
-                    kontoType: StønadskontoType.Fedrekvote,
+                    kontoType: 'FEDREKVOTE',
                     guid: '2',
                     gradering: {
                         arbeidstidprosent: 80,
@@ -164,7 +163,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         årsak: PeriodeResultatÅrsak.ANNET,
                     },
                     gjelderAnnenPart: false,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    kontoType: 'FELLESPERIODE',
                     morsAktivitet: MorsAktivitet.Innlagt,
                     guid: '3',
                 },
@@ -196,7 +195,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttaksperiode.tidsperiode.tom).toEqual(new Date('2022-01-20'));
             expect(uttaksperiode.type).toEqual(Periodetype.Uttak);
             expect(uttaksperiode.forelder).toEqual(Forelder.farMedmor);
-            expect(uttaksperiode.konto).toEqual(StønadskontoType.Fedrekvote);
+            expect(uttaksperiode.konto).toEqual('FEDREKVOTE');
             expect(uttaksperiode.gradert).toEqual(true);
             expect(uttaksperiode.ønskerSamtidigUttak).toEqual(true);
             expect(uttaksperiode.samtidigUttakProsent).toEqual('50');
@@ -210,7 +209,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttakFellesperiode.tidsperiode.tom).toEqual(new Date('2022-01-21'));
             expect(uttakFellesperiode.type).toEqual(Periodetype.Uttak);
             expect(uttakFellesperiode.forelder).toEqual(Forelder.farMedmor);
-            expect(uttakFellesperiode.konto).toEqual(StønadskontoType.Fellesperiode);
+            expect(uttakFellesperiode.konto).toEqual('FELLESPERIODE');
             expect(uttakFellesperiode.gradert).toEqual(false);
             expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
             expect(uttakFellesperiode.harIkkeAktivitetskrav).toEqual(undefined);
@@ -232,7 +231,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
                     guid: '0',
-                    stønadskontotype: StønadskontoType.Mødrekvote,
+                    stønadskontotype: 'MØDREKVOTE',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -248,7 +247,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gjelderAnnenPart: false,
                     samtidigUttak: 100,
                     flerbarnsdager: false,
-                    kontoType: StønadskontoType.Fedrekvote,
+                    kontoType: 'FEDREKVOTE',
                     guid: '0',
                     oppholdÅrsak: OppholdÅrsakType.Ingen,
                     resultat: {
@@ -304,7 +303,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     samtidigUttaksprosent: 100,
                     flerbarnsdager: false,
                     guid: '0',
-                    kontoType: StønadskontoType.Fedrekvote,
+                    kontoType: 'FEDREKVOTE',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -320,7 +319,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gjelderAnnenPart: true,
                     samtidigUttak: 100,
                     flerbarnsdager: false,
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                     guid: '1',
                     oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
                     resultat: {
@@ -437,7 +436,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-12',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '1',
                 resultat: {
                     innvilget: false,
@@ -498,7 +497,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-10',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '0',
                 resultat: {
                     innvilget: false,
@@ -513,7 +512,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-12',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '1',
                 resultat: {
                     innvilget: false,
@@ -535,7 +534,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-05',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '0',
                 resultat: {
                     innvilget: true,
@@ -563,7 +562,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2023-01-05',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '0',
                 resultat: {
                     innvilget: true,
@@ -597,7 +596,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-03',
                 },
                 gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 guid: '0',
                 resultat: {
                     innvilget: true,
@@ -621,7 +620,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2021-12-15',
                 },
                 gjelderAnnenPart: true,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 guid: '0',
                 resultat: {
                     innvilget: false,
@@ -637,7 +636,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: true,
                 utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 guid: '0',
                 resultat: {
                     innvilget: false,
@@ -653,7 +652,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const periode1 = result[0] as AvslåttPeriode;
         expect(periode1.tidsperiode.fom).toEqual(new Date('2021-12-01'));
         expect(periode1.tidsperiode.tom).toEqual(new Date('2021-12-28'));
-        expect(periode1.kontoType).toEqual(StønadskontoType.Fellesperiode);
+        expect(periode1.kontoType).toEqual('FELLESPERIODE');
         expect(periode1.infotype).toEqual(PeriodeInfoType.avslåttPeriode);
     });
 
@@ -668,7 +667,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 flerbarnsdager: false,
                 oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
                 guid: '0',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: false,
@@ -696,7 +695,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const uttakperiode = result[0] as Uttaksperiode;
         expect(uttakperiode.tidsperiode.fom).toEqual(new Date('2022-01-03'));
         expect(uttakperiode.tidsperiode.tom).toEqual(new Date('2022-02-04'));
-        expect(uttakperiode.konto).toEqual(StønadskontoType.Mødrekvote);
+        expect(uttakperiode.konto).toEqual('MØDREKVOTE');
         const uttakkAnnenpartEøs = result[1] as UttakAnnenPartEØSInfoPeriode;
         expect(uttakkAnnenpartEøs.tidsperiode.fom).toEqual(new Date('2022-02-05'));
         expect(uttakkAnnenpartEøs.tidsperiode.tom).toEqual(new Date('2022-03-04'));

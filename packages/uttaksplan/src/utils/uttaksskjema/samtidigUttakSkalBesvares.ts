@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const samtidigUttakSkalBesvares = (
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak_fpoversikt,
     erUttakInnenFørsteSeksUkerFødselFarMedmor: boolean,
     erUttakFørFødsel: boolean,
     erAleneOmsorg: boolean,
@@ -53,7 +54,7 @@ const samtidigUttakSkalBesvares = (
 
         const erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager: boolean =
             erUttakInnenFørsteSeksUkerFødselFarMedmor &&
-            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
+            (konto === 'FEDREKVOTE' || konto === 'FORELDREPENGER') &&
             ønskerFlerbarnsdager !== true;
 
         return !(erUttakFørFødsel || erUttakEgenKvoteFarMedmorFørsteSeksUkerUtenFlerbarnsdager);

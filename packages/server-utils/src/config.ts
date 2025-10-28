@@ -1,6 +1,6 @@
 import logger from './logger';
 
-const envVar = (name: string) => {
+const påkrevMiljøVariabel = (name: string) => {
     if (!process.env[name]) {
         const errorMessage = `Missing required environment variable '${name}'`;
         logger.error(errorMessage);
@@ -8,13 +8,6 @@ const envVar = (name: string) => {
     }
     return process.env[name];
 };
-
-const proxy = {
-    FPSOKNAD_API_SCOPE: envVar('FPSOKNAD_API_SCOPE'),
-    FPSOKNAD_API_URL: envVar('FPSOKNAD_API_URL'),
-    FPOVERSIKT_API_URL: envVar('FPOVERSIKT_API_URL'),
-    FPOVERSIKT_API_SCOPE: envVar('FPOVERSIKT_API_SCOPE'),
-} as const;
 
 const app = {
     port: Number(process.env.PORT) || 8080,
@@ -27,4 +20,4 @@ const app = {
 };
 
 // eslint-disable-next-line import/no-default-export
-export default { proxy, app };
+export default { app, påkrevMiljøVariabel };

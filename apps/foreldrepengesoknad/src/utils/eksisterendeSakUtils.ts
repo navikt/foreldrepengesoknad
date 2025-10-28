@@ -17,7 +17,6 @@ import {
     Saksperiode,
     SaksperiodeDTO,
     Situasjon,
-    StønadskontoType,
     Søkerrolle,
     UttakArbeidType,
     isAdoptertBarn,
@@ -32,6 +31,7 @@ import {
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
     FpSak_fpoversikt,
+    KontoTypeUttak_fpoversikt,
     PersonDto_fpoversikt,
     Person_fpoversikt,
 } from '@navikt/fp-types';
@@ -61,14 +61,14 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): KontoTypeUttak_fpoversikt | undefined => {
     switch (årsak) {
         case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
-            return StønadskontoType.Fedrekvote;
+            return 'FEDREKVOTE';
         case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
-            return StønadskontoType.Fellesperiode;
+            return 'FELLESPERIODE';
         case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
-            return StønadskontoType.Mødrekvote;
+            return 'MØDREKVOTE';
         default:
             return undefined;
     }

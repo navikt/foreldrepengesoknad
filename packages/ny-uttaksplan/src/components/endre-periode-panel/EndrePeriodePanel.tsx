@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { Forelder } from '@navikt/fp-constants';
+import { KontoTypeUttak_fpoversikt, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
@@ -34,7 +34,7 @@ export interface PanelData {
     fom?: string;
     tom?: string;
     forelder?: Forelder;
-    kontoType: StønadskontoType | undefined;
+    kontoType: KontoTypeUttak_fpoversikt | undefined;
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
     stillingsprosent?: string;
     skalDuJobbe?: boolean;

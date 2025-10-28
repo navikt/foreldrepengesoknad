@@ -3,8 +3,8 @@ import { IntlShape, injectIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types';
+import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { getVarighetString } from '../../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import planBemUtils from '../../../utils/planBemUtils';
@@ -13,7 +13,7 @@ import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
 interface Props {
-    uttak: Stønadskonto;
+    uttak: KontoDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     intl: IntlShape;
@@ -34,7 +34,7 @@ const Kontostatus: FunctionComponent<Props> = ({
     situasjon,
     erAleneOmOmsorg,
 }) => {
-    if (erEndringssøknad && uttak.konto === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (erEndringssøknad && uttak.konto === 'FORELDREPENGER_FØR_FØDSEL') {
         uttak.dager = 0;
     }
 

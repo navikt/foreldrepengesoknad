@@ -18,12 +18,11 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import {
     EksternArbeidsforholdDto_fpoversikt,
+    KontoBeregningDto_fpoversikt,
     Periode as PeriodeType,
-    TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
@@ -48,7 +47,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
     handleOnPlanChange: (nyPlan: Periode[]) => void;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
@@ -136,7 +135,7 @@ const Uttaksplan = ({
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
-    const harAktivitetsfriKvote = stønadskontoer.kontoer.some((st) => st.konto === StønadskontoType.AktivitetsfriKvote);
+    const harAktivitetsfriKvote = stønadskontoer.kontoer.some((st) => st.konto === 'AKTIVITETSFRI_KVOTE');
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,

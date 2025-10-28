@@ -14,7 +14,6 @@ import {
     PeriodeValidState,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     Tidsperiode,
     TidsperiodeDate,
     UtsettelseÅrsakType,
@@ -23,6 +22,7 @@ import {
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -118,33 +118,33 @@ export const getOppholdskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
+export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt => {
     if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
-        return StønadskontoType.Fedrekvote;
+        return 'FEDREKVOTE';
     }
 
     if (årsak === OppholdÅrsakType.UttakMødrekvoteAnnenForelder) {
-        return StønadskontoType.Mødrekvote;
+        return 'MØDREKVOTE';
     }
 
     if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
-        return StønadskontoType.Fellesperiode;
+        return 'FELLESPERIODE';
     }
 
     if (årsak === OppholdÅrsakType.UttakForeldrepengerAnnenForelder) {
-        return StønadskontoType.Foreldrepenger;
+        return 'FORELDREPENGER';
     }
 
-    return StønadskontoType.ForeldrepengerFørFødsel;
+    return 'FORELDREPENGER_FØR_FØDSEL';
 };
 
-export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): OppholdÅrsakType | undefined => {
+export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): OppholdÅrsakType | undefined => {
     switch (konto) {
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
         default:
             return undefined;

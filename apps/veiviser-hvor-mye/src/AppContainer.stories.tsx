@@ -4,8 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -13,19 +12,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -33,23 +32,23 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto_fpoversikt,
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -57,8 +56,8 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
-} satisfies TilgjengeligeStønadskontoer;
+    } satisfies KontoBeregningDto_fpoversikt,
+};
 
 const meta = {
     title: 'AppContainer',

@@ -16,7 +16,7 @@ import {
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { PeriodeInfoType } from '@navikt/fp-constants';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Perioden } from './Perioden';
@@ -55,10 +55,10 @@ export const getAllePerioderMedUttaksinfoFraUttaksplan = (perioder: Periode[]): 
 };
 
 export const beregnGjenståendeUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
     uttaksplan: Periode[],
     beregnDagerBrukt: boolean,
-): Stønadskonto[] => {
+): KontoDto_fpoversikt[] => {
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
     return tilgjengeligeStønadskontoer.kontoer.map((konto) => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
@@ -88,9 +88,9 @@ const summerAntallDagerForbrukt = (perioder: Periode[]): number => {
 };
 
 export const beregnBrukteUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
     uttaksplan: Periode[],
-): Stønadskonto[] => {
+): KontoDto_fpoversikt[] => {
     return beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, true);
 };
 

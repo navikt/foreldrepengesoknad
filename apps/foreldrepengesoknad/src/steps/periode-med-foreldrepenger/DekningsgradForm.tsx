@@ -10,15 +10,15 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Barn, Dekningsgrad, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { StønadskontoType, links } from '@navikt/fp-constants';
+import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 const finnSisteDagMedForeldrepenger = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    stønadskontoer: KontoBeregningDto_fpoversikt,
     barn: Barn,
 ): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
@@ -32,9 +32,8 @@ const finnSisteDagMedForeldrepenger = (
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUkerFraStønadskontoer(
-            stønadskontoer.kontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel),
-        ) * 5;
+        getAntallUkerFraStønadskontoer(stønadskontoer.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) *
+        5;
 
     const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
@@ -64,8 +63,8 @@ type Props = {
     onFortsettSenere?: () => void;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
-    stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto100: KontoBeregningDto_fpoversikt;
+    stønadskonto80: KontoBeregningDto_fpoversikt;
 };
 
 const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {

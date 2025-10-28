@@ -1,11 +1,5 @@
-import {
-    Arbeidsform,
-    Forelder,
-    MorsAktivitet,
-    OverføringÅrsakType,
-    StønadskontoType,
-    UttakRundtFødselÅrsak,
-} from '@navikt/fp-common';
+import { Arbeidsform, Forelder, MorsAktivitet, OverføringÅrsakType, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 
@@ -29,7 +23,7 @@ export enum PeriodeUttakFormField {
 export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.fom]: Date | undefined;
     [PeriodeUttakFormField.tom]: Date | undefined;
-    [PeriodeUttakFormField.konto]: StønadskontoType | '';
+    [PeriodeUttakFormField.konto]: KontoTypeUttak_fpoversikt | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
     [PeriodeUttakFormField.overføringsårsak]: OverføringÅrsakType | '';

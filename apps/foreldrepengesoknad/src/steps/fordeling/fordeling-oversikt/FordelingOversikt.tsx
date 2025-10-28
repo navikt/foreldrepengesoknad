@@ -11,7 +11,7 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FlerbarnsdagerInformasjon } from './Flerbarnsdagerinformasjon';
@@ -22,7 +22,7 @@ import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import { BeggeHarRettGraf } from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 
 interface Props {
-    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    kontoer: KontoBeregningDto_fpoversikt;
     navnFarMedmor: string;
     navnMor: string;
     deltUttak: boolean;

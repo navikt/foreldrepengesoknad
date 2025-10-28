@@ -6,7 +6,7 @@ import { mapUttaksplanFormValueToState } from 'steps/uttaksplan/UttaksplanFormUt
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-import { Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-uttaksplan';
 
@@ -35,7 +35,7 @@ export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFøds
         perioderMedUttakRundtFødsel.length === 1 &&
         dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
-            (perioderMedUttakRundtFødsel[0].konto !== StønadskontoType.Fedrekvote ||
+            (perioderMedUttakRundtFødsel[0].konto !== 'FEDREKVOTE' ||
                 !perioderMedUttakRundtFødsel[0].ønskerSamtidigUttak)) ||
             isOverføringsperiode(perioderMedUttakRundtFødsel[0]));
     const svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager =
@@ -43,7 +43,7 @@ export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFøds
         perioderMedUttakRundtFødsel.length === 1 &&
         dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
-        perioderMedUttakRundtFødsel[0].konto === StønadskontoType.Fedrekvote &&
+        perioderMedUttakRundtFødsel[0].konto === 'FEDREKVOTE' &&
         perioderMedUttakRundtFødsel[0].ønskerFlerbarnsdager === true;
 
     let infoTekst = undefined;

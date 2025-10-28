@@ -1,4 +1,4 @@
-import { StønadskontoType } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 export enum FordelingEier {
     Mor = 'MOR',
@@ -32,7 +32,7 @@ export interface DelInformasjon {
 
 export interface FordelingGrafInfo {
     antallDager: number;
-    konto: StønadskontoType;
+    konto: KontoTypeUttak_fpoversikt;
     eier: FordelingEier;
     fargekode: FordelingFargekode;
     beskrivelse: string;

@@ -12,7 +12,7 @@ import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } fro
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { Dekningsgrad, RettighetType, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto_fpoversikt, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -32,7 +32,7 @@ import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoer;
+    stønadskontoer: { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
 }
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {

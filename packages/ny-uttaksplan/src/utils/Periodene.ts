@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import { StønadskontoType } from '@navikt/fp-common';
 import {
     TidsperiodenString,
     UttaksdagenString,
@@ -276,7 +275,7 @@ function getAntallUttaksdager(perioder: Planperiode[]): number {
 
 function getForeldrepengerFørTermin(perioder: Planperiode[]): Planperiode | undefined {
     const periode: Planperiode | undefined = perioder.find(
-        (p) => isUttaksperiode(p) && p.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
+        (p) => isUttaksperiode(p) && p.kontoType === 'FORELDREPENGER_FØR_FØDSEL',
     );
 
     return periode;

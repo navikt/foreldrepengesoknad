@@ -6,12 +6,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
 import {
     BrukerRolleSak_fpoversikt,
     Familiehendelse_fpoversikt,
     KontoBeregningDto_fpoversikt,
     KontoDto_fpoversikt,
+    KontoTypeUttak_fpoversikt,
     OppholdÅrsakType,
     RettighetType_fpoversikt,
     SaksperiodeNy,
@@ -844,16 +844,16 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): StønadskontoType | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt | undefined => {
     switch (årsak) {
         case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
-            return StønadskontoType.Fedrekvote;
+            return 'FEDREKVOTE';
         case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
-            return StønadskontoType.Fellesperiode;
+            return 'FELLESPERIODE';
         case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
-            return StønadskontoType.Mødrekvote;
+            return 'MØDREKVOTE';
         case OppholdÅrsakType.UttakForeldrepengerAnnenForelder:
-            return StønadskontoType.Foreldrepenger;
+            return 'FORELDREPENGER';
         default:
             return undefined;
     }

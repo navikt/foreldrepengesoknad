@@ -15,7 +15,6 @@ import {
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
-    StønadskontoType,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
@@ -26,7 +25,7 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoType, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
+import { KontoType, KontoTypeUttak_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -185,15 +184,15 @@ const getUtsettelseÅrsakFromSaksperiode = (
 
 const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
     switch (saksperiode.kontoType) {
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
-        case StønadskontoType.Fellesperiode:
+        case 'FELLESPERIODE':
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
-        case StønadskontoType.Foreldrepenger:
+        case 'FORELDREPENGER':
             return OppholdÅrsakType.UttakForeldrepengerAnnenForelder;
-        case StønadskontoType.ForeldrepengerFørFødsel:
+        case 'FORELDREPENGER_FØR_FØDSEL':
             return OppholdÅrsakType.ForeldrepengerFørFødsel;
         default:
             return undefined;
@@ -216,22 +215,22 @@ const beregnSamtidigUttaksProsent = (
     return undefined;
 };
 
-export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): StønadskontoType => {
-    return periodeTrekkerMinsterett ? StønadskontoType.AktivitetsfriKvote : StønadskontoType.Foreldrepenger;
+export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): KontoTypeUttak_fpoversikt => {
+    return periodeTrekkerMinsterett ? 'AKTIVITETSFRI_KVOTE' : 'FORELDREPENGER';
 };
 
 const getErMorForSyk = (
     erFarEllerMedmor: boolean,
     saksperiode: Saksperiode,
     familiehendelsesdato: string,
-    konto: StønadskontoType | undefined,
+    konto: KontoTypeUttak_fpoversikt | undefined,
 ) => {
     if (
         erFarEllerMedmor &&
         !saksperiode.flerbarnsdager &&
         !saksperiode.samtidigUttak &&
         dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'), 'day') &&
-        konto !== StønadskontoType.AktivitetsfriKvote
+        konto !== 'AKTIVITETSFRI_KVOTE'
     ) {
         if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {
             return true;
@@ -499,7 +498,7 @@ const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, termind
         !saksperiode.resultat.innvilget &&
         saksperiode.resultat.trekkerDager &&
         dayjs(saksperiode.periode.tom).isBefore(dayjs(ISOStringToDate(termindato)), 'd') &&
-        saksperiode.kontoType !== StønadskontoType.Fedrekvote
+        saksperiode.kontoType !== 'FEDREKVOTE'
     );
 };
 

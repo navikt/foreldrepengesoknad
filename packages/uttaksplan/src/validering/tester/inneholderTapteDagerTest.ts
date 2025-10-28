@@ -1,4 +1,4 @@
-import { Periodetype, StønadskontoType, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+import { Periodetype, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
 
 import { Periodene } from '../../utils/Periodene';
 import { RegelTestresultat } from '../utils/types/regelTypes';
@@ -21,7 +21,7 @@ export function inneholderTapteDagerTest(grunnlag: Søknadsinfo): RegelTestresul
 
     const planInneholderAnnetEnnAktivitetsfriKvote = perioder
         .filter((p) => p.type !== Periodetype.Hull)
-        .some((p) => (isUttaksperiode(p) && p.konto !== StønadskontoType.AktivitetsfriKvote) || !isUttaksperiode(p));
+        .some((p) => (isUttaksperiode(p) && p.konto !== 'AKTIVITETSFRI_KVOTE') || !isUttaksperiode(p));
 
     const passerer = (planInneholderTapteDager && planInneholderAnnetEnnAktivitetsfriKvote) === false;
 

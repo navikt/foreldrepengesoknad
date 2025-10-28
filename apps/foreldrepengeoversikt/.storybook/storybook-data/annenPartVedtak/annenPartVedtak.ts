@@ -1,4 +1,4 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { AnnenPartSak_fpoversikt, PeriodeResultatÅrsak } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
@@ -6,7 +6,7 @@ export const annenPartVedtak = {
         {
             fom: '2023-03-12',
             tom: '2023-03-26',
-            kontoType: StønadskontoType.Fedrekvote,
+            kontoType: 'FEDREKVOTE',
             samtidigUttak: 100,
             resultat: {
                 innvilget: true,
