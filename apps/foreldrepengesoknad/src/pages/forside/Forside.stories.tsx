@@ -10,7 +10,6 @@ import {
     BehandlingTilstand_fpoversikt,
     FpSak_fpoversikt,
     PersonDto_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
 } from '@navikt/fp-types';
 
 import { Forside } from './Forside';
@@ -83,7 +82,7 @@ const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: BarnDto_fpoversikt[]): PersonMedArbeidsforholdDto_fpoversikt['person'] => {
+const getSøkerinfoMedBarn = (barna: BarnDto_fpoversikt[]): PersonDto_fpoversikt => {
     return { ...defaultPerson, barn: barna };
 };
 
@@ -141,8 +140,12 @@ const ettBarn = {
     kjønn: 'M',
 } satisfies BarnDto_fpoversikt;
 
-const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
-const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };
+const annetBarnSammeDato = { ...ettBarn, navn: { ...ettBarn.navn, mellomnavn: undefined, fornavn: 'Grønn' }, fnr: '4' };
+const tredjeBarnSammeDato = {
+    ...ettBarn,
+    navn: { ...ettBarn.navn, mellomnavn: undefined, fornavn: 'Sommerlig' },
+    fnr: '5',
+};
 
 const sakOpprettetFødsel = getSak({
     kanSøkeOmEndring: true,
