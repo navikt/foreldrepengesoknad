@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { Forelder } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { Planperiode } from '../types/Planperiode';
@@ -34,16 +35,7 @@ export const useUttaksplan = (saksperioder: SaksperiodeNy[]): Planperiode[] => {
                 førsteUttaksdagNesteBarnsSak: undefined,
                 modus,
             }),
-        [
-            søkersPerioder,
-            annenPartsPerioder,
-            erFarEllerMedmor,
-            bareFarMedmorHarRett,
-            familiehendelsedato,
-            familiesituasjon,
-            harAktivitetskravIPeriodeUtenUttak,
-            modus,
-        ],
+        [søkersPerioder, annenPartsPerioder],
     );
 
     return komplettPlan;
@@ -55,7 +47,9 @@ export const getSøkersPerioder = (
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
+        ? gjeldendeUttaksplan.filter((p) =>
+              erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
+          )
         : gjeldendeUttaksplan;
 };
 
@@ -65,6 +59,8 @@ export const getAnnenpartsPerioder = (
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
+        ? gjeldendeUttaksplan.filter((p) =>
+              erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
+          )
         : [];
 };

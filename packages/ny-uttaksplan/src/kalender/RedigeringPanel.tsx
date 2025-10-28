@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Planperiode } from 'types/Planperiode';
 
 import { Box, Button, VStack } from '@navikt/ds-react';
 
@@ -10,6 +9,7 @@ import { Period } from '@navikt/fp-ui';
 
 import { EndrePeriodePanel } from '../components/endre-periode-panel/EndrePeriodePanel';
 import { LeggTilPeriodePanel } from '../components/legg-til-periode-panel/LeggTilPeriodePanel';
+import { Planperiode } from '../types/Planperiode';
 import { mapPerioderToPermisjonsperiode } from '../utils/permisjonsperiodeUtils';
 
 type Props = {
@@ -22,13 +22,15 @@ type Props = {
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, familiehendelsedato }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
+    const sammenslåtteValgtePerioder = slåSammenTilstøtendePerioder(valgtePerioder);
+
     useEffect(() => {
         // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
         setErIRedigeringsmodus(false);
-    }, [valgtePerioder]);
+    }, [sammenslåtteValgtePerioder]);
 
     const valgtePerioderIKomplettPlan = komplettPlan.filter((p) =>
-        valgtePerioder.some((vp) => {
+        sammenslåtteValgtePerioder.some((vp) => {
             return (
                 (dayjs(vp.fom).isSameOrAfter(dayjs(p.fom), 'day') &&
                     dayjs(vp.fom).isSameOrBefore(dayjs(p.tom), 'day')) ||
@@ -57,7 +59,7 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                 >
                     <VStack gap="space-16">
                         <div>
-                            {valgtePerioder.map((periode) => (
+                            {sammenslåtteValgtePerioder.map((periode) => (
                                 <div key={periode.fom}>
                                     {periode.fom === periode.tom
                                         ? dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT)
@@ -77,8 +79,6 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                         <LeggTilPeriodePanel
                             onCancel={() => setErIRedigeringsmodus(false)}
                             handleAddPeriode={(nyPeriode) => handleOnPlanChange(nyPeriode, true)}
-                            erBarnetFødt
-                            gjelderAdopsjon={false}
                         />
                     )}
                     {!!permisjonsperioder && (
@@ -88,12 +88,31 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                             handleAddPeriode={() => {}}
                             permisjonsperiode={permisjonsperioder}
                             inneholderKunEnPeriode
-                            erBarnetFødt
-                            gjelderAdopsjon={false}
                         />
                     )}
                 </>
             )}
         </>
     );
+};
+
+const slåSammenTilstøtendePerioder = (perioder: Period[]): Period[] => {
+    if (!perioder.length) return [];
+
+    return [...perioder]
+        .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
+        .reduce<Period[]>((acc, curr) => {
+            const last = acc[acc.length - 1];
+
+            if (last && dayjs(last.tom).add(1, 'day').isSame(dayjs(curr.fom))) {
+                return acc.slice(0, -1).concat({
+                    ...curr,
+                    fom: last.fom,
+                    tom: curr.tom,
+                });
+            }
+
+            acc.push(curr);
+            return acc;
+        }, []);
 };

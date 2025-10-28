@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { ComponentProps, useState } from 'react';
 import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -16,24 +17,48 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
-        familiehendelsedato: '2024-04-04',
-        modus: 'planlegger',
+        modus: 'søknad',
         handleOnPlanChange: action('button-click'),
         valgtStønadskonto: {
             kontoer: [
-                { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
             ],
             minsteretter: MINSTERETTER,
         },
-        erAleneOmOmsorg: false,
+        aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
-        familiesituasjon: 'fødsel',
-        navnPåForeldre: { mor: 'Mamma', farMedmor: 'Pappa' },
+        navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+        children: null,
     },
-} satisfies Meta<typeof UttaksplanKalender>;
+    render: (args) => {
+        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
+
+        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+            setPerioder(oppdatertePerioder);
+            args.handleOnPlanChange?.(oppdatertePerioder);
+        };
+
+        return (
+            <UttaksplanDataProvider
+                barn={args.barn}
+                erFarEllerMedmor={args.erFarEllerMedmor}
+                navnPåForeldre={args.navnPåForeldre}
+                modus={args.modus}
+                valgtStønadskonto={args.valgtStønadskonto}
+                aleneOmOmsorg={args.aleneOmOmsorg || false}
+                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
+                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
+                harAktivitetskravIPeriodeUtenUttak={false}
+                erDeltUttak={args.erDeltUttak || false}
+            >
+                <UttaksplanKalender {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
+            </UttaksplanDataProvider>
+        );
+    },
+} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanKalender>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -102,40 +127,6 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-07-15',
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
-            },
-        ] satisfies SaksperiodeNy[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2024-04-04'],
-            antallBarn: 1,
-        },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-    },
-};
-
-export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2024-03-15',
-                tom: '2024-04-03',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: 'MOR',
-            },
-            {
-                fom: '2024-05-17',
-                tom: '2024-05-23',
-                kontoType: 'FELLESPERIODE',
-                forelder: 'MOR',
-                resultat: {
-                    innvilget: false,
-                    trekkerDager: false,
-                    trekkerMinsterett: false,
-                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
-                },
             },
         ] satisfies SaksperiodeNy[],
         barn: {

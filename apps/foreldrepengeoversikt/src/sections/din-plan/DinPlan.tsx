@@ -8,7 +8,12 @@ import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import { UttaksplanKalender, UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import {
+    KvoteOppsummeringWrapper,
+    UttaksplanDataProvider,
+    UttaksplanKalender,
+    UttaksplanNy,
+} from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
@@ -134,30 +139,9 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                         </>
                     )}
                     {visKalender && (
-                        <UttaksplanKalender
-                            readOnly={true}
-                            saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
-                        />
-                        <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
-                    </>
-                )}
-                {visKalender && (
-                    <UttaksplanKalender
-                        bareFarMedmorHarRett={bareFarMedmorHarRett}
-                        familiehendelsedato={familiehendelseDato}
-                        barn={barn}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                        søkersPerioder={relevantePerioder}
-                        annenPartsPerioder={relevanteAnnenPartsPerioder}
-                        navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
-                        modus="innsyn"
-                        familiesituasjon={familiesituasjon}
-                        navnPåForeldre={navnPåForeldre}
-                        valgtStønadskonto={{} as any}
-                        erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                    />
-                )}
+                        <UttaksplanKalender saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)} />
+                    )}
+                </UttaksplanDataProvider>
             </VStack>
         </VStack>
     );

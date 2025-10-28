@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';

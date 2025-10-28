@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
@@ -14,10 +15,12 @@ import { KontoBeregningResultatDto, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
-    KvoteOppsummering,
+    KvoteOppsummeringWrapper,
     Planperiode,
+    UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanNy,
+    finnOgSettInnHull,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -244,42 +247,31 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         )}
                     </VStack>
 
-                <VStack gap="space-20">
-                    {visningsmodus === 'kalender' && (
-                        <div className="p-6 max-[479px]:p-0">
-                            <UttaksplanKalender
-                                bareFarMedmorHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                familiehendelsedato={familiehendelsedato}
-                                søkersPerioder={getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor)}
-                                annenPartsPerioder={getAnnenpartsPerioder(
-                                    erDeltUttak,
-                                    gjeldendeUttaksplan,
-                                    erFarEllerMedmor,
-                                )}
-                                navnAnnenPart="Test" //TODO: fiks denne før prod?
-                                barn={mapOmBarnetTilBarn(omBarnet)}
-                                planleggerLegend={
-                                    <CalendarLabels
-                                        hvemPlanlegger={hvemPlanlegger}
-                                        barnet={omBarnet}
-                                        hvemHarRett={hvemHarRett}
-                                        uttaksplan={gjeldendeUttaksplan}
-                                        inneholderTapteDager={harTapteDager}
-                                    />
-                                }
-                                barnehagestartdato={barnehagestartdato}
-                                handleOnPlanChange={handleOnPlanChange}
-                                modus="planlegger"
-                                valgtStønadskonto={valgtStønadskonto}
-                                erAleneOmOmsorg={erAleneOmOmsorg}
-                                erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                                familiesituasjon={familiesituasjon}
-                                navnPåForeldre={navnPåForeldre}
-                            />
-                        </div>
-                    )}
+                    <VStack gap="space-20">
+                        {visningsmodus === 'kalender' && (
+                            <div className="p-6 max-[479px]:p-0">
+                                <UttaksplanKalender
+                                    saksperioder={gjeldendeUttaksplan}
+                                    planleggerLegend={
+                                        <CalendarLabels
+                                            hvemPlanlegger={hvemPlanlegger}
+                                            barnet={omBarnet}
+                                            hvemHarRett={hvemHarRett}
+                                            uttaksplan={gjeldendeUttaksplan}
+                                            inneholderTapteDager={harTapteDager}
+                                        />
+                                    }
+                                    barnehagestartdato={barnehagestartdato}
+                                    handleOnPlanChange={handleOnPlanChange}
+                                />
+                            </div>
+                        )}
+                    </VStack>
+                    <StepButtons
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                        nextButtonOnClick={navigator.goToNextDefaultStep}
+                        useSimplifiedTexts
+                    />
                 </VStack>
             </UttaksplanDataProvider>
         </PlanleggerStepPage>

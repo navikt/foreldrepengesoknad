@@ -6,17 +6,8 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button, Checkbox, HStack } from '@navikt/ds-react';
 
-import { BarnType, PeriodeColor } from '@navikt/fp-constants';
-import {
-    Barn,
-    Familiesituasjon,
-    NavnPåForeldre,
-    SaksperiodeNy,
-    UttakUtsettelseÅrsak_fpoversikt,
-    UttaksplanModus,
-    isFødtBarn,
-    isUfødtBarn,
-} from '@navikt/fp-types';
+import { PeriodeColor } from '@navikt/fp-constants';
+import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
     UttaksdagenString,
@@ -30,9 +21,11 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
-import { UttaksplanDataContext } from '../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { useUttaksplan } from '../context/useUttaksplan';
+import { useUttaksplanBuilder } from '../context/useUttaksplanBuilder';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from '../utils/periodeUtils';
+import { isHull, isPeriodeUtenUttak } from '../utils/periodeUtils';
 import { RedigeringPanel } from './RedigeringPanel';
 import { UttaksplanLegend } from './UttaksplanLegend';
 import {
@@ -229,7 +222,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         : undefined;
 
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
-    if (annenForelderSamtidigUttaksperiode && samtidigUttaksprosent && samtidigUttaksprosent > 0) {
+    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
 
@@ -331,98 +324,46 @@ const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
 };
 
 interface Props {
-    søkersPerioder: SaksperiodeNy[];
-    annenPartsPerioder?: SaksperiodeNy[];
-    harAktivitetskravIPeriodeUtenUttak: boolean;
-    erFarEllerMedmor: boolean;
-    bareFarMedmorHarRett: boolean;
-    familiesituasjon: Familiesituasjon;
-    barn: Barn;
-    navnAnnenPart: string;
-    modus: UttaksplanModus;
-    førsteUttaksdagNesteBarnsSak?: string;
-    planleggerLegend?: ReactElement<any>;
+    saksperioder: SaksperiodeNy[];
+    planleggerLegend?: ReactElement;
     barnehagestartdato?: string;
     handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void;
-    familiehendelsedato: string;
-    navnPåForeldre: NavnPåForeldre;
-    valgtStønadskonto: KontoBeregningDto;
-    erAleneOmOmsorg: boolean;
-    erMedmorDelAvSøknaden?: boolean;
 }
 
 export const UttaksplanKalender = ({
-    søkersPerioder,
-    annenPartsPerioder,
-    harAktivitetskravIPeriodeUtenUttak,
-    erFarEllerMedmor,
-    bareFarMedmorHarRett,
-    familiesituasjon,
-    barn,
-    navnAnnenPart,
-    førsteUttaksdagNesteBarnsSak,
+    saksperioder,
     planleggerLegend,
     barnehagestartdato,
     handleOnPlanChange,
-    familiehendelsedato,
-    modus,
-    navnPåForeldre,
-    valgtStønadskonto,
-    erAleneOmOmsorg,
-    erMedmorDelAvSøknaden,
 }: Props) => {
     const intl = useIntl();
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const erAdopsjon = barn.type === BarnType.ADOPTERT_ANNET_BARN || barn.type === BarnType.ADOPTERT_STEBARN;
-    const erIPlanleggerModus = planleggerLegend !== undefined;
+
+    const { barn, erFarEllerMedmor, familiehendelsedato, modus, navnPåForeldre } = useUttaksplanData();
+
+    const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+
+    const uttaksplan = useUttaksplan(saksperioder);
+    const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
 
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [isRangeSelectorMode, setRangeSelectorMode] = useState(false);
     const [valgtePerioder, setSelectedPeriods] = useState<Period[]>([]);
 
-    const komplettPlan = utledKomplettPlan({
-        familiehendelsedato,
-        erFarEllerMedmor,
-        søkersPerioder,
-        annenPartsPerioder,
-        gjelderAdopsjon: erAdopsjon,
-        bareFarMedmorHarRett,
-        harAktivitetskravIPeriodeUtenUttak,
-        førsteUttaksdagNesteBarnsSak,
-        modus,
-    });
-
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
-        : undefined;
-
-    const builder = Uttaksplanbuilder({
-        perioder: komplettPlan,
-        familiehendelsedato,
-        harAktivitetskravIPeriodeUtenUttak,
-        gjelderAdopsjon: erAdopsjon,
-        bareFarMedmorHarRett,
-        erFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak,
-        opprinneligPlan: annenPartsPlanperioder,
-        erIPlanleggerModus: true,
-    });
-
-    const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(komplettPlan);
+    const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
 
     const foreldrepengerHarAktivitetskrav =
-        komplettPlan.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        komplettPlan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
+        uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
+        uttaksplan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
 
     const perioderForKalendervisning = getPerioderForKalendervisning(
-        komplettPlan,
+        uttaksplan,
         erFarEllerMedmor,
         barn,
         navnAnnenPart,
         unikeUtsettelseÅrsaker,
         intl,
-        erIPlanleggerModus,
+        modus === 'planlegger',
         foreldrepengerHarAktivitetskrav,
         barnehagestartdato,
     );
@@ -442,8 +383,8 @@ export const UttaksplanKalender = ({
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = komplettPlan.some(
-        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
+    const harAvslåttePerioderSomIkkeGirTapteDager = uttaksplan.some(
+        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     const dateClickCallback = (selectedDate: string) => {
@@ -480,20 +421,7 @@ export const UttaksplanKalender = ({
     };
 
     return (
-        <UttaksplanDataContext
-            initialState={{
-                BARN: barn,
-                ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
-                FAMILIEHENDELSEDATO: familiehendelsedato,
-                NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: komplettPlan,
-                FAMILIESITUASJON: familiesituasjon,
-                MODUS: modus,
-                VALGT_STØNADSKONTO: valgtStønadskonto,
-                ALENE_OM_OMSORG: erAleneOmOmsorg,
-                ER_MEDMOR_DEL_AV_SØKNADEN: erMedmorDelAvSøknaden,
-            }}
-        >
+        <>
             {harAvslåttePerioderSomIkkeGirTapteDager && (
                 <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
@@ -549,8 +477,8 @@ export const UttaksplanKalender = ({
                         {!isDesktop && handleOnPlanChange && (
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
-                                komplettPlan={komplettPlan}
-                                handleOnPlanChange={getModifyPlan(builder, handleOnPlanChange)}
+                                komplettPlan={uttaksplan}
+                                handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                                 familiehendelsedato={familiehendelsedato}
                             />
                         )}
@@ -558,8 +486,8 @@ export const UttaksplanKalender = ({
                     {isDesktop && handleOnPlanChange && valgtePerioder.length > 0 && (
                         <RedigeringPanel
                             valgtePerioder={valgtePerioder}
-                            komplettPlan={komplettPlan}
-                            handleOnPlanChange={getModifyPlan(builder, handleOnPlanChange)}
+                            komplettPlan={uttaksplan}
+                            handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                             familiehendelsedato={familiehendelsedato}
                         />
                     )}
@@ -573,7 +501,7 @@ export const UttaksplanKalender = ({
             >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
-        </UttaksplanDataContext>
+        </>
     );
 };
 

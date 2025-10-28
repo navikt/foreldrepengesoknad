@@ -19,6 +19,7 @@ import { LocaleAll, LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
