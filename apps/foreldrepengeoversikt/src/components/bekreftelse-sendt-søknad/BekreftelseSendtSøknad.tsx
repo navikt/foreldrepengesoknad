@@ -346,7 +346,7 @@ const useÅpenBehandlingTilstand = () => {
 const useGetTidligstMuligeSvar = () => {
     const sak = useGetSelectedSak();
 
-    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+    if (sak?.ytelse !== 'FORELDREPENGER') {
         return undefined;
     }
 

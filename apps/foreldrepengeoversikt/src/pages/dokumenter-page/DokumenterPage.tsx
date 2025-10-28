@@ -54,14 +54,12 @@ const DokumenterPageInner = () => {
 
     const handleSort = (sortKey: ScopedSortState['orderBy']) => {
         setSort(
-            sort && sortKey === sort.orderBy && sort.direction === 'descending'
+            sortKey === sort?.orderBy && sort.direction === 'descending'
                 ? undefined
                 : {
                       orderBy: sortKey,
                       direction:
-                          sort && sortKey === sort.orderBy && sort.direction === 'ascending'
-                              ? 'descending'
-                              : 'ascending',
+                          sortKey === sort?.orderBy && sort.direction === 'ascending' ? 'descending' : 'ascending',
                   },
         );
     };
