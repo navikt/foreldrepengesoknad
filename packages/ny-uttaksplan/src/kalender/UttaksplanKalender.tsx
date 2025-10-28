@@ -166,7 +166,7 @@ const getKalenderFargeForUttaksperiode = (
         : undefined;
 
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
-    if (annenForelderSamtidigUttaksperiode && samtidigUttaksprosent && samtidigUttaksprosent > 0) {
+    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
 
