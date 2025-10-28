@@ -8,7 +8,7 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/fpoversikt/api/person/info`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/engangsstonad`,

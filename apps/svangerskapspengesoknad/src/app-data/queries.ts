@@ -11,7 +11,8 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     satser: `${urlPrefiks}/rest/satser`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
+
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/svangerskapspenger`,

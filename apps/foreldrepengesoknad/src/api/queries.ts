@@ -23,7 +23,7 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
     konto: `${urlPrefiks}/rest/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
