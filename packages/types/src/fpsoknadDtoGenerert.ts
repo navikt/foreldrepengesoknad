@@ -554,6 +554,7 @@ export type UttaksPeriodeDto = {
     samtidigUttakProsent?: number;
     ønskerFlerbarnsdager?: boolean;
     ønskerSamtidigUttak?: boolean;
+    ønskerGradering?: boolean;
 };
 
 export type UttaksplanDto = {
