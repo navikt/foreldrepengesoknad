@@ -27,8 +27,6 @@
     },
     "globalEnv": [
         "APPRES_CMS_URL",
-        "FORELDREPENGER_API_URL",
-        "FORELDREPENGER_API_SCOPE",
         "APP_VERSION",
         "FEATURE_TEST_1JULI2024_REGLER",
         "LOG_VALIDATION",

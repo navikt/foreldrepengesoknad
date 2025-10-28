@@ -52,7 +52,6 @@ spec:
       rules:
         - application: fpsoknad
         - application: fpoversikt
-        - application: foreldrepengesoknad-api
         - application: nav-dekoratoren
           namespace: personbruker
   env:
@@ -60,10 +59,6 @@ spec:
    - name: {{@key}}
      value: "{{this}}"
   {{/each}}
-   - name: FORELDREPENGER_API_URL
-     value: "http://foreldrepengesoknad-api/rest"
-   - name: FORELDREPENGER_API_SCOPE
-     value: "{{env.ENV}}-gcp:teamforeldrepenger:foreldrepengesoknad-api"
    - name: FPSOKNAD_API_URL
      value: "http://fpsoknad/fpsoknad"
    - name: FPSOKNAD_API_SCOPE
