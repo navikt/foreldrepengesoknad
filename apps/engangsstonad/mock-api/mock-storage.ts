@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { EsDataMapAndMetaData } from '../src/app-data/useEsMellomlagring';
-import mellomlagring from './mellomlagretdata.json';
+import mellomlagring from './mellomlagretdata.json' with { type: 'json' };
 
 const FILE_NAME = 'mellomlagretdata.json';
 
