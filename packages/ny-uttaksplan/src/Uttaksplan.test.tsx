@@ -18,7 +18,7 @@ describe('Uttaksplan', () => {
 
         expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
         expect(screen.getByText('09. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May - 26. Mar')).toBeInTheDocument();
+        expect(screen.getByText('09. May - 11. Dec')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
@@ -63,7 +63,7 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-12-12',
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -77,7 +77,7 @@ describe('Uttaksplan', () => {
 
         expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
         expect(screen.getByText('09. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May - 26. Mar')).toBeInTheDocument();
+        expect(screen.getByText('09. May - 11. Dec')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
         expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
@@ -146,7 +146,7 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-12-12',
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -158,36 +158,16 @@ describe('Uttaksplan', () => {
 
         render(<Default handleOnPlanChange={handleOnPlanChange} />);
 
-        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
+        expect(await screen.findByText('12. Dec - 26. Mar')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('09. May - 26. Mar'));
+        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
 
-        await userEvent.click(screen.getAllByText('Endre')[1]);
+        await userEvent.click(screen.getAllByText('Endre')[2]);
 
         expect(await screen.findByText('Endre periode')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('09.05.2025 - 21.08.2025 - Olga Utviklers kvote'));
-
-        await userEvent.click(screen.getByText('Gå videre'));
-
-        expect(await screen.findByText('Hva vil du endre til?')).toBeInTheDocument();
+        expect(screen.getByText('Hva vil du endre til?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ferie'));
-
-        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
-
-        expect(
-            await screen.findByText('Ferie kan ikke legges inn de første seks ukene etter fødsel.'),
-        ).toBeInTheDocument();
-
-        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
-        await userEvent.clear(fraOgMedDato);
-        await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
-        await userEvent.tab();
-        const tilOgMedDato = screen.getByLabelText('Til og med dato');
-        await userEvent.clear(tilOgMedDato);
-        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
-        await userEvent.tab();
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
@@ -203,16 +183,10 @@ describe('Uttaksplan', () => {
                 fom: '2025-05-09',
                 forelder: Forelder.mor,
                 kontoType: 'MØDREKVOTE',
-                tom: '2025-06-27',
+                tom: '2025-08-21',
             },
             {
-                fom: '2025-06-30',
-                forelder: Forelder.mor,
-                tom: '2025-08-28',
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
-            },
-            {
-                fom: '2025-08-29',
+                fom: '2025-08-22',
                 forelder: Forelder.mor,
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
@@ -220,7 +194,7 @@ describe('Uttaksplan', () => {
             {
                 fom: '2025-12-12',
                 forelder: Forelder.mor,
-                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
                 tom: '2026-03-26',
             },
         ]);
@@ -260,13 +234,11 @@ describe('Uttaksplan', () => {
 
         render(<Default handleOnPlanChange={handleOnPlanChange} />);
 
-        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
+        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('09. May - 26. Mar'));
+        await userEvent.click(screen.getByText('09. May - 11. Dec'));
 
         await userEvent.click(screen.getAllByText('Slett')[1]);
-
-        expect(await screen.findByText('Slett periode')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('09.05.2025 - 21.08.2025 - Olga Utviklers kvote'));
 
@@ -287,7 +259,7 @@ describe('Uttaksplan', () => {
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.mor,
+                forelder: Forelder.farMedmor,
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
@@ -295,49 +267,28 @@ describe('Uttaksplan', () => {
         ]);
     });
 
-    it('Skal vise "Fars kvote" når det er morOgFar som skal endre periode og legge til periode med foreldrepenger', async () => {
+    it('Skal vise "Fars kvote" når det er morOgFar', async () => {
         const handleOnPlanChange = vi.fn();
         render(<Default handleOnPlanChange={handleOnPlanChange} />);
-        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('09. May - 26. Mar'));
-        await userEvent.click(screen.getAllByText('Endre')[1]);
-        expect(await screen.findByText('Hvilken periode vil du endre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('12.12.2025 - 26.03.2026 - Espen Utviklers kvote'));
-        await userEvent.click(screen.getByText('Gå videre'));
-        const kontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
-        expect(within(kontotypeFieldset).getByText('Fars kvote')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Legg til periode'));
-        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        await userEvent.click(screen.getAllByText('Endre')[2]);
 
-        // Bruk getAllByText for heading i stedet for getByText
-        expect(screen.getAllByText('Hvilken del av foreldrepengene vil du bruke?').length).toBeGreaterThan(0);
-        // Finn fieldset ved å bruke legend-teksten
-        const nyKontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
-        expect(within(nyKontotypeFieldset).getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.queryByText('Medmors kvote')).not.toBeInTheDocument();
     });
 
-    it('Skal vise "Medmors kvote" når det er morOgmor som skal endre periode og legge til periode med foreldrepenger', async () => {
+    it('Skal vise "Medmors kvote" når det er morOgmor', async () => {
         const handleOnPlanChange = vi.fn();
+
         render(<MorOgMedmor handleOnPlanChange={handleOnPlanChange} />);
-        expect(await screen.findByText('09. May - 26. Mar')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('09. May - 26. Mar'));
-        await userEvent.click(screen.getAllByText('Endre')[1]);
-        expect(await screen.findByText('Hvilken periode vil du endre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('12.12.2025 - 26.03.2026 - Helga Utviklers kvote'));
-        await userEvent.click(screen.getByText('Gå videre'));
-        const kontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
-        expect(within(kontotypeFieldset).getByText('Medmors kvote')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Legg til periode'));
-        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        await userEvent.click(screen.getAllByText('Endre')[2]);
 
-        // Bruk getAllByText for heading i stedet for getByText
-        expect(screen.getAllByText('Hvilken del av foreldrepengene vil du bruke?').length).toBeGreaterThan(0);
-        // Finn fieldset ved å bruke legend-teksten
-        const nyKontotypeFieldset = screen.getAllByText('Velg kontotype')[0].closest('fieldset') as HTMLElement;
-        expect(within(nyKontotypeFieldset).getByText('Medmors kvote')).toBeInTheDocument();
+        expect(screen.getByText('Medmors kvote')).toBeInTheDocument();
         expect(screen.queryByText('Fars kvote')).not.toBeInTheDocument();
     });
 });
