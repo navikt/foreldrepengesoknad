@@ -1,34 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import fs from 'node:fs';
-import path from 'node:path';
 
-const FILE_NAME = 'mellomlagretdata.json';
+import { PersonFrontend } from '@navikt/fp-types';
 
-const getFilePath = function () {
-    const directories = ['./mock-api/', FILE_NAME];
-    return directories.join(path.sep);
-};
-
-export const getMellomlagretData = function () {
-    if (!fs.existsSync(getFilePath())) {
-        return undefined;
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(getFilePath(), 'utf8'));
-        } catch {
-            return undefined;
-        }
-    }
-};
-
-export const lagreMellomlagretData = (soknadsdata: any) => {
-    fs.writeFileSync(getFilePath(), JSON.stringify(soknadsdata, null, 4));
-};
-
-export const deleteMellomlagretData = function () {
-    fs.openSync(getFilePath(), 'w');
-};
+import { deleteMellomlagretData, getMellomlagretData, lagreMellomlagretData } from './mock-storage.ts';
 
 dotenv.config();
 const app = express();
@@ -53,7 +28,7 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-const personMock = {
+const personMock: PersonFrontend = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',
@@ -63,6 +38,15 @@ const personMock = {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
     },
+    barn: [
+        {
+            etternavn: 'Junior',
+            fnr: '123123123',
+            fornavn: 'Barn',
+            fødselsdato: '2020-01-01',
+            kjønn: 'K',
+        },
+    ],
 };
 
 const kvitteringMock = {
