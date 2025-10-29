@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
@@ -19,13 +19,13 @@ import { OversiktRoutes } from '../../routes/routes';
 
 export const MinidialogPage = () => {
     const params = useParams();
-    const minidialog = useQuery({
+    const minidialogQuery = useQuery({
         ...minidialogOptions(),
         select: (data) => data.find(({ saksnummer }) => saksnummer === params.saksnummer),
-    }).data;
+    });
+
     const sak = useGetSelectedSak();
 
-    const navigate = useNavigate();
     const intl = useIntl();
     useDocumentTitle(
         `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
@@ -37,9 +37,13 @@ export const MinidialogPage = () => {
         mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),
     });
 
+    if (minidialogQuery.isPending) {
+        return <Loader />;
+    }
+
+    const minidialog = minidialogQuery.data;
     if (!minidialog || !sak) {
-        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
-        return null;
+        return <Navigate to={`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`} />;
     }
 
     return (

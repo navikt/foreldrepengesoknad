@@ -32,17 +32,17 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                         <Route
-                            path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
+                            path={`${OversiktRoutes.HOVEDSIDE}`}
                             element={<Forside saker={saker} søkerinfo={søkerinfo} />}
                         />
-                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<Sak />}>
+                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`} element={<Sak />}>
                             <Route index element={<Saksoversikt søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                             <Route
                                 path={OversiktRoutes.TIDSLINJEN}
                                 element={<TidslinjePage søkersBarn={søkerinfo.person.barn} />}
                             />
-                            <Route path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`} element={<MinidialogPage />} />
+                            <Route path={`${OversiktRoutes.OPPGAVER}`} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
                             <Route
