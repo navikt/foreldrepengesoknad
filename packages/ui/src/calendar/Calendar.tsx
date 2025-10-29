@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { HGrid, VStack } from '@navikt/ds-react';
 
@@ -25,62 +25,46 @@ export type Period = {
 
 const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 
-const findLastPeriodTom = (periods: Period[]): string => {
-    return periods.reduce(
-        (lastTom, currentPeriod) => (dayjs(currentPeriod.tom).isAfter(dayjs(lastTom)) ? currentPeriod.tom : lastTom),
-        periods[0].tom,
-    );
+const buildPeriodMap = (periods: Period[]) => {
+    const map = new Map<string, Period>();
+    periods.forEach((p) => {
+        let current = dayjs(p.fom);
+        const end = dayjs(p.tom);
+        while (!current.isAfter(end, 'day')) {
+            const iso = current.format('YYYY-MM-DD');
+            if (!map.has(iso) || p.isSelected) {
+                map.set(iso, p);
+            }
+            current = current.add(1, 'day');
+        }
+    });
+    return map;
 };
 
-const findDayColor = (date: Dayjs, periods: Period[]) => {
-    const fomFirstPeriod = periods[0].fom;
-    const tomLastPeriod = findLastPeriodTom(periods);
-
-    if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
-        return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
-    }
-
-    // Kan ha en vanlig periode og en valgt periode på samme dag
-    const filteredPeriods = periods.filter((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
-    // Valgt periode skal ha prioritet
-    const period = filteredPeriods.find((p) => p.isSelected) || filteredPeriods[0];
-
-    if (period?.color === PeriodeColor.PINK) {
-        return PeriodeColor.PINK;
-    }
-
-    if (period?.color === PeriodeColor.PURPLE) {
-        return PeriodeColor.PURPLE;
-    }
-
-    if (isWeekend(date)) {
-        return PeriodeColor.GRAY;
-    }
-
-    return period?.color ?? PeriodeColor.NONE;
-};
+const findLastPeriodTom = (periods: Period[]): string =>
+    periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0].tom);
 
 const monthDiff = (d1: Date, d2: Date) => {
-    let months;
-    months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    months -= d1.getMonth();
-    months += d2.getMonth();
+    let months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months += d2.getMonth() - d1.getMonth();
     return Math.max(months, 0);
 };
 
-const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
-    const numberOfMonthsToAddStart = dayjs(firstDate).month() % 3;
-    const numberOfMonthsToAddEnd = 3 - (dayjs(lastDate).month() % 3);
+const findMonths = (firstDate: string, lastDate: string) => {
+    const first = dayjs(firstDate);
+    const last = dayjs(lastDate);
+    const numberOfMonthsToAddStart = first.month() % 3;
+    const numberOfMonthsToAddEnd = 3 - (last.month() % 3);
 
-    const firstDateInCalendar = dayjs(firstDate).subtract(numberOfMonthsToAddStart, 'month');
-    const lastDateInCalendar = dayjs(lastDate).add(numberOfMonthsToAddEnd, 'month');
+    const firstDateInCalendar = first.subtract(numberOfMonthsToAddStart, 'month');
+    const lastDateInCalendar = last.add(numberOfMonthsToAddEnd, 'month');
 
     const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
 
-    return [...new Array(numberOfMonthsBetween)].map((_, index) => ({
-        month: firstDateInCalendar.add(index, 'month').month(),
-        year: firstDateInCalendar.add(index, 'month').year(),
-    }));
+    return Array.from({ length: numberOfMonthsBetween }, (_, i) => {
+        const date = firstDateInCalendar.add(i, 'month');
+        return { month: date.month(), year: date.year() };
+    });
 };
 
 interface Props {
@@ -102,15 +86,33 @@ export const Calendar = ({
     children,
     lastSelectedDate,
 }: Props) => {
-    const months = findMonths(periods[0].fom, findLastPeriodTom(periods));
+    const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
+    const lastDate = useMemo(() => findLastPeriodTom(periods), [periods]);
+    const months = useMemo(() => findMonths(periods[0].fom, lastDate), [periods, lastDate]);
+
+    const findDayColor = (date: Dayjs) => {
+        const iso = date.format('YYYY-MM-DD');
+        const period = periodMap.get(iso);
+
+        if (!period) {
+            return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
+        }
+        if (period.color === PeriodeColor.PINK) {
+            return PeriodeColor.PINK;
+        }
+        if (period.color === PeriodeColor.PURPLE) {
+            return PeriodeColor.PURPLE;
+        }
+        return isWeekend(date) ? PeriodeColor.GRAY : period.color;
+    };
 
     return (
         <>
-            {periods.some((period) => period.srText) && (
+            {periods.some((p) => p.srText) && (
                 <div className={styles.srOnly}>
                     {periods
-                        .filter((periode) => periode.srText)
-                        .map((period) => period.srText)
+                        .filter((p) => p.srText)
+                        .map((p) => p.srText)
                         .toString()}
                 </div>
             )}
@@ -122,46 +124,46 @@ export const Calendar = ({
                         : { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
                 }
             >
-                {months.map((monthData) => (
-                    <VStack gap="space-4" key={monthData.year + '-' + monthData.month}>
-                        <Month
-                            year={monthData.year}
-                            month={monthData.month}
-                            headerLevel={useSmallerWidth ? '5' : '4'}
-                            showWeekNumbers={showWeekNumbers}
-                        >
-                            {[
-                                ...new Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys(),
-                            ].map((day) => {
-                                const date = dayjs()
-                                    .year(monthData.year)
-                                    .month(monthData.month)
-                                    .date(day + 1);
-                                const isoDate = formatDateIso(date);
+                {months.map(({ month, year }) => {
+                    const yearAndMonth = dayjs().year(year).month(month);
+                    const daysInMonth = yearAndMonth.daysInMonth();
+                    const monthDays = Array.from({ length: daysInMonth }, (_, i) => yearAndMonth.date(i + 1));
 
-                                return (
-                                    <Day
-                                        key={monthData.year + monthData.month + day}
-                                        day={day + 1}
-                                        periodeColor={findDayColor(date, periods)}
-                                        dateTooltipCallback={
-                                            dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
-                                        }
-                                        dateClickCallback={
-                                            dateClickCallback && !isWeekend(date)
-                                                ? () => dateClickCallback(isoDate)
-                                                : undefined
-                                        }
-                                    />
-                                );
-                            })}
-                        </Month>
-                        {children &&
-                            dayjs(lastSelectedDate).month() === monthData.month &&
-                            dayjs(lastSelectedDate).year() === monthData.year &&
-                            children}
-                    </VStack>
-                ))}
+                    return (
+                        <VStack gap="space-4" key={`${year}-${month}`}>
+                            <Month
+                                year={year}
+                                month={month}
+                                headerLevel={useSmallerWidth ? '5' : '4'}
+                                showWeekNumbers={showWeekNumbers}
+                            >
+                                {monthDays.map((date) => {
+                                    const isoDate = formatDateIso(date);
+                                    return (
+                                        <Day
+                                            key={isoDate}
+                                            day={date.date()}
+                                            periodeColor={findDayColor(date)}
+                                            dateTooltipCallback={
+                                                dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
+                                            }
+                                            dateClickCallback={
+                                                dateClickCallback && !isWeekend(date)
+                                                    ? () => dateClickCallback(isoDate)
+                                                    : undefined
+                                            }
+                                        />
+                                    );
+                                })}
+                            </Month>
+                            {children &&
+                                lastSelectedDate &&
+                                dayjs(lastSelectedDate).month() === month &&
+                                dayjs(lastSelectedDate).year() === year &&
+                                children}
+                        </VStack>
+                    );
+                })}
             </HGrid>
         </>
     );

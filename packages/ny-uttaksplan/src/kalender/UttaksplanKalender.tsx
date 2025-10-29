@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -359,16 +359,20 @@ export const UttaksplanKalender = ({
         uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
         uttaksplan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
 
-    const perioderForKalendervisning = getPerioderForKalendervisning(
-        uttaksplan,
-        erFarEllerMedmor,
-        barn,
-        navnAnnenPart,
-        unikeUtsettelseÅrsaker,
-        intl,
-        modus === 'planlegger',
-        foreldrepengerHarAktivitetskrav,
-        barnehagestartdato,
+    const perioderForKalendervisning = useMemo(
+        () =>
+            getPerioderForKalendervisning(
+                uttaksplan,
+                erFarEllerMedmor,
+                barn,
+                navnAnnenPart,
+                unikeUtsettelseÅrsaker,
+                intl,
+                modus === 'planlegger',
+                foreldrepengerHarAktivitetskrav,
+                barnehagestartdato,
+            ),
+        [uttaksplan],
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
@@ -393,38 +397,41 @@ export const UttaksplanKalender = ({
             (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
-    const dateClickCallback = (selectedDate: string) => {
-        if (isRangeSelectorMode) {
-            setSelectedPeriods((old) =>
-                old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
-                    ? []
-                    : [
-                          {
-                              color: PeriodeColor.DARKBLUE,
-                              fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
-                              tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
-                              isSelected: true,
-                              srText: '',
-                          },
-                      ],
-            );
-        } else {
-            setSelectedPeriods((old) =>
-                valgtePerioder.some((p) => p.fom === selectedDate)
-                    ? old.filter((p) => p.fom !== selectedDate)
-                    : [
-                          ...old,
-                          {
-                              color: PeriodeColor.DARKBLUE,
-                              fom: selectedDate,
-                              tom: selectedDate,
-                              isSelected: true,
-                              srText: '',
-                          },
-                      ].sort(sortPeriods),
-            );
-        }
-    };
+    const dateClickCallback = useCallback(
+        (selectedDate: string) => {
+            if (isRangeSelectorMode) {
+                setSelectedPeriods((old) =>
+                    old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
+                        ? []
+                        : [
+                              {
+                                  color: PeriodeColor.DARKBLUE,
+                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
+                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
+                                  isSelected: true,
+                                  srText: '',
+                              },
+                          ],
+                );
+            } else {
+                setSelectedPeriods((old) =>
+                    valgtePerioder.some((p) => p.fom === selectedDate)
+                        ? old.filter((p) => p.fom !== selectedDate)
+                        : [
+                              ...old,
+                              {
+                                  color: PeriodeColor.DARKBLUE,
+                                  fom: selectedDate,
+                                  tom: selectedDate,
+                                  isSelected: true,
+                                  srText: '',
+                              },
+                          ].sort(sortPeriods),
+                );
+            }
+        },
+        [isRangeSelectorMode, valgtePerioder],
+    );
 
     return (
         <>
