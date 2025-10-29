@@ -44,9 +44,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
 
     return (
         <HGrid columns={{ xs: '4fr 4fr 1fr 1fr', md: '3fr 3fr 3fr 1fr' }}>
-            <div
-                className={`ax-sm:px-2 ax-md:px-4 px-1 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}
-            >
+            <div className={`px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}>
                 <Heading size="xsmall" as="p">
                     {erFamiliehendelse
                         ? formatDateShortMonth(familiehendelsedato)

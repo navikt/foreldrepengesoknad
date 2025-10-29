@@ -384,7 +384,7 @@ export const Uttaksplanbuilder = ({
                         : getAnnenPartsUttak(opprinneligPlan);
 
                     resultat = leggTilPeriodeOgBuild(
-                        perioder,
+                        resultat,
                         periode,
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
