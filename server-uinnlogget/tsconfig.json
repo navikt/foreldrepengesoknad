@@ -4,7 +4,8 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "rootDir": "src",
-        "types": ["node"]
+        "types": ["node"],
+        "allowImportingTsExtensions": false
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]

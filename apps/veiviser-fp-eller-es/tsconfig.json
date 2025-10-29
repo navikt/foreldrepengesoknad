@@ -9,6 +9,6 @@
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "include": ["src"],
+    "include": ["src", "mock-api"],
     "exclude": ["node_modules"]
 }

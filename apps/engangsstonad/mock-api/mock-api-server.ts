@@ -1,10 +1,13 @@
-const express = require('express');
+import dotenv from 'dotenv';
+import express from 'express';
+
+import { deleteMellomlagretData, getMellomlagretData, lagreMellomlagretData } from './mock-storage.ts';
+
+dotenv.config();
 const app = express();
 const router = express.Router();
-require('dotenv').config();
-const MockStorage = require('./mock-storage.cjs');
 
-const allowCrossDomain = function (_req, res, next) {
+const allowCrossDomain = function (_req: any, res: any, next: any) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
@@ -13,8 +16,8 @@ const allowCrossDomain = function (_req, res, next) {
     next();
 };
 
-const delayAllResponses = function (millsec) {
-    return function (_req, _res, next) {
+const delayAllResponses = function (millsec: number) {
+    return (_req: any, _res: any, next: any) => {
         setTimeout(next, millsec);
     };
 };
@@ -33,6 +36,15 @@ const personMock = {
         kontonummer: '49875234987',
         banknavn: 'Storebank',
     },
+    barn: [
+        {
+            etternavn: 'Junior',
+            fnr: '123123123',
+            fornavn: 'Barn',
+            fødselsdato: '2020-01-01',
+            kjønn: 'K',
+        },
+    ],
 };
 
 const kvitteringMock = {
@@ -51,16 +63,16 @@ router.post('/rest/soknad/engangsstonad', (_req, res) => {
 });
 
 router.get('/rest/storage/engangsstonad', (_req, res) => {
-    res.send(MockStorage.getMellomlagretData());
+    res.send(getMellomlagretData());
 });
 
 router.post('/rest/storage/engangsstonad', (req, res) => {
-    MockStorage.lagreMellomlagretData(req.body);
+    lagreMellomlagretData(req.body);
     return res.sendStatus(200);
 });
 
 router.delete('/rest/storage/engangsstonad', (_req, res) => {
-    MockStorage.deleteMellomlagretData();
+    deleteMellomlagretData();
     return res.sendStatus(200);
 });
 
@@ -77,5 +89,6 @@ app.use('', router);
 
 const port = process.env.PORT || 8888;
 app.listen(port, () => {
+    // eslint-disable-next-line no-console
     console.log(`Mock-api listening on port: ${port}`);
 });
