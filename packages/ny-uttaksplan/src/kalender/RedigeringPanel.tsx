@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Box, Button, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, Forelder } from '@navikt/fp-constants';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { Period } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -43,13 +44,29 @@ export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelecte
     // );
 
     const slettPeriode = () => {
-        const planperioder = sammenslåtteValgtePerioder.map((p) => ({
+        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
             forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
             periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             fom: p.fom,
             tom: p.tom,
             readOnly: false,
             id: uniqueId(),
+        }));
+
+        handleOnPlanChange(planperioder, true);
+
+        setErIRedigeringsmodus(false);
+        setSelectedPeriods([]);
+    };
+
+    const leggTilFerie = () => {
+        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
+            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            fom: p.fom,
+            tom: p.tom,
+            readOnly: false,
+            id: uniqueId(),
+            utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
         }));
 
         handleOnPlanChange(planperioder, true);
@@ -88,7 +105,7 @@ export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelecte
                         <Button variant="secondary" size="small" onClick={slettPeriode}>
                             <FormattedMessage id="RedigeringPanel.SlettPeriode" />
                         </Button>
-                        <Button variant="secondary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
+                        <Button variant="secondary" size="small" onClick={leggTilFerie}>
                             <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                         </Button>
                         {/* <Button variant="secondary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
