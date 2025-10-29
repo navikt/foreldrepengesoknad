@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { PersonFrontend } from '@navikt/fp-types';
-
 import { deleteMellomlagretData, getMellomlagretData, lagreMellomlagretData } from './mock-storage.ts';
 
 dotenv.config();
@@ -28,7 +26,7 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-const personMock: PersonFrontend = {
+const personMock = {
     fnr: '11111111111',
     fornavn: 'Henrikke',
     etternavn: 'Ibsen',

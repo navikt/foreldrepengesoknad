@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { EsDataMapAndMetaData } from '../src/app-data/useEsMellomlagring';
-import * as mellomlagring from './mellomlagretdata.json';
+import mellomlagring from './mellomlagretdata.json';
 
 const FILE_NAME = 'mellomlagretdata.json';
 
@@ -12,10 +12,10 @@ const getFilePath = () => {
 };
 
 export const getMellomlagretData = () => {
-    return mellomlagring as Partial<EsDataMapAndMetaData>;
+    return mellomlagring;
 };
 
-export const lagreMellomlagretData = (soknadsdata: Partial<EsDataMapAndMetaData>) => {
+export const lagreMellomlagretData = (soknadsdata: EsDataMapAndMetaData) => {
     fs.writeFileSync(getFilePath(), JSON.stringify(soknadsdata, null, 4));
 };
 
