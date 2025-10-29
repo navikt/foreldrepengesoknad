@@ -671,7 +671,7 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
 }: {
-    kontoType: KontoDto_fpoversikt['konto'];
+    kontoType: KontoTypeUttak_fpoversikt;
     erMedmorDelAvSøknaden?: boolean;
 }) => {
     switch (kontoType) {
@@ -710,7 +710,7 @@ const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }
 };
 
 type FordelingSegmentProps = {
-    kontoType?: KontoDto_fpoversikt['konto'];
+    kontoType?: KontoTypeUttak_fpoversikt;
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
