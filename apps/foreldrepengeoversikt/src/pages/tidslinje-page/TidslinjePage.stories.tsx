@@ -42,8 +42,10 @@ export const Default: Story = {
     args: {
         søkersBarn: [
             {
-                fornavn: 'Olga',
-                etternavn: 'Utvikler',
+                navn: {
+                    fornavn: 'Olga',
+                    etternavn: 'Utvikler',
+                },
                 fnr: '23232424',
                 fødselsdato: '2024-01-01',
                 kjønn: 'K',

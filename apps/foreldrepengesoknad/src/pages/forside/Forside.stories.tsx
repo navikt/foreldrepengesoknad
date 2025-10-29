@@ -5,7 +5,12 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
-import { BarnFrontend, FpSak, FpÅpenBehandling, PersonFrontend, Søkerinfo } from '@navikt/fp-types';
+import {
+    BarnDto_fpoversikt,
+    BehandlingTilstand_fpoversikt,
+    FpSak_fpoversikt,
+    PersonDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { Forside } from './Forside';
 
@@ -16,32 +21,34 @@ const promiseAction = () => () => {
 
 const defaultPerson = {
     fnr: '19047815714',
-    fornavn: 'TALENTFULL',
-    etternavn: 'MYGG',
+    navn: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+    },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
     barn: [],
-} satisfies PersonFrontend;
+} satisfies PersonDto_fpoversikt;
 
 interface SakInfo {
     kanSøkeOmEndring: boolean;
     gjelderAdopsjon: boolean;
     antallBarn: number;
     sakErAvsluttet: boolean;
-    åpenbehandlingTilstand?: FpÅpenBehandling['tilstand'];
+    åpenbehandlingTilstand?: BehandlingTilstand_fpoversikt;
     fødselsdato?: string;
     termindato?: string;
     omsorgsovertakelse?: string;
 }
 
-const getSakMedBarn = (sak: FpSak, barnFnr: string[]): FpSak => {
+const getSakMedBarn = (sak: FpSak_fpoversikt, barnFnr: string[]): FpSak_fpoversikt => {
     const barna = barnFnr.map((fnrBarn) => {
         return { fnr: fnrBarn };
     });
     return { ...sak, barn: barna };
 };
 
-const getSak = (sakinfo: SakInfo): FpSak => {
+const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
     return {
         dekningsgrad: 'HUNDRE',
         familiehendelse: {
@@ -50,6 +57,7 @@ const getSak = (sakinfo: SakInfo): FpSak => {
             antallBarn: sakinfo.antallBarn,
             termindato: sakinfo.termindato,
         },
+        forelder: 'MOR',
         gjeldendeVedtak: { perioder: [] },
         harAnnenForelderTilsvarendeRettEØS: false,
         gjelderAdopsjon: sakinfo.gjelderAdopsjon,
@@ -74,7 +82,7 @@ const getSak = (sakinfo: SakInfo): FpSak => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: BarnFrontend[]): Søkerinfo['søker'] => {
+const getSøkerinfoMedBarn = (barna: BarnDto_fpoversikt[]): PersonDto_fpoversikt => {
     return { ...defaultPerson, barn: barna };
 };
 
@@ -83,24 +91,28 @@ const datoAdopsjon = '2022-12-08';
 
 const levendeBarn = {
     fnr: '1',
-    fornavn: 'Oriental',
-    etternavn: 'Bokhylle',
+    navn: {
+        fornavn: 'Oriental',
+        etternavn: 'Bokhylle',
+    },
     fødselsdato: dato,
     kjønn: 'K',
-} satisfies BarnFrontend;
+} satisfies BarnDto_fpoversikt;
 
 const dødtBarn = {
     ...levendeBarn,
     dødsdato: '2022-12-07',
-} satisfies BarnFrontend;
+} satisfies BarnDto_fpoversikt;
 
 const levendeTvilling = {
     fnr: '2',
-    fornavn: 'Vakker',
-    etternavn: 'Bokhylle',
+    navn: {
+        fornavn: 'Vakker',
+        etternavn: 'Bokhylle',
+    },
     fødselsdato: dato,
     kjønn: 'K',
-} satisfies BarnFrontend;
+} satisfies BarnDto_fpoversikt;
 
 const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
@@ -109,23 +121,31 @@ const dødfødtBarn = {
     dødsdato: dato,
     kjønn: 'K',
     fnr: '2',
-    fornavn: 'Vakker',
-    etternavn: 'Bokhylle',
-} satisfies BarnFrontend;
+    navn: {
+        fornavn: 'Vakker',
+        etternavn: 'Bokhylle',
+    },
+} satisfies BarnDto_fpoversikt;
 
 const sakErIkkeAvsluttet = false;
 
 const ettBarn = {
     fnr: '3',
-    fornavn: 'Evig',
-    mellomnavn: 'Lykkelig',
-    etternavn: 'Vår',
+    navn: {
+        fornavn: 'Evig',
+        mellomnavn: 'Lykkelig',
+        etternavn: 'Vår',
+    },
     fødselsdato: dato,
     kjønn: 'M',
-} satisfies BarnFrontend;
+} satisfies BarnDto_fpoversikt;
 
-const annetBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '4', fornavn: 'Grønn' };
-const tredjeBarnSammeDato = { ...ettBarn, mellomnavn: undefined, fnr: '5', fornavn: 'Sommerlig' };
+const annetBarnSammeDato = { ...ettBarn, navn: { ...ettBarn.navn, mellomnavn: undefined, fornavn: 'Grønn' }, fnr: '4' };
+const tredjeBarnSammeDato = {
+    ...ettBarn,
+    navn: { ...ettBarn.navn, mellomnavn: undefined, fornavn: 'Sommerlig' },
+    fnr: '5',
+};
 
 const sakOpprettetFødsel = getSak({
     kanSøkeOmEndring: true,
@@ -219,7 +239,7 @@ export const Default: Story = {
     args: {
         harGodkjentVilkår: false,
         saker: [],
-        søkerInfo: { søker: defaultPerson, arbeidsforhold: [] },
+        søkerInfo: { person: defaultPerson, arbeidsforhold: [] },
         setErEndringssøknad: action('button-click'),
         setHarGodkjentVilkår: action('button-click'),
         setSøknadGjelderNyttBarn: action('button-click'),
@@ -238,7 +258,7 @@ export const HarOpprettetFPSakFødselMedBarnetIPDL: Story = {
     args: {
         ...Default.args,
         saker: [sakOpprettetFødsel],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
     },
 };
 
@@ -253,7 +273,7 @@ export const HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL: Story = {
     args: {
         ...Default.args,
         saker: [erEndringssøknadUnderBehandlingAdopsjon],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
     },
 };
 
@@ -261,7 +281,7 @@ export const HarAvsluttetFPSak: Story = {
     args: {
         ...Default.args,
         saker: [sakAvsluttet],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
     },
 };
 
@@ -269,7 +289,7 @@ export const HarFlereSaker: Story = {
     args: {
         ...Default.args,
         saker: [sakOpprettetFødsel, { ...sakUnderBehandlingTermin, saksnummer: '555555' }],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
     },
 };
 
@@ -291,7 +311,7 @@ export const HarSakAdopsjonMedBarnIPDL: Story = {
     args: {
         ...Default.args,
         saker: [sakEttBarnAdopsjon],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
     },
 };
 
@@ -299,7 +319,7 @@ export const HarSakFødselTvillinger: Story = {
     args: {
         ...Default.args,
         saker: [sakMedTvillinger],
-        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]), arbeidsforhold: [] },
+        søkerInfo: { person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]), arbeidsforhold: [] },
     },
 };
 
@@ -308,7 +328,7 @@ export const HarSakFødselTrillinger: Story = {
         ...Default.args,
         saker: [sakMedTrillinger],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
+            person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
             arbeidsforhold: [],
         },
     },
@@ -319,7 +339,7 @@ export const HarIngenSakerOgEttBarn: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn]),
+            person: getSøkerinfoMedBarn([levendeBarn]),
             arbeidsforhold: [],
         },
     },
@@ -330,7 +350,7 @@ export const HarIngenSakerOgTvillinger: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
+            person: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
             arbeidsforhold: [],
         },
     },
@@ -341,7 +361,7 @@ export const HarIngenSakerOgEttDødtBarn: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødtBarn]),
+            person: getSøkerinfoMedBarn([dødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -352,7 +372,7 @@ export const HarIngenSakerOgToDødeTvillinger: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødtBarn, dødTvilling]),
+            person: getSøkerinfoMedBarn([dødtBarn, dødTvilling]),
             arbeidsforhold: [],
         },
     },
@@ -363,7 +383,7 @@ export const HarIngenSakerOgEtDødfødtBarn: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødfødtBarn]),
+            person: getSøkerinfoMedBarn([dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -374,7 +394,7 @@ export const HarIngenSakerOgToDødfødteBarn: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødfødtBarn, dødfødtBarn]),
+            person: getSøkerinfoMedBarn([dødfødtBarn, dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -385,7 +405,7 @@ export const HarIngenSakerMedEnLevendeOgEnDødfødtTvilling: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            person: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -396,7 +416,7 @@ export const HarIngenSakerMedEnLevendeOgEnDødTvilling: Story = {
         ...Default.args,
         saker: [],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, dødTvilling]),
+            person: getSøkerinfoMedBarn([levendeBarn, dødTvilling]),
             arbeidsforhold: [],
         },
     },
@@ -407,7 +427,7 @@ export const HarSakMedEnLevendeOgEnDødfødtTvilling: Story = {
         ...Default.args,
         saker: [sakMedTvillinger],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            person: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -418,7 +438,7 @@ export const HarSakMedEtDødtBarn: Story = {
         ...Default.args,
         saker: [sakOpprettetFødsel],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødtBarn]),
+            person: getSøkerinfoMedBarn([dødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -429,7 +449,7 @@ export const HarSakAdopsjonMedEtDødtBarn: Story = {
         ...Default.args,
         saker: [sakEttBarnAdopsjon],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([dødtBarn]),
+            person: getSøkerinfoMedBarn([dødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -440,7 +460,7 @@ export const HarSakMedOppgittBarnTvillingerAlleLever: Story = {
         ...Default.args,
         saker: [getSakMedBarn(sakMedTvillinger, ['1', '2'])],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
+            person: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
             arbeidsforhold: [],
         },
     },
@@ -451,7 +471,7 @@ export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling: Story = {
         ...Default.args,
         saker: [getSakMedBarn(sakMedTvillinger, ['1'])],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            person: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -462,7 +482,7 @@ export const HarSakMedTrillingerEnErDød: Story = {
         ...Default.args,
         saker: [sakMedTrillinger],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
+            person: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
             arbeidsforhold: [],
         },
     },
@@ -473,11 +493,13 @@ export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17u
         ...Default.args,
         saker: [sakUnderBehandlingTermin],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([
+            person: getSøkerinfoMedBarn([
                 {
                     fnr: '1',
-                    fornavn: 'Hanne',
-                    etternavn: 'Brokkoli',
+                    navn: {
+                        fornavn: 'Hanne',
+                        etternavn: 'Brokkoli',
+                    },
                     fødselsdato: '2024-03-01',
                     kjønn: 'K',
                 },
@@ -492,11 +514,13 @@ export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uke
         ...Default.args,
         saker: [sakUnderBehandlingTermin],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([
+            person: getSøkerinfoMedBarn([
                 {
                     fnr: '1',
-                    fornavn: 'Hanne',
-                    etternavn: 'Brokkoli',
+                    navn: {
+                        fornavn: 'Hanne',
+                        etternavn: 'Brokkoli',
+                    },
                     fødselsdato: '2024-08-09',
                     kjønn: 'K',
                 },
@@ -511,11 +535,13 @@ export const HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig: Story = {
         ...Default.args,
         saker: [sakUnderBehandlingTermin],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([
+            person: getSøkerinfoMedBarn([
                 {
                     fnr: '1',
-                    fornavn: 'Hanne',
-                    etternavn: 'Brokkoli',
+                    navn: {
+                        fornavn: 'Hanne',
+                        etternavn: 'Brokkoli',
+                    },
                     fødselsdato: '2024-02-29',
                     kjønn: 'K',
                 },
@@ -530,11 +556,13 @@ export const HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent: Story = 
         ...Default.args,
         saker: [sakUnderBehandlingTermin],
         søkerInfo: {
-            søker: getSøkerinfoMedBarn([
+            person: getSøkerinfoMedBarn([
                 {
                     fnr: '1',
-                    fornavn: 'Hanne',
-                    etternavn: 'Brokkoli',
+                    navn: {
+                        fornavn: 'Hanne',
+                        etternavn: 'Brokkoli',
+                    },
                     fødselsdato: '2024-08-10',
                     kjønn: 'K',
                 },

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Forelder, Periode, Periodetype, Situasjon, isUttaksperiode } from '@navikt/fp-common';
-import { KontoDto } from '@navikt/fp-types';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
@@ -19,7 +19,7 @@ import { guid } from '../guid';
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     startdatoPermisjon: Date | undefined,
     fellesperiodeDagerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
@@ -94,7 +94,7 @@ const deltUttakAdopsjonSøktFørst = (
 
 const deltUttakAdopsjonSøktSist = (
     familiehendelsesdato: Date,
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     erFarEllerMedmor: boolean,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
@@ -153,7 +153,7 @@ const deltUttakAdopsjonSøktSist = (
 const deltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     startdatoPermisjon: Date | undefined,
     fellesperiodeDagerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
@@ -187,7 +187,7 @@ const deltUttakAdopsjon = (
 
 const deltUttakFødselMor = (
     famDato: Date,
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     ønsketStartdatoPermisjon: Date,
     fellesperiodeDagerMor: number | undefined,
 ): Periode[] => {
@@ -289,7 +289,7 @@ const deltUttakFødselMor = (
 };
 
 const deltUttakFødselFarMedmor = (
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
@@ -399,7 +399,7 @@ const deltUttakFødselFarMedmor = (
 const deltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: KontoDto[],
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[],
     startdatoPermisjon: Date,
     fellesperiodeDagerMor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
@@ -433,7 +433,7 @@ interface DeltUttakParams {
     situasjon: Situasjon;
     famDato: Date;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: KontoDto[];
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[];
     startdatoPermisjon: Date;
     fellesperiodeDagerMor: number | undefined;
     harAnnenForelderSøktFP: boolean | undefined;

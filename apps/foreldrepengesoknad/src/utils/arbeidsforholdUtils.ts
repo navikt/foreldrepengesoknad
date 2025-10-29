@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { dateToISOString, formatDate } from '@navikt/fp-utils';
 
 /*
@@ -99,16 +99,16 @@ const getFraDatoForAktiveArbeidsforhold = (
 };
 
 export const getAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     familiehendelsesdato?: string,
-): Arbeidsforhold[] => {
+): EksternArbeidsforholdDto_fpoversikt[] => {
     const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>
-            a.tom === undefined ||
-            a.tom === null ||
-            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(dayjs.utc(a.tom), 'days')),
+            a.to === undefined ||
+            a.to === null ||
+            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(dayjs.utc(a.to), 'days')),
     );
 };

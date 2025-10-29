@@ -1,5 +1,5 @@
 // Representasjon i søknadene
-import { CountryCode } from './apiDtoGenerert';
+import { CountryCode } from './fpsoknadDtoGenerert';
 
 export type Utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: boolean;

@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { AnnenForelder, Barn, BarnType, SaksperiodeDTO } from '@navikt/fp-common';
-import { KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
@@ -44,7 +44,7 @@ const STØNADSKONTO_100 = {
         farRundtFødsel: 0,
         toTette: 0,
     },
-} satisfies KontoBeregningDto;
+} satisfies KontoBeregningDto_fpoversikt;
 
 const STØNADSKONTO_80 = {
     kontoer: [
@@ -69,7 +69,7 @@ const STØNADSKONTO_80 = {
         farRundtFødsel: 0,
         toTette: 0,
     },
-} satisfies KontoBeregningDto;
+} satisfies KontoBeregningDto_fpoversikt;
 
 const uttaksperiode = {
     fom: '2022-12-07',
@@ -186,7 +186,7 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
                                     dager: 250,
                                 },
                             ],
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '100': {
                             ...STØNADSKONTO_100,
                             kontoer: [
@@ -195,7 +195,7 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
                                     dager: 200,
                                 },
                             ],
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
@@ -448,11 +448,11 @@ export const MorFødselDeltUttakPrematurFødsel: Story = {
                         '100': {
                             ...STØNADSKONTO_100,
                             tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '80': {
                             ...STØNADSKONTO_80,
                             tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
@@ -501,7 +501,7 @@ export const MorAleneomsorgPrematurFødsel: Story = {
                                 },
                             ],
                             tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '80': {
                             ...STØNADSKONTO_80,
                             kontoer: [
@@ -515,7 +515,7 @@ export const MorAleneomsorgPrematurFødsel: Story = {
                                 },
                             ],
                             tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
@@ -591,7 +591,7 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
                                 },
                             ],
                             tillegg: { prematur: 0, flerbarn: 85 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '80': {
                             ...STØNADSKONTO_80,
                             kontoer: [
@@ -613,7 +613,7 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
                                 },
                             ],
                             tillegg: { prematur: 0, flerbarn: 105 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
@@ -669,7 +669,7 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
                                 },
                             ],
                             tillegg: { prematur: 0, flerbarn: 230 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '80': {
                             ...STØNADSKONTO_80,
                             kontoer: [
@@ -691,7 +691,7 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
                                 },
                             ],
                             tillegg: { prematur: 0, flerbarn: 280 },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],

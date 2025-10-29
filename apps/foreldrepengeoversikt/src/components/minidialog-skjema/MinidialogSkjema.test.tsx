@@ -41,7 +41,6 @@ describe('<MinidialogSkjema>', () => {
             expect(send).toHaveBeenNthCalledWith(1, {
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst: 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
                 },
                 fnr: '26430359419',
@@ -97,7 +96,6 @@ describe('<MinidialogSkjema>', () => {
             expect(send).toHaveBeenNthCalledWith(1, {
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst: 'Dette er et svar som er minst 25 tegn langt',
                 },
                 fnr: '26430359419',

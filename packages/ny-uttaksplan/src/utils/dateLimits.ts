@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface MinDateProps {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoTypeUttak_fpoversikt;
     familiehendelsedato: string;
     gjelderAdopsjon: boolean;
 }
@@ -41,7 +41,7 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
 
 interface MaxDateProps {
     årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoTypeUttak_fpoversikt;
     familiehendelsedato: string;
 }
 

@@ -7,16 +7,16 @@ import { useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
+import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
+import {
+    PersonMedArbeidsforholdDto_fpoversikt,
+    SaksperiodeNy,
+    Satser,
+    TidslinjeHendelseDto_fpoversikt,
+} from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
-import {
-    hentDokumenterOptions,
-    hentManglendeVedleggOptions,
-    hentSatserOptions,
-    hentTidslinjehendelserOptions,
-} from '../../api/api';
+import { hentDokumenterOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
@@ -39,10 +39,10 @@ import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/Inntektsmeldi
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
+const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
@@ -90,10 +90,8 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
     const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
-    const ENGANGSTØNAD = useQuery({
-        ...hentSatserOptions(),
-        select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
-    }).data;
+
+    const ENGANGSTØNAD = finnEngangstønadForSøknadstidspunkt(DEFAULT_SATSER, søknadstidspunkt);
 
     const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
@@ -113,7 +111,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                    bankkonto={søkerinfo.søker.bankkonto}
+                    bankkonto={søkerinfo.person.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -134,7 +132,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         visHeleTidslinjen={false}
-                        søkersBarn={søkerinfo.søker.barn ?? []}
+                        søkersBarn={søkerinfo.person.barn ?? []}
                     />
                 </ContentSection>
                 <section className="mb-12">
@@ -170,7 +168,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                 annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.søker.fornavn,
+                                    søkerinfo.person.navn.fornavn,
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak),
                                 )}
                             />
@@ -202,11 +200,11 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                             />
                                         </Heading>
                                     )}
-                                    {søkerinfo.søker.bankkonto?.kontonummer && (
+                                    {søkerinfo.person.bankkonto?.kontonummer && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="saksoversikt.utbetales"
-                                                values={{ kontonr: søkerinfo.søker.bankkonto.kontonummer }}
+                                                values={{ kontonr: søkerinfo.person.bankkonto.kontonummer }}
                                             />
                                         </BodyShort>
                                     )}

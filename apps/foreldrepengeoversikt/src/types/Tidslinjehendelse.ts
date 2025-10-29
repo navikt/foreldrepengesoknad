@@ -1,9 +1,9 @@
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 /**
  * Beriket tidshendelsetype for visning
  */
-export type Tidslinjehendelse = Omit<TidslinjeHendelseDto, 'tidslinjeHendelseType'> & {
+export type Tidslinjehendelse = Omit<TidslinjeHendelseDto_fpoversikt, 'tidslinjeHendelseType'> & {
     type?: string;
     manglendeVedlegg: unknown[];
     merInformasjon?: string;

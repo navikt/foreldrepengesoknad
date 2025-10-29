@@ -6,7 +6,7 @@ import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
-import { KontoTypeUttak } from './apiDtoGenerert';
+import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
 
 export interface SaksperiodeNy {
     fom: string;
@@ -14,7 +14,7 @@ export interface SaksperiodeNy {
     forelder?: Forelder;
     resultat?: PeriodeResultat;
     flerbarnsdager?: boolean;
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakType;
     utsettelseÅrsak?: UtsettelseÅrsakType;

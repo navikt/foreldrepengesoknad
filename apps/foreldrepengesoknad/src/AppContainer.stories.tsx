@@ -7,15 +7,17 @@ import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
 import { stønadskontoer } from 'storybookData/stønadskontoer';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
 const søkerinfo = {
-    søker: {
+    person: {
         fnr: '06499121154',
-        fornavn: 'Tapper',
-        etternavn: 'Konvolutt',
+        navn: {
+            fornavn: 'Tapper',
+            etternavn: 'Konvolutt',
+        },
         kjønn: 'M',
         fødselsdato: '1991-09-06',
         bankkonto: {
@@ -30,10 +32,10 @@ const søkerinfo = {
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SAUEFABRIKK',
             stillingsprosent: 100,
-            fom: '2018-03-01',
+            from: '2018-03-01',
         },
     ],
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const meta = {
     component: AppContainer,

@@ -1,4 +1,4 @@
-import { Saker } from '@navikt/fp-types';
+import { Saker_fpoversikt } from '@navikt/fp-types';
 
 export const ingenSaker = {
     foreldrepenger: [],
@@ -46,4 +46,4 @@ export const saker = {
             oppdatertTidspunkt: '2025-06-12T10:45:38.358',
         },
     ],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;

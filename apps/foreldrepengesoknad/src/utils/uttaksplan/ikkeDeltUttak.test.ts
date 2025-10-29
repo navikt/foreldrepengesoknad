@@ -1,7 +1,7 @@
 import MockDate from 'mockdate';
 
 import { Uttaksperiode } from '@navikt/fp-common';
-import { KontoDto } from '@navikt/fp-types';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
@@ -17,9 +17,9 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     const foreldrepenger = {
         konto: 'FORELDREPENGER',
         dager: 75,
-    } satisfies KontoDto;
+    } satisfies KontoDto_fpoversikt;
     const aktivitetsfriKonto = { konto: 'AKTIVITETSFRI_KVOTE', dager: 40 };
-    const stønadskontoer = [foreldrepenger, aktivitetsfriKonto] as KontoDto[];
+    const stønadskontoer = [foreldrepenger, aktivitetsfriKonto] as KontoDto_fpoversikt[];
     const morErUfør = true;
     const bareFarMedmorHarRett = true;
     const terminato = undefined;

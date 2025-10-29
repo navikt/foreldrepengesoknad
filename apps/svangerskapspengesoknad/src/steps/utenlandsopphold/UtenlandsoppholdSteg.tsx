@@ -5,7 +5,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
-import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Utenlandsopphold } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
@@ -20,7 +20,7 @@ const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const UtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {

@@ -7,23 +7,26 @@ import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
+export const getAktiveArbeidsforhold = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    termindato?: string,
+): EksternArbeidsforholdDto_fpoversikt[] => {
     if (termindato === undefined) {
         return arbeidsforhold;
     }
 
     return arbeidsforhold.filter((arb) =>
-        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months'), 'day') : true,
+        arb.to ? dayjs(arb.to).isSameOrAfter(dayjs(termindato).subtract(9, 'months'), 'day') : true,
     );
 };
 
-const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
+const getArbeidsgiverId = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt): string => {
     return arbeidsforhold.arbeidsgiverId ?? '';
 };
 
@@ -54,11 +57,11 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     return 100;
 };
 
-const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
-            fom: p.fom,
-            tom: p.tom,
+            fom: p.from,
+            tom: p.to,
             stillingsprosent: p.stillingsprosent,
         };
     });
@@ -66,7 +69,7 @@ const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]
 };
 
 export const getUnikeArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[] | undefined,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined,
     termindato: string,
 ): UnikArbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
@@ -74,22 +77,22 @@ export const getUnikeArbeidsforhold = (
 
         const unike = uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
             id: forhold.arbeidsgiverId,
-            fom: forhold.fom,
-            tom: forhold.tom,
+            fom: forhold.from,
+            tom: forhold.to,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
             arbeidsgiverId: forhold.arbeidsgiverId,
             arbeidsgiverIdType: forhold.arbeidsgiverIdType,
-            stillinger: [{ fom: forhold.fom, tom: forhold.tom, stillingsprosent: forhold.stillingsprosent }],
+            stillinger: [{ fom: forhold.from, tom: forhold.to, stillingsprosent: forhold.stillingsprosent }],
         })) as UnikArbeidsforhold[];
         const unikeMedStillinger = unike.map((arbeid) => {
             const likeArbeidsforhold = aktiveArbeidsforhold.filter(
                 (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
             );
             if (likeArbeidsforhold && likeArbeidsforhold.length > 1) {
-                const alleTom = likeArbeidsforhold.map((a) => a.tom);
+                const alleTom = likeArbeidsforhold.map((a) => a.to);
                 return {
                     ...arbeid,
-                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.format(ISO_DATE_FORMAT),
+                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.from)))!.format(ISO_DATE_FORMAT),
                     tom: alleTom.includes(undefined)
                         ? undefined
                         : dayjs.max(alleTom.map((tom) => dayjs(tom)))!.format(ISO_DATE_FORMAT),
@@ -107,7 +110,7 @@ export const getUnikeArbeidsforhold = (
 
 export const søkerHarKunEtAktivtArbeid = (
     termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erFrilanser: boolean,
     harEgenNæring: boolean,
 ) => {

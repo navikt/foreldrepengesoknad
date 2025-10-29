@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { AnnenForelder, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { MorsAktivitet } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -10,7 +10,7 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: UttaksperiodeBase;
-    registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     periodeErNyEllerEndret: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;

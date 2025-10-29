@@ -15,7 +15,7 @@ import {
 import { Label, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { BarnFrontend } from '@navikt/fp-types';
+import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -24,7 +24,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    valgteRegistrerteBarn: BarnFrontend[];
+    valgteRegistrerteBarn: BarnDto_fpoversikt[];
     skalInkludereTermindato: boolean;
 }
 

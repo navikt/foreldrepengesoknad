@@ -3,8 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, FormSummary } from '@navikt/ds-react';
 
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
+    EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
     isArbeidsforholdOgInntektFp,
@@ -15,7 +15,7 @@ import { JaNeiTekst } from '../OppsummeringPanel';
 
 interface ArbeidsforholdOppsummeringProps {
     readonly arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
-    readonly arbeidsforhold: Arbeidsforhold[];
+    readonly arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     readonly onVilEndreSvar: () => void;
 }
 
@@ -123,7 +123,11 @@ export const ArbeidsforholdOppsummering = ({
     );
 };
 
-const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsforhold: Arbeidsforhold }) => {
+const ArbeidsforholdFormSummaryValue = ({
+    arbeidsforhold,
+}: {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt;
+}) => {
     const intl = useIntl();
 
     return (
@@ -137,10 +141,8 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
                 <FormattedMessage
                     id="ArbeidsforholdFormSummaryValue.arbeidsforhold.periode"
                     values={{
-                        fom: formatDate(arbeidsforhold.fom),
-                        tom: arbeidsforhold.tom
-                            ? formatDate(arbeidsforhold.tom)
-                            : intl.formatMessage({ id: 'pågående' }),
+                        fom: formatDate(arbeidsforhold.from),
+                        tom: arbeidsforhold.to ? formatDate(arbeidsforhold.to) : intl.formatMessage({ id: 'pågående' }),
                     }}
                 />
             </FormSummary.Value>

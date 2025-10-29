@@ -12,7 +12,7 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { BarnFrontend } from '@navikt/fp-types';
+import { BarnDto_fpoversikt } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {
@@ -82,18 +82,22 @@ describe('dateUtils', () => {
     });
 
     it('skal finne det eldste barnet', () => {
-        const eldsteBarn: BarnFrontend = {
-            etternavn: 'test',
+        const eldsteBarn: BarnDto_fpoversikt = {
+            navn: {
+                etternavn: 'test',
+                fornavn: 'test',
+            },
             fnr: '123123',
-            fornavn: 'test',
             fødselsdato: '2020-01-01',
             kjønn: 'K',
         };
 
-        const yngsteBarn: BarnFrontend = {
-            etternavn: 'test',
+        const yngsteBarn: BarnDto_fpoversikt = {
+            navn: {
+                etternavn: 'test',
+                fornavn: 'test',
+            },
             fnr: '234234',
-            fornavn: 'test',
             fødselsdato: '2021-01-01',
             kjønn: 'K',
         };

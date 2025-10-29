@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { AnnenForelder, Periodetype, Situasjon, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
@@ -159,7 +159,7 @@ const skalViseFlerbarnsdager = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    kontoValue: KontoTypeUttak | '',
+    kontoValue: KontoTypeUttak_fpoversikt | '',
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,

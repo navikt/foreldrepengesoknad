@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import {
-    KontoBeregningDto,
+    KontoBeregningDto_fpoversikt,
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
@@ -53,7 +53,7 @@ const kontoNårBeggeHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto;
+} satisfies KontoBeregningDto_fpoversikt;
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
@@ -412,7 +412,7 @@ const kontoNårBareFarHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto;
+} satisfies KontoBeregningDto_fpoversikt;
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
@@ -499,7 +499,7 @@ const kontoNårBareMorHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto;
+} satisfies KontoBeregningDto_fpoversikt;
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {

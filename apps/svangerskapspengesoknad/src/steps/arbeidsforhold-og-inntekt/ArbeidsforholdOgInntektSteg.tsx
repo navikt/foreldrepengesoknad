@@ -10,9 +10,9 @@ import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
@@ -21,7 +21,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 const getNextRoute = (
     termindato: string,
-    aktiveArbeidsforhold: Arbeidsforhold[],
+    aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     values: ArbeidsforholdOgInntektSvp,
 ): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
@@ -39,7 +39,7 @@ const getNextRoute = (
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {

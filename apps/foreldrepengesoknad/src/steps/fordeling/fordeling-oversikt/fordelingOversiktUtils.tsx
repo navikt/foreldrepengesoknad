@@ -30,7 +30,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { KontoBeregningDto, Minsteretter, SøkersituasjonFp } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, Minsteretter_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
 
@@ -265,7 +265,7 @@ const getFellesInfoTekst = (
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
 ): number => {
@@ -283,7 +283,7 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
 ): number => {
@@ -300,7 +300,7 @@ const getAntallDagerFellesperiodeBruktAvAnnenPart = (
 };
 
 const getFordelingFelles = (
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     navnPåForeldre: NavnPåForeldre,
@@ -498,7 +498,7 @@ const getFordelingFedrekvote = (
 };
 
 const getFordelingMor = (
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     barn: Barn,
     ekstraDagerPrematur: number | undefined,
     kunMorFårForeldrepenger: boolean,
@@ -670,7 +670,7 @@ const getFordelingForeldrepengerFarAleneomsorg = (
 };
 
 const getFordelingForeldrepengerFar = (
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     erAleneOmsorg: boolean,
     erAdopsjon: boolean,
     barn: Barn,
@@ -778,8 +778,8 @@ export const getFarTekst = (erFarEllerMedmor: boolean, navnFar: string, intl: In
 };
 
 export const getFordelingFraKontoer = (
-    kontoer: KontoBeregningDto,
-    minsteretter: Minsteretter,
+    kontoer: KontoBeregningDto_fpoversikt,
+    minsteretter: Minsteretter_fpoversikt,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     navnPåForeldre: NavnPåForeldre,
@@ -886,7 +886,7 @@ export const getFordelingFraKontoer = (
 };
 
 export const getBeggeHarRettGrafFordeling = (
-    kontoer: KontoBeregningDto,
+    kontoer: KontoBeregningDto_fpoversikt,
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     navnMor: string,

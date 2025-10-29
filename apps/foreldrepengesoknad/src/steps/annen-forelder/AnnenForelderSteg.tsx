@@ -12,7 +12,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { PersonFrontend, Søkerinfo } from '@navikt/fp-types';
+import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -21,17 +21,17 @@ import { AnnenForelderFormData } from './AnnenForelderFormData';
 import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
 import { OppgiPersonalia } from './OppgiPersonalia';
 
-const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: PersonFrontend) => {
-    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
+const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, person: PersonDto_fpoversikt) => {
+    const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, person.barn);
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
             ? undefined
-            : registrerteBarn.find((registrertBarn) => registrertBarn.annenForelder !== undefined);
-    return registrertBarnMedAnnenForelder?.annenForelder;
+            : registrerteBarn.find((registrertBarn) => registrertBarn.annenPart !== undefined);
+    return registrertBarnMedAnnenForelder?.annenPart;
 };
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
@@ -48,7 +48,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
 
-    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.søker);
+    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.person);
 
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
@@ -71,10 +71,10 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
         const skalIkkeOppgiPersonaliaOgHarFraRegBarn = !skalOppgiPersonalia && annenForelderFraRegistrertBarn;
         const fornavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
-            ? annenForelderFraRegistrertBarn.fornavn
+            ? annenForelderFraRegistrertBarn.navn.fornavn
             : values.fornavn;
         const etternavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
-            ? annenForelderFraRegistrertBarn.etternavn
+            ? annenForelderFraRegistrertBarn.navn.etternavn
             : values.etternavn;
         const fnr = skalIkkeOppgiPersonaliaOgHarFraRegBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
 
@@ -119,7 +119,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {skalOppgiPersonalia && (
-                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.søker.fnr} />
+                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.person.fnr} />
                         )}
                         {!skalOppgiPersonalia && (
                             <RegistrertePersonalia

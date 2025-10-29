@@ -6,7 +6,6 @@ import { Alert } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
     NavnPåForeldre,
@@ -17,7 +16,7 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -32,10 +31,10 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: KontoBeregningDto;
+    stønadskontoer: KontoBeregningDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     handleDeletePeriode: (periodeId: string) => void;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;

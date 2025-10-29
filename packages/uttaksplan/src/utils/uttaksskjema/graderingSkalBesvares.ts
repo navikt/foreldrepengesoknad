@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, TidsperiodeDate } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 
 export const graderingSkalBesvares = (
     periodetype: Periodetype,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     familiehendelsesdato: Date,
     erFarMedmor: boolean,
     morErForSyk: boolean | undefined,

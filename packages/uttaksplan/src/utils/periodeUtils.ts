@@ -22,7 +22,7 @@ import {
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -118,7 +118,7 @@ export const getOppholdskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): KontoTypeUttak => {
+export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt => {
     if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
         return 'FEDREKVOTE';
     }
@@ -138,7 +138,7 @@ export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): K
     return 'FORELDREPENGER_FØR_FØDSEL';
 };
 
-export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak): OppholdÅrsakType | undefined => {
+export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): OppholdÅrsakType | undefined => {
     switch (konto) {
         case 'FEDREKVOTE':
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;

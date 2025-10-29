@@ -4,7 +4,13 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Forelder, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { HvemPlanleggerType, KontoBeregningDto, KontoDto, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
+import {
+    HvemPlanleggerType,
+    KontoBeregningDto_fpoversikt,
+    KontoDto_fpoversikt,
+    PlanForslag,
+    SaksperiodeNy,
+} from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -132,7 +138,7 @@ export type Uttaksdata = {
 
 const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskonto: KontoBeregningDto_fpoversikt,
     barnet: OmBarnet,
     tempAantallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
@@ -195,7 +201,7 @@ const finnDeltUttaksdata = (
 
 const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskonto: KontoBeregningDto_fpoversikt,
     barnet: OmBarnet,
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
@@ -274,7 +280,7 @@ const finnEnsligUttaksdata = (
 export const finnUttaksdata = (
     hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskonto: KontoBeregningDto_fpoversikt,
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
@@ -291,13 +297,15 @@ export type UttakUkerOgDager = {
     dager: number;
 };
 
-export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskonto: KontoBeregningDto): UttakUkerOgDager => {
+export const finnAntallUkerOgDagerMedForeldrepenger = (
+    stønadskonto: KontoBeregningDto_fpoversikt,
+): UttakUkerOgDager => {
     const { kontoer } = stønadskonto;
     return {
-        uker: kontoer.reduce((prev: number, current: KontoDto) => {
+        uker: kontoer.reduce((prev: number, current: KontoDto_fpoversikt) => {
             return Math.round(current.dager / 5) + prev;
         }, 0),
-        dager: kontoer.reduce((prev: number, current: KontoDto, index: number) => {
+        dager: kontoer.reduce((prev: number, current: KontoDto_fpoversikt, index: number) => {
             const result = current.dager + prev;
 
             if (index === kontoer.length - 1) {
@@ -312,7 +320,7 @@ export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskonto: KontoBereg
 interface LagForslagProps {
     erDeltUttak: boolean;
     famDato: string;
-    tilgjengeligeStønadskontoer: KontoDto[];
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[];
     fellesperiodeDagerMor: number | undefined;
     erAdopsjon: boolean;
     erFarEllerMedmor: boolean;

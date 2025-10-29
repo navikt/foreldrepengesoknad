@@ -1,13 +1,13 @@
 import { SøknadRoutes } from 'appData/routes';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './FpDataContext';
 import { useStepConfig } from './useStepConfig';
 
 export const useFpNavigator = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
 ) => {

@@ -17,7 +17,7 @@ import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import { Søkersituasjon } from '@navikt/fp-common';
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
@@ -32,7 +32,7 @@ const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean =
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     søknadGjelderEtNyttBarn?: boolean;
 }
 

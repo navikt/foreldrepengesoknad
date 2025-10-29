@@ -15,12 +15,12 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, KontoBeregningDto, Satser } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskontoer: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;

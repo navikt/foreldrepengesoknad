@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import ky from 'ky';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -19,12 +20,12 @@ import {
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EttersendelseDto, MinidialogInnslag, Ytelse } from '@navikt/fp-types';
+import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, søkerInfoOptions, urlPrefiks } from '../../api/api';
+import { API_URLS, søkerInfoOptions } from '../../api/api';
 import { isAttachmentWithError } from '../../utils/attachmentUtils.ts';
 import { validateFritekstFelt } from '../../utils/validationUtils';
 import { ScrollToTop } from '../scroll-to-top/ScrollToTop';
@@ -44,7 +45,7 @@ const mapYtelse = (sakstype: Ytelse) => {
 interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
-    minidialog: MinidialogInnslag;
+    minidialog: TilbakekrevingUttalelseOppgave_fpoversikt;
     onSubmit: (ettersendelse: EttersendelseDto) => void;
     sakstype: Ytelse;
     ettersendelseError: string | undefined;
@@ -75,17 +76,15 @@ export const MinidialogSkjema = ({
         setAvventerVedlegg(hasPendingUploads);
     };
 
-    useQuery<MinidialogInnslag[]>({
+    useQuery({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
-            return await fetch(`${urlPrefiks}/rest/minidialog`, { credentials: 'include' }).then((response) =>
-                response.json(),
-            );
+            return ky.get(API_URLS.minidialog).json<TilbakekrevingUttalelseOppgave_fpoversikt[]>();
         },
         refetchInterval: (query) => {
             const data = query.state.data;
-            if (!data || data?.find((innslag) => innslag.dialogId === minidialog?.dialogId)) {
+            if (!data || data?.find((innslag) => innslag.saksnummer === minidialog?.saksnummer)) {
                 return 1000;
             }
 
@@ -112,16 +111,15 @@ export const MinidialogSkjema = ({
             setTilbakemeldingValideringsfeil(feilmelding);
         } else if (brukerØnskerÅUttaleSeg !== undefined) {
             const submitData = {
-                fnr: notEmpty(søkerInfo).søker.fnr,
+                fnr: notEmpty(søkerInfo).person.fnr,
                 vedlegg:
                     brukerØnskerÅUttaleSeg && vedlegg
                         ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a))
                         : [],
-                saksnummer: minidialog.saksnr,
+                saksnummer: minidialog.saksnummer,
                 type: sakstype,
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst:
                         brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
                             ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
@@ -138,7 +136,7 @@ export const MinidialogSkjema = ({
             <MinidialogVenterPåSvar
                 fetchCounter={fetchCounter}
                 allowedToFetch={allowedToFetch}
-                saksnummer={minidialog.saksnr}
+                saksnummer={minidialog.saksnummer}
             />
         );
     }
@@ -148,7 +146,7 @@ export const MinidialogSkjema = ({
             <VStack gap="space-16">
                 <ScrollToTop />
                 <Alert variant="error"> {ettersendelseError}</Alert>
-                <Link as={RouterLink} to={`/sak/${minidialog.saksnr}`}>
+                <Link as={RouterLink} to={`/sak/${minidialog.saksnummer}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
             </VStack>

@@ -5,7 +5,7 @@ import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 
 import { KvitteringPage } from './kvittering/KvitteringPage';
@@ -23,7 +23,7 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 };
 
 interface Props {
-    personinfo: PersonFrontend;
+    personinfo: PersonDto_fpoversikt;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 

@@ -6,7 +6,7 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -19,8 +19,10 @@ const KVITTERING = {
 
 const DEFAULT_PERSONINFO = {
     fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
+    navn: {
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+    },
     kjønn: 'K',
     fødselsdato: '1979-01-28',
     bankkonto: {
@@ -28,7 +30,7 @@ const DEFAULT_PERSONINFO = {
         banknavn: 'Storebank',
     },
     barn: [],
-} satisfies PersonFrontend;
+} satisfies PersonDto_fpoversikt;
 
 const HANDLERS = [
     http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),

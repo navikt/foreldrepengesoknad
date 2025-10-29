@@ -5,7 +5,6 @@ import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -18,7 +17,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
@@ -67,10 +66,10 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: KontoDto[];
+    stønadskontoer: KontoDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
@@ -96,7 +95,10 @@ const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forel
     return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
 };
 
-const erUttakAvAnnenForeldersKvote = (konto: KontoTypeUttak | '', søkerErFarEllerMedmor: boolean): boolean => {
+const erUttakAvAnnenForeldersKvote = (
+    konto: KontoTypeUttak_fpoversikt | '',
+    søkerErFarEllerMedmor: boolean,
+): boolean => {
     return (
         (konto === 'MØDREKVOTE' && søkerErFarEllerMedmor === true) ||
         (konto === 'FEDREKVOTE' && søkerErFarEllerMedmor === false)
@@ -106,7 +108,7 @@ const erUttakAvAnnenForeldersKvote = (konto: KontoTypeUttak | '', søkerErFarEll
 const getPeriodeType = (
     periodenGjelder: Forelder | '',
     erFarEllerMedmor: boolean,
-    konto: KontoTypeUttak | '',
+    konto: KontoTypeUttak_fpoversikt | '',
     familiehendelsedato: Date,
     termindato: Date | undefined,
     tidsperiode: TidsperiodeDate,

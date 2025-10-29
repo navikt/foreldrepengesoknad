@@ -3,15 +3,17 @@ import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '30088930610',
-        fornavn: 'ERLINGA-MASK',
-        etternavn: 'ORAVAKANGAS',
+        navn: {
+            fornavn: 'ERLINGA-MASK',
+            etternavn: 'ORAVAKANGAS',
+        },
         kjønn: 'K',
         fødselsdato: '1989-08-30',
         barn: [],
@@ -26,48 +28,48 @@ const defaultSøkerinfo = {
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
             stillingsprosent: 32.63,
-            fom: '2014-05-22',
-            tom: '2019-05-31',
+            from: '2014-05-22',
+            to: '2019-05-31',
         },
         {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
             stillingsprosent: 0,
-            fom: '2018-04-09',
-            tom: '2018-09-09',
+            from: '2018-04-09',
+            to: '2018-09-09',
         },
         {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
             stillingsprosent: 80,
-            fom: '2018-06-25',
-            tom: '2018-08-05',
+            from: '2018-06-25',
+            to: '2018-08-05',
         },
         {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SYKEHUSET I VESTFOLD',
             stillingsprosent: 85.09,
-            fom: '2019-06-01',
+            from: '2019-06-01',
         },
         {
             arbeidsgiverId: '990322244',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'OMSORGSPARTNER VESTFOLD',
             stillingsprosent: 100,
-            fom: '2017-04-05',
+            from: '2017-04-05',
         },
         {
             arbeidsgiverId: '995090910',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'RE KOMMUNE',
             stillingsprosent: 0,
-            fom: '2018-06-01',
+            from: '2018-06-01',
         },
     ],
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const KVITTERING = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -128,7 +130,7 @@ export const VisAppMann: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+                        person: { ...defaultSøkerinfo.person, kjønn: 'M' },
                     }),
                 ),
             ]),
@@ -143,7 +145,7 @@ export const VisAppUmyndig: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+                        person: { ...defaultSøkerinfo.person, kjønn: 'K', fødselsdato: '2023-08-30' },
                     }),
                 ),
             ]),

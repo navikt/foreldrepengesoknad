@@ -19,7 +19,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -34,7 +34,7 @@ const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
 
-const findBarnetIRegistrerteBarn = (regBarn: BarnFrontend, barnet: Barn) => {
+const findBarnetIRegistrerteBarn = (regBarn: BarnDto_fpoversikt, barnet: Barn) => {
     if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
         return barnet.fnr.includes(regBarn.fnr);
     }
@@ -44,7 +44,7 @@ const findBarnetIRegistrerteBarn = (regBarn: BarnFrontend, barnet: Barn) => {
 const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: BarnFrontend[] | undefined,
+    valgteRegistrerteBarn: BarnDto_fpoversikt[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
@@ -75,7 +75,7 @@ const skalViseTermindato = (
 };
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     søknadGjelderNyttBarn: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -112,14 +112,14 @@ const OmBarnetStegInner = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, søker } = søkerInfo;
+    const { arbeidsforhold, person } = søkerInfo;
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? søker.barn.filter(
+            ? person.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -127,7 +127,7 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? søker.barn
+            ? person.barn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;

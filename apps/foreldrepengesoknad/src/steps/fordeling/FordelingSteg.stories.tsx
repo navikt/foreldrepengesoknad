@@ -10,7 +10,12 @@ import { action } from 'storybook/actions';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold, KontoBeregningDto, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoBeregningDto_fpoversikt,
+    PersonDto_fpoversikt,
+    SøkersituasjonFp,
+} from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
@@ -75,19 +80,25 @@ const vedtakMor = {
 
 const søkerInfoKvinne = {
     fnr: '19047815714',
-    fornavn: 'Hanne',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hanne',
+        etternavn: 'Mygg',
+    },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const søkerInfoMann = {
     fnr: '19047815715',
-    fornavn: 'Hans',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hans',
+        etternavn: 'Mygg',
+    },
     kjønn: 'M',
     fødselsdato: '1972-06-07',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -102,9 +113,9 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    søker: PersonFrontend;
+    person: PersonDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FordelingSteg>;
 
 const meta = {
@@ -140,7 +151,7 @@ type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
-const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as KontoBeregningDto;
+const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as KontoBeregningDto_fpoversikt;
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
@@ -164,7 +175,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -172,7 +183,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -225,14 +236,14 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -277,14 +288,14 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -325,14 +336,14 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -377,14 +388,14 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -429,14 +440,14 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -481,14 +492,14 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -536,14 +547,14 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -588,14 +599,14 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -657,14 +668,14 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
                                 prematur: 65,
                                 flerbarn: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -723,7 +734,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
                                 prematur: 0,
                                 flerbarn: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -731,7 +742,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -786,14 +797,14 @@ export const MorDeltUttakEttBarnTermin: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -852,14 +863,14 @@ export const MorDeltUttakTvillingerFødt: Story = {
                                 prematur: 0,
                                 flerbarn: 85,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -915,14 +926,14 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -977,14 +988,14 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1044,14 +1055,14 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
                                 prematur: 0,
                                 flerbarn: 230,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1107,14 +1118,14 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1173,14 +1184,14 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
                                 flerbarn: 0,
                                 prematur: 64,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1236,14 +1247,14 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1295,14 +1306,14 @@ export const FarSøkerAdopsjonToBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1353,7 +1364,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1361,7 +1372,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1419,7 +1430,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1427,7 +1438,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1480,14 +1491,14 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1535,14 +1546,14 @@ export const BareMorHarRettTermin: Story = {
                                 farRundtFødsel: 15,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1585,14 +1596,14 @@ export const BareMorHarRettAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1640,14 +1651,14 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1695,14 +1706,14 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1747,14 +1758,14 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1803,14 +1814,14 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        } satisfies KontoBeregningDto,
+                        } satisfies KontoBeregningDto_fpoversikt,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',

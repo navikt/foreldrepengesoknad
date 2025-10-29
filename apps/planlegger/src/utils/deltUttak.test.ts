@@ -1,7 +1,7 @@
 import MockDate from 'mockdate';
 
 import { Forelder } from '@navikt/fp-constants';
-import { KontoDto } from '@navikt/fp-types';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { deltUttak } from './deltUttak';
 
@@ -13,10 +13,10 @@ describe('Delt uttak - Fødsel Far/Medmor', () => {
     afterAll(() => {
         MockDate.reset();
     });
-    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto;
-    const mødrekvote = { konto: 'MØDREKVOTE', dager: 25 } satisfies KontoDto;
-    const fellesperiode = { konto: 'FELLESPERIODE', dager: 80 } satisfies KontoDto;
-    const foreldrepengerFørFødsel = { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 } satisfies KontoDto;
+    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto_fpoversikt;
+    const mødrekvote = { konto: 'MØDREKVOTE', dager: 25 } satisfies KontoDto_fpoversikt;
+    const fellesperiode = { konto: 'FELLESPERIODE', dager: 80 } satisfies KontoDto_fpoversikt;
+    const foreldrepengerFørFødsel = { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 } satisfies KontoDto_fpoversikt;
 
     it('skal gi far/medmor fellesperioden som ikke blir brukt av mor', () => {
         const forslag = deltUttak({

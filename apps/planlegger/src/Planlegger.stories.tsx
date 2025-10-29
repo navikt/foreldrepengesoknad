@@ -5,8 +5,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -61,7 +60,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies { '80': KontoBeregningDto; '100': KontoBeregningDto };
+} satisfies { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
 
 const meta = {
     title: 'PlanleggerDataFetcher',
@@ -72,18 +71,13 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                    const response = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/internal/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                     });
-                    const json = await response.json();
-                    return HttpResponse.json(json);
-                }),
-                http.get(API_URLS.satser, async () => {
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
                     const json = await response.json();
                     return HttpResponse.json(json);
                 }),
@@ -119,10 +113,7 @@ export const DefaultMockaStønadskontoerOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {
-            handlers: [
-                http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER)),
-                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
-            ],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
         },
     },
 };
@@ -158,9 +149,8 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                                 toTette: 0,
                             },
                         },
-                    } satisfies { '80': KontoBeregningDto; '100': KontoBeregningDto }),
+                    } satisfies { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt }),
                 ),
-                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },

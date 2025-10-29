@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { Heading, Loader } from '@navikt/ds-react';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
@@ -19,7 +19,7 @@ import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { Sak } from '../../types/Sak';
 
 type OuterProps = {
-    søkersBarn: Søkerinfo['søker']['barn'];
+    søkersBarn: BarnDto_fpoversikt[];
 };
 type InnerProps = OuterProps & {
     sak?: Sak;

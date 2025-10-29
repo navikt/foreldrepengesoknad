@@ -19,7 +19,7 @@ import {
     isAdoptertAnnetBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import {
     finnOgSettInnHull,
@@ -30,7 +30,7 @@ import {
 const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskonto: KontoBeregningDto_fpoversikt,
     annenForelder: AnnenForelder,
     annenPartsPerioder: Periode[] | undefined,
     fordeling: Fordeling,
@@ -183,7 +183,7 @@ const oppdaterPlanForslagMedAnnenPartsPerioder = (
 };
 
 export const lagUttaksplanForslag = (
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskonto: KontoBeregningDto_fpoversikt,
     annenPartsPerioder: Periode[] | undefined,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,

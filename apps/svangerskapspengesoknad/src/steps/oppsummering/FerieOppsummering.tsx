@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
-import { Arbeidsforhold, AvtaltFerieDto } from '@navikt/fp-types';
+import { ArbeidsforholdDto, AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 export function FerieOppsummering({
@@ -12,7 +12,7 @@ export function FerieOppsummering({
     alleArbeidsforhold,
 }: {
     onVilEndreSvar: () => void;
-    alleArbeidsforhold: Arbeidsforhold[];
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const ferie = useContextGetData(ContextDataType.FERIE);
     if (!ferie) {
@@ -48,7 +48,7 @@ export function FerieOppsummering({
     );
 }
 
-const FeriePeriodeOppsummering = ({ avtaltFerie }: { readonly avtaltFerie: AvtaltFerieDto[] }) => {
+const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
     return (
         <>
             <FormSummary.Answer>
@@ -91,8 +91,8 @@ const FlereArbeidsgivereFerieOppsummering = ({
     avtaltFerie,
     alleArbeidsforhold,
 }: {
-    readonly avtaltFerie: AvtaltFerieDto[];
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    avtaltFerie: AvtaltFerieDto[];
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) => {
     const arbeidsforholdMedFerie = [...new Set(avtaltFerie.map((f) => getArbeidsforholdId(f.arbeidsforhold)))];
 
@@ -118,7 +118,7 @@ const FlereArbeidsgivereFerieOppsummering = ({
     });
 };
 
-const getArbeidsforholdId = (arbeidsforhold: AvtaltFerieDto['arbeidsforhold']) => {
+const getArbeidsforholdId = (arbeidsforhold: ArbeidsforholdDto) => {
     switch (arbeidsforhold.type) {
         case 'frilanser':
             return 'frilanser';

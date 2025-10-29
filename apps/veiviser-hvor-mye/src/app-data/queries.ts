@@ -1,23 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { KontoBeregningDto, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    konto: `${urlPrefiks}/rest/konto`,
-    satser: `${urlPrefiks}/rest/satser`,
+    konto: `${urlPrefiks}/fpoversikt/internal/konto`,
 } as const;
-
-export const hentSatserOptions = () =>
-    queryOptions({
-        queryKey: ['SATSER'],
-        queryFn: () => ky.get(API_URLS.satser).json<Satser>(),
-        staleTime: Infinity,
-        initialData: DEFAULT_SATSER,
-    });
 
 type StønadskontoParams = {
     rettighetstype: string;
@@ -33,6 +23,8 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () =>
-            ky.post(API_URLS.konto, { json: data }).json<{ '100': KontoBeregningDto; '80': KontoBeregningDto }>(),
+            ky
+                .post(API_URLS.konto, { json: data })
+                .json<{ '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt }>(),
         staleTime: Infinity,
     });

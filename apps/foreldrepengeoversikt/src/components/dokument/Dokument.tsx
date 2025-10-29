@@ -2,29 +2,31 @@ import { FileIcon } from '@navikt/aksel-icons';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
-import { DokumentDto, DokumentKategori } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt, JournalpostType_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
-import { lagUrl } from '../../utils/dokumenterUtils';
+import { API_URLS } from '../../api/api.ts';
 
 interface Props {
-    readonly dokument: DokumentDto;
+    readonly dokument: DokumentDto_fpoversikt;
 }
 
-function DokumentLenke({ dokument }: { readonly dokument: DokumentDto }) {
-    const url = lagUrl(dokument);
-
+function DokumentLenke({ dokument }: { dokument: DokumentDto_fpoversikt }) {
     return (
         <>
             <FileIcon className="text-ax-text-accent-subtle" height={24} width={24} aria-hidden={true} />
-            <Link href={url} target="_blank" className="block overflow-hidden overflow-ellipsis whitespace-nowrap">
+            <Link
+                href={API_URLS.hentDokument(dokument.journalpostId ?? 'ukjent', dokument.dokumentId ?? 'ukjent')}
+                target="_blank"
+                className="block overflow-hidden overflow-ellipsis whitespace-nowrap"
+            >
                 {dokument.tittel}
             </Link>
         </>
     );
 }
 
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentKategori }) {
+function DokumentAvsender({ dokumentType }: { dokumentType: JournalpostType_fpoversikt }) {
     const text = (() => {
         switch (dokumentType) {
             case 'UTGÅENDE_DOKUMENT':

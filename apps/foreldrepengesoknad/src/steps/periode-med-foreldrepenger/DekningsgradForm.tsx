@@ -12,12 +12,15 @@ import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 import { Barn, Dekningsgrad, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn: Barn): string | undefined => {
+const finnSisteDagMedForeldrepenger = (
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    barn: Barn,
+): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -60,8 +63,8 @@ type Props = {
     onFortsettSenere?: () => void;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: KontoBeregningDto;
-    stønadskonto80: KontoBeregningDto;
+    stønadskonto100: KontoBeregningDto_fpoversikt;
+    stønadskonto80: KontoBeregningDto_fpoversikt;
 };
 
 const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {

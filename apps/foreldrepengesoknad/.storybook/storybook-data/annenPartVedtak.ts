@@ -1,4 +1,4 @@
-import { AnnenPartSak } from '@navikt/fp-types';
+import { AnnenPartSak_fpoversikt } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
     termindato: '2022-08-17',
@@ -29,7 +29,7 @@ export const annenPartVedtak = {
         },
     ],
     dekningsgrad: 'HUNDRE',
-} satisfies AnnenPartSak;
+} satisfies AnnenPartSak_fpoversikt;
 
 export const avslåttAnnenPartVedtak = {
     termindato: '2022-08-17',
@@ -45,4 +45,4 @@ export const avslåttAnnenPartVedtak = {
         },
     ],
     dekningsgrad: 'HUNDRE',
-} satisfies AnnenPartSak;
+} satisfies AnnenPartSak_fpoversikt;

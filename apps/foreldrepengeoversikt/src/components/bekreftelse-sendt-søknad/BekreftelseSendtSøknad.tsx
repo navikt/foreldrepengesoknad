@@ -7,7 +7,7 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
-import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
+import { Bankkonto_fpoversikt, TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { søkerInfoOptions } from '../../api/api.ts';
@@ -19,8 +19,8 @@ import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
-    relevantNyTidslinjehendelse: TidslinjeHendelseDto | undefined;
-    bankkonto: Søkerinfo['søker']['bankkonto'];
+    relevantNyTidslinjehendelse: TidslinjeHendelseDto_fpoversikt | undefined;
+    bankkonto?: Bankkonto_fpoversikt;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
     manglendeVedlegg: Skjemanummer[];
@@ -346,7 +346,7 @@ const useÅpenBehandlingTilstand = () => {
 const useGetTidligstMuligeSvar = () => {
     const sak = useGetSelectedSak();
 
-    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+    if (sak?.ytelse !== 'FORELDREPENGER') {
         return undefined;
     }
 

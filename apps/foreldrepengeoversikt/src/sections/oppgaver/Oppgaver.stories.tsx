@@ -32,7 +32,6 @@ export const Default: Story = {
                         {
                             saksnr: '352011079',
                             opprettet: '2023-02-09',
-                            dialogId: '1111111112',
                         },
                     ]),
                 ),

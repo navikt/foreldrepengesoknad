@@ -1,4 +1,4 @@
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 export const tidslinjeHendelser = [
     {
@@ -55,4 +55,4 @@ export const tidslinjeHendelser = [
         tidslinjeHendelseType: 'UTGÅENDE_INNHENT_OPPLYSNINGER',
         dokumenter: [],
     },
-] satisfies TidslinjeHendelseDto[];
+] satisfies TidslinjeHendelseDto_fpoversikt[];

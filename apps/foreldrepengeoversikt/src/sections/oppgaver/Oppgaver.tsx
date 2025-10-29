@@ -14,7 +14,7 @@ interface Props {
 export const Oppgaver = ({ saksnummer }: Props) => {
     const aktiveMinidialogerForSakenQuery = useQuery({
         ...minidialogOptions(),
-        select: (data) => data.filter(({ saksnr }) => saksnr === saksnummer),
+        select: (data) => data.filter((d) => d.saksnummer === saksnummer),
     });
 
     const intl = useIntl();

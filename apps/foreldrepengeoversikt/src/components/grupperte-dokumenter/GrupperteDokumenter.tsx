@@ -2,13 +2,13 @@ import { FolderIcon } from '@navikt/aksel-icons';
 
 import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 
 import { guid } from '../../utils/guid';
 import { Dokument } from '../dokument/Dokument';
 
 interface Props {
-    dokumenter: DokumentDto[];
+    dokumenter: DokumentDto_fpoversikt[];
 }
 
 export const GrupperteDokumenter = ({ dokumenter }: Props) => {

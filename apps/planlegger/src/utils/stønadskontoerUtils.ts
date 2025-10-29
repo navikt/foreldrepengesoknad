@@ -1,4 +1,4 @@
-import { KontoBeregningDto, KontoTypeUttak } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { UttakUkerOgDager } from './uttakUtils';
 
@@ -8,7 +8,7 @@ export type UkerOgDager = {
     totaltAntallDager: number;
 };
 
-export const getAntallUkerOgDager = (stønadskontoer: KontoBeregningDto): UttakUkerOgDager => {
+export const getAntallUkerOgDager = (stønadskontoer: KontoBeregningDto_fpoversikt): UttakUkerOgDager => {
     return Object.values(stønadskontoer.kontoer).reduce(
         (sum: UttakUkerOgDager, konto) => {
             const ukerOgDager = getUkerOgDager(konto.dager);
@@ -26,12 +26,18 @@ export const getUkerOgDager = (totaltAntallDager: number) => {
     return { uker, dager: totaltAntallDager - uker * 5, totaltAntallDager: totaltAntallDager };
 };
 
-const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
+const getDagerForKonto = (
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
+) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager : 0;
 };
 
-const getUkerOgDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak): UkerOgDager => {
+const getUkerOgDagerForKonto = (
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
+): UkerOgDager => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
 
     if (konto) {
@@ -41,22 +47,22 @@ const getUkerOgDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskont
     return { uker: 0, dager: 0, totaltAntallDager: 0 };
 };
 
-export const getAntallDagerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallDagerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FORELDREPENGER_FØR_FØDSEL');
-export const getAntallDagerMødrekvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallDagerMødrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'MØDREKVOTE');
 
-export const getAntallDagerFedrekvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallDagerFedrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FEDREKVOTE');
 
-export const getAntallUkerOgDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto): UkerOgDager =>
+export const getAntallUkerOgDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
     getUkerOgDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
-export const getAntallDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallDagerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
-export const getAntallUkerOgDagerFellesperiode = (stønadskontoer: KontoBeregningDto): UkerOgDager =>
+export const getAntallUkerOgDagerFellesperiode = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
     getUkerOgDagerForKonto(stønadskontoer, 'FELLESPERIODE');
 
-export const getAntallUkerOgDagerForeldrepenger = (stønadskontoer: KontoBeregningDto): UkerOgDager =>
+export const getAntallUkerOgDagerForeldrepenger = (stønadskontoer: KontoBeregningDto_fpoversikt): UkerOgDager =>
     getUkerOgDagerForKonto(stønadskontoer, 'FORELDREPENGER');

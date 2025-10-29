@@ -169,7 +169,7 @@ export const MorOgFarOgFarGraderer: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [
                             {

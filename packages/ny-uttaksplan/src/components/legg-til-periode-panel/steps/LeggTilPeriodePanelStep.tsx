@@ -5,7 +5,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt, UtsettelseÅrsakType } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -52,7 +52,7 @@ export const LeggTilPeriodePanelStep = ({
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
     const getForelderFromKontoType = (
-        ktValue: KontoTypeUttak | undefined,
+        ktValue: KontoTypeUttak_fpoversikt | undefined,
         fValue: Forelder | undefined,
     ): Forelder | undefined => {
         switch (ktValue) {

@@ -16,7 +16,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -37,7 +37,7 @@ const getInitialKonto = (
     erMorUfør: boolean,
     periodenStarterFørFamdato: boolean,
     erFarEllerMedmor: boolean,
-): KontoTypeUttak | '' => {
+): KontoTypeUttak_fpoversikt | '' => {
     if (erDeltUttak) {
         if (periodenStarterFørFamdato && erFarEllerMedmor) {
             return 'FEDREKVOTE';
@@ -309,10 +309,10 @@ const getKontoVerdi = (
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
     startDato: Date,
-    inputKonto: KontoTypeUttak,
+    inputKonto: KontoTypeUttak_fpoversikt,
     familiehendelsesdato: Date,
     harAktivitetsfriKvote: boolean,
-): KontoTypeUttak => {
+): KontoTypeUttak_fpoversikt => {
     if (samtidigWLBUttakFørFødselFarMedmor) {
         return 'FEDREKVOTE';
     }
@@ -373,7 +373,7 @@ export const mapPeriodeUttakFormToPeriode = (
                 erDeltUttak,
                 familiehendelsesdato,
             ),
-            konto: values.konto as KontoTypeUttak,
+            konto: values.konto as KontoTypeUttak_fpoversikt,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -389,7 +389,7 @@ export const mapPeriodeUttakFormToPeriode = (
             id,
             type,
             forelder: values.hvemSkalTaUttak as Forelder,
-            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak)!,
+            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak_fpoversikt)!,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -444,7 +444,7 @@ export const mapPeriodeUttakFormToPeriode = (
         erFarEllerMedmor,
         erDeltUttak,
         values.fom!,
-        values.konto as KontoTypeUttak,
+        values.konto as KontoTypeUttak_fpoversikt,
         familiehendelsesdato,
         harAktivitetsfriKvote,
     );

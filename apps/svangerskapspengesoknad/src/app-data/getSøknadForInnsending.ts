@@ -9,13 +9,13 @@ import {
 } from 'utils/tilretteleggingUtils';
 
 import {
-    Arbeidsforhold,
     Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     Målform,
     NæringDto,
+    PersonMedArbeidsforholdDto_fpoversikt,
     SvangerskapspengesøknadDto,
-    Søkerinfo,
     TilretteleggingbehovDto,
     VedleggDto,
 } from '@navikt/fp-types';
@@ -25,7 +25,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
 
 const finnTilretteleggingsbehov = (
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
     tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
@@ -64,7 +64,7 @@ const finnTilretteleggingsbehov = (
 
 const finnVedlegg = (
     tilretteleggingerVedlegg: Record<string, Attachment[]>,
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ): VedleggDto[] => {
     const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
         const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
@@ -84,7 +84,7 @@ const finnVedlegg = (
 };
 
 export const getSøknadForInnsending = (
-    søkerinfo: Søkerinfo,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): SvangerskapspengesøknadDto => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -99,18 +99,14 @@ export const getSøknadForInnsending = (
 
     return {
         søkerinfo: {
-            fnr: søkerinfo.søker.fnr,
-            navn: {
-                fornavn: søkerinfo.søker.fornavn,
-                mellomnavn: søkerinfo.søker.mellomnavn,
-                etternavn: søkerinfo.søker.etternavn,
-            },
+            fnr: søkerinfo.person.fnr,
+            navn: søkerinfo.person.navn,
             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
                 navn: af.arbeidsgiverNavn,
                 orgnummer: af.arbeidsgiverId,
                 stillingsprosent: af.stillingsprosent,
-                fom: af.fom,
-                tom: af.tom,
+                fom: af.from,
+                tom: af.to,
             })),
         },
         språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,

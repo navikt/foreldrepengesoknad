@@ -15,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { AnnenPartSak, SøkersituasjonFp } from '@navikt/fp-types';
+import { AnnenPartSak_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -101,7 +101,7 @@ export const getStønadskontoParams = ({
     annenForelder: AnnenForelder;
     søkersituasjon: SøkersituasjonFp;
     barnFraNesteSak?: BarnFraNesteSak;
-    annenPartsVedtak: AnnenPartSak | undefined;
+    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined;
     eksisterendeSak?: EksisterendeSak;
 }) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;

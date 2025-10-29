@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, TidsperiodeDate } from '@navikt/fp-common';
-import { KontoDto } from '@navikt/fp-types';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
@@ -9,7 +9,7 @@ import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 const kontoSkalBesvares = (
     periodetype: Periodetype,
     tidsperiode: TidsperiodeDate,
-    stønadskontoer: KontoDto[],
+    stønadskontoer: KontoDto_fpoversikt[],
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
 ): boolean => {

@@ -14,7 +14,7 @@ import {
     Uttaksperiode,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold, KontoTypeUttak } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
@@ -31,7 +31,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     annenForelder: AnnenForelder;
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
@@ -56,7 +56,7 @@ export const UttaksplanOppsummeringsliste = ({
 }: Props) => {
     const intl = useIntl();
 
-    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
+    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak_fpoversikt) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     };
 
