@@ -6,7 +6,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { TilOgMedDatoType } from 'types/Tilrettelegging';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [

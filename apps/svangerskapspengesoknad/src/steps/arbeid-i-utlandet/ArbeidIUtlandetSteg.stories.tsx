@@ -5,7 +5,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+
 import { ArbeidIUtlandetSteg } from './ArbeidIUtlandetSteg';
 
 const promiseAction = () => () => {

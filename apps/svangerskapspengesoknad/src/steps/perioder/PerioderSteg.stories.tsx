@@ -7,7 +7,8 @@ import { action } from 'storybook/actions';
 import { Barn } from 'types/Barn';
 import { DelivisTilretteleggingPeriodeType, DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+
 import { PerioderSteg } from './PerioderSteg';
 
 const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';

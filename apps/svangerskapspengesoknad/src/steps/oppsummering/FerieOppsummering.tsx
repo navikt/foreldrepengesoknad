@@ -4,10 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
-import { ArbeidsforholdDto, AvtaltFerieDto } from '@navikt/fp-types';
+import { ArbeidsforholdDto, AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
-
-import { EksternArbeidsforholdDto_fpoversikt } from '../../../../../packages/types';
 
 export function FerieOppsummering({
     onVilEndreSvar,
