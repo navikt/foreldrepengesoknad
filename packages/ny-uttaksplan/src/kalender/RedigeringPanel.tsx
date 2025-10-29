@@ -1,48 +1,65 @@
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { uniqueId } from 'lodash';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Box, Button, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, Forelder } from '@navikt/fp-constants';
 import { Period } from '@navikt/fp-ui';
 
-import { EndrePeriodePanel } from '../components/endre-periode-panel/EndrePeriodePanel';
-import { LeggTilPeriodePanel } from '../components/legg-til-periode-panel/LeggTilPeriodePanel';
-import { Planperiode } from '../types/Planperiode';
-import { mapPerioderToPermisjonsperiode } from '../utils/permisjonsperiodeUtils';
+import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 
 type Props = {
     valgtePerioder: Period[];
     komplettPlan: Planperiode[];
-    handleOnPlanChange: (oppdatertPeriode: Planperiode, leggTil: boolean) => void;
+    handleOnPlanChange: (oppdatertPeriode: Planperiode[], leggTil: boolean) => void;
     familiehendelsedato: string;
+    setSelectedPeriods: (perioder: Period[]) => void;
 };
 
-export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, familiehendelsedato }: Props) => {
+export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
+    const { erFarEllerMedmor } = useUttaksplanData();
 
     const sammenslåtteValgtePerioder = slåSammenTilstøtendePerioder(valgtePerioder);
 
-    useEffect(() => {
-        // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
-        setErIRedigeringsmodus(false);
-    }, [sammenslåtteValgtePerioder]);
+    // useEffect(() => {
+    //     // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
+    //     setErIRedigeringsmodus(false);
+    // }, [sammenslåtteValgtePerioder]);
 
-    const valgtePerioderIKomplettPlan = komplettPlan.filter((p) =>
-        sammenslåtteValgtePerioder.some((vp) => {
-            return (
-                (dayjs(vp.fom).isSameOrAfter(dayjs(p.fom), 'day') &&
-                    dayjs(vp.fom).isSameOrBefore(dayjs(p.tom), 'day')) ||
-                (dayjs(vp.tom).isSameOrAfter(dayjs(p.fom), 'day') &&
-                    dayjs(vp.tom).isSameOrBefore(dayjs(p.tom), 'day')) ||
-                (dayjs(vp.fom).isBefore(dayjs(p.fom), 'day') && dayjs(vp.tom).isAfter(dayjs(p.tom), 'day'))
-            );
-        }),
-    );
+    // const valgtePerioderIKomplettPlan = komplettPlan.filter((p) =>
+    //     sammenslåtteValgtePerioder.some((vp) => {
+    //         return (
+    //             (dayjs(vp.fom).isSameOrAfter(dayjs(p.fom), 'day') &&
+    //                 dayjs(vp.fom).isSameOrBefore(dayjs(p.tom), 'day')) ||
+    //             (dayjs(vp.tom).isSameOrAfter(dayjs(p.fom), 'day') &&
+    //                 dayjs(vp.tom).isSameOrBefore(dayjs(p.tom), 'day')) ||
+    //             (dayjs(vp.fom).isBefore(dayjs(p.fom), 'day') && dayjs(vp.tom).isAfter(dayjs(p.tom), 'day'))
+    //         );
+    //     }),
+    // );
+
+    const slettPeriode = () => {
+        const planperioder = sammenslåtteValgtePerioder.map((p) => ({
+            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+            fom: p.fom,
+            tom: p.tom,
+            readOnly: false,
+            id: uniqueId(),
+        }));
+
+        handleOnPlanChange(planperioder, true);
+
+        setErIRedigeringsmodus(false);
+        setSelectedPeriods([]);
+    };
 
     //TODO EndrePeriodPanel kan i dag kun oppdatera ein periode om gongen. Må endrast
-    const permisjonsperioder = mapPerioderToPermisjonsperiode(valgtePerioderIKomplettPlan, familiehendelsedato).at(0)!;
+    // const permisjonsperioder = mapPerioderToPermisjonsperiode(valgtePerioderIKomplettPlan, familiehendelsedato).at(0)!;
 
     //TODO Korleis skal ein håndtera valg av både nye og endra datoar samtidig?
 
@@ -67,31 +84,38 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                 </div>
                             ))}
                         </div>
-                        <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
-                            <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+
+                        <Button variant="secondary" size="small" onClick={slettPeriode}>
+                            <FormattedMessage id="RedigeringPanel.SlettPeriode" />
                         </Button>
+                        <Button variant="secondary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
+                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                        </Button>
+                        {/* <Button variant="secondary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
+                            <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                        </Button> */}
                     </VStack>
                 </Box.New>
             )}
-            {erIRedigeringsmodus && (
+            {/* {erIRedigeringsmodus && (
                 <>
                     {!permisjonsperioder && (
                         <LeggTilPeriodePanel
                             onCancel={() => setErIRedigeringsmodus(false)}
-                            handleAddPeriode={(nyPeriode) => handleOnPlanChange(nyPeriode, true)}
+                            handleAddPeriode={(nyPeriode) => handleOnPlanChange([nyPeriode], true)}
                         />
                     )}
                     {!!permisjonsperioder && (
                         <EndrePeriodePanel
                             closePanel={() => setErIRedigeringsmodus(false)}
-                            handleUpdatePeriode={(oppdatertPeriode) => handleOnPlanChange(oppdatertPeriode, false)}
+                            handleUpdatePeriode={(oppdatertPeriode) => handleOnPlanChange([oppdatertPeriode], false)}
                             handleAddPeriode={() => {}}
                             permisjonsperiode={permisjonsperioder}
                             inneholderKunEnPeriode
                         />
                     )}
                 </>
-            )}
+            )} */}
         </>
     );
 };

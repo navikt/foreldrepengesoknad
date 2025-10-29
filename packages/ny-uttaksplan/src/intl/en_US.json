@@ -199,5 +199,7 @@
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "kalender.velgRange": "Turn on range selection",
+    "RedigeringPanel.SlettPeriode": "Delete",
+    "RedigeringPanel.LeggInnFerie": "Vacation",
     "RedigeringPanel.RedigerUttaksplan": "Edit"
 }
