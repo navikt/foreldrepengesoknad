@@ -12,6 +12,7 @@ import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
+import { FpEllerEsRouter } from './FpEllerEsRouter';
 import { FpEllerEsVeiviser } from './FpEllerEsVeiviser';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
@@ -68,7 +69,7 @@ export const AppContainer = () => {
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />
                         <Provider locale={getDsProviderLocale(locale)}>
-                            <FpEllerEsVeiviser />
+                            <FpEllerEsRouter satser={DEFAULT_SATSER} />;
                         </Provider>
                     </QueryClientProvider>
                 </ErrorBoundary>
