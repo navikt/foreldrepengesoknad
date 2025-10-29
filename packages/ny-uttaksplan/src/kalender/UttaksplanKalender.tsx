@@ -490,6 +490,7 @@ export const UttaksplanKalender = ({
                         {!isDesktop && handleOnPlanChange && (
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
+                                setSelectedPeriods={setSelectedPeriods}
                                 komplettPlan={uttaksplan}
                                 handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                                 familiehendelsedato={familiehendelsedato}
@@ -499,6 +500,7 @@ export const UttaksplanKalender = ({
                     {isDesktop && handleOnPlanChange && valgtePerioder.length > 0 && (
                         <RedigeringPanel
                             valgtePerioder={valgtePerioder}
+                            setSelectedPeriods={setSelectedPeriods}
                             komplettPlan={uttaksplan}
                             handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                             familiehendelsedato={familiehendelsedato}
@@ -529,10 +531,10 @@ const getModifyPlan =
         uttaksplanBuilder: ReturnType<typeof Uttaksplanbuilder>,
         handleOnPlanChange: (perioder: SaksperiodeNy[]) => void,
     ) =>
-    (oppdatertPeriode: Planperiode, leggTil: boolean) => {
+    (oppdatertPeriode: Planperiode[], leggTil: boolean) => {
         const planperioder = leggTil
-            ? uttaksplanBuilder.leggTilPeriode(oppdatertPeriode)
-            : uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode);
+            ? uttaksplanBuilder.leggTilPerioder(oppdatertPeriode)
+            : uttaksplanBuilder.oppdaterPerioder(oppdatertPeriode);
         const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         handleOnPlanChange(
