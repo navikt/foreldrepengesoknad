@@ -29,8 +29,7 @@ describe('barnUtils', () => {
         expect(new Date(dato)).toEqual(new Date('2021-09-05'));
     });
 
-    // TODO: denne testen forstår jeg ikke, skal ikke adoptert_stebarn ha adopsjonsdato??
-    it.todo('skal returnere undefined når barn er adoptert', () => {
+    it('skal returnere undefined når barn er adoptert', () => {
         const barn = {
             type: BarnType.ADOPTERT_STEBARN,
             antallBarn: 1,
@@ -40,7 +39,7 @@ describe('barnUtils', () => {
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBeUndefined();
+        expect(dato).toBe('2021-01-01');
     });
 
     it('skal finne registrert barn når barn er født og er registrert fra før med samme fnr', () => {
