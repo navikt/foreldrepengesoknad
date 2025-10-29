@@ -9,7 +9,6 @@ type Props = OwnProps & SVGProps<any>;
 
 const UttaksplanAdvarselIkon = (props: Props) => {
     const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { title, ...rest } = props;
 
     return (
