@@ -52,6 +52,7 @@ export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback 
     return (
         <button
             data-testid={`day:${day};dayColor:${periodeColor}`}
+            type="button"
             className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursor}`}
             ref={buttonRef}
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
