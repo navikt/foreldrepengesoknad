@@ -1,4 +1,4 @@
-import { Attachment, KontoTypeUttak } from '@navikt/fp-types';
+import { Attachment, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
@@ -33,7 +33,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
-    konto: KontoTypeUttak;
+    konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
@@ -71,7 +71,7 @@ export interface Oppholdsperiode extends PeriodeBase {
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
-    konto: KontoTypeUttak;
+    konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
     årsak: OverføringÅrsakType;
 }
@@ -99,7 +99,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: KontoTypeUttak | undefined;
+    kontoType: KontoTypeUttak_fpoversikt | undefined;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;

@@ -1,6 +1,6 @@
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { Dokumenterer, VedleggInnsendingType } from './apiDtoGenerert';
+import { Dokumenterer, InnsendingType } from './fpsoknadDtoGenerert';
 
 export type Attachment = {
     dokumenterer?: Dokumenterer;
@@ -13,7 +13,7 @@ export type Attachment = {
     uploaded: boolean;
     type: AttachmentType;
     skjemanummer: Skjemanummer;
-    innsendingsType: VedleggInnsendingType;
+    innsendingsType: InnsendingType;
     error?: any;
     beskrivelse?: string;
 };

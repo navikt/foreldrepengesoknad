@@ -15,7 +15,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -29,7 +29,7 @@ type Props = {
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 
 export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {

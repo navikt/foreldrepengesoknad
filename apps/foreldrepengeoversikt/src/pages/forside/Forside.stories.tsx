@@ -6,7 +6,7 @@ import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -17,7 +17,7 @@ import { Forside } from './Forside';
 
 type StoryArgs = {
     saker: SakOppslag;
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 
 const meta = {

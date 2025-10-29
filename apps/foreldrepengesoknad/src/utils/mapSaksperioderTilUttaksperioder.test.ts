@@ -19,7 +19,7 @@ import {
     UttakArbeidType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { UttakPeriodeAnnenpartEøs } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 
 import { getKontotypeBareFarHarRett, mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 
@@ -683,7 +683,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 kontoType: 'FELLESPERIODE',
                 trekkdager: 55,
             },
-        ] as UttakPeriodeAnnenpartEøs[];
+        ] as UttakPeriodeAnnenpartEøs_fpoversikt[];
 
         const result = mapSaksperioderTilUttaksperioder(
             søkersPerioderFraVedtak,

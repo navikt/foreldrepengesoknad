@@ -13,12 +13,12 @@ import { PlanenDeresSteg } from 'steps/planen-deres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 
-import { KontoBeregningDto, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './steps/tilpass-planen/TilpassPlanenSteg';
 
 interface Props {
-    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskontoer?: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
     satser: Satser;
 }
 

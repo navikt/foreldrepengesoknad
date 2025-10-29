@@ -1,4 +1,4 @@
-import { Gradering, KontoTypeUttak } from '@navikt/fp-types';
+import { Gradering, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakTypeDTO } from './OppholdÅrsakTypeDTO';
@@ -11,7 +11,7 @@ export interface SaksperiodeDTO {
     tom: string;
     resultat: PeriodeResultatDTO;
     flerbarnsdager?: boolean;
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakTypeDTO;
     utsettelseÅrsak?: UtsettelseÅrsakTypeDTO;

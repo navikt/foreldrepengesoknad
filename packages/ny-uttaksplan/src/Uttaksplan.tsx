@@ -8,7 +8,7 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import {
     Barn,
     Familiesituasjon,
-    KontoBeregningDto,
+    KontoBeregningDto_fpoversikt,
     SaksperiodeNy,
     UttaksplanModus,
     isFødtBarn,
@@ -36,7 +36,7 @@ interface Props {
     familiesituasjon: Familiesituasjon;
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
     modus: UttaksplanModus;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskonto: KontoBeregningDto_fpoversikt;
     erAleneOmOmsorg: boolean;
     isAllAccordionsOpen?: boolean;
     erMedmorDelAvSøknaden?: boolean;

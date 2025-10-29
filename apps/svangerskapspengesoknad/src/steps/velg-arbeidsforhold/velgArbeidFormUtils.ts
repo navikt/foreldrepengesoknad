@@ -3,7 +3,13 @@ import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektSvp,
+    EksternArbeidsforholdDto_fpoversikt,
+    FRILANS_ID,
+    Frilans,
+    NæringDto,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 type VelgArbeidsforholdOptions = {
@@ -32,7 +38,7 @@ const getFrilansTilretteleggingOption = (): VelgArbeidsforholdOptions => ({
 });
 
 const getArbeidsforholdTilretteleggingOptions = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     intl: IntlShape,
 ): VelgArbeidsforholdOptions[] =>
@@ -47,7 +53,7 @@ const getArbeidsforholdTilretteleggingOptions = (
 
 export const mapArbeidsforholdToVelgArbeidOptions = (
     inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     intl: IntlShape,
     frilans?: Frilans,

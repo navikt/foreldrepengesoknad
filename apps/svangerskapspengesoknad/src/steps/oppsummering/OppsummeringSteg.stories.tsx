@@ -10,7 +10,7 @@ import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType } from 'types/Tilre
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { FRILANS_ID, Søkerinfo } from '@navikt/fp-types';
+import { FRILANS_ID, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -24,57 +24,59 @@ const DEFAULT_SØKERINFO = {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2014-05-22T00:00:00.000Z',
+            from: '2014-05-22T00:00:00.000Z',
             stillingsprosent: 32.63,
-            tom: '2019-05-31T00:00:00.000Z',
+            to: '2019-05-31T00:00:00.000Z',
         },
         {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2018-04-09T00:00:00.000Z',
+            from: '2018-04-09T00:00:00.000Z',
             stillingsprosent: 0,
-            tom: '2018-09-09T00:00:00.000Z',
+            to: '2018-09-09T00:00:00.000Z',
         },
         {
             arbeidsgiverId: '975326209',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2018-06-25T00:00:00.000Z',
+            from: '2018-06-25T00:00:00.000Z',
             stillingsprosent: 80,
-            tom: '2018-08-05T00:00:00.000Z',
+            to: '2018-08-05T00:00:00.000Z',
         },
         {
             arbeidsgiverId: ANNEN_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2019-06-01T00:00:00.000Z',
+            from: '2019-06-01T00:00:00.000Z',
             stillingsprosent: 85.09,
         },
         {
             arbeidsgiverId: ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-            fom: '2017-04-05T00:00:00.000Z',
+            from: '2017-04-05T00:00:00.000Z',
             stillingsprosent: 100,
         },
         {
             arbeidsgiverId: TREDJE_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Re Kommune',
-            fom: '2018-06-01T00:00:00.000Z',
+            from: '2018-06-01T00:00:00.000Z',
             stillingsprosent: 0,
         },
     ],
-    søker: {
-        etternavn: 'Oravakangas',
-        fornavn: 'Erlinga-Mask',
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
         fnr: '30088930610',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
     },
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();

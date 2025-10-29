@@ -5,18 +5,25 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
-import { AnnenPartSak, ForsendelseStatus, KontoBeregningDto, Saker, Søkerinfo, Tidsperiode } from '@navikt/fp-types';
+import {
+    AnnenPartSak_fpoversikt,
+    ForsendelseStatus,
+    KontoBeregningDto_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Saker_fpoversikt,
+    Tidsperiode,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/rest/sokerinfo`,
-    saker: `${urlPrefiks}/rest/innsyn/v2/saker`,
-    annenPartVedtak: `${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`,
-    konto: `${urlPrefiks}/rest/konto`,
-    trengerDokumentereMorsArbeid: `${urlPrefiks}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
-    erOppdatert: `${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    saker: `${urlPrefiks}/fpoversikt/api/saker`,
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    konto: `${urlPrefiks}/fpoversikt/internal/konto`,
+    trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
+    erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
@@ -47,14 +54,14 @@ export const statusOptions = () =>
 export const sakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(API_URLS.saker).json<Saker>(),
+        queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
         staleTime: Infinity,
     });
 
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<Søkerinfo>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
         staleTime: Infinity,
     });
 
@@ -71,7 +78,7 @@ export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
         queryFn: async () => {
             const vedtakEllerTomStrengForIngenVedtak = await ky
                 .post(API_URLS.annenPartVedtak, { json: data })
-                .json<AnnenPartSak | ''>();
+                .json<AnnenPartSak_fpoversikt | ''>();
             if (vedtakEllerTomStrengForIngenVedtak === '') {
                 return null;
             }
@@ -119,7 +126,9 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () =>
-            ky.post(API_URLS.konto, { json: data }).json<{ '100': KontoBeregningDto; '80': KontoBeregningDto }>(),
+            ky
+                .post(API_URLS.konto, { json: data })
+                .json<{ '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt }>(),
         staleTime: Infinity,
     });
 

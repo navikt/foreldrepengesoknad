@@ -1,7 +1,23 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-    input: 'http://localhost:9002/v3/api-docs',
-    output: 'temp-types',
-    plugins: ['@hey-api/client-fetch'],
+    input: ['./fpoversikt.json', './fpsoknad.json'],
+    output: ['temp-fpoversikt-types', 'temp-fpsoknad-types'],
+    plugins: [
+        '@hey-api/client-fetch',
+        {
+            name: '@hey-api/typescript',
+            definitions: {
+                case: 'preserve',
+                name: (typeName) => {
+                    if (typeName.includes('.')) {
+                        const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
+                        return `${strippedName}_fpoversikt`;
+                    }
+
+                    return typeName;
+                },
+            },
+        },
+    ],
 });

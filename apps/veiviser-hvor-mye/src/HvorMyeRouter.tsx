@@ -2,7 +2,7 @@ import { HvorMyeRoutes } from 'appData/routes';
 import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { KontoBeregningDto, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
 
 import { Arbeidssituasjon, ArbeidssituasjonSide } from './pages/arbeidssituasjon/ArbeidssituasjonSide';
 import { HvorMyeForside } from './pages/forside/HvorMyeForside';
@@ -10,7 +10,7 @@ import { OppsummeringSide } from './pages/oppsummering/OppsummeringSide';
 
 interface Props {
     satser: Satser;
-    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskontoer?: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
 }
 
 export const HvorMyeRouter = ({ satser, stønadskontoer }: Props) => {

@@ -9,7 +9,12 @@ import { action } from 'storybook/actions';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { ArbeidsforholdOgInntektSvp, Attachment, FRILANS_ID } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektSvp,
+    Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
+    FRILANS_ID,
+} from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
 
@@ -24,18 +29,18 @@ const DEFAULT_ARBEIDSFORHOLD = [
         arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2014-05-22T00:00:00.000Z',
+        from: '2014-05-22T00:00:00.000Z',
         stillingsprosent: 32.63,
-        tom: '2019-05-31T00:00:00.000Z',
+        to: '2019-05-31T00:00:00.000Z',
     },
     {
         arbeidsgiverId: ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-        fom: '2017-04-05T00:00:00.000Z',
+        from: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const promiseAction = () => () => {
     action('button-click')();

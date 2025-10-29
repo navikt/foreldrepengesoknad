@@ -5,7 +5,6 @@ import { Heading } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
@@ -13,7 +12,7 @@ import {
     Situasjon,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import Block from '../../../common/block/Block';
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
@@ -21,11 +20,11 @@ import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 
 interface Props {
     familiehendelsesdato: Date;
-    stønadskontoer: KontoBeregningDto;
+    stønadskontoer: KontoBeregningDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     isUtsettelse: boolean;
     handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;

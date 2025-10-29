@@ -11,10 +11,9 @@ import {
     Periodetype,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, Søkerinfo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Uttaksplanperiode } from '@navikt/fp-types';
 
 import {
-    UttaksplanPeriode,
     cleanEndringssøknad,
     cleanSøknad,
     getPeriodeVedTidspunkt,
@@ -27,26 +26,28 @@ const DEFAULT_SØKER_INFO = {
             arbeidsgiverId: '9903232324',
             arbeidsgiverIdType: 'ikke-orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2018-06-25T00:00:00.000Z',
+            from: '2018-06-25T00:00:00.000Z',
             stillingsprosent: 80,
         },
         {
             arbeidsgiverId: '990322244',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-            fom: '2017-04-05T00:00:00.000Z',
+            from: '2017-04-05T00:00:00.000Z',
             stillingsprosent: 100,
         },
     ],
-    søker: {
-        etternavn: 'Oravakangas',
-        fornavn: 'Erlinga-Mask',
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
         fnr: '02343434',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
     },
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -246,74 +247,74 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 //Periode 1:
 const fraDato_1 = '2022-01-25';
 const tilDato_1 = '2022-01-28';
-const periode_1: UttaksplanPeriode = {
+const periode_1 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_1,
     tom: tilDato_1,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 2:
 const fraDato_2 = '2022-01-31';
 const tilDato_2 = '2022-02-07';
-const periode_2: UttaksplanPeriode = {
+const periode_2 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_2,
     tom: tilDato_2,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 3: (1 dag)
 const fraDato_3 = '2022-02-11';
 const tilDato_3 = '2022-02-11';
-const periode_3: UttaksplanPeriode = {
+const periode_3 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_3,
     tom: tilDato_3,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 4:
 const fraDato_4 = '2022-02-14';
 const tilDato_4 = '2022-02-24';
-const periode_4: UttaksplanPeriode = {
+const periode_4 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_4,
     tom: tilDato_4,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 5: 28.02, 1 dag, ikke skuddår
 const fraDato_5 = '2022-02-28';
 const tilDato_5 = '2022-02-28';
-const periode_5: UttaksplanPeriode = {
+const periode_5 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_5,
     tom: tilDato_5,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 6: 1.03, ikke skuddår
 const fraDato_6 = '2022-03-01';
 const tilDato_6 = '2022-03-07';
-const periode_6: UttaksplanPeriode = {
+const periode_6 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_6,
     tom: tilDato_6,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 7: 1.03 i et skuddår
 const fraDato_7 = '2024-03-01';
 const tilDato_7 = '2024-03-07';
-const periode_7: UttaksplanPeriode = {
+const periode_7 = {
     type: Periodetype.Uttak,
     konto: 'FELLESPERIODE',
     fom: fraDato_7,
     tom: tilDato_7,
-};
+} satisfies Uttaksplanperiode;
 
-const uttaksplanMedAllePerioder: UttaksplanPeriode[] = [
+const uttaksplanMedAllePerioder: Uttaksplanperiode[] = [
     periode_1,
     periode_2,
     periode_3,
@@ -321,9 +322,9 @@ const uttaksplanMedAllePerioder: UttaksplanPeriode[] = [
     periode_5,
     periode_6,
     periode_7,
-] as UttaksplanPeriode[];
+];
 
-const getUttaksplanUtenPeriode = (removePeriode: UttaksplanPeriode): UttaksplanPeriode[] => {
+const getUttaksplanUtenPeriode = (removePeriode: Uttaksplanperiode): Uttaksplanperiode[] => {
     return uttaksplanMedAllePerioder.filter((periode) => periode !== removePeriode);
 };
 

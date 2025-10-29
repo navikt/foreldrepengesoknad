@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -10,7 +9,6 @@ import {
     EksisterendeSak,
     ForeldreparSituasjon,
     NavnPåForeldre,
-    Arbeidsforhold as OldArbeidsforhold,
     Periode,
     Situasjon,
     Søkersituasjon,
@@ -21,7 +19,11 @@ import {
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, KontoBeregningDto, Periode as PeriodeType } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoBeregningDto_fpoversikt,
+    Periode as PeriodeType,
+} from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
@@ -39,34 +41,16 @@ import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 
-//TODO (TOR) temp-mapping. Fjern
-const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[]): OldArbeidsforhold[] => {
-    if (!arbeidsforhold) {
-        return [];
-    }
-
-    return arbeidsforhold.map((arbforhold) => {
-        return {
-            arbeidsgiverId: arbforhold.arbeidsgiverId,
-            arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
-            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn ?? '',
-            fom: dayjs.utc(arbforhold.fom).toDate(),
-            stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
-        };
-    });
-};
-
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
     erDeltUttak: boolean;
     uttaksplan: Periode[];
     familiehendelsesdato: string;
     handleOnPlanChange: (nyPlan: Periode[]) => void;
-    stønadskontoer: KontoBeregningDto;
+    stønadskontoer: KontoBeregningDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erEndringssøknad: boolean;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
@@ -227,11 +211,10 @@ const Uttaksplan = ({
         }
     };
 
-    const oldFormatArbeidsforhold = mapNewToOldArbeidsforhold(arbeidsforhold);
-
+    // TODO: finn ut om det var riktig å slette oldArbeidsforhold mapping
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
-        arbeidsforhold: oldFormatArbeidsforhold,
+        arbeidsforhold,
         dekningsgrad: dekningsgrad,
         erEndringssøknad: erEndringssøknad,
         antallBarn: antallBarn,
@@ -306,7 +289,7 @@ const Uttaksplan = ({
                             stønadskontoer={stønadskontoer}
                             navnPåForeldre={navnPåForeldre}
                             annenForelder={annenForelder}
-                            arbeidsforhold={oldFormatArbeidsforhold}
+                            arbeidsforhold={arbeidsforhold}
                             handleDeletePeriode={handleDeletePeriode}
                             handleAddPeriode={handleAddPeriode}
                             erFarEllerMedmor={erFarEllerMedmor}

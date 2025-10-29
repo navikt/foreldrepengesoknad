@@ -25,7 +25,7 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoType, KontoTypeUttak, UttakPeriodeAnnenpartEøs } from '@navikt/fp-types/src/apiDtoGenerert';
+import { KontoType, KontoTypeUttak_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -215,7 +215,7 @@ const beregnSamtidigUttaksProsent = (
     return undefined;
 };
 
-export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): KontoTypeUttak => {
+export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): KontoTypeUttak_fpoversikt => {
     return periodeTrekkerMinsterett ? 'AKTIVITETSFRI_KVOTE' : 'FORELDREPENGER';
 };
 
@@ -223,7 +223,7 @@ const getErMorForSyk = (
     erFarEllerMedmor: boolean,
     saksperiode: Saksperiode,
     familiehendelsesdato: string,
-    konto: KontoTypeUttak | undefined,
+    konto: KontoTypeUttak_fpoversikt | undefined,
 ) => {
     if (
         erFarEllerMedmor &&
@@ -562,7 +562,7 @@ const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): OppholdÅrsakType =
 
 const mapUttaksperiodeAnnenpartEøs = (
     søkerErFarEllerMedmor: boolean,
-    p: UttakPeriodeAnnenpartEøs,
+    p: UttakPeriodeAnnenpartEøs_fpoversikt,
 ): UttakAnnenPartEØSInfoPeriode => {
     return {
         id: guid(),
@@ -583,7 +583,7 @@ const mapUttaksperiodeAnnenpartEøs = (
 const annnepartsUttak = (
     søkerErFarEllerMedmor: boolean,
     sammenslåddePerioder: Periode[],
-    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs_fpoversikt[] | undefined,
 ): InfoPeriode[] => {
     const uttakAnnenPart = sammenslåddePerioder.filter((p) => isInfoPeriode(p));
 
@@ -601,7 +601,7 @@ const annnepartsUttak = (
 export const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
-    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs[] | undefined,
+    perioderAnnenpartEøs: UttakPeriodeAnnenpartEøs_fpoversikt[] | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
     const gyldigePerioder = saksperioder.filter((periode) => gyldigeSaksperioder(periode, grunnlag.termindato));

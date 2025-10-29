@@ -6,9 +6,10 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
-import { hentInntektsmelding, hentSakerOptions, hentSatserOptions } from '../../api/api';
+import { hentInntektsmelding, hentSakerOptions } from '../../api/api';
 import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -34,8 +35,7 @@ export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
-    const GRUNNBELØP =
-        useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
+    const GRUNNBELØP = DEFAULT_SATSER.grunnbeløp[0].verdi;
     const ytelseTekst = useGetYtelse() === 'SVANGERSKAPSPENGER' ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();

@@ -7,7 +7,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils';
 
 import { AnnenForelder, Barn, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -114,7 +114,7 @@ const getBareFarMedmorHarRett = (
 };
 
 const harIngenAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
 ) => {
@@ -130,7 +130,7 @@ const harIngenAktiveArbeidsforhold = (
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
@@ -176,7 +176,7 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
-export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
+export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 

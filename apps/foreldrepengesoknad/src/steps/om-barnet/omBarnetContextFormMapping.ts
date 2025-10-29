@@ -15,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 
 import {
     BarnetFormValues,
@@ -63,7 +63,7 @@ const mapOmDetValgteBarnetFormDataToState = (
 
 export const mapOmBarnetFormDataToState = (
     values: BarnetFormValues,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
@@ -137,7 +137,7 @@ const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: Barn): string | un
     erFlereEnnToBarn ? barn.antallBarn.toString() : undefined;
 
 export const getOmBarnetInitialValues = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     barn?: Barn,
     termindatoFraVedtak?: string,

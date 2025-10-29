@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 
@@ -11,7 +11,7 @@ export const ønskerFlerbarnsdagerSkalBesvares = (
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
     tidsperiode: TidsperiodeDate,
-    stønadskontoType: KontoTypeUttak,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
     bareFarHarRett: boolean,
     antallBarn: number,
     erAleneOmOmsorg: boolean,

@@ -3,7 +3,18 @@ import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Familiehendelse, Familiesituasjon, Saker, Søkerinfo, Ytelse } from '@navikt/fp-types';
+import {
+    Barn,
+    BarnDto_fpoversikt,
+    EsSak_fpoversikt,
+    Familiehendelse_fpoversikt,
+    Familiesituasjon,
+    FpSak_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Saker_fpoversikt,
+    SvpSak_fpoversikt,
+    Ytelse,
+} from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
@@ -17,13 +28,13 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
-function sorterPersonEtterEldstOgNavn(p1: Søkerinfo['søker']['barn'][0], p2: Søkerinfo['søker']['barn'][0]) {
+function sorterPersonEtterEldstOgNavn(p1: BarnDto_fpoversikt, p2: BarnDto_fpoversikt) {
     if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
         return 1;
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
         return -1;
     } else {
-        return p1.fornavn < p2.fornavn ? -1 : 1;
+        return p1.navn.fornavn < p2.navn.fornavn ? -1 : 1;
     }
 }
 
@@ -36,7 +47,7 @@ export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) =>
     return undefined;
 };
 
-export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon: boolean): Barn => {
+export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjelderAdopsjon: boolean): Barn => {
     if (gjelderAdopsjon) {
         return {
             type: BarnType.ADOPTERT_STEBARN,
@@ -62,7 +73,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon:
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['søker']['barn']): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpoversikt[]): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
@@ -90,14 +101,14 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Søkerinfo['s
 
     return {
         fornavn: alleBarn
-            ?.filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
-            .map((b) => [b.fornavn, b.mellomnavn ?? ''].join(' ')),
+            ?.filter((b) => b.navn.fornavn !== undefined && b.navn.fornavn.trim() !== '')
+            .map((b) => [b.navn.fornavn, b.navn.mellomnavn ?? ''].join(' ')),
         fødselsdatoer,
         alleBarnaLever: !!alleBarn?.every((barn) => getLeverPerson(barn)),
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: BarnDto_fpoversikt[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -142,7 +153,7 @@ export const grupperSakerPåBarn = (registrerteBarn: Søkerinfo['søker']['barn'
 };
 
 const addYtelseToSak = (
-    saker: Saker['foreldrepenger'] | Saker['engangsstønad'] | Saker['svangerskapspenger'],
+    saker: EsSak_fpoversikt[] | FpSak_fpoversikt[] | SvpSak_fpoversikt[],
     ytelse: Ytelse,
 ): Sak[] => {
     if (ytelse === 'ENGANGSSTØNAD') {
@@ -174,7 +185,7 @@ const addYtelseToSak = (
     );
 };
 
-export const mapSakerDTOToSaker = (saker: Saker): SakOppslag => {
+export const mapSakerDTOToSaker = (saker: Saker_fpoversikt): SakOppslag => {
     return {
         foreldrepenger: addYtelseToSak(saker.foreldrepenger, 'FORELDREPENGER') as Foreldrepengesak[],
         engangsstønad: addYtelseToSak(saker.engangsstønad, 'ENGANGSSTØNAD') as EngangsstønadSak[],
@@ -196,7 +207,7 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
 };
 
 export const utledFamiliesituasjon = (
-    familiehendelse: Familiehendelse,
+    familiehendelse: Familiehendelse_fpoversikt,
     gjelderAdopsjon: boolean | undefined,
 ): Familiesituasjon => {
     if (gjelderAdopsjon) {
@@ -212,7 +223,7 @@ export const utledFamiliesituasjon = (
     return 'termin';
 };
 
-export const getFamiliehendelseDato = (familiehendelse: Familiehendelse): string => {
+export const getFamiliehendelseDato = (familiehendelse: Familiehendelse_fpoversikt): string => {
     const { fødselsdato, termindato, omsorgsovertakelse } = familiehendelse;
 
     if (omsorgsovertakelse) {
@@ -227,15 +238,15 @@ export const getFamiliehendelseDato = (familiehendelse: Familiehendelse): string
 };
 
 export const getNavnAnnenForelder = (
-    søkerinfo: Søkerinfo,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined,
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
-        søkerinfo.søker.barn && fødselsdatoFraSak
-            ? søkerinfo.søker.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
+        søkerinfo.person.barn && fødselsdatoFraSak
+            ? søkerinfo.person.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
-    const annenForelderNavn = barn?.annenForelder ? barn.annenForelder.fornavn : undefined;
+    const annenForelderNavn = barn?.annenPart ? barn.annenPart.navn.fornavn : undefined;
     return annenForelderNavn !== undefined && annenForelderNavn.trim() !== '' ? annenForelderNavn : 'Annen forelder';
 };
 

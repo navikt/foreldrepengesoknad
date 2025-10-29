@@ -10,7 +10,7 @@ import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPar
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
-import { BarnFrontend, PersonFrontend, SøkersituasjonFp } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, PersonDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
@@ -22,26 +22,32 @@ const promiseAction = () => () => {
 
 const defaultSøker = {
     fnr: '19047815714',
-    fornavn: 'TALENTFULL',
-    etternavn: 'MYGG',
+    navn: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+    },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
     barn: [
         {
             fnr: '21091981146',
             fødselsdato: '2021-03-15',
-            annenForelder: {
+            annenPart: {
                 fnr: '12038517080',
                 fødselsdato: '1985-03-12',
-                fornavn: 'LEALAUS',
-                etternavn: 'BÆREPOSE',
+                navn: {
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
             },
-            fornavn: 'KLØKTIG',
-            etternavn: 'MIDTPUNKT',
+            navn: {
+                fornavn: 'KLØKTIG',
+                etternavn: 'MIDTPUNKT',
+            },
             kjønn: 'M',
         },
     ],
-} satisfies PersonFrontend;
+} satisfies PersonDto_fpoversikt;
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
@@ -96,7 +102,7 @@ export const AnnenForelderFraOppgittBarn: Story = {
             antallBarn: 1,
             fnr: ['21091981146'],
         },
-        søkerInfo: { søker: defaultSøker, arbeidsforhold: [] },
+        søkerInfo: { person: defaultSøker, arbeidsforhold: [] },
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
     },
@@ -111,7 +117,7 @@ export const SkalOppgiPersonalia: Story = {
             antallBarn: 1,
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -127,7 +133,7 @@ export const SkalOppgiPersonaliaNavnMangler: Story = {
     args: {
         ...SkalOppgiPersonalia.args,
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -144,23 +150,27 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
     args: {
         ...SkalOppgiPersonalia.args,
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [
                     {
-                        fornavn: 'Ben',
+                        navn: {
+                            fornavn: 'Ben',
+                            etternavn: 'Big',
+                        },
                         fnr: '1',
-                        etternavn: 'Big',
                         kjønn: 'M',
                         fødselsdato: '2021-03-15',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '999999999',
                             fødselsdato: '1985-03-12',
-                            fornavn: 'LEALAUS',
-                            etternavn: 'BÆREPOSE',
+                            navn: {
+                                fornavn: 'LEALAUS',
+                                etternavn: 'BÆREPOSE',
+                            },
                         },
                     },
-                ] satisfies BarnFrontend[],
+                ] satisfies BarnDto_fpoversikt[],
             },
             arbeidsforhold: [],
         },
@@ -186,23 +196,29 @@ export const ForFar: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
-                fornavn: 'LEALAUS',
-                etternavn: 'BÆREPOSE',
+                navn: {
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
                 kjønn: 'M',
                 barn: [
                     {
                         fnr: '21091981146',
                         fødselsdato: '2021-03-15',
-                        annenForelder: {
+                        annenPart: {
                             fnr: '12038517080',
                             fødselsdato: '1985-03-12',
-                            fornavn: 'TALENTFULL',
-                            etternavn: 'MYGG',
+                            navn: {
+                                fornavn: 'TALENTFULL',
+                                etternavn: 'MYGG',
+                            },
                         },
-                        fornavn: 'KLØKTIG',
-                        etternavn: 'MIDTPUNKT',
+                        navn: {
+                            fornavn: 'KLØKTIG',
+                            etternavn: 'MIDTPUNKT',
+                        },
                         kjønn: 'K',
                     },
                 ],
@@ -225,7 +241,7 @@ export const MorUfødtBarn: Story = {
             kanIkkeOppgis: false,
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 barn: [],
             },
@@ -242,7 +258,7 @@ export const MedmorUfødtBarn: Story = {
             rolle: 'medmor',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
                 kjønn: 'K',
                 barn: [],
@@ -260,10 +276,12 @@ export const FarUfødtBarn: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
-                fornavn: 'LEALAUS',
-                etternavn: 'BÆREPOSE',
+                navn: {
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
                 kjønn: 'M',
                 barn: [],
             },
@@ -280,10 +298,12 @@ export const FarGiftUfødtBarn: Story = {
             rolle: 'far',
         },
         søkerInfo: {
-            søker: {
+            person: {
                 ...defaultSøker,
-                fornavn: 'LEALAUS',
-                etternavn: 'BÆREPOSE',
+                navn: {
+                    fornavn: 'LEALAUS',
+                    etternavn: 'BÆREPOSE',
+                },
                 kjønn: 'M',
                 barn: [],
                 sivilstand: { type: SivilstandType.GIFT },
@@ -296,7 +316,7 @@ export const FarGiftUfødtBarn: Story = {
 export const FarFødtBarnMorHarVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenForelder, kanIkkeOppgis: false },
+        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
     },
     parameters: {
         msw: {
@@ -308,7 +328,7 @@ export const FarFødtBarnMorHarVedtak: Story = {
 export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenForelder, kanIkkeOppgis: false },
+        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
     },
     parameters: {
         msw: {

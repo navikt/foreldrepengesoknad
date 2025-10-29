@@ -2,11 +2,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 interface Props {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     harArbeidsforhold: boolean;
 }
 
@@ -21,7 +21,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
         <VStack gap="space-8">
             {arbeidsforhold.map((arbforhold) => (
                 <Box.New
-                    key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}
+                    key={arbforhold.arbeidsgiverId + arbforhold.from + arbforhold.to}
                     padding="4"
                     background="brand-blue-moderate"
                     borderRadius="medium"
@@ -58,9 +58,9 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             <FormattedMessage
                                 id="inntektsinformasjon.arbeidsforhold.periode"
                                 values={{
-                                    fom: formatDate(arbforhold.fom),
-                                    tom: arbforhold.tom
-                                        ? formatDate(arbforhold.tom)
+                                    fom: formatDate(arbforhold.from),
+                                    tom: arbforhold.to
+                                        ? formatDate(arbforhold.to)
                                         : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
                                 }}
                             />

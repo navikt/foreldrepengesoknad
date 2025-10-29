@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
-import { API_URLS, hentSatserOptions } from 'appData/queries';
+import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -9,13 +9,14 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
-import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
-type TilgjengeligeStønadskontoer = { '80': KontoBeregningDto; '100': KontoBeregningDto };
+type TilgjengeligeStønadskontoer = { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -67,8 +68,6 @@ export const PlanleggerDataFetcher = () => {
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const satserData = useQuery(hentSatserOptions());
-
     const stønadskontoerData = useQuery({
         queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
         queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
@@ -101,15 +100,11 @@ export const PlanleggerDataFetcher = () => {
         },
     });
 
-    if (stønadskontoerData.error || satserData.error) {
+    if (stønadskontoerData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    if (!satserData.data) {
-        return <Spinner />;
-    }
-
-    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={satserData.data} />;
+    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={DEFAULT_SATSER} />;
 };
 
 export const PlanleggerDataInit = () => {

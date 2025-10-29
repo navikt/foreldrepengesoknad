@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { KontoDto } from '@navikt/fp-types';
+import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { deltUttak } from './deltUttak';
 
@@ -12,13 +12,13 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
     afterAll(() => {
         MockDate.reset();
     });
-    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto;
+    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto_fpoversikt;
     it('skal legge til 2 uker etter fødsel hvis WLB gjelder og situasjon er fødsel', () => {
         const perioder = deltUttak({
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -38,7 +38,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -58,7 +58,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-01T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -80,7 +80,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -100,7 +100,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'adopsjon',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -125,13 +125,13 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
     afterAll(() => {
         MockDate.reset();
     });
-    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto;
+    const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto_fpoversikt;
     it('skal ikke legge til noen perioder hvis far velger dato før mor er ferdig med uttaket', () => {
         const perioder = deltUttak({
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -149,7 +149,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as KontoDto_fpoversikt[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeDagerMor: undefined,
             harAnnenForelderSøktFP: true,

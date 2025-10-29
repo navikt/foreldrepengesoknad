@@ -2,16 +2,16 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
-import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
+import { KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { getForelderNavn } from './periodeUtils';
 
 export const getFiltrerteVelgbareStønadskontotyper = (
-    valgbareKontoer: KontoTypeUttak[],
+    valgbareKontoer: KontoTypeUttak_fpoversikt[],
     periodeFom: Date | undefined,
     familiehendelsesdato: Date,
-): KontoTypeUttak[] => {
+): KontoTypeUttak_fpoversikt[] => {
     if (!periodeFom) {
         return valgbareKontoer;
     }
@@ -24,7 +24,7 @@ export const getFiltrerteVelgbareStønadskontotyper = (
     return kontoer;
 };
 
-export const getVelgbareStønadskontotyper = (stønadskontoTyper: KontoDto[]): KontoTypeUttak[] =>
+export const getVelgbareStønadskontotyper = (stønadskontoTyper: KontoDto_fpoversikt[]): KontoTypeUttak_fpoversikt[] =>
     stønadskontoTyper
         .filter(
             (kontoType) =>
@@ -38,7 +38,7 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: KontoDto[]): K
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
@@ -81,7 +81,7 @@ export const getStønadskontoNavn = (
 
 export const getUttakAnnenPartStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     periodeForelder: Forelder,
     navnPåForeldre: NavnPåForeldre,
     samtidigUttakProsent: string | undefined,

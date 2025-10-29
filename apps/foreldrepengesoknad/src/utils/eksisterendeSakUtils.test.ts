@@ -1,5 +1,5 @@
 import { Arbeidsform, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
-import { FpSak } from '@navikt/fp-types';
+import { FpSak_fpoversikt } from '@navikt/fp-types';
 
 import {
     getArbeidsformFromUttakArbeidstype,
@@ -11,7 +11,6 @@ describe('eksisterendeSakUtils', () => {
     const eksisterendeSakMorTermin = {
         saksnummer: '352010329',
         sakAvsluttet: false,
-        sisteSøknadMottattDato: '2022-11-27',
         oppdatertTidspunkt: '2022-11-27',
         kanSøkeOmEndring: true,
         sakTilhørerMor: true,
@@ -54,7 +53,8 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'HUNDRE',
-    } as FpSak;
+        forelder: 'MOR',
+    } satisfies FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorTermin = {
         erAnnenPartsSak: false,
@@ -168,7 +168,6 @@ describe('eksisterendeSakUtils', () => {
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
         saksnummer: '352010530',
-        sisteSøknadMottattDato: '2022-11-27',
         oppdatertTidspunkt: '2022-11-27',
         sakAvsluttet: false,
         kanSøkeOmEndring: true,
@@ -196,7 +195,8 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'ÅTTI',
-    } as FpSak;
+        forelder: 'MOR',
+    } satisfies FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {
         erAnnenPartsSak: false,
@@ -292,7 +292,7 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-    } as FpSak;
+    } satisfies FpSak_fpoversikt;
 
     const forventetResultatFar = {
         ...forventetMappetEksisterendeSakMorTermin,
@@ -369,7 +369,7 @@ describe('eksisterendeSakUtils', () => {
             ...eksisterendeSakMedØnsketJusteringFarFødsel.familiehendelse,
             fødselsdato: undefined,
         },
-    } as FpSak;
+    } satisfies FpSak_fpoversikt;
 
     const forventetResultatFarTermin = {
         ...forventetResultatFar,

@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
 import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
@@ -11,7 +11,7 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
-    velgbareStønadskontoer: KontoTypeUttak[];
+    velgbareStønadskontoer: KontoTypeUttak_fpoversikt[];
     erOppholdsperiode: boolean;
     navnPåForeldre: NavnPåForeldre;
     fieldName: PeriodeUttakFormField;

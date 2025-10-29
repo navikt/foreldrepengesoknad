@@ -9,8 +9,7 @@ import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { Saker, Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -18,7 +17,7 @@ import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
 
 type StoryArgs = {
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
     saksnummer: string;
 };
 
@@ -83,7 +82,7 @@ export const Engangsstønad: Story = {
                             },
                         ],
                         svangerskapspenger: [],
-                    } satisfies Saker),
+                    } satisfies Saker_fpoversikt),
                 ),
                 http.get(API_URLS.tidslinje, () =>
                     HttpResponse.json([
@@ -107,7 +106,6 @@ export const Engangsstønad: Story = {
                     ]),
                 ),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
-                http.get(API_URLS.satser, () => HttpResponse.json(DEFAULT_SATSER)),
             ],
         },
     },

@@ -10,7 +10,7 @@ import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
@@ -104,7 +104,7 @@ const createTilretteleggingSteps = ({
 const getTilretteleggingLabels = (
     intl: IntlShape,
     erFlereTilrettelegginger: boolean,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     id?: string,
 ): Record<SøknadRoute, string> => {
     if (id === FRILANS_ID || id === EGEN_NÆRING_ID) {
@@ -129,7 +129,7 @@ const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): 
 const getStepConfig = (
     intl: IntlShape,
     currentPath: SøknadRoute | string,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): Array<ProgressStep<SøknadRoute | string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
@@ -233,7 +233,9 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (arbeidsforhold: Arbeidsforhold[]): Array<ProgressStep<SøknadRoute | string>> => {
+export const useStepConfig = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+): Array<ProgressStep<SøknadRoute | string>> => {
     const intl = useIntl();
 
     const location = useLocation();

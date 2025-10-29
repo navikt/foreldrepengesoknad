@@ -5,7 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Arbeidsform, TidsperiodeDate } from '@navikt/fp-common';
+import { Arbeidsform, TidsperiodeDate } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
@@ -16,7 +17,7 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
-const containsDuplicates = (arbeidsforhold: Arbeidsforhold[]): boolean => {
+const containsDuplicates = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): boolean => {
     if (arbeidsforhold.length > 1) {
         const arbeidsgiverIds = arbeidsforhold.map((a) => a.arbeidsgiverId);
         const uniqueIds = new Set(arbeidsgiverIds);
@@ -27,25 +28,21 @@ const containsDuplicates = (arbeidsforhold: Arbeidsforhold[]): boolean => {
     return false;
 };
 
-const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
-    return arbeidsforhold.arbeidsgiverId;
-};
-
 const getKunArbeidsforholdForValgtTidsperiode = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     tidsperiode: TidsperiodeDate,
-): Arbeidsforhold[] => {
+): EksternArbeidsforholdDto_fpoversikt[] => {
     if (tidsperiode.tom && tidsperiode.fom) {
         const kunArbeidsforholdForValgtTidsperiode = arbeidsforhold.filter((a) => {
-            if (a.tom === undefined) {
-                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.fom), 'day')) {
+            if (a.to === undefined) {
+                if (dayjs(tidsperiode.fom).isSameOrAfter(dayjs(a.from), 'day')) {
                     return true;
                 }
 
                 return false;
             }
 
-            if (dateIsBetween(tidsperiode.fom, a.fom, a.tom) || dateIsBetween(tidsperiode.tom, a.fom, a.tom)) {
+            if (dateIsBetween(tidsperiode.fom, a.from, a.to) || dateIsBetween(tidsperiode.tom, a.from, a.to)) {
                 return true;
             }
 
@@ -53,7 +50,7 @@ const getKunArbeidsforholdForValgtTidsperiode = (
         });
 
         if (containsDuplicates(kunArbeidsforholdForValgtTidsperiode)) {
-            return uniqBy(kunArbeidsforholdForValgtTidsperiode, getArbeidsgiverId);
+            return uniqBy(kunArbeidsforholdForValgtTidsperiode, (a) => a.arbeidsgiverId);
         }
 
         return kunArbeidsforholdForValgtTidsperiode;
@@ -64,11 +61,14 @@ const getKunArbeidsforholdForValgtTidsperiode = (
 
 interface Props {
     graderingsprosentVisible: boolean;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     tidsperiode: TidsperiodeDate;
 }
 
-const getArbeidsOptions = (arbeidsforhold: Arbeidsforhold[], tidsperiode: TidsperiodeDate): FormikRadioProp[] => {
+const getArbeidsOptions = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    tidsperiode: TidsperiodeDate,
+): FormikRadioProp[] => {
     const aktiveArbeidsforholdIPerioden = getKunArbeidsforholdForValgtTidsperiode(arbeidsforhold, tidsperiode);
 
     const defaultOptions: FormikRadioProp[] = [

@@ -5,7 +5,6 @@ import { Button, Heading } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
     NavnPåForeldre,
@@ -16,7 +15,7 @@ import {
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
@@ -32,10 +31,10 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: KontoBeregningDto;
+    stønadskontoer: KontoBeregningDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     handleDeletePeriode: (periodeId: string) => void;
     handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;

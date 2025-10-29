@@ -6,7 +6,7 @@ import { useSendSøknad } from 'appData/useSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 
 import { Forside } from './pages/forside/Forside';
@@ -38,7 +38,7 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     avbrytSøknad: () => Promise<void>,
     sendSøknad: () => Promise<void>,
@@ -195,7 +195,7 @@ const renderSøknadRoutes = (
 };
 
 interface Props {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagretData?: SvpDataMapAndMetaData;
 }
 

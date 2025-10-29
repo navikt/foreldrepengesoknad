@@ -13,7 +13,7 @@ import {
 import { FormSummary, List } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -22,7 +22,7 @@ export function PerioderOppsummering({
     alleArbeidsforhold,
 }: {
     onVilEndreSvar: () => void;
-    alleArbeidsforhold: Arbeidsforhold[];
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -57,7 +57,7 @@ function VirksomhetSummary({
     sisteDagForSvangerskapspenger,
     termindato,
 }: {
-    alleArbeidsforhold: Arbeidsforhold[];
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     sisteDagForSvangerskapspenger: string;
     termindato: string;
 }) {

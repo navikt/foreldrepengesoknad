@@ -1,12 +1,12 @@
 import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoBeregningDto, KontoDto, KontoTypeUttak } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
@@ -45,31 +45,34 @@ export const getStønadskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
 
-export const getAntallUkerFraStønadskontoer = (stønadskontoer: KontoDto[]): number => {
+export const getAntallUkerFraStønadskontoer = (stønadskontoer: KontoDto_fpoversikt[]): number => {
     return Object.values(stønadskontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
 };
 
-const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
+const getDagerForKonto = (
+    stønadskontoer: KontoBeregningDto_fpoversikt,
+    stønadskontoType: KontoTypeUttak_fpoversikt,
+) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager / 5 : 0;
 };
 
-export const getAntallUkerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FORELDREPENGER_FØR_FØDSEL');
 
-export const getAntallUkerMødrekvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerMødrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'MØDREKVOTE');
 
-export const getAntallUkerFedrekvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerFedrekvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FEDREKVOTE');
 
-export const getAntallUkerFellesperiode = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerFellesperiode = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FELLESPERIODE');
 
-export const getAntallUkerForeldrepenger = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerForeldrepenger = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'FORELDREPENGER');
 
-export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto): number =>
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto_fpoversikt): number =>
     getDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
 export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {

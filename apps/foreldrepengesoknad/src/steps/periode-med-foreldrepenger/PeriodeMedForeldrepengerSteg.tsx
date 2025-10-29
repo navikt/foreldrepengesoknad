@@ -11,7 +11,7 @@ import { getKjønnFromFnr } from 'utils/personUtils';
 import { Box, HStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { IconCircleWrapper, SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -20,7 +20,7 @@ import { DekningsgradValgtAvAnnenPartPanel } from './DekningsgradValgtAvAnnenPar
 import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };

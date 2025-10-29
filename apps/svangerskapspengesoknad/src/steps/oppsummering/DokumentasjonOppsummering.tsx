@@ -5,7 +5,7 @@ import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtil
 import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({
@@ -15,7 +15,7 @@ export function DokumentasjonOppsummering({
 }: {
     readonly tilretteleggingerVedlegg: Record<string, Attachment[]>;
     readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     return (
         <FormSummary>
@@ -68,7 +68,7 @@ function DokumentasjonLabel({
     alleArbeidsforhold,
 }: {
     readonly tilretteleggingId: string;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const intl = useIntl();
     switch (tilretteleggingId) {

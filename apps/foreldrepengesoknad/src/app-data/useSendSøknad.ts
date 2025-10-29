@@ -8,12 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (søkerinfo: Søkerinfo, erEndringssøknad: boolean) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad: boolean) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();

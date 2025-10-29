@@ -7,7 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table, VStack } from '@navikt/ds-react';
 
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from '../../api/api';
@@ -36,7 +36,7 @@ export const DokumenterPage = () => {
 };
 
 interface ScopedSortState extends SortState {
-    orderBy: keyof DokumentDto;
+    orderBy: keyof DokumentDto_fpoversikt;
 }
 
 const DokumenterPageInner = () => {
@@ -54,14 +54,12 @@ const DokumenterPageInner = () => {
 
     const handleSort = (sortKey: ScopedSortState['orderBy']) => {
         setSort(
-            sort && sortKey === sort.orderBy && sort.direction === 'descending'
+            sortKey === sort?.orderBy && sort.direction === 'descending'
                 ? undefined
                 : {
                       orderBy: sortKey,
                       direction:
-                          sort && sortKey === sort.orderBy && sort.direction === 'ascending'
-                              ? 'descending'
-                              : 'ascending',
+                          sortKey === sort?.orderBy && sort.direction === 'ascending' ? 'descending' : 'ascending',
                   },
         );
     };

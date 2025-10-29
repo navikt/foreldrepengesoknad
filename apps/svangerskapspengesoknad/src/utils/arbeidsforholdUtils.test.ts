@@ -1,4 +1,4 @@
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getTotalStillingsprosentPåSkjæringstidspunktet, getUnikeArbeidsforhold } from './arbeidsforholdUtils';
 
@@ -10,25 +10,25 @@ describe('getUnikeArbeidsforhold', () => {
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Sykehuset i Langfold',
                 stillingsprosent: 15,
-                fom: '2020-08-26',
-                tom: '2023-07-31',
+                from: '2020-08-26',
+                to: '2023-07-31',
             },
             {
                 arbeidsgiverId: '1',
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Sykehuset i Langfold',
                 stillingsprosent: 80,
-                fom: '2023-08-01',
-                tom: '2023-12-01',
+                from: '2023-08-01',
+                to: '2023-12-01',
             },
             {
                 arbeidsgiverId: '3',
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Bakeri',
                 stillingsprosent: 100,
-                fom: '2020-02-01',
+                from: '2020-02-01',
             },
-        ] as Arbeidsforhold[];
+        ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold, '2024-02-15');
         expect(unike.length).toEqual(2);
@@ -46,25 +46,25 @@ describe('getUnikeArbeidsforhold', () => {
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Sykehuset i Langfold',
                 stillingsprosent: 55,
-                fom: '2019-01-31',
-                tom: '2020-08-25',
+                from: '2019-01-31',
+                to: '2020-08-25',
             },
             {
                 arbeidsgiverId: '1',
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Sykehuset i Langfold',
                 stillingsprosent: 15,
-                fom: '2016-08-26',
+                from: '2016-08-26',
             },
             {
                 arbeidsgiverId: '1',
                 arbeidsgiverIdType: 'orgnr',
                 arbeidsgiverNavn: 'Sykehuset i Langfold',
                 stillingsprosent: 80,
-                fom: '2023-07-31',
-                tom: '2023-12-01',
+                from: '2023-07-31',
+                to: '2023-12-01',
             },
-        ] as Arbeidsforhold[];
+        ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold2, '2024-02-15');
         expect(unike.length).toEqual(1);

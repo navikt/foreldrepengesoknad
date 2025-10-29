@@ -25,14 +25,14 @@ import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 
-import { FpSak, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: () => Promise<void>,
     avbrytSøknad: () => void,
@@ -42,7 +42,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
+    if (!erMyndig(søkerInfo.person.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -95,7 +95,7 @@ const renderSøknadRoutes = (
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        kjønn={søkerInfo.søker.kjønn}
+                        kjønn={søkerInfo.person.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -136,7 +136,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.FORDELING}
                 element={
                     <FordelingSteg
-                        søker={søkerInfo.søker}
+                        person={søkerInfo.person}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -254,8 +254,8 @@ const renderSøknadRoutes = (
 
 interface Props {
     currentRoute: SøknadRoutes;
-    søkerInfo: Søkerinfo;
-    foreldrepengerSaker: FpSak[];
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;
@@ -288,7 +288,7 @@ export const ForeldrepengesøknadRoutes = ({
     );
 
     const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.søker.fnr,
+        søkerInfo.person.fnr,
         setErEndringssøknad,
         setHarGodkjentVilkår,
         setSøknadGjelderNyttBarn,
@@ -302,7 +302,12 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.person.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp
+        ) {
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
@@ -312,7 +317,7 @@ export const ForeldrepengesøknadRoutes = ({
         }
     }, [
         currentRoute,
-        søkerInfo.søker.fødselsdato,
+        søkerInfo.person.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,

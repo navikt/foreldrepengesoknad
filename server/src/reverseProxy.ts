@@ -13,8 +13,8 @@ type ProxyOptions = {
 const proxy = {
     FPSOKNAD_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_SCOPE'),
     FPSOKNAD_API_URL: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_URL'),
-    FORELDREPENGER_API_URL: serverConfig.påkrevMiljøVariabel('FORELDREPENGER_API_URL'),
-    FORELDREPENGER_API_SCOPE: serverConfig.påkrevMiljøVariabel('FORELDREPENGER_API_SCOPE'),
+    FPOVERSIKT_API_URL: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_URL'),
+    FPOVERSIKT_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_SCOPE'),
 } as const;
 
 export function configureReverseProxyApi(router: Router) {
@@ -25,9 +25,9 @@ export function configureReverseProxyApi(router: Router) {
     });
 
     addProxyHandler(router, {
-        ingoingUrl: '/rest',
-        outgoingUrl: proxy.FORELDREPENGER_API_URL,
-        scope: proxy.FORELDREPENGER_API_SCOPE,
+        ingoingUrl: '/fpoversikt',
+        outgoingUrl: proxy.FPOVERSIKT_API_URL,
+        scope: proxy.FPOVERSIKT_API_SCOPE,
     });
 }
 

@@ -26,7 +26,7 @@ import {
     ForeldrepengesøknadDto,
     Frilans,
     NæringDto,
-    Søkerinfo,
+    PersonMedArbeidsforholdDto_fpoversikt,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -50,26 +50,28 @@ const DEFAULT_SØKER_INFO = {
             arbeidsgiverId: '9903232324',
             arbeidsgiverIdType: 'ikke-orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            fom: '2018-06-25T00:00:00.000Z',
+            from: '2018-06-25T00:00:00.000Z',
             stillingsprosent: 80,
         },
         {
             arbeidsgiverId: '990322244',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-            fom: '2017-04-05T00:00:00.000Z',
+            from: '2017-04-05T00:00:00.000Z',
             stillingsprosent: 100,
         },
     ],
-    søker: {
-        etternavn: 'Oravakangas',
-        fornavn: 'Erlinga-Mask',
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
         fnr: '02343434',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
     },
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,
@@ -172,16 +174,13 @@ const UTTAKSPLAN_METADATA = {
 } satisfies UttaksplanMetaData;
 
 const EXPECTED_SØKER_INFO = {
-    fnr: DEFAULT_SØKER_INFO.søker.fnr,
-    navn: {
-        fornavn: DEFAULT_SØKER_INFO.søker.fornavn,
-        etternavn: DEFAULT_SØKER_INFO.søker.etternavn,
-    },
+    fnr: DEFAULT_SØKER_INFO.person.fnr,
+    navn: DEFAULT_SØKER_INFO.person.navn,
     arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
         navn: af.arbeidsgiverNavn,
         orgnummer: af.arbeidsgiverId,
         stillingsprosent: af.stillingsprosent,
-        fom: af.fom,
+        fom: af.from,
     })),
 };
 

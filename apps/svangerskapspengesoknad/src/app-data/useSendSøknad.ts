@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAbortSignal } from '@navikt/fp-api';
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
@@ -16,7 +16,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useSendSøknad = (søkerinfo: Søkerinfo) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();

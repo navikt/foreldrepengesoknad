@@ -11,7 +11,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
@@ -119,7 +119,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,

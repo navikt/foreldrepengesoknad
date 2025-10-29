@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 
-import { BarnFrontend, FpSak } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
 
@@ -26,37 +26,34 @@ const sak = {
     åpenBehandling: undefined,
     annenPart: { fnr: '123456789' },
     barn: [{ fnr: '987654321' }],
-} as FpSak;
+    forelder: 'MOR',
+} satisfies FpSak_fpoversikt;
 
 describe('forsideUtils - getSelectableBarnOptions', () => {
     const barnFraPDL = {
-        fornavn: 'Grønn',
-        etternavn: 'Dinosaur',
+        navn: { fornavn: 'Grønn', etternavn: 'Dinosaur' },
         fødselsdato: fødselsdato,
         fnr: '123456789',
         kjønn: 'K',
-    } satisfies BarnFrontend;
+    } satisfies BarnDto_fpoversikt;
     const barnFraPDL2 = {
-        fornavn: 'Svart',
-        etternavn: 'Edderkopp',
+        navn: { fornavn: 'Svart', etternavn: 'Edderkopp' },
         fødselsdato: dayjs(fødselsdato).add(2, 'month').format('YYYY-MM-DD'),
         fnr: '123456780',
         kjønn: 'K',
-    } satisfies BarnFrontend;
+    } satisfies BarnDto_fpoversikt;
     const barnTvilling = {
-        fornavn: 'Blå',
-        etternavn: 'Dinosaur',
+        navn: { fornavn: 'Blå', etternavn: 'Dinosaur' },
         fødselsdato: dayjs(fødselsdato).add(1, 'day').format('YYYY-MM-DD'),
         fnr: '123456788',
         kjønn: 'K',
-    } satisfies BarnFrontend;
+    } satisfies BarnDto_fpoversikt;
     const barnMerEnn3ÅrOg3Mnd = {
-        fornavn: 'Blå',
-        etternavn: 'Dinosaur',
+        navn: { fornavn: 'Blå', etternavn: 'Dinosaur' },
         fødselsdato: '2019-09-21',
         fnr: '123456788',
         kjønn: 'K',
-    } satisfies BarnFrontend;
+    } satisfies BarnDto_fpoversikt;
     it('skal kun returnere ett barn hvis barn fra PDL og sak har fødselsdato', async () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL]);
         expect(result.length).toBe(1);
@@ -125,7 +122,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         type: ValgtBarnType.FØDT,
         antallBarn: 1,
         sortableDato: new Date('2022-06-01'),
-        sak: { saksnummer: '1' } as FpSak,
+        sak: { saksnummer: '1' } as FpSak_fpoversikt,
         familiehendelsesdato: new Date('2022-06-01'),
         fnr: ['1234'],
         alleBarnaLever: true,
@@ -138,7 +135,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { saksnummer: '2' } as FpSak,
+                sak: { saksnummer: '2' } as FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -148,7 +145,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2023-04-01'),
-                sak: { saksnummer: '3' } as FpSak,
+                sak: { saksnummer: '3' } as FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2023-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2023-03-15'),
             },
@@ -157,7 +154,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2024-04-01'),
-                sak: { saksnummer: '3' } as FpSak,
+                sak: { saksnummer: '3' } as FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2024-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2024-03-15'),
             },
@@ -175,7 +172,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { saksnummer: '2' } as FpSak,
+                sak: { saksnummer: '2' } as FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -186,7 +183,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2021-04-01'),
-                sak: { saksnummer: '3' } as FpSak,
+                sak: { saksnummer: '3' } as FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2021-03-15'),
                 alleBarnaLever: true,

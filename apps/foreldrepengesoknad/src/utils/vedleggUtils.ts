@@ -1,5 +1,5 @@
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, Dokumenterer, VedleggInnsendingType } from '@navikt/fp-types';
+import { Attachment, Dokumenterer, InnsendingType } from '@navikt/fp-types';
 
 import { guid } from './guid';
 
@@ -9,7 +9,7 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType: VedleggInnsendingType,
+    innsendingsType: InnsendingType,
     dokumenterer?: Dokumenterer,
 ): Attachment => ({
     id: generateAttachmentId(),

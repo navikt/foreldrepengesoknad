@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { Uttaksdatoer, erInnenFørsteSeksUkerFødselFarMedmor } from '../uttaksdatoerUtils';
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
     periodetype: Periodetype,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak_fpoversikt,
     tidsperiode: TidsperiodeDate,
     situasjon: Situasjon,
     søkerErFarEllerMedmor: boolean,
@@ -24,7 +24,7 @@ const erMorForForSykSkalBesvares = (
 ): boolean => {
     const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
         periodetype,
-        konto as KontoTypeUttak,
+        konto as KontoTypeUttak_fpoversikt,
         tidsperiode,
         søkerErFarEllerMedmor,
         erAleneOmOmsorg,

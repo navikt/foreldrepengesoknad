@@ -18,7 +18,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { BarnFrontend, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
@@ -62,7 +62,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-export const getEldsteRegistrerteBarn = (registrerteBarn: BarnFrontend[]): BarnFrontend => {
+export const getEldsteRegistrerteBarn = (registrerteBarn: BarnDto_fpoversikt[]): BarnDto_fpoversikt => {
     return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1))[
         registrerteBarn.length - 1
     ];

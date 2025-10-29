@@ -1,6 +1,6 @@
 import { VStack } from '@navikt/ds-react';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
 import { HarSaker } from '../../components/har-saker/HarSaker';
@@ -15,13 +15,13 @@ import './forside.css';
 
 interface Props {
     saker: SakOppslag;
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 }
 
 export const Forside = ({ saker, søkerinfo }: Props) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.person.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
 
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes

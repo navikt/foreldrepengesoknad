@@ -1,13 +1,13 @@
 import { Tag } from '@navikt/ds-react';
 
-import { DokumentKategori } from '@navikt/fp-types';
+import { JournalpostType_fpoversikt } from '@navikt/fp-types';
 
-export const DokumentAvsender = ({ dokumentType }: { readonly dokumentType: DokumentKategori }) => {
-    const labelMap: Record<DokumentKategori, string> = {
-        UTGÅENDE_DOKUMENT: 'Nav',
-        INNGÅENDE_DOKUMENT: 'Du',
-    };
+const labelMap: Record<JournalpostType_fpoversikt, string> = {
+    UTGÅENDE_DOKUMENT: 'Nav',
+    INNGÅENDE_DOKUMENT: 'Du',
+};
 
+export const DokumentAvsender = ({ dokumentType }: { dokumentType: JournalpostType_fpoversikt }) => {
     return (
         <Tag size="small" className="min-w-12 justify-self-end" variant="neutral">
             {labelMap[dokumentType]}

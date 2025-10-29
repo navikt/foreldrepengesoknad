@@ -1,11 +1,11 @@
 import { Forelder } from '@navikt/fp-constants';
-import { KontoDto, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
+import { KontoDto_fpoversikt, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
 interface DeltUttakParams {
     famDato: string;
-    tilgjengeligeStønadskontoer: KontoDto[];
+    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[];
     fellesperiodeDagerMor: number | undefined;
     startdato?: string;
 }

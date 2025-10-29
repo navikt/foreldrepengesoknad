@@ -7,12 +7,13 @@ import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-reac
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import {
-    Familiehendelse,
-    FpSak,
-    KontoBeregningDto,
-    KontoDto,
-    KontoTypeUttak,
+    BrukerRolleSak_fpoversikt,
+    Familiehendelse_fpoversikt,
+    KontoBeregningDto_fpoversikt,
+    KontoDto_fpoversikt,
+    KontoTypeUttak_fpoversikt,
     OppholdÅrsakType,
+    RettighetType_fpoversikt,
     SaksperiodeNy,
     UttaksplanModus,
 } from '@navikt/fp-types';
@@ -23,12 +24,12 @@ import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 type Props = {
-    konto: KontoBeregningDto;
+    konto: KontoBeregningDto_fpoversikt;
     perioder: Planperiode[];
-    rettighetType: FpSak['rettighetType'];
-    forelder: FpSak['forelder'];
+    rettighetType: RettighetType_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
     visStatusIkoner: boolean;
-    familiehendelse?: Familiehendelse;
+    familiehendelse?: Familiehendelse_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     modus: UttaksplanModus;
     erMedmorDelAvSøknaden?: boolean;
@@ -568,7 +569,7 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({ konto, perioder }: { konto?: KontoDto_fpoversikt; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
     const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
@@ -670,7 +671,7 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
 }: {
-    kontoType: KontoDto['konto'];
+    kontoType: KontoTypeUttak_fpoversikt;
     erMedmorDelAvSøknaden?: boolean;
 }) => {
     switch (kontoType) {
@@ -709,7 +710,7 @@ const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }
 };
 
 type FordelingSegmentProps = {
-    kontoType?: KontoDto['konto'];
+    kontoType?: KontoTypeUttak_fpoversikt;
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
@@ -843,7 +844,7 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): KontoTypeUttak | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt | undefined => {
     switch (årsak) {
         case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
             return 'FEDREKVOTE';
@@ -858,7 +859,7 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): K
     }
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
+const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto_fpoversikt[]) => {
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
             if (p.oppholdÅrsak) {

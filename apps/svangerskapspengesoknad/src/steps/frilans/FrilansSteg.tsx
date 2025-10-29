@@ -6,14 +6,14 @@ import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Frilans } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {

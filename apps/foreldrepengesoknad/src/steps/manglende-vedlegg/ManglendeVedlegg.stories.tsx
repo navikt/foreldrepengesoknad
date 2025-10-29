@@ -20,7 +20,7 @@ import {
     SivilstandType,
     UtsettelseÅrsakType,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonFrontend, Situasjon, Søkerinfo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -31,56 +31,52 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
+        navn: {
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+        },
         kjønn: 'K',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '21091981146',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981146',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'SNILT',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981147',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'LYST',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
         ],
     },
     arbeidsforhold: [],
-} as Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
@@ -102,33 +98,30 @@ const defaultArbeidsforholdOgInntekt = {
 };
 
 const defaultSøkerinfoFar = {
-    søker: {
+    person: {
         fnr: '08099017784',
-        fornavn: 'FAR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
         kjønn: 'M',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '19047815714',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'K',
             },
         ],
         sivilstand: {
             type: SivilstandType.GIFT,
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';
@@ -204,7 +197,7 @@ const arbeidsforholdMorJobber80Prosent = [
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Mors Arbeidsplass AS',
         stillingsprosent: 80,
-        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+        from: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
     },
 ];
 
@@ -465,7 +458,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                http.post(API_URLS.trengerDokumentereMorsArbeid, async () => {
                     return HttpResponse.json(true);
                 }),
             ],

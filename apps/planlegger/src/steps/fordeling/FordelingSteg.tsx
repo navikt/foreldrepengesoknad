@@ -17,7 +17,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -108,7 +108,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
 };
 
 interface Props {
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskontoer: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
 }
 
 export const FordelingSteg = ({ stønadskontoer }: Props) => {
