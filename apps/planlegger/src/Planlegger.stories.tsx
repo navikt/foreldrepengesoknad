@@ -71,7 +71,7 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                    const response = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/internal/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {

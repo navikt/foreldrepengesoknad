@@ -4,13 +4,13 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { Link } from '@navikt/ds-react';
 
-import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import { Dokument_fpoversikt } from '@navikt/fp-types';
 
 import { API_URLS, hentInntektsmelding } from '../../api/api';
 import { OversiktRoutes } from '../../routes/routes';
 
 interface Props {
-    dokument: TidslinjeHendelseDto_fpoversikt['dokumenter'][0];
+    dokument: Dokument_fpoversikt;
     visesITidslinjen: boolean;
 }
 

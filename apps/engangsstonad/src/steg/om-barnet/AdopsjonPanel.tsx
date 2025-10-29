@@ -6,7 +6,7 @@ import { Adopsjon } from 'types/OmBarnet';
 import { Radio } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import { PersonDto_fpoversikt } from '@navikt/fp-types';
+import { Kjønn_fpoversikt } from '@navikt/fp-types';
 import { isMaxOneYearIntoTheFuture, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AdopsjonFodselFieldArray } from './AdopsjonFodselFieldArray';
@@ -16,7 +16,7 @@ export type FormValues = {
 } & Adopsjon;
 
 interface Props {
-    kjønn: PersonDto_fpoversikt['kjønn'];
+    kjønn: Kjønn_fpoversikt;
 }
 
 export const AdopsjonPanel = ({ kjønn }: Props) => {
