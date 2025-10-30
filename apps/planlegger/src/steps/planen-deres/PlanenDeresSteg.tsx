@@ -270,6 +270,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 erDeltUttak={fordeling !== undefined}
                             >
                                 <UttaksplanKalender
+                                    readOnly={true}
                                     saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
                                     planleggerLegend={
                                         <CalendarLabels

@@ -278,6 +278,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         {visningsmodus === 'kalender' && (
                             <div className="p-6 max-[479px]:p-0">
                                 <UttaksplanKalender
+                                    readOnly={false}
                                     saksperioder={gjeldendeUttaksplan}
                                     planleggerLegend={
                                         <CalendarLabels
