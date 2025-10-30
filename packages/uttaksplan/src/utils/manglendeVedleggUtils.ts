@@ -3,7 +3,6 @@ import {
     MissingAttachment,
     MorsAktivitet,
     Overføringsperiode,
-    OverføringÅrsakType,
     Periode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
@@ -162,8 +161,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
 
                 if (isOverføringsperiode(periode)) {
                     if (
-                        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-                        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+                        periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+                        periode.årsak === 'SYKDOM_ANNEN_FORELDER'
                     ) {
                         missingAttachments.push(
                             createMissingAttachment(
@@ -220,9 +219,7 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
     periode: Overføringsperiode,
-): boolean =>
-    (erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg) &&
-    periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
+): boolean => (erFarEllerMedmor || periode.årsak !== 'ALENEOMSORG') && periode.årsak !== 'IKKE_RETT_ANNEN_FORELDER';
 
 const missingAttachmentForAktivitetskrav = (
     periode: Utsettelsesperiode | Uttaksperiode,

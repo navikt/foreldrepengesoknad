@@ -1,6 +1,5 @@
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakOppholdÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { Tidsperiode } from './Tidsperiode';
 
 export interface Saksperiode extends Omit<UttakPeriode_fpoversikt, 'fom' | 'tom' | 'oppholdÅrsak'> {
@@ -8,5 +7,5 @@ export interface Saksperiode extends Omit<UttakPeriode_fpoversikt, 'fom' | 'tom'
     periode: Tidsperiode;
     gjelderAnnenPart: boolean;
     angittAvAnnenPart?: boolean;
-    oppholdÅrsak?: OppholdÅrsakType;
+    oppholdÅrsak?: UttakOppholdÅrsak_fpoversikt;
 }

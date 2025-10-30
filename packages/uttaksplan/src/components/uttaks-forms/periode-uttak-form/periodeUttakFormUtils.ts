@@ -5,7 +5,6 @@ import {
     Forelder,
     Oppholdsperiode,
     Overføringsperiode,
-    OverføringÅrsakType,
     Periode,
     Periodetype,
     Situasjon,
@@ -16,7 +15,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -378,7 +377,7 @@ export const mapPeriodeUttakFormToPeriode = (
                 fom: values.fom!,
                 tom: values.tom!,
             },
-            årsak: values.overføringsårsak as OverføringÅrsakType,
+            årsak: values.overføringsårsak as UttakOverføringÅrsak_fpoversikt,
         };
 
         return periode;

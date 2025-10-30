@@ -11,7 +11,6 @@ import {
     Dekningsgrad,
     EksisterendeSak,
     FamiliehendelseType,
-    OppholdÅrsakType,
     Saksgrunnlag,
     Saksperiode,
     Situasjon,
@@ -31,7 +30,6 @@ import {
     FpSak_fpoversikt,
     PersonDto_fpoversikt,
     Person_fpoversikt,
-    UttakOppholdÅrsak_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
@@ -60,19 +58,6 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fp
     }
 };
 
-const mapOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt | undefined): OppholdÅrsakType | undefined => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
-        case 'FELLESPERIODE_ANNEN_FORELDER':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-        case 'MØDREKVOTE_ANNEN_FORELDER':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
-        default:
-            return undefined;
-    }
-};
-
 export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSak: boolean): Saksperiode => {
     const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
@@ -90,7 +75,7 @@ export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSa
         overføringÅrsak: p.overføringÅrsak,
         samtidigUttak: p.samtidigUttak,
         morsAktivitet: p.morsAktivitet,
-        oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
+        oppholdÅrsak: p.oppholdÅrsak,
     };
 
     if (oppholdÅrsak !== undefined) {
