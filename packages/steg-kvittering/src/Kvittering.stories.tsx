@@ -30,7 +30,7 @@ export const JournalførtGåTilInnsyn: Story = {
     args: {
         forsendelseStatus: {
             status: 'ENDELIG',
-            saksnummer: 1,
+            saksnummer: '1',
         },
         pageTitle: 'Foreldrepengesøknad',
     },

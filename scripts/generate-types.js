@@ -13,7 +13,7 @@ const SOURCES = [
     {
         name: 'fpoversikt',
         url: 'https://fpoversikt.intern.dev.nav.no/fpoversikt/api/openapi.json',
-        localUrl: 'http://localhost:8889/api/openapi.json',
+        localUrl: 'http://localhost:8889/fpoversikt/api/openapi.json',
         aud: 'dev-gcp:teamforeldrepenger:fpoversikt',
     },
     {

@@ -553,8 +553,8 @@ export type UttaksPeriodeDto = {
     morsAktivitetIPerioden?: MorsAktivitet;
     samtidigUttakProsent?: number;
     ønskerFlerbarnsdager?: boolean;
-    ønskerSamtidigUttak?: boolean;
     ønskerGradering?: boolean;
+    ønskerSamtidigUttak?: boolean;
 };
 
 export type UttaksplanDto = {
@@ -752,6 +752,13 @@ export type EttersendelseDto = {
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
+export type ForsendelseStatus = {
+    saksnummer?: string;
+    status?: Status;
+};
+
+export type Status = 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG';
+
 export type YtelseMellomlagringType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTONAD';
 
 export type FormDataContentDisposition = {
@@ -918,11 +925,10 @@ export type StatusData = {
 };
 
 export type StatusResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
+    200: ForsendelseStatus;
 };
+
+export type StatusResponse = StatusResponses[keyof StatusResponses];
 
 export type FinnesDetAktivMellomlagringData = {
     body?: never;

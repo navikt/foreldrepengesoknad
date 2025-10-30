@@ -70,7 +70,7 @@ const GåTilMinSide = () => {
     );
 };
 
-const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
+const GåTilInnsyn = ({ saksnummer }: { saksnummer?: string }) => {
     if (saksnummer === undefined) {
         throw new Error('Udefinert saksnummer for status ENDELIG');
     }
