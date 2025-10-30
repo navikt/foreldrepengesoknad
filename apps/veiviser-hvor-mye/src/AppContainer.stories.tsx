@@ -67,7 +67,7 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/internal/konto', {
+                    const response = await fetch('http://localhost:8889/fpoversikt/external/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {

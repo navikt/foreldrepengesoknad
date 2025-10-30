@@ -235,9 +235,9 @@ export type TilbakekrevingUttalelseOppgave_fpoversikt = {
 };
 
 export type Navn_fpoversikt = {
-    fornavn: string;
+    fornavn?: string;
     mellomnavn?: string;
-    etternavn: string;
+    etternavn?: string;
 };
 
 export type Bankkonto_fpoversikt = {
@@ -436,7 +436,7 @@ export type FpSak_fpoversikt = {
     barn?: Person_fpoversikt[];
     dekningsgrad?: DekningsgradSak_fpoversikt;
     familiehendelse: Familiehendelse_fpoversikt;
-    forelder: BrukerRolleSak_fpoversikt;
+    forelder?: BrukerRolleSak_fpoversikt;
     gjeldendeVedtak?: FpVedtak_fpoversikt;
     gjelderAdopsjon: boolean;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
