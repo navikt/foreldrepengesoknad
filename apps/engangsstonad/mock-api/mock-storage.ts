@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { EsDataMapAndMetaData } from '../src/app-data/useEsMellomlagring';
-import mellomlagring from './mellomlagretdata.json' with { type: 'json' };
 
 const FILE_NAME = 'mellomlagretdata.json';
 
@@ -12,7 +11,14 @@ const getFilePath = () => {
 };
 
 export const getMellomlagretData = () => {
-    return mellomlagring;
+    try {
+        const raw = fs.readFileSync(getFilePath(), 'utf8');
+        return JSON.parse(raw) as EsDataMapAndMetaData;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+        // file missing or invalid -> return empty structure compatible with EsDataMapAndMetaData
+        return {} as EsDataMapAndMetaData;
+    }
 };
 
 export const lagreMellomlagretData = (soknadsdata: EsDataMapAndMetaData) => {
