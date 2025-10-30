@@ -197,7 +197,7 @@
     "kalender.lastNed": "Last ned kalender som PDF",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
-    "kalender.velgRange": "Aktiver områdevelger",
+    "kalender.velgRange": "Periodeseleksjon",
     "RedigeringPanel.SlettAlle": "Slett alle",
     "RedigeringPanel.LeggInnFerie": "Legg til ferie",
     "RedigeringPanel.RedigerUttaksplan": "Legg til/endre",

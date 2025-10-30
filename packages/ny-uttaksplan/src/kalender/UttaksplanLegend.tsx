@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import { Barn, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
@@ -57,24 +57,37 @@ export const UttaksplanLegend = ({
     selectLegend,
 }: Props) => {
     const intl = useIntl();
-    return uniqueColors
-        .filter((c) => c !== PeriodeColor.NONE)
-        .map((color) => (
-            <button
-                key={color}
-                onClick={
-                    color !== PeriodeColor.PINK && color !== PeriodeColor.PURPLE && color !== PeriodeColor.BLACKOUTLINE
-                        ? () => selectLegend(color)
-                        : undefined
-                }
-                type="button"
-                className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"
-            >
-                <CalendarLabel iconType={color}>
-                    <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                        {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
-                    </BodyShort>
-                </CalendarLabel>
-            </button>
-        ));
+    return (
+        <HStack gap="space-16" align="center">
+            {uniqueColors
+                .filter((c) => c !== PeriodeColor.NONE)
+                .map((color) => (
+                    <button
+                        key={color}
+                        onClick={
+                            color !== PeriodeColor.PINK &&
+                            color !== PeriodeColor.PURPLE &&
+                            color !== PeriodeColor.BLACKOUTLINE
+                                ? () => selectLegend(color)
+                                : undefined
+                        }
+                        type="button"
+                        className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"
+                    >
+                        <CalendarLabel iconType={color}>
+                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                                {getCalendarLabel(
+                                    color,
+                                    barn,
+                                    navnAnnenPart,
+                                    unikeUtsettelseÅrsaker,
+                                    erFarEllerMedmor,
+                                    intl,
+                                )}
+                            </BodyShort>
+                        </CalendarLabel>
+                    </button>
+                ))}
+        </HStack>
+    );
 };

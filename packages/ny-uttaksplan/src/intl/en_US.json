@@ -198,7 +198,7 @@
     "kalender.lastNed": "Download the calendar as PDF",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
-    "kalender.velgRange": "Turn on range selection",
+    "kalender.velgRange": "Range selection",
     "RedigeringPanel.SlettAlle": "Delete all",
     "RedigeringPanel.LeggInnFerie": "Add vacation",
     "RedigeringPanel.RedigerUttaksplan": "Add/change",
