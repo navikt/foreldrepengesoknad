@@ -80,19 +80,18 @@
     print-color-adjust: exact;
 }
 
-.blackOutlineCircle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+.blackOutlineRect {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
     border: 2px solid var(--ax-bg-neutral-strong) !important;
-    margin-bottom: 50%;
     print-color-adjust: exact;
 }
 
-.greenOutlineCircle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+.greenOutlineRect {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
     border: 2px solid var(--ax-success-400) !important;
     print-color-adjust: exact;
 }
@@ -109,7 +108,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 1px solid var(--ax-success-600);
+    border: 1px solid var(--ax-neutral-900);
     background-color: var(--ax-success-400);
     print-color-adjust: exact;
 }
@@ -118,7 +117,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 1px solid var(--ax-accent-600);
+    border: 1px solid var(--ax-neutral-900);
     background-color: var(--ax-accent-400);
     print-color-adjust: exact;
 }
@@ -127,8 +126,17 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 1px solid var(--ax-neutral-600);
+    border: 1px solid var(--ax-neutral-900);
     background-color: var(--ax-neutral-400) !important;
+    print-color-adjust: exact;
+}
+
+.pinkRect {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--ax-neutral-900);
+    background-color: var(--ax-danger-200) !important;
     print-color-adjust: exact;
 }
 
