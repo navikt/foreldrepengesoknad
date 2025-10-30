@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useMemo } from 'react';
 
-import { HGrid, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import { formatDateIso } from '@navikt/fp-utils';
@@ -116,14 +116,7 @@ export const Calendar = ({
                         .toString()}
                 </div>
             )}
-            <HGrid
-                gap={{ xs: '2', sm: '4', md: '8' }}
-                columns={
-                    useSmallerWidth
-                        ? { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
-                        : { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' }
-                }
-            >
+            <VStack gap="space-4">
                 {months.map(({ month, year }) => {
                     const yearAndMonth = dayjs().year(year).month(month);
                     const daysInMonth = yearAndMonth.daysInMonth();
@@ -164,7 +157,7 @@ export const Calendar = ({
                         </VStack>
                     );
                 })}
-            </HGrid>
+            </VStack>
         </>
     );
 };

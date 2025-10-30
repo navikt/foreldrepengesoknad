@@ -1,16 +1,19 @@
+import { PersonGroupIcon, PersonPregnantFillIcon, PersonSuitFillIcon, TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Box, Button, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT, Forelder } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { Period } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+
+type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
 type Props = {
     valgtePerioder: Period[];
@@ -20,7 +23,7 @@ type Props = {
     setSelectedPeriods: (perioder: Period[]) => void;
 };
 
-export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelectedPeriods }: Props) => {
+export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const { erFarEllerMedmor } = useUttaksplanData();
 
@@ -80,6 +83,8 @@ export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelecte
 
     //TODO Korleis skal ein håndtera valg av både nye og endra datoar samtidig?
 
+    const ekisterendePerioderSomErValgt = finnValgtePerioder(valgtePerioder, komplettPlan);
+
     return (
         <>
             {!erIRedigeringsmodus && (
@@ -88,29 +93,39 @@ export const RedigeringPanel = ({ valgtePerioder, handleOnPlanChange, setSelecte
                     borderRadius="4"
                     borderColor="neutral-subtle"
                     padding="4"
-                    width="300px"
+                    width="400px"
                     height="fit-content"
                 >
                     <VStack gap="space-16">
-                        <div>
-                            {sammenslåtteValgtePerioder.map((periode) => (
-                                <div key={periode.fom}>
-                                    {periode.fom === periode.tom
-                                        ? dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT)
-                                        : `${dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT)} - ${dayjs(periode.tom).format(DDMMYYYY_DATE_FORMAT)}`}
-                                </div>
-                            ))}
-                        </div>
-
-                        <Button variant="secondary" size="small" onClick={slettPeriode}>
-                            <FormattedMessage id="RedigeringPanel.SlettPeriode" />
-                        </Button>
+                        <VStack gap="space-4">
+                            <Heading size="xsmall">
+                                <FormattedMessage
+                                    id="RedigeringPanel.ValgteDager"
+                                    values={{ antall: finnAntallDager(valgtePerioder) }}
+                                />
+                            </Heading>
+                            {ekisterendePerioderSomErValgt.length > 0 && (
+                                <BodyShort>
+                                    <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
+                                </BodyShort>
+                            )}
+                        </VStack>
+                        {ekisterendePerioderSomErValgt.length > 0 && (
+                            <EksisterendePeriodeListe perioder={ekisterendePerioderSomErValgt} />
+                        )}
                         <Button variant="secondary" size="small" onClick={leggTilFerie}>
                             <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                         </Button>
-                        {/* <Button variant="secondary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
-                            <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                        </Button> */}
+                        <HStack gap="space-16">
+                            <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
+                                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                            </Button>
+                            {ekisterendePerioderSomErValgt.length > 0 && (
+                                <Button variant="tertiary" size="small" onClick={slettPeriode}>
+                                    <FormattedMessage id="RedigeringPanel.SlettAlle" />
+                                </Button>
+                            )}
+                        </HStack>
                     </VStack>
                 </Box.New>
             )}
@@ -156,4 +171,91 @@ const slåSammenTilstøtendePerioder = (perioder: Period[]): Period[] => {
             acc.push(curr);
             return acc;
         }, []);
+};
+
+const finnAntallDager = (perioder: Period[]): number => {
+    return perioder.reduce((acc, periode) => {
+        const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
+        return acc + dager;
+    }, 0);
+};
+
+const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
+    return komplettPlan
+        .map((p) => {
+            let overlappendeDager = 0;
+
+            perioder.forEach((periode) => {
+                const fom1 = dayjs(periode.fom);
+                const tom1 = dayjs(periode.tom);
+                const fom2 = dayjs(p.fom);
+                const tom2 = dayjs(p.tom);
+
+                // Find overlap start and end manually
+                const start = fom1.isAfter(fom2) ? fom1 : fom2;
+                const end = tom1.isBefore(tom2) ? tom1 : tom2;
+
+                // If overlap exists (including exact same days)
+                if (start.isSameOrBefore(end, 'day')) {
+                    const dager = end.diff(start, 'day') + 1; // include both start and end
+                    overlappendeDager += dager;
+                }
+            });
+
+            return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
+        })
+        .filter((p): p is PlanperiodeMedAntallDager => p !== null);
+};
+
+const EksisterendePeriodeListe = ({ perioder }: { perioder: PlanperiodeMedAntallDager[] }) => {
+    return (
+        <VStack gap="space-8">
+            {perioder.map((p) => (
+                <HStack gap="space-4" align="center" key={p.id}>
+                    {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
+                        <PersonPregnantFillIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-meta-purple-strong)"
+                        />
+                    )}
+                    {p.kontoType === 'FEDREKVOTE' && (
+                        <PersonSuitFillIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-success-strong)"
+                        />
+                    )}
+                    {p.kontoType === 'FELLESPERIODE' && (
+                        <PersonGroupIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-success-strong)"
+                        />
+                    )}
+                    <VStack gap="space-0">
+                        <Heading size="xsmall">
+                            {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
+                                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+                            )}
+                            {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.Mødrekvote" />}
+                            {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Fedrekvote" />}
+                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Fellesperiode" />}
+                        </Heading>
+                        <BodyShort>
+                            <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
+                        </BodyShort>
+                    </VStack>
+                    <Spacer />
+                    <TrashIcon title="a11y-title" fontSize="1.5rem" />
+                </HStack>
+            ))}
+        </VStack>
+    );
 };
