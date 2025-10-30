@@ -235,9 +235,9 @@ export type TilbakekrevingUttalelseOppgave_fpoversikt = {
 };
 
 export type Navn_fpoversikt = {
-    fornavn?: string;
+    fornavn: string;
     mellomnavn?: string;
-    etternavn?: string;
+    etternavn: string;
 };
 
 export type Bankkonto_fpoversikt = {
@@ -319,7 +319,7 @@ export type AnnenPartSak_fpoversikt = {
 };
 
 export type Arbeidsgiver_fpoversikt = {
-    id?: string;
+    id: string;
     type?: ArbeidsgiverType_fpoversikt;
 };
 
@@ -380,10 +380,10 @@ export type UttakPeriode_fpoversikt = {
 };
 
 export type UttakPeriodeResultat_fpoversikt = {
-    innvilget?: boolean;
-    trekkerDager?: boolean;
-    trekkerMinsterett?: boolean;
-    årsak?: UttakPeriodeResultatÅrsak_fpoversikt;
+    innvilget: boolean;
+    trekkerDager: boolean;
+    trekkerMinsterett: boolean;
+    årsak: UttakPeriodeResultatÅrsak_fpoversikt;
 };
 
 export type UttakPeriodeResultatÅrsak_fpoversikt =

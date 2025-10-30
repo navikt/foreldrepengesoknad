@@ -120,9 +120,9 @@ export const getUgyldigUttakMor = (
             .filter(
                 (p) =>
                     p.forelder === Forelder.mor &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
-                    p.årsak !== UtsettelseÅrsakType.Sykdom,
+                    p.årsak !== 'SØKER_INNLAGT' &&
+                    p.årsak !== 'BARN_INNLAGT' &&
+                    p.årsak !== 'SØKER_SYKDOM',
             );
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
@@ -231,7 +231,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUtsettelser()
-        .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
+        .filter((utsettelse) => utsettelse.årsak !== 'BARN_INNLAGT');
 
     return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
 };

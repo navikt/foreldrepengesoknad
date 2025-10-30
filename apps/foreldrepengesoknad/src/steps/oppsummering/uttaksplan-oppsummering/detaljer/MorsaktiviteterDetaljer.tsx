@@ -1,33 +1,33 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { MorsAktivitet } from '@navikt/fp-common';
+import { MorsAktivitet_fpoversikt } from '@navikt/fp-types';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Feltoppsummering } from './Feltoppsummering';
 
 interface Props {
-    morsAktivitet: MorsAktivitet;
+    morsAktivitet: MorsAktivitet_fpoversikt;
 }
 
-const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
+const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet_fpoversikt): string => {
     switch (aktivitet) {
-        case MorsAktivitet.Arbeid:
+        case 'ARBEID':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Arbeid' });
-        case MorsAktivitet.ArbeidOgUtdanning:
+        case 'ARBEID_OG_UTDANNING':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.ArbeidOgUtdanning' });
-        case MorsAktivitet.Innlagt:
+        case 'INNLAGT':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Innlagt' });
-        case MorsAktivitet.Introduksjonsprogrammet:
+        case 'INTROPROG':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Introduksjonsprogrammet' });
-        case MorsAktivitet.Kvalifiseringsprogrammet:
+        case 'KVALPROG':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Kvalifiseringsprogrammet' });
-        case MorsAktivitet.TrengerHjelp:
+        case 'TRENGER_HJELP':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.TrengerHjelp' });
-        case MorsAktivitet.Uføre:
+        case 'UFØRE':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Uføre' });
-        case MorsAktivitet.Utdanning:
+        case 'UTDANNING':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Utdanning' });
-        case MorsAktivitet.IkkeOppgitt:
+        case 'IKKE_OPPGITT':
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.UtenAktivitetsKrav' });
         default:
             return assertUnreachable('Mor har ingen aktivitet');

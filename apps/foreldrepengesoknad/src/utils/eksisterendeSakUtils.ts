@@ -12,10 +12,8 @@ import {
     EksisterendeSak,
     FamiliehendelseType,
     OppholdÅrsakType,
-    OppholdÅrsakTypeDTO,
     Saksgrunnlag,
     Saksperiode,
-    SaksperiodeDTO,
     Situasjon,
     Søkerrolle,
     UttakArbeidType,
@@ -27,6 +25,7 @@ import {
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
+    AktivitetType_fpoversikt,
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
@@ -34,6 +33,8 @@ import {
     KontoTypeUttak_fpoversikt,
     PersonDto_fpoversikt,
     Person_fpoversikt,
+    UttakOppholdÅrsak_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
@@ -50,7 +51,7 @@ import { guid } from './guid';
 import { mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 import { getKjønnFromFnrString } from './personUtils';
 
-export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
+export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fpoversikt): Arbeidsform => {
     switch (arbeidstype) {
         case UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE:
             return Arbeidsform.selvstendignæringsdrivende;
@@ -61,33 +62,35 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType)
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO): KontoTypeUttak_fpoversikt | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (
+    årsak: UttakOppholdÅrsak_fpoversikt,
+): KontoTypeUttak_fpoversikt | undefined => {
     switch (årsak) {
-        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
+        case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';
-        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
+        case 'FELLESPERIODE_ANNEN_FORELDER':
             return 'FELLESPERIODE';
-        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
+        case 'MØDREKVOTE_ANNEN_FORELDER':
             return 'MØDREKVOTE';
         default:
             return undefined;
     }
 };
 
-const mapOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO | undefined): OppholdÅrsakType | undefined => {
+const mapOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt | undefined): OppholdÅrsakType | undefined => {
     switch (årsak) {
-        case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
+        case 'FEDREKVOTE_ANNEN_FORELDER':
             return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
-        case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
+        case 'FELLESPERIODE_ANNEN_FORELDER':
             return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
-        case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
+        case 'MØDREKVOTE_ANNEN_FORELDER':
             return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
         default:
             return undefined;
     }
 };
 
-export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
+export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSak: boolean): Saksperiode => {
     const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
         guid: guid(),
@@ -165,17 +168,12 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     familiehendelsesdato: string,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
-    if (
-        eksisterendeSakAnnenPart === undefined ||
-        //@ts-expect-error Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
-        eksisterendeSakAnnenPart === ''
-    ) {
+    if (eksisterendeSakAnnenPart === undefined) {
         return undefined;
     }
     const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
-            //@ts-expect-error -- ignorer frem til typer er ported til autogenererte
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -275,7 +273,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
 
     const saksperioder = perioder
         .map((p) => {
-            // @ts-expect-error -- feil frem til alt er over på nye autogenererte typer
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);

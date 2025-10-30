@@ -1,5 +1,6 @@
 import { AnnenForelder, MorsAktivitet, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { MorsAktivitet_fpoversikt } from '@navikt/fp-types';
 
 const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
 
@@ -13,21 +14,21 @@ export const aktivitetskravMorUtil = {
     },
 };
 
-export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
+export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet_fpoversikt): Skjemanummer => {
     switch (morsAktivitet) {
-        case MorsAktivitet.Innlagt:
+        case 'INNLAGT':
             return Skjemanummer.DOK_INNLEGGELSE_MOR;
-        case MorsAktivitet.Kvalifiseringsprogrammet:
+        case 'KVALPROG':
             return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
-        case MorsAktivitet.Introduksjonsprogrammet:
+        case 'INTROPROG':
             return Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
-        case MorsAktivitet.ArbeidOgUtdanning:
+        case 'ARBEID_OG_UTDANNING':
             return Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
-        case MorsAktivitet.Arbeid:
+        case 'ARBEID':
             return Skjemanummer.DOK_ARBEID_MOR;
-        case MorsAktivitet.TrengerHjelp:
+        case 'TRENGER_HJELP':
             return Skjemanummer.DOK_SYKDOM_MOR;
-        case MorsAktivitet.Utdanning:
+        case 'UTDANNING':
             return Skjemanummer.DOK_UTDANNING_MOR;
         default:
             return Skjemanummer.ANNET;

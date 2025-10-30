@@ -1,28 +1,29 @@
 import { useIntl } from 'react-intl';
 
-import { Forelder, UtsettelseÅrsakType } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-common';
+import { UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 interface Props {
-    årsak: UtsettelseÅrsakType;
+    årsak: UttakUtsettelseÅrsak_fpoversikt;
     forelder: Forelder;
 }
 
-const getIkonForÅrsak = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
+const getIkonForÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt): UttaksplanIkonKeys => {
     switch (årsak) {
-        case UtsettelseÅrsakType.Ferie:
+        case 'LOVBESTEMT_FERIE':
             return UttaksplanIkonKeys.ferie;
-        case UtsettelseÅrsakType.Arbeid:
-        case UtsettelseÅrsakType.HvØvelse:
-        case UtsettelseÅrsakType.NavTiltak:
-        case UtsettelseÅrsakType.Fri:
+        case 'ARBEID':
+        case 'HV_ØVELSE':
+        case 'NAV_TILTAK':
+        case 'FRI':
             return UttaksplanIkonKeys.arbeid;
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.Sykdom:
+        case 'BARN_INNLAGT':
+        case 'SØKER_INNLAGT':
+        case 'SØKER_SYKDOM':
             return UttaksplanIkonKeys.sykdom;
     }
 };

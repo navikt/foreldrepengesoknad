@@ -6,7 +6,6 @@ import {
     Forelder,
     InfoPeriode,
     MorsAktivitet,
-    OppholdÅrsakType,
     OpprinneligSøkt,
     Overføringsperiode,
     Periode,
@@ -17,15 +16,18 @@ import {
     Saksperiode,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
-    UtsettelseÅrsakTypeDTO,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoType, KontoTypeUttak_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
+import {
+    KontoType,
+    KontoTypeUttak_fpoversikt,
+    UttakOppholdÅrsak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+} from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -157,43 +159,19 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
-const getUtsettelseÅrsakFromSaksperiode = (
-    årsak: UtsettelseÅrsakTypeDTO | undefined,
-): UtsettelseÅrsakType | undefined => {
-    switch (årsak) {
-        case UtsettelseÅrsakTypeDTO.Arbeid:
-            return UtsettelseÅrsakType.Arbeid;
-        case UtsettelseÅrsakTypeDTO.Ferie:
-            return UtsettelseÅrsakType.Ferie;
-        case UtsettelseÅrsakTypeDTO.InstitusjonBarnet:
-            return UtsettelseÅrsakType.InstitusjonBarnet;
-        case UtsettelseÅrsakTypeDTO.InstitusjonSøker:
-            return UtsettelseÅrsakType.InstitusjonSøker;
-        case UtsettelseÅrsakTypeDTO.Sykdom:
-            return UtsettelseÅrsakType.Sykdom;
-        case UtsettelseÅrsakTypeDTO.HvØvelse:
-            return UtsettelseÅrsakType.HvØvelse;
-        case UtsettelseÅrsakTypeDTO.NavTiltak:
-            return UtsettelseÅrsakType.NavTiltak;
-        case UtsettelseÅrsakTypeDTO.Fri:
-            return UtsettelseÅrsakType.Fri;
-        default:
-            return undefined;
-    }
-};
-
-const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
+const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): UttakOppholdÅrsak_fpoversikt | undefined => {
     switch (saksperiode.kontoType) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'FEDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'FELLESPERIODE_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'MØDREKVOTE_ANNEN_FORELDER';
         case 'FORELDREPENGER':
-            return OppholdÅrsakType.UttakForeldrepengerAnnenForelder;
+            return 'FORELDREPENGER_ANNEN_FORELDER';
         case 'FORELDREPENGER_FØR_FØDSEL':
-            return OppholdÅrsakType.ForeldrepengerFørFødsel;
+            // @ts-expect-error -- hva med denne??
+            return 'UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER';
         default:
             return undefined;
     }
@@ -314,7 +292,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
+        årsak: saksperiode.utsettelseÅrsak!, // TODO
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
@@ -326,11 +304,11 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
 
 const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
     if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
-        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Ferie) {
+        if (saksperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
             return OpprinneligSøkt.Ferie;
         }
 
-        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Arbeid) {
+        if (saksperiode.utsettelseÅrsak === 'ARBEID') {
             return OpprinneligSøkt.Arbeid;
         }
     }
@@ -374,7 +352,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
+            årsak: saksperiode.utsettelseÅrsak!, //TODO
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
@@ -452,10 +430,10 @@ const mapOverføringsperiodeFromSaksperiode = (
     return {
         id: guid(),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
-        konto: saksperiode.kontoType!,
+        konto: saksperiode.kontoType!, // TODO
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         type: Periodetype.Overføring,
-        årsak: saksperiode.overføringÅrsak!,
+        årsak: saksperiode.overføringÅrsak!, // TODO
     };
 };
 
@@ -547,16 +525,17 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     return nyePerioder;
 };
 
-const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): OppholdÅrsakType => {
+const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): UttakOppholdÅrsak_fpoversikt => {
     switch (konto) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'FEDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'FELLESPERIODE_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'MØDREKVOTE_ANNEN_FORELDER';
         default:
-            return OppholdÅrsakType.Ingen;
+            // TODO: blir dette feil?
+            return 'FELLESPERIODE_ANNEN_FORELDER';
     }
 };
 

@@ -2,7 +2,6 @@ import { IntlShape } from 'react-intl';
 
 import {
     Forelder,
-    OppholdÅrsakType,
     Periode,
     PeriodeInfoType,
     Søknadsinfo,
@@ -49,7 +48,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         if (
             isInfoPeriodeAnnenPart(p) &&
             p.infotype === PeriodeInfoType.uttakAnnenPart &&
-            p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+            p.årsak === 'FELLESPERIODE_ANNEN_FORELDER'
         ) {
             return false;
         }

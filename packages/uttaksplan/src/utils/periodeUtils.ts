@@ -6,9 +6,7 @@ import {
     Forelder,
     InfoPeriode,
     NavnPåForeldre,
-    OppholdÅrsakType,
     OpprinneligSøkt,
-    OverføringÅrsakType,
     Periode,
     PeriodeInfoType,
     PeriodeValidState,
@@ -16,13 +14,17 @@ import {
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isUttakAnnenPart,
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import {
+    KontoTypeUttak_fpoversikt,
+    UttakOppholdÅrsak_fpoversikt,
+    UttakOverføringÅrsak_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -100,52 +102,51 @@ const getUttaksprosentFromStillingsprosent = (
 
 export const getOppholdskontoNavn = (
     intl: IntlShape,
-    årsak: OppholdÅrsakType,
+    årsak: UttakOppholdÅrsak_fpoversikt,
     foreldernavn: string,
     erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
             { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
             { foreldernavn: navn },
         );
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+    //TODO: sjekk at disse intl keys stemmer
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt => {
-    if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
+export const getStønadskontoFromOppholdsårsak = (årsak: UttakOppholdÅrsak_fpoversikt): KontoTypeUttak_fpoversikt => {
+    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
         return 'FEDREKVOTE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakMødrekvoteAnnenForelder) {
+    if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
         return 'MØDREKVOTE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
+    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
         return 'FELLESPERIODE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakForeldrepengerAnnenForelder) {
+    if (årsak === 'FORELDREPENGER_ANNEN_FORELDER') {
         return 'FORELDREPENGER';
     }
 
     return 'FORELDREPENGER_FØR_FØDSEL';
 };
 
-export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): OppholdÅrsakType | undefined => {
+export const getOppholdsÅrsakFromStønadskonto = (
+    konto: KontoTypeUttak_fpoversikt,
+): UttakOppholdÅrsak_fpoversikt | undefined => {
     switch (konto) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'FEDREKVOTE_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'MØDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'FELLESPERIODE_ANNEN_FORELDER';
         default:
             return undefined;
     }
@@ -356,12 +357,14 @@ export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
     return erPeriodeFomEllerEtterDato(periode, dato) === false;
 };
 
-export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
-    årsak === UtsettelseÅrsakType.Sykdom ||
-    årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-    årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-    årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-    årsak === OverføringÅrsakType.sykdomAnnenForelder;
+export const erÅrsakSykdomEllerInstitusjonsopphold = (
+    årsak: UttakUtsettelseÅrsak_fpoversikt | UttakOverføringÅrsak_fpoversikt,
+) =>
+    årsak === 'SØKER_SYKDOM' ||
+    årsak === 'BARN_INNLAGT' ||
+    årsak === 'SØKER_INNLAGT' ||
+    årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+    årsak === 'SYKDOM_ANNEN_FORELDER';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
     return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));

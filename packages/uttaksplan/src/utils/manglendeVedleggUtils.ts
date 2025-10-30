@@ -88,7 +88,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                 );
             } else {
                 if (isUtsettelsesperiode(periode)) {
-                    if (periode.årsak === UtsettelseÅrsakType.HvØvelse) {
+                    if (periode.årsak === 'HV_ØVELSE') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -126,7 +126,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+                    if (periode.årsak === 'BARN_INNLAGT') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -137,7 +137,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                    if (periode.årsak === 'SØKER_INNLAGT') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -148,7 +148,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.Sykdom) {
+                    if (periode.årsak === 'SØKER_SYKDOM') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -212,8 +212,8 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
     return (
         harMorAktivitetskrav ||
         erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
-        årsak === UtsettelseÅrsakType.HvØvelse ||
-        årsak === UtsettelseÅrsakType.NavTiltak
+        årsak === 'HV_ØVELSE' ||
+        årsak === 'NAV_TILTAK'
     );
 };
 

@@ -40,7 +40,8 @@ export const mapPeriodeUtsettelseFormToPeriode = (
     return {
         id,
         type: Periodetype.Utsettelse,
-        årsak: values.årsak as UtsettelseÅrsakType,
+        // @ts-expect-error -- TODO
+        årsak: values.årsak,
         morsAktivitetIPerioden: values.morsAktivitetIPerioden ? values.morsAktivitetIPerioden : undefined,
         forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
         tidsperiode: {

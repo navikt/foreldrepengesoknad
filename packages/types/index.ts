@@ -51,19 +51,16 @@ export type {
 export type { PeriodeResultat } from './src/PeriodeResultat';
 export { PeriodeResultatÅrsak } from './src/PeriodeResultatÅrsak';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
-export type { Gradering } from './src/Gradering';
-export type { Aktivitet } from './src/Aktivitet';
-export type { ArbeidsgiverInfo } from './src/ArbeidsgiverInfo';
 export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UtsettelseÅrsakType } from './src/UtsettelseÅrsakType';
 export { UttakArbeidType } from './src/UttakArbeidType';
 export { MorsAktivitet } from './src/MorsAktivitet';
 export { OverføringÅrsakType } from './src/OverføringÅrsakType';
-export { OppholdÅrsakType } from './src/OppholdÅrsakType';
 export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/Ytelse';
 
 export * from './src/fpsoknadDtoGenerert';
+// @ts-expect-error -- todo
 export * from './src/fpoversiktDtoGenerert';

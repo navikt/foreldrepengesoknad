@@ -383,7 +383,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-12',
                 },
                 gjelderAnnenPart: false,
-                utsettelseÅrsak: UtsettelseÅrsakTypeDTO.Arbeid,
+                utsettelseÅrsak: 'ARBEID',
                 morsAktivitet: MorsAktivitet.Arbeid,
                 guid: '1',
                 resultat: {

@@ -7,12 +7,12 @@ import {
     Forelder,
     NavnPåForeldre,
     UtsettelseAnnenPartInfoPeriode,
-    UtsettelseÅrsakType,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     isUttakAnnenPart,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
+import { UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 
 import { formaterDatoKompakt } from '../../utils/dateUtils';
 import { getForelderNavn, getOppholdskontoNavn } from '../../utils/periodeUtils';
@@ -22,14 +22,15 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
-const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, foreldernavn: string, erMor: boolean) => {
+const getUtsettelseTekst = (
+    intl: IntlShape,
+    årsak: UttakUtsettelseÅrsak_fpoversikt,
+    foreldernavn: string,
+    erMor: boolean,
+) => {
     return erMor
-        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-          intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
-        : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-          intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
+        ? intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
+        : intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
