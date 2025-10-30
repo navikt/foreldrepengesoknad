@@ -30,7 +30,6 @@ import {
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
     PersonDto_fpoversikt,
     Person_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
@@ -59,21 +58,6 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fp
             return Arbeidsform.frilans;
         default:
             return Arbeidsform.arbeidstaker;
-    }
-};
-
-const getStønadskontoTypeFromOppholdÅrsakType = (
-    årsak: UttakOppholdÅrsak_fpoversikt,
-): KontoTypeUttak_fpoversikt | undefined => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
-            return 'FEDREKVOTE';
-        case 'FELLESPERIODE_ANNEN_FORELDER':
-            return 'FELLESPERIODE';
-        case 'MØDREKVOTE_ANNEN_FORELDER':
-            return 'MØDREKVOTE';
-        default:
-            return undefined;
     }
 };
 
@@ -111,7 +95,7 @@ export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSa
     };
 
     if (oppholdÅrsak !== undefined) {
-        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak);
+        returnPeriode.kontoType = p.kontoType;
         if (erAnnenPartsSak) {
             returnPeriode.gjelderAnnenPart = false;
             returnPeriode.angittAvAnnenPart = true;

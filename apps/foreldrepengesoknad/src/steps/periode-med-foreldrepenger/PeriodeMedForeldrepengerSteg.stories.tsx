@@ -7,8 +7,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
-import { AnnenForelder, Barn, BarnType, SaksperiodeDTO } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { KontoBeregningDto_fpoversikt, SøkersituasjonFp, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
@@ -94,7 +94,7 @@ const uttaksperiode = {
     },
     samtidigUttak: 50,
     flerbarnsdager: true,
-} as SaksperiodeDTO;
+} satisfies UttakPeriode_fpoversikt;
 
 const fellesProps = {
     arbeidsforhold: [],
