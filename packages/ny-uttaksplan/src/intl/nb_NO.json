@@ -199,7 +199,14 @@
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
     "kalender.velgRange": "Aktiver områdevelger",
-    "RedigeringPanel.SlettPeriode": "Slett",
-    "RedigeringPanel.LeggInnFerie": "Ferie",
-    "RedigeringPanel.RedigerUttaksplan": "Rediger"
+    "RedigeringPanel.SlettAlle": "Slett alle",
+    "RedigeringPanel.LeggInnFerie": "Legg til ferie",
+    "RedigeringPanel.RedigerUttaksplan": "Legg til/endre",
+    "RedigeringPanel.ValgteDager": "{antall} dager",
+    "RedigeringPanel.EksisterendePerioder": "Valgte datoer inneholder flere perioder",
+    "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Mor har foreldrepenger før fødsel",
+    "RedigeringPanel.Mødrekvote": "Mor har foreldrepenger",
+    "RedigeringPanel.Fedrekvote": "Far har foreldrepenger",
+    "RedigeringPanel.Fellesperiode": "Fellesperiode",
+    "RedigeringPanel.Dager": "{antall} dager"
 }

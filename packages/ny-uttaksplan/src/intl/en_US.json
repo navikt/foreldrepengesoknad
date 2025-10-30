@@ -200,7 +200,14 @@
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "kalender.velgRange": "Turn on range selection",
-    "RedigeringPanel.SlettPeriode": "Delete",
-    "RedigeringPanel.LeggInnFerie": "Vacation",
-    "RedigeringPanel.RedigerUttaksplan": "Edit"
+    "RedigeringPanel.SlettAlle": "Delete all",
+    "RedigeringPanel.LeggInnFerie": "Add vacation",
+    "RedigeringPanel.RedigerUttaksplan": "Add/change",
+    "RedigeringPanel.ValgteDager": "{antall} days",
+    "RedigeringPanel.EksisterendePerioder": "Selected dates contain multiple periods",
+    "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Mother has parental benefits before birth",
+    "RedigeringPanel.Fellesperiode": "Shared period",
+    "RedigeringPanel.Mødrekvote": "Mother has parental benefits",
+    "RedigeringPanel.Fedrekvote": "Father has parental benefits",
+    "RedigeringPanel.Dager": "{antall} days"
 }
