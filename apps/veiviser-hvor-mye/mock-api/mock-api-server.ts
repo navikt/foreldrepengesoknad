@@ -44,7 +44,7 @@ app.listen(port, () => {
 
 router.post('/rest/konto', async (req: any, res: any) => {
     try {
-        const data = await fetch('https://fpgrunnlag.intern.dev.nav.no/fpgrunndata/api/konto', {
+        const data = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/external/konto', {
             method: 'POST',
             headers: {
                 accept: 'application/json, text/plain, */*',
