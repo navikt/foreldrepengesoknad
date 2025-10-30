@@ -204,7 +204,21 @@ const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): Pl
 
             return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
         })
-        .filter((p): p is PlanperiodeMedAntallDager => p !== null);
+        .filter((p): p is PlanperiodeMedAntallDager => p !== null)
+        .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
+            const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
+
+            if (duplikat) {
+                return acc
+                    .filter((p) => p.kontoType !== duplikat.kontoType)
+                    .concat({
+                        ...duplikat,
+                        overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
+                    });
+            }
+
+            return acc.concat(curr);
+        }, []);
 };
 
 const EksisterendePeriodeListe = ({ perioder }: { perioder: PlanperiodeMedAntallDager[] }) => {
