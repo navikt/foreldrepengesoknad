@@ -338,6 +338,7 @@ interface Props {
     planleggerLegend?: ReactElement;
     barnehagestartdato?: string;
     handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void;
+    readOnly: boolean;
 }
 
 export const UttaksplanKalender = ({
@@ -345,6 +346,7 @@ export const UttaksplanKalender = ({
     planleggerLegend,
     barnehagestartdato,
     handleOnPlanChange,
+    readOnly,
 }: Props) => {
     const intl = useIntl();
 
@@ -448,7 +450,7 @@ export const UttaksplanKalender = ({
                 </Alert>
             )}
             <VStack gap="space-16" ref={targetRef}>
-                <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
+                <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
                     {planleggerLegend !== undefined ? (
                         <>{planleggerLegend}</>
                     ) : (
@@ -477,21 +479,23 @@ export const UttaksplanKalender = ({
                         />
                     )}
                 </div>
-                <Switch
-                    onChange={() => {
-                        setSelectedPeriods([]);
-                        setRangeSelectorMode(!isRangeSelectorMode);
-                    }}
-                    checked={isRangeSelectorMode}
-                >
-                    <FormattedMessage id="kalender.velgRange" />
-                </Switch>
+                {!readOnly && (
+                    <Switch
+                        onChange={() => {
+                            setSelectedPeriods([]);
+                            setRangeSelectorMode(!isRangeSelectorMode);
+                        }}
+                        checked={isRangeSelectorMode}
+                    >
+                        <FormattedMessage id="kalender.velgRange" />
+                    </Switch>
+                )}
 
                 <HStack gap="space-4">
                     <Calendar
                         periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                         lastSelectedDate={valgtePerioder.at(-1)?.tom}
-                        dateClickCallback={dateClickCallback}
+                        dateClickCallback={readOnly ? undefined : dateClickCallback}
                     >
                         {!isDesktop && handleOnPlanChange && (
                             <RedigeringPanel

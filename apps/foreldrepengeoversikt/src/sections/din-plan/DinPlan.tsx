@@ -139,7 +139,10 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                         </>
                     )}
                     {visKalender && (
-                        <UttaksplanKalender saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)} />
+                        <UttaksplanKalender
+                            readOnly={true}
+                            saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
+                        />
                     )}
                 </UttaksplanDataProvider>
             </VStack>
