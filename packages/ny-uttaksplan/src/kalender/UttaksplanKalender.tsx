@@ -4,7 +4,7 @@ import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, Checkbox, HStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, Switch, VStack } from '@navikt/ds-react';
 
 import { Forelder, PeriodeColor } from '@navikt/fp-constants';
 import {
@@ -441,13 +441,13 @@ export const UttaksplanKalender = ({
     );
 
     return (
-        <>
+        <VStack gap="space-8">
             {harAvslåttePerioderSomIkkeGirTapteDager && (
                 <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
-            <div ref={targetRef}>
+            <VStack gap="space-16" ref={targetRef}>
                 <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     {planleggerLegend !== undefined ? (
                         <>{planleggerLegend}</>
@@ -477,16 +477,15 @@ export const UttaksplanKalender = ({
                         />
                     )}
                 </div>
-                <Checkbox
-                    className="mb-4 print:hidden"
-                    checked={isRangeSelectorMode}
+                <Switch
                     onChange={() => {
                         setSelectedPeriods([]);
                         setRangeSelectorMode(!isRangeSelectorMode);
                     }}
+                    checked={isRangeSelectorMode}
                 >
                     <FormattedMessage id="kalender.velgRange" />
-                </Checkbox>
+                </Switch>
 
                 <HStack gap="space-4">
                     <Calendar
@@ -514,7 +513,7 @@ export const UttaksplanKalender = ({
                         />
                     )}
                 </HStack>
-            </div>
+            </VStack>
             <Button
                 className="mt-8 print:hidden"
                 variant="tertiary"
@@ -523,7 +522,7 @@ export const UttaksplanKalender = ({
             >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
-        </>
+        </VStack>
     );
 };
 
