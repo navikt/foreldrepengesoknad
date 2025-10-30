@@ -12,7 +12,7 @@ import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, Forelder, Periode, Periodetype } from '@navikt/fp-common';
 import {
     AttachmentMetadataType,
     AttachmentType,
@@ -115,8 +115,8 @@ const defaultUtenlandsopphold = {
 const defaultUttaksplan = [
     {
         id: '0',
-        type: 'uttak',
-        forelder: 'MOR',
+        type: Periodetype.Uttak,
+        forelder: Forelder.mor,
         konto: 'FORELDREPENGER_FØR_FØDSEL',
         tidsperiode: {
             fom: new Date('2021-11-23T23:00:00.000Z'),
@@ -125,8 +125,10 @@ const defaultUttaksplan = [
     },
     {
         id: '1',
-        type: 'utsettelse',
-        årsak: 'INSTITUSJONSOPPHOLD_SØKER',
+        type: Periodetype.Utsettelse,
+        forelder: Forelder.mor,
+        erArbeidstaker: false,
+        årsak: 'SØKER_INNLAGT',
         tidsperiode: {
             fom: new Date('2021-12-14T23:00:00.000Z'),
             tom: new Date('2022-01-24T23:00:00.000Z'),
@@ -134,7 +136,7 @@ const defaultUttaksplan = [
     },
     {
         id: '2',
-        type: 'periodeUtenUttak',
+        type: Periodetype.PeriodeUtenUttak,
         tidsperiode: {
             fom: new Date('2022-01-25T23:00:00.000Z'),
             tom: new Date('2022-03-28T23:00:00.000Z'),
@@ -142,8 +144,8 @@ const defaultUttaksplan = [
     },
     {
         id: '3',
-        type: 'uttak',
-        forelder: 'MOR',
+        type: Periodetype.Uttak,
+        forelder: Forelder.mor,
         konto: 'FELLESPERIODE',
         tidsperiode: {
             fom: new Date('2022-03-29T23:00:00.000Z'),
@@ -152,7 +154,7 @@ const defaultUttaksplan = [
         ønskerSamtidigUttak: false,
         gradert: false,
     },
-] as Periode[];
+] satisfies Periode[];
 
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,

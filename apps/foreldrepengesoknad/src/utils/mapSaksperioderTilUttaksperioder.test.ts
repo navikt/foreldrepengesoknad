@@ -229,6 +229,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     samtidigUttak: 100,
                     flerbarnsdager: false,
                     oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+                    kontoType: 'MØDREKVOTE',
                     guid: '0',
                     resultat: {
                         innvilget: true,

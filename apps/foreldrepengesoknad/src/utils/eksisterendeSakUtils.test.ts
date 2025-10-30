@@ -1,4 +1,4 @@
-import { Arbeidsform, UttakArbeidType } from '@navikt/fp-common';
+import { Arbeidsform, Saksperiode, UttakArbeidType } from '@navikt/fp-common';
 import { FpSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import {
@@ -481,6 +481,7 @@ describe('eksisterendeSakUtils', () => {
         const utsettelsesperiode = {
             fom: '2021-11-02',
             tom: '2021-11-02',
+            kontoType: 'MØDREKVOTE',
             resultat: {
                 innvilget: true,
                 trekkerMinsterett: false,
@@ -494,6 +495,7 @@ describe('eksisterendeSakUtils', () => {
 
         const forventetMappetUtsettelseSøker = {
             ...utsettelsesperiodeRest,
+            guid: expect.any(String),
             gjelderAnnenPart: false,
             oppholdÅrsak: undefined,
             overføringÅrsak: undefined,
@@ -501,11 +503,14 @@ describe('eksisterendeSakUtils', () => {
             samtidigUttak: undefined,
             flerbarnsdager: undefined,
             gradering: undefined,
-            kontoType: undefined,
+            kontoType: 'MØDREKVOTE',
             morsAktivitet: undefined,
-        };
+        } satisfies Saksperiode;
 
-        const forventetMappetUtsettelseAnnenPart = { ...forventetMappetUtsettelseSøker, gjelderAnnenPart: true };
+        const forventetMappetUtsettelseAnnenPart = {
+            ...forventetMappetUtsettelseSøker,
+            gjelderAnnenPart: true,
+        } satisfies Saksperiode;
 
         const overføringsperiode = {
             fom: '2022-11-07',
@@ -538,6 +543,7 @@ describe('eksisterendeSakUtils', () => {
         const oppholdsperiode = {
             fom: '2022-08-05',
             tom: '2022-08-05',
+            kontoType: 'MØDREKVOTE',
             resultat: {
                 innvilget: true,
                 trekkerMinsterett: false,
@@ -551,6 +557,7 @@ describe('eksisterendeSakUtils', () => {
 
         const forventetMappetOppholdSøker = {
             ...oppholdsperiodeRest,
+            guid: expect.any(String),
             gjelderAnnenPart: true,
             kontoType: 'MØDREKVOTE',
             periode: { fom: '2022-08-05', tom: '2022-08-05' },
@@ -559,15 +566,15 @@ describe('eksisterendeSakUtils', () => {
             gradering: undefined,
             morsAktivitet: undefined,
             utsettelseÅrsak: undefined,
-            oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
+            oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
             overføringÅrsak: undefined,
-        };
+        } satisfies Saksperiode;
 
         const forventetMappetOppholdAnnenPart = {
             ...forventetMappetOppholdSøker,
             gjelderAnnenPart: false,
             angittAvAnnenPart: true,
-        };
+        } satisfies Saksperiode;
 
         const avslåttPeriode = {
             fom: '2022-10-07',

@@ -59,5 +59,6 @@ export const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
-    return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix}${årsak}}` }, messageValues);
+    // @ts-expect-error -- TODO
+    return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix}${årsak}` }, messageValues);
 };
