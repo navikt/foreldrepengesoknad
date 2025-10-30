@@ -121,7 +121,7 @@ export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolea
     return returnPeriode;
 };
 
-const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiode.resultat.innvilget;
+const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiode.resultat?.innvilget === true;
 
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     periode: Saksperiode,

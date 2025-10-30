@@ -69,6 +69,9 @@ const startServer = async () => {
     const vedleggMockStore = './dist/vedlegg';
 
     if (!fs.existsSync(vedleggMockStore)) {
+        if (!fs.existsSync('./dist')) {
+            fs.mkdirSync('./dist');
+        }
         fs.mkdirSync(vedleggMockStore);
     }
 

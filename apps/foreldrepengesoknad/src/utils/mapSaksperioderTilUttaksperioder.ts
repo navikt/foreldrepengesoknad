@@ -245,7 +245,7 @@ const mapUttaksperiodeFromSaksperiode = (
     grunnlag: Saksgrunnlag,
     innvilgedePerioder: Saksperiode[],
 ): Periode => {
-    const gradert = saksperiode.gradering !== undefined && saksperiode.resultat.innvilget;
+    const gradert = saksperiode.gradering !== undefined && saksperiode.resultat?.innvilget;
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
     const erFarEllerMedmorOgKunSøkerHarRett =
         grunnlag.søkerErFarEllerMedmor &&
@@ -281,7 +281,7 @@ const mapUttaksperiodeFromSaksperiode = (
 
     const familiehendelseDato = getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelsesdato);
     const kontoType = erFarEllerMedmorOgKunSøkerHarRett
-        ? getKontotypeBareFarHarRett(saksperiode.resultat.trekkerMinsterett)
+        ? getKontotypeBareFarHarRett(saksperiode.resultat?.trekkerMinsterett ?? false)
         : saksperiode.kontoType;
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
@@ -325,7 +325,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
 };
 
 const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
-    if (saksperiode.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+    if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
         if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Ferie) {
             return OpprinneligSøkt.Ferie;
         }
@@ -335,7 +335,7 @@ const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
         }
     }
 
-    if (saksperiode.resultat.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
+    if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
         return OpprinneligSøkt.Gradering;
     }
 
@@ -355,7 +355,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
         visPeriodeIPlan: true,
-        kanSlettes: saksperiode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+        kanSlettes: saksperiode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
         opprinneligSøkt,
     };
     return avslåttPeriode;
@@ -369,7 +369,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
 ): UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode | AvslåttPeriode => {
     const tidsperiodeDate = convertTidsperiodeToTidsperiodeDate(saksperiode.periode);
 
-    if (saksperiode.utsettelseÅrsak !== undefined && saksperiode.resultat.innvilget === true) {
+    if (saksperiode.utsettelseÅrsak !== undefined && saksperiode.resultat?.innvilget === true) {
         return {
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
@@ -476,7 +476,7 @@ const mapPeriodeFromSaksperiode = (
         );
     }
 
-    if (!saksperiode.resultat.innvilget) {
+    if (!saksperiode.resultat?.innvilget) {
         return mapInfoPeriodeFromAvslåttSaksperiode(saksperiode, grunnlag.søkerErFarEllerMedmor);
     }
 
@@ -495,15 +495,15 @@ const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, termind
     return (
         termindato &&
         saksperiode.gjelderAnnenPart &&
-        !saksperiode.resultat.innvilget &&
-        saksperiode.resultat.trekkerDager &&
+        !saksperiode.resultat?.innvilget &&
+        saksperiode.resultat?.trekkerDager &&
         dayjs(saksperiode.periode.tom).isBefore(dayjs(ISOStringToDate(termindato)), 'd') &&
         saksperiode.kontoType !== 'FEDREKVOTE'
     );
 };
 
 const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | undefined) => {
-    if (saksperiode.resultat.innvilget) return true;
+    if (saksperiode.resultat?.innvilget) return true;
 
     if (saksperiode.gjelderAnnenPart) {
         if (erAnnenPartsAvslåttePrematurePeriode(saksperiode, termindato)) {
@@ -512,8 +512,8 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | unde
         return false;
     }
     if (
-        saksperiode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
-        saksperiode.resultat.trekkerDager === true
+        saksperiode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
+        saksperiode.resultat?.trekkerDager === true
     ) {
         return true;
     }
