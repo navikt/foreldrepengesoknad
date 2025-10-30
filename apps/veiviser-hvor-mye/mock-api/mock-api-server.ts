@@ -44,7 +44,7 @@ app.listen(port, () => {
 
 router.post('/rest/konto', async (req: any, res: any) => {
     try {
-        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/fpoversikt/api/konto', {
+        const data = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/external/konto', {
             method: 'POST',
             headers: {
                 accept: 'application/json, text/plain, */*',
@@ -62,7 +62,7 @@ router.post('/rest/konto', async (req: any, res: any) => {
 
 router.get('/rest/satser', async (_req: any, res: any) => {
     try {
-        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
+        const data = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/external/satser', {
             method: 'GET',
             headers: {
                 accept: 'application/json, text/plain, */*',
