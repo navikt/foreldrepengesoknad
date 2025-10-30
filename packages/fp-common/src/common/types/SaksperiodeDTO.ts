@@ -9,7 +9,7 @@ import { UtsettelseÅrsakTypeDTO } from './UtsettelseÅrsakTypeDTO';
 export interface SaksperiodeDTO {
     fom: string;
     tom: string;
-    resultat: PeriodeResultatDTO;
+    resultat?: PeriodeResultatDTO;
     flerbarnsdager?: boolean;
     kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering;

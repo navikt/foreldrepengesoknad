@@ -298,7 +298,7 @@ export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: Eksistere
         return false;
     }
     const saksperiode = getSaksperiode(periode, eksisterendeSak);
-    return saksperiode ? saksperiode.resultat.innvilget : false;
+    return saksperiode ? !!saksperiode.resultat?.innvilget : false;
 };
 
 const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
