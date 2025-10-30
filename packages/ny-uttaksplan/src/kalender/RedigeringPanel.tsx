@@ -185,38 +185,51 @@ const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): Pl
         .map((p) => {
             let overlappendeDager = 0;
 
-            perioder.forEach((periode) => {
+            const overlappendePerioder = perioder.filter((periode) => {
                 const fom1 = dayjs(periode.fom);
                 const tom1 = dayjs(periode.tom);
                 const fom2 = dayjs(p.fom);
                 const tom2 = dayjs(p.tom);
 
-                // Find overlap start and end manually
                 const start = fom1.isAfter(fom2) ? fom1 : fom2;
                 const end = tom1.isBefore(tom2) ? tom1 : tom2;
 
-                // If overlap exists (including exact same days)
                 if (start.isSameOrBefore(end, 'day')) {
-                    const dager = end.diff(start, 'day') + 1; // include both start and end
-                    overlappendeDager += dager;
+                    overlappendeDager += end.diff(start, 'day') + 1;
+                    return true;
                 }
+                return false;
             });
 
-            return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
+            if (overlappendeDager > 0) {
+                const fomDate = overlappendePerioder
+                    .map(({ fom }) => dayjs(fom))
+                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min))
+                    .format('YYYY-MM-DD');
+                const tomDate = overlappendePerioder
+                    .map(({ tom }) => dayjs(tom))
+                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max))
+                    .format('YYYY-MM-DD');
+
+                return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };
+            }
+
+            return null;
         })
         .filter((p): p is PlanperiodeMedAntallDager => p !== null)
         .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
             const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
-
             if (duplikat) {
                 return acc
                     .filter((p) => p.kontoType !== duplikat.kontoType)
                     .concat({
                         ...duplikat,
+                        // Keep earliest fom and latest tom across all merged periods
+                        fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
+                        tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
                         overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
                     });
             }
-
             return acc.concat(curr);
         }, []);
 };
@@ -224,52 +237,82 @@ const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): Pl
 const EksisterendePeriodeListe = ({ perioder }: { perioder: PlanperiodeMedAntallDager[] }) => {
     return (
         <VStack gap="space-8">
-            {perioder.map((p) => (
-                <HStack gap="space-4" align="center" key={p.id}>
-                    {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
-                        <PersonPregnantFillIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-meta-purple-strong)"
-                        />
-                    )}
-                    {p.kontoType === 'FEDREKVOTE' && (
-                        <PersonSuitFillIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-success-strong)"
-                        />
-                    )}
-                    {p.kontoType === 'FELLESPERIODE' && (
-                        <PersonGroupIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-success-strong)"
-                        />
-                    )}
-                    <VStack gap="space-0">
-                        <Heading size="xsmall">
-                            {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
-                                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
-                            )}
-                            {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.Mødrekvote" />}
-                            {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Fedrekvote" />}
-                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Fellesperiode" />}
-                        </Heading>
-                        <BodyShort>
-                            <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
-                        </BodyShort>
-                    </VStack>
-                    <Spacer />
-                    <TrashIcon title="a11y-title" fontSize="1.5rem" />
-                </HStack>
-            ))}
+            {perioder
+                .filter((p) => !!p.kontoType)
+                .map((p) => (
+                    <HStack gap="space-4" align="center" key={p.id}>
+                        {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
+                            <PersonPregnantFillIcon
+                                title="a11y-title"
+                                fontSize="1.5rem"
+                                height="35px"
+                                width="35px"
+                                color="var(--ax-bg-meta-purple-strong)"
+                            />
+                        )}
+                        {p.kontoType === 'FEDREKVOTE' && (
+                            <PersonSuitFillIcon
+                                title="a11y-title"
+                                fontSize="1.5rem"
+                                height="35px"
+                                width="35px"
+                                color="var(--ax-bg-success-strong)"
+                            />
+                        )}
+                        {p.kontoType === 'FELLESPERIODE' && (
+                            <PersonGroupIcon
+                                title="a11y-title"
+                                fontSize="1.5rem"
+                                height="35px"
+                                width="35px"
+                                color="var(--ax-bg-success-strong)"
+                            />
+                        )}
+                        <VStack gap="space-0">
+                            <Heading size="xsmall">
+                                {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
+                                    <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+                                )}
+                                {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.Mødrekvote" />}
+                                {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Fedrekvote" />}
+                                {p.kontoType === 'FELLESPERIODE' && (
+                                    <FormattedMessage id="RedigeringPanel.Fellesperiode" />
+                                )}
+                            </Heading>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="RedigeringPanel.Dager"
+                                    values={{ dato: formaterDato(p.fom, p.tom), antall: p.overlappendeDager }}
+                                />
+                            </BodyShort>
+                        </VStack>
+                        <Spacer />
+                        <TrashIcon title="a11y-title" fontSize="1.5rem" />
+                    </HStack>
+                ))}
         </VStack>
     );
+};
+
+const formaterDato = (fom: string, tom: string): string => {
+    const start = dayjs(fom);
+    const end = dayjs(tom);
+
+    const sameDay = start.isSame(end, 'day');
+    const sameMonth = start.isSame(end, 'month');
+    const sameYear = start.isSame(end, 'year');
+
+    if (sameDay) {
+        return start.format('D. MMM YYYY.');
+    }
+
+    if (sameMonth && sameYear) {
+        return `${start.format('D.')}-${end.format('D. MMM.')}`;
+    }
+
+    if (!sameMonth && sameYear) {
+        return `${start.format('D. MMM')} - ${end.format('D. MMM.')}`;
+    }
+
+    return `${start.format('D. MMM YY')} - ${end.format('D. MMM YY.')}`;
 };
