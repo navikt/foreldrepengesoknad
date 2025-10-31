@@ -9,7 +9,6 @@ import {
     PeriodeHull,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
@@ -573,7 +572,7 @@ describe('dateUtils', () => {
                     tom: new Date('2020-04-17'),
                 },
                 type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Arbeid,
+                årsak: 'ARBEID',
             };
             const deltPeriodeSenereDel: Partial<Uttaksperiode> = {
                 id: '9',

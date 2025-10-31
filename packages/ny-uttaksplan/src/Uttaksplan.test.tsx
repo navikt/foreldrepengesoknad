@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
 import { Forelder } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { UttakArbeidType } from '@navikt/fp-types';
 
 import * as stories from './Uttaksplan.stories';
 
@@ -53,7 +53,7 @@ describe('Uttaksplan', () => {
                 fom: '2025-06-30',
                 forelder: Forelder.mor,
                 tom: '2025-08-28',
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
                 fom: '2025-08-29',
@@ -209,7 +209,7 @@ describe('Uttaksplan', () => {
                 fom: '2025-06-30',
                 forelder: Forelder.mor,
                 tom: '2025-08-28',
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
                 fom: '2025-08-29',

@@ -3,7 +3,6 @@ import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { Forelder } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
@@ -22,7 +21,7 @@ interface FomValidatorProps {
     erBarnetFødt: boolean;
     minDate: string;
     maxDate: string;
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
 }
 
@@ -122,7 +121,7 @@ export const getFomValidators = ({
     }
 
     switch (årsak) {
-        case UtsettelseÅrsakType.Ferie:
+        case 'LOVBESTEMT_FERIE':
             validators.push(
                 isAfterOrSame(
                     erBarnetFødt
@@ -203,7 +202,7 @@ interface TomValidatorProps {
     erBarnetFødt: boolean;
     minDate: string;
     maxDate: string;
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
     gjelderAdopsjon: boolean;
 }
 
@@ -302,7 +301,7 @@ export const getTomValidators = ({
     }
 
     switch (årsak) {
-        case UtsettelseÅrsakType.Ferie:
+        case 'LOVBESTEMT_FERIE':
             validators.push(
                 isAfterOrSame(
                     erBarnetFødt

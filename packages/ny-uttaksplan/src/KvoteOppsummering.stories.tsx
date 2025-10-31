@@ -8,7 +8,6 @@ import {
     NavnPåForeldre,
     OppholdÅrsakType,
     PeriodeResultatÅrsak,
-    UtsettelseÅrsakType,
     UttakArbeidType,
 } from '@navikt/fp-types';
 
@@ -744,7 +743,7 @@ export const MorHarPrematuruker: Story = {
                     trekkerDager: true,
                     årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
                 },
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },

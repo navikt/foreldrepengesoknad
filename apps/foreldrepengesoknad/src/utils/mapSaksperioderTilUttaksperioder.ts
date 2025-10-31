@@ -17,7 +17,6 @@ import {
     Saksperiode,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
@@ -27,6 +26,7 @@ import {
 import {
     KontoType,
     KontoTypeUttak_fpoversikt,
+    UtsettelsesÅrsak,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
@@ -161,24 +161,24 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
-const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined): UtsettelseÅrsakType | undefined => {
+const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined): UtsettelsesÅrsak | undefined => {
     switch (årsak) {
         case 'ARBEID':
-            return UtsettelseÅrsakType.Arbeid;
+            return 'ARBEID';
         case 'LOVBESTEMT_FERIE':
-            return UtsettelseÅrsakType.Ferie;
+            return 'LOVBESTEMT_FERIE';
         case 'BARN_INNLAGT':
-            return UtsettelseÅrsakType.InstitusjonBarnet;
+            return 'INSTITUSJONSOPPHOLD_BARNET';
         case 'SØKER_INNLAGT':
-            return UtsettelseÅrsakType.InstitusjonSøker;
+            return 'INSTITUSJONSOPPHOLD_SØKER';
         case 'SØKER_SYKDOM':
-            return UtsettelseÅrsakType.Sykdom;
+            return 'SYKDOM';
         case 'HV_ØVELSE':
-            return UtsettelseÅrsakType.HvØvelse;
+            return 'HV_OVELSE';
         case 'NAV_TILTAK':
-            return UtsettelseÅrsakType.NavTiltak;
+            return 'NAV_TILTAK';
         case 'FRI':
-            return UtsettelseÅrsakType.Fri;
+            return 'FRI';
         default:
             return undefined;
     }

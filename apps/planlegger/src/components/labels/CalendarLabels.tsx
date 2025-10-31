@@ -13,7 +13,7 @@ import {
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { HvemPlanleggerType, SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
@@ -42,9 +42,7 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
 
-    const inneholderFerie = uttaksplan.some(
-        (p) => p.utsettelseÅrsak && p.utsettelseÅrsak === UtsettelseÅrsakType.Ferie,
-    );
+    const inneholderFerie = uttaksplan.some((p) => p.utsettelseÅrsak && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE');
 
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&

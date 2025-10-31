@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType, Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { withUttaksplanContextDecorator } from './storybook/decorators/withUttaksplanContextDecorator';
@@ -119,7 +119,7 @@ export const PrematurUker: Story = {
                     trekkerDager: true,
                     årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
                 },
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },

@@ -12,7 +12,6 @@ import {
     Saksgrunnlag,
     Saksperiode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     UttakArbeidType,
@@ -367,7 +366,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-10',
                 },
                 gjelderAnnenPart: false,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 guid: '0',
                 resultat: {
                     innvilget: true,
@@ -400,7 +399,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(utsettelse1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
         expect(utsettelse1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
         expect(utsettelse1.type).toEqual(Periodetype.Utsettelse);
-        expect(utsettelse1.årsak).toEqual(UtsettelseÅrsakType.Ferie);
+        expect(utsettelse1.årsak).toEqual('LOVBESTEMT_FERIE');
         expect(utsettelse1.forelder).toEqual(Forelder.farMedmor);
         expect(utsettelse1.erArbeidstaker).toEqual(false);
         const utsettelse2 = result[1] as Utsettelsesperiode;
@@ -408,7 +407,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(utsettelse2.tidsperiode.tom).toEqual(new Date('2022-01-12'));
         expect(utsettelse2.type).toEqual(Periodetype.Utsettelse);
         expect(utsettelse2.morsAktivitetIPerioden).toEqual(MorsAktivitet.Arbeid);
-        expect(utsettelse2.årsak).toEqual(UtsettelseÅrsakType.Arbeid);
+        expect(utsettelse2.årsak).toEqual('ARBEID');
         expect(utsettelse2.forelder).toEqual(Forelder.farMedmor);
         expect(utsettelse2.erArbeidstaker).toEqual(false);
     });
@@ -634,7 +633,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2021-12-28',
                 },
                 gjelderAnnenPart: true,
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                utsettelseÅrsak: 'BARN_INNLAGT',
                 kontoType: 'FELLESPERIODE',
                 guid: '0',
                 resultat: {

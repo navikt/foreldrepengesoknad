@@ -18,7 +18,6 @@ import {
     Periode,
     Periodetype,
     SivilstandType,
-    UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -505,7 +504,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
                     tom: new Date('2026-02-01'),
                 },
                 type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Fri,
+                årsak: 'FRI',
                 morsAktivitetIPerioden: MorsAktivitet.Arbeid,
                 erArbeidstaker: false,
             },

@@ -1,5 +1,4 @@
 import { Forelder } from '@navikt/fp-common';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { Uttaksplanbuilder } from './Uttaksplanbuilder';
@@ -95,7 +94,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2021-09-06',
         tom: '2021-09-10',
         forelder: Forelder.mor,
-        utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+        utsettelseÅrsak: 'ARBEID',
         readOnly: false,
     },
     {
@@ -111,7 +110,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2021-12-13',
         tom: '2021-12-31',
         forelder: Forelder.mor,
-        utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+        utsettelseÅrsak: 'ARBEID',
         readOnly: false,
     },
     {
@@ -135,7 +134,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2022-05-02',
         tom: '2022-05-10',
         forelder: Forelder.farMedmor,
-        utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+        utsettelseÅrsak: 'ARBEID',
         readOnly: true,
     },
     {
@@ -150,7 +149,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         id: '9',
         fom: '2022-07-11',
         tom: '2022-07-29',
-        utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+        utsettelseÅrsak: 'ARBEID',
         forelder: Forelder.farMedmor,
         readOnly: true,
     },
@@ -177,7 +176,7 @@ describe('Uttaksplanbuilder tester', () => {
             fom: '2022-08-15',
             tom: '2022-08-26',
             forelder: Forelder.mor,
-            utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+            utsettelseÅrsak: 'ARBEID',
             readOnly: false,
         };
 
@@ -200,7 +199,7 @@ describe('Uttaksplanbuilder tester', () => {
             tom: '2022-05-27',
             forelder: Forelder.mor,
             readOnly: false,
-            utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+            utsettelseÅrsak: 'ARBEID',
         };
 
         const result2 = Uttaksplanbuilder({
@@ -265,7 +264,7 @@ describe('Uttaksplanbuilder tester', () => {
                 fom: '2022-09-14',
                 tom: '2022-09-16',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+                utsettelseÅrsak: 'ARBEID',
                 readOnly: false,
             };
             const result = Uttaksplanbuilder({

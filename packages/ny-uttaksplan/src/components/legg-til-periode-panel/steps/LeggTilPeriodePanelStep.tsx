@@ -5,7 +5,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -74,10 +74,10 @@ export const LeggTilPeriodePanelStep = ({
             handleAddPeriode({
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
+                id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
                 readOnly: false,
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
