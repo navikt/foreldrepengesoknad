@@ -1,10 +1,10 @@
 import {
     Attachment,
-    KontoTypeUttak_fpoversikt,
+    KontoType,
     MorsAktivitet,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakOverføringÅrsak_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
+    Oppholdsårsak,
+    Overføringsårsak,
+    UtsettelsesÅrsak,
 } from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
@@ -12,7 +12,6 @@ import { Forelder } from './Forelder';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
 import { TidsperiodeDate } from './TidsperiodeDate';
-import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
 export enum Periodetype {
     Uttak = 'uttak',
@@ -37,7 +36,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
-    konto: KontoTypeUttak_fpoversikt;
+    konto: KontoType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
@@ -60,7 +59,7 @@ export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksp
 export type UtsettelseFormPeriodeType = Utsettelsesperiode | Oppholdsperiode;
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
-    årsak: UttakUtsettelseÅrsak_fpoversikt;
+    årsak: UtsettelsesÅrsak;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     erArbeidstaker: boolean;
@@ -69,15 +68,15 @@ export interface Utsettelsesperiode extends PeriodeBase {
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    årsak: UttakOppholdÅrsak_fpoversikt;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
 }
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
-    konto: KontoTypeUttak_fpoversikt;
+    konto: KontoType;
     forelder: Forelder;
-    årsak: UttakOverføringÅrsak_fpoversikt;
+    årsak: Overføringsårsak;
 }
 
 export interface PeriodeHull extends PeriodeBase {
@@ -103,7 +102,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: KontoTypeUttak_fpoversikt | undefined;
+    kontoType: KontoType | undefined;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -114,7 +113,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
 export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
-    årsak: UttakOppholdÅrsak_fpoversikt;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -127,7 +126,7 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
 export interface UttakAnnenPartEØSInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
-    årsak: UttakOppholdÅrsak_fpoversikt;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
     overskrives: boolean;
     visPeriodeIPlan: boolean;
@@ -137,7 +136,7 @@ export interface UttakAnnenPartEØSInfoPeriode extends InfoPeriodeBase {
 export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
-    årsak: UttakUtsettelseÅrsak_fpoversikt;
+    årsak: UtsettelsesÅrsak;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -227,7 +226,7 @@ export const isOverføringFarForSyk = (periode: Periode) => {
 };
 
 export const isUtsettelseBarnInnlagt = (periode: Periode) => {
-    return isUtsettelsesperiode(periode) && periode.årsak === 'BARN_INNLAGT';
+    return isUtsettelsesperiode(periode) && periode.årsak === 'INSTITUSJONSOPPHOLD_BARNET';
 };
 
 export const isMorStuderer = (periode: Periode) => {
@@ -235,11 +234,7 @@ export const isMorStuderer = (periode: Periode) => {
 };
 
 export const isPeriodeUtenUttakMorStuderer = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'UTDANNING'
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'UTDANNING';
 };
 
 export const isMorJobber = (periode: Periode) => {
@@ -247,11 +242,7 @@ export const isMorJobber = (periode: Periode) => {
 };
 
 export const isPeriodeUtenUttakMorJobber = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'ARBEID'
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'ARBEID';
 };
 
 export const isMorJobberOgStuderer = (periode: Periode) => {
@@ -261,7 +252,7 @@ export const isMorJobberOgStuderer = (periode: Periode) => {
 export const isPeriodeUtenUttakMorJobberOgStuderer = (periode: Periode) => {
     return (
         isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
+        periode.årsak === 'FRI' &&
         periode.morsAktivitetIPerioden === 'ARBEID_OG_UTDANNING'
     );
 };
@@ -271,11 +262,7 @@ export const isMorIntroprogram = (periode: Periode) => {
 };
 
 export const isPeriodeUtenUttakMorIntroprogram = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'INTROPROG'
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'INTROPROG';
 };
 
 export const isMorKvalprogram = (periode: Periode) => {
@@ -283,11 +270,7 @@ export const isMorKvalprogram = (periode: Periode) => {
 };
 
 export const isPeriodeUtenUttakMorKvalprogram = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'KVALPROG'
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'KVALPROG';
 };
 
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
@@ -306,22 +289,16 @@ export const isForeldrepengerMedAktivitetskravMorForSyk = (periode: Periode) => 
 
 export const isPeriodeUtenUttakMorForSyk = (periode: Periode) => {
     return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'TRENGER_HJELP'
+        isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'TRENGER_HJELP'
     );
 };
 
 export const isUtsettelseMorInnlagt = (periode: Periode) => {
-    return isUtsettelsesperiode(periode) && periode.årsak === 'SØKER_INNLAGT';
+    return isUtsettelsesperiode(periode) && periode.årsak === 'INSTITUSJONSOPPHOLD_SØKER';
 };
 
 export const isPeriodeUtenUttakMorInnlagt = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === UtsettelseÅrsakType.Fri &&
-        periode.morsAktivitetIPerioden === 'INNLAGT'
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'INNLAGT';
 };
 
 export const isFellesperiodeMorInnlagt = (periode: Periode) => {
@@ -333,7 +310,7 @@ export const isFellesperiodeMorForSyk = (periode: Periode) => {
 };
 
 export const isUtsettelseMorForSyk = (periode: Periode) => {
-    return isUtsettelsesperiode(periode) && periode.årsak === 'SØKER_SYKDOM';
+    return isUtsettelsesperiode(periode) && periode.årsak === 'SYKDOM';
 };
 
 export const isSkalIkkeHaForeldrepengerFørFødselPeriode = (periode: Periode): boolean => {
@@ -345,11 +322,11 @@ export const isUtsettelsesperiode = (periode: Periode): periode is Utsettelsespe
 };
 
 export const isUtsettelsePgaFerie = (periode: Periode): periode is Utsettelsesperiode => {
-    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Ferie;
+    return isUtsettelsesperiode(periode) && periode.årsak === 'ARBEID';
 };
 
 export const isUtsettelsePgaArbeid = (periode: Periode): periode is Utsettelsesperiode => {
-    return isUtsettelsesperiode(periode) && periode.årsak === UtsettelseÅrsakType.Arbeid;
+    return isUtsettelsesperiode(periode) && periode.årsak === 'ARBEID';
 };
 
 export const isOverføringsperiode = (periode: Periode): periode is Overføringsperiode => {
@@ -397,7 +374,7 @@ export const isUttakAnnenPart = (periode: Periode): periode is UttakAnnenPartInf
 };
 
 export const isPeriodeUtenUttakUtsettelse = (periode: Periode): periode is PeriodeUtenUttakUtsettelse => {
-    return periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Fri;
+    return periode.type === Periodetype.Utsettelse && periode.årsak === 'FRI';
 };
 
 export const isPeriodeUtenUttak = (periode: Periode): periode is PeriodeUtenUttak => {
