@@ -7,7 +7,6 @@ import {
     Periodetype,
     Situasjon,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isPeriodeUtenUttak,
 } from '@navikt/fp-common';
@@ -109,20 +108,16 @@ export const getUgyldigUttakMor = (
     if (value === 'mellomSyvOgÅtteUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
-            .filter(
-                (p) =>
-                    p.forelder === Forelder.mor &&
-                    (p.årsak === UtsettelseÅrsakType.Ferie || p.årsak === UtsettelseÅrsakType.Arbeid),
-            );
+            .filter((p) => p.forelder === Forelder.mor && (p.årsak === 'LOVBESTEMT_FERIE' || p.årsak === 'ARBEID'));
     } else if (value === 'førsteSeksUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
             .filter(
                 (p) =>
                     p.forelder === Forelder.mor &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
-                    p.årsak !== UtsettelseÅrsakType.Sykdom,
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_SØKER' &&
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_BARNET' &&
+                    p.årsak !== 'SYKDOM',
             );
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
@@ -231,7 +226,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUtsettelser()
-        .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
+        .filter((utsettelse) => utsettelse.årsak !== 'INSTITUSJONSOPPHOLD_BARNET');
 
     return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
 };

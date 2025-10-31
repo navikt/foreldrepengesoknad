@@ -61,8 +61,6 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
             <Block visible={samtidigUttakProsentVisible} padBottom="l">
                 <GuidePanel>
                     <FormattedMessage
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                         id={samtidigUttakInfoTekst}
                         values={{
                             link: (

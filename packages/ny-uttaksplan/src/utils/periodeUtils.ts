@@ -116,15 +116,11 @@ export const getOppholdskontoNavn = (
 
     if (erMor) {
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Bør ikkje ha dynamiske testId'ar
             { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
             { foreldernavn: navn },
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore Bør ikkje ha dynamiske testId'ar
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 

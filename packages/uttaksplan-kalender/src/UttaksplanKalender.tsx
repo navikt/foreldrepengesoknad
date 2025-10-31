@@ -5,7 +5,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype, UtsettelseÅrsakType } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 import {
     Barn,
     InfoPeriode,
@@ -13,6 +13,7 @@ import {
     Periode,
     PeriodeUtenUttak,
     Utsettelsesperiode,
+    UtsettelsesÅrsak,
     Uttaksperiode,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -75,7 +76,7 @@ const getPerioderForKalendervisning = (
     erFarEllerMedmor: boolean,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     intl: IntlShape,
 ): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);

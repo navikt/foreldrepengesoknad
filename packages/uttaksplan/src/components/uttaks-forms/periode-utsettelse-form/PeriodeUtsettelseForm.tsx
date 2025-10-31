@@ -250,8 +250,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
-                                            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                                            {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
                                         </ActionLink>
                                     </div>
