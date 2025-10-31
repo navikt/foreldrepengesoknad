@@ -532,9 +532,10 @@ const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): UttakOppholdÅrsak_
             return 'FELLESPERIODE_ANNEN_FORELDER';
         case 'MØDREKVOTE':
             return 'MØDREKVOTE_ANNEN_FORELDER';
-        default:
-            // TODO: blir dette feil?
+        case 'FORELDREPENGER':
             return 'FELLESPERIODE_ANNEN_FORELDER';
+        case 'FORELDREPENGER_FØR_FØDSEL':
+            return 'MØDREKVOTE_ANNEN_FORELDER';
     }
 };
 

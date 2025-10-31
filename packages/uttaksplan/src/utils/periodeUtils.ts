@@ -113,7 +113,6 @@ export const getOppholdskontoNavn = (
             { foreldernavn: navn },
         );
     }
-    //TODO: sjekk at disse intl keys stemmer
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
