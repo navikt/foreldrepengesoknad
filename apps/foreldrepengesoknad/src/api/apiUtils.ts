@@ -162,7 +162,7 @@ const changeClientonlyKontotype = (
             ) {
                 periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
             } else if (morErUfør) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+                periode.morsAktivitetIPerioden = 'UFØRE';
             }
         }
     }

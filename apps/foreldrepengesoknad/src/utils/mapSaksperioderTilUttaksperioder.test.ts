@@ -162,7 +162,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     },
                     gjelderAnnenPart: false,
                     kontoType: 'FELLESPERIODE',
-                    morsAktivitet: MorsAktivitet.Innlagt,
+                    morsAktivitet: 'INNLAGT',
                     guid: '3',
                 },
             ] as Saksperiode[];
@@ -211,7 +211,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttakFellesperiode.gradert).toEqual(false);
             expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
             expect(uttakFellesperiode.harIkkeAktivitetskrav).toEqual(undefined);
-            expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual(MorsAktivitet.Innlagt);
+            expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual('INNLAGT');
         },
     );
     it(

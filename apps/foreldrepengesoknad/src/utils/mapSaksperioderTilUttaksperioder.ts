@@ -5,7 +5,6 @@ import {
     FamiliehendelseType,
     Forelder,
     InfoPeriode,
-    MorsAktivitet,
     OpprinneligSøkt,
     Overføringsperiode,
     Periode,
@@ -25,8 +24,11 @@ import {
 import {
     KontoType,
     KontoTypeUttak_fpoversikt,
+    Oppholdsårsak,
+    UtsettelsesÅrsak,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
@@ -209,12 +211,20 @@ const getErMorForSyk = (
         dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'), 'day') &&
         konto !== 'AKTIVITETSFRI_KVOTE'
     ) {
-        if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {
+        if (saksperiode.morsAktivitet !== 'UFØRE') {
             return true;
         }
     }
 
     return undefined;
+};
+
+const mapKontoType = (kontoType: KontoTypeUttak_fpoversikt | undefined): KontoType | undefined => {
+    if (kontoType === undefined || kontoType === 'AKTIVITETSFRI_KVOTE') {
+        return undefined;
+    }
+
+    return kontoType;
 };
 
 const mapUttaksperiodeFromSaksperiode = (
@@ -263,7 +273,7 @@ const mapUttaksperiodeFromSaksperiode = (
     const uttaksperiode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
-        konto: kontoType!,
+        konto: mapKontoType(kontoType)!,
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, grunnlag.søkerErFarEllerMedmor),
         ønskerSamtidigUttak: saksperiode.samtidigUttak !== undefined,
@@ -287,11 +297,34 @@ const mapUttaksperiodeFromSaksperiode = (
     return uttaksperiode;
 };
 
+const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined): UtsettelsesÅrsak | undefined => {
+    switch (årsak) {
+        case 'ARBEID':
+            return 'ARBEID';
+        case 'HV_ØVELSE':
+            return 'HV_OVELSE';
+        case 'LOVBESTEMT_FERIE':
+            return 'LOVBESTEMT_FERIE';
+        case 'SØKER_SYKDOM':
+            return 'SYKDOM';
+        case 'SØKER_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_SØKER';
+        case 'BARN_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_BARNET';
+        case 'NAV_TILTAK':
+            return 'NAV_TILTAK';
+        case 'FRI':
+            return 'FRI';
+        case undefined:
+            return undefined;
+    }
+};
+
 const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarEllerMedmor: boolean): Periode => {
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: saksperiode.utsettelseÅrsak!,
+        årsak: mapUtsettelseÅrsak(saksperiode.utsettelseÅrsak)!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
@@ -338,6 +371,21 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
     return avslåttPeriode;
 };
 
+const mapOppholdÅrsak = (årsak?: UttakOppholdÅrsak_fpoversikt): Oppholdsårsak => {
+    switch (årsak) {
+        case 'MØDREKVOTE_ANNEN_FORELDER':
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
+        case 'FEDREKVOTE_ANNEN_FORELDER':
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
+        case 'FORELDREPENGER_ANNEN_FORELDER':
+            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
+        case 'FELLESPERIODE_ANNEN_FORELDER':
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
+        case undefined:
+            return 'INGEN';
+    }
+};
+
 const mapAnnenPartInfoPeriodeFromSaksperiode = (
     saksperiode: Saksperiode,
     erFarEllerMedmor: boolean,
@@ -351,7 +399,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: saksperiode.utsettelseÅrsak!,
+            årsak: mapUtsettelseÅrsak(saksperiode.utsettelseÅrsak)!,
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
@@ -409,7 +457,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
         id: guid(),
-        årsak: årsak!,
+        årsak: mapOppholdÅrsak(årsak),
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
@@ -524,18 +572,18 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     return nyePerioder;
 };
 
-const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): UttakOppholdÅrsak_fpoversikt => {
+const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): Oppholdsårsak => {
     switch (konto) {
         case 'FEDREKVOTE':
-            return 'FEDREKVOTE_ANNEN_FORELDER';
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return 'FELLESPERIODE_ANNEN_FORELDER';
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return 'MØDREKVOTE_ANNEN_FORELDER';
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         case 'FORELDREPENGER':
-            return 'FELLESPERIODE_ANNEN_FORELDER';
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         case 'FORELDREPENGER_FØR_FØDSEL':
-            return 'MØDREKVOTE_ANNEN_FORELDER';
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
     }
 };
 

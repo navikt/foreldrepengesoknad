@@ -1,10 +1,10 @@
 import { Forelder } from '@navikt/fp-constants';
 
-import { MorsAktivitet } from './MorsAktivitet';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 import { Gradering_fpoversikt, KontoTypeUttak_fpoversikt, UttakOppholdÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
+import { MorsAktivitet } from './fpsoknadDtoGenerert';
 
 export interface SaksperiodeNy {
     fom: string;

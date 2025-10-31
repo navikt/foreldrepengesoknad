@@ -44,7 +44,7 @@ describe('Aktivitetskrav ved utsettelse', () => {
 
 describe('getMorsAktivitetSkjemanummer', () => {
     it('should require Skjemanummer.DOK_INNLEGGELSE when morsAktivitet=Innlagt', () => {
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Innlagt)).toBe(Skjemanummer.DOK_INNLEGGELSE_MOR);
+        expect(getMorsAktivitetSkjemanummer('INNLAGT')).toBe(Skjemanummer.DOK_INNLEGGELSE_MOR);
     });
 
     it('should require Skjemanummer.BEKREFTELS_DELTAR_KVALIFISERINGSPROGRAM when morsAktivitet=Kvalifiseringsprogrammet', () => {
@@ -65,7 +65,7 @@ describe('getMorsAktivitetSkjemanummer', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.ArbeidOgUtdanning)).toBe(
             Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR,
         );
-        expect(getMorsAktivitetSkjemanummer(MorsAktivitet.TrengerHjelp)).toBe(Skjemanummer.DOK_SYKDOM_MOR);
+        expect(getMorsAktivitetSkjemanummer('TRENGER_HJELP')).toBe(Skjemanummer.DOK_SYKDOM_MOR);
     });
 
     it('should require Skjemanummer.BEKREFTELSE_FRA_STUDIESTED when morsAktivitet=Utdanning', () => {
@@ -83,7 +83,7 @@ describe('getMorsAktivitet', () => {
     });
 
     it('should return mors aktivitet = TRENGER HJELP for no input on mors aktivitet and input that mor er syk', () => {
-        expect(getMorsAktivitet(undefined, true)).toEqual(MorsAktivitet.TrengerHjelp);
+        expect(getMorsAktivitet(undefined, true)).toEqual('TRENGER_HJELP');
     });
 
     it('should return undefined if no input on mors aktivitet and mor er syk is false', () => {

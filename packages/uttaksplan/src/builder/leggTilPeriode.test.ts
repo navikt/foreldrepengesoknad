@@ -1,12 +1,4 @@
-import {
-    Forelder,
-    MorsAktivitet,
-    Periode,
-    PeriodeInfoType,
-    Periodetype,
-    UtsettelseÅrsakType,
-    Uttaksperiode,
-} from '@navikt/fp-common';
+import { Forelder, Periode, PeriodeInfoType, Periodetype, UtsettelseÅrsakType, Uttaksperiode } from '@navikt/fp-common';
 
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
 
@@ -157,7 +149,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+        årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     },
     {
         id: '4',
@@ -196,7 +188,7 @@ const perioderKunAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: 'MØDREKVOTE_ANNEN_FORELDER',
+        årsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
     },
 ];
 
@@ -755,7 +747,7 @@ describe('Test av split periode i uttaksplan', () => {
         },
         forelder: Forelder.farMedmor,
         konto: 'FORELDREPENGER',
-        morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+        morsAktivitetIPerioden: 'ARBEID',
         erMorForSyk: false,
     } as Uttaksperiode;
     it('Skal splitte periode med fedrekvote med familiehendelsesdato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {

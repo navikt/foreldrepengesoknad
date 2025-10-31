@@ -1,7 +1,6 @@
 import {
     AnnenForelder,
     Forelder,
-    MorsAktivitet,
     Periode,
     Periodetype,
     Situasjon,
@@ -119,9 +118,9 @@ export const getUgyldigUttakMor = (
             .filter(
                 (p) =>
                     p.forelder === Forelder.mor &&
-                    p.årsak !== 'SØKER_INNLAGT' &&
-                    p.årsak !== 'BARN_INNLAGT' &&
-                    p.årsak !== 'SØKER_SYKDOM',
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_SØKER' &&
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_BARNET' &&
+                    p.årsak !== 'SYKDOM',
             );
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
@@ -161,8 +160,8 @@ const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: 
 
         if (periode.konto === 'FELLESPERIODE' || periode.konto === 'FORELDREPENGER') {
             return (
-                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.morsAktivitetIPerioden === 'INNLAGT' ||
+                periode.morsAktivitetIPerioden === 'TRENGER_HJELP' ||
                 periode.erMorForSyk === true
             );
         }
@@ -226,7 +225,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUtsettelser()
-        .filter((utsettelse) => utsettelse.årsak !== 'BARN_INNLAGT');
+        .filter((utsettelse) => utsettelse.årsak !== 'INSTITUSJONSOPPHOLD_BARNET');
 
     return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
 };

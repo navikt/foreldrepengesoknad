@@ -19,7 +19,7 @@ const renderOptions = (intl: IntlShape) => {
     return Object.keys(MorsAktivitet)
         .filter(
             (aktivitetsid) =>
-                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.Uføre &&
+                (MorsAktivitet as any)[aktivitetsid] !== 'UFØRE' &&
                 (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.IkkeOppgitt,
         )
         .map((aktivitetsid) => (
