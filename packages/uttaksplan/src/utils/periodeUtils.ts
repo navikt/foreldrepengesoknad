@@ -272,6 +272,7 @@ export const getPeriodeTittel = (
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor);
         case Periodetype.Utsettelse:
             if (periode.årsak) {
+                console.log(periode);
                 return intl.formatMessage(
                     { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
                     {

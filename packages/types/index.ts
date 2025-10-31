@@ -54,7 +54,6 @@ export type { SaksperiodeNy } from './src/SaksperiodeNy';
 export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UtsettelseÅrsakType } from './src/UtsettelseÅrsakType';
 export { UttakArbeidType } from './src/UttakArbeidType';
-export { MorsAktivitet } from './src/MorsAktivitet';
 export { OverføringÅrsakType } from './src/OverføringÅrsakType';
 export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
