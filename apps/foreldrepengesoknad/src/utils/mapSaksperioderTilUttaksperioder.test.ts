@@ -12,7 +12,6 @@ import {
     Saksperiode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    UtsettelseÅrsakTypeDTO,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     UttakArbeidType,
@@ -420,7 +419,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-10',
                 },
                 gjelderAnnenPart: false,
-                utsettelseÅrsak: UtsettelseÅrsakTypeDTO.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 guid: '0',
                 resultat: {
                     innvilget: false,
@@ -474,7 +473,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     tom: '2022-01-10',
                 },
                 gjelderAnnenPart: true,
-                utsettelseÅrsak: UtsettelseÅrsakTypeDTO.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 guid: '0',
                 resultat: {
                     innvilget: false,

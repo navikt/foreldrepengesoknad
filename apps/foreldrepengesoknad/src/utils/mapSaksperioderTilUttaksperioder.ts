@@ -292,7 +292,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: saksperiode.utsettelseÅrsak!, // TODO
+        årsak: saksperiode.utsettelseÅrsak!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
@@ -352,7 +352,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: saksperiode.utsettelseÅrsak!, //TODO
+            årsak: saksperiode.utsettelseÅrsak!,
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,
@@ -430,10 +430,10 @@ const mapOverføringsperiodeFromSaksperiode = (
     return {
         id: guid(),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
-        konto: saksperiode.kontoType!, // TODO
+        konto: saksperiode.kontoType!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         type: Periodetype.Overføring,
-        årsak: saksperiode.overføringÅrsak!, // TODO
+        årsak: saksperiode.overføringÅrsak!,
     };
 };
 

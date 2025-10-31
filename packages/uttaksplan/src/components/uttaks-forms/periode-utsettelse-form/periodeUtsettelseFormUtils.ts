@@ -6,6 +6,7 @@ import {
     isUtsettelsePgaArbeid,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
+import { UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
@@ -40,8 +41,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
     return {
         id,
         type: Periodetype.Utsettelse,
-        // @ts-expect-error -- TODO
-        årsak: values.årsak,
+        årsak: values.årsak as UttakUtsettelseÅrsak_fpoversikt,
         morsAktivitetIPerioden: values.morsAktivitetIPerioden ? values.morsAktivitetIPerioden : undefined,
         forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
         tidsperiode: {
