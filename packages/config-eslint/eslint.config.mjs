@@ -84,7 +84,6 @@ export default [
             'import/no-default-export': ERROR,
             'react-hooks/rules-of-hooks': ERROR,
             'react-hooks/incompatible-library': OFF,
-            'react-hooks/refs': OFF,
             'react-hooks/set-state-in-effect': OFF,
             'react-hooks/exhaustive-deps': OFF,
 
