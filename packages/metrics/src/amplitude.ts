@@ -26,7 +26,7 @@ export const loggAmplitudeEvent = ({
 }) => {
     if (process.env.NODE_ENV === 'production' && (globalThis as any).dekoratorenAmplitude) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore -- ts-expect-error sier den er unused. Men uten ts-ignore så feil tsc
+        // @ts-expect-error -- ts-expect-error sier den er unused. Men uten ts-expect-error så feil tsc
         globalThis.dekoratorenAmplitude({
             origin,
             eventName,

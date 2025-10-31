@@ -5,7 +5,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -116,7 +116,7 @@ export const EndrePeriodePanelStep = ({
         }
 
         if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
                 return handleUpdatePeriode;
             }
 
@@ -134,12 +134,12 @@ export const EndrePeriodePanelStep = ({
             const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
 
             handleFunc({
-                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
+                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({

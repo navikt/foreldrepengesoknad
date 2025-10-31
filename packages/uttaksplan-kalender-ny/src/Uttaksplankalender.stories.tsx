@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType, Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, SaksperiodeNy, UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak, SaksperiodeNy, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
 
@@ -31,7 +31,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: UtsettelseÅrsakType.HvØvelse,
+                utsettelseÅrsak: 'HV_ØVELSE',
                 forelder: Forelder.mor,
                 resultat: {
                     innvilget: false,
@@ -106,7 +106,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
                 fom: '2021-06-29',
                 tom: '2021-07-16',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+                utsettelseÅrsak: 'ARBEID',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -134,13 +134,13 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                utsettelseÅrsak: 'BARN_INNLAGT',
             },
             {
                 fom: '2021-06-29',
                 tom: '2021-07-16',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonSøker,
+                utsettelseÅrsak: 'SØKER_INNLAGT',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -205,7 +205,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: UtsettelseÅrsakType.HvØvelse,
+                utsettelseÅrsak: 'HV_ØVELSE',
                 forelder: Forelder.mor,
             },
             {
@@ -234,7 +234,7 @@ export const UtsettelseMorArbeid: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+                utsettelseÅrsak: 'ARBEID',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -256,13 +256,13 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
                 fom: '2021-06-29',
                 tom: '2021-07-28',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -284,7 +284,7 @@ export const UtsettelseMorFri: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Fri,
+                utsettelseÅrsak: 'FRI',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -306,7 +306,7 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                utsettelseÅrsak: 'BARN_INNLAGT',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -328,7 +328,7 @@ export const UtsettelseMorInstitusjonSøker: Story = {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonSøker,
+                utsettelseÅrsak: 'SØKER_INNLAGT',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -350,7 +350,7 @@ export const UtsettelseMorNavTiltak: Story = {
                 fom: '2021-04-05',
                 tom: '2021-05-28',
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.NavTiltak,
+                utsettelseÅrsak: 'NAV_TILTAK',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -372,7 +372,7 @@ export const UtsettelseFarSykdom: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Sykdom,
+                utsettelseÅrsak: 'SØKER_SYKDOM',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -394,7 +394,7 @@ export const UtsettelseFarHvØvelse: Story = {
                 fom: '2024-06-11',
                 tom: '2024-06-24',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.HvØvelse,
+                utsettelseÅrsak: 'HV_ØVELSE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -416,13 +416,13 @@ export const UtsettelseFarFlereÅrsaker: Story = {
                 fom: '2021-04-05',
                 tom: '2021-06-14',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+                utsettelseÅrsak: 'ARBEID',
             },
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: Forelder.farMedmor,
-                utsettelseÅrsak: UtsettelseÅrsakType.HvØvelse,
+                utsettelseÅrsak: 'HV_ØVELSE',
             },
         ] satisfies SaksperiodeNy[],
         barn: {

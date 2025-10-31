@@ -5,8 +5,7 @@ import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
-import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
-import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
+import { KontoTypeUttak_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
 
 export interface SaksperiodeNy {
     fom: string;
@@ -17,7 +16,7 @@ export interface SaksperiodeNy {
     kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakType;
-    utsettelseÅrsak?: UtsettelseÅrsakType;
+    utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;

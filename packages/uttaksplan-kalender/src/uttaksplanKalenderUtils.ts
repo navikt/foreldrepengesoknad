@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { PeriodeColor } from '@navikt/fp-constants';
+import { Barn, UtsettelsesÅrsak, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { Period } from '@navikt/fp-ui';
 import {
     capitalizeFirstLetter,
@@ -10,33 +10,33 @@ import {
     getNavnGenitivEierform,
 } from '@navikt/fp-utils';
 
-const getUtsettelseÅrsakTekst = (årsak: UtsettelseÅrsakType, intl: IntlShape) => {
-    if (årsak === UtsettelseÅrsakType.Arbeid) {
+const getUtsettelseÅrsakTekst = (årsak: UtsettelsesÅrsak, intl: IntlShape) => {
+    if (årsak === 'ARBEID') {
         return intl.formatMessage({ id: `kalender.utsettelse.ARBEID` });
     }
-    if (årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+    if (årsak === 'INSTITUSJONSOPPHOLD_BARNET') {
         return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET` });
     }
-    if (årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+    if (årsak === 'INSTITUSJONSOPPHOLD_SØKER') {
         return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER` });
     }
-    if (årsak === UtsettelseÅrsakType.Ferie) {
+    if (årsak === 'LOVBESTEMT_FERIE') {
         return intl.formatMessage({ id: `kalender.utsettelse.LOVBESTEMT_FERIE` });
     }
-    if (årsak === UtsettelseÅrsakType.Sykdom) {
+    if (årsak === 'SYKDOM') {
         return intl.formatMessage({ id: `kalender.utsettelse.SYKDOM` });
     }
-    if (årsak === UtsettelseÅrsakType.HvØvelse) {
+    if (årsak === 'HV_OVELSE') {
         return intl.formatMessage({ id: `kalender.utsettelse.HV_OVELSE` });
     }
-    if (årsak === UtsettelseÅrsakType.NavTiltak) {
+    if (årsak === 'NAV_TILTAK') {
         return intl.formatMessage({ id: `kalender.utsettelse.NAV_TILTAK` });
     }
     return '';
 };
 
-const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): string => {
-    if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
+const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelsesÅrsak[], intl: IntlShape): string => {
+    if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== 'FRI') {
         const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
         return intl.formatMessage({ id: 'kalender.utsettelse' }, { årsak: årsakTekst });
     }
@@ -65,7 +65,7 @@ const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): str
 export const getKalenderPeriodenavn = (
     color: PeriodeColor,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): string => {
@@ -116,7 +116,7 @@ export const getKalenderSkjermlesertekstForPeriode = (
     period: Period,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): string | undefined => {

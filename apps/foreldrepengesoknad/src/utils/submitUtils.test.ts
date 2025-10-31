@@ -1,11 +1,4 @@
-import {
-    Forelder,
-    Periode,
-    PeriodeUtenUttak,
-    Periodetype,
-    Utsettelsesperiode,
-    UtsettelseÅrsakType,
-} from '@navikt/fp-common';
+import { Forelder, Periode, PeriodeUtenUttak, Periodetype, Utsettelsesperiode } from '@navikt/fp-common';
 
 import { finnEndringerIUttaksplan } from './submitUtils';
 
@@ -90,7 +83,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(utsettelseForSlettetPeriode.tidsperiode.fom).toEqual(opprinneligPlan[2].tidsperiode.fom);
             expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[2].tidsperiode.tom);
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
-            expect(utsettelseForSlettetPeriode.årsak).toEqual(UtsettelseÅrsakType.Fri);
+            expect(utsettelseForSlettetPeriode.årsak).toEqual('FRI');
             expect(utsettelseForSlettetPeriode.forelder).toEqual(Forelder.farMedmor);
         },
     );
@@ -112,7 +105,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(utsettelseForSlettedePerioder.tidsperiode.fom).toEqual(opprinneligPlan[1].tidsperiode.fom);
             expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[1].tidsperiode.tom);
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
-            expect(utsettelseForSlettedePerioder.årsak).toEqual(UtsettelseÅrsakType.Fri);
+            expect(utsettelseForSlettedePerioder.årsak).toEqual('FRI');
             expect(utsettelseForSlettedePerioder.forelder).toEqual(Forelder.farMedmor);
         },
     );
@@ -131,7 +124,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
         expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(opprinneligPlanMedKunEnPeriode[0].tidsperiode.fom);
         expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlanMedKunEnPeriode[0].tidsperiode.tom);
         expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
-        expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
+        expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
         expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
     });
     it(
@@ -182,7 +175,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom,
             );
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
-            expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
+            expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
             expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
         },
     );
@@ -233,7 +226,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom,
             );
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
-            expect(utsettelseSomSendesInn.årsak).toEqual(UtsettelseÅrsakType.Fri);
+            expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
             expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
         },
     );

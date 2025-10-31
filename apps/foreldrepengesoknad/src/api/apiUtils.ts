@@ -14,7 +14,6 @@ import {
     Periode,
     Periodetype,
     Søkerrolle,
-    UtsettelseÅrsakType,
     UttaksperiodeBase,
     isAdoptertBarn,
     isAdoptertStebarn,
@@ -259,7 +258,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
 
     const endringsTidspunktPeriode: Uttaksplanperiode = {
         type: Periodetype.Utsettelse,
-        årsak: UtsettelseÅrsakType.Fri,
+        årsak: 'FRI',
         fom: dateToISOString(endringstidspunkt),
         tom: dateToISOString(endringsTidspunktPeriodeTom),
         erArbeidstaker: false,

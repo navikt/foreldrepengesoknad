@@ -17,15 +17,19 @@ import {
     Saksperiode,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
-    UtsettelseÅrsakTypeDTO,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoType, KontoTypeUttak_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
+import {
+    KontoType,
+    KontoTypeUttak_fpoversikt,
+    UtsettelsesÅrsak,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
@@ -157,26 +161,24 @@ const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor:
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };
 
-const getUtsettelseÅrsakFromSaksperiode = (
-    årsak: UtsettelseÅrsakTypeDTO | undefined,
-): UtsettelseÅrsakType | undefined => {
+const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined): UtsettelsesÅrsak | undefined => {
     switch (årsak) {
-        case UtsettelseÅrsakTypeDTO.Arbeid:
-            return UtsettelseÅrsakType.Arbeid;
-        case UtsettelseÅrsakTypeDTO.Ferie:
-            return UtsettelseÅrsakType.Ferie;
-        case UtsettelseÅrsakTypeDTO.InstitusjonBarnet:
-            return UtsettelseÅrsakType.InstitusjonBarnet;
-        case UtsettelseÅrsakTypeDTO.InstitusjonSøker:
-            return UtsettelseÅrsakType.InstitusjonSøker;
-        case UtsettelseÅrsakTypeDTO.Sykdom:
-            return UtsettelseÅrsakType.Sykdom;
-        case UtsettelseÅrsakTypeDTO.HvØvelse:
-            return UtsettelseÅrsakType.HvØvelse;
-        case UtsettelseÅrsakTypeDTO.NavTiltak:
-            return UtsettelseÅrsakType.NavTiltak;
-        case UtsettelseÅrsakTypeDTO.Fri:
-            return UtsettelseÅrsakType.Fri;
+        case 'ARBEID':
+            return 'ARBEID';
+        case 'LOVBESTEMT_FERIE':
+            return 'LOVBESTEMT_FERIE';
+        case 'BARN_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_BARNET';
+        case 'SØKER_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_SØKER';
+        case 'SØKER_SYKDOM':
+            return 'SYKDOM';
+        case 'HV_ØVELSE':
+            return 'HV_OVELSE';
+        case 'NAV_TILTAK':
+            return 'NAV_TILTAK';
+        case 'FRI':
+            return 'FRI';
         default:
             return undefined;
     }
@@ -314,7 +316,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
     const utsettelsesperiode: Utsettelsesperiode = {
         id: guid(),
         type: Periodetype.Utsettelse,
-        årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
+        årsak: mapUtsettelseÅrsak(saksperiode.utsettelseÅrsak)!,
         tidsperiode: convertTidsperiodeToTidsperiodeDate(saksperiode.periode),
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         erArbeidstaker: false,
@@ -326,11 +328,11 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
 
 const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
     if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
-        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Ferie) {
+        if (saksperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
             return OpprinneligSøkt.Ferie;
         }
 
-        if (saksperiode.utsettelseÅrsak === UtsettelseÅrsakTypeDTO.Arbeid) {
+        if (saksperiode.utsettelseÅrsak === 'ARBEID') {
             return OpprinneligSøkt.Arbeid;
         }
     }
@@ -374,7 +376,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
             type: Periodetype.Info,
             infotype: PeriodeInfoType.utsettelseAnnenPart,
             id: guid(),
-            årsak: getUtsettelseÅrsakFromSaksperiode(saksperiode.utsettelseÅrsak)!,
+            årsak: mapUtsettelseÅrsak(saksperiode.utsettelseÅrsak)!,
             tidsperiode: tidsperiodeDate,
             forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
             overskrives: true,

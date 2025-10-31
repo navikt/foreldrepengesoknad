@@ -1,14 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import {
-    Arbeidsform,
-    BarnType,
-    Forelder,
-    OppholdÅrsakType,
-    PeriodeInfoType,
-    Periodetype,
-    UtsettelseÅrsakType,
-} from '@navikt/fp-constants';
+import { Arbeidsform, BarnType, Forelder, OppholdÅrsakType, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 import { Periode } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -45,7 +37,6 @@ const uttaksplanMor = [
     {
         type: Periodetype.Hull,
         id: '3',
-        forelder: Forelder.mor,
         tidsperiode: {
             fom: new Date('2024-04-19'),
             tom: new Date('2024-05-16'),
@@ -54,8 +45,9 @@ const uttaksplanMor = [
     {
         type: Periodetype.Info,
         infotype: PeriodeInfoType.avslåttPeriode,
+        kontoType: 'MØDREKVOTE',
+        kanSlettes: false,
         id: '4',
-        årsak: UtsettelseÅrsakType.HvØvelse,
         tidsperiode: {
             fom: new Date('2024-05-17'),
             tom: new Date('2024-05-23'),
@@ -145,11 +137,11 @@ const uttaksplanMor = [
         ønskerSamtidigUttak: false,
         visPeriodeIPlan: true,
     },
-];
+] satisfies Periode[];
 
 export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
     args: {
-        uttaksplan: uttaksplanMor as Periode[],
+        uttaksplan: uttaksplanMor,
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -242,7 +234,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
                     fom: new Date('2021-06-29'),
                     tom: new Date('2021-07-16'),
                 },
-                årsak: UtsettelseÅrsakType.Arbeid,
+                årsak: 'ARBEID',
                 bekrefterArbeidIPerioden: true,
                 erArbeidstaker: true,
             },
@@ -278,7 +270,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                årsak: 'INSTITUSJONSOPPHOLD_BARNET',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -293,7 +285,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                     fom: new Date('2021-06-29'),
                     tom: new Date('2021-07-16'),
                 },
-                årsak: UtsettelseÅrsakType.InstitusjonSøker,
+                årsak: 'INSTITUSJONSOPPHOLD_SØKER',
                 bekrefterArbeidIPerioden: true,
                 erArbeidstaker: true,
             },
@@ -374,7 +366,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.utsettelseAnnenPart,
                 id: '5',
-                årsak: UtsettelseÅrsakType.HvØvelse,
+                årsak: 'HV_OVELSE',
                 tidsperiode: {
                     fom: new Date('2024-05-17'),
                     tom: new Date('2024-05-23'),
@@ -446,7 +438,7 @@ export const UtsettelseMorArbeid: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.Arbeid,
+                årsak: 'ARBEID',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -470,7 +462,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.Ferie,
+                årsak: 'LOVBESTEMT_FERIE',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -480,7 +472,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.farMedmor,
-                årsak: UtsettelseÅrsakType.Ferie,
+                årsak: 'LOVBESTEMT_FERIE',
                 tidsperiode: {
                     fom: new Date('2021-06-29'),
                     tom: new Date('2021-07-28'),
@@ -504,7 +496,7 @@ export const UtsettelseMorFri: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.Fri,
+                årsak: 'FRI',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -528,7 +520,7 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.InstitusjonBarnet,
+                årsak: 'INSTITUSJONSOPPHOLD_BARNET',
                 tidsperiode: {
                     fom: new Date('2021-04-05'),
                     tom: new Date('2021-05-28'),
@@ -552,7 +544,7 @@ export const UtsettelseMorInstitusjonSøker: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.InstitusjonSøker,
+                årsak: 'INSTITUSJONSOPPHOLD_SØKER',
                 tidsperiode: {
                     fom: new Date('2021-04-05'),
                     tom: new Date('2021-05-28'),
@@ -576,7 +568,7 @@ export const UtsettelseMorNavTiltak: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.NavTiltak,
+                årsak: 'NAV_TILTAK',
                 tidsperiode: {
                     fom: new Date('2021-04-05'),
                     tom: new Date('2021-05-28'),
@@ -600,7 +592,7 @@ export const UtsettelseFarSykdom: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.farMedmor,
-                årsak: UtsettelseÅrsakType.Sykdom,
+                årsak: 'SYKDOM',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -624,7 +616,7 @@ export const UtsettelseFarHvØvelse: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.farMedmor,
-                årsak: UtsettelseÅrsakType.HvØvelse,
+                årsak: 'HV_OVELSE',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),
@@ -648,7 +640,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.farMedmor,
-                årsak: UtsettelseÅrsakType.Arbeid,
+                årsak: 'ARBEID',
                 tidsperiode: {
                     fom: new Date('2021-04-05'),
                     tom: new Date('2021-06-14'),
@@ -658,7 +650,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
                 type: Periodetype.Utsettelse,
                 id: '2',
                 forelder: Forelder.farMedmor,
-                årsak: UtsettelseÅrsakType.HvØvelse,
+                årsak: 'HV_OVELSE',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
                     tom: new Date('2021-06-28'),

@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
+import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
@@ -27,7 +27,7 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {årsak === UtsettelseÅrsakType.Arbeid && (
+            {årsak === 'ARBEID' && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.bekreft100ProsentIArbeid.label' })}
                     verdi={bekreftErIArbeidSvar}

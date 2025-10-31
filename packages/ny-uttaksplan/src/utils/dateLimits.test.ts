@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { getMaxDate, getMinDate } from './dateLimits';
@@ -68,7 +67,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for ferie - ved fødsel', () => {
-        const årsak = UtsettelseÅrsakType.Ferie;
+        const årsak = 'LOVBESTEMT_FERIE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -80,7 +79,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for ferie - ved adopsjon', () => {
-        const årsak = UtsettelseÅrsakType.Ferie;
+        const årsak = 'LOVBESTEMT_FERIE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = true;
 

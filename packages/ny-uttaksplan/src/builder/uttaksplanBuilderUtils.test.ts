@@ -1,5 +1,5 @@
 import { Forelder } from '@navikt/fp-common';
-import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { OppholdÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -358,7 +358,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             tom: '2021-01-07',
             forelder: Forelder.mor,
             readOnly: false,
-            utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+            utsettelseÅrsak: 'ARBEID',
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {

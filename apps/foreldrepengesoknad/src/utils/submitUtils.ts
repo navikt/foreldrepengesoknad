@@ -5,7 +5,6 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
@@ -68,7 +67,7 @@ export const finnEndringerIUttaksplan = (
                 fom: førsteSlettedePeriode!.tidsperiode.fom,
                 tom: førsteSlettedePeriode!.tidsperiode.tom,
             },
-            årsak: UtsettelseÅrsakType.Fri,
+            årsak: 'FRI',
             forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
             erArbeidstaker: false,
         } as Utsettelsesperiode;

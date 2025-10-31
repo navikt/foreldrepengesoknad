@@ -4,7 +4,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { Barn, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { Barn, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 import { getFamiliehendelseKalendarLabel, getKalenderPeriodenavn } from './uttaksplanKalenderUtils';
@@ -13,7 +13,7 @@ const getCalendarLabel = (
     color: PeriodeColor,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): ReactNode => {
@@ -42,7 +42,7 @@ interface Props {
     uniqueColors: PeriodeColor[];
     barn: Barn;
     navnAnnenPart: string;
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[];
+    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[];
     erFarEllerMedmor: boolean;
 }
 

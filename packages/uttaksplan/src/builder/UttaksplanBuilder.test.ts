@@ -5,7 +5,6 @@ import {
     PeriodeInfoType,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
 
@@ -225,7 +224,7 @@ describe('Uttaksplanbuilder tester', () => {
             },
             forelder: Forelder.mor,
             erArbeidstaker: true,
-            årsak: UtsettelseÅrsakType.Arbeid,
+            årsak: 'ARBEID',
         };
 
         const result = Uttaksplanbuilder(
@@ -250,7 +249,7 @@ describe('Uttaksplanbuilder tester', () => {
             },
             forelder: Forelder.mor,
             erArbeidstaker: true,
-            årsak: UtsettelseÅrsakType.Arbeid,
+            årsak: 'ARBEID',
         };
 
         const result2 = Uttaksplanbuilder(
@@ -315,7 +314,7 @@ describe('Uttaksplanbuilder tester', () => {
                     tom: new Date('2022-09-16'),
                 },
                 forelder: Forelder.mor,
-                årsak: UtsettelseÅrsakType.Arbeid,
+                årsak: 'ARBEID',
             } as Utsettelsesperiode;
             const result = Uttaksplanbuilder(
                 perioderMedAnnenPartsUttakOgUtsettelserISlutten,

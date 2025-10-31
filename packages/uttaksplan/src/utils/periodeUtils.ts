@@ -16,13 +16,12 @@ import {
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isUttakAnnenPart,
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -356,10 +355,10 @@ export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
     return erPeriodeFomEllerEtterDato(periode, dato) === false;
 };
 
-export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
-    årsak === UtsettelseÅrsakType.Sykdom ||
-    årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-    årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelsesÅrsak | OverføringÅrsakType) =>
+    årsak === 'SYKDOM' ||
+    årsak === 'INSTITUSJONSOPPHOLD_BARNET' ||
+    årsak === 'INSTITUSJONSOPPHOLD_SØKER' ||
     årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
     årsak === OverføringÅrsakType.sykdomAnnenForelder;
 

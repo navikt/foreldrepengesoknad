@@ -7,7 +7,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 import { Alert, Button } from '@navikt/ds-react';
 
 import { BarnType, Forelder, PeriodeColor } from '@navikt/fp-constants';
-import { Barn, SaksperiodeNy, UtsettelseÅrsakType, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
     UttaksdagenString,
@@ -60,7 +60,7 @@ const getPerioderForKalendervisning = (
     erFarEllerMedmor: boolean,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[],
     intl: IntlShape,
     erIPlanleggerModus: boolean,
     foreldrepengerHarAktivitetskrav: boolean,
@@ -314,7 +314,7 @@ const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
 const getUnikeUtsettelsesårsaker = (allePerioderInklHull: KalenderPeriode[]) => {
     const utsettelseÅrsaker = allePerioderInklHull
         .map((u) => u.utsettelseÅrsak)
-        .filter((utsettelseÅrsak): utsettelseÅrsak is UtsettelseÅrsakType => !!utsettelseÅrsak);
+        .filter((utsettelseÅrsak): utsettelseÅrsak is UttakUtsettelseÅrsak_fpoversikt => !!utsettelseÅrsak);
     return [...new Set(utsettelseÅrsaker)];
 };
 
