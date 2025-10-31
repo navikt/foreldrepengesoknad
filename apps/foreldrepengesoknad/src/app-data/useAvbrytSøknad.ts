@@ -9,7 +9,6 @@ import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { useContextReset } from './FpDataContext';
 
 export const useAvbrytSøknad = (
-    fødselsnr: string,
     setErEndringssøknad: (erEndringssøknad: boolean) => void,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn?: boolean) => void,
@@ -36,7 +35,7 @@ export const useAvbrytSøknad = (
         slettMellomlagring();
 
         navigate('/');
-    }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
+    }, [slettMellomlagring, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
 
     return avbrytSøknadHandler;
 };

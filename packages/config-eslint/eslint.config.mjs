@@ -4,6 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -30,6 +31,7 @@ export default [
     pluginReact.configs.flat.recommended,
     jsxA11y.flatConfigs.recommended,
     importPlugin.flatConfigs.recommended,
+    reactHooks.configs.flat.recommended,
     eslintConfigPrettier,
     {
         rules: {
@@ -79,6 +81,12 @@ export default [
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
             '@typescript-eslint/ban-ts-comment': ERROR,
+            'import/no-default-export': ERROR,
+            'react-hooks/rules-of-hooks': ERROR,
+            'react-hooks/incompatible-library': OFF,
+            'react-hooks/refs': OFF,
+            'react-hooks/set-state-in-effect': OFF,
+            'react-hooks/exhaustive-deps': OFF,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [
@@ -94,9 +102,10 @@ export default [
         },
     },
     {
-        ignores: ['**/*.stories.tsx', 'eslint.config.mjs'],
+        files: ['**/*.stories.tsx', 'eslint.config.mjs'],
         rules: {
-            'import/no-default-export': ERROR,
+            'import/no-default-export': OFF,
+            'react-hooks/rules-of-hooks': OFF,
         },
     },
 ];
