@@ -369,7 +369,7 @@ export type UttakPeriode_fpoversikt = {
     fom: string;
     forelder?: BrukerRolleSak_fpoversikt;
     gradering?: Gradering_fpoversikt;
-    kontoType: KontoType_fpoversikt; // TODO: stemmer det at denne kan være null?
+    kontoType?: KontoType_fpoversikt;
     morsAktivitet?: MorsAktivitet_fpoversikt;
     oppholdÅrsak?: UttakOppholdÅrsak_fpoversikt;
     overføringÅrsak?: UttakOverføringÅrsak_fpoversikt;
