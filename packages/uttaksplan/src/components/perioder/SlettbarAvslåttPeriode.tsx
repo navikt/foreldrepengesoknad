@@ -47,6 +47,8 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
             {bodyTekst ? <BodyLong>{bodyTekst}</BodyLong> : null}
             <div className={bem.element('wrapper')}>
                 <ActionLink onClick={onSlettPeriode}>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                     <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
                 </ActionLink>
             </div>

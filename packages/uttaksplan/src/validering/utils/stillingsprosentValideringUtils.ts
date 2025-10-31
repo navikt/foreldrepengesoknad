@@ -11,6 +11,8 @@ import { hasValueRule } from './regelUtils';
 import { Validator } from './types/validatorTypes';
 
 const getMessage = (intl: IntlShape, messageKey: string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
     return intl.formatMessage({ id: messageKey });
 };
 
