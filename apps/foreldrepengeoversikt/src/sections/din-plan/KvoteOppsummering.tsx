@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { KvoteOppsummering, Planperiode } from '@navikt/fp-uttaksplan-ny';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
@@ -52,7 +53,7 @@ const KvoterOversiktInner = ({
             familiehendelse={sak.familiehendelse}
             konto={konto}
             rettighetType={sak.rettighetType}
-            forelder={sak.forelder}
+            forelder={notEmpty(sak.forelder, 'forelder må være satt på sak')}
             visStatusIkoner={false}
         />
     );

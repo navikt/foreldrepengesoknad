@@ -1,11 +1,4 @@
-import {
-    Forelder,
-    OppholdÅrsakType,
-    Periode,
-    Periodetype,
-    UttakAnnenPartInfoPeriode,
-    Uttaksperiode,
-} from '@navikt/fp-common';
+import { Forelder, Periode, Periodetype, UttakAnnenPartInfoPeriode, Uttaksperiode } from '@navikt/fp-common';
 
 import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
@@ -146,7 +139,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -245,7 +238,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -334,7 +327,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -373,7 +366,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     ønskerSamtidigUttak: true,
                     samtidigUttakProsent: '100',
                     overskrives: true,
-                    årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                    årsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 },
             ] as Periode[];
 
@@ -421,7 +414,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 overskrives: true,
-                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as Periode[];
 
@@ -458,7 +451,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 overskrives: true,
-                årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as Periode[];
 
@@ -501,7 +494,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     forelder: Forelder.farMedmor,
                     ønskerSamtidigUttak: true,
                     samtidigUttakProsent: '100',
-                    årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                    årsak: 'FEDREKVOTE_ANNEN_FORELDER',
                     overskrives: true,
                 },
             ] as Periode[];

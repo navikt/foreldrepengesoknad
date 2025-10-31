@@ -4,11 +4,11 @@ import { IntlShape } from 'react-intl';
 
 import { Forelder } from '@navikt/fp-constants';
 import {
-    OppholdÅrsakType,
     PeriodeResultatÅrsak,
     SaksperiodeNy,
     Tidsperiode,
     UtsettelseÅrsakType,
+    UttakOppholdÅrsak_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
 import {
@@ -108,7 +108,7 @@ export const isPeriodeUtenUttak = (periode: Planperiode) => {
 
 export const getOppholdskontoNavn = (
     intl: IntlShape,
-    årsak: OppholdÅrsakType,
+    årsak: UttakOppholdÅrsak_fpoversikt,
     foreldernavn: string,
     erMor: boolean,
 ) => {
@@ -116,15 +116,11 @@ export const getOppholdskontoNavn = (
 
     if (erMor) {
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Bør ikkje ha dynamiske testId'ar
             { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
             { foreldernavn: navn },
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore Bør ikkje ha dynamiske testId'ar
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
@@ -325,7 +321,7 @@ export const mapSaksperiodeTilPlanperiode = (
 const getForelderForPeriode = (
     søkerErFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
-    oppholdsårsak: OppholdÅrsakType | undefined,
+    oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,
 ): Forelder => {
     if (oppholdsårsak || gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;

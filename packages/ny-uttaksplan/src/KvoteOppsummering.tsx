@@ -12,9 +12,9 @@ import {
     KontoBeregningDto_fpoversikt,
     KontoDto_fpoversikt,
     KontoTypeUttak_fpoversikt,
-    OppholdÅrsakType,
     RettighetType_fpoversikt,
     SaksperiodeNy,
+    UttakOppholdÅrsak_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
@@ -844,15 +844,17 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (
+    årsak: UttakOppholdÅrsak_fpoversikt,
+): KontoTypeUttak_fpoversikt | undefined => {
     switch (årsak) {
-        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+        case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';
-        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+        case 'FELLESPERIODE_ANNEN_FORELDER':
             return 'FELLESPERIODE';
-        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+        case 'MØDREKVOTE_ANNEN_FORELDER':
             return 'MØDREKVOTE';
-        case OppholdÅrsakType.UttakForeldrepengerAnnenForelder:
+        case 'FORELDREPENGER_ANNEN_FORELDER':
             return 'FORELDREPENGER';
         default:
             return undefined;

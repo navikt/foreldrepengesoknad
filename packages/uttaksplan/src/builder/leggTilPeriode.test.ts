@@ -1,7 +1,6 @@
 import {
     Forelder,
     MorsAktivitet,
-    OppholdÅrsakType,
     Periode,
     PeriodeInfoType,
     Periodetype,
@@ -158,7 +157,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'FEDREKVOTE_ANNEN_FORELDER',
     },
     {
         id: '4',
@@ -197,7 +196,7 @@ const perioderKunAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+        årsak: 'MØDREKVOTE_ANNEN_FORELDER',
     },
 ];
 

@@ -1,12 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-common';
 import {
     KontoBeregningDto_fpoversikt,
     MorsAktivitet,
     NavnPåForeldre,
-    OppholdÅrsakType,
     PeriodeResultatÅrsak,
     UtsettelseÅrsakType,
     UttakArbeidType,
@@ -62,7 +61,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -129,7 +128,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 readOnly: true,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -173,7 +172,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-31',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -182,7 +181,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-29',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
@@ -197,7 +196,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -248,12 +247,12 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-31',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -297,7 +296,7 @@ export const BeggeRettMorLedigeDager: Story = {
                 readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -306,7 +305,7 @@ export const BeggeRettMorLedigeDager: Story = {
                 readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -320,7 +319,7 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -365,7 +364,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -374,7 +373,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
@@ -388,7 +387,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -442,7 +441,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 forelder: Forelder.farMedmor,
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: Forelder.farMedmor,
     },
 };
@@ -475,7 +474,7 @@ export const EnRettFarLedigeDager: Story = {
                 forelder: Forelder.farMedmor,
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: Forelder.farMedmor,
     },
 };
@@ -527,7 +526,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -558,7 +557,7 @@ export const EnRettMorLedigeDager: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: Forelder.mor,
     },
 };
@@ -589,7 +588,7 @@ export const AleneomsorgMorLedigeDager: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: Forelder.mor,
     },
 };
@@ -635,7 +634,7 @@ export const AleneomsorgFarLedigeDager: Story = {
                 forelder: Forelder.farMedmor,
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: Forelder.farMedmor,
     },
 };
@@ -681,7 +680,7 @@ export const AleneomsorgFarForMangeDager: Story = {
                 forelder: Forelder.farMedmor,
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: Forelder.farMedmor,
     },
 };
@@ -764,7 +763,7 @@ export const MorHarPrematuruker: Story = {
                 forelder: Forelder.mor,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: Forelder.mor,
     },
 };

@@ -1,5 +1,5 @@
 import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
-import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -81,7 +81,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         tom: '2024-06-28',
         forelder: Forelder.farMedmor,
         readOnly: true,
-        oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
     },
 ];
 
@@ -91,7 +91,7 @@ const perioderKunAnnenPartsUttak: Planperiode[] = [
         fom: '2022-10-04',
         tom: '2022-12-12',
         forelder: Forelder.mor,
-        oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+        oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
         readOnly: true,
     },
 ];
