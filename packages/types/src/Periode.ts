@@ -2,7 +2,6 @@ import {
     Arbeidsform,
     Forelder,
     MorsAktivitet,
-    OppholdÅrsakType,
     OpprinneligSøkt,
     OverføringÅrsakType,
     PeriodeHullÅrsak,
@@ -13,7 +12,7 @@ import {
 
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
-import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
+import { KontoTypeUttak_fpoversikt, UttakOppholdÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
 
 interface PeriodeBase {
     id: string;
@@ -58,7 +57,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    årsak: OppholdÅrsakType;
+    årsak: UttakOppholdÅrsak_fpoversikt;
     forelder: Forelder;
 }
 
@@ -97,7 +96,7 @@ interface AvslåttPeriode extends InfoPeriodeBase {
 interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
-    årsak: OppholdÅrsakType;
+    årsak: UttakOppholdÅrsak_fpoversikt;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;

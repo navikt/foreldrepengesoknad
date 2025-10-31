@@ -8,7 +8,6 @@ export { PeriodeInfoType } from './src/periodeInfoType';
 export { UtsettelseÅrsakType } from './src/utsettelseÅrsakType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
 export { OverføringÅrsakType } from './src/overføringÅrsakType';
-export { OppholdÅrsakType } from './src/oppholdÅrsakType';
 export { MorsAktivitet } from './src/morsAktivitet';
 export { Periodetype } from './src/periodetype';
 export { BarnType } from './src/barnType';

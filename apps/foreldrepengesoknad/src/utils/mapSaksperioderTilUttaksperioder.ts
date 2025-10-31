@@ -170,9 +170,8 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): UttakOpphold
         case 'FORELDREPENGER':
             return 'FORELDREPENGER_ANNEN_FORELDER';
         case 'FORELDREPENGER_FØR_FØDSEL':
-            // @ts-expect-error -- hva med denne??
-            return 'UTTAK_FORELDREPENGER_FØR_FØDSEL_ANNEN_FORELDER';
-        default:
+            return 'MØDREKVOTE_ANNEN_FORELDER'; // TODO
+        case undefined:
             return undefined;
     }
 };

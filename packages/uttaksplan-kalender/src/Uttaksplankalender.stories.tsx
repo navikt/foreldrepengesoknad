@@ -4,7 +4,6 @@ import {
     Arbeidsform,
     BarnType,
     Forelder,
-    OppholdÅrsakType,
     PeriodeInfoType,
     Periodetype,
     UtsettelseÅrsakType,
@@ -45,7 +44,6 @@ const uttaksplanMor = [
     {
         type: Periodetype.Hull,
         id: '3',
-        forelder: Forelder.mor,
         tidsperiode: {
             fom: new Date('2024-04-19'),
             tom: new Date('2024-05-16'),
@@ -55,7 +53,8 @@ const uttaksplanMor = [
         type: Periodetype.Info,
         infotype: PeriodeInfoType.avslåttPeriode,
         id: '4',
-        årsak: UtsettelseÅrsakType.HvØvelse,
+        kanSlettes: false,
+        kontoType: 'MØDREKVOTE',
         tidsperiode: {
             fom: new Date('2024-05-17'),
             tom: new Date('2024-05-23'),
@@ -119,7 +118,7 @@ const uttaksplanMor = [
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
         id: '9',
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'FEDREKVOTE_ANNEN_FORELDER',
         tidsperiode: {
             fom: new Date('2024-06-28'),
             tom: new Date('2024-07-02'),
@@ -134,7 +133,7 @@ const uttaksplanMor = [
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
         id: '10',
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'FEDREKVOTE_ANNEN_FORELDER',
         tidsperiode: {
             fom: new Date('2024-07-03'),
             tom: new Date('2024-07-15'),
@@ -145,11 +144,11 @@ const uttaksplanMor = [
         ønskerSamtidigUttak: false,
         visPeriodeIPlan: true,
     },
-];
+] satisfies Periode[];
 
 export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
     args: {
-        uttaksplan: uttaksplanMor as Periode[],
+        uttaksplan: uttaksplanMor,
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -314,7 +313,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '1',
-                årsak: OppholdÅrsakType.ForeldrepengerFørFødsel,
+                årsak: 'MØDREKVOTE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-03-15'),
                     tom: new Date('2024-04-03'),
@@ -329,7 +328,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '2',
-                årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                årsak: 'MØDREKVOTE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-04-04'),
                     tom: new Date('2024-04-18'),
@@ -359,7 +358,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '4',
-                årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                årsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-04-19'),
                     tom: new Date('2024-05-16'),
@@ -387,7 +386,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '6',
-                årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                årsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-05-24'),
                     tom: new Date('2024-05-30'),
