@@ -287,12 +287,7 @@ export const ForeldrepengesøknadRoutes = ({
         søknadGjelderNyttBarn,
     );
 
-    const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.person.fnr,
-        setErEndringssøknad,
-        setHarGodkjentVilkår,
-        setSøknadGjelderNyttBarn,
-    );
+    const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 

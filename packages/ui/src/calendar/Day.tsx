@@ -83,6 +83,7 @@ export const Day = ({ day, periodeColor, dayType, isSelected, dateTooltipCallbac
         >
             {day}
             {dateTooltipCallback && isDaysWithPeriode(periodeColor) && (
+                /* eslint-disable-next-line react-hooks/refs*/
                 <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                     <Popover.Content>{dateTooltipCallback()}</Popover.Content>
                 </Popover>
