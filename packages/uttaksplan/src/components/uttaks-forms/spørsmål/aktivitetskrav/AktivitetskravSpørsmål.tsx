@@ -16,26 +16,25 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
+const MorsAktivitetConst = [
+    'ARBEID',
+    'UTDANNING',
+    'KVALPROG',
+    'INTROPROG',
+    'TRENGER_HJELP',
+    'INNLAGT',
+    'ARBEID_OG_UTDANNING',
+    'UFØRE',
+    'IKKE_OPPGITT',
+] satisfies MorsAktivitet[];
 const renderOptions = (intl: IntlShape) => {
-    return [
-        'ARBEID',
-        'UTDANNING',
-        'KVALPROG',
-        'INTROPROG',
-        'TRENGER_HJELP',
-        'INNLAGT',
-        'ARBEID_OG_UTDANNING',
-        'UFØRE',
-        'IKKE_OPPGITT',
-    ]
-        .filter((aktivitet) => aktivitet !== 'UFØRE' && aktivitet !== 'IKKE_OPPGITT')
-        .map((aktivitet) => (
+    return MorsAktivitetConst.filter((aktivitet) => aktivitet !== 'UFØRE' && aktivitet !== 'IKKE_OPPGITT').map(
+        (aktivitet) => (
             <option value={aktivitet} key={aktivitet}>
-                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
-                {intl.formatMessage({ id: `uttaksplan.morsAktivitet.${aktivitetsid}` })}
+                {intl.formatMessage({ id: `uttaksplan.morsAktivitet.${aktivitet}` })}
             </option>
-        ));
+        ),
+    );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
