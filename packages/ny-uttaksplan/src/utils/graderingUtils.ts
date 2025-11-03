@@ -27,6 +27,7 @@ export const getGradering = (
     if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return undefined;
     }
+
     if (skalDuJobbe) {
         return {
             aktivitet: {
