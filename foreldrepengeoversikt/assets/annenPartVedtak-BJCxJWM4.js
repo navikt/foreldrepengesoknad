@@ -1,0 +1,1 @@
+import{F as e}from"./iframe-DeMdVyFz.js";const t={perioder:[{fom:"2023-03-12",tom:"2023-03-26",kontoType:"FEDREKVOTE",samtidigUttak:100,resultat:{innvilget:!0,trekkerMinsterett:!1,trekkerDager:!0,årsak:"ANNET"},forelder:e.farMedmor}],termindato:"2022-08-17",dekningsgrad:"HUNDRE",antallBarn:1};export{t as a};
