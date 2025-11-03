@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt, NavnPåForeldre, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, NavnPåForeldre, UttakArbeidType } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -74,7 +74,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -89,7 +89,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -104,7 +104,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -734,7 +734,7 @@ export const MorHarPrematuruker: Story = {
                     innvilget: false,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
                 },
                 utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
@@ -750,7 +750,7 @@ export const MorHarPrematuruker: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,

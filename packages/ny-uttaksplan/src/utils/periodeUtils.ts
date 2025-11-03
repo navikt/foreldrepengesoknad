@@ -4,7 +4,6 @@ import { IntlShape } from 'react-intl';
 
 import { Forelder } from '@navikt/fp-constants';
 import {
-    PeriodeResultatÅrsak,
     SaksperiodeNy,
     Tidsperiode,
     UttakOppholdÅrsak_fpoversikt,
@@ -46,9 +45,7 @@ export const isUttaksperiode = (periode: Planperiode | SaksperiodeNy) => {
 };
 
 export const isPrematuruker = (periode: Planperiode | SaksperiodeNy) => {
-    return (
-        periode.kontoType !== undefined && periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER
-    );
+    return periode.kontoType !== undefined && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
 export const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
@@ -64,10 +61,7 @@ export const isForeldrepengerFørFødselPeriode = (periode: Planperiode) => {
 };
 
 export const isUtsettelsesperiode = (periode: Planperiode) => {
-    return (
-        periode.utsettelseÅrsak !== undefined &&
-        periode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER
-    );
+    return periode.utsettelseÅrsak !== undefined && periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
 export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
@@ -273,7 +267,7 @@ export const mapSaksperiodeTilPlanperiode = (
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => {
         if (p.resultat) {
-            if (p.resultat.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER) {
+            if (p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
                 return true;
             }
 

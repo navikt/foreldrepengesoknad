@@ -1,8 +1,8 @@
-import { PeriodeResultatÅrsak } from './PeriodeResultatÅrsak';
+import { UttakPeriodeResultatÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
 
 export interface PeriodeResultat {
     innvilget: boolean;
     trekkerMinsterett: boolean;
     trekkerDager: boolean;
-    årsak: PeriodeResultatÅrsak;
+    årsak: UttakPeriodeResultatÅrsak_fpoversikt;
 }

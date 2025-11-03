@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
 import { Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
+import { UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -261,7 +261,7 @@ export const MorOgFarOgFarGraderer: Story = {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: false,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 gradering: {
                     arbeidstidprosent: 50,
@@ -281,7 +281,7 @@ export const MorOgFarOgFarGraderer: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 gradering: {
                     arbeidstidprosent: 50,
@@ -301,7 +301,7 @@ export const MorOgFarOgFarGraderer: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 gradering: {
                     arbeidstidprosent: 50,
