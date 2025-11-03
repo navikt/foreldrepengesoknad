@@ -1,4 +1,4 @@
-import { MorsAktivitet } from '@navikt/fp-common';
+import { MorsAktivitet } from '@navikt/fp-types';
 
 import { hasValue } from './validationUtil';
 
@@ -10,7 +10,7 @@ export const getMorsAktivitet = (
         return aktivitetskravMorValue as MorsAktivitet;
     }
     if (erMorForSykValue) {
-        return MorsAktivitet.TrengerHjelp;
+        return 'TRENGER_HJELP';
     }
     return undefined;
 };

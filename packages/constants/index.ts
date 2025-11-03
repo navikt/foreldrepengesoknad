@@ -6,7 +6,6 @@ export { PeriodeColor } from './src/colors';
 export { Forelder } from './src/forelder';
 export { PeriodeInfoType } from './src/periodeInfoType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
-export { MorsAktivitet } from './src/morsAktivitet';
 export { Periodetype } from './src/periodetype';
 export { BarnType } from './src/barnType';
 export { MinsterettType } from './src/minsterettType';

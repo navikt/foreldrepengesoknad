@@ -4,7 +4,6 @@ import {
     Dekningsgrad,
     FamiliehendelseType,
     Forelder,
-    MorsAktivitet,
     PeriodeInfoType,
     PeriodeResultatÅrsak,
     Periodetype,
@@ -160,7 +159,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     },
                     gjelderAnnenPart: false,
                     kontoType: 'FELLESPERIODE',
-                    morsAktivitet: MorsAktivitet.Innlagt,
+                    morsAktivitet: 'INNLAGT',
                     guid: '3',
                 },
             ] as Saksperiode[];
@@ -209,7 +208,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttakFellesperiode.gradert).toEqual(false);
             expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
             expect(uttakFellesperiode.harIkkeAktivitetskrav).toEqual(undefined);
-            expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual(MorsAktivitet.Innlagt);
+            expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual('INNLAGT');
         },
     );
     it(
@@ -380,7 +379,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: false,
                 utsettelseÅrsak: 'ARBEID',
-                morsAktivitet: MorsAktivitet.Arbeid,
+                morsAktivitet: 'ARBEID',
                 guid: '1',
                 resultat: {
                     innvilget: true,
@@ -404,7 +403,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(utsettelse2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
         expect(utsettelse2.tidsperiode.tom).toEqual(new Date('2022-01-12'));
         expect(utsettelse2.type).toEqual(Periodetype.Utsettelse);
-        expect(utsettelse2.morsAktivitetIPerioden).toEqual(MorsAktivitet.Arbeid);
+        expect(utsettelse2.morsAktivitetIPerioden).toEqual('ARBEID');
         expect(utsettelse2.årsak).toEqual('ARBEID');
         expect(utsettelse2.forelder).toEqual(Forelder.farMedmor);
         expect(utsettelse2.erArbeidstaker).toEqual(false);

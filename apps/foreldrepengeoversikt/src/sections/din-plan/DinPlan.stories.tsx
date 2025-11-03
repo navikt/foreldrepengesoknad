@@ -3,7 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -269,7 +269,7 @@ export const MorOgFarOgFarGraderer: Story = {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
                     },
                 },
-                morsAktivitet: MorsAktivitet.Arbeid,
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },
@@ -289,7 +289,7 @@ export const MorOgFarOgFarGraderer: Story = {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
                     },
                 },
-                morsAktivitet: MorsAktivitet.Arbeid,
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },

@@ -1,5 +1,5 @@
-import { Arbeidsform, Forelder, MorsAktivitet, UttakRundtFødselÅrsak } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
+import { Arbeidsform, Forelder, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt, MorsAktivitet, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 
 import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 

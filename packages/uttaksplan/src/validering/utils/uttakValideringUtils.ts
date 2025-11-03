@@ -1,7 +1,6 @@
 import {
     AnnenForelder,
     Forelder,
-    MorsAktivitet,
     Periode,
     Periodetype,
     Situasjon,
@@ -156,8 +155,8 @@ const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: 
 
         if (periode.konto === 'FELLESPERIODE' || periode.konto === 'FORELDREPENGER') {
             return (
-                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.morsAktivitetIPerioden === 'INNLAGT' ||
+                periode.morsAktivitetIPerioden === 'TRENGER_HJELP' ||
                 periode.erMorForSyk === true
             );
         }

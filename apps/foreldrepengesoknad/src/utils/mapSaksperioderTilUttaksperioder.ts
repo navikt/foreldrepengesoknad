@@ -5,7 +5,6 @@ import {
     FamiliehendelseType,
     Forelder,
     InfoPeriode,
-    MorsAktivitet,
     OpprinneligSøkt,
     Overføringsperiode,
     Periode,
@@ -232,7 +231,7 @@ const getErMorForSyk = (
         dayjs(saksperiode.periode.fom).isBefore(dayjs(familiehendelsesdato).add(6, 'weeks'), 'day') &&
         konto !== 'AKTIVITETSFRI_KVOTE'
     ) {
-        if (saksperiode.morsAktivitet !== MorsAktivitet.Uføre) {
+        if (saksperiode.morsAktivitet !== 'UFØRE') {
             return true;
         }
     }

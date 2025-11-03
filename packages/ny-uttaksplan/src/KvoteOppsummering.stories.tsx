@@ -2,13 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
-import {
-    KontoBeregningDto_fpoversikt,
-    MorsAktivitet,
-    NavnPåForeldre,
-    PeriodeResultatÅrsak,
-    UttakArbeidType,
-} from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, NavnPåForeldre, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -425,7 +419,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 fom: '2024-12-06',
                 tom: '2025-02-13',
                 kontoType: 'FORELDREPENGER',
-                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                morsAktivitet: 'IKKE_OPPGITT',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },
@@ -435,7 +429,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 fom: '2025-02-14',
                 tom: '2025-09-11',
                 kontoType: 'FORELDREPENGER',
-                morsAktivitet: MorsAktivitet.Arbeid,
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },
@@ -458,7 +452,7 @@ export const EnRettFarLedigeDager: Story = {
                 fom: '2024-12-06',
                 tom: '2025-02-06',
                 kontoType: 'FORELDREPENGER',
-                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                morsAktivitet: 'IKKE_OPPGITT',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },
@@ -468,7 +462,7 @@ export const EnRettFarLedigeDager: Story = {
                 fom: '2025-02-14',
                 tom: '2025-09-04',
                 kontoType: 'FORELDREPENGER',
-                morsAktivitet: MorsAktivitet.Arbeid,
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
                 forelder: Forelder.farMedmor,
             },

@@ -1,6 +1,7 @@
 import {
     Attachment,
     KontoTypeUttak_fpoversikt,
+    MorsAktivitet,
     Oppholdsårsak,
     UtsettelsesÅrsak,
     UttakOverføringÅrsak_fpoversikt,
@@ -8,7 +9,6 @@ import {
 
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
-import { MorsAktivitet } from './MorsAktivitet';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
 import { TidsperiodeDate } from './TidsperiodeDate';
@@ -230,70 +230,52 @@ export const isUtsettelseBarnInnlagt = (periode: Periode) => {
 };
 
 export const isMorStuderer = (periode: Periode) => {
-    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning;
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === 'UTDANNING';
 };
 
 export const isPeriodeUtenUttakMorStuderer = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Utdanning
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'UTDANNING';
 };
 
 export const isMorJobber = (periode: Periode) => {
-    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid;
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === 'ARBEID';
 };
 
 export const isPeriodeUtenUttakMorJobber = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Arbeid
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'ARBEID';
 };
 
 export const isMorJobberOgStuderer = (periode: Periode) => {
-    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning;
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === 'ARBEID_OG_UTDANNING';
 };
 
 export const isPeriodeUtenUttakMorJobberOgStuderer = (periode: Periode) => {
     return (
         isUtsettelsesperiode(periode) &&
         periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning
+        periode.morsAktivitetIPerioden === 'ARBEID_OG_UTDANNING'
     );
 };
 
 export const isMorIntroprogram = (periode: Periode) => {
-    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet;
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === 'INTROPROG';
 };
 
 export const isPeriodeUtenUttakMorIntroprogram = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'INTROPROG';
 };
 
 export const isMorKvalprogram = (periode: Periode) => {
-    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet;
+    return isUttaksperiode(periode) && periode.morsAktivitetIPerioden === 'KVALPROG';
 };
 
 export const isPeriodeUtenUttakMorKvalprogram = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'KVALPROG';
 };
 
 export const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: Periode) => {
     return (
-        isUttaksperiode(periode) &&
-        periode.konto === 'FORELDREPENGER' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
+        isUttaksperiode(periode) && periode.konto === 'FORELDREPENGER' && periode.morsAktivitetIPerioden === 'INNLAGT'
     );
 };
 
@@ -301,15 +283,13 @@ export const isForeldrepengerMedAktivitetskravMorForSyk = (periode: Periode) => 
     return (
         isUttaksperiode(periode) &&
         periode.konto === 'FORELDREPENGER' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+        periode.morsAktivitetIPerioden === 'TRENGER_HJELP'
     );
 };
 
 export const isPeriodeUtenUttakMorForSyk = (periode: Periode) => {
     return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+        isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'TRENGER_HJELP'
     );
 };
 
@@ -318,19 +298,15 @@ export const isUtsettelseMorInnlagt = (periode: Periode) => {
 };
 
 export const isPeriodeUtenUttakMorInnlagt = (periode: Periode) => {
-    return (
-        isUtsettelsesperiode(periode) &&
-        periode.årsak === 'FRI' &&
-        periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
-    );
+    return isUtsettelsesperiode(periode) && periode.årsak === 'FRI' && periode.morsAktivitetIPerioden === 'INNLAGT';
 };
 
 export const isFellesperiodeMorInnlagt = (periode: Periode) => {
-    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt;
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === 'INNLAGT';
 };
 
 export const isFellesperiodeMorForSyk = (periode: Periode) => {
-    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp;
+    return isUttakAvFellesperiode(periode) && periode.morsAktivitetIPerioden === 'TRENGER_HJELP';
 };
 
 export const isUtsettelseMorForSyk = (periode: Periode) => {
