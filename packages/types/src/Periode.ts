@@ -3,7 +3,6 @@ import {
     Forelder,
     MorsAktivitet,
     OpprinneligSøkt,
-    OverføringÅrsakType,
     PeriodeHullÅrsak,
     PeriodeInfoType,
     Periodetype,
@@ -11,7 +10,7 @@ import {
 
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
-import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
+import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
 import { Oppholdsårsak, UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
 
 interface PeriodeBase {
@@ -65,7 +64,7 @@ export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
     konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
-    årsak: OverføringÅrsakType;
+    årsak: UttakOverføringÅrsak_fpoversikt;
 }
 
 interface PeriodeHull extends PeriodeBase {

@@ -1,5 +1,5 @@
-import { Arbeidsform, Forelder, MorsAktivitet, OverføringÅrsakType, UttakRundtFødselÅrsak } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { Arbeidsform, Forelder, MorsAktivitet, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 
 import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 
@@ -26,7 +26,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.konto]: KontoTypeUttak_fpoversikt | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
-    [PeriodeUttakFormField.overføringsårsak]: OverføringÅrsakType | '';
+    [PeriodeUttakFormField.overføringsårsak]: UttakOverføringÅrsak_fpoversikt | '';
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]: string;
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';

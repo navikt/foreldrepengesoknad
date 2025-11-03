@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
 import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
-import { OverføringÅrsakType, PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
+import { PeriodeResultatÅrsak, UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -92,7 +92,7 @@ export const FarSøker: Story = {
                                             tom: '2025-02-04',
                                             forelder: Forelder.farMedmor,
                                             kontoType: 'MØDREKVOTE',
-                                            overføringÅrsak: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
+                                            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
                                         },
                                     ],
                                 },

@@ -5,7 +5,7 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { OverføringÅrsakType } from '@navikt/fp-types';
+import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
@@ -77,31 +77,31 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
 const getOverføringsTekst = (
     stønadskontoNavn: string,
     navnPåAnnenForelder: string,
-    overføringsÅrsak: OverføringÅrsakType | undefined,
+    overføringsÅrsak: UttakOverføringÅrsak_fpoversikt | undefined,
 ) => {
     switch (overføringsÅrsak) {
-        case OverføringÅrsakType.sykdomAnnenForelder:
+        case 'SYKDOM_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.sykdomAnnenForelder"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.aleneomsorg:
+        case 'ALENEOMSORG':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.aleneomsorg"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.ikkeRettAnnenForelder:
+        case 'IKKE_RETT_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.institusjonsoppholdAnnenForelder:
+        case 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder"

@@ -2,7 +2,6 @@ import {
     AnnenForelder,
     Forelder,
     MorsAktivitet,
-    OverføringÅrsakType,
     Periode,
     Periodetype,
     Situasjon,
@@ -218,11 +217,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeOverføringer = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getOverføringer()
-        .filter(
-            (p) =>
-                p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
-                p.årsak !== OverføringÅrsakType.sykdomAnnenForelder,
-        );
+        .filter((p) => p.årsak !== 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && p.årsak !== 'SYKDOM_ANNEN_FORELDER');
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUtsettelser()

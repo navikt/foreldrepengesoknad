@@ -1,9 +1,14 @@
-import { Attachment, KontoTypeUttak_fpoversikt, Oppholdsårsak, UtsettelsesÅrsak } from '@navikt/fp-types';
+import {
+    Attachment,
+    KontoTypeUttak_fpoversikt,
+    Oppholdsårsak,
+    UtsettelsesÅrsak,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
-import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
 import { TidsperiodeDate } from './TidsperiodeDate';
@@ -71,7 +76,7 @@ export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
     konto: KontoTypeUttak_fpoversikt;
     forelder: Forelder;
-    årsak: OverføringÅrsakType;
+    årsak: UttakOverføringÅrsak_fpoversikt;
 }
 
 export interface PeriodeHull extends PeriodeBase {
@@ -193,7 +198,7 @@ export const isUttakAvFedrekvoteMorForSyk = (periode: Periode): periode is Uttak
 export const isOverføringMorInnlagt = (periode: Periode) => {
     return (
         isOverføringsperiode(periode) &&
-        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
         periode.forelder === Forelder.farMedmor
     );
 };
@@ -202,23 +207,21 @@ export const isOverføringMorForSyk = (periode: Periode) => {
     return (
         isOverføringsperiode(periode) &&
         periode.forelder === Forelder.farMedmor &&
-        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+        periode.årsak === 'SYKDOM_ANNEN_FORELDER'
     );
 };
 
 export const isOverføringFarInnlagt = (periode: Periode) => {
     return (
         isOverføringsperiode(periode) &&
-        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
+        periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
         periode.forelder === Forelder.mor
     );
 };
 
 export const isOverføringFarForSyk = (periode: Periode) => {
     return (
-        isOverføringsperiode(periode) &&
-        periode.forelder === Forelder.mor &&
-        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+        isOverføringsperiode(periode) && periode.forelder === Forelder.mor && periode.årsak === 'SYKDOM_ANNEN_FORELDER'
     );
 };
 
