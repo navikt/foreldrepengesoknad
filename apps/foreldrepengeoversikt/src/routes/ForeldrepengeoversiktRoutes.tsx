@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -68,25 +68,18 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
  */
 function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
     const navigate = useNavigate();
+    const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
 
     const alleSaker = getAlleYtelser(saker);
     const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0].saksnummer : undefined;
 
-    const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
-    const [tillatRedirect, setTillatRedirect] = useState(true);
-
-    const landetPåHovedsideOgHarIkkeRedirected = viErPåLandingSiden && tillatRedirect;
-
     // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
-    useEffect(() => {
-        setTillatRedirect(false);
-    }, []);
+    const harRedirectet = useRef(false);
 
-    useEffect(() => {
-        if (landetPåHovedsideOgHarIkkeRedirected && harKunDetteSaksnummeret) {
-            navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
-        }
-    }, [landetPåHovedsideOgHarIkkeRedirected, navigate, harKunDetteSaksnummeret]);
+    if (viErPåLandingSiden && !harRedirectet.current && harKunDetteSaksnummeret) {
+        harRedirectet.current = true;
+        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
+    }
 
     return <Outlet />;
 }

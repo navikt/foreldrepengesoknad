@@ -37,6 +37,7 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, skjer kun ved ekstern endring
             setErVelkommen(true);
             navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }

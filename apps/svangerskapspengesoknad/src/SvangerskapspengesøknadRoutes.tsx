@@ -210,6 +210,7 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, kun kjørt ved endringa av ekstern data
             setHarGodkjentVilkår(true);
             navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }

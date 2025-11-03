@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { UseFormWatch } from 'react-hook-form';
+import { IntlShape } from 'react-intl';
 
 import { Forelder } from '@navikt/fp-constants';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
@@ -13,10 +13,13 @@ import {
     isWeekday,
 } from '@navikt/fp-validation';
 
+import { EndrePeriodePanelStepFormValues } from '../components/endre-periode-panel/steps/EndrePeriodePanelStep';
 import { LeggTilPeriodePanelFormValues } from '../components/legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface FomValidatorProps {
+    intl: IntlShape;
+    watch: UseFormWatch<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>;
     familiehendelsedato: string;
     erBarnetFødt: boolean;
     minDate: string;
@@ -26,6 +29,8 @@ interface FomValidatorProps {
 }
 
 export const getFomValidators = ({
+    intl,
+    watch,
     familiehendelsedato,
     erBarnetFødt,
     minDate,
@@ -33,9 +38,6 @@ export const getFomValidators = ({
     årsak,
     gjelderAdopsjon,
 }: FomValidatorProps) => {
-    const intl = useIntl();
-    const { watch } = useFormContext<LeggTilPeriodePanelFormValues>();
-
     const tomValue = watch('tom');
     const skalDuJobbe = watch('skalDuJobbe');
     const samtidigUttak = watch('samtidigUttak');
@@ -198,6 +200,8 @@ export const getFomValidators = ({
 };
 
 interface TomValidatorProps {
+    intl: IntlShape;
+    watch: UseFormWatch<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>;
     familiehendelsedato: string;
     erBarnetFødt: boolean;
     minDate: string;
@@ -207,6 +211,8 @@ interface TomValidatorProps {
 }
 
 export const getTomValidators = ({
+    intl,
+    watch,
     familiehendelsedato,
     erBarnetFødt,
     minDate,
@@ -214,9 +220,6 @@ export const getTomValidators = ({
     årsak,
     gjelderAdopsjon,
 }: TomValidatorProps) => {
-    const { watch } = useFormContext<LeggTilPeriodePanelFormValues>();
-    const intl = useIntl();
-
     const fomValue = watch('fom');
     const skalDuJobbe = watch('skalDuJobbe');
     const samtidigUttak = watch('samtidigUttak');

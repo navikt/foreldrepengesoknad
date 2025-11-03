@@ -76,6 +76,8 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     disableWeekends={true}
                     validate={getFomValidators({
+                        intl,
+                        watch,
                         familiehendelsedato,
                         erBarnetFødt,
                         minDate,
@@ -88,6 +90,8 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
                     name="tom"
                     control={control}
                     validate={getTomValidators({
+                        intl,
+                        watch,
                         familiehendelsedato,
                         erBarnetFødt,
                         minDate,

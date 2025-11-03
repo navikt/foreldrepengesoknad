@@ -287,12 +287,7 @@ export const ForeldrepengesøknadRoutes = ({
         søknadGjelderNyttBarn,
     );
 
-    const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.person.fnr,
-        setErEndringssøknad,
-        setHarGodkjentVilkår,
-        setSøknadGjelderNyttBarn,
-    );
+    const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
@@ -308,6 +303,7 @@ export const ForeldrepengesøknadRoutes = ({
             lagretHarGodkjentVilkår &&
             isFirstTimeLoadingApp
         ) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);

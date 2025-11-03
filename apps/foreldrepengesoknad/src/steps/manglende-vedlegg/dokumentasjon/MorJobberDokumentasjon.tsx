@@ -45,37 +45,41 @@ export const MorJobberDokumentasjon = ({
     erFarEllerMedmor,
     termindato,
 }: Props) => {
-    if (perioder.length === 0) {
-        return null;
-    }
     const intl = useIntl();
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
     const annenPartFødselsnummer = isAnnenForelderOppgittNorsk(annenForelder) ? annenForelder.fnr : undefined;
     const updateDokArbeidMorAttachment = updateAttachments(Skjemanummer.DOK_ARBEID_MOR);
 
+    const bareFarHarRett =
+        isAnnenForelderOppgittNorsk(annenForelder) &&
+        erFarEllerMedmor &&
+        annenForelder.harRettPåForeldrepengerINorge === false;
+
+    const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(
+        perioder,
+        barn,
+        bareFarHarRett,
+        annenPartFødselsnummer || '',
+    );
+
+    const trengerDokumentereMorsArbeidQuery = useQuery({
+        ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
+        enabled:
+            !!annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder) && !!dokumentereMorsArbeidParams,
+    });
+
+    if (perioder.length === 0) {
+        return null;
+    }
+
     if (annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder)) {
-        const bareFarHarRett =
-            isAnnenForelderOppgittNorsk(annenForelder) &&
-            erFarEllerMedmor &&
-            annenForelder.harRettPåForeldrepengerINorge === false;
-
-        const dokumentereMorsArbeidParams = getDokumentereMorsArbeidParams(
-            perioder,
-            barn,
-            bareFarHarRett,
-            annenPartFødselsnummer,
-        );
-
-        const trengerDokumentereMorsArbeidQuery = useQuery({
-            ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
-            enabled: !!dokumentereMorsArbeidParams,
-        });
-
         if (trengerDokumentereMorsArbeidQuery.isPending) {
             return <Loader className="self-center" size="large" />;
         }
+
         const trengerDokumentereMorsArbeid = trengerDokumentereMorsArbeidQuery.data ?? true;
 
         if (!trengerDokumentereMorsArbeid) {
