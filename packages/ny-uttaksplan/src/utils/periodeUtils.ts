@@ -4,10 +4,10 @@ import { IntlShape } from 'react-intl';
 
 import { Forelder } from '@navikt/fp-constants';
 import {
-    OppholdÅrsakType,
     PeriodeResultatÅrsak,
     SaksperiodeNy,
     Tidsperiode,
+    UttakOppholdÅrsak_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
@@ -108,7 +108,7 @@ export const isPeriodeUtenUttak = (periode: Planperiode) => {
 
 export const getOppholdskontoNavn = (
     intl: IntlShape,
-    årsak: OppholdÅrsakType,
+    årsak: UttakOppholdÅrsak_fpoversikt,
     foreldernavn: string,
     erMor: boolean,
 ) => {
@@ -325,7 +325,7 @@ export const mapSaksperiodeTilPlanperiode = (
 const getForelderForPeriode = (
     søkerErFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
-    oppholdsårsak: OppholdÅrsakType | undefined,
+    oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,
 ): Forelder => {
     if (oppholdsårsak || gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;

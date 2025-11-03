@@ -1,5 +1,4 @@
 import { Forelder } from '@navikt/fp-constants';
-import { OppholdÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -20,7 +19,7 @@ const uttakBase: Planperiode = {
 
 const oppholdsBase: Planperiode = {
     id: '2',
-    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+    oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
     forelder: Forelder.farMedmor,

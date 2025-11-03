@@ -77,11 +77,11 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO)
 const mapOppholdÅrsakType = (årsak: OppholdÅrsakTypeDTO | undefined): OppholdÅrsakType | undefined => {
     switch (årsak) {
         case OppholdÅrsakTypeDTO.UttakFedrekvoteAnnenForelder:
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'FEDREKVOTE_ANNEN_FORELDER';
         case OppholdÅrsakTypeDTO.UttakFellesperiodeAnnenForelder:
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'FELLESPERIODE_ANNEN_FORELDER';
         case OppholdÅrsakTypeDTO.UttakMødrekvoteAnnenForelder:
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'MØDREKVOTE_ANNEN_FORELDER';
         default:
             return undefined;
     }

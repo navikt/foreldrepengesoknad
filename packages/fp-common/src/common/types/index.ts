@@ -12,7 +12,6 @@ export * from './MissingAttachment';
 export * from './MorsAktivitet';
 export * from './NavnPåForeldre';
 export * from './OppholdÅrsakType';
-export * from './OppholdÅrsakTypeDTO';
 export * from './OverføringÅrsakType';
 export * from './Periode';
 export * from './PeriodeHullÅrsak';
