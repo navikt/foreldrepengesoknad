@@ -9,16 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
-import {
-    AnnenForelder,
-    Barn,
-    BarnType,
-    Forelder,
-    MorsAktivitet,
-    Periode,
-    Periodetype,
-    SivilstandType,
-} from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Forelder, Periode, Periodetype, SivilstandType } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -336,7 +327,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -402,7 +393,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -445,7 +436,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Utdanning,
+                morsAktivitetIPerioden: 'UTDANNING',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -490,7 +481,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
                     tom: new Date('2025-02-01'),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -505,7 +496,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
                 },
                 type: Periodetype.Utsettelse,
                 årsak: 'FRI',
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
             },
         ],

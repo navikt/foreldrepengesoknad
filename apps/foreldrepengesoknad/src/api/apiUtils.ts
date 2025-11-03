@@ -10,7 +10,6 @@ import {
     AnnenForelderOppgitt,
     Arbeidsform,
     Barn,
-    MorsAktivitet,
     Periode,
     Periodetype,
     Søkerrolle,
@@ -159,9 +158,9 @@ const changeClientonlyKontotype = (
                 !annenForelderHarRettPåForeldrepengerINorge &&
                 andreAugust2022ReglerGjelder(familiehendelsesdato)
             ) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
+                periode.morsAktivitetIPerioden = 'IKKE_OPPGITT';
             } else if (morErUfør) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+                periode.morsAktivitetIPerioden = 'UFØRE';
             }
         }
     }

@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { MorsAktivitet, NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { MorsAktivitet } from '@navikt/fp-types';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
@@ -16,14 +17,20 @@ interface Props {
 }
 
 const renderOptions = (intl: IntlShape) => {
-    return Object.keys(MorsAktivitet)
-        .filter(
-            (aktivitetsid) =>
-                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.Uføre &&
-                (MorsAktivitet as any)[aktivitetsid] !== MorsAktivitet.IkkeOppgitt,
-        )
-        .map((aktivitetsid) => (
-            <option value={(MorsAktivitet as any)[aktivitetsid]} key={(MorsAktivitet as any)[aktivitetsid]}>
+    return [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+        'UFØRE',
+        'IKKE_OPPGITT',
+    ]
+        .filter((aktivitet) => aktivitet !== 'UFØRE' && aktivitet !== 'IKKE_OPPGITT')
+        .map((aktivitet) => (
+            <option value={aktivitet} key={aktivitet}>
                 {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                 {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                 {intl.formatMessage({ id: `uttaksplan.morsAktivitet.${aktivitetsid}` })}

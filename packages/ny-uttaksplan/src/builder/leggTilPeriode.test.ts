@@ -1,4 +1,4 @@
-import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
+import { Forelder } from '@navikt/fp-constants';
 import { omitOne } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -598,7 +598,7 @@ describe('Test av split periode i uttaksplan', () => {
         tom: '2022-05-02',
         forelder: Forelder.farMedmor,
         kontoType: 'FORELDREPENGER',
-        morsAktivitet: MorsAktivitet.Arbeid,
+        morsAktivitet: 'ARBEID',
         readOnly: false,
     };
 

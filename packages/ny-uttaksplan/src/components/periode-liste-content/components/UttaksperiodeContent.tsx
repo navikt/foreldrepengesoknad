@@ -79,23 +79,23 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
 
 export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
     switch (aktivitet) {
-        case MorsAktivitet.Arbeid:
+        case 'ARBEID':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Arbeid' });
-        case MorsAktivitet.ArbeidOgUtdanning:
+        case 'ARBEID_OG_UTDANNING':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.ArbeidOgUtdanning' });
-        case MorsAktivitet.Innlagt:
+        case 'INNLAGT':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Innlagt' });
-        case MorsAktivitet.Introduksjonsprogrammet:
+        case 'INTROPROG':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Introduksjonsprogrammet' });
-        case MorsAktivitet.Kvalifiseringsprogrammet:
+        case 'KVALPROG':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Kvalifiseringsprogrammet' });
-        case MorsAktivitet.TrengerHjelp:
+        case 'TRENGER_HJELP':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.TrengerHjelp' });
-        case MorsAktivitet.Uføre:
+        case 'UFØRE':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Uføre' });
-        case MorsAktivitet.Utdanning:
+        case 'UTDANNING':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Utdanning' });
-        case MorsAktivitet.IkkeOppgitt:
+        case 'IKKE_OPPGITT':
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.UtenAktivitetsKrav' });
         default:
             return assertUnreachable('Mor har ingen aktivitet');

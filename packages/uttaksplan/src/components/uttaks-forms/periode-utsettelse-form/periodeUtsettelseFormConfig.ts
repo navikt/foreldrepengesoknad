@@ -1,5 +1,4 @@
-import { MorsAktivitet } from '@navikt/fp-common';
-import { UtsettelsesÅrsak } from '@navikt/fp-types';
+import { MorsAktivitet, UtsettelsesÅrsak } from '@navikt/fp-types';
 
 import { getTypedFormComponents } from '../../../formik-wrappers';
 

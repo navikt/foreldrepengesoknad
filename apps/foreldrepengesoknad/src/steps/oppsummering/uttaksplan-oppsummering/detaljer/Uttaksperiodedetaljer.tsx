@@ -1,7 +1,6 @@
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { MorsAktivitet } from '@navikt/fp-constants';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
@@ -70,7 +69,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
                     verdi={arbeidsformTekst}
                 />
             )}
-            {morsAktivitetIPerioden && morsAktivitetIPerioden !== MorsAktivitet.IkkeOppgitt && (
+            {morsAktivitetIPerioden && morsAktivitetIPerioden !== 'IKKE_OPPGITT' && (
                 <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />
             )}
         </>

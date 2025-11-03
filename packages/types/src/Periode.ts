@@ -1,7 +1,6 @@
 import {
     Arbeidsform,
     Forelder,
-    MorsAktivitet,
     OpprinneligSøkt,
     PeriodeHullÅrsak,
     PeriodeInfoType,
@@ -11,7 +10,7 @@ import {
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
 import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
-import { Oppholdsårsak, UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
+import { MorsAktivitet, Oppholdsårsak, UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
 
 interface PeriodeBase {
     id: string;
