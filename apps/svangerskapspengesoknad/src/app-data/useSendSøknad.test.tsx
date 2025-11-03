@@ -14,7 +14,7 @@ import {
     TilOgMedDatoType,
 } from 'types/Tilrettelegging';
 
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     Attachment,
@@ -305,7 +305,7 @@ describe('useSendSøknad', () => {
                                     id: ARBEIDSGIVER_ID,
                                     type: 'virksomhet',
                                 },
-                                type: AttachmentMetadataType.TILRETTELEGGING,
+                                type: 'TILRETTELEGGING',
                             },
                         },
                         {
@@ -315,7 +315,7 @@ describe('useSendSøknad', () => {
                                     id: ANNEN_ARBEIDSGIVER_ID,
                                     type: 'privat',
                                 },
-                                type: AttachmentMetadataType.TILRETTELEGGING,
+                                type: 'TILRETTELEGGING',
                             },
                         },
                     ],
@@ -430,7 +430,7 @@ describe('useSendSøknad', () => {
                                     id: EGEN_NÆRING_ID,
                                     type: 'selvstendig',
                                 },
-                                type: AttachmentMetadataType.TILRETTELEGGING,
+                                type: 'TILRETTELEGGING',
                             },
                         },
                         {
@@ -440,7 +440,7 @@ describe('useSendSøknad', () => {
                                     id: FRILANS_ID,
                                     type: 'frilanser',
                                 },
-                                type: AttachmentMetadataType.TILRETTELEGGING,
+                                type: 'TILRETTELEGGING',
                             },
                         },
                     ],
@@ -570,7 +570,7 @@ describe('useSendSøknad', () => {
                                     id: ARBEIDSGIVER_ID,
                                     type: 'virksomhet',
                                 },
-                                type: AttachmentMetadataType.TILRETTELEGGING,
+                                type: 'TILRETTELEGGING',
                             },
                         },
                     ],

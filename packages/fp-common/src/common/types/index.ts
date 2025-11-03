@@ -7,7 +7,6 @@ export * from './EksisterendeSak';
 export * from './FamiliehendelseType';
 export * from './Forelder';
 export * from './ForeldreparSituasjonTypes';
-export * from './MinsterettType';
 export * from './MissingAttachment';
 export * from './NavnPåForeldre';
 export * from './Periode';

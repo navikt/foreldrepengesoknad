@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
@@ -28,7 +28,7 @@ export const AleneomsorgDokumentasjon = ({ attachments, updateAttachments, annen
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.tittel' })}
             description={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.description' })}
             attachmentType={AttachmentType.ALENEOMSORG}
-            metadataType={AttachmentMetadataType.BARN}
+            metadataType={'BARN'}
         />
     );
 };

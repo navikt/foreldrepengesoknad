@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
@@ -47,7 +47,7 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
             )}
             description={intl.formatMessage({ id: 'manglendeVedlegg.militær.description' })}
             attachmentType={AttachmentType.ANNEN_INNTEKT}
-            metadataType={AttachmentMetadataType.OPPTJENING}
+            metadataType="OPPTJENING"
             perioder={perioder}
         />
     );
