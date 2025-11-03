@@ -1,5 +1,5 @@
 import { Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
+import { RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -32,7 +32,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -45,7 +45,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -58,7 +58,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -71,7 +71,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -117,7 +117,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -130,7 +130,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -143,7 +143,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,
@@ -156,7 +156,7 @@ export const saker = {
                             innvilget: true,
                             trekkerMinsterett: true,
                             trekkerDager: true,
-                            årsak: PeriodeResultatÅrsak.ANNET,
+                            årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
                         forelder: Forelder.mor,

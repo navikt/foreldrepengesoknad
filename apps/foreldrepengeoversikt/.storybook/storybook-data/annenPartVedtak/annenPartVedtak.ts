@@ -1,5 +1,5 @@
 import { Forelder } from '@navikt/fp-constants';
-import { AnnenPartSak_fpoversikt, PeriodeResultatÅrsak } from '@navikt/fp-types';
+import { AnnenPartSak_fpoversikt } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
     perioder: [
@@ -12,7 +12,7 @@ export const annenPartVedtak = {
                 innvilget: true,
                 trekkerMinsterett: false,
                 trekkerDager: true,
-                årsak: PeriodeResultatÅrsak.ANNET,
+                årsak: 'ANNET',
             },
             forelder: Forelder.farMedmor,
         },

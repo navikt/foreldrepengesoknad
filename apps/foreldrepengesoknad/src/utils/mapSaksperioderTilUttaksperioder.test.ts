@@ -5,7 +5,6 @@ import {
     FamiliehendelseType,
     Forelder,
     PeriodeInfoType,
-    PeriodeResultatÅrsak,
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
@@ -67,7 +66,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -95,7 +94,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                     gjelderAnnenPart: true,
                     flerbarnsdager: false,
@@ -112,7 +111,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                     gjelderAnnenPart: true,
                     flerbarnsdager: false,
@@ -131,7 +130,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                     gjelderAnnenPart: false,
                     samtidigUttak: 50,
@@ -155,7 +154,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                     gjelderAnnenPart: false,
                     kontoType: 'FELLESPERIODE',
@@ -231,7 +230,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                 },
                 {
@@ -249,7 +248,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                 },
             ] as Saksperiode[];
@@ -303,7 +302,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                 },
                 {
@@ -321,7 +320,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                         innvilget: true,
                         trekkerMinsterett: false,
                         trekkerDager: true,
-                        årsak: PeriodeResultatÅrsak.ANNET,
+                        årsak: 'ANNET',
                     },
                 },
             ] as Saksperiode[];
@@ -369,7 +368,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
             {
@@ -385,7 +384,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -422,7 +421,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
             {
@@ -437,7 +436,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -476,7 +475,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -484,7 +483,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const result = mapSaksperioderTilUttaksperioder(avslåttePeriodeAnnenPart, grunnlag, undefined, undefined);
         expect(result.length).toEqual(0);
     });
-    it('Skal filtrere bort søkerens avslåtte perioder som ikke trekker dager eller har PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER', () => {
+    it('Skal filtrere bort søkerens avslåtte perioder som ikke trekker dager eller har "AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER"', () => {
         const avslåttePerioderSøker = [
             {
                 periode: {
@@ -498,7 +497,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: false,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
             {
@@ -513,7 +512,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER,
+                    årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
                 },
             },
         ] as Saksperiode[];
@@ -535,7 +534,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: false,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -563,7 +562,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: false,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -597,7 +596,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: false,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -621,7 +620,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
             {
@@ -637,7 +636,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: false,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];
@@ -667,7 +666,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     innvilget: true,
                     trekkerMinsterett: false,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
             },
         ] as Saksperiode[];

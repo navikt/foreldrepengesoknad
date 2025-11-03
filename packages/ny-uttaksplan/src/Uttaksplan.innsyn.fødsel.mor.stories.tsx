@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType, Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { withUttaksplanContextDecorator } from './storybook/decorators/withUttaksplanContextDecorator';
@@ -50,7 +49,7 @@ export const MorAleneOmOmsorg: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -63,7 +62,7 @@ export const MorAleneOmOmsorg: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -76,7 +75,7 @@ export const MorAleneOmOmsorg: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
@@ -117,7 +116,7 @@ export const PrematurUker: Story = {
                     innvilget: false,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
                 },
                 utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
@@ -131,7 +130,7 @@ export const PrematurUker: Story = {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
                 forelder: Forelder.mor,

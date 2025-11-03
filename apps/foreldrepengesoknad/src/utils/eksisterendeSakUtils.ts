@@ -177,7 +177,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
-            //@ts-expect-error -- ignorer frem til typer er ported til autogenererte
+            //@ts-expect-error -- todo
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);

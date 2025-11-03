@@ -13,7 +13,6 @@ export * from './NavnPåForeldre';
 export * from './Periode';
 export * from './PeriodeHullÅrsak';
 export * from './PeriodeInfoType';
-export * from './PeriodeResultatÅrsak';
 export * from './PeriodeResultatDTO';
 export * from './PeriodeValidState';
 export * from './RettighetType';

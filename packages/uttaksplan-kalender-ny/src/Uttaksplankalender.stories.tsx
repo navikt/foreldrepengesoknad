@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType, Forelder } from '@navikt/fp-constants';
-import { PeriodeResultatÅrsak, SaksperiodeNy, UttakArbeidType } from '@navikt/fp-types';
+import { SaksperiodeNy, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
 
@@ -37,7 +37,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                     innvilget: false,
                     trekkerDager: false,
                     trekkerMinsterett: false,
-                    årsak: PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID,
+                    årsak: 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID',
                 },
             },
             {
@@ -455,7 +455,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
                     innvilget: false,
                     trekkerDager: false,
                     trekkerMinsterett: false,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID,
+                    årsak: 'AVSLAG_UTSETTELSE_TILBAKE_I_TID',
                 },
             },
             {
@@ -501,7 +501,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
                     innvilget: false,
                     trekkerDager: false,
                     trekkerMinsterett: false,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID,
+                    årsak: 'AVSLAG_UTSETTELSE_TILBAKE_I_TID',
                 },
             },
         ] satisfies SaksperiodeNy[],

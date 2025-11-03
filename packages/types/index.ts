@@ -49,7 +49,6 @@ export type {
     Oppholdsperiode,
 } from './src/Periode';
 export type { PeriodeResultat } from './src/PeriodeResultat';
-export { PeriodeResultatÅrsak } from './src/PeriodeResultatÅrsak';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
 export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UttakArbeidType } from './src/UttakArbeidType';

@@ -9,7 +9,6 @@ import {
     Overføringsperiode,
     Periode,
     PeriodeInfoType,
-    PeriodeResultatÅrsak,
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
@@ -324,7 +323,7 @@ const mapUtsettelseperiodeFromSaksperiode = (saksperiode: Saksperiode, erFarElle
 };
 
 const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
-    if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_UTSETTELSE_TILBAKE_I_TID) {
+    if (saksperiode.resultat?.årsak === 'AVSLAG_UTSETTELSE_TILBAKE_I_TID') {
         if (saksperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
             return OpprinneligSøkt.Ferie;
         }
@@ -334,7 +333,7 @@ const getOpprinneligSøkt = (saksperiode: Saksperiode) => {
         }
     }
 
-    if (saksperiode.resultat?.årsak === PeriodeResultatÅrsak.INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID) {
+    if (saksperiode.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
         return OpprinneligSøkt.Gradering;
     }
 
@@ -354,7 +353,7 @@ const mapInfoPeriodeFromAvslåttSaksperiode = (saksperiode: Saksperiode, erFarEl
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
         visPeriodeIPlan: true,
-        kanSlettes: saksperiode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+        kanSlettes: saksperiode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER',
         opprinneligSøkt,
     };
     return avslåttPeriode;
@@ -511,7 +510,7 @@ const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | unde
         return false;
     }
     if (
-        saksperiode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
+        saksperiode.resultat?.årsak !== 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER' &&
         saksperiode.resultat?.trekkerDager === true
     ) {
         return true;
