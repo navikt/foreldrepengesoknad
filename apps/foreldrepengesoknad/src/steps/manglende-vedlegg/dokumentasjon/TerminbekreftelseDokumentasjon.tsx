@@ -79,15 +79,14 @@ export const skalViseTerminbekreftelseDokumentasjon = ({
         return true;
     }
 
-    const skalHaOmBarnetDok =
+    return (
         søkersituasjon &&
         barn &&
         isUfødtBarn(barn) &&
         (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
             getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
-        getKanSøkePåTermin(erFarEllerMedmor, barn.termindato);
-
-    return skalHaOmBarnetDok;
+        getKanSøkePåTermin(erFarEllerMedmor, barn.termindato)
+    );
 };
 
 const getBareFarMedmorHarRett = (
@@ -104,11 +103,10 @@ const getBareFarMedmorHarRett = (
 
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
 
-    const bareFarMedmorHarRett =
+    return (
         !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
-        !farMedmorErAleneOmOmsorg;
-
-    return bareFarMedmorHarRett;
+        !farMedmorErAleneOmOmsorg
+    );
 };
 
 const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
