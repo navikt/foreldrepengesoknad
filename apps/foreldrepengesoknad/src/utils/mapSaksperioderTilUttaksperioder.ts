@@ -194,9 +194,6 @@ const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): Oppholdsårs
             return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         case 'FORELDREPENGER':
             return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
-        // TODO: tror denne er safe å slette? Brukes ikke eksplisitt noen steder, og ikke del av backend kontrakt
-        // case 'FORELDREPENGER_FØR_FØDSEL':
-        //     return OppholdÅrsakType.ForeldrepengerFørFødsel;
         default:
             return undefined;
     }
