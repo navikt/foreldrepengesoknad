@@ -139,7 +139,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -238,7 +238,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -327,7 +327,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
-                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as UttakAnnenPartInfoPeriode[];
 
@@ -366,7 +366,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     ønskerSamtidigUttak: true,
                     samtidigUttakProsent: '100',
                     overskrives: true,
-                    årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                    årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
                 },
             ] as Periode[];
 
@@ -414,7 +414,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 overskrives: true,
-                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as Periode[];
 
@@ -451,7 +451,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 ønskerSamtidigUttak: true,
                 samtidigUttakProsent: '100',
                 overskrives: true,
-                årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
             },
         ] as Periode[];
 
@@ -494,7 +494,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     forelder: Forelder.farMedmor,
                     ønskerSamtidigUttak: true,
                     samtidigUttakProsent: '100',
-                    årsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                    årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
                     overskrives: true,
                 },
             ] as Periode[];

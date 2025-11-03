@@ -5,7 +5,6 @@ import {
     FamiliehendelseType,
     Forelder,
     MorsAktivitet,
-    OppholdÅrsakType,
     PeriodeInfoType,
     PeriodeResultatÅrsak,
     Periodetype,
@@ -63,7 +62,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: true,
                 flerbarnsdager: false,
-                oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+                oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 guid: '0',
                 kontoType: 'MØDREKVOTE',
                 resultat: {
@@ -247,7 +246,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     kontoType: 'FEDREKVOTE',
                     guid: '0',
-                    oppholdÅrsak: OppholdÅrsakType.Ingen,
+                    oppholdÅrsak: 'INGEN',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -319,7 +318,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     kontoType: 'MØDREKVOTE',
                     guid: '1',
-                    oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+                    oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -663,7 +662,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: false,
                 flerbarnsdager: false,
-                oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+                oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 guid: '0',
                 kontoType: 'MØDREKVOTE',
                 resultat: {

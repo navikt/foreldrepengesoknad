@@ -1,9 +1,8 @@
-import { Attachment, KontoTypeUttak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
+import { Attachment, KontoTypeUttak_fpoversikt, Oppholdsårsak, UtsettelsesÅrsak } from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
-import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
@@ -64,7 +63,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    årsak: OppholdÅrsakType;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
 }
 
@@ -109,7 +108,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
 export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
-    årsak: OppholdÅrsakType;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -122,7 +121,7 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
 export interface UttakAnnenPartEØSInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
-    årsak: OppholdÅrsakType;
+    årsak: Oppholdsårsak;
     forelder: Forelder;
     overskrives: boolean;
     visPeriodeIPlan: boolean;

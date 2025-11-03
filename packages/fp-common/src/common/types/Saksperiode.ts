@@ -1,4 +1,5 @@
-import { OppholdÅrsakType } from './OppholdÅrsakType';
+import { Oppholdsårsak } from '@navikt/fp-types';
+
 import { SaksperiodeDTO } from './SaksperiodeDTO';
 import { Tidsperiode } from './Tidsperiode';
 
@@ -7,5 +8,5 @@ export interface Saksperiode extends Omit<SaksperiodeDTO, 'fom' | 'tom' | 'oppho
     periode: Tidsperiode;
     gjelderAnnenPart: boolean;
     angittAvAnnenPart?: boolean;
-    oppholdÅrsak?: OppholdÅrsakType;
+    oppholdÅrsak?: Oppholdsårsak;
 }
