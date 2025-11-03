@@ -303,7 +303,7 @@ export const ForeldrepengesøknadRoutes = ({
             lagretHarGodkjentVilkår &&
             isFirstTimeLoadingApp
         ) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);

@@ -34,7 +34,7 @@ export const PeriodeListeItem = ({
     // Sync local state with global accordion state
     useEffect(() => {
         if (isAllAccordionsOpen !== undefined) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Skriv om dette
             setErPeriodeInnholdÅpen(isAllAccordionsOpen);
         }
     }, [isAllAccordionsOpen]);
