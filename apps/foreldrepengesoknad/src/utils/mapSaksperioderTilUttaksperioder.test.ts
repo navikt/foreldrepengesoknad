@@ -80,7 +80,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(infoperiode.tidsperiode.fom).toEqual(new Date('2022-01-03'));
         expect(infoperiode.tidsperiode.tom).toEqual(new Date('2022-02-04'));
         expect(infoperiode.type).toEqual(Periodetype.Info);
-        expect(infoperiode.årsak).toEqual('MØDREKVOTE_ANNEN_FORELDER');
+        expect(infoperiode.årsak).toEqual('UTTAK_MØDREKVOTE_ANNEN_FORELDER');
     });
 
     it(
@@ -177,7 +177,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(infoperiode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
             expect(infoperiode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
             expect(infoperiode1.type).toEqual(Periodetype.Info);
-            expect(infoperiode1.årsak).toEqual('MØDREKVOTE_ANNEN_FORELDER');
+            expect(infoperiode1.årsak).toEqual('UTTAK_MØDREKVOTE_ANNEN_FORELDER');
             expect(infoperiode1.forelder).toEqual(Forelder.mor);
 
             const infoperiode2 = result[1] as UttakAnnenPartInfoPeriode;
@@ -226,7 +226,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gjelderAnnenPart: true,
                     samtidigUttak: 100,
                     flerbarnsdager: false,
-                    oppholdAarsak: 'MØDREKVOTE_ANNEN_FORELDER',
+                    oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                     guid: '0',
                     stønadskontotype: 'MØDREKVOTE',
                     resultat: {
