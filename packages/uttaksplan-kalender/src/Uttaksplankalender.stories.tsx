@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Arbeidsform, BarnType, Forelder, OppholdÅrsakType, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
+import { Arbeidsform, BarnType, Forelder, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 import { Periode } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -111,7 +111,7 @@ const uttaksplanMor = [
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
         id: '9',
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
         tidsperiode: {
             fom: new Date('2024-06-28'),
             tom: new Date('2024-07-02'),
@@ -126,7 +126,7 @@ const uttaksplanMor = [
         type: Periodetype.Info,
         infotype: PeriodeInfoType.uttakAnnenPart,
         id: '10',
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
         tidsperiode: {
             fom: new Date('2024-07-03'),
             tom: new Date('2024-07-15'),
@@ -306,7 +306,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '1',
-                årsak: OppholdÅrsakType.ForeldrepengerFørFødsel,
+                årsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-03-15'),
                     tom: new Date('2024-04-03'),
@@ -321,7 +321,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '2',
-                årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                årsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-04-04'),
                     tom: new Date('2024-04-18'),
@@ -351,7 +351,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '4',
-                årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                årsak: 'UTTAK_FELLESP_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-04-19'),
                     tom: new Date('2024-05-16'),
@@ -379,7 +379,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 type: Periodetype.Info,
                 infotype: PeriodeInfoType.uttakAnnenPart,
                 id: '6',
-                årsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                årsak: 'UTTAK_FELLESP_ANNEN_FORELDER',
                 tidsperiode: {
                     fom: new Date('2024-05-24'),
                     tom: new Date('2024-05-30'),
