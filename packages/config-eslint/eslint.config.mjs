@@ -83,8 +83,8 @@ export default [
             '@typescript-eslint/ban-ts-comment': ERROR,
             'import/no-default-export': ERROR,
             'react-hooks/rules-of-hooks': ERROR,
+            'react-hooks/set-state-in-effect': ERROR,
             'react-hooks/incompatible-library': OFF,
-            'react-hooks/set-state-in-effect': OFF,
             'react-hooks/exhaustive-deps': OFF,
             'react-hooks/refs': OFF,
 

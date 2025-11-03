@@ -303,6 +303,7 @@ export const ForeldrepengesøknadRoutes = ({
             lagretHarGodkjentVilkår &&
             isFirstTimeLoadingApp
         ) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
