@@ -8,7 +8,7 @@ import {
     PeriodeResultatÅrsak,
     SaksperiodeNy,
     Tidsperiode,
-    UtsettelseÅrsakType,
+    UttakUtsettelseÅrsak_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
 import {
@@ -128,23 +128,23 @@ export const getOppholdskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsakType) => {
+export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {
     switch (utsettelseÅrsak) {
-        case UtsettelseÅrsakType.Arbeid:
+        case 'ARBEID':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
-        case UtsettelseÅrsakType.Ferie:
+        case 'LOVBESTEMT_FERIE':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
-        case UtsettelseÅrsakType.Fri:
+        case 'FRI':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FRI' });
-        case UtsettelseÅrsakType.HvØvelse:
+        case 'HV_ØVELSE':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.HV_ØVELSE' });
-        case UtsettelseÅrsakType.InstitusjonBarnet:
+        case 'BARN_INNLAGT':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.BARN_INNLAGT' });
-        case UtsettelseÅrsakType.InstitusjonSøker:
+        case 'SØKER_INNLAGT':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_INNLAGT' });
-        case UtsettelseÅrsakType.NavTiltak:
+        case 'NAV_TILTAK':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
-        case UtsettelseÅrsakType.Sykdom:
+        case 'SØKER_SYKDOM':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });
     }
 };

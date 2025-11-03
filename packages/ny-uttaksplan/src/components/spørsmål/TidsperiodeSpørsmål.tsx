@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HStack, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -35,14 +34,14 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, gjelderAdopsjon, erBarnetF
 
     const getÅrsak = () => {
         if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            return UtsettelseÅrsakType.Ferie;
+            return 'LOVBESTEMT_FERIE';
         }
 
         if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             return PeriodeHullType.PERIODE_UTEN_UTTAK;
         }
 
-        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
             return valgtPeriode.utsettelseÅrsak;
         }
 

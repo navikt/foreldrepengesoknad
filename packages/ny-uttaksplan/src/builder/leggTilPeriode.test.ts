@@ -1,5 +1,5 @@
 import { Forelder, MorsAktivitet } from '@navikt/fp-constants';
-import { OppholdÅrsakType, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { OppholdÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -433,7 +433,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             fom: '2022-05-05',
             tom: '2022-05-18',
             forelder: Forelder.mor,
-            utsettelseÅrsak: UtsettelseÅrsakType.Arbeid,
+            utsettelseÅrsak: 'ARBEID',
             readOnly: false,
         };
 

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { BarnType, Forelder } from '@navikt/fp-constants';
-import { SaksperiodeNy, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 
@@ -128,7 +128,7 @@ export const MorOgFarMedFerieopphold: Story = {
             },
             {
                 forelder: Forelder.mor,
-                utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 fom: '2025-12-12',
                 tom: '2025-12-15',
             },

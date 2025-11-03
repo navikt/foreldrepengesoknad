@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 
 import { Forelder } from '@navikt/fp-common';
 import { BarnType } from '@navikt/fp-constants';
-import { ArbeidsgiverInfoType, Barn, UtsettelseÅrsakType, UttakArbeidType } from '@navikt/fp-types';
+import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
@@ -406,7 +406,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
-                utsettelseÅrsak: UtsettelseÅrsakType.InstitusjonSøker,
+                utsettelseÅrsak: 'SØKER_INNLAGT',
                 forelder: Forelder.mor,
                 readOnly: false,
             },

@@ -8,12 +8,12 @@ import {
     PeriodeHullÅrsak,
     PeriodeInfoType,
     Periodetype,
-    UtsettelseÅrsakType,
 } from '@navikt/fp-constants';
 
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
 import { KontoTypeUttak_fpoversikt } from './fpoversiktDtoGenerert';
+import { UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
 
 interface PeriodeBase {
     id: string;
@@ -49,7 +49,7 @@ interface UttaksperiodeBase extends PeriodeBase {
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
-    årsak: UtsettelseÅrsakType;
+    årsak: UtsettelsesÅrsak;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     erArbeidstaker: boolean;
@@ -110,7 +110,7 @@ interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
 interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
-    årsak: UtsettelseÅrsakType;
+    årsak: UtsettelsesÅrsak;
     forelder: Forelder;
     overskrives: true;
     visPeriodeIPlan: boolean;
@@ -125,7 +125,7 @@ export interface PeriodeUtenUttak extends PeriodeBase {
 interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'> {
     type: Periodetype.Utsettelse;
     morsAktivitetIPerioden?: MorsAktivitet;
-    årsak: UtsettelseÅrsakType.Fri;
+    årsak: 'FRI';
     erArbeidstaker: boolean;
     forelder: Forelder;
 }

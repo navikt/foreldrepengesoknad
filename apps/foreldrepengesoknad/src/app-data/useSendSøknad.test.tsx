@@ -17,7 +17,6 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
-    UtsettelseÅrsakType,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
@@ -155,7 +154,7 @@ const VEDLEGG = {
 
 const PERIODE = {
     id: '1',
-    årsak: UtsettelseÅrsakType.Arbeid,
+    årsak: 'ARBEID',
     tidsperiode: {
         fom: new Date('2024-01-01'),
         tom: new Date('2024-10-10'),

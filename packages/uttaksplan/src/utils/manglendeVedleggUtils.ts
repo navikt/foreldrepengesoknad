@@ -9,7 +9,6 @@ import {
     Periodetype,
     Søknadsinfo,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
@@ -88,7 +87,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                 );
             } else {
                 if (isUtsettelsesperiode(periode)) {
-                    if (periode.årsak === UtsettelseÅrsakType.HvØvelse) {
+                    if (periode.årsak === 'HV_OVELSE') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -100,7 +99,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                     }
 
                     if (
-                        periode.årsak === UtsettelseÅrsakType.Fri &&
+                        periode.årsak === 'FRI' &&
                         søknadsinfo.søkerErFarEllerMedmor &&
                         !søknadsinfo.morErUfør &&
                         !søknadsinfo.morHarRett
@@ -115,7 +114,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.NavTiltak) {
+                    if (periode.årsak === 'NAV_TILTAK') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -126,7 +125,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+                    if (periode.årsak === 'INSTITUSJONSOPPHOLD_BARNET') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -137,7 +136,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                    if (periode.årsak === 'INSTITUSJONSOPPHOLD_SØKER') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -148,7 +147,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.Sykdom) {
+                    if (periode.årsak === 'SYKDOM') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -212,8 +211,8 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
     return (
         harMorAktivitetskrav ||
         erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
-        årsak === UtsettelseÅrsakType.HvØvelse ||
-        årsak === UtsettelseÅrsakType.NavTiltak
+        årsak === 'HV_OVELSE' ||
+        årsak === 'NAV_TILTAK'
     );
 };
 

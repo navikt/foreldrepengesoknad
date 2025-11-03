@@ -5,7 +5,6 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
-    UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
 
@@ -532,7 +531,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             },
             forelder: Forelder.mor,
             erArbeidstaker: true,
-            årsak: UtsettelseÅrsakType.Arbeid,
+            årsak: 'ARBEID',
         };
 
         const result = leggTilPeriode({

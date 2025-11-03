@@ -13,7 +13,7 @@ import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
-import { Familiesituasjon, PeriodeResultatÅrsak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { Familiesituasjon, PeriodeResultatÅrsak } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
@@ -123,21 +123,21 @@ export const getTekst = (
 
     if (utsettelseÅrsak !== undefined) {
         switch (utsettelseÅrsak) {
-            case UtsettelseÅrsakType.InstitusjonSøker:
+            case 'SØKER_INNLAGT':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonSøker' });
-            case UtsettelseÅrsakType.Sykdom:
+            case 'SØKER_SYKDOM':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.sykdom' });
-            case UtsettelseÅrsakType.InstitusjonBarnet:
+            case 'BARN_INNLAGT':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonBarn' });
-            case UtsettelseÅrsakType.Arbeid:
+            case 'ARBEID':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.arbeid' });
-            case UtsettelseÅrsakType.Ferie:
+            case 'LOVBESTEMT_FERIE':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.ferie' });
-            case UtsettelseÅrsakType.HvØvelse:
+            case 'HV_ØVELSE':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.hvØvelse' });
-            case UtsettelseÅrsakType.NavTiltak:
+            case 'NAV_TILTAK':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.navTiltak' });
-            case UtsettelseÅrsakType.Fri:
+            case 'FRI':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.fri' });
         }
     }
@@ -192,11 +192,11 @@ export const getIkon = (
     }
 
     if (utsettelseÅrsak !== undefined) {
-        if (utsettelseÅrsak === UtsettelseÅrsakType.Arbeid || utsettelseÅrsak === UtsettelseÅrsakType.Fri) {
+        if (utsettelseÅrsak === 'ARBEID' || utsettelseÅrsak === 'FRI') {
             return <BriefcaseFillIcon className={ikonfarge} width={24} height={24} />;
         }
 
-        if (utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
+        if (utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
             return <ParasolBeachFillIcon className={ikonfarge} width={24} height={24} />;
         }
 
