@@ -1,9 +1,8 @@
-import { Oppholdsårsak } from '@navikt/fp-types';
+import { Oppholdsårsak, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { SaksperiodeDTO } from './SaksperiodeDTO';
 import { Tidsperiode } from './Tidsperiode';
 
-export interface Saksperiode extends Omit<SaksperiodeDTO, 'fom' | 'tom' | 'oppholdÅrsak'> {
+export interface Saksperiode extends Omit<UttakPeriode_fpoversikt, 'fom' | 'tom' | 'oppholdÅrsak'> {
     guid: string;
     periode: Tidsperiode;
     gjelderAnnenPart: boolean;

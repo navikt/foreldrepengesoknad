@@ -8,13 +8,14 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     EksternArbeidsforholdDto_fpoversikt,
     KontoBeregningDto_fpoversikt,
     PersonDto_fpoversikt,
     SøkersituasjonFp,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -46,7 +47,7 @@ const vedtakFar = {
                 årsak: 'ANNET',
             },
         },
-    ] as SaksperiodeDTO[],
+    ] satisfies UttakPeriode_fpoversikt[],
 };
 
 const vedtakMor = {
@@ -75,7 +76,7 @@ const vedtakMor = {
                 årsak: 'ANNET',
             },
         },
-    ] as SaksperiodeDTO[],
+    ] satisfies UttakPeriode_fpoversikt[],
 };
 
 const søkerInfoKvinne = {

@@ -380,10 +380,10 @@ export type UttakPeriode_fpoversikt = {
 };
 
 export type UttakPeriodeResultat_fpoversikt = {
-    innvilget?: boolean;
-    trekkerDager?: boolean;
-    trekkerMinsterett?: boolean;
-    årsak?: UttakPeriodeResultatÅrsak_fpoversikt;
+    innvilget: boolean;
+    trekkerDager: boolean;
+    trekkerMinsterett: boolean;
+    årsak: UttakPeriodeResultatÅrsak_fpoversikt;
 };
 
 export type UttakPeriodeResultatÅrsak_fpoversikt =
