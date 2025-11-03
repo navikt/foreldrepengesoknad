@@ -5,6 +5,7 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -32,6 +33,7 @@ export default [
     jsxA11y.flatConfigs.recommended,
     importPlugin.flatConfigs.recommended,
     reactHooks.configs.flat.recommended,
+    reactYouMightNotNeedAnEffect.configs.recommended,
     eslintConfigPrettier,
     {
         rules: {
