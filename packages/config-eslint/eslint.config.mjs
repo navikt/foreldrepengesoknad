@@ -86,6 +86,7 @@ export default [
             'react-hooks/incompatible-library': OFF,
             'react-hooks/set-state-in-effect': OFF,
             'react-hooks/exhaustive-deps': OFF,
+            'react-hooks/refs': OFF,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [

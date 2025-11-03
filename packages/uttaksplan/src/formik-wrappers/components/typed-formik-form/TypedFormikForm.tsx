@@ -116,7 +116,6 @@ function TypedFormikForm<FormValues, ErrorType>({
         }
     }, [submitCount, showErrors, setStatus, formSubmitCount, isSubmitting, isValid]);
 
-    // eslint-disable-next-line react-hooks/refs
     if (userHasSubmittedValidForm(ref.current, { isValid, isSubmitting })) {
         if (onValidSubmit) {
             onValidSubmit();
