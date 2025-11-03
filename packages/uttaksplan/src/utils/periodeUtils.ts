@@ -6,7 +6,6 @@ import {
     Forelder,
     InfoPeriode,
     NavnPåForeldre,
-    OppholdÅrsakType,
     OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
@@ -21,7 +20,7 @@ import {
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
+import { KontoTypeUttak_fpoversikt, Oppholdsårsak, UtsettelsesÅrsak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -97,12 +96,7 @@ const getUttaksprosentFromStillingsprosent = (
     return undefined;
 };
 
-export const getOppholdskontoNavn = (
-    intl: IntlShape,
-    årsak: OppholdÅrsakType,
-    foreldernavn: string,
-    erMor: boolean,
-) => {
+export const getOppholdskontoNavn = (intl: IntlShape, årsak: Oppholdsårsak, foreldernavn: string, erMor: boolean) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
         return intl.formatMessage(
@@ -117,34 +111,34 @@ export const getOppholdskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): KontoTypeUttak_fpoversikt => {
-    if (årsak === OppholdÅrsakType.UttakFedrekvoteAnnenForelder) {
+export const getStønadskontoFromOppholdsårsak = (årsak: Oppholdsårsak): KontoTypeUttak_fpoversikt => {
+    if (årsak === 'UTTAK_FEDREKVOTE_ANNEN_FORELDER') {
         return 'FEDREKVOTE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakMødrekvoteAnnenForelder) {
+    if (årsak === 'UTTAK_MØDREKVOTE_ANNEN_FORELDER') {
         return 'MØDREKVOTE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder) {
+    if (årsak === 'UTTAK_FELLESP_ANNEN_FORELDER') {
         return 'FELLESPERIODE';
     }
 
-    if (årsak === OppholdÅrsakType.UttakForeldrepengerAnnenForelder) {
+    if (årsak === 'UTTAK_FORELDREPENGER_ANNEN_FORELDER') {
         return 'FORELDREPENGER';
     }
 
     return 'FORELDREPENGER_FØR_FØDSEL';
 };
 
-export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): OppholdÅrsakType | undefined => {
+export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): Oppholdsårsak | undefined => {
     switch (konto) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         default:
             return undefined;
     }

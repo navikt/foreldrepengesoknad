@@ -6,7 +6,6 @@ import {
     Forelder,
     InfoPeriode,
     MorsAktivitet,
-    OppholdÅrsakType,
     OpprinneligSøkt,
     Overføringsperiode,
     Periode,
@@ -26,6 +25,7 @@ import {
 import {
     KontoType,
     KontoTypeUttak_fpoversikt,
+    Oppholdsårsak,
     UtsettelsesÅrsak,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
@@ -184,18 +184,16 @@ const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefine
     }
 };
 
-const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): OppholdÅrsakType | undefined => {
+const getOppholdÅrsakFromSaksperiode = (saksperiode: Saksperiode): Oppholdsårsak | undefined => {
     switch (saksperiode.kontoType) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         case 'FORELDREPENGER':
-            return OppholdÅrsakType.UttakForeldrepengerAnnenForelder;
-        case 'FORELDREPENGER_FØR_FØDSEL':
-            return OppholdÅrsakType.ForeldrepengerFørFødsel;
+            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
         default:
             return undefined;
     }
@@ -549,16 +547,16 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     return nyePerioder;
 };
 
-const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): OppholdÅrsakType => {
+const mapKontoTypeTilOppholdÅrsakType = (konto: KontoType): Oppholdsårsak => {
     switch (konto) {
         case 'FEDREKVOTE':
-            return OppholdÅrsakType.UttakFedrekvoteAnnenForelder;
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
         case 'FELLESPERIODE':
-            return OppholdÅrsakType.UttakFellesperiodeAnnenForelder;
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         case 'MØDREKVOTE':
-            return OppholdÅrsakType.UttakMødrekvoteAnnenForelder;
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         default:
-            return OppholdÅrsakType.Ingen;
+            return 'INGEN';
     }
 };
 

@@ -5,7 +5,6 @@ import {
     FamiliehendelseType,
     Forelder,
     MorsAktivitet,
-    OppholdÅrsakType,
     PeriodeInfoType,
     PeriodeResultatÅrsak,
     Periodetype,
@@ -63,7 +62,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: true,
                 flerbarnsdager: false,
-                oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 guid: '0',
                 kontoType: 'MØDREKVOTE',
                 resultat: {
@@ -81,7 +80,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(infoperiode.tidsperiode.fom).toEqual(new Date('2022-01-03'));
         expect(infoperiode.tidsperiode.tom).toEqual(new Date('2022-02-04'));
         expect(infoperiode.type).toEqual(Periodetype.Info);
-        expect(infoperiode.årsak).toEqual(OppholdÅrsakType.UttakMødrekvoteAnnenForelder);
+        expect(infoperiode.årsak).toEqual('UTTAK_MØDREKVOTE_ANNEN_FORELDER');
     });
 
     it(
@@ -102,7 +101,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     },
                     gjelderAnnenPart: true,
                     flerbarnsdager: false,
-                    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                     guid: '0',
                     kontoType: 'MØDREKVOTE',
                 },
@@ -121,7 +120,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     utbetalingsprosent: 100,
                     arbeidstidprosent: 100,
-                    oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                    oppholdÅrsak: 'UTTAK_FELLESP_ANNEN_FORELDER',
                     guid: '1',
                     kontoType: 'FELLESPERIODE',
                 },
@@ -178,14 +177,14 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(infoperiode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
             expect(infoperiode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
             expect(infoperiode1.type).toEqual(Periodetype.Info);
-            expect(infoperiode1.årsak).toEqual(OppholdÅrsakType.UttakMødrekvoteAnnenForelder);
+            expect(infoperiode1.årsak).toEqual('UTTAK_MØDREKVOTE_ANNEN_FORELDER');
             expect(infoperiode1.forelder).toEqual(Forelder.mor);
 
             const infoperiode2 = result[1] as UttakAnnenPartInfoPeriode;
             expect(infoperiode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
             expect(infoperiode2.tidsperiode.tom).toEqual(new Date('2022-01-18'));
             expect(infoperiode2.type).toEqual(Periodetype.Info);
-            expect(infoperiode2.årsak).toEqual(OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
+            expect(infoperiode2.årsak).toEqual('UTTAK_FELLESP_ANNEN_FORELDER');
             expect(infoperiode2.forelder).toEqual(Forelder.mor);
 
             const uttaksperiode = result[2] as Uttaksperiode;
@@ -227,7 +226,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gjelderAnnenPart: true,
                     samtidigUttak: 100,
                     flerbarnsdager: false,
-                    oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                     guid: '0',
                     stønadskontotype: 'MØDREKVOTE',
                     resultat: {
@@ -247,7 +246,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     kontoType: 'FEDREKVOTE',
                     guid: '0',
-                    oppholdÅrsak: OppholdÅrsakType.Ingen,
+                    oppholdÅrsak: 'INGEN',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -319,7 +318,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     flerbarnsdager: false,
                     kontoType: 'MØDREKVOTE',
                     guid: '1',
-                    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                     resultat: {
                         innvilget: true,
                         trekkerMinsterett: false,
@@ -663,7 +662,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                 },
                 gjelderAnnenPart: false,
                 flerbarnsdager: false,
-                oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
                 guid: '0',
                 kontoType: 'MØDREKVOTE',
                 resultat: {
@@ -697,7 +696,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const uttakkAnnenpartEøs = result[1] as UttakAnnenPartEØSInfoPeriode;
         expect(uttakkAnnenpartEøs.tidsperiode.fom).toEqual(new Date('2022-02-05'));
         expect(uttakkAnnenpartEøs.tidsperiode.tom).toEqual(new Date('2022-03-04'));
-        expect(uttakkAnnenpartEøs.årsak).toEqual(OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
+        expect(uttakkAnnenpartEøs.årsak).toEqual('UTTAK_FELLESP_ANNEN_FORELDER');
         expect(uttakkAnnenpartEøs.trekkdager).toEqual(55);
     });
 });

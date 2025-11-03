@@ -7,7 +7,6 @@ export { Forelder } from './src/forelder';
 export { PeriodeInfoType } from './src/periodeInfoType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
 export { OverføringÅrsakType } from './src/overføringÅrsakType';
-export { OppholdÅrsakType } from './src/oppholdÅrsakType';
 export { MorsAktivitet } from './src/morsAktivitet';
 export { Periodetype } from './src/periodetype';
 export { BarnType } from './src/barnType';

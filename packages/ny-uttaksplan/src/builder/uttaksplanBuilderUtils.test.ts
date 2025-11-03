@@ -1,5 +1,4 @@
 import { Forelder } from '@navikt/fp-common';
-import { OppholdÅrsakType } from '@navikt/fp-types';
 import { omitOne } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -114,7 +113,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 readOnly: true,
                 samtidigUttak: 100,
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ];
 
@@ -197,7 +196,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: Forelder.farMedmor,
                 samtidigUttak: 80,
                 readOnly: true,
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ];
 
@@ -274,7 +273,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 tom: '2022-02-04',
                 forelder: Forelder.farMedmor,
                 samtidigUttak: 100,
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 readOnly: true,
             },
         ];
@@ -301,7 +300,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     tom: '2021-01-07',
                     forelder: Forelder.farMedmor,
                     samtidigUttak: 100,
-                    oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                    oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                     readOnly: true,
                 },
             ];
@@ -335,7 +334,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2021-01-05',
                 tom: '2021-01-05',
                 forelder: Forelder.farMedmor,
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 samtidigUttak: 100,
                 readOnly: true,
             },
@@ -366,7 +365,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2021-01-01',
                 tom: '2021-01-04',
                 forelder: Forelder.farMedmor,
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 samtidigUttak: 100,
                 readOnly: true,
             },
@@ -401,7 +400,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     fom: '2021-01-07',
                     tom: '2021-01-08',
                     forelder: Forelder.farMedmor,
-                    oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                    oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                     readOnly: true,
                 },
             ];

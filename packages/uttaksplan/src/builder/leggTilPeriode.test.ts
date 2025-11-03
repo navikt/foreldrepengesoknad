@@ -1,12 +1,4 @@
-import {
-    Forelder,
-    MorsAktivitet,
-    OppholdÅrsakType,
-    Periode,
-    PeriodeInfoType,
-    Periodetype,
-    Uttaksperiode,
-} from '@navikt/fp-common';
+import { Forelder, MorsAktivitet, Periode, PeriodeInfoType, Periodetype, Uttaksperiode } from '@navikt/fp-common';
 
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
 
@@ -157,7 +149,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     },
     {
         id: '4',
@@ -196,7 +188,7 @@ const perioderKunAnnenPartsUttak: Periode[] = [
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+        årsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
     },
 ];
 

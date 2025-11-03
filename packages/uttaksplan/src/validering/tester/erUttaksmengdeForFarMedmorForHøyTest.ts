@@ -1,6 +1,5 @@
 import {
     Forelder,
-    OppholdÅrsakType,
     Periode,
     PeriodeInfoType,
     Søknadsinfo,
@@ -37,7 +36,7 @@ const erUttaksmengdeForFarMedmorForHøy = (
         if (
             isInfoPeriodeAnnenPart(p) &&
             p.infotype === PeriodeInfoType.uttakAnnenPart &&
-            p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+            p.årsak === 'UTTAK_FELLESP_ANNEN_FORELDER'
         ) {
             return false;
         }
