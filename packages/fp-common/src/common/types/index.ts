@@ -11,7 +11,6 @@ export * from './MinsterettType';
 export * from './MissingAttachment';
 export * from './MorsAktivitet';
 export * from './NavnPåForeldre';
-export * from './OverføringÅrsakType';
 export * from './Periode';
 export * from './PeriodeHullÅrsak';
 export * from './PeriodeInfoType';

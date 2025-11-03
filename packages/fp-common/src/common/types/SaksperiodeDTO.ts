@@ -2,11 +2,11 @@ import {
     Gradering,
     KontoTypeUttak_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
+    UttakOverføringÅrsak_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 
 import { MorsAktivitet } from './MorsAktivitet';
-import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultatDTO } from './PeriodeResultatDTO';
 
 export interface SaksperiodeDTO {
@@ -18,7 +18,7 @@ export interface SaksperiodeDTO {
     gradering?: Gradering;
     oppholdÅrsak?: UttakOppholdÅrsak_fpoversikt;
     utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
-    overføringÅrsak?: OverføringÅrsakType;
+    overføringÅrsak?: UttakOverføringÅrsak_fpoversikt;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
 }

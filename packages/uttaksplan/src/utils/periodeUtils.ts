@@ -7,7 +7,6 @@ import {
     InfoPeriode,
     NavnPåForeldre,
     OpprinneligSøkt,
-    OverføringÅrsakType,
     Periode,
     PeriodeInfoType,
     PeriodeValidState,
@@ -20,7 +19,12 @@ import {
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt, Oppholdsårsak, UtsettelsesÅrsak } from '@navikt/fp-types';
+import {
+    KontoTypeUttak_fpoversikt,
+    Oppholdsårsak,
+    UtsettelsesÅrsak,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
@@ -349,12 +353,12 @@ export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
     return erPeriodeFomEllerEtterDato(periode, dato) === false;
 };
 
-export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelsesÅrsak | OverføringÅrsakType) =>
+export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelsesÅrsak | UttakOverføringÅrsak_fpoversikt) =>
     årsak === 'SYKDOM' ||
     årsak === 'INSTITUSJONSOPPHOLD_BARNET' ||
     årsak === 'INSTITUSJONSOPPHOLD_SØKER' ||
-    årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-    årsak === OverføringÅrsakType.sykdomAnnenForelder;
+    årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+    årsak === 'SYKDOM_ANNEN_FORELDER';
 
 export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
     return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
