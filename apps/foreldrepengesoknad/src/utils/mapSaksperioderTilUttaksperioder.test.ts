@@ -184,7 +184,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(infoperiode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
             expect(infoperiode2.tidsperiode.tom).toEqual(new Date('2022-01-18'));
             expect(infoperiode2.type).toEqual(Periodetype.Info);
-            expect(infoperiode2.årsak).toEqual('FELLESPERIODE_ANNEN_FORELDER');
+            expect(infoperiode2.årsak).toEqual('UTTAK_FELLESP_ANNEN_FORELDER');
             expect(infoperiode2.forelder).toEqual(Forelder.mor);
 
             const uttaksperiode = result[2] as Uttaksperiode;
@@ -696,7 +696,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         const uttakkAnnenpartEøs = result[1] as UttakAnnenPartEØSInfoPeriode;
         expect(uttakkAnnenpartEøs.tidsperiode.fom).toEqual(new Date('2022-02-05'));
         expect(uttakkAnnenpartEøs.tidsperiode.tom).toEqual(new Date('2022-03-04'));
-        expect(uttakkAnnenpartEøs.årsak).toEqual('FELLESPERIODE_ANNEN_FORELDER');
+        expect(uttakkAnnenpartEøs.årsak).toEqual('UTTAK_FELLESP_ANNEN_FORELDER');
         expect(uttakkAnnenpartEøs.trekkdager).toEqual(55);
     });
 });
