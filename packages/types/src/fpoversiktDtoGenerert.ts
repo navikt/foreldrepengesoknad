@@ -304,7 +304,7 @@ export type AnnenPartRequest_fpoversikt = {
 };
 
 export type Aktivitet_fpoversikt = {
-    arbeidsgiver?: Arbeidsgiver_fpoversikt;
+    arbeidsgiver: Arbeidsgiver_fpoversikt;
     arbeidsgiverNavn?: string;
     type: AktivitetType_fpoversikt;
 };
@@ -319,7 +319,7 @@ export type AnnenPartSak_fpoversikt = {
 };
 
 export type Arbeidsgiver_fpoversikt = {
-    id?: string;
+    id: string;
     type?: ArbeidsgiverType_fpoversikt;
 };
 

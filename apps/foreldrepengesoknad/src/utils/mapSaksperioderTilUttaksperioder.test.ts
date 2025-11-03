@@ -13,7 +13,6 @@ import {
     Utsettelsesperiode,
     UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
-    UttakArbeidType,
     Uttaksperiode,
 } from '@navikt/fp-common';
 import { UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
@@ -143,7 +142,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
                     gradering: {
                         arbeidstidprosent: 80,
                         aktivitet: {
-                            type: UttakArbeidType.ORDINÆRT_ARBEID,
+                            type: 'ORDINÆRT_ARBEID',
                             arbeidsgiver: { id: '50089', type: 'ORGANISASJON' },
                         },
                     },

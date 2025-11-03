@@ -31,6 +31,5 @@ export * from './Søkersituasjon';
 export * from './Søknadsinfo';
 export * from './Tidsperiode';
 export * from './TidsperiodeDate';
-export * from './UttakArbeidType';
 export * from './UttakRundtFødselÅrsak';
 export * from './UttaksplanHexColor';
