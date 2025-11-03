@@ -16,7 +16,6 @@ import {
     SaksperiodeDTO,
     Situasjon,
     Søkerrolle,
-    UttakArbeidType,
     isAdoptertBarn,
     isFødtBarn,
     isInfoPeriode,
@@ -25,6 +24,7 @@ import {
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
+    AktivitetType_fpoversikt,
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
@@ -50,11 +50,11 @@ import { guid } from './guid';
 import { mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 import { getKjønnFromFnrString } from './personUtils';
 
-export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
+export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fpoversikt): Arbeidsform => {
     switch (arbeidstype) {
-        case UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE:
+        case 'SELVSTENDIG_NÆRINGSDRIVENDE':
             return Arbeidsform.selvstendignæringsdrivende;
-        case UttakArbeidType.FRILANS:
+        case 'FRILANS':
             return Arbeidsform.frilans;
         default:
             return Arbeidsform.arbeidstaker;

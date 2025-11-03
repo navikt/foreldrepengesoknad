@@ -196,7 +196,6 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                             type: UttakArbeidType.ORDINÆRT_ARBEID,
                             arbeidsgiver: {
                                 id: '1',
-                                navn: 'TESTY TEST',
                                 type: ArbeidsgiverInfoType.ORGANISASJON,
                             },
                         },

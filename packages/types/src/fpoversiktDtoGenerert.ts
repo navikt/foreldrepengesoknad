@@ -319,7 +319,7 @@ export type AnnenPartSak_fpoversikt = {
 };
 
 export type Arbeidsgiver_fpoversikt = {
-    id?: string;
+    id: string;
     type?: ArbeidsgiverType_fpoversikt;
 };
 

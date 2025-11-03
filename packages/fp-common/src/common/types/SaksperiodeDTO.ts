@@ -1,5 +1,5 @@
 import {
-    Gradering,
+    Gradering_fpoversikt,
     KontoTypeUttak_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
@@ -15,7 +15,7 @@ export interface SaksperiodeDTO {
     resultat?: PeriodeResultatDTO;
     flerbarnsdager?: boolean;
     kontoType?: KontoTypeUttak_fpoversikt;
-    gradering?: Gradering;
+    gradering?: Gradering_fpoversikt;
     oppholdÅrsak?: UttakOppholdÅrsak_fpoversikt;
     utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
     overføringÅrsak?: OverføringÅrsakType;

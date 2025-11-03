@@ -1,4 +1,4 @@
-import { Arbeidsform, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
+import { Arbeidsform, SaksperiodeDTO } from '@navikt/fp-common';
 import { FpSak_fpoversikt } from '@navikt/fp-types';
 
 import {
@@ -389,19 +389,19 @@ describe('eksisterendeSakUtils', () => {
 
     describe('getArbeidsformFromUttakArbeidstype', () => {
         it('skal mappe Frilans uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.FRILANS);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('FRILANS');
             expect(arbeidsform).toBe(Arbeidsform.frilans);
         });
 
         it('skal mappe Selvstendig næringsdrivende uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('SELVSTENDIG_NÆRINGSDRIVENDE');
             expect(arbeidsform).toBe(Arbeidsform.selvstendignæringsdrivende);
         });
 
         it('skal mappe arbeidstaker når det ikke er frilans eller selvstendig næringsdrivende', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.ORDINÆRT_ARBEID);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('ORDINÆRT_ARBEID');
             expect(arbeidsform).toBe(Arbeidsform.arbeidstaker);
-            const arbeidsformAnnet = getArbeidsformFromUttakArbeidstype(UttakArbeidType.ANNET);
+            const arbeidsformAnnet = getArbeidsformFromUttakArbeidstype('ANNET');
             expect(arbeidsformAnnet).toBe(Arbeidsform.arbeidstaker);
         });
     });
