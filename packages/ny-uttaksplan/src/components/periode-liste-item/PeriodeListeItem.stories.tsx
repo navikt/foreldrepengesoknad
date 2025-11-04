@@ -4,7 +4,7 @@ import { ComponentProps } from 'react';
 import { Accordion } from '@navikt/ds-react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, UttakArbeidType } from '@navikt/fp-types';
+import { Barn } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
@@ -192,7 +192,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     kontoType: 'FELLESPERIODE',
                     gradering: {
                         aktivitet: {
-                            type: UttakArbeidType.ORDINÆRT_ARBEID,
+                            type: 'ORDINÆRT_ARBEID',
                             arbeidsgiver: {
                                 id: '1',
                                 type: 'ORGANISASJON',
