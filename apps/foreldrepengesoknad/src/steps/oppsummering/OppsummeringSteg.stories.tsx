@@ -13,13 +13,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import {
-    AttachmentMetadataType,
-    AttachmentType,
-    ISO_DATE_FORMAT,
-    SivilstandType,
-    Skjemanummer,
-} from '@navikt/fp-constants';
+import { AttachmentType, ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
@@ -674,7 +668,7 @@ const FIL_INFO = {
 const FIL_INFO_UTTAK_MED_PERIODE = {
     ...FIL_INFO,
     dokumenterer: {
-        type: AttachmentMetadataType.UTTAK,
+        type: 'UTTAK' as const,
         perioder: [
             {
                 fom: '2024-01-01',
@@ -697,7 +691,7 @@ export const VisAlleVedlegg: Story = {
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                     innsendingsType: 'LASTET_OPP',
                     dokumenterer: {
-                        type: AttachmentMetadataType.OPPTJENING,
+                        type: 'OPPTJENING',
                         perioder: [
                             {
                                 fom: '2024-01-01',
@@ -722,7 +716,7 @@ export const VisAlleVedlegg: Story = {
                     innsendingsType: 'LASTET_OPP',
                     skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
                     dokumenterer: {
-                        type: AttachmentMetadataType.OPPTJENING,
+                        type: 'OPPTJENING',
                         perioder: [
                             {
                                 fom: '2024-01-01',

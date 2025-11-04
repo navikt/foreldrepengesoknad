@@ -4,7 +4,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
@@ -61,7 +61,7 @@ export const TerminbekreftelseDokumentasjon = ({
                     : 'manglendeVedlegg.terminbekreftelse.description',
             })}
             attachmentType={AttachmentType.TERMINBEKREFTELSE}
-            metadataType={AttachmentMetadataType.BARN}
+            metadataType={'BARN'}
         />
     );
 };

@@ -6,8 +6,8 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
-import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { AttachmentType } from '@navikt/fp-constants';
+import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
@@ -44,7 +44,7 @@ interface Props {
     labelText: string;
     description?: string | React.ReactNode;
     attachmentType: AttachmentType;
-    metadataType: AttachmentMetadataType;
+    metadataType: DokumentererType;
     perioder?: Perioder;
 }
 

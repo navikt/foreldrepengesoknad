@@ -10,7 +10,7 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
+import { AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
@@ -51,7 +51,7 @@ export const UttakUploader = ({
         if (formAttachments.length === 0) {
             const init = lagSendSenereDokument(attachmentType, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
-                type: AttachmentMetadataType.UTTAK,
+                type: 'UTTAK',
                 perioder: perioder.map((p) => ({
                     fom: dateToISOString(p.tidsperiode.fom),
                     tom: dateToISOString(p.tidsperiode.tom),
@@ -92,7 +92,7 @@ export const UttakUploader = ({
             updateAttachments={(vedlegg) => {
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
-                        type: AttachmentMetadataType.UTTAK,
+                        type: 'UTTAK',
                         perioder: perioder.map((p) => ({
                             fom: dateToISOString(p.tidsperiode.fom),
                             tom: dateToISOString(p.tidsperiode.tom),
