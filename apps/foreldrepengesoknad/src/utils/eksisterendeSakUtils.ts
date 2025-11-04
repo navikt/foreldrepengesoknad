@@ -20,7 +20,6 @@ import {
     isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AktivitetType_fpoversikt,
@@ -257,16 +256,16 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const grunnlag: Saksgrunnlag = {
         dekningsgrad: dekningsgrad === 'HUNDRE' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
         antallBarn: antallBarn,
-        morErAleneOmOmsorg: sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
+        morErAleneOmOmsorg: sakTilhørerMor && rettighetType === 'ALENEOMSORG',
         morErUfør: morUføretrygd,
-        morHarRett: sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
-        farMedmorErAleneOmOmsorg: !sakTilhørerMor && rettighetType === RettighetType.ALENEOMSORG,
-        farMedmorHarRett: !sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
+        morHarRett: sakTilhørerMor || rettighetType === 'BEGGE_RETT',
+        farMedmorErAleneOmOmsorg: !sakTilhørerMor && rettighetType === 'ALENEOMSORG',
+        farMedmorHarRett: !sakTilhørerMor || rettighetType === 'BEGGE_RETT',
         søkerErFarEllerMedmor: erFarEllerMedmor,
         termindato,
         fødselsdato: fødselsdatoForSaken,
         omsorgsovertakelsesdato: omsorgsovertakelse,
-        erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
+        erDeltUttak: rettighetType === 'BEGGE_RETT',
         erBarnetFødt: fødselsdatoForSaken !== undefined,
         familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdatoForSaken, omsorgsovertakelse),
         familiehendelseType: getFamiliehendelseType(fødselsdatoForSaken, termindato, omsorgsovertakelse),

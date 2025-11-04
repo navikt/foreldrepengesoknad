@@ -52,7 +52,6 @@ export type { PeriodeResultat } from './src/PeriodeResultat';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
 export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UttakArbeidType } from './src/UttakArbeidType';
-export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/Ytelse';

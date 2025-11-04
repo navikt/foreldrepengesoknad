@@ -1,4 +1,4 @@
-import { RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
+import { Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -12,7 +12,7 @@ export const saker = {
             morUføretrygd: false,
             harAnnenForelderTilsvarendeRettEØS: false,
             ønskerJustertUttakVedFødsel: false,
-            rettighetType: RettighetType.BEGGE_RETT,
+            rettighetType: 'BEGGE_RETT',
             annenPart: {
                 fnr: '03506715317',
             },
@@ -96,7 +96,7 @@ export const saker = {
             morUføretrygd: false,
             harAnnenForelderTilsvarendeRettEØS: false,
             ønskerJustertUttakVedFødsel: false,
-            rettighetType: RettighetType.BEGGE_RETT,
+            rettighetType: 'BEGGE_RETT',
             annenPart: {
                 fnr: '03506715317',
             },
@@ -244,7 +244,7 @@ export const sakerTidligFPSøknad = {
             morUføretrygd: false,
             harAnnenForelderTilsvarendeRettEØS: false,
             ønskerJustertUttakVedFødsel: false,
-            rettighetType: RettighetType.BEGGE_RETT,
+            rettighetType: 'BEGGE_RETT',
             annenPart: {
                 fnr: '03506715317',
             },
@@ -278,7 +278,7 @@ export const sakerVenterPåFpInntektsmelding = {
             morUføretrygd: false,
             harAnnenForelderTilsvarendeRettEØS: false,
             ønskerJustertUttakVedFødsel: false,
-            rettighetType: RettighetType.BEGGE_RETT,
+            rettighetType: 'BEGGE_RETT',
             annenPart: {
                 fnr: '03506715317',
             },
@@ -312,7 +312,7 @@ export const endringFPSøknad = {
             morUføretrygd: false,
             harAnnenForelderTilsvarendeRettEØS: false,
             ønskerJustertUttakVedFødsel: false,
-            rettighetType: RettighetType.BEGGE_RETT,
+            rettighetType: 'BEGGE_RETT',
             annenPart: {
                 fnr: '03506715317',
             },

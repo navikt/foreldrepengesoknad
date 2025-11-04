@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
-import { RettighetType } from '@navikt/fp-common';
 import { KontoBeregningDto_fpoversikt, NavnPåForeldre, UttakArbeidType } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
@@ -54,7 +53,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         visStatusIkoner: true,
         konto: kontoNårBeggeHarRett,
         perioder: [],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -121,7 +120,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 readOnly: true,
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -189,7 +188,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -245,7 +244,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -312,7 +311,7 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -380,7 +379,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
@@ -434,7 +433,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: 'FAR_MEDMOR',
     },
 };
@@ -467,7 +466,7 @@ export const EnRettFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: 'FAR_MEDMOR',
     },
 };
@@ -519,7 +518,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: 'MOR',
     },
 };
@@ -550,7 +549,7 @@ export const EnRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
+        rettighetType: 'BARE_SØKER_RETT',
         forelder: 'MOR',
     },
 };
@@ -581,7 +580,7 @@ export const AleneomsorgMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: 'MOR',
     },
 };
@@ -627,7 +626,7 @@ export const AleneomsorgFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: 'FAR_MEDMOR',
     },
 };
@@ -673,7 +672,7 @@ export const AleneomsorgFarForMangeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
+        rettighetType: 'ALENEOMSORG',
         forelder: 'FAR_MEDMOR',
     },
 };
@@ -756,7 +755,7 @@ export const MorHarPrematuruker: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
+        rettighetType: 'BEGGE_RETT',
         forelder: 'MOR',
     },
 };
