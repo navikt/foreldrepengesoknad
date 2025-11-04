@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Forelder, Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
 import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
@@ -32,7 +32,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             const aktivitetsFriPeriode: Uttaksperiode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'AKTIVITETSFRI_KVOTE',
                 tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
                 vedlegg: [],
@@ -59,7 +59,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
@@ -81,7 +81,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'AKTIVITETSFRI_KVOTE',
             tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
             vedlegg: [],
@@ -108,7 +108,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         const aktivitetskravPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'FORELDREPENGER',
             tidsperiode: getTidsperiode(
                 Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
@@ -148,7 +148,7 @@ const ikkeDeltUttakAdopsjonMor = (
     const periode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: foreldrepengerKonto.konto,
         tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
         vedlegg: [],
@@ -209,7 +209,7 @@ const ikkeDeltUttakFødselMor = (
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FORELDREPENGER',
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
@@ -221,7 +221,7 @@ const ikkeDeltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: foreldrePengerFørFødselKonto.konto,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
@@ -235,7 +235,7 @@ const ikkeDeltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FORELDREPENGER_FØR_FØDSEL',
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {
@@ -260,7 +260,7 @@ const ikkeDeltUttakFødselMor = (
     const foreldrepengerPeriode: Periode = {
         id: guid(),
         type: Periodetype.Uttak,
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: foreldrepengerKonto.konto,
         tidsperiode: antallDagerIForeldrepenger,
         vedlegg: [],
@@ -292,7 +292,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             const aktivitetsFriPeriode: Uttaksperiode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'AKTIVITETSFRI_KVOTE',
                 tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
                 vedlegg: [],
@@ -329,7 +329,7 @@ const ikkeDeltUttakFødselFarMedmor = (
         const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDatoNestePeriode, foreldrepengerKonto.dager),
             vedlegg: [],
@@ -341,7 +341,7 @@ const ikkeDeltUttakFødselFarMedmor = (
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'AKTIVITETSFRI_KVOTE',
             tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
             vedlegg: [],
@@ -369,7 +369,7 @@ const ikkeDeltUttakFødselFarMedmor = (
         const aktivitetskravPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'FORELDREPENGER',
             tidsperiode: getTidsperiode(
                 Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),

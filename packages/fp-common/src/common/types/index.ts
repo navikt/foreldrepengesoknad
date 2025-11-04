@@ -5,7 +5,6 @@ export * from './Barn';
 export * from './Dekningsgrad';
 export * from './EksisterendeSak';
 export * from './FamiliehendelseType';
-export * from './Forelder';
 export * from './ForeldreparSituasjonTypes';
 export * from './MissingAttachment';
 export * from './NavnPåForeldre';

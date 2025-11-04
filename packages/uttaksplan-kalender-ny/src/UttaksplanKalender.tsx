@@ -6,7 +6,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { BarnType, Forelder, PeriodeColor } from '@navikt/fp-constants';
+import { BarnType, PeriodeColor } from '@navikt/fp-constants';
 import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
@@ -203,8 +203,7 @@ const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor
 };
 
 const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean) =>
-    (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
-    (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
+    (periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor);
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: KalenderPeriode,
@@ -249,11 +248,11 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return PeriodeColor.BLUE;
     }
 
-    if (periode.forelder === Forelder.mor) {
+    if (periode.forelder === 'MOR') {
         return PeriodeColor.BLUE;
     }
 
-    if (periode.forelder === Forelder.farMedmor) {
+    if (periode.forelder === 'FAR_MEDMOR') {
         return PeriodeColor.LIGHTGREEN;
     }
 
@@ -274,7 +273,7 @@ const getKalenderFargeForPeriodeType = (
     }
 
     if (periode.utsettelseÅrsak) {
-        return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
+        return periode.forelder === 'FAR_MEDMOR' ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
     }
 
     if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {

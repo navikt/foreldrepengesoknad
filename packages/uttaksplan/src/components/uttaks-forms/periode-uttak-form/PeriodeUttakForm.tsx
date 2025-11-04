@@ -16,8 +16,12 @@ import {
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt, KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoDto_fpoversikt,
+    KontoTypeUttak_fpoversikt,
+} from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
@@ -91,8 +95,8 @@ interface Props {
     isOpen: boolean;
 }
 
-const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
+const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: BrukerRolleSak_fpoversikt): boolean => {
+    return !((erFarEllerMedmor && forelder === 'FAR_MEDMOR') || (!erFarEllerMedmor && forelder === 'MOR'));
 };
 
 const erUttakAvAnnenForeldersKvote = (
@@ -106,7 +110,7 @@ const erUttakAvAnnenForeldersKvote = (
 };
 
 const getPeriodeType = (
-    periodenGjelder: Forelder | '',
+    periodenGjelder: BrukerRolleSak_fpoversikt | '',
     erFarEllerMedmor: boolean,
     konto: KontoTypeUttak_fpoversikt | '',
     familiehendelsedato: Date,
@@ -170,7 +174,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
-    const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
     const annenForelderHarRettIEØS =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 

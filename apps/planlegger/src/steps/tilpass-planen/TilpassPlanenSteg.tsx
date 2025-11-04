@@ -11,7 +11,6 @@ import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } fro
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { Dekningsgrad, KontoBeregningDto_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -291,7 +290,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                     modus: 'planlegger',
                                 })}
                                 rettighetType={utledRettighetType()}
-                                forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+                                forelder={erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'}
                                 erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
                             />
                         </>

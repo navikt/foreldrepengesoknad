@@ -3,7 +3,6 @@ import {
     AvslåttPeriode,
     Dekningsgrad,
     FamiliehendelseType,
-    Forelder,
     PeriodeInfoType,
     Periodetype,
     Saksgrunnlag,
@@ -175,20 +174,20 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(infoperiode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
             expect(infoperiode1.type).toEqual(Periodetype.Info);
             expect(infoperiode1.årsak).toEqual('UTTAK_MØDREKVOTE_ANNEN_FORELDER');
-            expect(infoperiode1.forelder).toEqual(Forelder.mor);
+            expect(infoperiode1.forelder).toEqual('MOR');
 
             const infoperiode2 = result[1] as UttakAnnenPartInfoPeriode;
             expect(infoperiode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
             expect(infoperiode2.tidsperiode.tom).toEqual(new Date('2022-01-18'));
             expect(infoperiode2.type).toEqual(Periodetype.Info);
             expect(infoperiode2.årsak).toEqual('UTTAK_FELLESP_ANNEN_FORELDER');
-            expect(infoperiode2.forelder).toEqual(Forelder.mor);
+            expect(infoperiode2.forelder).toEqual('MOR');
 
             const uttaksperiode = result[2] as Uttaksperiode;
             expect(uttaksperiode.tidsperiode.fom).toEqual(new Date('2022-01-19'));
             expect(uttaksperiode.tidsperiode.tom).toEqual(new Date('2022-01-20'));
             expect(uttaksperiode.type).toEqual(Periodetype.Uttak);
-            expect(uttaksperiode.forelder).toEqual(Forelder.farMedmor);
+            expect(uttaksperiode.forelder).toEqual('FAR_MEDMOR');
             expect(uttaksperiode.konto).toEqual('FEDREKVOTE');
             expect(uttaksperiode.gradert).toEqual(true);
             expect(uttaksperiode.ønskerSamtidigUttak).toEqual(true);
@@ -202,7 +201,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttakFellesperiode.tidsperiode.fom).toEqual(new Date('2022-01-21'));
             expect(uttakFellesperiode.tidsperiode.tom).toEqual(new Date('2022-01-21'));
             expect(uttakFellesperiode.type).toEqual(Periodetype.Uttak);
-            expect(uttakFellesperiode.forelder).toEqual(Forelder.farMedmor);
+            expect(uttakFellesperiode.forelder).toEqual('FAR_MEDMOR');
             expect(uttakFellesperiode.konto).toEqual('FELLESPERIODE');
             expect(uttakFellesperiode.gradert).toEqual(false);
             expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
@@ -264,22 +263,22 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
             expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
             expect(uttak1.type).toEqual(Periodetype.Info);
-            expect(uttak1.forelder).toEqual(Forelder.mor);
+            expect(uttak1.forelder).toEqual('MOR');
             const uttak2 = result[1] as Uttaksperiode;
             expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
             expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
             expect(uttak2.type).toEqual(Periodetype.Info);
-            expect(uttak2.forelder).toEqual(Forelder.mor);
+            expect(uttak2.forelder).toEqual('MOR');
             const uttak3 = result[2] as Uttaksperiode;
             expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
             expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
             expect(uttak3.type).toEqual(Periodetype.Uttak);
-            expect(uttak3.forelder).toEqual(Forelder.farMedmor);
+            expect(uttak3.forelder).toEqual('FAR_MEDMOR');
             const uttak4 = result[3] as Uttaksperiode;
             expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
             expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
             expect(uttak4.type).toEqual(Periodetype.Info);
-            expect(uttak4.forelder).toEqual(Forelder.mor);
+            expect(uttak4.forelder).toEqual('MOR');
         },
     );
     it(
@@ -335,22 +334,22 @@ describe('mapSaksperioderTilUttaksperioder', () => {
             expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
             expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
             expect(uttak1.type).toEqual(Periodetype.Uttak);
-            expect(uttak1.forelder).toEqual(Forelder.farMedmor);
+            expect(uttak1.forelder).toEqual('FAR_MEDMOR');
             const uttak2 = result[2] as Uttaksperiode;
             expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
             expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
             expect(uttak2.type).toEqual(Periodetype.Uttak);
-            expect(uttak2.forelder).toEqual(Forelder.farMedmor);
+            expect(uttak2.forelder).toEqual('FAR_MEDMOR');
             const uttak3 = result[1] as Uttaksperiode;
             expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
             expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
             expect(uttak3.type).toEqual(Periodetype.Info);
-            expect(uttak3.forelder).toEqual(Forelder.mor);
+            expect(uttak3.forelder).toEqual('MOR');
             const uttak4 = result[3] as Uttaksperiode;
             expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
             expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
             expect(uttak4.type).toEqual(Periodetype.Uttak);
-            expect(uttak4.forelder).toEqual(Forelder.farMedmor);
+            expect(uttak4.forelder).toEqual('FAR_MEDMOR');
         },
     );
 
@@ -396,7 +395,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(utsettelse1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
         expect(utsettelse1.type).toEqual(Periodetype.Utsettelse);
         expect(utsettelse1.årsak).toEqual('LOVBESTEMT_FERIE');
-        expect(utsettelse1.forelder).toEqual(Forelder.farMedmor);
+        expect(utsettelse1.forelder).toEqual('FAR_MEDMOR');
         expect(utsettelse1.erArbeidstaker).toEqual(false);
         const utsettelse2 = result[1] as Utsettelsesperiode;
         expect(utsettelse2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
@@ -404,7 +403,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(utsettelse2.type).toEqual(Periodetype.Utsettelse);
         expect(utsettelse2.morsAktivitetIPerioden).toEqual('ARBEID');
         expect(utsettelse2.årsak).toEqual('ARBEID');
-        expect(utsettelse2.forelder).toEqual(Forelder.farMedmor);
+        expect(utsettelse2.forelder).toEqual('FAR_MEDMOR');
         expect(utsettelse2.erArbeidstaker).toEqual(false);
     });
     it('Skal mappe avslåtte perioder riktig', () => {
@@ -448,16 +447,16 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(avslåttPeriode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
         expect(avslåttPeriode1.type).toEqual(Periodetype.Info);
         expect(avslåttPeriode1.avslåttPeriodeType).toEqual(Periodetype.Utsettelse);
-        expect(avslåttPeriode1.forelder).toEqual(Forelder.farMedmor);
+        expect(avslåttPeriode1.forelder).toEqual('FAR_MEDMOR');
         expect(avslåttPeriode1.overskrives).toEqual(true);
         expect(avslåttPeriode1.visPeriodeIPlan).toEqual(true);
         const avslåttPeriode2 = result[1] as AvslåttPeriode;
         expect(avslåttPeriode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
         expect(avslåttPeriode2.tidsperiode.tom).toEqual(new Date('2022-01-12'));
         expect(avslåttPeriode2.type).toEqual(Periodetype.Info);
-        expect(avslåttPeriode2.forelder).toEqual(Forelder.farMedmor);
+        expect(avslåttPeriode2.forelder).toEqual('FAR_MEDMOR');
         expect(avslåttPeriode2.avslåttPeriodeType).toEqual(Periodetype.Uttak);
-        expect(avslåttPeriode2.forelder).toEqual(Forelder.farMedmor);
+        expect(avslåttPeriode2.forelder).toEqual('FAR_MEDMOR');
         expect(avslåttPeriode2.overskrives).toEqual(true);
         expect(avslåttPeriode2.visPeriodeIPlan).toEqual(true);
     });

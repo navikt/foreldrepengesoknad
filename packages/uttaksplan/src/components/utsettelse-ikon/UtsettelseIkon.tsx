@@ -1,7 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { Forelder } from '@navikt/fp-common';
-import { UtsettelsesÅrsak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
 import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import IconBox from '../icon-box/IconBox';
@@ -9,7 +8,7 @@ import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/Uttakspla
 
 interface Props {
     årsak: UtsettelsesÅrsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
 const getIkonForÅrsak = (årsak: UtsettelsesÅrsak): UttaksplanIkonKeys => {

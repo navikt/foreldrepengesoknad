@@ -1,11 +1,4 @@
-import {
-    Forelder,
-    Periode,
-    PeriodeInfoType,
-    Søknadsinfo,
-    isInfoPeriodeAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
@@ -13,7 +6,7 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const harSøktOmFellesperiode = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
-        if (periode.forelder === Forelder.farMedmor && periode.konto === 'FELLESPERIODE') {
+        if (periode.forelder === 'FAR_MEDMOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }

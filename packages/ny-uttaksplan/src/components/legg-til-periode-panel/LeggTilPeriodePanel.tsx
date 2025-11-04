@@ -3,8 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { Planperiode } from '../../types/Planperiode';
 import { LeggTilPeriodePanelStep } from './steps/LeggTilPeriodePanelStep';
@@ -15,7 +14,7 @@ export interface PanelData {
     fom?: string;
     tom?: string;
     kontoType?: KontoTypeUttak_fpoversikt;
-    forelder?: Forelder;
+    forelder?: BrukerRolleSak_fpoversikt;
 }
 
 interface Props {

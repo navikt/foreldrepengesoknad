@@ -1,5 +1,10 @@
-import { Arbeidsform, Forelder, UttakRundtFødselÅrsak } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt, MorsAktivitet, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
+import { Arbeidsform, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak_fpoversikt,
+    MorsAktivitet,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 
 import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 
@@ -33,7 +38,7 @@ export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak | '';
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
-    [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
+    [PeriodeUttakFormField.hvemSkalTaUttak]: BrukerRolleSak_fpoversikt | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;
 }
 

@@ -3,7 +3,6 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Forelder } from '@navikt/fp-constants';
 import { UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -41,7 +40,7 @@ export const Default: Story = {
                 fom: '2022-10-14',
                 tom: '2022-12-21',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
             },
         ],
@@ -84,13 +83,13 @@ export const FarSøker: Story = {
                                             fom: '2024-10-01',
                                             tom: '2024-10-14',
                                             kontoType: 'FEDREKVOTE',
-                                            forelder: Forelder.farMedmor,
+                                            forelder: 'FAR_MEDMOR',
                                             samtidigUttak: 100,
                                         },
                                         {
                                             fom: '2025-01-01',
                                             tom: '2025-02-04',
-                                            forelder: Forelder.farMedmor,
+                                            forelder: 'FAR_MEDMOR',
                                             kontoType: 'MØDREKVOTE',
                                             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
                                         },
@@ -117,32 +116,32 @@ export const FarSøker: Story = {
                 fom: '2024-09-10',
                 tom: '2024-09-30',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2024-10-01',
                 tom: '2024-10-14',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 100,
             },
             {
                 fom: '2024-10-15',
                 tom: '2024-12-09',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2024-12-10',
                 tom: '2024-12-31',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-02-05',
                 tom: '2025-03-11',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
@@ -154,7 +153,7 @@ export const FarSøker: Story = {
                 fom: '2025-03-19',
                 tom: '2025-04-22',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
         navnPåForeldre: {
@@ -271,7 +270,7 @@ export const MorOgFarOgFarGraderer: Story = {
                 },
                 morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
                 fom: '2025-11-18',
@@ -291,7 +290,7 @@ export const MorOgFarOgFarGraderer: Story = {
                 },
                 morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
                 fom: '2026-03-17',
@@ -310,7 +309,7 @@ export const MorOgFarOgFarGraderer: Story = {
                     },
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ],
         navnPåForeldre: {

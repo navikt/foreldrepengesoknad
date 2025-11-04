@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { BarnType, Forelder } from '@navikt/fp-constants';
+import { BarnType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
@@ -48,25 +48,25 @@ export const Default: Story = {
         },
         søkersPerioder: [
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
@@ -109,31 +109,31 @@ export const MorOgFarMedFerieopphold: Story = {
         ...Default.args,
         søkersPerioder: [
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 fom: '2025-12-12',
                 tom: '2025-12-15',
             },
             {
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-16',
                 tom: '2026-03-30',

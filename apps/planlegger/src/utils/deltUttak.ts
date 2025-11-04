@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-constants';
 import { KontoDto_fpoversikt, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
@@ -39,7 +38,7 @@ export const deltUttak = ({
             foreldrepengerFørFødsel.dager,
         );
         const periodeFPFF: SaksperiodeNy = {
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
@@ -53,7 +52,7 @@ export const deltUttak = ({
     if (mødrekvote !== undefined) {
         const tidsperiode = getTidsperiodeString(currentTomDate, mødrekvote.dager);
         const periodeMødrekvote: SaksperiodeNy = {
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
@@ -67,7 +66,7 @@ export const deltUttak = ({
     if (fellesperiodeDagerMor !== undefined && fellesperiodeDagerMor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerMor);
         const periodeFellesperiode: SaksperiodeNy = {
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
@@ -81,7 +80,7 @@ export const deltUttak = ({
     if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
         const periodeFellesperiode: SaksperiodeNy = {
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
@@ -95,7 +94,7 @@ export const deltUttak = ({
     if (fedrekvote !== undefined) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fedrekvote.dager);
         const periodeFedrekvote: SaksperiodeNy = {
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             kontoType: 'FEDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,

@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
-import { KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { BrukerRolleSak_fpoversikt, KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { getForelderNavn } from './periodeUtils';
@@ -80,7 +80,7 @@ export const getStønadskontoNavn = (
 export const getUttakAnnenPartStønadskontoNavn = (
     intl: IntlShape,
     konto: KontoTypeUttak_fpoversikt,
-    periodeForelder: Forelder,
+    periodeForelder: BrukerRolleSak_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     samtidigUttakProsent: string | undefined,
     erFarEllerMedmor: boolean,

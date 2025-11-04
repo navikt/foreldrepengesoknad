@@ -1,5 +1,6 @@
 import {
     Attachment,
+    BrukerRolleSak_fpoversikt,
     KontoTypeUttak_fpoversikt,
     MorsAktivitet,
     Oppholdsårsak,
@@ -8,7 +9,6 @@ import {
 } from '@navikt/fp-types';
 
 import { Arbeidsform } from './Arbeidsform';
-import { Forelder } from './Forelder';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
 import { TidsperiodeDate } from './TidsperiodeDate';
@@ -37,7 +37,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: KontoTypeUttak_fpoversikt;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
     samtidigUttakProsent?: string;
@@ -60,7 +60,7 @@ export type UtsettelseFormPeriodeType = Utsettelsesperiode | Oppholdsperiode;
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelsesÅrsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     morsAktivitetIPerioden?: MorsAktivitet;
     erArbeidstaker: boolean;
     bekrefterArbeidIPerioden?: boolean;
@@ -69,13 +69,13 @@ export interface Utsettelsesperiode extends PeriodeBase {
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: Oppholdsårsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
     konto: KontoTypeUttak_fpoversikt;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     årsak: UttakOverføringÅrsak_fpoversikt;
 }
 
@@ -103,7 +103,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
     kontoType: KontoTypeUttak_fpoversikt | undefined;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
     kanSlettes: boolean;
@@ -114,7 +114,7 @@ export interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: Oppholdsårsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
     ønskerSamtidigUttak?: boolean;
@@ -127,7 +127,7 @@ export interface UttakAnnenPartEØSInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: Oppholdsårsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: boolean;
     visPeriodeIPlan: boolean;
     trekkdager: number;
@@ -137,7 +137,7 @@ export interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
     årsak: UtsettelsesÅrsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
 }
@@ -157,7 +157,7 @@ export interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'fo
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: 'FRI';
     erArbeidstaker: boolean;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
 export type Periode =
@@ -199,15 +199,13 @@ export const isOverføringMorInnlagt = (periode: Periode) => {
     return (
         isOverføringsperiode(periode) &&
         periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
-        periode.forelder === Forelder.farMedmor
+        periode.forelder === 'FAR_MEDMOR'
     );
 };
 
 export const isOverføringMorForSyk = (periode: Periode) => {
     return (
-        isOverføringsperiode(periode) &&
-        periode.forelder === Forelder.farMedmor &&
-        periode.årsak === 'SYKDOM_ANNEN_FORELDER'
+        isOverføringsperiode(periode) && periode.forelder === 'FAR_MEDMOR' && periode.årsak === 'SYKDOM_ANNEN_FORELDER'
     );
 };
 
@@ -215,14 +213,12 @@ export const isOverføringFarInnlagt = (periode: Periode) => {
     return (
         isOverføringsperiode(periode) &&
         periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
-        periode.forelder === Forelder.mor
+        periode.forelder === 'MOR'
     );
 };
 
 export const isOverføringFarForSyk = (periode: Periode) => {
-    return (
-        isOverføringsperiode(periode) && periode.forelder === Forelder.mor && periode.årsak === 'SYKDOM_ANNEN_FORELDER'
-    );
+    return isOverføringsperiode(periode) && periode.forelder === 'MOR' && periode.årsak === 'SYKDOM_ANNEN_FORELDER';
 };
 
 export const isUtsettelseBarnInnlagt = (periode: Periode) => {

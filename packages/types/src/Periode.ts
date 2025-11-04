@@ -1,15 +1,12 @@
-import {
-    Arbeidsform,
-    Forelder,
-    OpprinneligSøkt,
-    PeriodeHullÅrsak,
-    PeriodeInfoType,
-    Periodetype,
-} from '@navikt/fp-constants';
+import { Arbeidsform, OpprinneligSøkt, PeriodeHullÅrsak, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
-import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak_fpoversikt,
+    UttakOverføringÅrsak_fpoversikt,
+} from './fpoversiktDtoGenerert';
 import { MorsAktivitet, Oppholdsårsak, UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
 
 interface PeriodeBase {
@@ -26,7 +23,7 @@ interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
 interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: KontoTypeUttak_fpoversikt;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
     samtidigUttakProsent?: string;
@@ -47,7 +44,7 @@ export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksp
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelsesÅrsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     morsAktivitetIPerioden?: MorsAktivitet;
     erArbeidstaker: boolean;
     bekrefterArbeidIPerioden?: boolean;
@@ -56,13 +53,13 @@ export interface Utsettelsesperiode extends PeriodeBase {
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: Oppholdsårsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
     konto: KontoTypeUttak_fpoversikt;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     årsak: UttakOverføringÅrsak_fpoversikt;
 }
 
@@ -84,7 +81,7 @@ interface AvslåttPeriode extends InfoPeriodeBase {
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
     kontoType: KontoTypeUttak_fpoversikt | undefined;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
     kanSlettes: boolean;
@@ -95,7 +92,7 @@ interface UttakAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.uttakAnnenPart;
     årsak: Oppholdsårsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
     ønskerSamtidigUttak?: boolean;
@@ -108,7 +105,7 @@ interface UtsettelseAnnenPartInfoPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.utsettelseAnnenPart;
     årsak: UtsettelsesÅrsak;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;
 }
@@ -124,7 +121,7 @@ interface PeriodeUtenUttakUtsettelse extends Omit<Utsettelsesperiode, 'forelder'
     morsAktivitetIPerioden?: MorsAktivitet;
     årsak: 'FRI';
     erArbeidstaker: boolean;
-    forelder: Forelder;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
 export type Periode =
