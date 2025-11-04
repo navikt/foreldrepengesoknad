@@ -1,10 +1,8 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
 
-import { BodyShort } from '@navikt/ds-react';
-
-import { CalendarIconLabel } from './CalendarIconLabel';
+import { Chips } from '@navikt/ds-react';
 
 interface Props {
     barnet: OmBarnet;
@@ -16,18 +14,11 @@ export const BarnehageplassLabel = ({ barnet }: Props) => {
     const barnehageplassdato = barnehagestartDato(barnet);
 
     return (
-        <CalendarIconLabel iconType="purple">
-            <BodyShort>
-                <FormattedMessage
-                    id="BarnehageplassLabel.Barnehagestartdato"
-                    values={{
-                        dato: intl.formatDate(barnehageplassdato, {
-                            day: '2-digit',
-                            month: 'short',
-                        }),
-                    }}
-                />
-            </BodyShort>
-        </CalendarIconLabel>
+        <Chips.Toggle>
+            {intl.formatMessage(
+                { id: 'BarnehageplassLabel.Barnehagestartdato' },
+                { dato: intl.formatDate(barnehageplassdato, { day: '2-digit', month: 'short' }) },
+            )}
+        </Chips.Toggle>
     );
 };

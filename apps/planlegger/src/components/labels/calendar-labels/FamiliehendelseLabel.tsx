@@ -1,11 +1,9 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { getFamiliehendelsedato } from 'utils/uttakUtils';
 
-import { BodyShort } from '@navikt/ds-react';
-
-import { CalendarIconLabel } from './CalendarIconLabel';
+import { Chips } from '@navikt/ds-react';
 
 interface Props {
     barnet: OmBarnet;
@@ -20,44 +18,46 @@ export const FamiliehendelseLabel = ({ barnet }: Props) => {
 
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
-    return (
-        <CalendarIconLabel iconType="pink">
-            <BodyShort>
-                {barnet.erFødsel && erFødt && (
-                    <FormattedMessage
-                        id="FamiliehendelseLabel.Fødselsdato"
-                        values={{
-                            mnd: familiehendelsedato,
-                            dato: intl.formatDate(barnet.fødselsdato, {
-                                day: '2-digit',
-                                month: 'short',
-                            }),
-                        }}
-                    />
-                )}
-                {barnet.erFødsel && erIkkeFødt && (
-                    <FormattedMessage
-                        id="FamiliehendelseLabel.Termindato"
-                        values={{
-                            dato: intl.formatDate(barnet.termindato, {
-                                day: '2-digit',
-                                month: 'short',
-                            }),
-                        }}
-                    />
-                )}
-                {erAdoptert && (
-                    <FormattedMessage
-                        id="FamiliehendelseLabel.Omsorgsovertakelse"
-                        values={{
-                            dato: intl.formatDate(barnet.overtakelsesdato, {
-                                day: '2-digit',
-                                month: 'short',
-                            }),
-                        }}
-                    />
-                )}
-            </BodyShort>
-        </CalendarIconLabel>
-    );
+    const getLabel = () => {
+        if (barnet.erFødsel && erFødt) {
+            return intl.formatMessage(
+                { id: 'FamiliehendelseLabel.Fødselsdato' },
+                {
+                    mnd: familiehendelsedato,
+                    dato: intl.formatDate(barnet.fødselsdato, {
+                        day: '2-digit',
+                        month: 'short',
+                    }),
+                },
+            );
+        }
+
+        if (barnet.erFødsel && erIkkeFødt) {
+            return intl.formatMessage(
+                { id: 'FamiliehendelseLabel.Termindato' },
+                {
+                    dato: intl.formatDate(barnet.termindato, {
+                        day: '2-digit',
+                        month: 'short',
+                    }),
+                },
+            );
+        }
+
+        if (erAdoptert) {
+            return intl.formatMessage(
+                { id: 'FamiliehendelseLabel.Omsorgsovertakelse' },
+                {
+                    dato: intl.formatDate(barnet.overtakelsesdato, {
+                        day: '2-digit',
+                        month: 'short',
+                    }),
+                },
+            );
+        }
+
+        return '';
+    };
+
+    return <Chips.Toggle>{getLabel()}</Chips.Toggle>;
 };

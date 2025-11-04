@@ -1,4 +1,4 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { getDefaultNavnSøker1, getDefaultNavnSøker2 } from 'utils/HvemPlanleggerUtils';
@@ -10,11 +10,9 @@ import {
     harKunMorRett,
 } from 'utils/hvemHarRettUtils';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { Chips, HStack, VStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
-import { CalendarLabel } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
 import { AntallUkerFpLabel } from './calendar-labels/AntallUkerFpLabel';
@@ -59,24 +57,20 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
         <VStack gap="space-4">
             {skalViseAntallUkerLabels && (
                 <HStack gap="space-8">
-                    <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
-                    {søker2Tekst && hvemHarRett === 'beggeHarRett' && <AntallUkerFpLabel søkerTekst={søker2Tekst} />}
-                    <FamiliehendelseLabel barnet={barnet} />
-                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
-                    {inneholderTapteDager && (
-                        <CalendarLabel iconType={PeriodeColor.BLACK}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.TapteDager" />
-                            </BodyShort>
-                        </CalendarLabel>
-                    )}
-                    {inneholderFerie && (
-                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.Ferie" />
-                            </BodyShort>
-                        </CalendarLabel>
-                    )}
+                    <Chips>
+                        <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
+                        {søker2Tekst && hvemHarRett === 'beggeHarRett' && (
+                            <AntallUkerFpLabel søkerTekst={søker2Tekst} />
+                        )}
+                        <FamiliehendelseLabel barnet={barnet} />
+                        {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
+                        {inneholderTapteDager && (
+                            <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.TapteDager' })}</Chips.Toggle>
+                        )}
+                        {inneholderFerie && (
+                            <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.Ferie' })}</Chips.Toggle>
+                        )}
+                    </Chips>
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
@@ -86,18 +80,10 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel iconType={PeriodeColor.BLACK}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.TapteDager" />
-                            </BodyShort>
-                        </CalendarLabel>
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.TapteDager' })}</Chips.Toggle>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.Ferie" />
-                            </BodyShort>
-                        </CalendarLabel>
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.Ferie' })}</Chips.Toggle>
                     )}
                 </HStack>
             )}
@@ -107,18 +93,23 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel iconType={PeriodeColor.BLACK}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.TapteDager" />
-                            </BodyShort>
-                        </CalendarLabel>
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.TapteDager' })}</Chips.Toggle>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel iconType={PeriodeColor.BLUEOUTLINE}>
-                            <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                <FormattedMessage id="CalendarLabels.Ferie" />
-                            </BodyShort>
-                        </CalendarLabel>
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.Ferie' })}</Chips.Toggle>
+                    )}
+                </HStack>
+            )}
+            {erFarOgFarOgFødsel && (
+                <HStack gap="space-8">
+                    <ForeldrepengerLabel />
+                    <FamiliehendelseLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
+                    {inneholderTapteDager && (
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.TapteDager' })}</Chips.Toggle>
+                    )}
+                    {inneholderFerie && (
+                        <Chips.Toggle>{intl.formatMessage({ id: 'CalendarLabels.Ferie' })}</Chips.Toggle>
                     )}
                 </HStack>
             )}
