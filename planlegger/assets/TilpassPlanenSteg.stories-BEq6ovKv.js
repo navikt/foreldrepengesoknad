@@ -1,0 +1,344 @@
+import{j as k}from"./iframe-Btp9_amg.js";import{M as N,P as A,C as t}from"./usePlanleggerNavigator-1EvLIIxt.js";import{P as H}from"./routes-Cyl7_Mgv.js";import{A as r}from"./Arbeidssituasjon-i2z_eSVB.js";import{D as b}from"./Dekningsgrad-Bg_cIyqc.js";import{H as n}from"./HvemPlanleggerUtils-BC4MImQ7.js";import{T as u}from"./TilpassPlanenSteg-D-Lex3IW.js";import"./preload-helper-D9Z9MdNV.js";import"./barnetUtils-CP6X6uT_.js";import"./hvemHarRettUtils-XSskBN0g.js";import"./uttakUtils-D2dlSsnv.js";import"./useScrollBehaviour-LDmU47po.js";import"./CalendarLabels-BrivtcS5.js";import"./CalendarIconLabel-Dpg5CEoe.js";import"./BarnehageplassSteg-eCNalfTe.js";import"./PlanleggerStepPage-hCn_1XPe.js";import"./BabyWrapped-BQzk25f1.js";import"./Information-CfxksFBr.js";import"./amplitudeUtils-CfsYsBK0.js";import"./amplitude-Bt1fqaFI.js";import"./FamiliehendelseLabel-VenFiOrL.js";import"./ToggleGroup-D882UlxD.js";import"./HvaErMulig-Dt-OYbNU.js";import"./PersonPregnant-DK_AGq5V.js";import"./PencilWriting-C9w4-hBE.js";import"./PersonGroup-BCpoiQyx.js";const{action:B}=__STORYBOOK_MODULE_ACTIONS__,a={farRundtFødsel:10,toTette:0},se={title:"steg/TilpassPlanenSteg",component:u,render:({gåTilNesteSide:P=B("button-click"),hvemPlanlegger:T,fordeling:D,hvorLangPeriode:c,omBarnet:f,arbeidssituasjon:v,stønadskontoer:_,uttaksplan:L,originalUttaksplan:S})=>k.jsx(N,{initialEntries:[H.PLANEN_DERES],children:k.jsx(A,{onDispatch:P,initialState:{[t.FORDELING]:D,[t.HVOR_LANG_PERIODE]:c,[t.HVEM_PLANLEGGER]:T,[t.OM_BARNET]:f,[t.ARBEIDSSITUASJON]:v,[t.UTTAKSPLAN]:L,[t.ORIGINAL_UTTAKSPLAN]:S},children:k.jsx(u,{stønadskontoer:_})})})},e={args:{hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåFar:"Espen Utvikler",type:n.MOR_OG_FAR},omBarnet:{erFødsel:!0,erBarnetFødt:!1,termindato:"2025-05-09",antallBarn:"1"},fordeling:{antallDagerSøker1:0},hvorLangPeriode:{dekningsgrad:b.HUNDRE_PROSENT},arbeidssituasjon:{status:r.JOBBER,jobberAnnenPart:!0},stønadskontoer:{80:{kontoer:[{konto:"MØDREKVOTE",dager:95},{konto:"FEDREKVOTE",dager:95},{konto:"FELLESPERIODE",dager:101},{konto:"FORELDREPENGER_FØR_FØDSEL",dager:15}],minsteretter:a},100:{kontoer:[{konto:"MØDREKVOTE",dager:75},{konto:"FEDREKVOTE",dager:75},{konto:"FELLESPERIODE",dager:80},{konto:"FORELDREPENGER_FØR_FØDSEL",dager:15}],minsteretter:a}},uttaksplan:[[{forelder:"MOR",kontoType:"FORELDREPENGER_FØR_FØDSEL",fom:"2025-04-18",tom:"2025-05-08"},{forelder:"MOR",kontoType:"MØDREKVOTE",fom:"2025-05-09",tom:"2025-08-21"},{forelder:"MOR",kontoType:"FELLESPERIODE",fom:"2025-08-22",tom:"2025-12-11"},{forelder:"FAR_MEDMOR",kontoType:"FEDREKVOTE",fom:"2025-12-12",tom:"2026-03-26"}]],originalUttaksplan:[{forelder:"MOR",kontoType:"FORELDREPENGER_FØR_FØDSEL",fom:"2025-04-18",tom:"2025-05-08"},{forelder:"MOR",kontoType:"MØDREKVOTE",fom:"2025-05-09",tom:"2025-08-21"},{forelder:"MOR",kontoType:"FELLESPERIODE",fom:"2025-08-22",tom:"2025-12-11"},{forelder:"FAR_MEDMOR",kontoType:"FEDREKVOTE",fom:"2025-12-12",tom:"2026-03-26"}]}},s={args:{...e.args,fordeling:void 0,arbeidssituasjon:{status:r.JOBBER,jobberAnnenPart:!1},stønadskontoer:{80:{kontoer:[{konto:"FORELDREPENGER",dager:291},{konto:"FORELDREPENGER_FØR_FØDSEL",dager:15}],minsteretter:a},100:{kontoer:[{konto:"FORELDREPENGER",dager:230},{konto:"FORELDREPENGER_FØR_FØDSEL",dager:15}],minsteretter:a}},uttaksplan:[[{forelder:"MOR",kontoType:"FORELDREPENGER_FØR_FØDSEL",fom:"2025-04-18",tom:"2025-05-08"},{forelder:"MOR",kontoType:"FORELDREPENGER",fom:"2025-05-09",tom:"2026-03-26"}]],originalUttaksplan:[{forelder:"MOR",kontoType:"FORELDREPENGER_FØR_FØDSEL",fom:"2025-04-18",tom:"2025-05-08"},{forelder:"MOR",kontoType:"FORELDREPENGER",fom:"2025-05-09",tom:"2026-03-26"}]}},E={args:{...e.args,fordeling:void 0,arbeidssituasjon:{status:r.UFØR,jobberAnnenPart:!0},stønadskontoer:{80:{kontoer:[{konto:"FORELDREPENGER",dager:166},{konto:"AKTIVITETSFRI_KVOTE",dager:95}],minsteretter:{farRundtFødsel:10,toTette:0}},100:{kontoer:[{konto:"FORELDREPENGER",dager:125},{konto:"AKTIVITETSFRI_KVOTE",dager:75}],minsteretter:{farRundtFødsel:10,toTette:0}}}}},R={args:{...e.args,fordeling:void 0,arbeidssituasjon:{status:r.INGEN,jobberAnnenPart:!0},stønadskontoer:{80:{kontoer:[{konto:"FORELDREPENGER",dager:211},{konto:"AKTIVITETSFRI_KVOTE",dager:50}],minsteretter:{farRundtFødsel:10,toTette:0}},100:{kontoer:[{konto:"FORELDREPENGER",dager:150},{konto:"AKTIVITETSFRI_KVOTE",dager:50}],minsteretter:{farRundtFødsel:10,toTette:0}}}}},g={args:{...e.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},d={args:{...s.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},i={args:{...E.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},m={args:{...R.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},l={args:{...e.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",type:n.MOR},fordeling:void 0,arbeidssituasjon:{status:r.JOBBER,jobberAnnenPart:void 0}}},O={args:{...e.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",type:n.FAR},fordeling:void 0,arbeidssituasjon:{status:r.JOBBER,jobberAnnenPart:void 0},stønadskontoer:{80:{kontoer:[{konto:"FORELDREPENGER",dager:291}],minsteretter:a},100:{kontoer:[{konto:"FORELDREPENGER",dager:230}],minsteretter:a}}}},o={args:{...e.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",navnPåMedfar:"Anders Utvikler",type:n.FAR_OG_FAR}}},F={args:{...o.args,fordeling:void 0,arbeidssituasjon:{status:r.JOBBER,jobberAnnenPart:!1}}},M={args:{...o.args,fordeling:void 0,arbeidssituasjon:{status:r.INGEN,jobberAnnenPart:!0}}},p={args:{...e.args,omBarnet:{erFødsel:!0,erBarnetFødt:!0,termindato:"2024-04-11",fødselsdato:"2024-04-12",antallBarn:"1"}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      navnPåFar: 'Espen Utvikler',
+      type: HvemPlanleggerType.MOR_OG_FAR
+    },
+    omBarnet: {
+      erFødsel: true,
+      erBarnetFødt: false,
+      termindato: '2025-05-09',
+      antallBarn: '1'
+    },
+    fordeling: {
+      antallDagerSøker1: 0
+    },
+    hvorLangPeriode: {
+      dekningsgrad: Dekningsgrad.HUNDRE_PROSENT
+    },
+    arbeidssituasjon: {
+      status: Arbeidsstatus.JOBBER,
+      jobberAnnenPart: true
+    },
+    stønadskontoer: {
+      '80': {
+        kontoer: [{
+          konto: 'MØDREKVOTE',
+          dager: 95
+        }, {
+          konto: 'FEDREKVOTE',
+          dager: 95
+        }, {
+          konto: 'FELLESPERIODE',
+          dager: 101
+        }, {
+          konto: 'FORELDREPENGER_FØR_FØDSEL',
+          dager: 15
+        }],
+        minsteretter: MINSTERETTER
+      },
+      '100': {
+        kontoer: [{
+          konto: 'MØDREKVOTE',
+          dager: 75
+        }, {
+          konto: 'FEDREKVOTE',
+          dager: 75
+        }, {
+          konto: 'FELLESPERIODE',
+          dager: 80
+        }, {
+          konto: 'FORELDREPENGER_FØR_FØDSEL',
+          dager: 15
+        }],
+        minsteretter: MINSTERETTER
+      }
+    },
+    uttaksplan: [[{
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+      fom: '2025-04-18',
+      tom: '2025-05-08'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'MØDREKVOTE',
+      fom: '2025-05-09',
+      tom: '2025-08-21'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'FELLESPERIODE',
+      fom: '2025-08-22',
+      tom: '2025-12-11'
+    }, {
+      forelder: 'FAR_MEDMOR',
+      kontoType: 'FEDREKVOTE',
+      fom: '2025-12-12',
+      tom: '2026-03-26'
+    }]],
+    originalUttaksplan: [{
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+      fom: '2025-04-18',
+      tom: '2025-05-08'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'MØDREKVOTE',
+      fom: '2025-05-09',
+      tom: '2025-08-21'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'FELLESPERIODE',
+      fom: '2025-08-22',
+      tom: '2025-12-11'
+    }, {
+      forelder: 'FAR_MEDMOR',
+      kontoType: 'FEDREKVOTE',
+      fom: '2025-12-12',
+      tom: '2026-03-26'
+    }]
+  }
+}`,...e.parameters?.docs?.source}}};s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.JOBBER,
+      jobberAnnenPart: false
+    },
+    stønadskontoer: {
+      '80': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 291
+        }, {
+          konto: 'FORELDREPENGER_FØR_FØDSEL',
+          dager: 15
+        }],
+        minsteretter: MINSTERETTER
+      },
+      '100': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 230
+        }, {
+          konto: 'FORELDREPENGER_FØR_FØDSEL',
+          dager: 15
+        }],
+        minsteretter: MINSTERETTER
+      }
+    },
+    uttaksplan: [[{
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+      fom: '2025-04-18',
+      tom: '2025-05-08'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER',
+      fom: '2025-05-09',
+      tom: '2026-03-26'
+    }]],
+    originalUttaksplan: [{
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+      fom: '2025-04-18',
+      tom: '2025-05-08'
+    }, {
+      forelder: 'MOR',
+      kontoType: 'FORELDREPENGER',
+      fom: '2025-05-09',
+      tom: '2026-03-26'
+    }]
+  }
+}`,...s.parameters?.docs?.source}}};E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.UFØR,
+      jobberAnnenPart: true
+    },
+    stønadskontoer: {
+      '80': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 166
+        }, {
+          konto: 'AKTIVITETSFRI_KVOTE',
+          dager: 95
+        }],
+        minsteretter: {
+          farRundtFødsel: 10,
+          toTette: 0
+        }
+      },
+      '100': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 125
+        }, {
+          konto: 'AKTIVITETSFRI_KVOTE',
+          dager: 75
+        }],
+        minsteretter: {
+          farRundtFødsel: 10,
+          toTette: 0
+        }
+      }
+    }
+  }
+}`,...E.parameters?.docs?.source}}};R.parameters={...R.parameters,docs:{...R.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.INGEN,
+      jobberAnnenPart: true
+    },
+    stønadskontoer: {
+      '80': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 211
+        }, {
+          konto: 'AKTIVITETSFRI_KVOTE',
+          dager: 50
+        }],
+        minsteretter: {
+          farRundtFødsel: 10,
+          toTette: 0
+        }
+      },
+      '100': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 150
+        }, {
+          konto: 'AKTIVITETSFRI_KVOTE',
+          dager: 50
+        }],
+        minsteretter: {
+          farRundtFødsel: 10,
+          toTette: 0
+        }
+      }
+    }
+  }
+}`,...R.parameters?.docs?.source}}};g.parameters={...g.parameters,docs:{...g.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      navnPåMedmor: 'Helga Utvikler',
+      type: HvemPlanleggerType.MOR_OG_MEDMOR
+    }
+  }
+}`,...g.parameters?.docs?.source}}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarKunMorHarRett.args,
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      navnPåMedmor: 'Helga Utvikler',
+      type: HvemPlanleggerType.MOR_OG_MEDMOR
+    }
+  }
+}`,...d.parameters?.docs?.source}}};i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarKunFarHarRettMorUfør.args,
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      navnPåMedmor: 'Helga Utvikler',
+      type: HvemPlanleggerType.MOR_OG_MEDMOR
+    }
+  }
+}`,...i.parameters?.docs?.source}}};m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarKunFarHarRettMorIngenAvDisse.args,
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      navnPåMedmor: 'Helga Utvikler',
+      type: HvemPlanleggerType.MOR_OG_MEDMOR
+    }
+  }
+}`,...m.parameters?.docs?.source}}};l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    hvemPlanlegger: {
+      navnPåMor: 'Olga Utvikler',
+      type: HvemPlanleggerType.MOR
+    },
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.JOBBER,
+      jobberAnnenPart: undefined
+    }
+  }
+}`,...l.parameters?.docs?.source}}};O.parameters={...O.parameters,docs:{...O.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    hvemPlanlegger: {
+      navnPåFar: 'Espen Utvikler',
+      type: HvemPlanleggerType.FAR
+    },
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.JOBBER,
+      jobberAnnenPart: undefined
+    },
+    stønadskontoer: {
+      '80': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 291
+        }],
+        minsteretter: MINSTERETTER
+      },
+      '100': {
+        kontoer: [{
+          konto: 'FORELDREPENGER',
+          dager: 230
+        }],
+        minsteretter: MINSTERETTER
+      }
+    }
+  }
+}`,...O.parameters?.docs?.source}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    hvemPlanlegger: {
+      navnPåFar: 'Espen Utvikler',
+      navnPåMedfar: 'Anders Utvikler',
+      type: HvemPlanleggerType.FAR_OG_FAR
+    }
+  }
+}`,...o.parameters?.docs?.source}}};F.parameters={...F.parameters,docs:{...F.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...FarOgFarBeggeHarRett.args,
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.JOBBER,
+      jobberAnnenPart: false
+    }
+  }
+}`,...F.parameters?.docs?.source}}};M.parameters={...M.parameters,docs:{...M.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...FarOgFarBeggeHarRett.args,
+    fordeling: undefined,
+    arbeidssituasjon: {
+      status: Arbeidsstatus.INGEN,
+      jobberAnnenPart: true
+    }
+  }
+}`,...M.parameters?.docs?.source}}};p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...MorOgFarBeggeHarRett.args,
+    omBarnet: {
+      erFødsel: true,
+      erBarnetFødt: true,
+      termindato: '2024-04-11',
+      fødselsdato: '2024-04-12',
+      antallBarn: '1'
+    }
+  }
+}`,...p.parameters?.docs?.source}}};const Ee=["MorOgFarBeggeHarRett","MorOgFarKunMorHarRett","MorOgFarKunFarHarRettMorUfør","MorOgFarKunFarHarRettMorIngenAvDisse","MorOgMedmorBeggeHarRett","MorOgMedmorKunMorHarRett","MorOgMedmorKunMedmorHarRettMorUfør","MorOgMedmorKunMedmorHarRettMorIngenAvDisse","BareMorSøkerOgHarRett","BareFarSøkerOgHarRett","FarOgFarBeggeHarRett","FarOgFarKunFarHarRett","FarOgFarKunMedfarHarRett","BarnetErFødtDagenEtterTermindato"];export{O as BareFarSøkerOgHarRett,l as BareMorSøkerOgHarRett,p as BarnetErFødtDagenEtterTermindato,o as FarOgFarBeggeHarRett,F as FarOgFarKunFarHarRett,M as FarOgFarKunMedfarHarRett,e as MorOgFarBeggeHarRett,R as MorOgFarKunFarHarRettMorIngenAvDisse,E as MorOgFarKunFarHarRettMorUfør,s as MorOgFarKunMorHarRett,g as MorOgMedmorBeggeHarRett,m as MorOgMedmorKunMedmorHarRettMorIngenAvDisse,i as MorOgMedmorKunMedmorHarRettMorUfør,d as MorOgMedmorKunMorHarRett,Ee as __namedExportsOrder,se as default};
