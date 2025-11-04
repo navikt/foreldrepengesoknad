@@ -46,11 +46,10 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const rettighetType = gjeldendeSak.rettighetType;
     const sakAvsluttet = gjeldendeSak.sakAvsluttet;
 
-    const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
+    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarMedmorHarRett = rettighetType === 'BARE_SØKER_RETT' && !sakTilhørerMor;
     const erDeltUttak = rettighetType === 'BEGGE_RETT';
-    // TODO??
     const morHarRett = sakTilhørerMor && (rettighetType === 'BEGGE_RETT' || rettighetType === 'BARE_SØKER_RETT');
     const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
