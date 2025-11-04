@@ -3,7 +3,6 @@ import {
     AvslåttPeriode,
     Dekningsgrad,
     FamiliehendelseType,
-    Forelder,
     PeriodeInfoType,
     Periodetype,
     Saksgrunnlag,

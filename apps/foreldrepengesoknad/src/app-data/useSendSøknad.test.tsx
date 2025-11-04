@@ -13,7 +13,6 @@ import {
     BarnType,
     EksisterendeSak,
     FamiliehendelseType,
-    Forelder,
     Periode,
     PeriodeInfoType,
     Periodetype,

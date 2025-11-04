@@ -1,4 +1,4 @@
-import { Forelder, Periode, PeriodeUtenUttak, Periodetype, Utsettelsesperiode } from '@navikt/fp-common';
+import { Periode, PeriodeUtenUttak, Periodetype, Utsettelsesperiode } from '@navikt/fp-common';
 
 import { finnEndringerIUttaksplan } from './submitUtils';
 

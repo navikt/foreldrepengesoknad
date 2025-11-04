@@ -4,7 +4,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import {
-    Forelder,
     NavnPåForeldre,
     UtsettelseAnnenPartInfoPeriode,
     UttakAnnenPartEØSInfoPeriode,

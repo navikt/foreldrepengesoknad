@@ -3,7 +3,6 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { Forelder } from '@navikt/fp-constants';
 import { UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 

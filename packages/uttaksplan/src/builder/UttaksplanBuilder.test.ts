@@ -1,5 +1,4 @@
 import {
-    Forelder,
     InfoPeriode,
     Periode,
     PeriodeInfoType,
@@ -28,7 +27,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-05-02'),
             tom: new Date('2022-08-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -38,7 +37,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-08-15'),
             tom: new Date('2022-10-07'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -51,7 +50,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2021-12-06'),
             tom: new Date('2021-12-15'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
     {
@@ -61,7 +60,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2021-12-16'),
             tom: new Date('2022-01-05'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -71,7 +70,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2022-01-06'),
             tom: new Date('2022-05-18'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -81,7 +80,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2022-05-19'),
             tom: new Date('2022-07-01'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
     {
@@ -99,7 +98,7 @@ const perioderMedToPerioderFørFødsel: Periode[] = [
             fom: new Date('2022-07-18'),
             tom: new Date('2022-09-23'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -112,7 +111,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2021-08-18'),
             tom: new Date('2021-09-03'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -122,7 +121,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2021-09-06'),
             tom: new Date('2021-09-10'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
     } as Utsettelsesperiode,
     {
         id: '3',
@@ -131,7 +130,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2021-09-13'),
             tom: new Date('2021-12-10'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -141,7 +140,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2021-12-13'),
             tom: new Date('2021-12-31'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
     } as Utsettelsesperiode,
     {
         id: '5',
@@ -150,7 +149,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2022-01-03'),
             tom: new Date('2022-01-07'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -160,7 +159,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Periode[] = [
             fom: new Date('2022-01-10'),
             tom: new Date('2022-04-29'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
     {
@@ -222,7 +221,7 @@ describe('Uttaksplanbuilder tester', () => {
                 fom: new Date('2022-08-15'),
                 tom: new Date('2022-08-26'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             erArbeidstaker: true,
             årsak: 'ARBEID',
         };
@@ -247,7 +246,7 @@ describe('Uttaksplanbuilder tester', () => {
                 fom: new Date('2022-05-23'),
                 tom: new Date('2022-05-27'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             erArbeidstaker: true,
             årsak: 'ARBEID',
         };
@@ -275,7 +274,7 @@ describe('Uttaksplanbuilder tester', () => {
                 fom: new Date('2022-10-26'),
                 tom: new Date('2022-11-11'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'MØDREKVOTE',
         };
         const result = Uttaksplanbuilder(
@@ -313,7 +312,7 @@ describe('Uttaksplanbuilder tester', () => {
                     fom: new Date('2022-09-14'),
                     tom: new Date('2022-09-16'),
                 },
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 årsak: 'ARBEID',
             } as Utsettelsesperiode;
             const result = Uttaksplanbuilder(

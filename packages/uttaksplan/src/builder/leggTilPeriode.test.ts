@@ -1,4 +1,4 @@
-import { Forelder, Periode, PeriodeInfoType, Periodetype, Uttaksperiode } from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Periodetype, Uttaksperiode } from '@navikt/fp-common';
 
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
 
@@ -112,7 +112,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -125,7 +125,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -135,7 +135,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -158,7 +158,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -184,7 +184,7 @@ const perioderKunAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-10-04'),
             tom: new Date('2022-12-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
@@ -201,7 +201,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -228,7 +228,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -253,7 +253,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -280,7 +280,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -305,7 +305,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -332,7 +332,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -357,7 +357,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -384,7 +384,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -411,7 +411,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-03-31'),
                 tom: new Date('2022-04-13'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -438,7 +438,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-03-31'),
                 tom: new Date('2022-04-07'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -466,7 +466,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-10-13'),
                 tom: new Date('2022-10-26'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -493,7 +493,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-10-26'),
                 tom: new Date('2022-11-08'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -521,7 +521,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-05-05'),
                 tom: new Date('2022-05-18'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             erArbeidstaker: true,
             årsak: 'ARBEID',
         };
@@ -551,7 +551,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-05-03'),
                 tom: new Date('2022-05-06'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         };
 
@@ -577,7 +577,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-09-12'),
                 tom: new Date('2022-10-14'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FEDREKVOTE',
         };
 
@@ -610,7 +610,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                     fom: new Date('2022-09-12'),
                     tom: new Date('2022-10-14'),
                 },
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FEDREKVOTE',
             };
 
@@ -641,7 +641,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-09-12'),
                 tom: new Date('2022-10-14'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FEDREKVOTE',
         };
 
@@ -702,7 +702,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                     fom: new Date('2023-05-12'),
                     tom: new Date('2023-09-19'),
                 },
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FELLESPERIODE',
             };
 

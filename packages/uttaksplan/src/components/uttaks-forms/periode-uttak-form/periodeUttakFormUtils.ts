@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 
 import {
     Arbeidsform,
-    Forelder,
     Oppholdsperiode,
     Overføringsperiode,
     Periode,
@@ -15,7 +14,11 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak_fpoversikt,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -58,7 +61,7 @@ const getInitialKonto = (
 
 const getHvemSkalTaUttak = (
     erDeltUttak: boolean,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
     periodenStarterFørFamdato: boolean,
     erFarEllerMedmor: boolean,
     annenForelderHarRettIEØS: boolean,
@@ -68,7 +71,7 @@ const getHvemSkalTaUttak = (
             return 'FAR_MEDMOR';
         }
         if (annenForelderHarRettIEØS) {
-            return erFarEllerMedmor ? 'FAR_MEDMOR' : Forelder.mor;
+            return erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
         }
 
         return '';
@@ -79,7 +82,7 @@ const getHvemSkalTaUttak = (
 
 const getInitialValues = (
     erDeltUttak: boolean,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
     erMorUfør: boolean,
     familiehendelsesdato: Date,
     startdatoPeriode: Date | undefined,
@@ -120,7 +123,7 @@ export const cleanPeriodeUttakFormData = (
     values: PeriodeUttakFormData,
     visibility: QuestionVisibility<PeriodeUttakFormField, undefined>,
     erDeltUttak: boolean,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
     erMorUfør: boolean,
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
@@ -194,7 +197,7 @@ const getInitialÅrsakForUttakRundtFødsel = (
 export const getPeriodeUttakFormInitialValues = (
     periode: Periode,
     erDeltUttak: boolean,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
     erMorUfør: boolean,
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
@@ -328,12 +331,12 @@ const getKontoVerdi = (
 };
 
 const getForelderForPeriode = (
-    angittForelder: Forelder,
+    angittForelder: BrukerRolleSak_fpoversikt,
     tidsperiode: TidsperiodeDate,
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
     familiehendelsesdato: Date,
-): Forelder => {
+): BrukerRolleSak_fpoversikt => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
 
     if (
@@ -363,7 +366,7 @@ export const mapPeriodeUttakFormToPeriode = (
             id,
             type,
             forelder: getForelderForPeriode(
-                values.hvemSkalTaUttak as Forelder,
+                values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt,
                 {
                     fom: values.fom!,
                     tom: values.tom!,
@@ -387,7 +390,7 @@ export const mapPeriodeUttakFormToPeriode = (
         const periode: Oppholdsperiode = {
             id,
             type,
-            forelder: values.hvemSkalTaUttak as Forelder,
+            forelder: values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt,
             årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak_fpoversikt)!,
             tidsperiode: {
                 fom: values.fom!,
@@ -436,7 +439,7 @@ export const mapPeriodeUttakFormToPeriode = (
 
     const forelderVerdi = samtidigWLBUttakFørFørsteSeksUkerFarMedmor
         ? 'FAR_MEDMOR'
-        : (values.hvemSkalTaUttak as Forelder);
+        : (values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt);
 
     const kontoVerdi = getKontoVerdi(
         samtidigWLBUttakFørFødselFarMedmor,

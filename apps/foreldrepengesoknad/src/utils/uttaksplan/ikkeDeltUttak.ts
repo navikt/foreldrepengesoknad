@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Forelder, Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
 import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {

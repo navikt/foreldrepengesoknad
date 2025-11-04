@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Forelder, Periode, Periodetype } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 
 import { slettPeriode } from './slettPeriode';
 
@@ -65,7 +65,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-10'),
             tom: new Date('2022-08-23'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
     {
@@ -75,7 +75,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-24'),
             tom: new Date('2022-08-30'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -85,7 +85,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-31'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];

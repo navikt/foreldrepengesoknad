@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import {
-    Forelder,
     Periode,
     Periodetype,
     Utsettelsesperiode,

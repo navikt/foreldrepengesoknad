@@ -1,4 +1,4 @@
-import { Forelder, Periode, Periodetype } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 
 import { SøknadRoutes, isRouteAvailable } from './routes';
 

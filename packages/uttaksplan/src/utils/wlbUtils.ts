@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import {
-    Forelder,
     Periode,
     Periodetype,
     Situasjon,

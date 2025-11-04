@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Barn, Forelder, Periode, Situasjon, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
+import { Barn, Periode, Situasjon, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan';
 

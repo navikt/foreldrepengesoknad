@@ -9,7 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
-import { AnnenForelder, Barn, BarnType, Forelder, Periode, Periodetype, SivilstandType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Periode, Periodetype, SivilstandType } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 

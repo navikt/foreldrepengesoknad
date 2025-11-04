@@ -1,6 +1,5 @@
 import {
     AnnenForelder,
-    Forelder,
     Periode,
     Periodetype,
     Situasjon,
@@ -106,13 +105,13 @@ export const getUgyldigUttakMor = (
     if (value === 'mellomSyvOgÅtteUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
-            .filter((p) => p.forelder === Forelder.mor && (p.årsak === 'LOVBESTEMT_FERIE' || p.årsak === 'ARBEID'));
+            .filter((p) => p.forelder === 'MOR' && (p.årsak === 'LOVBESTEMT_FERIE' || p.årsak === 'ARBEID'));
     } else if (value === 'førsteSeksUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
             .filter(
                 (p) =>
-                    p.forelder === Forelder.mor &&
+                    p.forelder === 'MOR' &&
                     p.årsak !== 'INSTITUSJONSOPPHOLD_SØKER' &&
                     p.årsak !== 'INSTITUSJONSOPPHOLD_BARNET' &&
                     p.årsak !== 'SYKDOM',
@@ -120,22 +119,22 @@ export const getUgyldigUttakMor = (
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.gradert === true);
+        .filter((p) => p.forelder === 'MOR' && p.gradert === true);
 
     const flernbarnsPerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.ønskerFlerbarnsdager === true);
+        .filter((p) => p.forelder === 'MOR' && p.ønskerFlerbarnsdager === true);
 
     const fellesPerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.konto === 'FELLESPERIODE');
+        .filter((p) => p.forelder === 'MOR' && p.konto === 'FELLESPERIODE');
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
     if (!flerbarnsFødsel && flerbarnsFødsel !== undefined && !andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         samtidigUttaksperioder = Periodene(ugyldigPeriode)
             .getUttak()
-            .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);
+            .filter((p) => p.forelder === 'MOR' && p.ønskerSamtidigUttak);
     }
 
     return [

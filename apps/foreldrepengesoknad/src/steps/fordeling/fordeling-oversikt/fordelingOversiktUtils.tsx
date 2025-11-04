@@ -20,7 +20,6 @@ import { Link } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Barn,
-    Forelder,
     NavnPåForeldre,
     Periode,
     isAdoptertBarn,

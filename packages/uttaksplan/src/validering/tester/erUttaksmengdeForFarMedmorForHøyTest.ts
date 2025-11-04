@@ -1,11 +1,4 @@
-import {
-    Forelder,
-    Periode,
-    PeriodeInfoType,
-    Søknadsinfo,
-    isInfoPeriodeAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';

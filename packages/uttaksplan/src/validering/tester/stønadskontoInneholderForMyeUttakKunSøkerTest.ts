@@ -1,13 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import {
-    Forelder,
-    Periode,
-    PeriodeInfoType,
-    Søknadsinfo,
-    isInfoPeriodeAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 
 import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
@@ -20,7 +13,7 @@ const harSøktOmFellesperiode = (periode: Periode, søkerErFarEllerMedmor: boole
             return true;
         }
 
-        if (!søkerErFarEllerMedmor && periode.forelder === Forelder.mor && periode.konto === 'FELLESPERIODE') {
+        if (!søkerErFarEllerMedmor && periode.forelder === 'MOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }

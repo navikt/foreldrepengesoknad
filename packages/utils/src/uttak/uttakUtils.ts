@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
-import { Forelder, PeriodeColor } from '@navikt/fp-constants';
+import { PeriodeColor } from '@navikt/fp-constants';
 import {
+    BrukerRolleSak_fpoversikt,
     KontoTypeUttak_fpoversikt,
     Oppholdsperiode,
     Periode,
@@ -65,7 +66,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
     return undefined;
 };
 
-export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean): PeriodeColor => {
+export const getForelderFarge = (forelder: BrukerRolleSak_fpoversikt, erFarEllerMedmor: boolean): PeriodeColor => {
     if (forelder === 'MOR') {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
     }
@@ -91,7 +92,7 @@ export const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor
 
 export const getUttaksperiodeFarge = (
     konto: KontoTypeUttak_fpoversikt,
-    forelder: Forelder | undefined,
+    forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
 ): PeriodeColor => {
@@ -105,7 +106,7 @@ export const getUttaksperiodeFarge = (
     return getForelderFarge(forelder, erFarEllerMedmor);
 };
 
-export const getUtsettelseFarge = (forelder: Forelder): PeriodeColor => {
+export const getUtsettelseFarge = (forelder: BrukerRolleSak_fpoversikt): PeriodeColor => {
     return forelder === 'FAR_MEDMOR' ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
 };
 
