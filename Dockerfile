@@ -51,7 +51,9 @@ RUN pnpm exec turbo test
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
 WORKDIR /usr/src/app/apps/${APP}
-RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo build
+RUN mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # App Distroless
