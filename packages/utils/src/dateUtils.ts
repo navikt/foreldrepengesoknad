@@ -138,3 +138,11 @@ export const dateStringIsSameOrAfter = (date: string | undefined, otherDate: str
     }
     return false;
 };
+
+export const convertStringOrDateToDate = (date: Date | string): Date => {
+    if (typeof date === 'string') {
+        return new Date(date);
+    }
+
+    return date;
+};
