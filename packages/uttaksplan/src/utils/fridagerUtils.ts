@@ -2,14 +2,13 @@ import DateHolidays, { HolidaysTypes } from 'date-holidays';
 import dayjs from 'dayjs';
 
 import { TidsperiodeDate } from '@navikt/fp-common';
+import { convertStringOrDateToDate } from '@navikt/fp-utils';
 
 const holidays = new DateHolidays('no');
 
 export const getOffentligeFridager = (tidsperiode: TidsperiodeDate): HolidaysTypes.Holiday[] => {
-    const fraÅr =
-        typeof tidsperiode.fom === 'string' ? new Date(tidsperiode.fom).getFullYear() : tidsperiode.fom.getFullYear();
-    const tilÅr =
-        typeof tidsperiode.tom === 'string' ? new Date(tidsperiode.tom).getFullYear() : tidsperiode.tom.getFullYear();
+    const fraÅr = convertStringOrDateToDate(tidsperiode.fom).getFullYear();
+    const tilÅr = convertStringOrDateToDate(tidsperiode.tom).getFullYear();
 
     let days = [] as HolidaysTypes.Holiday[];
     if (fraÅr === tilÅr) {
@@ -29,7 +28,7 @@ export const getOffentligeFridager = (tidsperiode: TidsperiodeDate): HolidaysTyp
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): HolidaysTypes.Holiday[] => {
-    const days: HolidaysTypes.Holiday[] = holidays.getHolidays(måned.getFullYear());
+    const days: HolidaysTypes.Holiday[] = holidays.getHolidays(convertStringOrDateToDate(måned).getFullYear());
     const start = dayjs(måned).startOf('month');
     const slutt = dayjs(måned).endOf('month');
     return days

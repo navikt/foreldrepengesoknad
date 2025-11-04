@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { formatDate } from '../dateUtils';
+import { convertStringOrDateToDate, formatDate } from '../dateUtils';
 import { Tidsperioden } from './Tidsperioden';
 
 dayjs.extend(isoWeek);
@@ -46,7 +46,14 @@ function getUttaksdagFørDato(dato: Date): Date {
  * @param dato
  */
 function getUttaksdagTilOgMedDato(dato: Date): Date {
-    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
+    const newDate = dato
+        ? new Date(
+              convertStringOrDateToDate(dato).getFullYear(),
+              convertStringOrDateToDate(dato).getMonth(),
+              convertStringOrDateToDate(dato).getDate(),
+              12,
+          )
+        : dato;
     switch (getUkedag(dato)) {
         case 6:
             return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').toDate();
