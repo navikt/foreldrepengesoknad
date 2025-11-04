@@ -303,6 +303,8 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                             attachments={terminbekreftelseVedlegg}
                             updateAttachments={updateAttachments}
                             barn={barn}
+                            annenForelder={annenForelder}
+                            søkersituasjon={søkersituasjon}
                             arbeidsforhold={søkerInfo.arbeidsforhold}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
