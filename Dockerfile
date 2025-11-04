@@ -4,6 +4,7 @@ ARG NODE_BUILD_IMG=node:22-alpine
 ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
+ARG SENTRY_RELEASE=""
 
 #########################################
 # PREPARE DEPS FOR BUILD
@@ -50,7 +51,9 @@ RUN pnpm exec turbo test
 #########################################
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
+ARG SENTRY_RELEASE
 WORKDIR /usr/src/app/apps/${APP}
+ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
     SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo build
 RUN mv /usr/src/app/apps/${APP}/dist /public

@@ -17,6 +17,9 @@ export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
             org: 'nav',
             project: 'engangsstonad',
             url: 'https://sentry.gc.nav.no',
+            release: {
+                name: process.env.VITE_SENTRY_RELEASE,
+            },
         }),
     ],
     resolve: {

@@ -8,8 +8,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import 'styles/globals.css';
 
-import { Environment } from '@navikt/fp-constants';
-
 import { AppContainer } from './AppContainer';
 import './index.css';
 
@@ -20,7 +18,7 @@ countries.registerLocale(langEN);
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
-        release: Environment.APP_VERSION,
+        release: import.meta.env.VITE_SENTRY_RELEASE,
         environment: globalThis.location.hostname,
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
