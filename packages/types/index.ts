@@ -30,11 +30,7 @@ export {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './src/Periode';
-export type {
-    InformasjonOmUtenlandsoppholdDTO,
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-} from './src/Utenlandsopphold';
+export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn } from './src/Barn';
 export type {

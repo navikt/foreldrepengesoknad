@@ -11,19 +11,3 @@ export type UtenlandsoppholdPeriode = {
     tom: string;
     landkode: CountryCode;
 };
-
-// API representasjon
-type UtenlandsoppholdDTO = {
-    land: string;
-    tidsperiode: {
-        fom: string;
-        tom: string;
-    };
-};
-
-export type InformasjonOmUtenlandsoppholdDTO = {
-    iNorgeSiste12Mnd: boolean;
-    iNorgeNeste12Mnd: boolean;
-    tidligereOpphold: UtenlandsoppholdDTO[];
-    senereOpphold: UtenlandsoppholdDTO[];
-};
