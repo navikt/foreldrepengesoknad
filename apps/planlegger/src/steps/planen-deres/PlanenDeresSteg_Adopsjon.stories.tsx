@@ -6,7 +6,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -80,7 +79,7 @@ export const MorOgFarBeggeHarRett: Story = {
             antallDagerSøker1: 0,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,

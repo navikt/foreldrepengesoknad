@@ -1,4 +1,3 @@
-import { PeriodeResultat } from './PeriodeResultat';
 import {
     BrukerRolleSak_fpoversikt,
     Gradering_fpoversikt,
@@ -6,6 +5,7 @@ import {
     MorsAktivitet_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
     UttakOverføringÅrsak_fpoversikt,
+    UttakPeriodeResultat_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from './fpoversiktDtoGenerert';
 
@@ -13,7 +13,7 @@ export interface SaksperiodeNy {
     fom: string;
     tom: string;
     forelder?: BrukerRolleSak_fpoversikt;
-    resultat?: PeriodeResultat;
+    resultat?: UttakPeriodeResultat_fpoversikt;
     flerbarnsdager?: boolean;
     kontoType?: KontoTypeUttak_fpoversikt;
     gradering?: Gradering_fpoversikt;

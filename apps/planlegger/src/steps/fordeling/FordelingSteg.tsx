@@ -5,7 +5,6 @@ import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
@@ -225,7 +224,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 hvemPlanlegger={hvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
-                                uttaksdata={dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80}
+                                uttaksdata={dekningsgrad === '100' ? uttaksdata100 : uttaksdata80}
                             />
                         )}
                     </VStack>

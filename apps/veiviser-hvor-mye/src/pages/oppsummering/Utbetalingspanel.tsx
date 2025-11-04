@@ -46,7 +46,7 @@ interface Props {
 export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
     const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
-    const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
+    const erDekningsgrad100 = dekningsgrad === '100';
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;

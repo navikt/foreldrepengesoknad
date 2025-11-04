@@ -9,7 +9,6 @@ import { action } from 'storybook/actions';
 import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
-import { SivilstandType } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, PersonDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -306,7 +305,7 @@ export const FarGiftUfødtBarn: Story = {
                 },
                 kjønn: 'M',
                 barn: [],
-                sivilstand: { type: SivilstandType.GIFT },
+                sivilstand: { type: 'GIFT' },
             },
             arbeidsforhold: [],
         },

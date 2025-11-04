@@ -1,4 +1,4 @@
-import { Gradering_fpoversikt, KontoTypeUttak_fpoversikt, UttakArbeidType } from '@navikt/fp-types';
+import { Gradering_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -31,7 +31,7 @@ export const getGradering = (
     if (skalDuJobbe) {
         return {
             aktivitet: {
-                type: UttakArbeidType.ORDINÆRT_ARBEID,
+                type: 'ORDINÆRT_ARBEID',
             },
             arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
         };

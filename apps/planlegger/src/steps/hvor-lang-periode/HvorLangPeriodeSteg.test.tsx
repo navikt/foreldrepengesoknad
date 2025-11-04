@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
@@ -55,7 +54,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+                dekningsgrad: '80',
             },
             key: ContextDataType.HVOR_LANG_PERIODE,
             type: 'update',
@@ -145,7 +144,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+                dekningsgrad: '100',
             },
             key: ContextDataType.HVOR_LANG_PERIODE,
             type: 'update',
@@ -178,7 +177,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+                dekningsgrad: '100',
             },
             key: ContextDataType.HVOR_LANG_PERIODE,
             type: 'update',
@@ -211,7 +210,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+                dekningsgrad: '100',
             },
             key: ContextDataType.HVOR_LANG_PERIODE,
             type: 'update',

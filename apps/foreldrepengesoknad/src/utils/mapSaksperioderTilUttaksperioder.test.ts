@@ -1,7 +1,6 @@
 import {
     Arbeidsform,
     AvslåttPeriode,
-    Dekningsgrad,
     FamiliehendelseType,
     PeriodeInfoType,
     Periodetype,
@@ -38,7 +37,7 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         erDeltUttak: true,
         farMedmorErAleneOmOmsorg: false,
         familiehendelseType: FamiliehendelseType.FØDSEL,
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         antallBarn: 1,
         morErAleneOmOmsorg: false,
         morErUfør: false,

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
-import { KontoBeregningDto_fpoversikt, NavnPåForeldre, UttakArbeidType } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, NavnPåForeldre } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -228,7 +228,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                 },
                 flerbarnsdager: false,
