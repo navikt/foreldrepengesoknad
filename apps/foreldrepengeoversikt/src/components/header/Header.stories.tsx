@@ -27,7 +27,9 @@ type Story = StoryObj<typeof meta>;
 
 export const DefaultDinSakHeader: Story = {
     args: {
-        //@ts-expect-error Sjekk om ytelse litt i backend
-        sak: saker.foreldrepenger[0],
+        sak: {
+            ...saker.foreldrepenger[0],
+            ytelse: 'FORELDREPENGER',
+        },
     },
 };

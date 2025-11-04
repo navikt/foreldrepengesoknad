@@ -137,6 +137,7 @@ export const UttaksplanOppsummeringsliste = ({
                             );
                         }
                         if (periode.type === Periodetype.Overføring) {
+                            console.log('overføring');
                             return (
                                 <FormSummary.Answer key={periode.type + periode.tidsperiode}>
                                     <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>

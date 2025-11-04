@@ -345,8 +345,7 @@ export const finnOgSettInnHull = (
     return result;
 };
 
-// @ts-expect-error ubrukt parameter
-const beregnSamtidiguttaksprosent = (p: Planperiode, overlappendePeriode: Planperiode) => {
+const beregnSamtidiguttaksprosent = (overlappendePeriode: Planperiode) => {
     /*
      Når man lager planen ønsker vi å automatisk endre på den andre parten sin uttaksprosent så man slipper gjøre to sett med endringer.
      Men den må utledes utifra maks tillat prosent. Dette avhenger av hvilke kontoer som benyttes, eller om det er flerbarnsdager osv.
@@ -403,7 +402,7 @@ export const settInnAnnenPartsUttak = (
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
                 res.push({
                     ...overlappendePeriode,
-                    samtidigUttak: beregnSamtidiguttaksprosent(p, overlappendePeriode),
+                    samtidigUttak: beregnSamtidiguttaksprosent(overlappendePeriode),
                 });
             }
 
