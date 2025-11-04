@@ -1,0 +1,1 @@
+import{j as t}from"./iframe-TtV2hCAk.js";import{U as e}from"./TidsperiodeSpørsmål-bbIxGCFy.js";const s=(o,{parameters:a})=>{const{context:n}=a;return t.jsx(e,{initialState:n,children:t.jsx(o,{})})};s.__docgenInfo={description:"",methods:[],displayName:"withUttaksplanContextDecorator"};export{s as w};
