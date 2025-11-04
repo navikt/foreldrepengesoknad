@@ -13,7 +13,6 @@ export * from './Periode';
 export * from './PeriodeHullÅrsak';
 export * from './PeriodeInfoType';
 export * from './PeriodeValidState';
-export * from './RettighetType';
 export * from './Saksgrunnlag';
 export * from './Saksperiode';
 export * from './Situasjon';

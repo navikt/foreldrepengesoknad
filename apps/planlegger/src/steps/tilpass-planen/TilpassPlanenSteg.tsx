@@ -12,7 +12,7 @@ import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } fro
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { Dekningsgrad, KontoBeregningDto_fpoversikt, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -85,13 +85,13 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
     const utledRettighetType = () => {
         if (erDeltUttak) {
-            return RettighetType.BEGGE_RETT;
+            return 'BEGGE_RETT';
         }
         if (erAleneOmOmsorg) {
-            return RettighetType.ALENEOMSORG;
+            return 'ALENEOMSORG';
         }
 
-        return RettighetType.BARE_SØKER_RETT;
+        return 'BARE_SØKER_RETT';
     };
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {

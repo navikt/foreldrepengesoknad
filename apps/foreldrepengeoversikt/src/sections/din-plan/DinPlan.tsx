@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
+import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
@@ -48,10 +48,11 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
     const søkerErFarEllerMedmor = !sakTilhørerMor;
-    const bareFarMedmorHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
-    const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
-    const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
-    const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
+    const bareFarMedmorHarRett = rettighetType === 'BARE_SØKER_RETT' && !sakTilhørerMor;
+    const erDeltUttak = rettighetType === 'BEGGE_RETT';
+    // TODO??
+    const morHarRett = sakTilhørerMor && (rettighetType === 'BEGGE_RETT' || rettighetType === 'BARE_SØKER_RETT');
+    const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
