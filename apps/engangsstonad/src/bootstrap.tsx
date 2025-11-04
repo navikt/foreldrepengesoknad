@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import Environment from 'appData/Environment';
 import * as countries from 'i18n-iso-countries';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
@@ -8,6 +7,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import 'styles/globals.css';
+
+import { Environment } from '@navikt/fp-constants';
 
 import { AppContainer } from './AppContainer';
 import './index.css';
