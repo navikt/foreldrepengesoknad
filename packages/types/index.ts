@@ -5,7 +5,6 @@ export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
 export type { Situasjon } from './src/Situasjon';
 export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
-export type { Sivilstand } from './src/Sivilstand';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
 export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';

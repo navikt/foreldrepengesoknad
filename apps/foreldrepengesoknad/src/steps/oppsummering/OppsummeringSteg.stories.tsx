@@ -13,14 +13,14 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Periode } from '@navikt/fp-common';
-import { AttachmentType, ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
     PersonMedArbeidsforholdDto_fpoversikt,
-    Sivilstand,
+    Sivilstand_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -53,7 +53,7 @@ const defaultSøkerinfoMor = {
             },
         ],
         sivilstand: {
-            type: SivilstandType.GIFT,
+            type: 'GIFT',
         },
     },
     arbeidsforhold: [],
@@ -78,7 +78,7 @@ const defaultSøkerinfoFar = {
             },
         ],
         sivilstand: {
-            type: SivilstandType.UGIFT,
+            type: 'UGIFT',
         },
     },
     arbeidsforhold: [],
@@ -200,7 +200,7 @@ type StoryArgs = {
     utenlandsoppholdSenere?: UtenlandsoppholdPeriode[];
     utenlandsoppholdTidligere?: UtenlandsoppholdPeriode[];
     barn?: Barn;
-    sivilstand?: Sivilstand;
+    sivilstand?: Sivilstand_fpoversikt;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
     egenNæring?: NæringDto;
@@ -310,7 +310,7 @@ export const MorMedAnnenForelderUgift: Story = {
             person: {
                 ...defaultSøkerinfoMor.person,
                 sivilstand: {
-                    type: SivilstandType.UGIFT,
+                    type: 'UGIFT',
                 },
             },
         },
@@ -378,7 +378,7 @@ export const FarMedUførMorUgift: Story = {
             person: {
                 ...defaultSøkerinfoFar.person,
                 sivilstand: {
-                    type: SivilstandType.UGIFT,
+                    type: 'UGIFT',
                 },
             },
         },

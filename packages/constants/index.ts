@@ -8,7 +8,6 @@ export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
 export { Periodetype } from './src/periodetype';
 export { BarnType } from './src/barnType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
-export { SivilstandType } from './src/sivilstandType';
 export { DEFAULT_SATSER } from './src/grunnbeløp';
 export {
     DATE_4_YEARS_AGO,
