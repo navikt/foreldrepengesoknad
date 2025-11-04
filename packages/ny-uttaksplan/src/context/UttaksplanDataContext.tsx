@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 
 import { Barn, NavnPåForeldre } from '@navikt/fp-common';
 import { Familiesituasjon, KontoBeregningDto_fpoversikt, UttaksplanModus } from '@navikt/fp-types';
@@ -62,12 +62,15 @@ export const UttaksplanDataContext = ({ children, initialState, onDispatch }: Pr
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <UttaksplanStateContext.Provider value={state}>

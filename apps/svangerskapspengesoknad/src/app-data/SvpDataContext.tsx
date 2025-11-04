@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
@@ -80,12 +80,15 @@ export const SvpDataContext = ({ children, initialState, onDispatch }: Props): J
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <SvpStateContext.Provider value={state}>

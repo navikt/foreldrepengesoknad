@@ -1,5 +1,5 @@
 import { SøknadRoutes } from 'appData/routes';
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { Fordeling } from 'types/Fordeling';
 import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
@@ -89,12 +89,15 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <FpStateContext.Provider value={state}>

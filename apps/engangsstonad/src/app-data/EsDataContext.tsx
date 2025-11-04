@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
@@ -57,12 +57,15 @@ export const EsDataContext = ({ children, initialState, onDispatch }: Props): JS
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <EsStateContext.Provider value={state}>
@@ -77,7 +80,7 @@ export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): Cont
     return state[key];
 };
 
-/** Hook returns function capable of getting all types of data from context state  */
+/** Hook returns function capable of getting all types of data from context 'state  */
 export const useContextGetAnyData = () => {
     const state = useContext(EsStateContext);
 

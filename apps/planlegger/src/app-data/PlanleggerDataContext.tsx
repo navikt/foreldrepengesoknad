@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -63,12 +63,15 @@ export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Pr
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
-        dispatch(a);
-    };
+    const dispatchWrapper = useCallback(
+        (a: Action) => {
+            if (onDispatch) {
+                onDispatch(a);
+            }
+            dispatch(a);
+        },
+        [onDispatch],
+    );
 
     return (
         <PlanleggerStateContext.Provider value={state}>
