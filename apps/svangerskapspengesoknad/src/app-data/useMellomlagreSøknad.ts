@@ -9,7 +9,7 @@ import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 7;
+export const VERSJON_MELLOMLAGRING = 8;
 
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
