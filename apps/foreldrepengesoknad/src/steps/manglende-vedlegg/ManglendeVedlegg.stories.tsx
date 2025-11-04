@@ -79,7 +79,7 @@ const defaultBarn = {
     antallBarn: 1,
     type: BarnType.FØDT,
     fødselsdatoer: ['2024-01-01'],
-} as Barn;
+} satisfies Barn;
 
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,

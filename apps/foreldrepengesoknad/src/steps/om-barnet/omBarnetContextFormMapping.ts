@@ -35,10 +35,10 @@ const mapOmDetValgteBarnetFormDataToState = (
         return {
             ...valgtRegistrertBarn,
             type: barnSøktOmFørMenIkkeRegistrert ? BarnType.UFØDT : BarnType.FØDT,
-            termindato: (values as FødtBarn | UfødtBarn).termindato,
+            termindato: (values satisfies FødtBarn | UfødtBarn).termindato,
             fødselsdatoer: valgtRegistrertBarn.fødselsdatoer,
             antallBarn: valgtRegistrertBarn.antallBarn,
-        } as Barn;
+        } satisfies Barn;
     }
 
     if (erAdoptertStebarn(values)) {
@@ -71,7 +71,7 @@ export const mapOmBarnetFormDataToState = (
 ): Barn => {
     if (valgtRegistrertBarn !== undefined) {
         return mapOmDetValgteBarnetFormDataToState(
-            valgtRegistrertBarn as FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
+            valgtRegistrertBarn satisfies FødtBarn | AdoptertBarn | IkkeUtfyltTypeBarn,
             situasjon,
             values,
             barnSøktOmFørMenIkkeRegistrert,

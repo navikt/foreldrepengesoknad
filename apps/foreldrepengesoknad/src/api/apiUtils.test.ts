@@ -189,12 +189,13 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             konto: 'FELLESPERIODE',
             samtidigUttakProsent: undefined,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'FAR_MEDMOR',
+        } satisfies Uttaksperiode;
         const periodeHull = {
             id: '1',
             type: Periodetype.Hull,
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
-        } as PeriodeHull;
+        } satisfies PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
 
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
@@ -215,7 +216,9 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             type: Periodetype.Uttak,
             erMorForSyk: true,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'MOR',
+            konto: 'MØDREKVOTE',
+        } satisfies Uttaksperiode;
 
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
 

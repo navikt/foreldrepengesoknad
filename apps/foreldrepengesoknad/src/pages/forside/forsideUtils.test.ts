@@ -122,7 +122,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         type: ValgtBarnType.FØDT,
         antallBarn: 1,
         sortableDato: new Date('2022-06-01'),
-        sak: { saksnummer: '1' } as FpSak_fpoversikt,
+        sak: { saksnummer: '1' } satisfies FpSak_fpoversikt,
         familiehendelsesdato: new Date('2022-06-01'),
         fnr: ['1234'],
         alleBarnaLever: true,
@@ -135,7 +135,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { saksnummer: '2' } as FpSak_fpoversikt,
+                sak: { saksnummer: '2' } satisfies FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -145,7 +145,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2023-04-01'),
-                sak: { saksnummer: '3' } as FpSak_fpoversikt,
+                sak: { saksnummer: '3' } satisfies FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2023-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2023-03-15'),
             },
@@ -154,11 +154,11 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2024-04-01'),
-                sak: { saksnummer: '3' } as FpSak_fpoversikt,
+                sak: { saksnummer: '3' } satisfies FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2024-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2024-03-15'),
             },
-        ] as ValgtBarn[];
+        ] satisfies ValgtBarn[];
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);
         expect(res?.fnr).toEqual(undefined);
         expect(res?.familiehendelsesdato).toEqual(new Date('2023-04-01'));
@@ -172,7 +172,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { saksnummer: '2' } as FpSak_fpoversikt,
+                sak: { saksnummer: '2' } satisfies FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -183,7 +183,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2021-04-01'),
-                sak: { saksnummer: '3' } as FpSak_fpoversikt,
+                sak: { saksnummer: '3' } satisfies FpSak_fpoversikt,
                 familiehendelsesdato: new Date('2021-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2021-03-15'),
                 alleBarnaLever: true,
