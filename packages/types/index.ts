@@ -50,7 +50,6 @@ export type {
 } from './src/Periode';
 export type { PeriodeResultat } from './src/PeriodeResultat';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
-export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
 export { UttakArbeidType } from './src/UttakArbeidType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';

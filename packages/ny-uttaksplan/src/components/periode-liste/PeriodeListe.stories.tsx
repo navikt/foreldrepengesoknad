@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
+import { Barn, UttakArbeidType } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
@@ -132,7 +132,7 @@ export const UttaksperioderMor: Story = {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
                         arbeidsgiver: {
                             id: '1',
-                            type: ArbeidsgiverInfoType.ORGANISASJON,
+                            type: 'ORGANISASJON',
                         },
                     },
                     arbeidstidprosent: 20,
@@ -268,7 +268,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
                         arbeidsgiver: {
                             id: '1',
-                            type: ArbeidsgiverInfoType.ORGANISASJON,
+                            type: 'ORGANISASJON',
                         },
                     },
                     arbeidstidprosent: 80,
