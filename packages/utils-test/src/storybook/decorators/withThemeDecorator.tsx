@@ -4,9 +4,8 @@ import type { DecoratorFunction } from 'storybook/internal/types';
 import { Theme } from '@navikt/ds-react';
 
 export const withThemeDecorator: DecoratorFunction = (Story, context) => {
-    const theme = context.globals['theme'];
-
     const Wrapper = () => {
+        const theme = context.globals['theme'];
         useEffect(() => {
             const elements = document.getElementsByClassName('sb-show-main');
             if (elements.length > 0) {
