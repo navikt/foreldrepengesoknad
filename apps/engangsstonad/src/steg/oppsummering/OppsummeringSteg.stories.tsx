@@ -21,7 +21,7 @@ const promiseAction = () => () => {
 const barnetDefault = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+    fødselsdato: dayjs().subtract(9, 'day').format(ISO_DATE_FORMAT),
     termindato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
 } satisfies BarnetErFødt;
 
