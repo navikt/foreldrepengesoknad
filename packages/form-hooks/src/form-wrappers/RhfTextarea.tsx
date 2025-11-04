@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { Textarea } from '@navikt/ds-react';
@@ -36,15 +36,18 @@ export const RhfTextarea = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 
-    const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        field.onChange(
-            event.currentTarget.value === '' ? null : replaceInvisibleCharsWithSpace(event.currentTarget.value),
-        );
-    };
+    const onChange = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
+            field.onChange(
+                event.currentTarget.value === '' ? null : replaceInvisibleCharsWithSpace(event.currentTarget.value),
+            );
+        },
+        [field],
+    );
 
     return (
         <Textarea

@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { JSX, ReactNode, useState } from 'react';
+import React, { JSX, ReactNode, useCallback, useMemo, useState } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -74,7 +74,7 @@ export const RhfDatepicker = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 
@@ -99,20 +99,26 @@ export const RhfDatepicker = <T extends FieldValues>({
         defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
     });
 
-    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const verdi = dayjs(event.target.value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
-        const isValidDate = isValidDateString(verdi);
+    const onChangeInput = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const verdi = dayjs(event.target.value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+            const isValidDate = isValidDateString(verdi);
 
-        setFieldValue(event.target.value);
-        if (onChange) {
-            onChange(isValidDate ? verdi : event.target.value);
-        }
-        field.onChange(isValidDate ? verdi : event.target.value);
-    };
+            setFieldValue(event.target.value);
+            if (onChange) {
+                onChange(isValidDate ? verdi : event.target.value);
+            }
+            field.onChange(isValidDate ? verdi : event.target.value);
+        },
+        [setFieldValue, onChange, field],
+    );
 
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
     const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
-    const disabledDays = fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined;
+    const disabledDays = useMemo(
+        () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
+        [fromDate, toDate],
+    );
 
     return (
         <DatePicker

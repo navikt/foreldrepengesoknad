@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { UNSAFE_Combobox } from '@navikt/ds-react';
@@ -32,15 +32,18 @@ export const RhfCombobox = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 
-    const onToggleSelected = (option: string, isSelected: boolean, isCustomOption: boolean) => {
-        if (!isCustomOption) {
-            field.onChange(isSelected ? option : '');
-        }
-    };
+    const onToggleSelected = useCallback(
+        (option: string, isSelected: boolean, isCustomOption: boolean) => {
+            if (!isCustomOption) {
+                field.onChange(isSelected ? option : '');
+            }
+        },
+        [field],
+    );
 
     return (
         <UNSAFE_Combobox

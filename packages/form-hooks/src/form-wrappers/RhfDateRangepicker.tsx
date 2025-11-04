@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { JSX, ReactNode, useState } from 'react';
+import { JSX, ReactNode, useMemo, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { DatePicker, HStack, VStack, useRangeDatepicker } from '@navikt/ds-react';
@@ -74,14 +74,14 @@ export const RhfDateRangepicker = ({
     const { field: fromField } = useController({
         name: nameFrom,
         rules: {
-            validate: getValidationRules(validateFrom),
+            validate: useMemo(() => getValidationRules(validateFrom), [validateFrom]),
         },
     });
 
     const { field: toField } = useController({
         name: nameTo,
         rules: {
-            validate: getValidationRules(validateTo),
+            validate: useMemo(() => getValidationRules(validateTo), [validateTo]),
         },
     });
 
@@ -127,7 +127,10 @@ export const RhfDateRangepicker = ({
 
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
     const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
-    const disabledDays = fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined;
+    const disabledDays = useMemo(
+        () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
+        [fromDate, toDate],
+    );
 
     return (
         <DatePicker

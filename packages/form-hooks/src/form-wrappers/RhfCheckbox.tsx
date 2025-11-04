@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { Checkbox, ErrorMessage } from '@navikt/ds-react';
@@ -30,18 +30,21 @@ export const RhfCheckbox = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 
     const error = getError(errors, name);
 
-    const onChangeFn = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        field.onChange(evt);
-        if (onChange) {
-            onChange(evt.currentTarget.checked);
-        }
-    };
+    const onChangeFn = useCallback(
+        (evt: React.ChangeEvent<HTMLInputElement>) => {
+            field.onChange(evt);
+            if (onChange) {
+                onChange(evt.currentTarget.checked);
+            }
+        },
+        [field, onChange],
+    );
 
     return (
         <>

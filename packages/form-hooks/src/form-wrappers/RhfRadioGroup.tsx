@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { RadioGroup } from '@navikt/ds-react';
@@ -35,7 +35,7 @@ export const RhfRadioGroup = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 

@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { TextField } from '@navikt/ds-react';
@@ -40,16 +40,19 @@ export const RhfNumericField = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: getValidationRules(validate),
+            validate: useMemo(() => getValidationRules(validate), [validate]),
         },
     });
 
-    const onChangeFn = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        field.onChange(evt);
-        if (onChange) {
-            onChange(evt.currentTarget.value);
-        }
-    };
+    const onChangeFn = useCallback(
+        (evt: React.ChangeEvent<HTMLInputElement>) => {
+            field.onChange(evt);
+            if (onChange) {
+                onChange(evt.currentTarget.value);
+            }
+        },
+        [field, onChange],
+    );
 
     return (
         <TextField
