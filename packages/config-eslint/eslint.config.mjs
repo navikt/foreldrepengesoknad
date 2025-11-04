@@ -4,6 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
+import reactCompiler from 'eslint-plugin-react-compiler';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
@@ -23,6 +24,7 @@ export default [
         },
         plugins: {
             vitest,
+            'react-compiler': reactCompiler,
         },
         languageOptions: { globals: globals.browser },
     },
@@ -89,6 +91,7 @@ export default [
             'react-hooks/incompatible-library': OFF,
             'react-hooks/exhaustive-deps': OFF,
             'react-hooks/refs': OFF,
+            'react-compiler/react-compiler': ERROR,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [

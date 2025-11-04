@@ -35,6 +35,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
 
     const fortsettSøknadSenere = () => {
         loggAmplitudeEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
+        // eslint-disable-next-line react-compiler/react-compiler
         globalThis.location.href = 'https://nav.no';
     };
 

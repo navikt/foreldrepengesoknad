@@ -40,6 +40,9 @@ const createConfig = (setupFileDirName) =>
             tailwindcss(),
             react({
                 include: '**/*.{jsx,tsx}',
+                babel: {
+                    plugins: ['babel-plugin-react-compiler'],
+                },
             }),
         ],
         css: {

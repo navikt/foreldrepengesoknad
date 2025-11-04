@@ -17,6 +17,7 @@ function FormikYesOrNoQuestion<FieldName, ErrorType>({
 }: FormikYesOrNoQuestionProps<FieldName, ErrorType> & TypedFormInputValidationProps<FieldName, ErrorType>) {
     const { yes: yesLabel = 'Ja', no: noLabel = 'Nei' } = labels || {};
     const testKey = restProps['data-testid'];
+    // eslint-disable-next-line react-compiler/react-compiler
     delete restProps['data-testid'];
 
     return (
