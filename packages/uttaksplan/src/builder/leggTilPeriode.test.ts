@@ -10,7 +10,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -20,7 +20,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-17'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -30,7 +30,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -43,7 +43,7 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -53,7 +53,7 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -71,7 +71,7 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -84,7 +84,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -94,7 +94,7 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -145,7 +145,7 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-08-04'),
             tom: new Date('2022-08-17'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
@@ -171,7 +171,7 @@ const perioderMedFarsUttak: Periode[] = [
             fom: new Date('2022-10-04'),
             tom: new Date('2022-12-12'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     },
 ];
@@ -671,7 +671,7 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-08-05'),
                 tom: new Date('2022-08-10'),
             },
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'FEDREKVOTE',
         };
 
@@ -735,7 +735,7 @@ describe('Test av split periode i uttaksplan', () => {
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-02'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     } as Uttaksperiode;
     const splitPeriodeBFHRMedAktivitetskrav = {
@@ -745,7 +745,7 @@ describe('Test av split periode i uttaksplan', () => {
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-02'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FORELDREPENGER',
         morsAktivitetIPerioden: 'ARBEID',
         erMorForSyk: false,

@@ -14,7 +14,7 @@ const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termin
             Uttaksdagen(dayjs(termindato).toDate()).denneEllerNeste(),
             'day',
         ) &&
-        periodeRundtFødsel.forelder === Forelder.farMedmor &&
+        periodeRundtFødsel.forelder === 'FAR_MEDMOR' &&
         periodeRundtFødsel.konto === 'FEDREKVOTE' &&
         periodeRundtFødsel.ønskerSamtidigUttak === true &&
         periodeRundtFødsel.ønskerFlerbarnsdager !== true

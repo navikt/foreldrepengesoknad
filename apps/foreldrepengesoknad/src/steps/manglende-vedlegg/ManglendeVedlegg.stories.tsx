@@ -305,7 +305,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         uttaksplan: [
             {
                 id: '08499121-6620-16419-3321-0027063089154',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
@@ -320,7 +320,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
@@ -371,7 +371,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         uttaksplan: [
             {
                 id: '08499121-6620-16419-3321-0027063089154',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
@@ -386,7 +386,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
@@ -429,7 +429,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         uttaksplan: [
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
@@ -474,7 +474,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         uttaksplan: [
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FORELDREPENGER',
                 tidsperiode: {
                     fom: new Date('2025-01-01'),
@@ -489,7 +489,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 tidsperiode: {
                     fom: new Date('2026-01-01'),
                     tom: new Date('2026-02-01'),

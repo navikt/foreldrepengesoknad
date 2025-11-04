@@ -66,7 +66,7 @@ export const Default: Story = {
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
@@ -133,7 +133,7 @@ export const MorOgFarMedFerieopphold: Story = {
                 tom: '2025-12-15',
             },
             {
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-16',
                 tom: '2026-03-30',

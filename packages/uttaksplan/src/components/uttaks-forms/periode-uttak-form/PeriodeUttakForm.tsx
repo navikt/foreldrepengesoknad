@@ -92,7 +92,7 @@ interface Props {
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
+    return !((erFarEllerMedmor && forelder === 'FAR_MEDMOR') || (!erFarEllerMedmor && forelder === Forelder.mor));
 };
 
 const erUttakAvAnnenForeldersKvote = (
@@ -170,7 +170,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
-    const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : Forelder.mor;
     const annenForelderHarRettIEØS =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 

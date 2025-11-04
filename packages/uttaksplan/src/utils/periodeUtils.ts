@@ -151,9 +151,9 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpovers
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
     let forelderNavn = '';
     if (navnPåForeldre.farMedmor) {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     } else {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
+        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : forelder;
     }
     return capitalizeFirstLetter(forelderNavn);
 };
@@ -226,8 +226,8 @@ const getPeriodeTittelInfoPeriode = (
             }
 
             if (
-                (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
-                (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)
+                (periode.forelder === 'MOR' && erFarEllerMedmor) ||
+                (periode.forelder === 'FAR_MEDMOR' && !erFarEllerMedmor)
             ) {
                 return intl.formatMessage(
                     { id: 'uttaksplan.periodetype.info.avslåttPeriode.annenPart' },

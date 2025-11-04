@@ -5,7 +5,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
+import { PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 import {
     Barn,
     InfoPeriode,
@@ -177,7 +177,7 @@ const getKalenderFargeForPeriodeType = (
 ): PeriodeColor => {
     switch (periode.type) {
         case Periodetype.Utsettelse:
-            return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
+            return periode.forelder === 'FAR_MEDMOR' ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
         case Periodetype.PeriodeUtenUttak:
             return getKalenderFargeForPeriodeUtenUttak(periode, barn);
         case Periodetype.Hull:

@@ -16,7 +16,7 @@ import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/ty
 
 const harSøktOmFellesperiode = (periode: Periode, søkerErFarEllerMedmor: boolean) => {
     if (isUttaksperiode(periode)) {
-        if (søkerErFarEllerMedmor && periode.forelder === Forelder.farMedmor && periode.konto === 'FELLESPERIODE') {
+        if (søkerErFarEllerMedmor && periode.forelder === 'FAR_MEDMOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
 

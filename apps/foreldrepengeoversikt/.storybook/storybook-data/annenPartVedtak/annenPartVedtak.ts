@@ -14,7 +14,7 @@ export const annenPartVedtak = {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
         },
     ],
     termindato: '2022-08-17',

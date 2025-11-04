@@ -57,7 +57,7 @@ export const LeggTilPeriodePanelStep = ({
     ): Forelder | undefined => {
         switch (ktValue) {
             case 'FEDREKVOTE':
-                return Forelder.farMedmor;
+                return 'FAR_MEDMOR';
             case 'MØDREKVOTE':
             case 'FORELDREPENGER_FØR_FØDSEL':
                 return Forelder.mor;

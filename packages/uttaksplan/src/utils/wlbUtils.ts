@@ -34,7 +34,7 @@ export const gjelderWLBReglerFarMedmorRundtFødsel = (
 export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: Periode): boolean => {
     return (
         isUttaksperiode(periode) &&
-        periode.forelder === Forelder.farMedmor &&
+        periode.forelder === 'FAR_MEDMOR' &&
         periode.konto === 'FEDREKVOTE' &&
         !!periode.erMorForSyk === false &&
         periode.morsAktivitetIPerioden === undefined &&
@@ -59,7 +59,7 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (
 };
 
 export const isUttaksperiodeBareFarMedmorHarRett = (periode: Periode, morHarRett: boolean): boolean => {
-    return isUttaksperiode(periode) && periode.forelder === Forelder.farMedmor && !morHarRett;
+    return isUttaksperiode(periode) && periode.forelder === 'FAR_MEDMOR' && !morHarRett;
 };
 
 export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, termindato: Date | undefined): Date => {

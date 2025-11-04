@@ -27,13 +27,13 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
                     label: erFarEllerMedmor
                         ? capitalizeFirstLetter(navnPåForeldre.farMedmor)
                         : capitalizeFirstLetter(navnPåForeldre.mor),
-                    value: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+                    value: erFarEllerMedmor ? 'FAR_MEDMOR' : Forelder.mor,
                 },
                 {
                     label: erFarEllerMedmor
                         ? capitalizeFirstLetter(navnPåForeldre.mor)
                         : capitalizeFirstLetter(navnPåForeldre.farMedmor),
-                    value: erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
+                    value: erFarEllerMedmor ? Forelder.mor : 'FAR_MEDMOR',
                 },
             ]}
             validate={(value) => {

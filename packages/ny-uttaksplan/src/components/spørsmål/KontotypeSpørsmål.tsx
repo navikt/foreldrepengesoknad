@@ -48,7 +48,7 @@ export const KontotypeSpørsmål = () => {
                     <Radio value={Forelder.mor}>
                         <FormattedMessage id="uttaksplan.mor" />
                     </Radio>
-                    <Radio value={Forelder.farMedmor}>
+                    <Radio value={'FAR_MEDMOR'}>
                         <FormattedMessage id="uttaksplan.far" />
                     </Radio>
                 </RhfRadioGroup>

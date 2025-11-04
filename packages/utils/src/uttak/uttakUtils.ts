@@ -66,7 +66,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
 };
 
 export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean): PeriodeColor => {
-    if (forelder === Forelder.mor) {
+    if (forelder === 'MOR') {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
     }
     return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
@@ -106,7 +106,7 @@ export const getUttaksperiodeFarge = (
 };
 
 export const getUtsettelseFarge = (forelder: Forelder): PeriodeColor => {
-    return forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
+    return forelder === 'FAR_MEDMOR' ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
 };
 
 export const getOppholdFarge = (periode: Oppholdsperiode, erFarEllerMedmor: boolean): PeriodeColor => {

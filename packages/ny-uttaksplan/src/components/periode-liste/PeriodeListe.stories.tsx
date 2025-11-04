@@ -184,7 +184,7 @@ export const UttaksperioderMorOgFar: Story = {
                 fom: '2024-04-22',
                 tom: '2024-05-03',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 samtidigUttak: 100,
                 readOnly: true,
             },
@@ -201,7 +201,7 @@ export const UttaksperioderMorOgFar: Story = {
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 readOnly: true,
             },
             {
@@ -209,7 +209,7 @@ export const UttaksperioderMorOgFar: Story = {
                 fom: '2024-07-01',
                 tom: '2024-07-08',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 readOnly: true,
             },
         ],
@@ -239,7 +239,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 fom: '2024-05-01',
                 tom: '2024-08-21',
                 kontoType: 'FORELDREPENGER',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 readOnly: false,
             },
             {
@@ -247,7 +247,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 fom: '2024-08-22',
                 tom: '2024-08-29',
                 kontoType: 'AKTIVITETSFRI_KVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 readOnly: false,
             },
             {
@@ -262,7 +262,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 fom: '2024-09-16',
                 tom: '2024-09-23',
                 kontoType: 'FORELDREPENGER',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 readOnly: false,
                 gradering: {
                     aktivitet: {
@@ -320,7 +320,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 flerbarnsdager: true,
                 samtidigUttak: 100,
                 readOnly: true,

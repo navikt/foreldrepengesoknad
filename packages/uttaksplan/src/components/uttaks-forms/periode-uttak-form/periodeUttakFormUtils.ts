@@ -65,10 +65,10 @@ const getHvemSkalTaUttak = (
 ) => {
     if (erDeltUttak) {
         if ((periodenStarterFørFamdato || annenForelderHarRettIEØS) && erFarEllerMedmor) {
-            return Forelder.farMedmor;
+            return 'FAR_MEDMOR';
         }
         if (annenForelderHarRettIEØS) {
-            return erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+            return erFarEllerMedmor ? 'FAR_MEDMOR' : Forelder.mor;
         }
 
         return '';
@@ -342,7 +342,7 @@ const getForelderForPeriode = (
         erDeltUttak &&
         (angittForelder as any) === ''
     ) {
-        return Forelder.farMedmor;
+        return 'FAR_MEDMOR';
     }
 
     return angittForelder;
@@ -435,7 +435,7 @@ export const mapPeriodeUttakFormToPeriode = (
             : samtidigUttakProsentInputVerdi;
 
     const forelderVerdi = samtidigWLBUttakFørFørsteSeksUkerFarMedmor
-        ? Forelder.farMedmor
+        ? 'FAR_MEDMOR'
         : (values.hvemSkalTaUttak as Forelder);
 
     const kontoVerdi = getKontoVerdi(

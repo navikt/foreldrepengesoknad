@@ -137,7 +137,7 @@ const getSamtidigUttakTekst = (
     navnPåForeldre: NavnPåForeldre,
 ) => {
     const periodenGjelderSøker = erFarEllerMedmor
-        ? forelderIPerioden === Forelder.farMedmor
+        ? forelderIPerioden === 'FAR_MEDMOR'
         : forelderIPerioden === Forelder.mor;
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;

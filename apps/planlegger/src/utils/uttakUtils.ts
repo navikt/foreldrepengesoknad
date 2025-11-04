@@ -367,9 +367,7 @@ export const getSøkersPerioder = (
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) =>
-              erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
-          )
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
         : gjeldendeUttaksplan;
 };
 
@@ -379,8 +377,6 @@ export const getAnnenpartsPerioder = (
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) =>
-              erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
-          )
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
         : [];
 };

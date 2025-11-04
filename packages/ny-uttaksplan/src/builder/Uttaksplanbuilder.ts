@@ -173,7 +173,7 @@ const slettPeriodeOgBuild = (
 
 const getAnnenPart = (forelder: Forelder | undefined) => {
     if (forelder) {
-        return forelder === Forelder.mor ? Forelder.farMedmor : Forelder.mor;
+        return forelder === Forelder.mor ? 'FAR_MEDMOR' : Forelder.mor;
     }
 
     return undefined;

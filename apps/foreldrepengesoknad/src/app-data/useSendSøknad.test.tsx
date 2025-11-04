@@ -160,7 +160,7 @@ const PERIODE = {
         tom: new Date('2024-10-10'),
     },
     type: Periodetype.Info,
-    forelder: Forelder.mor,
+    forelder: 'MOR',
     infotype: PeriodeInfoType.utsettelseAnnenPart,
     overskrives: true,
     visPeriodeIPlan: false,

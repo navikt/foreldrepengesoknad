@@ -36,7 +36,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
         type: Periodetype.Utsettelse,
         årsak: values.årsak as UtsettelsesÅrsak,
         morsAktivitetIPerioden: values.morsAktivitetIPerioden ? values.morsAktivitetIPerioden : undefined,
-        forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+        forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : Forelder.mor,
         tidsperiode: {
             fom: values.fom!,
             tom: values.tom!,

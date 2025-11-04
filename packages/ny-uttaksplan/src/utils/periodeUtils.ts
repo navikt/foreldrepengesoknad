@@ -322,10 +322,10 @@ const getForelderForPeriode = (
     oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,
 ): Forelder => {
     if (oppholdsårsak || gjelderAnnenPart) {
-        return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+        return søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
     }
 
-    return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    return søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 };
 
 type UtledKomplettPlanParams = {

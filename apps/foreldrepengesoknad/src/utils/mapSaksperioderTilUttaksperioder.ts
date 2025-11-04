@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import {
     AvslåttPeriode,
     FamiliehendelseType,
-    Forelder,
     InfoPeriode,
     OpprinneligSøkt,
     Overføringsperiode,
@@ -21,6 +20,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import {
+    BrukerRolleSak_fpoversikt,
     KontoType,
     KontoTypeUttak_fpoversikt,
     Oppholdsårsak,
@@ -152,11 +152,11 @@ const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     }
 };
 
-const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): Forelder => {
+const getForelderForPeriode = (saksperiode: Saksperiode, søkerErFarEllerMedmor: boolean): BrukerRolleSak_fpoversikt => {
     if (saksperiode.gjelderAnnenPart) {
-        return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+        return søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
     }
-    return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    return søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 };
 
 const mapUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined): UtsettelsesÅrsak | undefined => {
@@ -568,7 +568,7 @@ const mapUttaksperiodeAnnenpartEøs = (
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        forelder: søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
+        forelder: søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR',
         tidsperiode: {
             fom: ISOStringToDate(p.fom)!,
             tom: ISOStringToDate(p.tom)!,

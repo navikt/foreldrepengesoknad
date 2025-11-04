@@ -71,14 +71,14 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
                 kontoType: 'FEDREKVOTE',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ] satisfies SaksperiodeNy[],
         barn: {
@@ -99,13 +99,13 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',
             },
             {
                 fom: '2021-06-29',
                 tom: '2021-07-16',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'ARBEID',
             },
         ] satisfies SaksperiodeNy[],
@@ -160,20 +160,20 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 100,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FELLESPERIODE',
             },
             {
                 fom: '2024-06-14',
                 tom: '2024-07-02',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 gradering: {
                     aktivitet: {
@@ -261,7 +261,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             {
                 fom: '2021-06-29',
                 tom: '2021-07-28',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
         ] satisfies SaksperiodeNy[],
@@ -371,7 +371,7 @@ export const UtsettelseFarSykdom: Story = {
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'SØKER_SYKDOM',
             },
         ] satisfies SaksperiodeNy[],
@@ -393,7 +393,7 @@ export const UtsettelseFarHvØvelse: Story = {
             {
                 fom: '2024-06-11',
                 tom: '2024-06-24',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'HV_ØVELSE',
             },
         ] satisfies SaksperiodeNy[],
@@ -415,13 +415,13 @@ export const UtsettelseFarFlereÅrsaker: Story = {
             {
                 fom: '2021-04-05',
                 tom: '2021-06-14',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'ARBEID',
             },
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'HV_ØVELSE',
             },
         ] satisfies SaksperiodeNy[],
@@ -626,7 +626,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
             {
                 fom: '2025-05-21',
                 tom: '2025-05-27',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 70,
             },

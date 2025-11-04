@@ -11,7 +11,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 fom: new Date('2022-04-01'),
                 tom: new Date('2022-05-01'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FORELDREPENGER_FØR_FØDSEL',
         },
         {
@@ -21,7 +21,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 fom: new Date('2022-05-02'),
                 tom: new Date('2022-08-01'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'MØDREKVOTE',
         },
         {
@@ -31,7 +31,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 fom: new Date('2022-08-02'),
                 tom: new Date('2022-10-01'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FELLESPERIODE',
         },
     ];
@@ -44,7 +44,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                 fom: new Date('2022-10-02'),
                 tom: new Date('2022-11-01'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'MØDREKVOTE',
         },
     ];
@@ -84,7 +84,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[2].tidsperiode.tom);
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseForSlettetPeriode.årsak).toEqual('FRI');
-            expect(utsettelseForSlettetPeriode.forelder).toEqual(Forelder.farMedmor);
+            expect(utsettelseForSlettetPeriode.forelder).toEqual('FAR_MEDMOR');
         },
     );
 
@@ -106,7 +106,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[1].tidsperiode.tom);
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseForSlettedePerioder.årsak).toEqual('FRI');
-            expect(utsettelseForSlettedePerioder.forelder).toEqual(Forelder.farMedmor);
+            expect(utsettelseForSlettedePerioder.forelder).toEqual('FAR_MEDMOR');
         },
     );
     it('finnEndringerIUttaksplan - Skal returnere en utsettelsesperiode hvis opprinnelig plan hadde kun en periode og den ble slettet', () => {
@@ -125,7 +125,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
         expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlanMedKunEnPeriode[0].tidsperiode.tom);
         expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
         expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
-        expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
+        expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
     });
     it(
         'finnEndringerIUttaksplan - Skal returnere en utsettelsesperiode hvis opprinnelig plan hadde annen parts periode i' +
@@ -140,7 +140,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         fom: new Date('2022-10-02'),
                         tom: new Date('2022-1-31'),
                     },
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                 },
                 {
                     id: '5',
@@ -149,7 +149,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         fom: new Date('2022-11-01'),
                         tom: new Date('2022-11-08'),
                     },
-                    forelder: Forelder.farMedmor,
+                    forelder: 'FAR_MEDMOR',
                     konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
@@ -176,7 +176,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             );
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
-            expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
+            expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
         },
     );
 
@@ -193,7 +193,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         fom: new Date('2022-10-02'),
                         tom: new Date('2022-1-31'),
                     },
-                    forelder: Forelder.farMedmor,
+                    forelder: 'FAR_MEDMOR',
                     konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
@@ -227,7 +227,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             );
             expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
-            expect(utsettelseSomSendesInn.forelder).toEqual(Forelder.farMedmor);
+            expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
         },
     );
 });

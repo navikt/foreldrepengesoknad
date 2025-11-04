@@ -107,7 +107,7 @@ export const getTekst = (
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
-    const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
+    const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == Forelder.mor;
 
     if (erFamiliehendelse) {
         switch (familiesituasjon) {

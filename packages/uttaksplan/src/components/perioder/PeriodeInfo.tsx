@@ -48,13 +48,13 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                           intl,
                           periode.årsak,
                           getForelderNavn(periode.forelder, navnPåForeldre),
-                          periode.forelder === Forelder.mor,
+                          periode.forelder === 'MOR',
                       )
                     : getUtsettelseTekst(
                           intl,
                           periode.årsak,
                           getForelderNavn(periode.forelder, navnPåForeldre),
-                          periode.forelder === Forelder.mor,
+                          periode.forelder === 'MOR',
                       ))}
         </BodyShort>
     );

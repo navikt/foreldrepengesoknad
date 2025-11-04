@@ -162,7 +162,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const periode = {
             type: Periodetype.Uttak,
             konto: 'FEDREKVOTE',
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -180,7 +180,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const periode = {
             type: Periodetype.Uttak,
             konto: 'FEDREKVOTE',
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -198,7 +198,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const periode = {
             type: Periodetype.Uttak,
             konto: 'FEDREKVOTE',
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -216,7 +216,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const periode = {
             type: Periodetype.Uttak,
             konto: 'FEDREKVOTE',
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: true,
             ønskerSamtidigUttak: false,
             tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-286T00:00:00.000Z') },
@@ -233,7 +233,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         const periode = {
             type: Periodetype.Uttak,
             konto: 'FORELDREPENGER',
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
@@ -251,7 +251,7 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
             const periode = {
                 type: Periodetype.Uttak,
                 konto: 'FORELDREPENGER',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
             } as Periode;
             const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(

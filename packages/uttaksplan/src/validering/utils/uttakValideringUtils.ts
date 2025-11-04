@@ -208,7 +208,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)
         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
         .filter((p) => erPeriodeFørDato(p, førsteUttaksdagEtterSeksUker))
-        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === Forelder.farMedmor);
+        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === 'FAR_MEDMOR');
 
     const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUttak()

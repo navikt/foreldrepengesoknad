@@ -116,7 +116,7 @@ const uttaksplanMor = [
             fom: new Date('2024-06-28'),
             tom: new Date('2024-07-02'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         overskrives: true,
         gradert: false,
         ønskerSamtidigUttak: true,
@@ -131,7 +131,7 @@ const uttaksplanMor = [
             fom: new Date('2024-07-03'),
             tom: new Date('2024-07-15'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         overskrives: true,
         gradert: false,
         ønskerSamtidigUttak: false,
@@ -206,7 +206,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
         uttaksplan: [
             {
                 id: '1',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FORELDREPENGER',
                 tidsperiode: {
                     fom: new Date('2021-05-31'),
@@ -229,7 +229,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '3',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 tidsperiode: {
                     fom: new Date('2021-06-29'),
                     tom: new Date('2021-07-16'),
@@ -334,7 +334,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             },
             {
                 id: '3',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date('2024-04-04'),
@@ -392,7 +392,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             },
             {
                 id: '8',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date('2024-05-31'),
@@ -406,7 +406,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             },
             {
                 id: '9',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date('2024-06-14'),
@@ -471,7 +471,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '2',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 årsak: 'LOVBESTEMT_FERIE',
                 tidsperiode: {
                     fom: new Date('2021-06-29'),
@@ -591,7 +591,7 @@ export const UtsettelseFarSykdom: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '2',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 årsak: 'SYKDOM',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
@@ -615,7 +615,7 @@ export const UtsettelseFarHvØvelse: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '2',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 årsak: 'HV_OVELSE',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
@@ -639,7 +639,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '2',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 årsak: 'ARBEID',
                 tidsperiode: {
                     fom: new Date('2021-04-05'),
@@ -649,7 +649,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
             {
                 type: Periodetype.Utsettelse,
                 id: '2',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 årsak: 'HV_OVELSE',
                 tidsperiode: {
                     fom: new Date('2021-06-15'),
@@ -898,7 +898,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
             {
                 type: Periodetype.Uttak,
                 id: '1',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FEDREKVOTE',
                 samtidigUttakProsent: '70',
                 tidsperiode: {

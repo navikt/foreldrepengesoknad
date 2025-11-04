@@ -228,13 +228,13 @@ export const UttaksperiodeFar: Story = {
                 fom: '2024-06-01',
                 tom: '2024-06-28',
             },
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             perioder: [
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    forelder: Forelder.farMedmor,
+                    forelder: 'FAR_MEDMOR',
                     kontoType: 'FEDREKVOTE',
                     readOnly: false,
                 },

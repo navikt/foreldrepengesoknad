@@ -203,8 +203,7 @@ const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor
 };
 
 const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean) =>
-    (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
-    (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
+    (periode.forelder === Forelder.mor && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor);
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: KalenderPeriode,
@@ -253,7 +252,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return PeriodeColor.BLUE;
     }
 
-    if (periode.forelder === Forelder.farMedmor) {
+    if (periode.forelder === 'FAR_MEDMOR') {
         return PeriodeColor.LIGHTGREEN;
     }
 
@@ -274,7 +273,7 @@ const getKalenderFargeForPeriodeType = (
     }
 
     if (periode.utsettelseÅrsak) {
-        return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
+        return periode.forelder === 'FAR_MEDMOR' ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
     }
 
     if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {

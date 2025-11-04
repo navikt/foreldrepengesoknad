@@ -38,7 +38,7 @@ export const MorSøkerMedTapteDager: Story = {
             {
                 fom: '2026-03-11',
                 tom: '2026-06-24',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
             },
         ] satisfies SaksperiodeNy[],
@@ -83,7 +83,7 @@ export const MorSøkerUtenTapteDager: Story = {
             {
                 fom: '2026-03-11',
                 tom: '2026-06-24',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
             },
         ] satisfies SaksperiodeNy[],

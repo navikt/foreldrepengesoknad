@@ -13,7 +13,7 @@ import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const harSøktOmFellesperiode = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
-        if (periode.forelder === Forelder.farMedmor && periode.konto === 'FELLESPERIODE') {
+        if (periode.forelder === 'FAR_MEDMOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }

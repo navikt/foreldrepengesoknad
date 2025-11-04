@@ -116,25 +116,25 @@ export const MorOgFarBeggeHarRett: Story = {
         uttaksplan: [
             [
                 {
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                     fom: '2025-04-18',
                     tom: '2025-05-08',
                 },
                 {
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
                     fom: '2025-05-09',
                     tom: '2025-08-21',
                 },
                 {
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     fom: '2025-08-22',
                     tom: '2025-12-11',
                 },
                 {
-                    forelder: Forelder.farMedmor,
+                    forelder: 'FAR_MEDMOR',
                     kontoType: 'FEDREKVOTE',
                     fom: '2025-12-12',
                     tom: '2026-03-26',
@@ -143,25 +143,25 @@ export const MorOgFarBeggeHarRett: Story = {
         ],
         originalUttaksplan: [
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
@@ -197,13 +197,13 @@ export const MorOgFarKunMorHarRett: Story = {
         uttaksplan: [
             [
                 {
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                     fom: '2025-04-18',
                     tom: '2025-05-08',
                 },
                 {
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FORELDREPENGER',
                     fom: '2025-05-09',
                     tom: '2026-03-26',
@@ -212,13 +212,13 @@ export const MorOgFarKunMorHarRett: Story = {
         ],
         originalUttaksplan: [
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER',
                 fom: '2025-05-09',
                 tom: '2026-03-26',

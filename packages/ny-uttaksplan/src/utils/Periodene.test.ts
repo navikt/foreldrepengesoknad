@@ -9,7 +9,7 @@ const førsteUttaksdag = UttaksdagenString(familiehendelsesdato).denneEllerNeste
 const førsteUttaksdagTidsperiode = getTidsperiodeString(førsteUttaksdag, 5);
 
 const uttakBase: Planperiode = {
-    forelder: Forelder.farMedmor,
+    forelder: 'FAR_MEDMOR',
     kontoType: 'FELLESPERIODE',
     fom: førsteUttaksdagTidsperiode.tom,
     tom: førsteUttaksdagTidsperiode.fom,
@@ -22,7 +22,7 @@ const oppholdsBase: Planperiode = {
     oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
-    forelder: Forelder.farMedmor,
+    forelder: 'FAR_MEDMOR',
     readOnly: false,
 };
 
