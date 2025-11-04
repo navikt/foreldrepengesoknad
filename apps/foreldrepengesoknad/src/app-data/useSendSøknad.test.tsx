@@ -301,7 +301,7 @@ describe('useFpSendSøknad', () => {
                         rettigheter: {
                             harRettPåForeldrepenger: false,
                             erInformertOmSøknaden: undefined,
-                            erAleneOmOmsorg: undefined,
+                            erAleneOmOmsorg: false,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
                             harMorUføretrygd: undefined,
@@ -367,7 +367,7 @@ describe('useFpSendSøknad', () => {
                         rettigheter: {
                             harRettPåForeldrepenger: false,
                             erInformertOmSøknaden: undefined,
-                            erAleneOmOmsorg: undefined,
+                            erAleneOmOmsorg: false,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
                             harMorUføretrygd: undefined,

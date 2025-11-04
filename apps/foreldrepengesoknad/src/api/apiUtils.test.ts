@@ -223,9 +223,11 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             erMorForSyk: true,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
             forelder: 'MOR',
-            konto: 'MØDREKVOTE',
-        } satisfies Uttaksperiode;
+            // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
+            konto: undefined,
+        } satisfies Periode;
 
+        // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
 
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);

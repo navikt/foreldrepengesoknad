@@ -1,32 +1,12 @@
-import { CountryCode } from '@navikt/fp-types';
+import { AnnenForelder, AnnenForelderOppgitt } from '@navikt/fp-common';
 
-type AnnenForelderIkkeOppgitt = {
-    kanIkkeOppgis: true;
-};
+export type AnnenForelderFormData = Partial<AnnenForelder>;
 
-type AnnenForelderErOppgitt = {
-    kanIkkeOppgis: false;
-    erAleneOmOmsorg: boolean;
-    fornavn: string;
-    etternavn: string;
-    fnr: string;
-    utenlandskFnr?: boolean;
-    bostedsland?: CountryCode;
-    datoForAleneomsorg?: string;
-    harRettPåForeldrepengerINorge?: boolean;
-    harOppholdtSegIEØS?: boolean;
-    harRettPåForeldrepengerIEØS?: boolean;
-    erInformertOmSøknaden?: boolean;
-    erMorUfør?: boolean;
-};
-
-export type AnnenForelderFormData = AnnenForelderIkkeOppgitt | AnnenForelderErOppgitt;
-
-export const erAnnenForelderOppgitt = (
+export const isAnnenForelderOppgittFormData = (
     annenForelder: AnnenForelderFormData,
-): annenForelder is AnnenForelderErOppgitt => {
-    if (!(annenForelder as AnnenForelderErOppgitt).kanIkkeOppgis) {
-        return true;
+): annenForelder is Partial<AnnenForelderOppgitt> => {
+    if (annenForelder.kanIkkeOppgis === true) {
+        return false;
     }
-    return false;
+    return true;
 };

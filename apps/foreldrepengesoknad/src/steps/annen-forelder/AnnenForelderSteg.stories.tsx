@@ -53,8 +53,7 @@ const defaultAnnenForelder = {
     fornavn: 'Hans',
     etternavn: 'Utvikler',
     kanIkkeOppgis: false,
-    erAleneOmOmsorg: true,
-    datoForAleneomsorg: '2021-09-21',
+    erAleneOmOmsorg: false,
 } satisfies AnnenForelderType;
 
 type StoryArgs = {
@@ -131,24 +130,7 @@ export const SkalOppgiPersonalia: Story = {
             },
             arbeidsforhold: [],
         },
-        annenForelder: defaultAnnenForelder,
-    },
-};
-
-export const SkalOppgiPersonaliaNavnMangler: Story = {
-    args: {
-        ...SkalOppgiPersonalia.args,
-        søkerInfo: {
-            person: {
-                ...defaultSøker,
-                barn: [],
-            },
-            arbeidsforhold: [],
-        },
-        annenForelder: {
-            ...defaultAnnenForelder,
-            fornavn: 'annen forelder',
-        },
+        annenForelder: undefined,
     },
 };
 
@@ -243,7 +225,7 @@ export const MorUfødtBarn: Story = {
             antallBarn: 1,
             termindato: '2023-05-05',
         },
-        annenForelder: defaultAnnenForelder,
+        annenForelder: undefined,
         søkerInfo: {
             person: {
                 ...defaultSøker,
@@ -320,7 +302,12 @@ export const FarGiftUfødtBarn: Story = {
 export const FarFødtBarnMorHarVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultAnnenForelder },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            fornavn: defaultSøker.navn.fornavn,
+            etternavn: defaultSøker.navn.etternavn,
+            fnr: defaultSøker.fnr,
+        },
     },
     parameters: {
         msw: {
@@ -332,7 +319,12 @@ export const FarFødtBarnMorHarVedtak: Story = {
 export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultAnnenForelder },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            fornavn: defaultSøker.navn.fornavn,
+            etternavn: defaultSøker.navn.etternavn,
+            fnr: defaultSøker.fnr,
+        },
     },
     parameters: {
         msw: {
