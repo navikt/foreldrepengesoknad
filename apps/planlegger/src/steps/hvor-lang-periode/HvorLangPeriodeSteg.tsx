@@ -8,7 +8,6 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -72,10 +71,10 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
 
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, hvemHarRett, intl);
 
-    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
-    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
 
-    const stønadskonto = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const stønadskonto = valgtDekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
     const valgtStønadskonto = valgtDekningsgrad ? stønadskonto : undefined;
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
@@ -83,8 +82,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
-    const antallUkerOgDager =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUkerOgDager100 : antallUkerOgDager80;
+    const antallUkerOgDager = valgtDekningsgrad === '100' ? antallUkerOgDager100 : antallUkerOgDager80;
 
     const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
@@ -183,7 +181,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                             ]}
                             onChange={scrollToBottom}
                         >
-                            <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
+                            <Radio value={'100'} autoFocus>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.100"
                                     values={{
@@ -192,7 +190,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
                                     }}
                                 />
                             </Radio>
-                            <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
+                            <Radio value={'80'}>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.80"
                                     values={{ uker80: antallUkerOgDager80.uker, dager80: antallUkerOgDager80.dager }}

@@ -11,7 +11,7 @@ import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Heading, Link } from '@navikt/ds-react';
 
-import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOppsummering,
@@ -43,7 +43,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderFar =
         !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
-    const erSøkerIkkeGift = person.sivilstand?.type !== SivilstandType.GIFT;
+    const erSøkerIkkeGift = person.sivilstand?.type !== 'GIFT';
 
     return (
         (rolle === 'far' ||

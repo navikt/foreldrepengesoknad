@@ -3,8 +3,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { UttakArbeidType } from '@navikt/fp-types';
-
 import * as stories from './Uttaksplan.stories';
 
 const { Default, MorOgMedmor, MorOgFarMedFerieopphold } = composeStories(stories);
@@ -129,7 +127,7 @@ describe('Uttaksplan', () => {
                 forelder: 'MOR',
                 gradering: {
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                     arbeidstidprosent: 50,
                 },

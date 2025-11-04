@@ -3,7 +3,6 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
-import { UttakArbeidType } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/api.ts';
@@ -145,7 +144,7 @@ export const FarSøker: Story = {
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.FRILANS,
+                        type: 'FRILANS',
                     },
                 },
             },
@@ -265,7 +264,7 @@ export const MorOgFarOgFarGraderer: Story = {
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                 },
                 morsAktivitet: 'ARBEID',
@@ -285,7 +284,7 @@ export const MorOgFarOgFarGraderer: Story = {
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                 },
                 morsAktivitet: 'ARBEID',
@@ -305,7 +304,7 @@ export const MorOgFarOgFarGraderer: Story = {
                 gradering: {
                     arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                 },
                 flerbarnsdager: false,

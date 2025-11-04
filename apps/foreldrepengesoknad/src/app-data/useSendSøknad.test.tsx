@@ -19,7 +19,6 @@ import {
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
-    Dekningsgrad,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
     Frilans,
@@ -201,7 +200,7 @@ const getWrapper =
                             [ContextDataType.FRILANS]: FRILANS,
                             [ContextDataType.EGEN_NÆRING]: EGEN_NÆRING,
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: ANDRE_INNTEKTSKILDER,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTENLANDSOPPHOLD]: {
                                 harBoddUtenforNorgeSiste12Mnd: true,
                                 skalBoUtenforNorgeNeste12Mnd: true,
@@ -215,7 +214,7 @@ const getWrapper =
                                 saksnummer: '1',
                                 erAnnenPartsSak: false,
                                 grunnlag: {
-                                    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+                                    dekningsgrad: '100',
                                     antallBarn: 1,
                                     morErAleneOmOmsorg: false,
                                     morErUfør: false,
@@ -323,7 +322,7 @@ describe('useFpSendSøknad', () => {
                             tom: '2025-10-01',
                         },
                     ],
-                    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+                    dekningsgrad: '100',
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
                         uttaksperioder: [],

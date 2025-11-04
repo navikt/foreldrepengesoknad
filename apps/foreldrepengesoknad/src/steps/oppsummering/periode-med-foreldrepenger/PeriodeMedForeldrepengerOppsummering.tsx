@@ -8,7 +8,6 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 import { FormSummary } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Dekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
@@ -68,7 +67,7 @@ const PeriodeLabel = () => {
         return null;
     }
 
-    if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+    if (dekningsgrad === '100') {
         return (
             <FormattedMessage
                 id="uttaksplaninfo.49Uker"

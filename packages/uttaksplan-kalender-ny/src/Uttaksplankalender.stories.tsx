@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BarnType } from '@navikt/fp-constants';
-import { SaksperiodeNy, UttakArbeidType } from '@navikt/fp-types';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanKalender } from './UttaksplanKalender';
 
@@ -53,7 +53,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 kontoType: 'FELLESPERIODE',
                 gradering: {
                     aktivitet: {
-                        type: UttakArbeidType.ANNET,
+                        type: 'ANNET',
                     },
                     arbeidstidprosent: 50,
                 },
@@ -177,7 +177,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
                 kontoType: 'FEDREKVOTE',
                 gradering: {
                     aktivitet: {
-                        type: UttakArbeidType.FRILANS,
+                        type: 'FRILANS',
                     },
                     arbeidstidprosent: 50,
                 },

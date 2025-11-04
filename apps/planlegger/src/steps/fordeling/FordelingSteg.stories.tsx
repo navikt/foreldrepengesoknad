@@ -6,10 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -57,7 +56,7 @@ const meta = {
         omBarnet,
         stønadskontoer,
         gåTilNesteSide = action('button-click'),
-        dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad = '100',
     }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
@@ -113,7 +112,7 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
@@ -131,7 +130,7 @@ export const FlereForsørgereToBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '2',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
@@ -149,7 +148,7 @@ export const FarOgFar: Story = {
             antallBarn: '2',
             overtakelsesdato: '2024-01-01',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };

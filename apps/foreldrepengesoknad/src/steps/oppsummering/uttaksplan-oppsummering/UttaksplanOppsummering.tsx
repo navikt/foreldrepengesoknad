@@ -3,8 +3,8 @@ import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { AnnenForelder, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 
@@ -41,7 +41,7 @@ export const UttaksplanOppsummering = ({
     let dekningsgradTekst = undefined;
 
     if (antallUkerOgDagerIUttaksplan.dager > 0) {
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+        if (dekningsgrad === '100') {
             dekningsgradTekst = intl.formatMessage(
                 { id: 'oppsummering.uttak.dekningsgrad.verdi100.ukerOgDager' },
                 { antallUker: antallUkerOgDagerIUttaksplan.uker, antallDager: antallUkerOgDagerIUttaksplan.dager },
@@ -54,7 +54,7 @@ export const UttaksplanOppsummering = ({
         }
     } else {
         dekningsgradTekst =
-            dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            dekningsgrad === '100'
                 ? intl.formatMessage(
                       { id: 'oppsummering.uttak.dekningsgrad.verdi100.bareUker' },
                       {

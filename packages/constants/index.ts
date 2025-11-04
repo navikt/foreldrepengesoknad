@@ -9,7 +9,6 @@ export { Periodetype } from './src/periodetype';
 export { Environment } from './src/Environment';
 export { BarnType } from './src/barnType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
-export { SivilstandType } from './src/sivilstandType';
 export { DEFAULT_SATSER } from './src/grunnbeløp';
 export {
     DATE_4_YEARS_AGO,

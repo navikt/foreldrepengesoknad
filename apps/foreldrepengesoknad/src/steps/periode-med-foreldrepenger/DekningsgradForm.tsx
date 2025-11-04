@@ -9,10 +9,10 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Barn, Dekningsgrad, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Barn, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -155,7 +155,7 @@ export const DekningsgradForm = ({
                         ]}
                     >
                         <Radio
-                            value={Dekningsgrad.HUNDRE_PROSENT}
+                            value={'100'}
                             description={getRadioBeskrivelse(
                                 intl,
                                 erAdopsjon,
@@ -175,7 +175,7 @@ export const DekningsgradForm = ({
                             />
                         </Radio>
                         <Radio
-                            value={Dekningsgrad.ÅTTI_PROSENT}
+                            value={'80'}
                             description={getRadioBeskrivelse(
                                 intl,
                                 erAdopsjon,

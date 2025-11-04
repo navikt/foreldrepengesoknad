@@ -1,5 +1,6 @@
 import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes.ts';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
@@ -8,16 +9,17 @@ import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
-import { Dekningsgrad } from 'types/Dekningsgrad';
+import { Arbeidsstatus } from 'types/Arbeidssituasjon.ts';
 import { Fordeling } from 'types/Fordeling';
 import { erAlenesøker, getErFarEllerMedmor, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert, mapOmBarnetTilBarn } from 'utils/barnetUtils.ts';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
@@ -25,10 +27,7 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { PlanleggerRoutes } from '../../app-data/routes';
 import { CalendarLabels } from '../../components/labels/CalendarLabels';
-import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
@@ -39,9 +38,7 @@ const finnAntallDagerSøker1 = (
     fordeling: Fordeling,
 ) => {
     const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
-        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
-            : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
+        dekningsgrad === '100' ? stønadskontoer['100'] : stønadskontoer['80'],
     );
 
     return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
@@ -71,13 +68,12 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     const lagreOriginalUttaksplan = useContextSaveData(ContextDataType.ORIGINAL_UTTAKSPLAN);
     const lagreTilpassPlan = useContextSaveData(ContextDataType.TILPASS_PLAN);
 
-    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
-    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
 
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
-    const valgtStønadskonto =
-        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
@@ -201,7 +197,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             onChange={oppdaterPeriodeOgFordeling}
                             style={{ width: '100%' }}
                         >
-                            <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
+                            <ToggleGroup.Item value={'100'}>
                                 <FormattedMessage
                                     id="OversiktSteg.100"
                                     values={{
@@ -210,7 +206,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                     }}
                                 />
                             </ToggleGroup.Item>
-                            <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
+                            <ToggleGroup.Item value={'80'}>
                                 <FormattedMessage
                                     id="OversiktSteg.80"
                                     values={{

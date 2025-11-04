@@ -5,7 +5,6 @@ export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
 export type { Situasjon } from './src/Situasjon';
 export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
-export type { Sivilstand } from './src/Sivilstand';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
 export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
@@ -31,12 +30,7 @@ export {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './src/Periode';
-export { Dekningsgrad } from './src/Dekningsgrad';
-export type {
-    InformasjonOmUtenlandsoppholdDTO,
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-} from './src/Utenlandsopphold';
+export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn } from './src/Barn';
 export type {
@@ -48,10 +42,7 @@ export type {
     Uttaksperiode,
     Oppholdsperiode,
 } from './src/Periode';
-export type { PeriodeResultat } from './src/PeriodeResultat';
 export type { SaksperiodeNy } from './src/SaksperiodeNy';
-export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
-export { UttakArbeidType } from './src/UttakArbeidType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/Ytelse';

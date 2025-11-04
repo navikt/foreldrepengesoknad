@@ -1,9 +1,7 @@
-import { Dekningsgrad } from '@navikt/fp-types';
-
 export const getDekningsgradFromString = (dekningsgrad: string | undefined) => {
     if (!dekningsgrad) {
-        return Dekningsgrad.HUNDRE_PROSENT;
+        return '100';
     }
 
-    return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT;
+    return dekningsgrad === '100' ? '100' : '80';
 };

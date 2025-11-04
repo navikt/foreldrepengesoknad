@@ -7,8 +7,7 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,7 +50,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     };
 
     const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === '80';
     return (
         <VStack gap="space-40">
             <Infobox

@@ -10,7 +10,7 @@ import { getKjønnFromFnr } from 'utils/personUtils';
 
 import { Box, HStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { IconCircleWrapper, SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -70,16 +70,10 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 goToNextDefaultStep={navigator.goToNextDefaultStep}
                                 fornavnAnnenForelder={annenForelder.fornavn}
                                 kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
-                                dekningsgrad={
-                                    annenPartVedtak.dekningsgrad === 'HUNDRE'
-                                        ? Dekningsgrad.HUNDRE_PROSENT
-                                        : Dekningsgrad.ÅTTI_PROSENT
-                                }
+                                dekningsgrad={annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'}
                                 valgtStønadskonto={
                                     tilgjengeligeStønadskontoerQuery.data[
-                                        annenPartVedtak.dekningsgrad === 'HUNDRE'
-                                            ? Dekningsgrad.HUNDRE_PROSENT
-                                            : Dekningsgrad.ÅTTI_PROSENT
+                                        annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'
                                     ]
                                 }
                             />
@@ -92,8 +86,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 onFortsettSenere={navigator.fortsettSøknadSenere}
                                 barn={barn}
                                 søkersituasjon={søkersituasjon}
-                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}
-                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.ÅTTI_PROSENT]}
+                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data['100']}
+                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data['80']}
                             />
                         )}
                     </>
