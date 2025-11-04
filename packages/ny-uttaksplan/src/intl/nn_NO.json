@@ -207,5 +207,6 @@
     "RedigeringPanel.Mødrekvote": "Mor har foreldrepenger",
     "RedigeringPanel.Fedrekvote": "Far har foreldrepenger",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
-    "RedigeringPanel.Dager": "{dato} {antall} dager"
+    "RedigeringPanel.Dager": "{dato} {antall} dager",
+    "LeggTilPeriodePanel.Dager": "Valgte dager:"
 }

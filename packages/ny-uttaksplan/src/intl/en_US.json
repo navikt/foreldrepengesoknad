@@ -208,5 +208,6 @@
     "RedigeringPanel.Fellesperiode": "Shared period",
     "RedigeringPanel.Mødrekvote": "Mother has parental benefits",
     "RedigeringPanel.Fedrekvote": "Father has parental benefits",
-    "RedigeringPanel.Dager": "{dato} {antall} days"
+    "RedigeringPanel.Dager": "{dato} {antall} days",
+    "LeggTilPeriodePanel.Dager": "Selected days:"
 }

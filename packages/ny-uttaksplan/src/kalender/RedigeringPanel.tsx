@@ -1,7 +1,7 @@
 import { PersonGroupIcon, PersonPregnantFillIcon, PersonSuitFillIcon, TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -12,41 +12,32 @@ import { Period } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+import { LeggTilPeriodePanel, erFerieLovlig } from './legg-til-periode-panel/LeggTilPeriodePanel';
 
 type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
 type Props = {
     valgtePerioder: Period[];
     komplettPlan: Planperiode[];
-    handleOnPlanChange: (oppdatertPeriode: Planperiode[], leggTil: boolean) => void;
+    handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
     familiehendelsedato: string;
-    setSelectedPeriods: (perioder: Period[]) => void;
+    setSelectedPeriods: React.Dispatch<React.SetStateAction<Period[]>>;
 };
 
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
-    const { erFarEllerMedmor } = useUttaksplanData();
+    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
-    const sammenslåtteValgtePerioder = slåSammenTilstøtendePerioder(valgtePerioder);
+    const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
-    // useEffect(() => {
-    //     // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
-    //     setErIRedigeringsmodus(false);
-    // }, [sammenslåtteValgtePerioder]);
+    useEffect(() => {
+        // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
+        if (erIRedigeringsmodus) {
+            setErIRedigeringsmodus(false);
+        }
+    }, [sammenslåtteValgtePerioder]);
 
-    // const valgtePerioderIKomplettPlan = komplettPlan.filter((p) =>
-    //     sammenslåtteValgtePerioder.some((vp) => {
-    //         return (
-    //             (dayjs(vp.fom).isSameOrAfter(dayjs(p.fom), 'day') &&
-    //                 dayjs(vp.fom).isSameOrBefore(dayjs(p.tom), 'day')) ||
-    //             (dayjs(vp.tom).isSameOrAfter(dayjs(p.fom), 'day') &&
-    //                 dayjs(vp.tom).isSameOrBefore(dayjs(p.tom), 'day')) ||
-    //             (dayjs(vp.fom).isBefore(dayjs(p.fom), 'day') && dayjs(vp.tom).isAfter(dayjs(p.tom), 'day'))
-    //         );
-    //     }),
-    // );
-
-    const slettPeriode = () => {
+    const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
             forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
             periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
@@ -56,10 +47,42 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
             id: uniqueId(),
         }));
 
-        handleOnPlanChange(planperioder, true);
+        handleOnPlanChange(planperioder);
 
-        setErIRedigeringsmodus(false);
         setSelectedPeriods([]);
+    };
+
+    const slettPeriode = (periode: { fom: string; tom: string }) => {
+        const start = dayjs(periode.fom);
+        const end = dayjs(periode.tom);
+
+        const perioder = sammenslåtteValgtePerioder.filter((p) => {
+            const pStart = dayjs(p.fom);
+            const pEnd = dayjs(p.tom);
+
+            return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
+        });
+
+        const planperioder = perioder.map<Planperiode>((p) => ({
+            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+            fom: p.fom,
+            tom: p.tom,
+            readOnly: false,
+            id: uniqueId(),
+        }));
+
+        handleOnPlanChange(planperioder);
+
+        setSelectedPeriods((oldPeriods) =>
+            oldPeriods.filter(
+                (p) =>
+                    // keep only those that do NOT overlap any deleted range
+                    !perioder.some(
+                        (rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'),
+                    ),
+            ),
+        );
     };
 
     const leggTilFerie = () => {
@@ -72,21 +95,19 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
             utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
         }));
 
-        handleOnPlanChange(planperioder, true);
+        handleOnPlanChange(planperioder);
 
         setErIRedigeringsmodus(false);
         setSelectedPeriods([]);
     };
 
-    //TODO EndrePeriodPanel kan i dag kun oppdatera ein periode om gongen. Må endrast
-    // const permisjonsperioder = mapPerioderToPermisjonsperiode(valgtePerioderIKomplettPlan, familiehendelsedato).at(0)!;
-
-    //TODO Korleis skal ein håndtera valg av både nye og endra datoar samtidig?
-
-    const ekisterendePerioderSomErValgt = finnValgtePerioder(valgtePerioder, komplettPlan);
+    const ekisterendePerioderSomErValgt = useMemo(
+        () => finnValgtePerioder(valgtePerioder, komplettPlan),
+        [valgtePerioder, komplettPlan],
+    );
 
     return (
-        <>
+        <div>
             {!erIRedigeringsmodus && (
                 <Box.New
                     borderWidth="1"
@@ -111,17 +132,27 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                             )}
                         </VStack>
                         {ekisterendePerioderSomErValgt.length > 0 && (
-                            <EksisterendePeriodeListe perioder={ekisterendePerioderSomErValgt} />
+                            <EksisterendePeriodeListe
+                                perioder={ekisterendePerioderSomErValgt}
+                                slettPeriode={slettPeriode}
+                            />
                         )}
-                        <Button variant="secondary" size="small" onClick={leggTilFerie}>
-                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                        </Button>
+                        {!valgtePerioder.some((p) => erFerieLovlig(p, familiehendelsedato)) && (
+                            <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                            </Button>
+                        )}
                         <HStack gap="space-16">
-                            <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)}>
+                            <Button
+                                variant="primary"
+                                size="small"
+                                onClick={() => setErIRedigeringsmodus(true)}
+                                type="button"
+                            >
                                 <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
                             </Button>
                             {ekisterendePerioderSomErValgt.length > 0 && (
-                                <Button variant="tertiary" size="small" onClick={slettPeriode}>
+                                <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
                                     <FormattedMessage id="RedigeringPanel.SlettAlle" />
                                 </Button>
                             )}
@@ -129,26 +160,17 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                     </VStack>
                 </Box.New>
             )}
-            {/* {erIRedigeringsmodus && (
-                <>
-                    {!permisjonsperioder && (
-                        <LeggTilPeriodePanel
-                            onCancel={() => setErIRedigeringsmodus(false)}
-                            handleAddPeriode={(nyPeriode) => handleOnPlanChange([nyPeriode], true)}
-                        />
-                    )}
-                    {!!permisjonsperioder && (
-                        <EndrePeriodePanel
-                            closePanel={() => setErIRedigeringsmodus(false)}
-                            handleUpdatePeriode={(oppdatertPeriode) => handleOnPlanChange([oppdatertPeriode], false)}
-                            handleAddPeriode={() => {}}
-                            permisjonsperiode={permisjonsperioder}
-                            inneholderKunEnPeriode
-                        />
-                    )}
-                </>
-            )} */}
-        </>
+            {erIRedigeringsmodus && (
+                <LeggTilPeriodePanel
+                    onCancel={() => setErIRedigeringsmodus(false)}
+                    handleAddPeriode={(nyePerioder) => {
+                        handleOnPlanChange(nyePerioder);
+                        setSelectedPeriods([]);
+                    }}
+                    valgtePerioder={sammenslåtteValgtePerioder}
+                />
+            )}
+        </div>
     );
 };
 
@@ -234,7 +256,13 @@ const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): Pl
         }, []);
 };
 
-const EksisterendePeriodeListe = ({ perioder }: { perioder: PlanperiodeMedAntallDager[] }) => {
+const EksisterendePeriodeListe = ({
+    perioder,
+    slettPeriode,
+}: {
+    perioder: PlanperiodeMedAntallDager[];
+    slettPeriode: (periode: { fom: string; tom: string }) => void;
+}) => {
     return (
         <VStack gap="space-8">
             {perioder
@@ -287,7 +315,7 @@ const EksisterendePeriodeListe = ({ perioder }: { perioder: PlanperiodeMedAntall
                             </BodyShort>
                         </VStack>
                         <Spacer />
-                        <TrashIcon title="a11y-title" fontSize="1.5rem" />
+                        <TrashIcon title="a11y-title" fontSize="1.5rem" onClick={() => slettPeriode(p)} />
                     </HStack>
                 ))}
         </VStack>

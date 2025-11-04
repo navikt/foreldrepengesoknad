@@ -534,10 +534,8 @@ const getModifyPlan =
         uttaksplanBuilder: ReturnType<typeof Uttaksplanbuilder>,
         handleOnPlanChange: (perioder: SaksperiodeNy[]) => void,
     ) =>
-    (oppdatertPeriode: Planperiode[], leggTil: boolean) => {
-        const planperioder = leggTil
-            ? uttaksplanBuilder.leggTilPerioder(oppdatertPeriode)
-            : uttaksplanBuilder.oppdaterPerioder(oppdatertPeriode);
+    (oppdatertPeriode: Planperiode[]) => {
+        const planperioder = uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
         const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
         handleOnPlanChange(
