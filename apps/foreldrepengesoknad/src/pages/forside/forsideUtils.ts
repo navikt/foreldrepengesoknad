@@ -211,7 +211,7 @@ const getSelectableBarnOptionsFraPDL = (
     const fødselsdatoPåBarnFraSaker = barnFraSaker
         .filter((barn) => barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0)
         .flatMap((b) => b.fødselsdatoer);
-    const selectableBarnFraPDL = [] as ValgtBarn[];
+    const selectableBarnFraPDL: ValgtBarn[] = [];
 
     //Fjerner dødfødte barn som har en sak
     const registrerteBarnUtenDødeBarnMedSak = registrerteBarnMedFnr.filter(

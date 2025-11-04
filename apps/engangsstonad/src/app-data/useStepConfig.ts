@@ -9,17 +9,18 @@ import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataC
 import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
 // TODO Denne bør flyttast ut
-const getPathToLabelMap = (intl: IntlShape) =>
-    ({
-        [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
-        [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
-        [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Termin' }),
-        [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Adopsjon' }),
-        [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.Utenlandsopphold' }),
-        [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.TidligereUtenlandsopphold' }),
-        [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.FremtidigUtenlandsopphold' }),
-        [Path.OPPSUMMERING]: intl.formatMessage({ id: 'UseStepConfig.Oppsummering' }),
-    }) as Record<string, string>;
+const getPathToLabelMap = (intl: IntlShape) => ({
+    [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
+    [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
+    [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Termin' }),
+    [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Adopsjon' }),
+    [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.Utenlandsopphold' }),
+    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.TidligereUtenlandsopphold' }),
+    [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.FremtidigUtenlandsopphold' }),
+    [Path.OPPSUMMERING]: intl.formatMessage({ id: 'UseStepConfig.Oppsummering' }),
+    [Path.VELKOMMEN]: '',
+    [Path.KVITTERING]: '',
+});
 
 const isAfterStep = (previousStepPath: Path, currentStepPath: Path): boolean => {
     return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);

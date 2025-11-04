@@ -32,7 +32,7 @@ export type ContextDataMap = {
     [ContextDataType.TILPASS_PLAN]?: boolean;
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action =
     | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }

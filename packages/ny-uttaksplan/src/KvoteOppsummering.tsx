@@ -888,14 +888,14 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto_fpovers
         const dagerEøs = Math.min(
             sum(
                 perioder
-                    .filter((p) => isUttaksperiodeAnnenpartEøs(p as Planperiode) && p.kontoType === aktuellKontoType)
+                    .filter((p) => isUttaksperiodeAnnenpartEøs(p) && p.kontoType === aktuellKontoType)
                     .map(finnAntallDagerÅTrekke),
             ),
             gjeldendeKonto.dager,
         );
         const dagerNorge = sum(
             perioder
-                .filter((p) => !isUttaksperiodeAnnenpartEøs(p as Planperiode) && p.kontoType === aktuellKontoType)
+                .filter((p) => !isUttaksperiodeAnnenpartEøs(p) && p.kontoType === aktuellKontoType)
                 .map(finnAntallDagerÅTrekke),
         );
         dagerTotalt += dagerEøs + dagerNorge;

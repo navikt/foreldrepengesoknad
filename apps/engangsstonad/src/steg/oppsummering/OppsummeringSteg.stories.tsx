@@ -22,7 +22,8 @@ const barnetDefault = {
     erBarnetFødt: true,
     antallBarn: 1,
     fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-} as BarnetErFødt;
+    termindato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+} satisfies BarnetErFødt;
 
 const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,

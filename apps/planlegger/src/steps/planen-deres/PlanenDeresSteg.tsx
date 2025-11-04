@@ -77,8 +77,8 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
-    const oppdaterPeriodeOgFordeling = (value: string) => {
-        const dekningsgrad = value as Dekningsgrad;
+    const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
+        const dekningsgrad = value;
         lagreHvorLangPeriode({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
@@ -194,7 +194,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             defaultValue={hvorLangPeriode?.dekningsgrad}
                             size={isDesktop ? 'medium' : 'small'}
                             variant="neutral"
-                            onChange={oppdaterPeriodeOgFordeling}
+                            onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
                             style={{ width: '100%' }}
                         >
                             <ToggleGroup.Item value={'100'}>

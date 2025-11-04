@@ -72,7 +72,7 @@ export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
     return periode.utsettelseÅrsak !== undefined;
 };
 
-export const isUttaksperiodeAnnenpartEøs = (periode: Planperiode) => {
+export const isUttaksperiodeAnnenpartEøs = (periode: SaksperiodeNy) => {
     return periode.trekkdager !== undefined;
 };
 
@@ -191,14 +191,14 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
 };
 
 export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPerioder: Planperiode[]) => {
-    const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce((res, p) => {
+    const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce<SplittetDatoType[]>((res, p) => {
         res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
         return res;
-    }, [] as SplittetDatoType[]);
-    const annenPartsUttakTidsperioder = annenPartsPerioder.reduce((res, p) => {
+    }, []);
+    const annenPartsUttakTidsperioder = annenPartsPerioder.reduce<SplittetDatoType[]>((res, p) => {
         res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
         return res;
-    }, [] as SplittetDatoType[]);
+    }, []);
 
     const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
         if (new Date(d1.dato).getTime() - new Date(d2.dato).getTime() === 0) {
@@ -213,12 +213,12 @@ export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPer
         return new Date(d1.dato).getTime() - new Date(d2.dato).getTime();
     });
 
-    const alleUnikeDatoer = alleDatoer.reduce((result, datoWrapper) => {
+    const alleUnikeDatoer = alleDatoer.reduce<SplittetDatoType[]>((result, datoWrapper) => {
         if (!result.some((d) => d.dato === datoWrapper.dato && d.erFom === datoWrapper.erFom)) {
             result.push(datoWrapper);
         }
         return result;
-    }, [] as SplittetDatoType[]);
+    }, []);
     const normaliserteEgnePerioder: Planperiode[] = [];
     const normaliserteAnnenPartsPerioder: Planperiode[] = [];
 
