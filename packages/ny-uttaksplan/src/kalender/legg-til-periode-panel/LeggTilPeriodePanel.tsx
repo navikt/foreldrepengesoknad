@@ -1,13 +1,14 @@
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
+import { PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { Box, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
-import { getFloatFromString } from '@navikt/fp-utils';
+import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import { formatDate, getFloatFromString } from '@navikt/fp-utils';
 
 import { PanelButtons } from '../../components/panel-buttons/PanelButtons';
 import { GraderingSpørsmål } from '../../components/spørsmål/GraderingSpørsmål';
@@ -18,8 +19,8 @@ import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 
 type LeggTilPeriodePanelFormValues = {
-    kontoType?: KontoTypeUttak_fpoversikt;
-    forelder: BrukerRolleSak_fpoversikt;
+    kontoType?: KontoTypeUttak;
+    forelder: Forelder;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
     samtidigUttak?: boolean;
@@ -34,19 +35,9 @@ interface Props {
     }>;
     onCancel?: () => void;
     handleAddPeriode: (oppdatertePerioder: Planperiode[]) => void;
-    erMinimert: boolean;
-    setErMinimert: (erMinimert: boolean) => void;
 }
 
-export const LeggTilPeriodePanel = ({
-    valgtePerioder,
-    onCancel,
-    handleAddPeriode,
-    erMinimert,
-    setErMinimert,
-}: Props) => {
-    const intl = useIntl();
-
+export const LeggTilPeriodePanel = ({ valgtePerioder, onCancel, handleAddPeriode }: Props) => {
     const { aleneOmOmsorg, familiehendelsedato, valgtStønadskonto } = useUttaksplanData();
 
     const formMethods = useForm<LeggTilPeriodePanelFormValues>();
@@ -69,15 +60,15 @@ export const LeggTilPeriodePanel = ({
             if (hvaVilDuGjøre === 'leggTilFerie') {
                 perioder.push({
                     ...felles,
-                    id: `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
-                    forelder: 'MOR',
-                    utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                    id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
+                    forelder: Forelder.mor,
+                    utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
                 });
             } else if (hvaVilDuGjøre === 'leggTilOpphold') {
                 perioder.push({
                     ...felles,
                     id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                    forelder: 'MOR',
+                    forelder: Forelder.mor,
                     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
                 });
             } else {
@@ -118,64 +109,52 @@ export const LeggTilPeriodePanel = ({
         });
 
     return (
-        <>
+        <Box.New
+            borderWidth="1"
+            borderRadius="4"
+            borderColor="neutral-subtle"
+            padding="4"
+            width="400px"
+            height="fit-content"
+        >
             <VStack gap="space-8">
-                <Box.New background="accent-soft" padding="4">
-                    <HStack gap="space-8" align="center">
-                        <PencilIcon aria-hidden={true} width={24} height={24} />
-                        <Heading size="small">
-                            <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                        </Heading>
-                        <Spacer />
-                        <div className="block sm:hidden">
-                            {erMinimert ? (
-                                <ChevronUpIcon
-                                    title="a11y-title"
-                                    fontSize="1.5rem"
-                                    onClick={() => setErMinimert(false)}
-                                />
-                            ) : (
-                                <ChevronDownIcon
-                                    title="a11y-title"
-                                    fontSize="1.5rem"
-                                    onClick={() => setErMinimert(true)}
-                                />
-                            )}
-                        </div>
-                    </HStack>
-                </Box.New>
-
-                <div className={erMinimert ? 'hidden' : 'block'}>
-                    <div className="px-4 pb-4 pt-4">
-                        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                            <VStack gap="space-16">
-                                <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
-                                {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
-                                <GraderingSpørsmål />
-                                <PanelButtons
-                                    onCancel={() => onCancel?.()}
-                                    isFinalStep={true}
-                                    addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
-                                />
-                            </VStack>
-                        </RhfForm>
-                    </div>
-                </div>
+                <HStack gap="space-8" align="center">
+                    <PencilIcon aria-hidden={true} width={24} height={24} />
+                    <Heading size="medium">
+                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                    </Heading>
+                </HStack>
+                <BodyShort>
+                    <FormattedMessage id="LeggTilPeriodePanel.Dager" />
+                    {valgtePerioder.map((p) => (
+                        <BodyShort key={p.fom + p.tom}>
+                            {p.fom === p.tom ? formatDate(p.fom) : formatDate(p.fom) + ' - ' + formatDate(p.tom)}
+                        </BodyShort>
+                    ))}
+                </BodyShort>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-16">
+                        <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} />
+                        {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                        <GraderingSpørsmål />
+                        <PanelButtons onCancel={() => onCancel?.()} isFinalStep={true} />
+                    </VStack>
+                </RhfForm>
             </VStack>
-        </>
+        </Box.New>
     );
 };
 
 const getForelderFromKontoType = (
-    ktValue: KontoTypeUttak_fpoversikt | undefined,
-    fValue: BrukerRolleSak_fpoversikt | undefined,
-): BrukerRolleSak_fpoversikt | undefined => {
+    ktValue: KontoTypeUttak | undefined,
+    fValue: Forelder | undefined,
+): Forelder | undefined => {
     switch (ktValue) {
         case 'FEDREKVOTE':
-            return 'FAR_MEDMOR';
+            return Forelder.farMedmor;
         case 'MØDREKVOTE':
         case 'FORELDREPENGER_FØR_FØDSEL':
-            return 'MOR';
+            return Forelder.mor;
         default:
             return fValue;
     }

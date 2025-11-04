@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -12,11 +13,10 @@ import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/En
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 interface Props {
-    gyldigeKontotyper?: KontoTypeUttak_fpoversikt[];
-    skalViseTittel?: boolean;
+    gyldigeKontotyper?: KontoTypeUttak[];
 }
 
-export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }: Props) => {
+export const KontotypeSpørsmål = ({ gyldigeKontotyper }: Props) => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const { valgtStønadskonto, erMedmorDelAvSøknaden } = useUttaksplanData();
@@ -46,13 +46,15 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }
                 ]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
-                {valgtStønadskonto.kontoer.map((konto) => {
-                    return (
-                        <Radio key={konto.konto} value={konto.konto}>
-                            {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
-                        </Radio>
-                    );
-                })}
+                {valgtStønadskonto.kontoer
+                    .filter((k) => gyldigeKontotyper === undefined || gyldigeKontotyper.includes(k.konto))
+                    .map((konto) => {
+                        return (
+                            <Radio key={konto.konto} value={konto.konto}>
+                                {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
+                            </Radio>
+                        );
+                    })}
             </RhfRadioGroup>
             {kontoTypeValue === 'FELLESPERIODE' && (
                 <RhfRadioGroup
