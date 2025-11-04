@@ -1,6 +1,5 @@
 import MockDate from 'mockdate';
 
-import { Forelder } from '@navikt/fp-constants';
 import { KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { deltUttak } from './deltUttak';

@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-constants';
 import { AnnenPartSak_fpoversikt } from '@navikt/fp-types';
 
 export const annenPartVedtak = {

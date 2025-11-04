@@ -11,7 +11,6 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { Forelder } from '@navikt/fp-constants';
 import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './TilpassPlanenSteg';

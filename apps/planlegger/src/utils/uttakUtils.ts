@@ -3,7 +3,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { Forelder, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     HvemPlanleggerType,
     KontoBeregningDto_fpoversikt,

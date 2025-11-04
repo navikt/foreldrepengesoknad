@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Forelder } from '@navikt/fp-constants';
 import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
 
 import { CalendarLabels } from './CalendarLabels';
