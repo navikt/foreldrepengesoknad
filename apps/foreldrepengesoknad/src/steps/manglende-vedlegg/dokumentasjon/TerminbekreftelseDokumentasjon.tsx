@@ -6,7 +6,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor.ts';
 import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils.ts';
 
 import { AnnenForelder, Barn, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
@@ -57,7 +57,7 @@ export const TerminbekreftelseDokumentasjon = ({
                     : 'manglendeVedlegg.terminbekreftelse.description',
             })}
             attachmentType={AttachmentType.TERMINBEKREFTELSE}
-            metadataType={AttachmentMetadataType.BARN}
+            metadataType={'BARN'}
         />
     );
 };

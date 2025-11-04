@@ -1,5 +1,5 @@
-import { Arbeidsform, SaksperiodeDTO } from '@navikt/fp-common';
-import { FpSak_fpoversikt } from '@navikt/fp-types';
+import { Arbeidsform } from '@navikt/fp-common';
+import { FpSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import {
     getArbeidsformFromUttakArbeidstype,
@@ -463,7 +463,7 @@ describe('eksisterendeSakUtils', () => {
             },
             samtidigUttak: 50,
             flerbarnsdager: true,
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
         const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
 
@@ -488,7 +488,7 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             utsettelseÅrsak: 'HV_ØVELSE',
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
 
@@ -518,7 +518,7 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
         const forventetMappetOverføringSøker = {
@@ -545,7 +545,7 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
 
@@ -579,7 +579,7 @@ describe('eksisterendeSakUtils', () => {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
 

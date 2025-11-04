@@ -16,7 +16,7 @@ import {
     isAnnenforelderOppholdtSegIEØS,
     isPeriodeUtenUttakUtsettelse,
 } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { dateToISOString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -123,7 +123,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
         const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
 
         const sendAutomatiskVedlegg = addMetadata(init, {
-            type: AttachmentMetadataType.UTTAK,
+            type: 'UTTAK',
             perioder: perioder.map((p) => ({
                 fom: dateToISOString(p.tidsperiode.fom),
                 tom: dateToISOString(p.tidsperiode.tom),

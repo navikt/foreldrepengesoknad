@@ -13,7 +13,6 @@ import {
     FamiliehendelseType,
     Saksgrunnlag,
     Saksperiode,
-    SaksperiodeDTO,
     Situasjon,
     Søkerrolle,
     isAdoptertBarn,
@@ -29,11 +28,12 @@ import {
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoType_fpoversikt,
     Oppholdsårsak,
     PersonDto_fpoversikt,
     Person_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
@@ -63,7 +63,7 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fp
 
 const getStønadskontoTypeFromOppholdÅrsakType = (
     årsak: UttakOppholdÅrsak_fpoversikt,
-): KontoTypeUttak_fpoversikt | undefined => {
+): KontoType_fpoversikt | undefined => {
     switch (årsak) {
         case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';
@@ -89,7 +89,7 @@ const mapOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt | undefined)
     }
 };
 
-export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolean): Saksperiode => {
+export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSak: boolean): Saksperiode => {
     const { oppholdÅrsak } = p;
     const returnPeriode: Saksperiode = {
         guid: guid(),
@@ -177,7 +177,6 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const erAnnenPartsSak = true;
     const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
         .map((p) => {
-            //@ts-expect-error -- todo
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
@@ -277,7 +276,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
 
     const saksperioder = perioder
         .map((p) => {
-            // @ts-expect-error -- feil frem til alt er over på nye autogenererte typer
             return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
