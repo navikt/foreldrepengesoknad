@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { PersonDto_fpoversikt } from '@navikt/fp-types';
@@ -87,7 +87,7 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
         }
     }, [skalMellomlagre]);
 
-    const mellomlagreOgNaviger = useCallback(() => {
+    const mellomlagreOgNaviger = () => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
@@ -96,7 +96,7 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
         });
 
         return promise;
-    }, []);
+    };
 
     return mellomlagreOgNaviger;
 };

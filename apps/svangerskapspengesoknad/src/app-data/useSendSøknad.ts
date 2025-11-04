@@ -3,7 +3,6 @@ import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAbortSignal } from '@navikt/fp-api';
@@ -62,11 +61,8 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
         mutationFn: () => send(),
     });
 
-    return useMemo(
-        () => ({
-            sendSøknad: () => sendSøknad(),
-            errorSendSøknad: error,
-        }),
-        [sendSøknad, error],
-    );
+    return {
+        sendSøknad: () => sendSøknad(),
+        errorSendSøknad: error,
+    };
 };

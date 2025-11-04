@@ -3,7 +3,6 @@ import { useMutation } from '@tanstack/react-query';
 import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
@@ -112,11 +111,8 @@ export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
         mutationFn: () => send(),
     });
 
-    return useMemo(
-        () => ({
-            sendSøknad: () => sendSøknad(),
-            errorSendSøknad: error,
-        }),
-        [sendSøknad, error],
-    );
+    return {
+        sendSøknad: () => sendSøknad(),
+        errorSendSøknad: error,
+    };
 };

@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
@@ -57,15 +57,12 @@ export const EsDataContext = ({ children, initialState, onDispatch }: Props): JS
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = useCallback(
-        (a: Action) => {
-            if (onDispatch) {
-                onDispatch(a);
-            }
-            dispatch(a);
-        },
-        [onDispatch],
-    );
+    const dispatchWrapper = (a: Action) => {
+        if (onDispatch) {
+            onDispatch(a);
+        }
+        dispatch(a);
+    };
 
     return (
         <EsStateContext.Provider value={state}>
@@ -84,35 +81,29 @@ export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): Cont
 export const useContextGetAnyData = () => {
     const state = useContext(EsStateContext);
 
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE) => {
-            return state[key];
-        },
-        [state],
-    );
+    return <TYPE extends ContextDataType>(key: TYPE) => {
+        return state[key];
+    };
 };
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(EsDispatchContext);
-    return useCallback(
-        (data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch, key],
-    );
+    return (data: ContextDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    };
 };
 
 /** Hook returns state reset function  */
 export const useContextReset = () => {
     const dispatch = useContext(EsDispatchContext);
-    return useCallback(() => {
+    return () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
         }
-    }, [dispatch]);
+    };
 };
 
 /** Hook returns state  */

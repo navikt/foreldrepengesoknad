@@ -183,10 +183,7 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname))),
-        [location.pathname],
-    );
+    const currentPath = notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname)));
 
     const requiredSteps = erEndringssøknad ? REQUIRED_APP_STEPS_ENDRINGSSØKNAD : REQUIRED_APP_STEPS;
     const appPathList = useMemo(
@@ -202,14 +199,10 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
         [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad],
     );
 
-    return useMemo(
-        () =>
-            appPathList.map((p, index) => ({
-                index,
-                id: p,
-                label: pathToLabelMap[p],
-                isSelected: p === currentPath,
-            })),
-        [appPathList, currentPath, pathToLabelMap],
-    );
+    return appPathList.map((p, index) => ({
+        index,
+        id: p,
+        label: pathToLabelMap[p],
+        isSelected: p === currentPath,
+    }));
 };

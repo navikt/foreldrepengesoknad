@@ -1,5 +1,5 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { encodeToBase64 } from '@navikt/fp-utils';
@@ -26,33 +26,30 @@ export const usePlanleggerNavigator = () => {
         }
     }, [path]);
 
-    const goToPreviousDefaultStep = useCallback(() => {
+    const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? PlanleggerRoutes.OM_PLANLEGGEREN;
         setPath(previousPath);
-    }, [stepConfig]);
+    };
 
-    const goToNextStep = useCallback((nextPath: PlanleggerRoutes) => {
+    const goToNextStep = (nextPath: PlanleggerRoutes) => {
         setPath(nextPath);
-    }, []);
+    };
 
-    const goToNextDefaultStep = useCallback(() => {
+    const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
         setPath(nextPath);
-    }, [stepConfig]);
+    };
 
-    const avbrytSøknad = useCallback(() => {
+    const avbrytSøknad = () => {
         setPath(PlanleggerRoutes.OM_PLANLEGGEREN);
-    }, []);
+    };
 
-    return useMemo(
-        () => ({
-            goToPreviousDefaultStep,
-            goToNextStep,
-            goToNextDefaultStep,
-            avbrytSøknad,
-        }),
-        [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
-    );
+    return {
+        goToPreviousDefaultStep,
+        goToNextStep,
+        goToNextDefaultStep,
+        avbrytSøknad,
+    };
 };

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, VStack } from '@navikt/ds-react';
@@ -152,36 +152,27 @@ export const FileUploader = ({
         updateAttachments(successAttachments, hasPendingUploads);
     }, [attachments]);
 
-    const saveFiles = useCallback(
-        (files: FileObject[]) => {
-            const uploadAttachments = async (allPendingAttachments: FileUploaderAttachment[]) => {
-                for (const pendingAttachment of allPendingAttachments) {
-                    await uploadAttachment(pendingAttachment.attachmentData, saveAttachment);
-                    replaceAttachmentIfFound(setAttachments, pendingAttachment);
-                }
-            };
+    const saveFiles = (files: FileObject[]) => {
+        const uploadAttachments = async (allPendingAttachments: FileUploaderAttachment[]) => {
+            for (const pendingAttachment of allPendingAttachments) {
+                await uploadAttachment(pendingAttachment.attachmentData, saveAttachment);
+                replaceAttachmentIfFound(setAttachments, pendingAttachment);
+            }
+        };
 
-            const allPendingAttachments = files.map((file) =>
-                getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
-            );
-            addOrReplaceAttachments(setAttachments, allPendingAttachments);
-            uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
-        },
-        [attachmentType, skjemanummer, saveAttachment],
-    );
+        const allPendingAttachments = files.map((file) =>
+            getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
+        );
+        addOrReplaceAttachments(setAttachments, allPendingAttachments);
+        uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
+    };
 
-    const deleteAttachment = useCallback((fileToRemove: FileObject) => {
+    const deleteAttachment = (fileToRemove: FileObject) => {
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.fileObject !== fileToRemove));
-    }, []);
+    };
 
-    const uploadedAttachments = useMemo(
-        () => attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error),
-        [attachments],
-    );
-    const failedAttachments = useMemo(
-        () => attachments.filter((a) => !!a.attachmentData.error || !!a.fileObject.error),
-        [attachments],
-    );
+    const uploadedAttachments = attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error);
+    const failedAttachments = attachments.filter((a) => !!a.attachmentData.error || !!a.fileObject.error);
 
     return (
         <VStack gap="space-24">

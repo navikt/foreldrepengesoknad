@@ -1,5 +1,5 @@
 import { UploadIcon } from '@navikt/aksel-icons';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Accept, FileRejection, useDropzone } from 'react-dropzone';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -40,15 +40,12 @@ const FileDropInput: React.FunctionComponent<Props> = (props) => {
         onDrop,
     });
 
-    const className = useMemo(
-        () => `${bem.block}
+    const className = `${bem.block}
             ${bem.modifierConditional('withError', error !== undefined) || ''}
             ${bem.modifierConditional('dragActive', isDragActive) || ''}
             ${bem.modifierConditional('dragAccept', isDragAccept) || ''}
             ${bem.modifierConditional('dragReject', isDragReject) || ''}
-            ${bem.modifierConditional('focused', isFocused) || ''}`,
-        [isDragActive, isDragAccept, isDragReject, error, isFocused],
-    );
+            ${bem.modifierConditional('focused', isFocused) || ''}`;
 
     const getLabel = () => {
         if (rejectLabel && isDragActive && isDragReject) {

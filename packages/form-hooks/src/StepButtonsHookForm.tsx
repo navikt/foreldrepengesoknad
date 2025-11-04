@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
 import { StepButtons } from '@navikt/fp-ui';
@@ -27,12 +26,12 @@ export const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
         formState: { dirtyFields, isSubmitting },
     } = useFormContext<DATA_TYPE>();
 
-    const onBackButtonClick = useCallback(() => {
+    const onBackButtonClick = () => {
         if (saveDataOnPreviousClick && Object.keys(dirtyFields).length > 0) {
             saveDataOnPreviousClick(getValues());
         }
         goToPreviousStep();
-    }, [dirtyFields, getValues, goToPreviousStep, saveDataOnPreviousClick]);
+    };
 
     return (
         <StepButtons

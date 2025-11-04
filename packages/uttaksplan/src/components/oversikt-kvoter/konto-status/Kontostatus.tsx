@@ -35,7 +35,7 @@ const Kontostatus: FunctionComponent<Props> = ({
     erAleneOmOmsorg,
 }) => {
     if (erEndringssøknad && uttak.konto === 'FORELDREPENGER_FØR_FØDSEL') {
-        //eslint-disable-next-line react-hooks/immutability -- Fiksar ikkje sidan denne koden blir sletta snart
+        //eslint-disable-next-line react-hooks/immutability, react-compiler/react-compiler -- Fiksar ikkje sidan denne koden blir sletta snart
         uttak.dager = 0;
     }
 

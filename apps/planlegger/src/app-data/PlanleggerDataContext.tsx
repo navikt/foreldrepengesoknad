@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -63,15 +63,12 @@ export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Pr
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = useCallback(
-        (a: Action) => {
-            if (onDispatch) {
-                onDispatch(a);
-            }
-            dispatch(a);
-        },
-        [onDispatch],
-    );
+    const dispatchWrapper = (a: Action) => {
+        if (onDispatch) {
+            onDispatch(a);
+        }
+        dispatch(a);
+    };
 
     return (
         <PlanleggerStateContext.Provider value={state}>
@@ -83,14 +80,11 @@ export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Pr
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(
-        (data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch, key],
-    );
+    return (data: ContextDataMap[TYPE]) => {
+        if (dispatch) {
+            dispatch({ type: 'update', key, data });
+        }
+    };
 };
 
 /** Hook returns data for one specific data type  */
@@ -103,12 +97,9 @@ export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): Cont
 export const useContextGetAnyData = () => {
     const state = useContext(PlanleggerStateContext);
 
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE) => {
-            return state[key];
-        },
-        [state],
-    );
+    return <TYPE extends ContextDataType>(key: TYPE) => {
+        return state[key];
+    };
 };
 
 export const useContextComplete = () => {

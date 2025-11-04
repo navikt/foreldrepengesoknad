@@ -33,6 +33,7 @@ export const useSvpNavigator = (
 
     const fortsettSøknadSenere = () => {
         loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
+        // eslint-disable-next-line react-compiler/react-compiler
         globalThis.location.href = 'https://nav.no';
     };
 

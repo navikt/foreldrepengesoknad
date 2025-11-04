@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'api/queries';
 import ky from 'ky';
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
@@ -20,7 +19,7 @@ export const useAvbrytSøknad = (
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const avbrytSøknadHandler = useCallback(async () => {
+    const avbrytSøknadHandler = async () => {
         loggAmplitudeEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'skjema avbrutt',
@@ -35,7 +34,7 @@ export const useAvbrytSøknad = (
         slettMellomlagring();
 
         navigate('/');
-    }, [slettMellomlagring, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
+    };
 
     return avbrytSøknadHandler;
 };

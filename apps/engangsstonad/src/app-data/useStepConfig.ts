@@ -92,10 +92,7 @@ export const useStepConfig = () => {
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    const currentPath = useMemo(
-        () => notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname))),
-        [location.pathname],
-    );
+    const currentPath = notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname)));
 
     const appPathList = useMemo(
         () =>
@@ -109,13 +106,9 @@ export const useStepConfig = () => {
         [currentPath, getStateData],
     );
 
-    return useMemo(
-        () =>
-            appPathList.map((p) => ({
-                id: p,
-                label: pathToLabelMap[p],
-                isSelected: p === currentPath,
-            })),
-        [appPathList, currentPath, pathToLabelMap],
-    );
+    return appPathList.map((p) => ({
+        id: p,
+        label: pathToLabelMap[p],
+        isSelected: p === currentPath,
+    }));
 };

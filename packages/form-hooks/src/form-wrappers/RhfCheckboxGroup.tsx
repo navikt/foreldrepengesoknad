@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { CheckboxGroup } from '@navikt/ds-react';
@@ -32,19 +32,16 @@ export const RhfCheckboxGroup = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 
-    const onChangeFn = useCallback(
-        (value: string[]) => {
-            if (onChange) {
-                onChange(value);
-            }
-            field.onChange(value);
-        },
-        [field, onChange],
-    );
+    const onChangeFn = (value: string[]) => {
+        if (onChange) {
+            onChange(value);
+        }
+        field.onChange(value);
+    };
 
     return (
         <CheckboxGroup

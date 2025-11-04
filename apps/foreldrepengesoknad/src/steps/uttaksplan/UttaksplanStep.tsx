@@ -291,6 +291,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                         )
                     ) {
                         if (!p.ønskerSamtidigUttak) {
+                            // eslint-disable-next-line react-compiler/react-compiler -- fikser ikkje denne da dette blir fjerna snart
                             p.ønskerSamtidigUttak = true;
                             p.samtidigUttakProsent = getSamtidigUttaksprosent(p.gradert, p.stillingsprosent);
                         }

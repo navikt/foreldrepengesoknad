@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Fordeling } from 'types/Fordeling';
 import { Søknad } from 'types/Søknad';
@@ -173,7 +173,7 @@ export const useMellomlagreSøknad = (
         }
     }, [skalMellomlagre]);
 
-    const mellomlagreSøknadOgNaviger = useCallback(() => {
+    const mellomlagreSøknadOgNaviger = () => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
@@ -182,7 +182,7 @@ export const useMellomlagreSøknad = (
         });
 
         return promise;
-    }, []);
+    };
 
     return mellomlagreSøknadOgNaviger;
 };
