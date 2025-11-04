@@ -9,7 +9,7 @@ import { PersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 3;
+export const VERSJON_MELLOMLAGRING = 4;
 
 export type EsDataMapAndMetaData = { version: number; personinfo: PersonDto_fpoversikt } & ContextDataMap;
 
