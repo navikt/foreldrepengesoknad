@@ -73,6 +73,7 @@ const defaultAnnenForelder = {
     etternavn: 'Hagen',
     kanIkkeOppgis: false,
     fnr: '21091981144',
+    erAleneOmOmsorg: false,
 } satisfies AnnenForelder;
 
 const defaultBarn = {

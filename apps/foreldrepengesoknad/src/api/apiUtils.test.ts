@@ -55,6 +55,8 @@ const getAnnenForelderUførMock = (
     datoForAleneomsorgInput: string | undefined,
 ): AnnenForelder => {
     return {
+        fnr: '1',
+        erAleneOmOmsorg: false,
         fornavn: 'Mor',
         etternavn: 'Utvikler',
         erMorUfør: urUførInput,
@@ -69,6 +71,10 @@ const getAnnenForelderMock = (): AnnenForelder => {
         fornavn: 'Mor',
         etternavn: 'UtenUførInfo',
         kanIkkeOppgis: false,
+        fnr: '1',
+        erAleneOmOmsorg: false,
+        erMorUfør: false,
+        erForSyk: false,
     };
 };
 

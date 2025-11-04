@@ -48,6 +48,15 @@ const defaultSøker = {
     ],
 } satisfies PersonDto_fpoversikt;
 
+const defaultAnnenForelder = {
+    fnr: '1',
+    fornavn: 'Hans',
+    etternavn: 'Utvikler',
+    kanIkkeOppgis: false,
+    erAleneOmOmsorg: true,
+    datoForAleneomsorg: '2021-09-21',
+} satisfies AnnenForelderType;
+
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
@@ -122,9 +131,7 @@ export const SkalOppgiPersonalia: Story = {
             },
             arbeidsforhold: [],
         },
-        annenForelder: {
-            kanIkkeOppgis: false,
-        },
+        annenForelder: defaultAnnenForelder,
     },
 };
 
@@ -139,8 +146,8 @@ export const SkalOppgiPersonaliaNavnMangler: Story = {
             arbeidsforhold: [],
         },
         annenForelder: {
+            ...defaultAnnenForelder,
             fornavn: 'annen forelder',
-            kanIkkeOppgis: false,
         },
     },
 };
@@ -174,9 +181,9 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
             arbeidsforhold: [],
         },
         annenForelder: {
+            ...defaultAnnenForelder,
             fornavn: 'Tom',
             fnr: '123456789',
-            kanIkkeOppgis: false,
         },
     },
 };
@@ -236,9 +243,7 @@ export const MorUfødtBarn: Story = {
             antallBarn: 1,
             termindato: '2023-05-05',
         },
-        annenForelder: {
-            kanIkkeOppgis: false,
-        },
+        annenForelder: defaultAnnenForelder,
         søkerInfo: {
             person: {
                 ...defaultSøker,
@@ -315,7 +320,7 @@ export const FarGiftUfødtBarn: Story = {
 export const FarFødtBarnMorHarVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
+        annenForelder: { ...defaultAnnenForelder },
     },
     parameters: {
         msw: {
@@ -327,7 +332,7 @@ export const FarFødtBarnMorHarVedtak: Story = {
 export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
+        annenForelder: { ...defaultAnnenForelder },
     },
     parameters: {
         msw: {

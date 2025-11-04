@@ -1,3 +1,5 @@
+import { CountryCode } from '@navikt/fp-types';
+
 type AnnenForelderIkkeOppgitt = {
     kanIkkeOppgis: true;
 };
@@ -9,7 +11,7 @@ type AnnenForelderErOppgitt = {
     etternavn: string;
     fnr: string;
     utenlandskFnr?: boolean;
-    bostedsland?: string;
+    bostedsland?: CountryCode;
     datoForAleneomsorg?: string;
     harRettPåForeldrepengerINorge?: boolean;
     harOppholdtSegIEØS?: boolean;

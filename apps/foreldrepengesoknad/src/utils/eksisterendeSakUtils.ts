@@ -5,6 +5,7 @@ import { ValgtBarn } from 'types/ValgtBarn';
 
 import {
     AnnenForelder,
+    AnnenForelderOppgitt,
     Arbeidsform,
     Barn,
     BarnType,
@@ -360,7 +361,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     annenPart: AnnenForelderDto_fpoversikt,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-): AnnenForelder => {
+): AnnenForelderOppgitt => {
     switch (situasjon) {
         case 'fødsel':
         case 'adopsjon':
@@ -466,11 +467,12 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder =>
             etternavn: valgteBarn.annenForelder.navn.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         };
     }
 
     return {
-        kanIkkeOppgis: false,
+        kanIkkeOppgis: true, // dette gir ikke mening?
     };
 };
 
@@ -504,7 +506,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
     barn: BarnDto_fpoversikt[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
-): AnnenForelder => {
+): AnnenForelderOppgitt => {
     const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
 
     const mockAnnenForelder = {
@@ -518,7 +520,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
         kanIkkeOppgis: false,
         erMorUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
         erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
-    };
+    } satisfies AnnenForelderOppgitt;
     const annenForelderFraSak = finnAnnenForelderForSaken(
         barn,
         ISOStringToDate(grunnlag.fødselsdato),

@@ -46,7 +46,6 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         fødselsdato: '2022-01-03',
         erBarnetFødt: true,
         ønskerJustertUttakVedFødsel: undefined,
-        barn: [],
     } satisfies Saksgrunnlag;
     it('Skal returnere inforperioder om annen parts uttak der det er søkerens førstegangssøknad med kun annen parts uttak', () => {
         const sakMedKunAnnenPartsUttak = [

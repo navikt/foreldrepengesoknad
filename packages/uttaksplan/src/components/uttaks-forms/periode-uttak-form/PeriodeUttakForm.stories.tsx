@@ -48,6 +48,7 @@ const defaultInput = {
         fnr: '123132123132',
         harRettPåForeldrepengerINorge: true,
         erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
     },
     arbeidsforhold: [
         {
