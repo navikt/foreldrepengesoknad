@@ -1,4 +1,4 @@
-const Environment = () => {
+const initEnvironment = () => {
     const settingsNode = document.getElementById('nav:appSettings');
 
     if (!settingsNode) {
@@ -8,10 +8,11 @@ const Environment = () => {
     const appSettings = JSON.parse((settingsNode as HTMLScriptElement).text);
 
     return {
-        LOG_VALIDATION: appSettings.LOG_VALIDATION,
+        APP_VERSION: appSettings.APP_VERSION,
         INNSYN: appSettings.INNSYN,
+        FEATURE_TEST_1JULI2024_REGLER: appSettings.FEATURE_TEST_1JULI2024_REGLER,
+        LOG_VALIDATION: appSettings.LOG_VALIDATION,
     };
 };
 
-// eslint-disable-next-line import/no-default-export
-export default Environment();
+export const Environment = initEnvironment();

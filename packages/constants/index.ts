@@ -6,6 +6,7 @@ export { PeriodeColor } from './src/colors';
 export { PeriodeInfoType } from './src/periodeInfoType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
 export { Periodetype } from './src/periodetype';
+export { Environment } from './src/Environment';
 export { BarnType } from './src/barnType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
 export { SivilstandType } from './src/sivilstandType';

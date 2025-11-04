@@ -11,6 +11,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { Environment } from '@navikt/fp-constants';
+
 import { AppContainer } from './AppContainer';
 import './index.css';
 import './styles/app.css';
@@ -22,7 +24,7 @@ dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://8e90481464a4442db8c86bc31b9e41ad@sentry.gc.nav.no/11',
-    release: (globalThis as any).APP_VERSION,
+    release: Environment.APP_VERSION,
     environment: globalThis.location.hostname,
     integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
