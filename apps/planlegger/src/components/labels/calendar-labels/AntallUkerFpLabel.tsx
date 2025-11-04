@@ -1,6 +1,6 @@
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { Chips } from '@navikt/ds-react';
 
 import { CalendarLabel } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -10,17 +10,12 @@ interface Props {
     isBluePanel?: boolean;
 }
 
-export const AntallUkerFpLabel = ({ søkerTekst, isBluePanel }: Props) => {
+export const AntallUkerFpLabel = ({ søkerTekst }: Props) => {
+    const intl = useIntl();
+
     return (
-        <CalendarLabel color={isBluePanel ? 'BLUE' : 'GREEN'}>
-            <BodyShort>
-                <FormattedMessage
-                    id="OversiktSteg.UkerForeldrepenger"
-                    values={{
-                        hvem: capitalizeFirstLetter(søkerTekst),
-                    }}
-                />
-            </BodyShort>
-        </CalendarLabel>
+        <Chips.Toggle className="bg-black">
+            {intl.formatMessage({ id: 'OversiktSteg.UkerForeldrepenger' }, { hvem: capitalizeFirstLetter(søkerTekst) })}
+        </Chips.Toggle>
     );
 };
