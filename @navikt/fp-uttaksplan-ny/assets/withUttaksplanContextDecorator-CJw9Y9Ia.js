@@ -1,0 +1,1 @@
+import{j as t}from"./iframe-DinAmnlu.js";import{U as e}from"./TidsperiodeSpørsmål-rOD_CaiO.js";const s=(o,{parameters:a})=>{const{context:n}=a;return t.jsx(e,{initialState:n,children:t.jsx(o,{})})};s.__docgenInfo={description:"",methods:[],displayName:"withUttaksplanContextDecorator"};export{s as w};
