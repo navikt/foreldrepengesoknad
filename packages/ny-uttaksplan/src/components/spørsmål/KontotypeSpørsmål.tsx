@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -45,7 +44,7 @@ export const KontotypeSpørsmål = () => {
                     validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.forelder.påkrevd' }))]}
                     label={intl.formatMessage({ id: 'KontotypeSpørsmål.hvemGjelder' })}
                 >
-                    <Radio value={Forelder.mor}>
+                    <Radio value={'MOR'}>
                         <FormattedMessage id="uttaksplan.mor" />
                     </Radio>
                     <Radio value={'FAR_MEDMOR'}>

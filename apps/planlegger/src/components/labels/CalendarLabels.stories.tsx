@@ -19,20 +19,20 @@ export const MorSøkerMedTapteDager: Story = {
             {
                 fom: '2025-07-14',
                 tom: '2025-08-02',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             },
             // legger inn tapt dag mellom termindato og første dag av mødrekvote
             {
                 fom: '2025-08-05',
                 tom: '2025-11-17',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
             },
             {
                 fom: '2025-11-18',
                 tom: '2026-03-10',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
             },
             {
@@ -65,19 +65,19 @@ export const MorSøkerUtenTapteDager: Story = {
             {
                 fom: '2025-07-14',
                 tom: '2025-08-02',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             },
             {
                 fom: '2025-08-04',
                 tom: '2025-11-17',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
             },
             {
                 fom: '2025-11-18',
                 tom: '2026-03-10',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
             },
             {

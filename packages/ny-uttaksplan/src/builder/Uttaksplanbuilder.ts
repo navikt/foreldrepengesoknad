@@ -1,4 +1,4 @@
-import { Forelder } from '@navikt/fp-constants';
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { Planperiode } from '../types/Planperiode';
 import { isAnnenPartsPeriode } from '../utils/periodeUtils';
@@ -171,9 +171,9 @@ const slettPeriodeOgBuild = (
     );
 };
 
-const getAnnenPart = (forelder: Forelder | undefined) => {
+const getAnnenPart = (forelder: BrukerRolleSak_fpoversikt | undefined) => {
     if (forelder) {
-        return forelder === Forelder.mor ? 'FAR_MEDMOR' : Forelder.mor;
+        return forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
     }
 
     return undefined;
@@ -181,7 +181,7 @@ const getAnnenPart = (forelder: Forelder | undefined) => {
 
 interface GetPerioderPåForelderParams {
     perioder: Planperiode[];
-    forelder: Forelder | undefined;
+    forelder: BrukerRolleSak_fpoversikt | undefined;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     familiehendelsedato: string;
     gjelderAdopsjon: boolean;

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Forelder } from '@navikt/fp-constants';
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
 
 import { Permisjonsperiode } from '../types/Permisjonsperiode';
@@ -69,7 +69,7 @@ export const mapPerioderToPermisjonsperiode = (
     }
 
     let nyPermisjonsperiode: Permisjonsperiode | undefined = undefined;
-    let forelderForrigePeriode: Forelder | undefined = undefined;
+    let forelderForrigePeriode: BrukerRolleSak_fpoversikt | undefined = undefined;
     let erSamtidigUttak = false;
 
     perioder.forEach((periode, index) => {

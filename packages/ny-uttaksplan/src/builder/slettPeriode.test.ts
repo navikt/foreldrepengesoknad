@@ -1,7 +1,5 @@
 import MockDate from 'mockdate';
 
-import { Forelder } from '@navikt/fp-constants';
-
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { slettPeriode } from './slettPeriode';
 
@@ -10,7 +8,7 @@ const perioder: Planperiode[] = [
         id: '1',
         fom: '2022-04-14',
         tom: '2022-05-04',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
@@ -18,7 +16,7 @@ const perioder: Planperiode[] = [
         id: '2',
         fom: '2022-05-05',
         tom: '2022-08-17',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
@@ -26,7 +24,7 @@ const perioder: Planperiode[] = [
         id: '3',
         fom: '2022-08-18',
         tom: '2022-10-12',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
@@ -37,7 +35,7 @@ const perioder2: Planperiode[] = [
         id: '1',
         fom: '2022-05-11',
         tom: '2022-05-31',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         readOnly: false,
     },
@@ -45,7 +43,7 @@ const perioder2: Planperiode[] = [
         id: '2',
         fom: '2022-06-01',
         tom: '2022-08-09',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
@@ -53,7 +51,7 @@ const perioder2: Planperiode[] = [
         id: '3',
         fom: '2022-08-10',
         tom: '2022-08-23',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
         readOnly: false,
     },
@@ -61,7 +59,7 @@ const perioder2: Planperiode[] = [
         id: '4',
         fom: '2022-08-24',
         tom: '2022-08-30',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
         readOnly: false,
     },
@@ -69,7 +67,7 @@ const perioder2: Planperiode[] = [
         id: '5',
         fom: '2022-08-31',
         tom: '2022-10-12',
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
         readOnly: false,
     },

@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
 import { Familiesituasjon } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
@@ -25,7 +24,7 @@ export const finnBakgrunnsfarge = (permisjonsperiode: Permisjonsperiode, erFamil
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const erMor = forelder === Forelder.mor;
+    const erMor = forelder === 'MOR';
 
     if (erFamiliehendelse) {
         return 'bg-ax-danger-100';
@@ -56,7 +55,7 @@ export const finnBakgrunnsfarge = (permisjonsperiode: Permisjonsperiode, erFamil
 
 const getIkonFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
     const { forelder, erUtsettelse, erHull } = permisjonsperiode;
-    const erMor = forelder === Forelder.mor;
+    const erMor = forelder === 'MOR';
     const erPeriodeUtenUttak =
         permisjonsperiode.forelder === undefined &&
         !!permisjonsperiode.samtidigUttak === false &&
@@ -107,7 +106,7 @@ export const getTekst = (
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
-    const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == Forelder.mor;
+    const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == 'MOR';
 
     if (erFamiliehendelse) {
         switch (familiesituasjon) {
@@ -219,7 +218,7 @@ export const getBorderFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehe
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const erMor = forelder === Forelder.mor;
+    const erMor = forelder === 'MOR';
 
     if (erFamiliehendelse) {
         return 'border-ax-danger-100';

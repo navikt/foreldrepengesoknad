@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-constants';
 import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';

@@ -3,9 +3,8 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -36,7 +35,7 @@ export interface EndrePeriodePanelStepFormValues {
     fom: string | undefined;
     tom: string | undefined;
     kontoType: KontoTypeUttak_fpoversikt;
-    forelder?: Forelder;
+    forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
     samtidigUttak?: boolean;
@@ -93,14 +92,14 @@ export const EndrePeriodePanelStep = ({
 
     const getForelderFromKontoType = (
         ktValue: KontoTypeUttak_fpoversikt,
-        fValue: Forelder | undefined,
-    ): Forelder | undefined => {
+        fValue: BrukerRolleSak_fpoversikt | undefined,
+    ): BrukerRolleSak_fpoversikt | undefined => {
         switch (ktValue) {
             case 'FEDREKVOTE':
                 return 'FAR_MEDMOR';
             case 'MØDREKVOTE':
             case 'FORELDREPENGER_FØR_FØDSEL':
-                return Forelder.mor;
+                return 'MOR';
             default:
                 return fValue;
         }
@@ -138,7 +137,7 @@ export const EndrePeriodePanelStep = ({
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
@@ -147,7 +146,7 @@ export const EndrePeriodePanelStep = ({
                 readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {

@@ -1,10 +1,10 @@
 import { Tidsperiode } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { Planperiode } from './Planperiode';
 
 export interface Permisjonsperiode {
-    forelder?: Forelder;
+    forelder?: BrukerRolleSak_fpoversikt;
     perioder: Planperiode[];
     tidsperiode: Tidsperiode;
     samtidigUttak?: boolean;

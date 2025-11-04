@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import { IntlShape } from 'react-intl';
 
-import { Forelder } from '@navikt/fp-constants';
 import {
+    BrukerRolleSak_fpoversikt,
     SaksperiodeNy,
     Tidsperiode,
     UttakOppholdÅrsak_fpoversikt,
@@ -320,7 +320,7 @@ const getForelderForPeriode = (
     søkerErFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,
-): Forelder => {
+): BrukerRolleSak_fpoversikt => {
     if (oppholdsårsak || gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
     }

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { BarnType, Forelder } from '@navikt/fp-constants';
+import { BarnType } from '@navikt/fp-constants';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { withUttaksplanContextDecorator } from './storybook/decorators/withUttaksplanContextDecorator';
@@ -52,7 +52,7 @@ export const MorAleneOmOmsorg: Story = {
                     årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-09-30',
@@ -65,7 +65,7 @@ export const MorAleneOmOmsorg: Story = {
                     årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2026-02-24',
@@ -78,7 +78,7 @@ export const MorAleneOmOmsorg: Story = {
                     årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
         valgtStønadskonto: {} as any,
@@ -120,7 +120,7 @@ export const PrematurUker: Story = {
                 },
                 utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-10-11',
@@ -133,7 +133,7 @@ export const PrematurUker: Story = {
                     årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
         valgtStønadskonto: {} as any,

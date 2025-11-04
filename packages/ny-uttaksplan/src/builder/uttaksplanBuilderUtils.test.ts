@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-common';
 import { omitOne } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -36,7 +35,7 @@ describe('uttaksplanbuilderUtils - slåSammenLikePerioder', () => {
         expect(result.length).toEqual(2);
     });
     it('slåSammenLikePerioder - skal ikke slå sammen perioder med forskjellige foreldre', () => {
-        const perioder3 = [perioder[0], { ...perioder[1], forelder: Forelder.mor }];
+        const perioder3 = [perioder[0], { ...perioder[1], forelder: 'MOR' as const }];
         const result = slåSammenLikePerioder(perioder3, '2022-07-21', undefined);
         expect(result.length).toEqual(2);
     });
@@ -81,7 +80,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-01-21',
                 tom: '2022-01-28',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 100,
                 readOnly: false,
             },
@@ -90,7 +89,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-01-31',
                 tom: '2022-02-25',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 50,
                 readOnly: false,
             },
@@ -99,7 +98,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-02-28',
                 tom: '2022-04-22',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 70,
                 readOnly: false,
             },
@@ -164,7 +163,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-01-21',
                 tom: '2022-01-28',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 100,
                 readOnly: false,
             },
@@ -173,7 +172,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-01-31',
                 tom: '2022-02-25',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 100,
                 readOnly: false,
             },
@@ -182,7 +181,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-02-28',
                 tom: '2022-04-22',
                 kontoType: 'MØDREKVOTE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 samtidigUttak: 80,
                 readOnly: false,
             },
@@ -355,7 +354,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             readOnly: false,
             utsettelseÅrsak: 'ARBEID',
         };

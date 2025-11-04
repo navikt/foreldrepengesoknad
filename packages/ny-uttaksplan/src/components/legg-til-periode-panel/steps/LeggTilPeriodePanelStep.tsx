@@ -3,9 +3,8 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -53,14 +52,14 @@ export const LeggTilPeriodePanelStep = ({
 
     const getForelderFromKontoType = (
         ktValue: KontoTypeUttak_fpoversikt | undefined,
-        fValue: Forelder | undefined,
-    ): Forelder | undefined => {
+        fValue: BrukerRolleSak_fpoversikt | undefined,
+    ): BrukerRolleSak_fpoversikt | undefined => {
         switch (ktValue) {
             case 'FEDREKVOTE':
                 return 'FAR_MEDMOR';
             case 'MØDREKVOTE':
             case 'FORELDREPENGER_FØR_FØDSEL':
-                return Forelder.mor;
+                return 'MOR';
             default:
                 return fValue;
         }
@@ -76,7 +75,7 @@ export const LeggTilPeriodePanelStep = ({
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
                 readOnly: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
@@ -85,7 +84,7 @@ export const LeggTilPeriodePanelStep = ({
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 readOnly: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {

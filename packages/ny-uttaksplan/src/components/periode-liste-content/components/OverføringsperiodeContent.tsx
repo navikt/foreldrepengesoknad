@@ -4,7 +4,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
 import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
