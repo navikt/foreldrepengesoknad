@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Forelder, Periode, Periodetype, Situasjon, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, Periodetype, Situasjon, isUttaksperiode } from '@navikt/fp-common';
 import { KontoDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
@@ -29,7 +29,7 @@ const deltUttakAdopsjonSøktFørst = (
         const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
         const perioder: Periode[] = [];
         const kontoType = erFarEllerMedmor ? 'FEDREKVOTE' : 'MØDREKVOTE';
-        const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+        const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
         const konto = tilgjengeligeStønadskontoer.find((k) =>
             erFarEllerMedmor ? k.konto === 'FEDREKVOTE' : k.konto === 'MØDREKVOTE',
         );
@@ -133,12 +133,12 @@ const deltUttakAdopsjonSøktSist = (
                     return {
                         ...periode,
                         konto: 'MØDREKVOTE',
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     };
                 } else {
                     return {
                         ...periode,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     };
                 }
             }
@@ -209,7 +209,7 @@ const deltUttakFødselMor = (
             const ekstraPeriodeFørFødsel: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
@@ -221,7 +221,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FORELDREPENGER_FØR_FØDSEL',
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
@@ -234,7 +234,7 @@ const deltUttakFødselMor = (
         const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'FORELDREPENGER_FØR_FØDSEL',
             skalIkkeHaUttakFørTermin: true,
             tidsperiode: {
@@ -250,7 +250,7 @@ const deltUttakFødselMor = (
         const periodeMødrekvote: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             konto: 'MØDREKVOTE',
             tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
             ønskerSamtidigUttak: false,
@@ -274,7 +274,7 @@ const deltUttakFødselMor = (
             const periodeFellesperiodeMor: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: getTidsperiode(currentTomDate, fellesperiodeDagerMor - trekkEkstraPermisjonDager),
                 ønskerSamtidigUttak: false,
@@ -332,7 +332,7 @@ const deltUttakFødselFarMedmor = (
         const fedrekvotePeriode: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             konto: 'FEDREKVOTE',
             tidsperiode: getTidsperiode(startDatoUttak, lengdePåForeslåttUttak),
             ønskerSamtidigUttak: erPeriodeWLBRundtFødsel,
@@ -382,7 +382,7 @@ const deltUttakFødselFarMedmor = (
             const fellesPeriode: Periode = {
                 id: guid(),
                 type: Periodetype.Uttak,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: getTidsperiode(sisteUttaksDag, antallDagerFellesperiode),
                 ønskerSamtidigUttak: false,

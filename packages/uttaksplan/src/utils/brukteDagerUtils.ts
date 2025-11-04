@@ -1,5 +1,5 @@
-import { Forelder, Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
+import { Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { BrukerRolleSak_fpoversikt, KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
 
 import { Periodene } from './Periodene';
 import { beregnBrukteUttaksdager, getAllePerioderMedUttaksinfoFraUttaksplan } from './uttaksPlanStatus';
@@ -21,10 +21,10 @@ export interface BrukteDager {
 }
 
 const isMorsPeriode = (periode: Uttaksperiode): boolean => {
-    return periode.forelder === Forelder.mor;
+    return periode.forelder === 'MOR';
 };
 const isFarsPeriode = (periode: Uttaksperiode): boolean => {
-    return periode.forelder === Forelder.farMedmor;
+    return periode.forelder === 'FAR_MEDMOR';
 };
 const isFellesperiodeKvote = (uttak: KontoDto_fpoversikt): boolean => uttak.konto === 'FELLESPERIODE';
 
@@ -50,7 +50,7 @@ const getBrukteDagerForForelder = (
     tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
     perioder: Uttaksperiode[],
     familiehendelsesdato: Date,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = Periodene(perioder)
         .getPerioderFørFamiliehendelsesdato(familiehendelsesdato)
@@ -63,7 +63,7 @@ const getBrukteDagerForForelder = (
     const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder);
     const dagerTotalt = summerBrukteUttaksdager(alle);
 
-    const isMor = forelder === Forelder.mor;
+    const isMor = forelder === 'MOR';
     const dagerEgneKvoter = summerBrukteUttaksdager(alle.filter(isMor ? isMorsKvote : isFarMedmorsKvote));
     const dagerOverført = summerBrukteUttaksdager(alle.filter(isMor ? isFarMedmorsKvote : isMorsKvote));
     const dagerFellesperiode = summerBrukteUttaksdager(alle.filter(isFellesperiodeKvote));
@@ -90,13 +90,13 @@ export const getBrukteDager = (
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isMorsPeriode),
             familiehendelsesdato,
-            Forelder.mor,
+            'MOR',
         ),
         farMedmor: getBrukteDagerForForelder(
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isFarsPeriode),
             familiehendelsesdato,
-            Forelder.farMedmor,
+            'FAR_MEDMOR',
         ),
         alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder),
     };

@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-constants';
 import { RettighetType, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
@@ -35,7 +34,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2022-07-01',
@@ -48,7 +47,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2022-08-12',
@@ -61,7 +60,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2022-10-14',
@@ -74,7 +73,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                         samtidigUttak: 50,
                     },
                 ],
@@ -85,7 +84,7 @@ export const saker = {
                 },
             ],
             dekningsgrad: 'HUNDRE',
-            forelder: Forelder.mor,
+            forelder: 'MOR',
         },
         {
             oppdatertTidspunkt: '2024-02-28T21:19:08.911',
@@ -101,7 +100,7 @@ export const saker = {
             annenPart: {
                 fnr: '03506715317',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             familiehendelse: {
                 fødselsdato: '2023-01-10',
                 termindato: '2023-01-10',
@@ -120,7 +119,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2023-01-10',
@@ -133,7 +132,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2023-02-21',
@@ -146,7 +145,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                     {
                         fom: '2024-05-28',
@@ -159,7 +158,7 @@ export const saker = {
                             årsak: 'ANNET',
                         },
                         flerbarnsdager: false,
-                        forelder: Forelder.mor,
+                        forelder: 'MOR',
                     },
                 ],
             },
@@ -249,7 +248,7 @@ export const sakerTidligFPSøknad = {
             annenPart: {
                 fnr: '03506715317',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             familiehendelse: {
                 fødselsdato: '2023-01-10',
                 termindato: '2023-01-10',
@@ -283,7 +282,7 @@ export const sakerVenterPåFpInntektsmelding = {
             annenPart: {
                 fnr: '03506715317',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             familiehendelse: {
                 fødselsdato: '2023-01-10',
                 termindato: '2023-01-10',
@@ -317,7 +316,7 @@ export const endringFPSøknad = {
             annenPart: {
                 fnr: '03506715317',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             familiehendelse: {
                 fødselsdato: '2023-01-10',
                 termindato: '2023-01-10',

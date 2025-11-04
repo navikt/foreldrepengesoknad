@@ -4,7 +4,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import {
-    Forelder,
     NavnPåForeldre,
     UtsettelseAnnenPartInfoPeriode,
     UttakAnnenPartEØSInfoPeriode,
@@ -48,13 +47,13 @@ const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => 
                           intl,
                           periode.årsak,
                           getForelderNavn(periode.forelder, navnPåForeldre),
-                          periode.forelder === Forelder.mor,
+                          periode.forelder === 'MOR',
                       )
                     : getUtsettelseTekst(
                           intl,
                           periode.årsak,
                           getForelderNavn(periode.forelder, navnPåForeldre),
-                          periode.forelder === Forelder.mor,
+                          periode.forelder === 'MOR',
                       ))}
         </BodyShort>
     );

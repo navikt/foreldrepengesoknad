@@ -3,7 +3,6 @@ import { ComponentProps } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-common';
 import { BarnType } from '@navikt/fp-constants';
 import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
 
@@ -90,13 +89,13 @@ export const UttaksperiodeMor: Story = {
                 fom: '2024-06-01',
                 tom: '2024-06-30',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-30',
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
@@ -125,13 +124,13 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                 fom: '2024-06-01',
                 tom: '2024-07-26',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
@@ -139,7 +138,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
@@ -168,7 +167,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                 fom: '2024-06-01',
                 tom: '2024-07-26',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
@@ -181,7 +180,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
@@ -189,7 +188,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-29',
                     tom: '2024-08-23',
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
                         aktivitet: {
@@ -228,13 +227,13 @@ export const UttaksperiodeFar: Story = {
                 fom: '2024-06-01',
                 tom: '2024-06-28',
             },
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             perioder: [
                 {
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    forelder: Forelder.farMedmor,
+                    forelder: 'FAR_MEDMOR',
                     kontoType: 'FEDREKVOTE',
                     readOnly: false,
                 },

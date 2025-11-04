@@ -20,7 +20,6 @@ import { Link } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Barn,
-    Forelder,
     NavnPåForeldre,
     Periode,
     isAdoptertBarn,
@@ -935,7 +934,7 @@ export const getSisteUttaksdagAnnenForelder = (
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;
     }
-    const annenPartForelder = erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+    const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
         (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
     );

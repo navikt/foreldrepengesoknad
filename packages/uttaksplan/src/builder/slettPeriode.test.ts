@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Forelder, Periode, Periodetype } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 
 import { slettPeriode } from './slettPeriode';
 
@@ -12,7 +12,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -22,7 +22,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-17'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -32,7 +32,7 @@ const perioder: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -45,7 +45,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-05-11'),
             tom: new Date('2022-05-31'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
@@ -55,7 +55,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-06-01'),
             tom: new Date('2022-08-09'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -65,7 +65,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-10'),
             tom: new Date('2022-08-23'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
     {
@@ -75,7 +75,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-24'),
             tom: new Date('2022-08-30'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'MØDREKVOTE',
     },
     {
@@ -85,7 +85,7 @@ const perioder2: Periode[] = [
             fom: new Date('2022-08-31'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
     },
 ];
@@ -140,7 +140,7 @@ const perioderFar: Periode[] = [
             fom: new Date('2022-07-25'),
             tom: new Date('2022-08-01'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     },
     {
@@ -150,7 +150,7 @@ const perioderFar: Periode[] = [
             fom: new Date('2022-08-02'),
             tom: new Date('2022-08-08'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     },
     {
@@ -168,7 +168,7 @@ const perioderFar: Periode[] = [
             fom: new Date('2022-08-12'),
             tom: new Date('2022-09-19'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     },
     {
@@ -178,7 +178,7 @@ const perioderFar: Periode[] = [
             fom: new Date('2022-09-20'),
             tom: new Date('2022-10-25'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         konto: 'FEDREKVOTE',
     },
 ];

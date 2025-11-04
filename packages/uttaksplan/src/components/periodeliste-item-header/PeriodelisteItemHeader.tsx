@@ -7,7 +7,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import {
-    Forelder,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -202,7 +201,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     let annenForelderNavn;
     let beskrivelseSamtidigUttak;
     if (annenForelderSamtidigUttakPeriode && isUttakAnnenPart(annenForelderSamtidigUttakPeriode)) {
-        annenForelderIsMor = annenForelderSamtidigUttakPeriode.forelder === Forelder.mor;
+        annenForelderIsMor = annenForelderSamtidigUttakPeriode.forelder === 'MOR';
         annenForelderNavn = getForelderNavn(annenForelderSamtidigUttakPeriode.forelder, navnPåForeldre);
         beskrivelseSamtidigUttak = getVarighetString(
             getValidTidsperiode(annenForelderSamtidigUttakPeriode.tidsperiode)

@@ -1,7 +1,6 @@
-import { Forelder } from '@navikt/fp-constants';
-
 import { PeriodeResultat } from './PeriodeResultat';
 import {
+    BrukerRolleSak_fpoversikt,
     Gradering_fpoversikt,
     KontoTypeUttak_fpoversikt,
     MorsAktivitet_fpoversikt,
@@ -13,7 +12,7 @@ import {
 export interface SaksperiodeNy {
     fom: string;
     tom: string;
-    forelder?: Forelder;
+    forelder?: BrukerRolleSak_fpoversikt;
     resultat?: PeriodeResultat;
     flerbarnsdager?: boolean;
     kontoType?: KontoTypeUttak_fpoversikt;

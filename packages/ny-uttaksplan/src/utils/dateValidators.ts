@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { UseFormWatch } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 
-import { Forelder } from '@navikt/fp-constants';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
@@ -171,8 +170,8 @@ export const getFomValidators = ({
     if (skalDuJobbe && !gjelderAdopsjon) {
         if (
             kontoType === 'MØDREKVOTE' ||
-            (kontoType === 'FELLESPERIODE' && forelder === Forelder.mor) ||
-            (kontoType === 'FORELDREPENGER' && forelder === Forelder.mor)
+            (kontoType === 'FELLESPERIODE' && forelder === 'MOR') ||
+            (kontoType === 'FORELDREPENGER' && forelder === 'MOR')
         ) {
             validators.push((date) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
@@ -352,13 +351,13 @@ export const getTomValidators = ({
     if (skalDuJobbe && !gjelderAdopsjon) {
         if (
             kontoType === 'MØDREKVOTE' ||
-            (kontoType === 'FELLESPERIODE' && forelder === Forelder.mor) ||
-            (kontoType === 'FORELDREPENGER' && forelder === Forelder.mor)
+            (kontoType === 'FELLESPERIODE' && forelder === 'MOR') ||
+            (kontoType === 'FORELDREPENGER' && forelder === 'MOR')
         ) {
             validators.push((date) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
                     const feilmelding =
-                        kontoType === 'FORELDREPENGER' && forelder === Forelder.mor
+                        kontoType === 'FORELDREPENGER' && forelder === 'MOR'
                             ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
                             : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
 

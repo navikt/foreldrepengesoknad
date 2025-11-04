@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
@@ -33,7 +32,7 @@ export interface PanelData {
     currentStep: PanelStep;
     fom?: string;
     tom?: string;
-    forelder?: Forelder;
+    forelder?: BrukerRolleSak_fpoversikt;
     kontoType: KontoTypeUttak_fpoversikt | undefined;
     årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
     stillingsprosent?: string;

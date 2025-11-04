@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import {
-    Forelder,
     ForeldrepengerFørFødselUttaksperiode,
     InfoPeriode,
     Oppholdsperiode,
@@ -23,6 +22,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { Perioden } from './Perioden';
@@ -40,7 +40,8 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
-    getPerioderMedFerieForForelder: (forelder: Forelder) => getPerioderMedFerieForForelder(perioder, forelder),
+    getPerioderMedFerieForForelder: (forelder: BrukerRolleSak_fpoversikt) =>
+        getPerioderMedFerieForForelder(perioder, forelder),
     getFørstePerioderEtterFamiliehendelsesdato: (dato: Date) =>
         getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
@@ -49,7 +50,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getFørsteUttaksdagEksluderInfoperioderOgFrittUttak: () =>
         getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder),
     getAntallUttaksdager: () => getAntallUttaksdager(perioder),
-    getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
+    getAntallFeriedager: (forelder?: BrukerRolleSak_fpoversikt) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnFørstePeriodeEtterDato: (dato: Date) => finnFørstePeriodeEtterDato(perioder, dato),
@@ -305,14 +306,14 @@ function getAntallUttaksdager(perioder: Periode[]): number {
     }, 0);
 }
 
-function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
+function getAntallFeriedager(perioder: Periode[], forelder?: BrukerRolleSak_fpoversikt): number {
     return getFerieUtsettelser(perioder)
         .filter((p) => (isValidTidsperiodeString(p.tidsperiode) && forelder ? p.forelder === forelder : true))
         .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
         .reduce((tot, curr) => tot + curr, 0);
 }
 
-function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder): Periode[] {
+function getPerioderMedFerieForForelder(perioder: Periode[], forelder: BrukerRolleSak_fpoversikt): Periode[] {
     return perioder.filter((periode) => erPeriodeMedFerieForForelder(periode, forelder));
 }
 
@@ -330,7 +331,7 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undef
     return Uttaksdagen(perioder.at(-1)!.tidsperiode.tom).neste();
 }
 
-const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelder): boolean => {
+const erPeriodeMedFerieForForelder = (periode: Periode, forelder: BrukerRolleSak_fpoversikt): boolean => {
     return isUtsettelsePgaFerie(periode) && periode.forelder === forelder;
 };
 

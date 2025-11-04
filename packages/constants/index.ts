@@ -3,7 +3,6 @@ export { Arbeidsform } from './src/arbeidsform';
 export { Skjemanummer } from './src/skjemanummer';
 export { AttachmentType } from './src/attachmentType';
 export { PeriodeColor } from './src/colors';
-export { Forelder } from './src/forelder';
 export { PeriodeInfoType } from './src/periodeInfoType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
 export { Periodetype } from './src/periodetype';

@@ -3,7 +3,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { Forelder } from '@navikt/fp-constants';
 import { UttakArbeidType } from '@navikt/fp-types';
 
 import * as stories from './Uttaksplan.stories';
@@ -39,31 +38,31 @@ describe('Uttaksplan', () => {
         expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
             },
             {
                 fom: '2025-05-09',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
             },
             {
                 fom: '2025-06-30',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 tom: '2025-08-28',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
                 fom: '2025-08-29',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
             },
             {
                 fom: '2025-12-12',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -115,19 +114,19 @@ describe('Uttaksplan', () => {
         expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
             },
             {
                 fom: '2025-05-09',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
             },
             {
                 fom: '2025-06-30',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 gradering: {
                     aktivitet: {
                         type: UttakArbeidType.ORDINÆRT_ARBEID,
@@ -140,13 +139,13 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-08-29',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
             },
             {
                 fom: '2025-12-12',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -195,31 +194,31 @@ describe('Uttaksplan', () => {
         expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
             },
             {
                 fom: '2025-05-09',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
             },
             {
                 fom: '2025-06-30',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 tom: '2025-08-28',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
                 fom: '2025-08-29',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
             },
             {
                 fom: '2025-12-12',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -275,19 +274,19 @@ describe('Uttaksplan', () => {
         expect(handleOnPlanChange).toHaveBeenCalledTimes(1);
         expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
             },
             {
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',

@@ -4,8 +4,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
-import { MorsAktivitet } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, MorsAktivitet } from '@navikt/fp-types';
 import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
@@ -132,13 +131,11 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
 
 const getSamtidigUttakTekst = (
     samtidiguttaksProsent: number,
-    forelderIPerioden: Forelder,
+    forelderIPerioden: BrukerRolleSak_fpoversikt,
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
 ) => {
-    const periodenGjelderSøker = erFarEllerMedmor
-        ? forelderIPerioden === Forelder.farMedmor
-        : forelderIPerioden === Forelder.mor;
+    const periodenGjelderSøker = erFarEllerMedmor ? forelderIPerioden === 'FAR_MEDMOR' : forelderIPerioden === 'MOR';
     const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåHovedforelderIPerioden = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 

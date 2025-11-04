@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import {
-    Forelder,
     Periode,
     Periodetype,
     Utsettelsesperiode,
@@ -68,7 +67,7 @@ export const finnEndringerIUttaksplan = (
                 tom: førsteSlettedePeriode!.tidsperiode.tom,
             },
             årsak: 'FRI',
-            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             erArbeidstaker: false,
         } as Utsettelsesperiode;
         return [utsettelseForSlettedePerioder];

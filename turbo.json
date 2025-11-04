@@ -18,6 +18,7 @@
         },
         "lint:eslint": {},
         "lint:tsc": {},
+        "lint:fix": {},
         "build-storybook": {
             "dependsOn": ["build"]
         },

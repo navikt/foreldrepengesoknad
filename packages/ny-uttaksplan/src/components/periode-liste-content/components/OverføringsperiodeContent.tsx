@@ -4,7 +4,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
 import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
@@ -26,9 +25,9 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
         // TODO fiks bruk av !
         periode.kontoType!,
         navnPåForeldre,
-        forelder === Forelder.farMedmor,
+        forelder === 'FAR_MEDMOR',
     );
-    const navnPåAnnenForelder = forelder === Forelder.farMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
