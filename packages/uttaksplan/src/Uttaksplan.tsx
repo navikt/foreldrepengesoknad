@@ -5,7 +5,6 @@ import {
     AnnenForelder,
     Barn,
     BarnFraNesteSak,
-    Dekningsgrad,
     EksisterendeSak,
     ForeldreparSituasjon,
     NavnPåForeldre,
@@ -20,6 +19,7 @@ import {
 } from '@navikt/fp-common';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import {
+    Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
     KontoBeregningDto_fpoversikt,
     Periode as PeriodeType,

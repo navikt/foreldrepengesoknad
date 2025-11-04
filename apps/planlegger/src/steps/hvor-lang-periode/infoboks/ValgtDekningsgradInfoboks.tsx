@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
@@ -21,7 +20,7 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
@@ -64,14 +63,10 @@ export const ValgtDekningsgradInfoboks = ({
     });
 
     const sluttdatoSøker1 =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoPeriode1
-            : uttaksdata80.sluttdatoPeriode1;
+        valgtDekningsgrad === '100' ? uttaksdata100.sluttdatoPeriode1 : uttaksdata80.sluttdatoPeriode1;
 
     const sluttdatoSøker2 =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? uttaksdata100.sluttdatoPeriode2
-            : uttaksdata80.sluttdatoPeriode2;
+        valgtDekningsgrad === '100' ? uttaksdata100.sluttdatoPeriode2 : uttaksdata80.sluttdatoPeriode2;
 
     const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdopsjon;
 

@@ -2,7 +2,6 @@ export * from './AnnenForelder';
 export * from './Arbeidsforhold';
 export * from './Arbeidsform';
 export * from './Barn';
-export * from './Dekningsgrad';
 export * from './EksisterendeSak';
 export * from './FamiliehendelseType';
 export * from './ForeldreparSituasjonTypes';

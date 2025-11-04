@@ -1,4 +1,5 @@
-import { Dekningsgrad } from './Dekningsgrad';
+import { Dekningsgrad } from '@navikt/fp-types';
+
 import { FamiliehendelseType } from './FamiliehendelseType';
 
 export interface Saksgrunnlag {

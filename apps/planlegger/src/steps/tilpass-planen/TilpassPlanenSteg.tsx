@@ -11,7 +11,7 @@ import { getAnnenpartsPerioder, getFamiliehendelsedato, getSøkersPerioder } fro
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, KontoBeregningDto_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -60,10 +60,9 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const initiellUttaksplanIndex = uttaksplan.length - 1;
     const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(Math.max(initiellUttaksplanIndex, 0));
 
-    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
-    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
-    const valgtStønadskonto =
-        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
+    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex] : [];

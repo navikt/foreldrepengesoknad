@@ -8,7 +8,6 @@ import {
     Arbeidsform,
     Barn,
     BarnType,
-    Dekningsgrad,
     EksisterendeSak,
     FamiliehendelseType,
     Saksgrunnlag,
@@ -189,10 +188,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     const adopsjonsdato = isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined;
 
     const grunnlagForAnnenPart = {
-        dekningsgrad:
-            eksisterendeSakAnnenPart.dekningsgrad === 'HUNDRE'
-                ? Dekningsgrad.HUNDRE_PROSENT
-                : Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: eksisterendeSakAnnenPart.dekningsgrad === 'HUNDRE' ? '100' : '80',
         antallBarn: eksisterendeSakAnnenPart.antallBarn ?? barn.antallBarn,
         morErAleneOmOmsorg: false,
         morErUfør: false,
@@ -211,7 +207,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         ønskerJustertUttakVedFødsel: undefined,
         barn: [], // barn brukes ikke videre her
         perioderAnnenpartEøs: undefined,
-    };
+    } as const;
 
     const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
         saksperioderAnnenPart,
@@ -254,7 +250,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
             : undefined;
     const fødselsdatoForSaken = fødselsdatoFraFPSak ?? fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
-        dekningsgrad: dekningsgrad === 'HUNDRE' ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: dekningsgrad === 'HUNDRE' ? '100' : '80',
         antallBarn: antallBarn,
         morErAleneOmOmsorg: sakTilhørerMor && rettighetType === 'ALENEOMSORG',
         morErUfør: morUføretrygd,

@@ -1,8 +1,7 @@
-import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import { AnnenForelder } from './AnnenForelder';
 import { Barn } from './Barn';
-import { Dekningsgrad } from './Dekningsgrad';
 import { EksisterendeSak } from './EksisterendeSak';
 import { NavnPåForeldre } from './NavnPåForeldre';
 import { Periode } from './Periode';

@@ -5,7 +5,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
@@ -84,7 +83,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -137,7 +136,7 @@ export const MorOgFarKunFarHarRett: Story = {
             lønnSøker2: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -182,7 +181,7 @@ export const FarOgFarFødsel: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -231,7 +230,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -272,7 +271,7 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -300,7 +299,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             lønnSøker1: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+            dekningsgrad: '80',
         },
         omBarnet: {
             erFødsel: true,
@@ -341,7 +340,7 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+            dekningsgrad: '80',
         },
         omBarnet: {
             erFødsel: true,
@@ -382,7 +381,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -440,7 +439,7 @@ export const KunMorHarRett: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -508,7 +507,7 @@ export const AleneforsørgerMorErUfør: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.UFØR,
@@ -533,7 +532,7 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,

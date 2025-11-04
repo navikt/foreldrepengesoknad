@@ -10,7 +10,7 @@ import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from 
 
 import { links } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Dekningsgrad, KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
@@ -117,13 +117,13 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                     {!harIkkeRettTilFp && (
                         <>
                             <Utbetalingspanel
-                                dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
+                                dekningsgrad={'100'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
                                 satser={satser}
                             />
                             <Utbetalingspanel
-                                dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
+                                dekningsgrad={'80'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
                                 satser={satser}
