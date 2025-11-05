@@ -42,10 +42,13 @@ export const Engangsstønad = () => {
         return <Umyndig appName="engangsstonad" />;
     }
 
+    // @ts-expect-error -- TODO
+    const feiler = personinfo.finnesikke.finneshvertfallikke;
+
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !isEqual(mellomlagretState.personinfo, personinfo.data)) {
+    if (feiler && mellomlagretState && !isEqual(mellomlagretState.personinfo, personinfo.data)) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
