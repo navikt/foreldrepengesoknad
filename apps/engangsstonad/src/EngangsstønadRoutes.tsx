@@ -50,7 +50,6 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
     return (
         <Routes>
             {!erVelkommen && <Route path="*" element={<Navigate to={Path.VELKOMMEN} />} />}
-            <div>Midlertidig for å unngå cache 12321 TODO</div>
             <Route
                 path={Path.VELKOMMEN}
                 element={
