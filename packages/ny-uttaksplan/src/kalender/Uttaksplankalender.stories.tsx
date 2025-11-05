@@ -19,6 +19,7 @@ const meta = {
     args: {
         modus: 'søknad',
         handleOnPlanChange: action('button-click'),
+        readOnly: false,
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
@@ -148,18 +149,18 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 kontoType: 'FELLESPERIODE',
-                forelder: Forelder.mor,
+                forelder: 'MOR',
                 resultat: {
                     innvilget: false,
                     trekkerDager: false,
                     trekkerMinsterett: false,
-                    årsak: PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
                 },
             },
         ] satisfies SaksperiodeNy[],

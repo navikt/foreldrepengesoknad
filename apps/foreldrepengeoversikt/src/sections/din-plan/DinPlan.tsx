@@ -6,7 +6,7 @@ import { Foreldrepengesak } from 'types/Sak';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
+import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import {
     KvoteOppsummeringWrapper,
@@ -21,7 +21,7 @@ import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
-    annenPartsPerioder: SaksperiodeNy[];
+    annenPartsPerioder: UttakPeriode_fpoversikt[];
 }
 
 export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {

@@ -282,6 +282,7 @@ export const OppsummeringHarRett = ({
                                     />
                                 }
                                 barnehagestartdato={barnehagestartdato}
+                                readOnly
                             />
                         </UttaksplanDataProvider>
                     </VStack>
