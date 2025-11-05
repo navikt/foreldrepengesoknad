@@ -26,6 +26,7 @@ jobs:
       bake-target: 'veiviser-hvor-mye'
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
   deploy-dev:
     name: Deploy dev
