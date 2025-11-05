@@ -13,12 +13,13 @@ export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     plugins: [
         // Put the Sentry vite plugin after all other plugins
         sentryVitePlugin({
-            authToken: process.env.SENTRY_AUTH_TOKEN, // <-- Kommer fra Github organization secrets
+            authToken: process.env.SENTRY_AUTH_TOKEN, // Kommer fra Github organization secrets
+            disable: !process.env.SENTRY_AUTH_TOKEN, // Ikke last opp source maps hvis token ikke er satt. Token er bare satt når det bygges fra master branch
             org: 'nav',
             project: 'engangsstonad',
             url: 'https://sentry.gc.nav.no',
             release: {
-                name: process.env.VITE_SENTRY_RELEASE,
+                name: process.env.VITE_SENTRY_RELEASE, // Lages av "generate-build-version" i build workflow
             },
         }),
     ],
