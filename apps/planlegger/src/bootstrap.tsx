@@ -8,8 +8,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import { Environment } from '@navikt/fp-constants';
-
 import { AppContainer } from './AppContainer';
 import './index.css';
 import './styles/global.css';
@@ -20,7 +18,7 @@ countries.registerLocale(langNN);
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://b6072f817d64f96c64eb45747c2dfeea@sentry.gc.nav.no/181',
-        release: Environment.APP_VERSION,
+        release: import.meta.env.VITE_SENTRY_RELEASE,
         environment: globalThis.location.hostname,
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
