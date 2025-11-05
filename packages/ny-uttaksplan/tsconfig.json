@@ -5,7 +5,7 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "rootDir": "src",
-        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals", "@navikt/ds-react/types/theme"]
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]
