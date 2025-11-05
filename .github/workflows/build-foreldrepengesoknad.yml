@@ -21,7 +21,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@d82a6fe449f56938a073da20baca50bed596a800
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
@@ -35,7 +35,7 @@ jobs:
       id-token: write
     if: github.ref_name == 'master'
     needs: build-app
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@d82a6fe449f56938a073da20baca50bed596a800
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
@@ -49,7 +49,7 @@ jobs:
       id-token: write
     if: github.ref_name == 'master'
     needs: [build-app, deploy-dev]
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@d82a6fe449f56938a073da20baca50bed596a800
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
