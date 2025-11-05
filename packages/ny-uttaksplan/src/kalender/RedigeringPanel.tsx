@@ -31,6 +31,7 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     useEffect(() => {
         // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
         if (erIRedigeringsmodus) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Skriv om dette
             setErIRedigeringsmodus(false);
         }
     }, [sammenslåtteValgtePerioder]);
