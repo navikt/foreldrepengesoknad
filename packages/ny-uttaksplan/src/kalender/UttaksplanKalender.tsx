@@ -373,7 +373,17 @@ export const UttaksplanKalender = ({
                 foreldrepengerHarAktivitetskrav,
                 barnehagestartdato,
             ),
-        [uttaksplan],
+        [
+            uttaksplan,
+            erFarEllerMedmor,
+            barn,
+            navnAnnenPart,
+            unikeUtsettelseÅrsaker,
+            intl,
+            modus,
+            foreldrepengerHarAktivitetskrav,
+            barnehagestartdato,
+        ],
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);

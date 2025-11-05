@@ -60,7 +60,7 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-12-12',
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -143,7 +143,7 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-12-12',
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
             },
@@ -183,13 +183,7 @@ describe('Uttaksplan', () => {
                 tom: '2025-08-21',
             },
             {
-                fom: '2025-06-30',
-                forelder: 'MOR',
-                tom: '2025-08-28',
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-            },
-            {
-                fom: '2025-08-29',
+                fom: '2025-08-22',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
@@ -197,8 +191,8 @@ describe('Uttaksplan', () => {
             {
                 fom: '2025-12-12',
                 forelder: 'MOR',
-                kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
         ]);
     });
@@ -262,7 +256,7 @@ describe('Uttaksplan', () => {
                 tom: '2025-12-11',
             },
             {
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',

@@ -34,7 +34,16 @@ export const useUttaksplan = (saksperioder: SaksperiodeNy[]): Planperiode[] => {
                 førsteUttaksdagNesteBarnsSak: undefined,
                 modus,
             }),
-        [søkersPerioder, annenPartsPerioder],
+        [
+            søkersPerioder,
+            annenPartsPerioder,
+            erFarEllerMedmor,
+            bareFarMedmorHarRett,
+            familiehendelsedato,
+            familiesituasjon,
+            harAktivitetskravIPeriodeUtenUttak,
+            modus,
+        ],
     );
 
     return komplettPlan;
