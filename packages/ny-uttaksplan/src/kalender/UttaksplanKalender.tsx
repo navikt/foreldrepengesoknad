@@ -208,8 +208,7 @@ const getKalenderFargeForAnnenPart = (periode: Planperiode, erFarEllerMedmor: bo
 };
 
 const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
-    (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
-    (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
+    (periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor);
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: Planperiode,
@@ -272,7 +271,7 @@ const getKalenderFargeForPeriodeType = (
     barn: Barn,
 ): PeriodeColor => {
     if (isAvslåttPeriode(periode)) {
-        if (periode.resultat?.årsak === PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER) {
+        if (periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return PeriodeColor.BLACKOUTLINE;
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -395,7 +394,7 @@ export const UttaksplanKalender = ({
     const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
         (p) =>
             isAvslåttPeriode(p) &&
-            p.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_FRATREKK_PLEIEPENGER &&
+            p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
             (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 

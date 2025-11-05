@@ -5,9 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak, UtsettelseÅrsakType } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 import { formatDate, getFloatFromString } from '@navikt/fp-utils';
 
 import { PanelButtons } from '../../components/panel-buttons/PanelButtons';
@@ -19,8 +18,8 @@ import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 
 type LeggTilPeriodePanelFormValues = {
-    kontoType?: KontoTypeUttak;
-    forelder: Forelder;
+    kontoType?: KontoTypeUttak_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
     samtidigUttak?: boolean;
@@ -60,15 +59,15 @@ export const LeggTilPeriodePanel = ({ valgtePerioder, onCancel, handleAddPeriode
             if (hvaVilDuGjøre === 'leggTilFerie') {
                 perioder.push({
                     ...felles,
-                    id: `${fomValue} - ${tomValue} - ${UtsettelseÅrsakType.Ferie}`,
-                    forelder: Forelder.mor,
-                    utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+                    id: `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
+                    forelder: 'MOR',
+                    utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 });
             } else if (hvaVilDuGjøre === 'leggTilOpphold') {
                 perioder.push({
                     ...felles,
                     id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                    forelder: Forelder.mor,
+                    forelder: 'MOR',
                     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
                 });
             } else {
@@ -146,15 +145,15 @@ export const LeggTilPeriodePanel = ({ valgtePerioder, onCancel, handleAddPeriode
 };
 
 const getForelderFromKontoType = (
-    ktValue: KontoTypeUttak | undefined,
-    fValue: Forelder | undefined,
-): Forelder | undefined => {
+    ktValue: KontoTypeUttak_fpoversikt | undefined,
+    fValue: BrukerRolleSak_fpoversikt | undefined,
+): BrukerRolleSak_fpoversikt | undefined => {
     switch (ktValue) {
         case 'FEDREKVOTE':
-            return Forelder.farMedmor;
+            return 'FAR_MEDMOR';
         case 'MØDREKVOTE':
         case 'FORELDREPENGER_FØR_FØDSEL':
-            return Forelder.mor;
+            return 'MOR';
         default:
             return fValue;
     }

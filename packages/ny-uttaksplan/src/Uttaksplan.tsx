@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { KontoBeregningDto_fpoversikt, SaksperiodeNy, UttaksplanModus } from '@navikt/fp-types';
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
@@ -18,9 +18,6 @@ import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 interface Props {
     saksperioder: SaksperiodeNy[];
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
-    modus: UttaksplanModus;
-    valgtStønadskonto?: KontoBeregningDto_fpoversikt;
-    erAleneOmOmsorg: boolean;
     isAllAccordionsOpen?: boolean;
 }
 

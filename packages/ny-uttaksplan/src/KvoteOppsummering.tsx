@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import {
     BrukerRolleSak_fpoversikt,
     Familiehendelse_fpoversikt,
@@ -28,7 +28,7 @@ import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 //TODO (TOR) Fjern denne wrapperen og skriv om story
 export const KvoteOppsummeringWrapper = (props: {
     saksperioder: SaksperiodeNy[];
-    rettighetType: FpSak['rettighetType'];
+    rettighetType: RettighetType_fpoversikt;
     visStatusIkoner: boolean;
 }) => {
     const { familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus, erMedmorDelAvSøknaden } =
@@ -41,7 +41,7 @@ export const KvoteOppsummeringWrapper = (props: {
             konto={valgtStønadskonto}
             perioder={uttaksplan}
             rettighetType={props.rettighetType}
-            forelder={erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor}
+            forelder={erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'}
             visStatusIkoner={props.visStatusIkoner}
             familiesituasjon={familiesituasjon}
             navnPåForeldre={navnPåForeldre}

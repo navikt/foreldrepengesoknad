@@ -6,8 +6,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { Period } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -39,7 +37,7 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             fom: p.fom,
             tom: p.tom,
@@ -64,7 +62,7 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
         });
 
         const planperioder = perioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             fom: p.fom,
             tom: p.tom,
@@ -87,12 +85,12 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
 
     const leggTilFerie = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             fom: p.fom,
             tom: p.tom,
             readOnly: false,
             id: uniqueId(),
-            utsettelseÅrsak: UtsettelseÅrsakType.Ferie,
+            utsettelseÅrsak: 'LOVBESTEMT_FERIE',
         }));
 
         handleOnPlanChange(planperioder);
