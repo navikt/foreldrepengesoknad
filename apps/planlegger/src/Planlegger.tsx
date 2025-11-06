@@ -10,13 +10,11 @@ import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUti
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningResultatDto } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
-
-type TilgjengeligeStønadskontoer = { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -58,7 +56,7 @@ const getStønadskontoer = async (
         morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
     };
 
-    return ky.post(API_URLS.konto, { json: params }).json<TilgjengeligeStønadskontoer>();
+    return ky.post(API_URLS.konto, { json: params }).json<KontoBeregningResultatDto>();
 };
 
 export const PlanleggerDataFetcher = () => {
@@ -72,7 +70,7 @@ export const PlanleggerDataFetcher = () => {
         queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
         queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
-        select: (data: TilgjengeligeStønadskontoer): TilgjengeligeStønadskontoer => {
+        select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
             //TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
 
             // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
@@ -81,9 +79,9 @@ export const PlanleggerDataFetcher = () => {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data
-            const modifiserteData: TilgjengeligeStønadskontoer = JSON.parse(JSON.stringify(data));
+            const modifiserteData: KontoBeregningResultatDto = JSON.parse(JSON.stringify(data));
             // Liste over dekningsgrader vi skal prosessere
-            const dekningsgrader: Array<keyof TilgjengeligeStønadskontoer> = ['80', '100'];
+            const dekningsgrader = ['80', '100'] as const;
             // Bearbeide hver dekningsgrad
             for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];

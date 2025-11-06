@@ -8,7 +8,7 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
-    KontoBeregningDto_fpoversikt,
+    KontoBeregningResultatDto,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     Tidsperiode,
@@ -125,10 +125,7 @@ export type DokumentereMorsArbeidParams = {
 export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
-        queryFn: () =>
-            ky
-                .post(API_URLS.konto, { json: data })
-                .json<{ '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt }>(),
+        queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
     });
 

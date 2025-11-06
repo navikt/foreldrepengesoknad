@@ -590,25 +590,6 @@ export type TidslinjeHendelseType_fpoversikt =
     | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
     | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
 
-export type KontoBeregningDto_fpoversikt = {
-    kontoer: KontoDto_fpoversikt[];
-    minsteretter: Minsteretter_fpoversikt;
-    tillegg?: Tillegg_fpoversikt;
-};
-
-export type KontoDto_fpoversikt = {
-    dager: number;
-    konto: KontoTypeUttak_fpoversikt;
-};
-
-export type KontoTypeUttak_fpoversikt =
-    | 'MØDREKVOTE'
-    | 'FEDREKVOTE'
-    | 'FELLESPERIODE'
-    | 'FORELDREPENGER'
-    | 'FORELDREPENGER_FØR_FØDSEL'
-    | 'AKTIVITETSFRI_KVOTE';
-
 export type Minsteretter_fpoversikt = {
     farRundtFødsel: number;
     toTette: number;
@@ -1112,21 +1093,3 @@ export type HentTidslinjeResponses = {
 };
 
 export type HentTidslinjeResponse = HentTidslinjeResponses[keyof HentTidslinjeResponses];
-
-export type Personinfo1Data = {
-    body: KontoBeregningGrunnlagDto_fpoversikt;
-    path?: never;
-    query?: never;
-    url: '/api/konto';
-};
-
-export type Personinfo1Responses = {
-    /**
-     * default response
-     */
-    default: {
-        [key: string]: KontoBeregningDto_fpoversikt;
-    };
-};
-
-export type Personinfo1Response = Personinfo1Responses[keyof Personinfo1Responses];

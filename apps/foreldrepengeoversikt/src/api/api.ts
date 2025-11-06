@@ -8,8 +8,8 @@ import {
     AnnenPartSak_fpoversikt,
     DokumentDto_fpoversikt,
     EttersendelseDto,
-    KontoBeregningDto_fpoversikt,
     KontoBeregningGrunnlagDto_fpoversikt,
+    KontoBeregningResultatDto,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
@@ -62,10 +62,7 @@ export const hentSakerOptions = () =>
 export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
-        queryFn: () =>
-            ky
-                .post(API_URLS.konto, { json: body })
-                .json<{ '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt }>(),
+        queryFn: () => ky.post(API_URLS.konto, { json: body }).json<KontoBeregningResultatDto>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>
