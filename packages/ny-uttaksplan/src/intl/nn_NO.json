@@ -167,7 +167,7 @@
     "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikkje legges inn de første seks ukene etter fødsel.",
     "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikkje legges inn de første seks ukene etter termin.",
     "endreTidsPeriodeModal.minDato": "Første mulige dato for perioden er {minDate}.",
-    "endreTidsPeriodeModal.maksDato": "Siste mulige dato  for perioden er {maxDate}",
+    "endreTidsPeriodeModal.maksDato": "Siste mulige dato for perioden er {maxDate}",
     "TidsperiodeSpørsmål.fom": "Frå og med dato",
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "KontotypeSpørsmål.velgKontotype": "Vel kontotype",

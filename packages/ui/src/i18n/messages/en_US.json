@@ -6,7 +6,7 @@
     "Umyndig.Tekst": "Because you are under 18, one of your parents or a guardian must sign your application with you. You must therefore complete the application on paper and send it by post to Nav.",
     "Umyndig.Knapp.Papirsøknad": "Go to the paper application",
     "ErrorSummaryFp.Tittel": "You have to correct the following errors:",
-    "FileInput.Vedlegg.Lovlige": "You can upload documents of types PDF, JPEG, JPG og PNG. The files can be up to {maxStørrelse} MB",
+    "FileInput.Vedlegg.Lovlige": "You can upload documents of types PDF, JPEG, JPG and PNG. The files can be up to {maxStørrelse} MB",
     "FileInput.Vedlegg.Header": "Attachment ({length})",
     "FileInput.Vedlegg.HeaderWithName": "Uploaded ({length}) - {name}",
     "FileInput.Vedlegg.Uploading": "Uploading...",

@@ -44,7 +44,7 @@
     "valideringsfeil.næringsinntekt.forLang": "Næringsinntekt kan bestå av maksimalt 9 siffer.",
     "valideringsfeil.næringsinntekt.mindreEnnNull": "Næringsinntekten må være et tall som er større eller lik 0.",
     "valideringsfeil.varigEndringInntekt.mindreEnnNull": "Næringsinntekten din etter endring må være et tall som er større eller lik 0.",
-    "valideringsfeil.varigEndringInntekt.forLang": "Næringsinntekten din etter endring kan bestå av maksimalt 9 siffer..",
+    "valideringsfeil.varigEndringInntekt.forLang": "Næringsinntekten din etter endring kan bestå av maksimalt 9 siffer.",
     "valideringsfeil.egenNæringPågående.påkrevd": "Du må oppgi om virksomheten din er pågående.",
     "valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd": "Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.",
     "valideringsfeil.egenNæringOrgnr.ugyldigFormat": "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer.",
