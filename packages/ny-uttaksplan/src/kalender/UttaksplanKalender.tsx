@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, HStack, Switch, VStack } from '@navikt/ds-react';
+import { Alert, Button, Switch, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import {
@@ -25,7 +25,6 @@ import {
     getForelderFarge,
     getUttaksperiodeFarge,
     omitMany,
-    useMedia,
 } from '@navikt/fp-utils';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
@@ -393,8 +392,6 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
     const uttaksplan = useUttaksplan(saksperioder);
     const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
 
-    const isDesktop = useMedia('screen and (min-width: 768px)');
-
     const [isRangeSelectorMode, setRangeSelectorMode] = useState(false);
     const [valgtePerioder, setSelectedPeriods] = useState<Period[]>([]);
 
@@ -538,6 +535,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         }}
                     />
                 </div>
+
                 {!readOnly && (
                     <Switch
                         onChange={() => {
@@ -550,13 +548,24 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                     </Switch>
                 )}
 
-                <HStack gap="space-4">
-                    <Calendar
-                        periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
-                        lastSelectedDate={valgtePerioder.at(-1)?.tom}
-                        dateClickCallback={readOnly ? undefined : dateClickCallback}
-                    >
-                        {!isDesktop && handleOnPlanChange && (
+                <div className="flex flex-col sm:flex-row">
+                    <div className="flex-1">
+                        <Calendar
+                            periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
+                            dateClickCallback={readOnly ? undefined : dateClickCallback}
+                        />
+                    </div>
+                    {handleOnPlanChange && valgtePerioder.length > 0 && (
+                        <div
+                            className={[
+                                // On mobile: fixed bottom bar
+                                'fixed bottom-0 left-0 right-0 z-40 w-full',
+
+                                // On larger screens (lg and up): sticky sidebar
+                                'sm:sticky sm:top-4 sm:w-72 sm:self-start',
+                            ].join(' ')}
+                            style={{ paddingBottom: 'env(safe-area-inset-bottom, 1rem)' }}
+                        >
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
                                 setSelectedPeriods={setSelectedPeriods}
@@ -564,21 +573,13 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                                 handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                                 familiehendelsedato={familiehendelsedato}
                             />
-                        )}
-                    </Calendar>
-                    {isDesktop && handleOnPlanChange && valgtePerioder.length > 0 && (
-                        <RedigeringPanel
-                            valgtePerioder={valgtePerioder}
-                            setSelectedPeriods={setSelectedPeriods}
-                            komplettPlan={uttaksplan}
-                            handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
-                            familiehendelsedato={familiehendelsedato}
-                        />
+                        </div>
                     )}
-                </HStack>
+                </div>
             </VStack>
+
             <Button
-                className="mt-8 print:hidden"
+                className="mt-8 pb-20 sm:pb-0 print:hidden"
                 variant="tertiary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => toPDF()}

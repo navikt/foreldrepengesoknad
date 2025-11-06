@@ -1,7 +1,14 @@
-import { PersonGroupIcon, PersonPregnantFillIcon, PersonSuitFillIcon, TrashIcon } from '@navikt/aksel-icons';
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    PersonGroupIcon,
+    PersonPregnantFillIcon,
+    PersonSuitFillIcon,
+    TrashIcon,
+} from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, ErrorMessage, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -24,19 +31,12 @@ type Props = {
 
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
+    const [erMinimert, setErMinimert] = useState(false);
     const [kanIkkeLeggeTilFerie, setKanIkkeLeggeTilFerie] = useState(false);
 
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
-
-    useEffect(() => {
-        // Lukk redigeringsmodus når bruker endrer på valgte perioder i kalender
-        if (erIRedigeringsmodus) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Skriv om dette
-            setErIRedigeringsmodus(false);
-        }
-    }, [sammenslåtteValgtePerioder]);
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
@@ -112,61 +112,79 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     );
 
     return (
-        <div>
+        <Box.New
+            borderWidth="1"
+            borderRadius="4"
+            borderColor="neutral-subtle"
+            height="fit-content"
+            maxHeight={erIRedigeringsmodus ? '100vh' : 'none'}
+            overflow={erIRedigeringsmodus ? 'auto' : 'hidden'}
+            background="default"
+        >
             {!erIRedigeringsmodus && (
-                <Box.New
-                    borderWidth="1"
-                    borderRadius="4"
-                    borderColor="neutral-subtle"
-                    padding="4"
-                    width="400px"
-                    height="fit-content"
-                >
-                    <VStack gap="space-16">
-                        <VStack gap="space-4">
+                <div className="p-4">
+                    <div className="block sm:hidden">
+                        <HStack justify="space-between" align="center" wrap={false}>
                             <Heading size="xsmall">
                                 <FormattedMessage
                                     id="RedigeringPanel.ValgteDager"
                                     values={{ antall: finnAntallDager(valgtePerioder) }}
                                 />
                             </Heading>
+                            {erMinimert ? (
+                                <ChevronUpIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(false)}
+                                />
+                            ) : (
+                                <ChevronDownIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(true)}
+                                />
+                            )}
+                        </HStack>
+                    </div>
+                    <div className={erMinimert ? 'hidden' : 'block'}>
+                        <VStack gap="space-16">
                             {ekisterendePerioderSomErValgt.length > 0 && (
                                 <BodyShort>
                                     <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
                                 </BodyShort>
                             )}
-                        </VStack>
-                        {ekisterendePerioderSomErValgt.length > 0 && (
-                            <EksisterendePeriodeListe
-                                perioder={ekisterendePerioderSomErValgt}
-                                slettPeriode={slettPeriode}
-                            />
-                        )}
-                        {kanIkkeLeggeTilFerie && (
-                            <ErrorMessage>
-                                <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
-                            </ErrorMessage>
-                        )}
-                        <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                        </Button>
-                        <HStack gap="space-16">
-                            <Button
-                                variant="primary"
-                                size="small"
-                                onClick={() => setErIRedigeringsmodus(true)}
-                                type="button"
-                            >
-                                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                            </Button>
                             {ekisterendePerioderSomErValgt.length > 0 && (
-                                <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
-                                    <FormattedMessage id="RedigeringPanel.SlettAlle" />
-                                </Button>
+                                <EksisterendePeriodeListe
+                                    perioder={ekisterendePerioderSomErValgt}
+                                    slettPeriode={slettPeriode}
+                                />
                             )}
-                        </HStack>
-                    </VStack>
-                </Box.New>
+                            {kanIkkeLeggeTilFerie && (
+                                <ErrorMessage>
+                                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
+                                </ErrorMessage>
+                            )}
+                            <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                            </Button>
+                            <HStack gap="space-16">
+                                <Button
+                                    variant="primary"
+                                    size="small"
+                                    onClick={() => setErIRedigeringsmodus(true)}
+                                    type="button"
+                                >
+                                    <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                                </Button>
+                                {ekisterendePerioderSomErValgt.length > 0 && (
+                                    <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
+                                        <FormattedMessage id="RedigeringPanel.SlettAlle" />
+                                    </Button>
+                                )}
+                            </HStack>
+                        </VStack>
+                    </div>
+                </div>
             )}
             {erIRedigeringsmodus && (
                 <LeggTilPeriodePanel
@@ -176,9 +194,11 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                         setSelectedPeriods([]);
                     }}
                     valgtePerioder={sammenslåtteValgtePerioder}
+                    erMinimert={erMinimert}
+                    setErMinimert={setErMinimert}
                 />
             )}
-        </div>
+        </Box.New>
     );
 };
 
