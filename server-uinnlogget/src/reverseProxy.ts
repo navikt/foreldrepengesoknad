@@ -4,14 +4,14 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { serverConfig } from '@navikt/fp-server-utils';
 
 const proxy = {
-    FPOVERSIKT_API_URL: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_URL'),
+    FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
 } as const;
 
 export const configureReverseProxyApi = (router: Router) => {
     router.use(
-        '/fpoversikt',
+        '/fpgrunndata',
         createProxyMiddleware({
-            target: proxy.FPOVERSIKT_API_URL,
+            target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,
             logger: console,
         }),

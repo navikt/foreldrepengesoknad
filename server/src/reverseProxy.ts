@@ -15,6 +15,7 @@ const proxy = {
     FPSOKNAD_API_URL: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_URL'),
     FPOVERSIKT_API_URL: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_URL'),
     FPOVERSIKT_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_SCOPE'),
+    FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
 } as const;
 
 export function configureReverseProxyApi(router: Router) {
@@ -29,9 +30,18 @@ export function configureReverseProxyApi(router: Router) {
         outgoingUrl: proxy.FPOVERSIKT_API_URL,
         scope: proxy.FPOVERSIKT_API_SCOPE,
     });
+
+    router.use(
+        '/fpgrunndata',
+        createProxyMiddleware({
+            target: proxy.FPGRUNNDATA_API_URL,
+            changeOrigin: true,
+            logger: console,
+        }),
+    );
 }
 
-export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
+function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
     router.use(
         ingoingUrl,
         async (request: Request, response: Response, next: NextFunction) => {
