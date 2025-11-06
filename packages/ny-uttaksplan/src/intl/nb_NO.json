@@ -172,6 +172,7 @@
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "KontotypeSpørsmål.velgKontotype": "Velg kontotype",
     "KontotypeSpørsmål.hvemGjelder": "Hvem gjelder fellesperioden?",
+    "KontotypeSpørsmål.ugyldigKontotype": "Denne kontotypen er ugyldig for dag(ene) du har valgt",
     "GraderingSpørsmål.HvorMangeProsent": "Hvor mange prosent skal du jobbe?",
     "kalender.fødsel": "Fødsel",
     "kalender.termin": "Termin",
@@ -210,5 +211,6 @@
     "RedigeringPanel.Fedrekvote": "Far har foreldrepenger",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
     "RedigeringPanel.Dager": "{dato} {antall} dager",
+    "RedigeringPanel.KanIkkeLeggeTilFerie": "Kan ikke legge til ferie for valgte dag(er)",
     "LeggTilPeriodePanel.Dager": "Valgte dager:"
 }
