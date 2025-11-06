@@ -4,8 +4,8 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { BodyShort, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 

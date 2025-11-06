@@ -3,7 +3,7 @@ import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useNavigate } from 'react-router-dom';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 import { useContextReset } from './SvpDataContext';
 
@@ -16,7 +16,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
     });
 
     const avbrytSøknadHandler = async () => {
-        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
+        loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
 
         reset();
 

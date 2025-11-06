@@ -1,6 +1,6 @@
 import { SøknadRoutes } from 'appData/routes';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './FpDataContext';
@@ -35,7 +35,7 @@ export const useFpNavigator = (
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
+        loggUmamiEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
         globalThis.location.href = 'https://nav.no';
     };
 

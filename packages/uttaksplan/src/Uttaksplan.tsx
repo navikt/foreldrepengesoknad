@@ -17,7 +17,7 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import {
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
@@ -254,7 +254,7 @@ const Uttaksplan = ({
 
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'slettUttaksplan' },

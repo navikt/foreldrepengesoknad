@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appName }: Props) => {
-    loggAmplitudeEvent({
+    loggUmamiEvent({
         origin: appName,
         eventName: 'besøk',
         eventData: { tittel: 'registerdataUtdatert' },

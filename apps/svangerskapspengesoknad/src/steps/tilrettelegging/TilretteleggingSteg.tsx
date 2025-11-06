@@ -32,7 +32,7 @@ import {
     RhfTextarea,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
@@ -266,7 +266,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                         size="small"
                                         header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
                                         onOpenChange={(open) =>
-                                            loggAmplitudeEvent({
+                                            loggUmamiEvent({
                                                 origin: 'svangerskapspengesoknad',
                                                 eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                                 eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
@@ -316,7 +316,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                     id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
                                 })}
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: {

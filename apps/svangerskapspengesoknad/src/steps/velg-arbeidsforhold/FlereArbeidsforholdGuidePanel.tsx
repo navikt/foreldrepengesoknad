@@ -2,10 +2,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, GuidePanel, List } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 export const FlereArbeidsforholdGuidePanel = () => {
-    loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'besøk', eventData: { tittel: 'umyndig' } });
+    loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'besøk', eventData: { tittel: 'umyndig' } });
 
     return (
         <GuidePanel>

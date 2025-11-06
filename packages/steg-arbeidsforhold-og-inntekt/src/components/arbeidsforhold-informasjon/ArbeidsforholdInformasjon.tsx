@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { AppName, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { HarArbeidsforhold } from './HarArbeidsforhold';
@@ -25,7 +25,7 @@ export const ArbeidsforholdInformasjon = ({ appOrigin, arbeidsforhold, visMangle
             {visManglerInfo && (
                 <ReadMore
                     onOpenChange={(open) =>
-                        loggAmplitudeEvent({
+                        loggUmamiEvent({
                             origin: appOrigin,
                             eventName: open ? 'readmore åpnet' : 'readmore lukket',
                             eventData: { tittel: 'inntektsinformasjon.arbeidsforhold.info' },

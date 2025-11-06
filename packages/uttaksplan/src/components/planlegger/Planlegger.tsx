@@ -14,7 +14,7 @@ import {
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';
@@ -198,7 +198,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                loggAmplitudeEvent({
+                                loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilPeriodeKlikk' },
@@ -213,7 +213,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                loggAmplitudeEvent({
+                                loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilUtsettelseKlikk' },

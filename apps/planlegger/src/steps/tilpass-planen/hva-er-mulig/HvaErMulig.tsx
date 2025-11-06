@@ -4,9 +4,9 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker, erFarDelAvSøknaden, erFarOgFar } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 

@@ -1,4 +1,4 @@
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
@@ -34,7 +34,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
+        loggUmamiEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
         globalThis.location.href = 'https://nav.no';
     };
 

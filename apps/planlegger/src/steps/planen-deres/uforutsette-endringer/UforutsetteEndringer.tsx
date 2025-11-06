@@ -4,7 +4,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
