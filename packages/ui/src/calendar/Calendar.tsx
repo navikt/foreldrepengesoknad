@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useMemo } from 'react';
 
-import { VStack } from '@navikt/ds-react';
+import { HGrid } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import { Period } from '@navikt/fp-types';
@@ -66,8 +66,6 @@ interface Props {
     showWeekNumbers?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
-    children?: React.ReactNode;
-    lastSelectedDate?: string;
 }
 
 export const Calendar = ({
@@ -76,8 +74,6 @@ export const Calendar = ({
     showWeekNumbers = true,
     dateTooltipCallback,
     dateClickCallback,
-    children,
-    lastSelectedDate,
 }: Props) => {
     const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
     const lastDate = useMemo(() => findLastPeriodTom(periods), [periods]);
@@ -109,48 +105,42 @@ export const Calendar = ({
                         .toString()}
                 </div>
             )}
-            <VStack gap="space-4">
+            <HGrid gap="space-24" columns={{ sm: 1, md: dateClickCallback ? 1 : 2 }}>
                 {months.map(({ month, year }) => {
                     const yearAndMonth = dayjs().year(year).month(month);
                     const daysInMonth = yearAndMonth.daysInMonth();
                     const monthDays = Array.from({ length: daysInMonth }, (_, i) => yearAndMonth.date(i + 1));
 
                     return (
-                        <VStack gap="space-4" key={`${year}-${month}`}>
-                            <Month
-                                year={year}
-                                month={month}
-                                headerLevel={useSmallerWidth ? '5' : '4'}
-                                showWeekNumbers={showWeekNumbers}
-                            >
-                                {monthDays.map((date) => {
-                                    const isoDate = formatDateIso(date);
-                                    return (
-                                        <Day
-                                            key={isoDate}
-                                            day={date.date()}
-                                            periodeColor={findDayColor(date)}
-                                            dateTooltipCallback={
-                                                dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
-                                            }
-                                            dateClickCallback={
-                                                dateClickCallback && !isWeekend(date)
-                                                    ? () => dateClickCallback(isoDate)
-                                                    : undefined
-                                            }
-                                        />
-                                    );
-                                })}
-                            </Month>
-                            {children &&
-                                lastSelectedDate &&
-                                dayjs(lastSelectedDate).month() === month &&
-                                dayjs(lastSelectedDate).year() === year &&
-                                children}
-                        </VStack>
+                        <Month
+                            key={`${year}-${month}`}
+                            year={year}
+                            month={month}
+                            headerLevel={useSmallerWidth ? '5' : '4'}
+                            showWeekNumbers={showWeekNumbers}
+                        >
+                            {monthDays.map((date) => {
+                                const isoDate = formatDateIso(date);
+                                return (
+                                    <Day
+                                        key={isoDate}
+                                        day={date.date()}
+                                        periodeColor={findDayColor(date)}
+                                        dateTooltipCallback={
+                                            dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
+                                        }
+                                        dateClickCallback={
+                                            dateClickCallback && !isWeekend(date)
+                                                ? () => dateClickCallback(isoDate)
+                                                : undefined
+                                        }
+                                    />
+                                );
+                            })}
+                        </Month>
                     );
                 })}
-            </VStack>
+            </HGrid>
         </>
     );
 };

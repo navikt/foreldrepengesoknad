@@ -1,10 +1,70 @@
+/* calendar.module.css */
+
 .srOnly {
     position: absolute;
+    left: -10000px;
+    top: auto;
     width: 1px;
     height: 1px;
-    padding: 0;
-    margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
+}
+
+/* Outer grid: 1 column on mobile, 2 columns on md+ */
+.calendarGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem; /* adjust to match your HGrid gap */
+}
+
+/* months column (left) always first grid item */
+.monthsColumn {
+    /* nothing special; it will become the left column on md+ */
+}
+
+/* sidebar becomes second grid column on md+ */
+.sidebar {
+    /* keep normal flow so grid places it in the right column */
+}
+
+/* sticky inner wrapper */
+.sticky {
+    position: sticky;
+    top: 1rem; /* adjust if you have a fixed header */
+    align-self: start;
+}
+
+/* inline children (mobile insertion) */
+.inlineChildren {
+    margin-top: 0.5rem;
+}
+
+/* visibility helpers */
+.showOnSm {
+    display: block;
+}
+.showOnMd {
+    display: none;
+}
+
+/* === breakpoint: MD and up === */
+@media (min-width: 768px) {
+    .calendarGrid {
+        /* left column fluid, right column fixed (change 320px to desired width) */
+        grid-template-columns: 1fr 320px;
+        align-items: start; /* so sticky has room */
+    }
+
+    .showOnSm {
+        display: none;
+    }
+    .showOnMd {
+        display: block;
+    }
+
+    /* ensure no parent clipping for sticky to work */
+    .monthsColumn,
+    .sidebar,
+    .calendarGrid {
+        overflow: visible;
+    }
 }

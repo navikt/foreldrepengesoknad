@@ -1,13 +1,13 @@
-import { PencilIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Box, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
-import { formatDate, getFloatFromString } from '@navikt/fp-utils';
+import { getFloatFromString } from '@navikt/fp-utils';
 
 import { PanelButtons } from '../../components/panel-buttons/PanelButtons';
 import { GraderingSpørsmål } from '../../components/spørsmål/GraderingSpørsmål';
@@ -34,9 +34,19 @@ interface Props {
     }>;
     onCancel?: () => void;
     handleAddPeriode: (oppdatertePerioder: Planperiode[]) => void;
+    erMinimert: boolean;
+    setErMinimert: (erMinimert: boolean) => void;
 }
 
-export const LeggTilPeriodePanel = ({ valgtePerioder, onCancel, handleAddPeriode }: Props) => {
+export const LeggTilPeriodePanel = ({
+    valgtePerioder,
+    onCancel,
+    handleAddPeriode,
+    erMinimert,
+    setErMinimert,
+}: Props) => {
+    const intl = useIntl();
+
     const { aleneOmOmsorg, familiehendelsedato, valgtStønadskonto } = useUttaksplanData();
 
     const formMethods = useForm<LeggTilPeriodePanelFormValues>();
@@ -108,39 +118,51 @@ export const LeggTilPeriodePanel = ({ valgtePerioder, onCancel, handleAddPeriode
         });
 
     return (
-        <Box.New
-            borderWidth="1"
-            borderRadius="4"
-            borderColor="neutral-subtle"
-            padding="4"
-            width="400px"
-            height="fit-content"
-        >
+        <>
             <VStack gap="space-8">
-                <HStack gap="space-8" align="center">
-                    <PencilIcon aria-hidden={true} width={24} height={24} />
-                    <Heading size="medium">
-                        <FormattedMessage id="uttaksplan.leggTilPeriode" />
-                    </Heading>
-                </HStack>
-                <BodyShort>
-                    <FormattedMessage id="LeggTilPeriodePanel.Dager" />
-                    {valgtePerioder.map((p) => (
-                        <BodyShort key={p.fom + p.tom}>
-                            {p.fom === p.tom ? formatDate(p.fom) : formatDate(p.fom) + ' - ' + formatDate(p.tom)}
-                        </BodyShort>
-                    ))}
-                </BodyShort>
-                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="space-16">
-                        <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} />
-                        {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
-                        <GraderingSpørsmål />
-                        <PanelButtons onCancel={() => onCancel?.()} isFinalStep={true} />
-                    </VStack>
-                </RhfForm>
+                <Box.New background="accent-soft" padding="4">
+                    <HStack gap="space-8" align="center">
+                        <PencilIcon aria-hidden={true} width={24} height={24} />
+                        <Heading size="small">
+                            <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                        </Heading>
+                        <Spacer />
+                        <div className="block sm:hidden">
+                            {erMinimert ? (
+                                <ChevronUpIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(false)}
+                                />
+                            ) : (
+                                <ChevronDownIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(true)}
+                                />
+                            )}
+                        </div>
+                    </HStack>
+                </Box.New>
+
+                <div className={erMinimert ? 'hidden' : 'block'}>
+                    <div className="px-4 pb-4 pt-4">
+                        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                            <VStack gap="space-16">
+                                <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
+                                {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                                <GraderingSpørsmål />
+                                <PanelButtons
+                                    onCancel={() => onCancel?.()}
+                                    isFinalStep={true}
+                                    addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
+                                />
+                            </VStack>
+                        </RhfForm>
+                    </div>
+                </div>
             </VStack>
-        </Box.New>
+        </>
     );
 };
 

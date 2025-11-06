@@ -14,9 +14,10 @@ import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/L
 
 interface Props {
     gyldigeKontotyper?: KontoTypeUttak_fpoversikt[];
+    skalViseTittel?: boolean;
 }
 
-export const KontotypeSpørsmål = ({ gyldigeKontotyper }: Props) => {
+export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }: Props) => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const { valgtStønadskonto, erMedmorDelAvSøknaden } = useUttaksplanData();
@@ -32,9 +33,11 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper }: Props) => {
 
     return (
         <VStack gap="space-16">
-            <Heading size="medium">
-                <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
-            </Heading>
+            {skalViseTittel && (
+                <Heading size="medium">
+                    <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />
+                </Heading>
+            )}
             <RhfRadioGroup
                 name="kontoType"
                 control={control}

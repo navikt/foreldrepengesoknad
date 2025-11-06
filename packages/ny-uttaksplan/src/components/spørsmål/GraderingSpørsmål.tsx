@@ -41,7 +41,7 @@ export const GraderingSpørsmål = () => {
                 <RhfNumericField
                     name="stillingsprosent"
                     control={control}
-                    className="w-xs"
+                    className="max-w-xs"
                     label={intl.formatMessage({ id: 'GraderingSpørsmål.HvorMangeProsent' })}
                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentValue)]}
                     maxLength={5}

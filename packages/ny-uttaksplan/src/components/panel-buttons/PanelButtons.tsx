@@ -6,9 +6,10 @@ interface Props {
     onCancel: () => void;
     onGoPreviousStep?: () => void;
     isFinalStep: boolean;
+    addButtonText?: string;
 }
 
-export const PanelButtons = ({ onCancel, onGoPreviousStep, isFinalStep }: Props) => {
+export const PanelButtons = ({ onCancel, onGoPreviousStep, isFinalStep, addButtonText }: Props) => {
     return (
         <HStack gap="space-8" justify="space-between">
             <Button type="button" variant="secondary" onClick={onCancel}>
@@ -21,7 +22,9 @@ export const PanelButtons = ({ onCancel, onGoPreviousStep, isFinalStep }: Props)
                     </Button>
                 )}
                 <Button>
-                    {isFinalStep ? (
+                    {addButtonText ? (
+                        addButtonText
+                    ) : isFinalStep ? (
                         <FormattedMessage id="uttaksplan.ferdig" />
                     ) : (
                         <FormattedMessage id="uttaksplan.gåVidere" />
