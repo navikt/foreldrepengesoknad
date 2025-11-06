@@ -4,7 +4,7 @@ import { uniqueId } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, ErrorMessage, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Period } from '@navikt/fp-types';
 
@@ -24,6 +24,8 @@ type Props = {
 
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
+    const [kanIkkeLeggeTilFerie, setKanIkkeLeggeTilFerie] = useState(false);
+
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
@@ -85,19 +87,23 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     };
 
     const leggTilFerie = () => {
-        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-            fom: p.fom,
-            tom: p.tom,
-            readOnly: false,
-            id: uniqueId(),
-            utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-        }));
+        if (!valgtePerioder.some((p) => erFerieLovlig(p, familiehendelsedato))) {
+            const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
+                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+                fom: p.fom,
+                tom: p.tom,
+                readOnly: false,
+                id: uniqueId(),
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+            }));
 
-        handleOnPlanChange(planperioder);
+            handleOnPlanChange(planperioder);
 
-        setErIRedigeringsmodus(false);
-        setSelectedPeriods([]);
+            setErIRedigeringsmodus(false);
+            setSelectedPeriods([]);
+        } else {
+            setKanIkkeLeggeTilFerie(true);
+        }
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
@@ -136,11 +142,14 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                 slettPeriode={slettPeriode}
                             />
                         )}
-                        {!valgtePerioder.some((p) => erFerieLovlig(p, familiehendelsedato)) && (
-                            <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                                <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                            </Button>
+                        {kanIkkeLeggeTilFerie && (
+                            <ErrorMessage>
+                                <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
+                            </ErrorMessage>
                         )}
+                        <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                        </Button>
                         <HStack gap="space-16">
                             <Button
                                 variant="primary"

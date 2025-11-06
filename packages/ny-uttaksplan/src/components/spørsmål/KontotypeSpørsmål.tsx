@@ -46,15 +46,13 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper }: Props) => {
                 ]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
-                {valgtStønadskonto.kontoer
-                    .filter((k) => gyldigeKontotyper === undefined || gyldigeKontotyper.includes(k.konto))
-                    .map((konto) => {
-                        return (
-                            <Radio key={konto.konto} value={konto.konto}>
-                                {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
-                            </Radio>
-                        );
-                    })}
+                {valgtStønadskonto.kontoer.map((konto) => {
+                    return (
+                        <Radio key={konto.konto} value={konto.konto}>
+                            {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
+                        </Radio>
+                    );
+                })}
             </RhfRadioGroup>
             {kontoTypeValue === 'FELLESPERIODE' && (
                 <RhfRadioGroup
