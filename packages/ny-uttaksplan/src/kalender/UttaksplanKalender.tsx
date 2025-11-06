@@ -558,11 +558,8 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                     {handleOnPlanChange && valgtePerioder.length > 0 && (
                         <div
                             className={[
-                                // On mobile: fixed bottom bar
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
-
-                                // On larger screens (lg and up): sticky sidebar
-                                'sm:sticky sm:top-4 sm:w-72 sm:self-start',
+                                'sm:sticky sm:top-4 sm:max-w-[20.5rem] sm:self-start',
                             ].join(' ')}
                             style={{ paddingBottom: 'env(safe-area-inset-bottom, 1rem)' }}
                         >

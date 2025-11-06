@@ -246,7 +246,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                     <VStack gap="space-20">
                         {visningsmodus === 'kalender' && (
-                            <div className="p-6 max-[479px]:p-0">
+                            <div className="max-[479px]:p-0">
                                 <UttaksplanKalender
                                     readOnly={false}
                                     saksperioder={gjeldendeUttaksplan}
