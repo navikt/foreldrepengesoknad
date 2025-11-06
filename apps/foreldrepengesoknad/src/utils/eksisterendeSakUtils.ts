@@ -370,8 +370,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fornavn: finnFornavn(annenPart, intl),
                     etternavn: annenPart.navn.etternavn,
                     erMorUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepengerINorge:
-                        !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                    harRettPåForeldrepengerINorge: grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -382,7 +381,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 fornavn: finnFornavn(annenPart, intl),
                 etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepengerINorge:
-                    !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                    grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -460,7 +459,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
     }
 };
 
-const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder => {
+const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | undefined => {
     if (valgteBarn.annenForelder !== undefined) {
         return {
             fornavn: valgteBarn.annenForelder.navn.fornavn,
@@ -471,9 +470,7 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder =>
         };
     }
 
-    return {
-        kanIkkeOppgis: true, // dette gir ikke mening?
-    };
+    return undefined;
 };
 
 const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
