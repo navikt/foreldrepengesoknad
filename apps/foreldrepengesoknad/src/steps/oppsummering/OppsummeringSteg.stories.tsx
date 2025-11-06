@@ -99,7 +99,7 @@ const defaultSøkersituasjon = {
 
 const defaultAnnenForelder = {
     kanIkkeOppgis: true,
-};
+} as const;
 
 const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -517,7 +517,6 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: {
             person: defaultSøkerinfoMor.person,
@@ -563,7 +562,6 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -589,7 +587,6 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -625,7 +622,6 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
         ],
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -649,7 +645,6 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
         ],
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },

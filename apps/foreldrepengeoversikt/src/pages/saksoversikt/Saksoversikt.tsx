@@ -8,12 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import {
-    PersonMedArbeidsforholdDto_fpoversikt,
-    SaksperiodeNy,
-    Satser,
-    TidslinjeHendelseDto_fpoversikt,
-} from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
@@ -165,7 +160,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
-                                annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
+                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.person.navn.fornavn,

@@ -106,7 +106,7 @@ export const BarnVelger = ({ selectableBarn }: Props) => {
     const ufødteBarn = selectableBarn.filter((b) => b.type === ValgtBarnType.UFØDT);
     const fødteOgAdopterteBarn = selectableBarn.filter((b) => b.type !== ValgtBarnType.UFØDT);
 
-    let radios = [] as ReactElement[];
+    let radios: ReactElement[] = [];
     if (fødteOgAdopterteBarn.length > 0) {
         radios = radios.concat(getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl));
     }

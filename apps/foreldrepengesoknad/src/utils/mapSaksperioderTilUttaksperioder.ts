@@ -523,7 +523,7 @@ const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): Periode[] => {
-    const nyePerioder = [] as Periode[];
+    const nyePerioder: Periode[] = [];
     for (const p of perioder) {
         if (tidperiodeOverlapperDato(p.tidsperiode, familiehendelsesdato) && isUttaksperiode(p)) {
             const splittedePerioder = splittUttaksperiodePåFamiliehendelsesdato(p, familiehendelsesdato);

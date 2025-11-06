@@ -7,7 +7,6 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
     AnnenForelder,
-    AnnenForelderOppgitt,
     Arbeidsform,
     Barn,
     Periode,
@@ -140,7 +139,14 @@ const cleanBarn = (barn: Barn): BarnDto => {
 };
 
 const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
-    return rolle.toUpperCase() as BrukerRolle;
+    switch (rolle) {
+        case 'mor':
+            return 'MOR';
+        case 'far':
+            return 'FAR';
+        case 'medmor':
+            return 'MEDMOR';
+    }
 };
 
 const changeClientonlyKontotype = (
@@ -293,40 +299,38 @@ const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenFore
         return;
     }
 
-    const oppgitt = annenForelder as AnnenForelderOppgitt;
-
-    const harRettPåForeldrepenger = !!oppgitt.harRettPåForeldrepengerINorge;
+    const harRettPåForeldrepenger = !!annenForelder.harRettPåForeldrepengerINorge;
     /*
      Hvis bruker har svart på spørsmålet om annenForelder er informert så bruker vi det.
      Men i tilfelle endringssøknad så finnes ikke dette spørsmålet eksplisitt (det finnes implisitt i en checkbox for å kunne sende).
      I de tilfellene sier vi ja hvis annen forelder har rett i Norge.
     */
     const erInformertOmSøknaden = (() => {
-        if (oppgitt.erInformertOmSøknaden === undefined) {
+        if (annenForelder.erInformertOmSøknaden === undefined) {
             return harRettPåForeldrepenger ? true : undefined;
         }
-        return oppgitt.erInformertOmSøknaden;
+        return annenForelder.erInformertOmSøknaden;
     })();
 
     const baseData = {
-        fnr: oppgitt.fnr,
-        fornavn: oppgitt.fornavn,
-        etternavn: oppgitt.etternavn,
+        fnr: annenForelder.fnr,
+        fornavn: annenForelder.fornavn,
+        etternavn: annenForelder.etternavn,
         rettigheter: {
             harRettPåForeldrepenger,
             erInformertOmSøknaden,
-            erAleneOmOmsorg: oppgitt.erAleneOmOmsorg,
-            harMorUføretrygd: oppgitt.erMorUfør,
-            harAnnenForelderOppholdtSegIEØS: oppgitt.harOppholdtSegIEØS,
+            erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+            harMorUføretrygd: annenForelder.erMorUfør,
+            harAnnenForelderOppholdtSegIEØS: annenForelder.harOppholdtSegIEØS,
             harAnnenForelderTilsvarendeRettEØS:
                 // Bevarer logikken fra steget og gammel oppførsel her siden harRettPåForeldrepengerIEØS defaulter til false mange plasser
-                oppgitt.harRettPåForeldrepengerINorge !== false || oppgitt.harOppholdtSegIEØS !== true
+                annenForelder.harRettPåForeldrepengerINorge !== false || annenForelder.harOppholdtSegIEØS !== true
                     ? undefined
-                    : oppgitt.harRettPåForeldrepengerIEØS,
+                    : annenForelder.harRettPåForeldrepengerIEØS,
         },
     };
-    return oppgitt.utenlandskFnr
-        ? { type: 'utenlandsk', ...baseData, bostedsland: oppgitt.bostedsland ?? 'UNDEFINED' }
+    return annenForelder.utenlandskFnr
+        ? { type: 'utenlandsk', ...baseData, bostedsland: annenForelder.bostedsland ?? 'UNDEFINED' }
         : { type: 'norsk', ...baseData };
 };
 

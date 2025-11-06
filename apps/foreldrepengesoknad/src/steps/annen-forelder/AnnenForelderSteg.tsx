@@ -10,7 +10,7 @@ import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
@@ -63,8 +63,8 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         annenForelder.fnr !== annenForelderFraRegistrertBarn?.fnr;
     const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined || oppgittFnrErUlikRegistrertBarn;
 
-    const onSubmit = (values: AnnenForelderFormData) => {
-        if (values.kanIkkeOppgis === true) {
+    const onSubmit = (values: AnnenForelder) => {
+        if (values.kanIkkeOppgis) {
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
             return navigator.goToNextDefaultStep();
         }
@@ -85,7 +85,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         oppdaterAnnenForeldre({
             ...values,
             harRettPåForeldrepengerINorge,
-            kanIkkeOppgis: false,
+            kanIkkeOppgis: false, // NOTE: må settes eksplisitt
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
@@ -115,7 +115,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                <RhfForm formMethods={formMethods} onSubmit={(values) => onSubmit(values as AnnenForelder)}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {skalOppgiPersonalia && (

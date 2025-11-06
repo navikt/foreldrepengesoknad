@@ -55,6 +55,8 @@ const getAnnenForelderUførMock = (
     datoForAleneomsorgInput: string | undefined,
 ): AnnenForelder => {
     return {
+        fnr: '1',
+        erAleneOmOmsorg: false,
         fornavn: 'Mor',
         etternavn: 'Utvikler',
         erMorUfør: urUførInput,
@@ -69,6 +71,10 @@ const getAnnenForelderMock = (): AnnenForelder => {
         fornavn: 'Mor',
         etternavn: 'UtenUførInfo',
         kanIkkeOppgis: false,
+        fnr: '1',
+        erAleneOmOmsorg: false,
+        erMorUfør: false,
+        erForSyk: false,
     };
 };
 
@@ -189,12 +195,13 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             konto: 'FELLESPERIODE',
             samtidigUttakProsent: undefined,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'FAR_MEDMOR',
+        } satisfies Uttaksperiode;
         const periodeHull = {
             id: '1',
             type: Periodetype.Hull,
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
-        } as PeriodeHull;
+        } satisfies PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
 
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
@@ -215,8 +222,12 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             type: Periodetype.Uttak,
             erMorForSyk: true,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'MOR',
+            // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
+            konto: undefined,
+        } satisfies Periode;
 
+        // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
 
         const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);

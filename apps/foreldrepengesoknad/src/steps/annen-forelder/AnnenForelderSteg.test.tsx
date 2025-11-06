@@ -5,6 +5,7 @@ import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
+import { AnnenForelder } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
@@ -359,7 +360,7 @@ describe('<AnnenForelderSteg>', () => {
                 harRettPåForeldrepengerIEØS: false,
                 kanIkkeOppgis: false,
                 utenlandskFnr: true,
-            },
+            } satisfies AnnenForelder,
             key: ContextDataType.ANNEN_FORELDER,
             type: 'update',
         });

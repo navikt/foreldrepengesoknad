@@ -36,7 +36,7 @@ interface Props {
     familiesituasjon: Familiesituasjon;
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
     modus: UttaksplanModus;
-    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    valgtStønadskonto?: KontoBeregningDto_fpoversikt;
     erAleneOmOmsorg: boolean;
     isAllAccordionsOpen?: boolean;
     erMedmorDelAvSøknaden?: boolean;

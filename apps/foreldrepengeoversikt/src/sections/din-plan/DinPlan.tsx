@@ -32,7 +32,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
         const perioderAnnenPartEØS = gjeldendeSak.gjeldendeVedtak?.perioderAnnenpartEøs;
 
         if (perioderAnnenPartEØS && perioderAnnenPartEØS.length > 0) {
-            return perioderAnnenPartEØS as SaksperiodeNy[];
+            return perioderAnnenPartEØS;
         }
 
         return annenPartsPerioder;
@@ -118,7 +118,6 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                             modus="innsyn"
                             handleOnPlanChange={() => null}
-                            valgtStønadskonto={{} as any}
                             erAleneOmOmsorg={søkerErAleneOmOmsorg}
                         />
                         <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />

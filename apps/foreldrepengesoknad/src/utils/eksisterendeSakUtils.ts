@@ -5,6 +5,7 @@ import { ValgtBarn } from 'types/ValgtBarn';
 
 import {
     AnnenForelder,
+    AnnenForelderOppgitt,
     Arbeidsform,
     Barn,
     BarnType,
@@ -356,7 +357,7 @@ const getAnnenForelderFromSaksgrunnlag = (
     annenPart: AnnenForelderDto_fpoversikt,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-): AnnenForelder => {
+): AnnenForelderOppgitt => {
     switch (situasjon) {
         case 'fødsel':
         case 'adopsjon':
@@ -365,8 +366,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fornavn: finnFornavn(annenPart, intl),
                     etternavn: annenPart.navn.etternavn,
                     erMorUfør: grunnlag.morErUfør,
-                    harRettPåForeldrepengerINorge:
-                        !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                    harRettPåForeldrepengerINorge: grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -377,7 +377,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 fornavn: finnFornavn(annenPart, intl),
                 etternavn: annenPart.navn.etternavn,
                 harRettPåForeldrepengerINorge:
-                    !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                    grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -455,19 +455,18 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
     }
 };
 
-const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder => {
+const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | undefined => {
     if (valgteBarn.annenForelder !== undefined) {
         return {
             fornavn: valgteBarn.annenForelder.navn.fornavn,
             etternavn: valgteBarn.annenForelder.navn.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         };
     }
 
-    return {
-        kanIkkeOppgis: false,
-    };
+    return undefined;
 };
 
 const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
@@ -500,7 +499,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
     barn: BarnDto_fpoversikt[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
-): AnnenForelder => {
+): AnnenForelderOppgitt => {
     const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
 
     const mockAnnenForelder = {
@@ -514,7 +513,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
         kanIkkeOppgis: false,
         erMorUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
         erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
-    };
+    } satisfies AnnenForelderOppgitt;
     const annenForelderFraSak = finnAnnenForelderForSaken(
         barn,
         ISOStringToDate(grunnlag.fødselsdato),

@@ -153,7 +153,13 @@ type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
-const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as KontoBeregningDto_fpoversikt;
+const DEFAULT_STØNADSKONTO = {
+    kontoer: [],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+} satisfies KontoBeregningDto_fpoversikt;
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
@@ -198,6 +204,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
             termindato: '2021-09-24',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             kanIkkeOppgis: false,
@@ -258,6 +265,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
             termindato: '2023-12-20',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -358,6 +366,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
             termindato: '2023-09-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -410,6 +419,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
             termindato: '2021-09-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -462,6 +472,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
             termindato: '2022-07-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -513,6 +524,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
             termindato: '2024-07-21',
         },
         annenForelder: {
+            fnr: '1',
             erAleneOmOmsorg: true,
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
@@ -569,6 +581,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
             termindato: '2024-04-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -621,6 +634,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
             adopsjonsdato: '2021-08-23',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
@@ -689,6 +703,7 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
             termindato: '2023-12-21',
         },
         annenForelder: {
+            erAleneOmOmsorg: false,
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             fnr: '1212121313',
@@ -760,6 +775,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '80',
         arbeidsforhold: [],
@@ -822,6 +838,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -889,6 +906,7 @@ export const MorDeltUttakTvillingerFødt: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -951,6 +969,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1014,6 +1033,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1081,6 +1101,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1143,6 +1164,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1210,6 +1232,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1273,6 +1296,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1332,6 +1356,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1392,6 +1417,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '80',
         arbeidsforhold: [],
@@ -1458,6 +1484,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
             harOppholdtSegIEØS: true,
             harRettPåForeldrepengerIEØS: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '80',
         arbeidsforhold: [],
@@ -1519,6 +1546,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
             harOppholdtSegIEØS: true,
             harRettPåForeldrepengerIEØS: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1571,6 +1599,7 @@ export const BareMorHarRettTermin: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1622,6 +1651,7 @@ export const BareMorHarRettAdopsjon: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],
@@ -1676,6 +1706,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: true,
         },
         dekningsgrad: '100',
@@ -1732,6 +1763,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: false,
         },
         dekningsgrad: '100',
@@ -1784,6 +1816,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: true,
         },
         dekningsgrad: '100',
@@ -1841,6 +1874,7 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
             harRettPåForeldrepengerINorge: false,
             erMorUfør: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
         dekningsgrad: '100',
         arbeidsforhold: [],

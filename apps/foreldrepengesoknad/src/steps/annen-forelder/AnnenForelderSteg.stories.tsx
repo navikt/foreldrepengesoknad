@@ -48,6 +48,14 @@ const defaultSøker = {
     ],
 } satisfies PersonDto_fpoversikt;
 
+const defaultAnnenForelder = {
+    fnr: '1',
+    fornavn: 'Hans',
+    etternavn: 'Utvikler',
+    kanIkkeOppgis: false,
+    erAleneOmOmsorg: false,
+} satisfies AnnenForelderType;
+
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
@@ -122,26 +130,7 @@ export const SkalOppgiPersonalia: Story = {
             },
             arbeidsforhold: [],
         },
-        annenForelder: {
-            kanIkkeOppgis: false,
-        },
-    },
-};
-
-export const SkalOppgiPersonaliaNavnMangler: Story = {
-    args: {
-        ...SkalOppgiPersonalia.args,
-        søkerInfo: {
-            person: {
-                ...defaultSøker,
-                barn: [],
-            },
-            arbeidsforhold: [],
-        },
-        annenForelder: {
-            fornavn: 'annen forelder',
-            kanIkkeOppgis: false,
-        },
+        annenForelder: undefined,
     },
 };
 
@@ -174,9 +163,9 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
             arbeidsforhold: [],
         },
         annenForelder: {
+            ...defaultAnnenForelder,
             fornavn: 'Tom',
             fnr: '123456789',
-            kanIkkeOppgis: false,
         },
     },
 };
@@ -236,9 +225,7 @@ export const MorUfødtBarn: Story = {
             antallBarn: 1,
             termindato: '2023-05-05',
         },
-        annenForelder: {
-            kanIkkeOppgis: false,
-        },
+        annenForelder: undefined,
         søkerInfo: {
             person: {
                 ...defaultSøker,
@@ -315,7 +302,12 @@ export const FarGiftUfødtBarn: Story = {
 export const FarFødtBarnMorHarVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            fornavn: defaultSøker.navn.fornavn,
+            etternavn: defaultSøker.navn.etternavn,
+            fnr: defaultSøker.fnr,
+        },
     },
     parameters: {
         msw: {
@@ -327,7 +319,12 @@ export const FarFødtBarnMorHarVedtak: Story = {
 export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     args: {
         ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: { ...defaultSøker.barn[0].annenPart, kanIkkeOppgis: false },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            fornavn: defaultSøker.navn.fornavn,
+            etternavn: defaultSøker.navn.etternavn,
+            fnr: defaultSøker.fnr,
+        },
     },
     parameters: {
         msw: {

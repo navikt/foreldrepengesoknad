@@ -1,10 +1,7 @@
 import { CountryCode } from '@navikt/fp-types';
 
-interface Common {
-    kanIkkeOppgis: boolean;
-}
-
-export interface AnnenForelderOppgitt extends Common {
+export interface AnnenForelderOppgitt {
+    kanIkkeOppgis: false;
     fornavn: string;
     etternavn: string;
     fnr: string;
@@ -20,7 +17,9 @@ export interface AnnenForelderOppgitt extends Common {
     datoForAleneomsorg?: string;
 }
 
-export type AnnenForelderIkkeOppgitt = Common;
+export type AnnenForelderIkkeOppgitt = {
+    kanIkkeOppgis: true;
+};
 
 export type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
 

@@ -9,6 +9,7 @@ import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import {
+    AnnenForelder,
     Barn,
     BarnType,
     EksisterendeSak,
@@ -90,7 +91,8 @@ const ANNEN_FORELDER = {
     fornavn: 'Espen',
     etternavn: 'Utvikler',
     fnr: '1223232',
-};
+    erAleneOmOmsorg: false,
+} satisfies AnnenForelder;
 
 const TIDLIGERE_UTENLANDSOPPHOLD = [
     {
@@ -299,7 +301,7 @@ describe('useFpSendSøknad', () => {
                         rettigheter: {
                             harRettPåForeldrepenger: false,
                             erInformertOmSøknaden: undefined,
-                            erAleneOmOmsorg: undefined,
+                            erAleneOmOmsorg: false,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
                             harMorUføretrygd: undefined,
@@ -365,7 +367,7 @@ describe('useFpSendSøknad', () => {
                         rettigheter: {
                             harRettPåForeldrepenger: false,
                             erInformertOmSøknaden: undefined,
-                            erAleneOmOmsorg: undefined,
+                            erAleneOmOmsorg: false,
                             harAnnenForelderOppholdtSegIEØS: undefined,
                             harAnnenForelderTilsvarendeRettEØS: undefined,
                             harMorUføretrygd: undefined,

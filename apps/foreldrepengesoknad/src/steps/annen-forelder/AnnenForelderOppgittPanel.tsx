@@ -14,7 +14,7 @@ import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
+import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';
 
 type Props = {
     rolle: Søkerrolle;
@@ -35,7 +35,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
         }).data ?? false;
 
     const formValues = formMethods.watch();
-    if (!erAnnenForelderOppgitt(formValues)) {
+    if (!isAnnenForelderOppgittFormData(formValues)) {
         throw new Error('Annen forelder skal alltid være oppgitt her');
     }
 

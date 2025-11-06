@@ -335,6 +335,7 @@ export const FarFødselMorHarVedtak: Story = {
             fnr: '27438445248',
             fornavn: 'Eline',
             etternavn: 'Ilder',
+            erAleneOmOmsorg: false,
             kanIkkeOppgis: false,
         },
         søkerInfo: {
