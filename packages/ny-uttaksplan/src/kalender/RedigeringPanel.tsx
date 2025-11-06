@@ -311,7 +311,6 @@ const EksisterendePeriodeListe = ({
     perioder: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
 }) => {
-    console.log(perioder);
     return (
         <VStack gap="space-12">
             {perioder.map((p) => (
