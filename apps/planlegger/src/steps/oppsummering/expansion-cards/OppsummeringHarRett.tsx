@@ -14,7 +14,6 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
@@ -22,6 +21,7 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import {
     finnAntallUkerOgDagerMedForeldrepenger,
     getAnnenpartsPerioder,

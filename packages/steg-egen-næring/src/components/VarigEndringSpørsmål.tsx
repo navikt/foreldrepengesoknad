@@ -6,7 +6,7 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 import {
     hasMaxLength,
@@ -59,7 +59,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
             </RhfRadioGroup>
             <ReadMore
                 onOpenChange={(open) =>
-                    loggAmplitudeEvent({
+                    loggUmamiEvent({
                         origin: appOrigin,
                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                         eventData: { tittel: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' },

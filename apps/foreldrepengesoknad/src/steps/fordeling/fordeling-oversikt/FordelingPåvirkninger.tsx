@@ -11,7 +11,7 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'u
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -64,7 +64,7 @@ export const FordelingPåvirkninger = ({
                 aria-label={heading}
                 onToggle={(open) => {
                     if (open) {
-                        loggAmplitudeEvent({
+                        loggUmamiEvent({
                             origin: 'foreldrepengesoknad',
                             eventName: 'accordion åpnet',
                             eventData: { tittel: heading },

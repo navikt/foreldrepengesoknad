@@ -15,7 +15,7 @@ import {
     Utsettelsesperiode,
     isInfoPeriode,
 } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -105,7 +105,7 @@ const Periodeliste: FunctionComponent<Props> = ({
         if (openPeriodeId === id) {
             setOpenPeriodeId(null!);
         } else {
-            loggAmplitudeEvent({
+            loggUmamiEvent({
                 origin: 'foreldrepengesoknad',
                 eventName: 'accordion åpnet',
                 eventData: { tittel: 'expandPeriode' },

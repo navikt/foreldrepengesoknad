@@ -9,7 +9,7 @@ import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils
 import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
@@ -67,7 +67,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
     const forrigeMåned = dayjs().subtract(1, 'month');
 
     useEffect(() => {
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'veiviser-hvor-mye',
             eventName: 'besøk',
             eventData: {

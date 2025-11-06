@@ -3,11 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Infobox } from '@navikt/fp-ui';
 
 const copyUrlToClipboard = async () => {
-    loggAmplitudeEvent({
+    loggUmamiEvent({
         origin: 'planlegger',
         eventName: 'kopier',
         eventData: { tittel: 'OppsummeringSteg.KopierUrl' },

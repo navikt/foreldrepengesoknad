@@ -11,7 +11,7 @@ import {
     Utsettelsesperiode,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -107,7 +107,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: 0,
                         max: 100,
                         onChange: (nyUker: number) => {
-                            loggAmplitudeEvent({
+                            loggUmamiEvent({
                                 origin: 'foreldrepengesoknad',
                                 eventName: 'button klikk',
                                 eventData: { tittel: 'ukeStepperKlikk' },
@@ -129,7 +129,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: uker === 0 ? 1 : 0,
                         max: 5,
                         onChange: (nyDager: number) => {
-                            loggAmplitudeEvent({
+                            loggUmamiEvent({
                                 origin: 'foreldrepengesoknad',
                                 eventName: 'button klikk',
                                 eventData: { tittel: 'dagStepperKlikk' },

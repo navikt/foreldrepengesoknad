@@ -4,11 +4,11 @@ import { FormattedMessage } from 'react-intl';
 import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 export const IkkeKvinne = () => {
-    loggAmplitudeEvent({
+    loggUmamiEvent({
         origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
         eventData: { tittel: 'ikkeKvinne' },

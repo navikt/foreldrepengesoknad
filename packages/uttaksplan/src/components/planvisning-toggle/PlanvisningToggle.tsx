@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 import planBemUtils from '../../utils/planBemUtils';
 import './planvisning-toggle.css';
@@ -20,7 +20,7 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
     const bem = planBemUtils('planvisning-toggle');
 
     const onChangeHandler = (value: Visningsmodus) => {
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: value === 'kalender' ? 'visKalenderIPlanSteget' : 'visListeIPlanSteget' },

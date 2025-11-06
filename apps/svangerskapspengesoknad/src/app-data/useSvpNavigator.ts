@@ -1,4 +1,4 @@
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
@@ -32,7 +32,7 @@ export const useSvpNavigator = (
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
+        loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
         globalThis.location.href = 'https://nav.no';
     };
 

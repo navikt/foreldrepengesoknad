@@ -1,6 +1,6 @@
 declare global {
     interface Window {
-        dekoratorenAmplitude: (params?: {
+        dekoratorenAnalytics: (params?: {
             origin: unknown | string;
             eventName: unknown | string;
             eventData?: unknown;

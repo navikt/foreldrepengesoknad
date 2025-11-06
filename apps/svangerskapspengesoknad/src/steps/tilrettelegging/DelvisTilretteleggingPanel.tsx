@@ -15,7 +15,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -105,7 +105,7 @@ export const DelvisTilretteleggingPanel = ({
                     />
                     <ReadMore
                         onOpenChange={(open) =>
-                            loggAmplitudeEvent({
+                            loggUmamiEvent({
                                 origin: 'svangerskapspengesoknad',
                                 eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                 eventData: { tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel' },
