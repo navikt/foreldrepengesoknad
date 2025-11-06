@@ -67,6 +67,8 @@ spec:
      value: "http://fpoversikt/fpoversikt"
    - name: FPOVERSIKT_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:fpoversikt"
+   - name: FPGRUNNDATA_API_URL
+     value: "http://fpgrunndata/fpgrunndata/api/konto"
    - name: APP_VERSION
      value: {{image}}
    - name: NODE_ENV

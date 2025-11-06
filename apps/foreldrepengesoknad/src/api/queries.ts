@@ -21,7 +21,7 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
-    konto: `${urlPrefiks}/fpoversikt/external/konto`,
+    konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 

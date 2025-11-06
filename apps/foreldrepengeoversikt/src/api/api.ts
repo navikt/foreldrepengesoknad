@@ -30,7 +30,7 @@ export const API_URLS = {
     hentDokument: (journalpostId: string, dokumentId: string) =>
         `${urlPrefiks}/fpoversikt/api/dokument?journalpostId=${journalpostId}&dokumentId=${dokumentId}`,
     inntektsmelding: `${urlPrefiks}/fpoversikt/api/inntektsmeldinger`,
-    konto: `${urlPrefiks}/fpoversikt/external/konto`,
+    konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
     manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`,
 
