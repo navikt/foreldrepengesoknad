@@ -8,12 +8,13 @@ import {
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, ErrorMessage, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Period } from '@navikt/fp-types';
+import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
@@ -37,6 +38,15 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
+
+    const isDesktop = useMedia('screen and (min-width: 640px)');
+
+    useEffect(() => {
+        if (isDesktop) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) Kan ein gjera dette på ein annan måte?
+            setErMinimert(false);
+        }
+    }, [isDesktop]);
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
