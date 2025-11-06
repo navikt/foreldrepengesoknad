@@ -11,7 +11,7 @@ import { uniqueId } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Box, Button, ErrorMessage, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Period } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
@@ -180,14 +180,14 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                 </>
                             )}
                             {kanIkkeLeggeTilFerie && (
-                                <ErrorMessage>
+                                <Alert variant="info" size="small">
                                     <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
-                                </ErrorMessage>
+                                </Alert>
                             )}
                             <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
                                 <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                             </Button>
-                            <HStack gap="space-16">
+                            <HStack justify="space-between">
                                 <Button
                                     variant="primary"
                                     size="small"
@@ -311,61 +311,69 @@ const EksisterendePeriodeListe = ({
     perioder: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
 }) => {
+    console.log(perioder);
     return (
-        <VStack gap="space-8">
-            {perioder
-                .filter((p) => !!p.kontoType)
-                .map((p) => (
-                    <HStack gap="space-4" align="center" key={p.id} wrap={false}>
-                        {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
-                            <PersonPregnantFillIcon
-                                title="a11y-title"
-                                fontSize="1.5rem"
-                                height="35px"
-                                width="35px"
-                                color="var(--ax-bg-meta-purple-strong)"
+        <VStack gap="space-12">
+            {perioder.map((p) => (
+                <HStack gap="space-4" key={p.id} wrap={false}>
+                    {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
+                        <PersonPregnantFillIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-meta-purple-strong)"
+                        />
+                    )}
+                    {p.kontoType === 'FEDREKVOTE' && (
+                        <PersonSuitFillIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-success-strong)"
+                        />
+                    )}
+                    {p.kontoType === 'FELLESPERIODE' && (
+                        <PersonGroupIcon
+                            title="a11y-title"
+                            fontSize="1.5rem"
+                            height="35px"
+                            width="35px"
+                            color="var(--ax-bg-success-strong)"
+                        />
+                    )}
+                    <VStack gap="space-0">
+                        <Heading size="xsmall">
+                            {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
+                                <FormattedMessage id="RedigeringPanel.Mor" />
+                            )}
+                            {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Far" />}
+                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Felles" />}
+                            {p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
+                                <FormattedMessage id="RedigeringPanel.Ferie" />
+                            )}
+                        </Heading>
+                        <BodyShort>
+                            {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
+                                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+                            )}
+                            {(p.kontoType === 'MØDREKVOTE' || p.kontoType === 'FEDREKVOTE') && (
+                                <FormattedMessage id="Foreldrepenger" />
+                            )}
+                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Fellesperiode" />}
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="RedigeringPanel.Dager"
+                                values={{ dato: formaterDato(p.fom, p.tom), antall: p.overlappendeDager }}
                             />
-                        )}
-                        {p.kontoType === 'FEDREKVOTE' && (
-                            <PersonSuitFillIcon
-                                title="a11y-title"
-                                fontSize="1.5rem"
-                                height="35px"
-                                width="35px"
-                                color="var(--ax-bg-success-strong)"
-                            />
-                        )}
-                        {p.kontoType === 'FELLESPERIODE' && (
-                            <PersonGroupIcon
-                                title="a11y-title"
-                                fontSize="1.5rem"
-                                height="35px"
-                                width="35px"
-                                color="var(--ax-bg-success-strong)"
-                            />
-                        )}
-                        <VStack gap="space-0">
-                            <Heading size="xsmall">
-                                {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
-                                    <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
-                                )}
-                                {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.Mødrekvote" />}
-                                {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Fedrekvote" />}
-                                {p.kontoType === 'FELLESPERIODE' && (
-                                    <FormattedMessage id="RedigeringPanel.Fellesperiode" />
-                                )}
-                            </Heading>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ dato: formaterDato(p.fom, p.tom), antall: p.overlappendeDager }}
-                                />
-                            </BodyShort>
-                        </VStack>
-                        <Spacer />
-                        <TrashIcon title="a11y-title" fontSize="1.5rem" onClick={() => slettPeriode(p)} />
-                    </HStack>
-                ))}
+                        </BodyShort>
+                    </VStack>
+                    <Spacer />
+                    <TrashIcon title="a11y-title" fontSize="1.5rem" onClick={() => slettPeriode(p)} />
+                </HStack>
+            ))}
         </VStack>
     );
 };

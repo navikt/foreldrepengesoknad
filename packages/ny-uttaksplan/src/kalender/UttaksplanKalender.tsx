@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, Switch, VStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 import {
@@ -537,15 +537,23 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                 </div>
 
                 {!readOnly && (
-                    <Switch
+                    <RadioGroup
+                        legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
                         onChange={() => {
                             setSelectedPeriods([]);
                             setRangeSelectorMode(!isRangeSelectorMode);
                         }}
-                        checked={isRangeSelectorMode}
+                        value={isRangeSelectorMode}
                     >
-                        <FormattedMessage id="kalender.velgRange" />
-                    </Switch>
+                        <HStack gap="space-16">
+                            <Radio value={false}>
+                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
+                            </Radio>
+                            <Radio value={true}>
+                                <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
+                            </Radio>
+                        </HStack>
+                    </RadioGroup>
                 )}
 
                 <div className="flex flex-col sm:flex-row">
