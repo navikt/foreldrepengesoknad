@@ -206,12 +206,14 @@
     "RedigeringPanel.LeggInnFerie": "Legg til ferie",
     "RedigeringPanel.RedigerUttaksplan": "Legg til/endre",
     "RedigeringPanel.ValgteDager": "{antall} dager",
-    "RedigeringPanel.EksisterendePerioder": "Valgte datoer inneholder flere perioder",
+    "RedigeringPanel.EksisterendePerioder": "Valgte datoer inneholder eksisterende period(er)",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Mor har foreldrepenger før fødsel",
     "RedigeringPanel.Mødrekvote": "Mor har foreldrepenger",
     "RedigeringPanel.Fedrekvote": "Far har foreldrepenger",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
     "RedigeringPanel.Dager": "{dato} {antall} dager",
     "RedigeringPanel.KanIkkeLeggeTilFerie": "Kan ikke legge til ferie for valgte dag(er)",
+    "RedigeringPanel.DuHarMarkertNyeDager": "Du har markert nye dager",
+    "RedigeringPanel.NyeDagerForklaring": "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
     "LeggTilPeriodePanel.Dager": "Valgte dager:"
 }

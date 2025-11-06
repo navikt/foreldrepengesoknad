@@ -158,16 +158,26 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                     </div>
                     <div className={erMinimert ? 'hidden' : 'block'}>
                         <VStack gap="space-16">
-                            {ekisterendePerioderSomErValgt.length > 0 && (
-                                <BodyShort>
-                                    <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
-                                </BodyShort>
+                            {ekisterendePerioderSomErValgt.length === 0 && (
+                                <VStack gap="space-8">
+                                    <Heading size="xsmall">
+                                        <FormattedMessage id="RedigeringPanel.DuHarMarkertNyeDager" />
+                                    </Heading>
+                                    <BodyShort>
+                                        <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
+                                    </BodyShort>
+                                </VStack>
                             )}
                             {ekisterendePerioderSomErValgt.length > 0 && (
-                                <EksisterendePeriodeListe
-                                    perioder={ekisterendePerioderSomErValgt}
-                                    slettPeriode={slettPeriode}
-                                />
+                                <>
+                                    <BodyShort>
+                                        <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
+                                    </BodyShort>
+                                    <EksisterendePeriodeListe
+                                        perioder={ekisterendePerioderSomErValgt}
+                                        slettPeriode={slettPeriode}
+                                    />
+                                </>
                             )}
                             {kanIkkeLeggeTilFerie && (
                                 <ErrorMessage>
@@ -306,7 +316,7 @@ const EksisterendePeriodeListe = ({
             {perioder
                 .filter((p) => !!p.kontoType)
                 .map((p) => (
-                    <HStack gap="space-4" align="center" key={p.id}>
+                    <HStack gap="space-4" align="center" key={p.id} wrap={false}>
                         {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
                             <PersonPregnantFillIcon
                                 title="a11y-title"

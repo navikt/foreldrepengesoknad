@@ -207,12 +207,13 @@
     "RedigeringPanel.LeggInnFerie": "Add vacation",
     "RedigeringPanel.RedigerUttaksplan": "Add/change",
     "RedigeringPanel.ValgteDager": "{antall} days",
-    "RedigeringPanel.EksisterendePerioder": "Selected dates contain multiple periods",
+    "RedigeringPanel.EksisterendePerioder": "Selected dates contain existing period(s)",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Mother has parental benefits before birth",
     "RedigeringPanel.Fellesperiode": "Shared period",
     "RedigeringPanel.Mødrekvote": "Mother has parental benefits",
     "RedigeringPanel.Fedrekvote": "Father has parental benefits",
     "RedigeringPanel.Dager": "{dato} {antall} days",
     "RedigeringPanel.KanIkkeLeggeTilFerie": "Cannot add vacation for selected day(s)",
+    "RedigeringPanel.NyeDagerForklaring": "You have marked days that are not yet included in the plan. Select 'Add' to create a new period.",
     "LeggTilPeriodePanel.Dager": "Selected days:"
 }

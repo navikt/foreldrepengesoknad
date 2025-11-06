@@ -255,7 +255,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     </VStack>
 
                     <VStack gap="space-20">
-                        <div className="p-[24px] max-[479px]:p-0">
+                        <div className="max-[479px]:p-0">
                             <UttaksplanDataProvider
                                 barn={mapOmBarnetTilBarn(omBarnet)}
                                 erFarEllerMedmor={erFarEllerMedmor}
