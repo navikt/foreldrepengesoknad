@@ -78,6 +78,12 @@ describe('<KvoteOppsummering >', () => {
                 'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
             ),
         ).not.toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        expect(screen.getByText('9 uker er lagt til, 1 uke gjenstår')).toBeInTheDocument();
+        expect(screen.getByText('29 uker er lagt til, 1 uke gjenstår')).toBeInTheDocument();
     });
     it('<AleneomsorgFarForMangeDager >', async () => {
         render(<AleneomsorgFarForMangeDager />);
