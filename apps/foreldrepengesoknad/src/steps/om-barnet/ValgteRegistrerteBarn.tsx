@@ -6,16 +6,13 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    formaterFødselsdatoerPåBarn,
-    getTittelBarnNårNavnSkalIkkeVises,
-    sorterRegistrerteBarnEtterEldstOgNavn,
-} from 'utils/barnUtils';
+import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
 
 import { Label, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -34,7 +31,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const { control } = useFormContext<BarnetFormValues>();
 
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
-    const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterRegistrerteBarnEtterEldstOgNavn);
+    const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterPersonEtterEldstOgNavn);
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0].fødselsdato;
 
