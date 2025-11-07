@@ -334,9 +334,6 @@ importers:
       react-router-dom:
         specifier: 7.9.2
         version: 7.9.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      zod:
-        specifier: 4.1.11
-        version: 4.1.11
     devDependencies:
       '@formatjs/cli-lib':
         specifier: 6.6.6
