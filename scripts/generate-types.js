@@ -22,11 +22,6 @@ const SOURCES = [
         localUrl: 'http://localhost:8999/fpsoknad/api/openapi.json',
         aud: 'dev-gcp:teamforeldrepenger:fpsoknad',
     },
-    {
-        name: 'fpgrunndata',
-        url: 'https://fpgrunnlag.intern.dev.nav.no/fpgrunndata/api/openapi.json',
-        localUrl: 'TODO',
-    },
 ];
 
 async function fetchOpenApi({ name, url, localUrl, aud }) {
@@ -79,21 +74,11 @@ async function fetchOpenApi({ name, url, localUrl, aud }) {
         fs.writeFileSync(swaggerPath, openApiResponse);
     } else {
         console.log(`\n==> [${name}] Kjører i remote modus. Henter token og OpenAPI.`);
-        let token = '';
-        if (aud) {
-            token = execFileSync(
-                'curl',
-                [
-                    '-s',
-                    '-X',
-                    'POST',
-                    'https://azure-token-generator.intern.dev.nav.no/api/public/m2m',
-                    '-d',
-                    `aud=${aud}`,
-                ],
-                { encoding: 'utf-8' },
-            ).trim();
-        }
+        const token = execFileSync(
+            'curl',
+            ['-s', '-X', 'POST', 'https://azure-token-generator.intern.dev.nav.no/api/public/m2m', '-d', `aud=${aud}`],
+            { encoding: 'utf-8' },
+        ).trim();
 
         console.log(`Henter OpenAPI fra: ${url}`);
         const openApiResponse = execFileSync(

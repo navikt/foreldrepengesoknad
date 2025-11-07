@@ -1,8 +1,8 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-    input: ['./fpoversikt.json', './fpsoknad.json', './fpgrunndata.json'],
-    output: ['temp-fpoversikt-types', 'temp-fpsoknad-types', 'temp-fpgrunndata-types'],
+    input: ['./fpoversikt.json', './fpsoknad.json'],
+    output: ['temp-fpoversikt-types', 'temp-fpsoknad-types'],
     plugins: [
         '@hey-api/client-fetch',
         {
@@ -10,10 +10,6 @@ export default defineConfig({
             definitions: {
                 case: 'preserve',
                 name: (typeName) => {
-                    if (typeName.includes('no.nav.foreldrepenger.grunnlag')) {
-                        const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
-                        return `${strippedName}`;
-                    }
                     if (typeName.includes('.fpsoknad.')) {
                         const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
                         return `${strippedName}`;
