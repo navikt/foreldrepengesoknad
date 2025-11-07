@@ -163,13 +163,3 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
     }
     return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);
 };
-
-export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: BarnDto_fpoversikt, b2: BarnDto_fpoversikt) => {
-    if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
-        return 1;
-    } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
-        return -1;
-    } else {
-        return b1.navn.fornavn < b2.navn.fornavn ? -1 : 1;
-    }
-};

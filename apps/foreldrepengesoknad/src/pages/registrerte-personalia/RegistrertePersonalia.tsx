@@ -28,7 +28,12 @@ export const RegistrertePersonalia = ({
             header={
                 <>
                     {altTekstHvisUkjentNavn ??
-                        formaterNavn(person.navn.fornavn, person.navn.etternavn, visEtternavn, person.navn.mellomnavn)}
+                        formaterNavn(
+                            person.navn?.fornavn ?? '',
+                            person.navn?.etternavn ?? '',
+                            visEtternavn,
+                            person.navn?.mellomnavn,
+                        )}
                 </>
             }
             icon={<BabyWrappedIcon height={24} width={24} color="#005B82" />}

@@ -15,7 +15,7 @@ import {
     SvpSak_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
 import { GruppertSak } from '../types/GruppertSak';
@@ -27,19 +27,6 @@ import { getLeverPerson } from './personUtils';
 export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
-
-function sorterPersonEtterEldstOgNavn(p1: BarnDto_fpoversikt, p2: BarnDto_fpoversikt) {
-    if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
-        return 1;
-    } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
-        return -1;
-    } else {
-        const fornavn1 = p1.navn?.fornavn ?? '';
-        const fornavn2 = p2.navn?.fornavn ?? '';
-
-        return fornavn1 < fornavn2 ? -1 : 1;
-    }
-}
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
