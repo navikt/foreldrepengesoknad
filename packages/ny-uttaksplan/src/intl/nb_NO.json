@@ -199,6 +199,8 @@
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
     "kalender.velgRange": "Periodeseleksjon",
+    "kalender.barnehageplass": "Barnehageplass",
+    "kalender.ferie": "Ferie",
     "RedigeringPanel.SlettAlle": "Slett alle",
     "RedigeringPanel.LeggInnFerie": "Legg til ferie",
     "RedigeringPanel.RedigerUttaksplan": "Legg til/endre",

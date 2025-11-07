@@ -7,7 +7,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
@@ -16,11 +15,9 @@ import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     KvoteOppsummeringWrapper,
-    Planperiode,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanNy,
-    finnOgSettInnHull,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -253,15 +250,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 <UttaksplanKalender
                                     readOnly={false}
                                     saksperioder={gjeldendeUttaksplan}
-                                    planleggerLegend={
-                                        <CalendarLabels
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            barnet={omBarnet}
-                                            hvemHarRett={hvemHarRett}
-                                            uttaksplan={gjeldendeUttaksplan}
-                                            inneholderTapteDager={harTapteDager}
-                                        />
-                                    }
                                     barnehagestartdato={barnehagestartdato}
                                     handleOnPlanChange={handleOnPlanChange}
                                 />

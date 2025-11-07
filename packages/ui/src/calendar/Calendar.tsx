@@ -6,6 +6,7 @@ import React, { useMemo } from 'react';
 import { VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
+import { Period } from '@navikt/fp-types';
 import { formatDateIso } from '@navikt/fp-utils';
 
 import { Day } from './Day';
@@ -15,14 +16,6 @@ import { CalendarPeriod } from './types/CalendarPeriod';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
-
-export type Period = {
-    fom: string;
-    tom: string;
-    color: PeriodeColor;
-    srText?: string;
-    isSelected?: boolean;
-};
 
 const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 

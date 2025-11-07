@@ -1,0 +1,16 @@
+export type LegendLabel =
+    | 'HELG'
+    | 'BARNEHAGEPLASS'
+    | 'TERMIN'
+    | 'FØDSEL'
+    | 'ADOPSJON'
+    | 'MØDREKVOTE'
+    | 'FEDREKVOTE'
+    | 'FELLESPERIODE'
+    | 'FORELDREPENGER'
+    | 'FORELDREPENGER_FØR_FØDSEL'
+    | 'AKTIVITETSFRI_KVOTE'
+    | 'PERIODE_UTEN_UTTAK'
+    | 'TAPTE_DAGER'
+    | 'FERIE'
+    | 'NO_LABEL';

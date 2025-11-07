@@ -1,7 +1,14 @@
 import { IntlShape } from 'react-intl';
 
-import { Barn, UttakUtsettelseÅrsak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
+import { PeriodeColor } from '@navikt/fp-constants';
+import {
+    Barn,
+    LegendLabel,
+    Period,
+    UttakUtsettelseÅrsak_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,

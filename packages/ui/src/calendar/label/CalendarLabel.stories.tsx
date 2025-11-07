@@ -12,83 +12,83 @@ type Story = StoryObj<typeof meta>;
 
 export const GreenLabel: Story = {
     args: {
-        color: 'GREEN',
+        color: PeriodeColor.GREEN,
         children: <div>green</div>,
     },
 };
 
 export const BlueLabel: Story = {
     args: {
-        color: 'BLUE',
+        color: PeriodeColor.BLUE,
         children: <div>blue</div>,
     },
 };
 export const PinkLabel: Story = {
     args: {
-        color: 'PINK',
+        color: PeriodeColor.PINK,
         children: <div>pink</div>,
     },
 };
 
 export const BlueOutlineLabel: Story = {
     args: {
-        color: 'BLUEOUTLINE',
+        color: PeriodeColor.BLUEOUTLINE,
         children: <div>blue outline</div>,
     },
 };
 
 export const BlueStripedLabel: Story = {
     args: {
-        color: 'BLUESTRIPED',
+        color: PeriodeColor.BLUESTRIPED,
         children: <div>blue striped</div>,
     },
 };
 
 export const GreenOutlineLabel: Story = {
     args: {
-        color: 'GREENOUTLINE',
+        color: PeriodeColor.GREENOUTLINE,
         children: <div>green outline</div>,
     },
 };
 
 export const GreenStripedLabel: Story = {
     args: {
-        color: 'GREENSTRIPED',
+        color: PeriodeColor.GREENSTRIPED,
         children: <div>green striped</div>,
     },
 };
 
 export const LightBlueLabel: Story = {
     args: {
-        color: 'LIGHTBLUE',
+        color: PeriodeColor.LIGHTBLUE,
         children: <div>light blue</div>,
     },
 };
 
 export const LightGreenLabel: Story = {
     args: {
-        color: 'LIGHTGREEN',
+        color: PeriodeColor.LIGHTGREEN,
         children: <div>light green</div>,
     },
 };
 
 export const LightGreenBlueLabel: Story = {
     args: {
-        color: 'LIGHTGREENBLUE',
+        color: PeriodeColor.LIGHTGREENBLUE,
         children: <div>light green blue</div>,
     },
 };
 
 export const LightBlueGreenLabel: Story = {
     args: {
-        color: 'LIGHTBLUEGREEN',
+        color: PeriodeColor.LIGHTBLUEGREEN,
         children: <div>light blue green</div>,
     },
 };
 
 export const BlackLabel: Story = {
     args: {
-        color: 'BLACK',
+        color: PeriodeColor.BLACK,
         children: <div>black</div>,
     },
 };

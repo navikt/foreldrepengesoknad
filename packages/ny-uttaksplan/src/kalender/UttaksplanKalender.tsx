@@ -1,14 +1,23 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button, HStack, Switch, VStack } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
-import { Calendar, Period } from '@navikt/fp-ui';
+import {
+    Barn,
+    LegendLabel,
+    Period,
+    SaksperiodeNy,
+    UttakUtsettelseÅrsak_fpoversikt,
+    UttaksplanKalenderLegendInfo,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
+import { Calendar } from '@navikt/fp-ui';
 import {
     UttaksdagenString,
     formatDateIso,
@@ -18,7 +27,7 @@ import {
     omitMany,
     useMedia,
 } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -35,7 +44,7 @@ import {
     isAvslåttPeriodeFørsteSeksUkerMor,
     isUttaksperiode,
 } from './helpers/uttaksplanHelpers';
-import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
+import { getFamiliehendelseKalendarLabel, getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
 const slåSammenPerioder = (periods: Period[]) => {
     if (periods.length <= 1) {
@@ -58,6 +67,39 @@ const slåSammenPerioder = (periods: Period[]) => {
             return res;
         }
     }, [] as Period[]);
+};
+
+const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
+    if (p.kontoType) {
+        switch (p.kontoType) {
+            case 'FORELDREPENGER_FØR_FØDSEL':
+                return 'FORELDREPENGER_FØR_FØDSEL';
+            case 'MØDREKVOTE':
+                return 'MØDREKVOTE';
+            case 'FEDREKVOTE':
+                return 'FEDREKVOTE';
+            case 'FELLESPERIODE':
+                return 'FELLESPERIODE';
+            case 'FORELDREPENGER':
+                return 'FORELDREPENGER';
+            case 'AKTIVITETSFRI_KVOTE':
+                return 'AKTIVITETSFRI_KVOTE';
+            default:
+                return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
+        }
+    }
+
+    if (p.periodeHullÅrsak) {
+        if (p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            return 'PERIODE_UTEN_UTTAK';
+        }
+
+        if (p.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+            return 'TAPTE_DAGER';
+        }
+    }
+
+    return 'FERIE';
 };
 
 const getPerioderForKalendervisning = (
@@ -87,7 +129,12 @@ const getPerioderForKalendervisning = (
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, [] as Planperiode[]);
 
-    const barnehageperiode = { fom: barnehagestartdato, tom: barnehagestartdato, color: PeriodeColor.PURPLE } as Period;
+    const barnehageperiode = {
+        fom: barnehagestartdato,
+        tom: barnehagestartdato,
+        color: PeriodeColor.PURPLE,
+        legendLabel: 'BARNEHAGEPLASS',
+    } as Period;
 
     const res = unikePerioder.reduce((acc, periode) => {
         const color = erIPlanleggerModus
@@ -109,11 +156,13 @@ const getPerioderForKalendervisning = (
                     fom: periode.fom,
                     tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
                     color: color,
+                    legendLabel: getLegendLabelFromPeriode(periode),
                 },
                 {
                     fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
                     tom: periode.tom,
                     color: color,
+                    legendLabel: getLegendLabelFromPeriode(periode),
                 },
             ];
         }
@@ -126,6 +175,7 @@ const getPerioderForKalendervisning = (
                     : formatDateIso(periode.fom),
                 tom: formatDateIso(periode.tom),
                 color,
+                legendLabel: getLegendLabelFromPeriode(periode),
             },
         ];
     }, [] as Period[]);
@@ -140,6 +190,7 @@ const getPerioderForKalendervisning = (
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: PeriodeColor.PINK,
+        legendLabel: getFamiliehendelseKalendarLabel(barn),
     });
 
     const perioderSlåttSammen = slåSammenPerioder(perioderForVisning);
@@ -327,19 +378,12 @@ const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
 
 interface Props {
     saksperioder: SaksperiodeNy[];
-    planleggerLegend?: ReactElement;
     barnehagestartdato?: string;
     handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void;
     readOnly: boolean;
 }
 
-export const UttaksplanKalender = ({
-    saksperioder,
-    planleggerLegend,
-    barnehagestartdato,
-    handleOnPlanChange,
-    readOnly,
-}: Props) => {
+export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnPlanChange, readOnly }: Props) => {
     const intl = useIntl();
 
     const { barn, erFarEllerMedmor, familiehendelsedato, modus, navnPåForeldre } = useUttaksplanData();
@@ -387,9 +431,22 @@ export const UttaksplanKalender = ({
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
-    const unikePeriodefarger = [...new Set(perioderForKalendervisning.map((period) => period.color))];
+    const unikeLegendLabels = [...new Set(perioderForKalendervisning.map((period) => period.legendLabel))];
+    const unikeLegendColors = [...new Set(perioderForKalendervisning.map((period) => period.color))];
+
+    const legendInfo: UttaksplanKalenderLegendInfo[] = unikeLegendColors.map((color) => ({
+        color,
+        label: unikeLegendLabels.find((label) => {
+            const periode = perioderForKalendervisning.find((p) => p.color === color && p.legendLabel === label);
+            return periode !== undefined;
+        }) as LegendLabel,
+    }));
+
     if (inkludererHelg) {
-        unikePeriodefarger.push(PeriodeColor.GRAY);
+        legendInfo.push({
+            color: PeriodeColor.GRAY,
+            label: 'HELG',
+        });
     }
 
     const pdfOptions = {
@@ -421,6 +478,7 @@ export const UttaksplanKalender = ({
                                   tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
                                   isSelected: true,
                                   srText: '',
+                                  legendLabel: old.length === 0 ? 'NO_LABEL' : old[0].legendLabel,
                               },
                           ],
                 );
@@ -436,6 +494,7 @@ export const UttaksplanKalender = ({
                                   tom: selectedDate,
                                   isSelected: true,
                                   srText: '',
+                                  legendLabel: old.length === 0 ? 'NO_LABEL' : old[0].legendLabel,
                               },
                           ].sort(sortPeriods),
                 );
@@ -453,33 +512,31 @@ export const UttaksplanKalender = ({
             )}
             <VStack gap="space-16" ref={targetRef}>
                 <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
-                    {planleggerLegend !== undefined ? (
-                        <>{planleggerLegend}</>
-                    ) : (
-                        <UttaksplanLegend
-                            uniqueColors={unikePeriodefarger}
-                            barn={barn}
-                            navnAnnenPart={navnAnnenPart}
-                            unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            selectLegend={(color: PeriodeColor) => {
-                                const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
-                                setSelectedPeriods((old) =>
-                                    old.some((p) => p.fom === periode.fom || p.tom === periode.tom)
-                                        ? []
-                                        : [
-                                              {
-                                                  color: PeriodeColor.DARKBLUE,
-                                                  fom: periode?.fom,
-                                                  tom: periode?.tom,
-                                                  isSelected: true,
-                                                  srText: '',
-                                              },
-                                          ],
-                                );
-                            }}
-                        />
-                    )}
+                    <UttaksplanLegend
+                        legendInfo={legendInfo}
+                        uniqueColors={unikeLegendColors}
+                        barn={barn}
+                        navnAnnenPart={navnAnnenPart}
+                        unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        selectLegend={(color: PeriodeColor) => {
+                            const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
+                            setSelectedPeriods((old) =>
+                                old.some((p) => p.fom === periode.fom || p.tom === periode.tom)
+                                    ? []
+                                    : [
+                                          {
+                                              color: PeriodeColor.DARKBLUE,
+                                              fom: periode?.fom,
+                                              tom: periode?.tom,
+                                              isSelected: true,
+                                              srText: '',
+                                              legendLabel: periode.legendLabel,
+                                          },
+                                      ],
+                            );
+                        }}
+                    />
                 </div>
                 {!readOnly && (
                     <Switch

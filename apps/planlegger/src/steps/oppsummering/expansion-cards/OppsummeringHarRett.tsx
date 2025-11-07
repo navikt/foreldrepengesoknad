@@ -268,18 +268,6 @@ export const OppsummeringHarRett = ({
                                 saksperioder={
                                     tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
                                 }
-                                planleggerLegend={
-                                    <CalendarLabels
-                                        hvemPlanlegger={hvemPlanlegger}
-                                        barnet={barnet}
-                                        hvemHarRett={hvemHarRett}
-                                        uttaksplan={
-                                            tilpassPlan
-                                                ? gjeldendeUttaksplan
-                                                : [...planforslag.søker1, ...planforslag.søker2]
-                                        }
-                                    />
-                                }
                                 barnehagestartdato={barnehagestartdato}
                                 readOnly
                             />

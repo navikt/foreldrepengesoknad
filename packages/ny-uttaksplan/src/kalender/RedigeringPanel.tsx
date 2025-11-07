@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { Period } from '@navikt/fp-ui';
+import { Period } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
