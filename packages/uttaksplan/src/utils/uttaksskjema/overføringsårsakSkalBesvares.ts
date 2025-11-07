@@ -1,12 +1,12 @@
 import { AnnenForelder, Periodetype } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { harAnnenForelderRettIEØS } from '../../utils/annenForelderUtils';
 
 const overføringsårsakSkalBesvares = (
     periodetype: Periodetype,
     erFarEllerMedmor: boolean,
-    kontoValue: KontoTypeUttak_fpoversikt,
+    kontoValue: KontoTypeUttak,
     annenForelder: AnnenForelder,
 ): boolean => {
     const annenForelderHarRettIEØS = harAnnenForelderRettIEØS(annenForelder);

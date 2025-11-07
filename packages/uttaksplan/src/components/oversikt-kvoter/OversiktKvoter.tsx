@@ -11,7 +11,7 @@ import {
     Søkerrolle,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
@@ -29,10 +29,7 @@ import TilesList from './tilesList/TilesList';
 
 const bem = planBemUtils('oversiktKvoter');
 
-const filtrerBortAnnenPartsKonto = (
-    uttakskontoer: KontoDto_fpoversikt[],
-    erFarEllerMedmor: boolean,
-): KontoDto_fpoversikt[] => {
+const filtrerBortAnnenPartsKonto = (uttakskontoer: KontoDto[], erFarEllerMedmor: boolean): KontoDto[] => {
     return erFarEllerMedmor
         ? uttakskontoer.filter((uttak) => uttak.konto !== 'MØDREKVOTE')
         : uttakskontoer.filter((uttak) => uttak.konto !== 'FEDREKVOTE');
@@ -139,7 +136,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
 };
 
 interface Props {
-    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt;
+    tilgjengeligeStønadskontoer: KontoBeregningDto;
     uttaksplan: Periode[];
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;

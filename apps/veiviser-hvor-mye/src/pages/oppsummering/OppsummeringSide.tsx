@@ -10,7 +10,7 @@ import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from 
 
 import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
-import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
@@ -41,7 +41,7 @@ const finnHendelse = (
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer: { '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt };
+    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 

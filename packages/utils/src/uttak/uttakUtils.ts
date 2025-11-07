@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { PeriodeColor } from '@navikt/fp-constants';
 import {
     BrukerRolleSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     Oppholdsperiode,
     Periode,
     Tidsperiode,
@@ -73,7 +73,7 @@ export const getForelderFarge = (forelder: BrukerRolleSak_fpoversikt, erFarEller
     return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
 };
 
-export const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): PeriodeColor => {
+export const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): PeriodeColor => {
     switch (konto) {
         case 'FEDREKVOTE':
         case 'AKTIVITETSFRI_KVOTE':
@@ -91,7 +91,7 @@ export const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor
 };
 
 export const getUttaksperiodeFarge = (
-    konto: KontoTypeUttak_fpoversikt,
+    konto: KontoTypeUttak,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,

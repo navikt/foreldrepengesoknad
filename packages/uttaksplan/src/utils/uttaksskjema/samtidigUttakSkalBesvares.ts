@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const samtidigUttakSkalBesvares = (
     periodetype: Periodetype,
-    konto: KontoTypeUttak_fpoversikt,
+    konto: KontoTypeUttak,
     erUttakInnenFørsteSeksUkerFødselFarMedmor: boolean,
     erUttakFørFødsel: boolean,
     erAleneOmsorg: boolean,

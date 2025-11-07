@@ -14,11 +14,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import {
-    BrukerRolleSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
-    UttakOverføringÅrsak_fpoversikt,
-} from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -39,7 +35,7 @@ const getInitialKonto = (
     erMorUfør: boolean,
     periodenStarterFørFamdato: boolean,
     erFarEllerMedmor: boolean,
-): KontoTypeUttak_fpoversikt | '' => {
+): KontoTypeUttak | '' => {
     if (erDeltUttak) {
         if (periodenStarterFørFamdato && erFarEllerMedmor) {
             return 'FEDREKVOTE';
@@ -311,10 +307,10 @@ const getKontoVerdi = (
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
     startDato: Date,
-    inputKonto: KontoTypeUttak_fpoversikt,
+    inputKonto: KontoTypeUttak,
     familiehendelsesdato: Date,
     harAktivitetsfriKvote: boolean,
-): KontoTypeUttak_fpoversikt => {
+): KontoTypeUttak => {
     if (samtidigWLBUttakFørFødselFarMedmor) {
         return 'FEDREKVOTE';
     }
@@ -375,7 +371,7 @@ export const mapPeriodeUttakFormToPeriode = (
                 erDeltUttak,
                 familiehendelsesdato,
             ),
-            konto: values.konto as KontoTypeUttak_fpoversikt,
+            konto: values.konto as KontoTypeUttak,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -391,7 +387,7 @@ export const mapPeriodeUttakFormToPeriode = (
             id,
             type,
             forelder: values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt,
-            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak_fpoversikt)!,
+            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak)!,
             tidsperiode: {
                 fom: values.fom!,
                 tom: values.tom!,
@@ -446,7 +442,7 @@ export const mapPeriodeUttakFormToPeriode = (
         erFarEllerMedmor,
         erDeltUttak,
         values.fom!,
-        values.konto as KontoTypeUttak_fpoversikt,
+        values.konto as KontoTypeUttak,
         familiehendelsesdato,
         harAktivitetsfriKvote,
     );

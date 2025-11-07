@@ -1,12 +1,12 @@
-import { KontoDto_fpoversikt, PlanForslag, SaksperiodeNy, Situasjon } from '@navikt/fp-types';
+import { KontoDto, PlanForslag, SaksperiodeNy, Situasjon } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: string,
-    foreldrepengerKonto: KontoDto_fpoversikt,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     farOgFar: boolean,
 ): PlanForslag => {
@@ -60,7 +60,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     return { søker1: perioder, søker2: [] };
 };
 
-const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: KontoDto_fpoversikt): PlanForslag => {
+const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: KontoDto): PlanForslag => {
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
     const periode: SaksperiodeNy = {
         kontoType: foreldrepengerKonto.konto,
@@ -74,9 +74,9 @@ const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: KontoDto
 const ikkeDeltUttakAdopsjon = (
     famDato: string,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: KontoDto_fpoversikt,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     farOgFar: boolean,
 ) => {
@@ -96,8 +96,8 @@ const ikkeDeltUttakAdopsjon = (
 
 const ikkeDeltUttakFødselMor = (
     famDato: string,
-    foreldrepengerKonto: KontoDto_fpoversikt,
-    foreldrePengerFørFødselKonto: KontoDto_fpoversikt,
+    foreldrepengerKonto: KontoDto,
+    foreldrePengerFørFødselKonto: KontoDto,
 ): PlanForslag => {
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
     const perioder: SaksperiodeNy[] = [];
@@ -127,9 +127,9 @@ const ikkeDeltUttakFødselMor = (
 
 const ikkeDeltUttakFødselFarMedmor = (
     famDato: string,
-    foreldrepengerKonto: KontoDto_fpoversikt,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     erAleneOmOmsorg: boolean,
     farOgFar: boolean,
@@ -212,10 +212,10 @@ const ikkeDeltUttakFødselFarMedmor = (
 const ikkeDeltUttakFødsel = (
     famDato: string,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: KontoDto_fpoversikt,
-    foreldrePengerFørFødselKonto: KontoDto_fpoversikt | undefined,
+    foreldrepengerKonto: KontoDto,
+    foreldrePengerFørFødselKonto: KontoDto | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: KontoDto_fpoversikt | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     erAleneOmOmsorg: boolean,
     farOgFar: boolean,
@@ -241,7 +241,7 @@ interface IkkeDeltUttakProps {
     situasjon: Situasjon;
     famDato: string;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: KontoDto_fpoversikt[];
+    tilgjengeligeStønadskontoer: KontoDto[];
     erMorUfør: boolean | undefined;
     bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;

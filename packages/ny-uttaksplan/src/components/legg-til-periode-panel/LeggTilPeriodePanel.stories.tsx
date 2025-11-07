@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { UttaksplanContextDataType } from '../../context/UttaksplanDataContext';
 import { withUttaksplanContextDecorator } from '../../storybook/decorators/withUttaksplanContextDecorator';
@@ -41,7 +41,7 @@ const meta = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 } satisfies Meta<typeof LeggTilPeriodePanel>;

@@ -1,4 +1,4 @@
-import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto } from '@navikt/fp-types';
 
 import { AnnenForelder } from './AnnenForelder';
 import { Barn } from './Barn';
@@ -24,7 +24,7 @@ export interface Søknadsinfo {
     erFlerbarnssøknad: boolean;
     familiehendelsesdato: Date;
     termindato: Date | undefined;
-    stønadskontoer: KontoBeregningDto_fpoversikt;
+    stønadskontoer: KontoBeregningDto;
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
     eksisterendeSak: EksisterendeSak | undefined;

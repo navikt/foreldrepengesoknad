@@ -8,7 +8,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -26,7 +26,7 @@ const DEFAULT_STØNADSKONTO = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
     '80': {
         kontoer: [
             { konto: 'MØDREKVOTE', dager: 95 },
@@ -38,7 +38,7 @@ const DEFAULT_STØNADSKONTO = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
 };
 
 type StoryArgs = {

@@ -1,13 +1,13 @@
 import { Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 
 import { Periodene } from './Periodene';
 import { beregnBrukteUttaksdager, getAllePerioderMedUttaksinfoFraUttaksplan } from './uttaksPlanStatus';
 
 interface ForeldersBrukteDager {
-    førTermin: KontoDto_fpoversikt[];
-    etterTermin: KontoDto_fpoversikt[];
-    alle: KontoDto_fpoversikt[];
+    førTermin: KontoDto[];
+    etterTermin: KontoDto[];
+    alle: KontoDto[];
     dagerTotalt: number;
     dagerEgneKvoter: number;
     dagerAnnenForeldersKvote: number;
@@ -17,7 +17,7 @@ interface ForeldersBrukteDager {
 export interface BrukteDager {
     mor: ForeldersBrukteDager;
     farMedmor: ForeldersBrukteDager;
-    alle: KontoDto_fpoversikt[];
+    alle: KontoDto[];
 }
 
 const isMorsPeriode = (periode: Uttaksperiode): boolean => {
@@ -26,9 +26,9 @@ const isMorsPeriode = (periode: Uttaksperiode): boolean => {
 const isFarsPeriode = (periode: Uttaksperiode): boolean => {
     return periode.forelder === 'FAR_MEDMOR';
 };
-const isFellesperiodeKvote = (uttak: KontoDto_fpoversikt): boolean => uttak.konto === 'FELLESPERIODE';
+const isFellesperiodeKvote = (uttak: KontoDto): boolean => uttak.konto === 'FELLESPERIODE';
 
-const isMorsKvote = (uttak: KontoDto_fpoversikt): boolean => {
+const isMorsKvote = (uttak: KontoDto): boolean => {
     switch (uttak.konto) {
         case 'FORELDREPENGER_FØR_FØDSEL':
         case 'MØDREKVOTE':
@@ -38,16 +38,16 @@ const isMorsKvote = (uttak: KontoDto_fpoversikt): boolean => {
     }
 };
 
-const isFarMedmorsKvote = (uttak: KontoDto_fpoversikt): boolean => {
+const isFarMedmorsKvote = (uttak: KontoDto): boolean => {
     return uttak.konto === 'FEDREKVOTE';
 };
 
-const summerBrukteUttaksdager = (uttak: KontoDto_fpoversikt[]) => {
+const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
     return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
 const getBrukteDagerForForelder = (
-    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Uttaksperiode[],
     familiehendelsesdato: Date,
     forelder: BrukerRolleSak_fpoversikt,
@@ -80,7 +80,7 @@ const getBrukteDagerForForelder = (
 };
 
 export const getBrukteDager = (
-    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Periode[],
     familiehendelsesdato: Date,
 ): BrukteDager => {

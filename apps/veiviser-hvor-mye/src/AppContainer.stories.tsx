@@ -4,7 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -32,7 +32,7 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
     '80': {
         kontoer: [
             {
@@ -56,7 +56,7 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
 };
 
 const meta = {
@@ -67,7 +67,7 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/internal/konto', {
+                    const response = await fetch('https://fpgrunnlag.intern.dev.nav.no/fpgrunndata/api/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {

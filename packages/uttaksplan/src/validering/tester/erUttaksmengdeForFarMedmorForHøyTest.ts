@@ -1,5 +1,5 @@
 import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
@@ -16,7 +16,7 @@ const harSøktOmFellesperiode = (periode: Periode) => {
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
-    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     farEllerMedmor: boolean,
 ): boolean => {
     const harFarMedmorSøktOmFellesperiode = uttaksplan.some((p) => harSøktOmFellesperiode(p));

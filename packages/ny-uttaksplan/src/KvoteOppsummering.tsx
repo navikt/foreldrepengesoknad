@@ -9,9 +9,9 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import {
     BrukerRolleSak_fpoversikt,
     Familiehendelse_fpoversikt,
-    KontoBeregningDto_fpoversikt,
-    KontoDto_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoBeregningDto,
+    KontoDto,
+    KontoTypeUttak,
     RettighetType_fpoversikt,
     SaksperiodeNy,
     UttakOppholdÅrsak_fpoversikt,
@@ -24,7 +24,7 @@ import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 type Props = {
-    konto: KontoBeregningDto_fpoversikt;
+    konto: KontoBeregningDto;
     perioder: Planperiode[];
     rettighetType: RettighetType_fpoversikt;
     forelder: BrukerRolleSak_fpoversikt;
@@ -574,7 +574,7 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: KontoDto_fpoversikt; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
     const intl = useIntl();
     const { visStatusIkoner, familiehendelse, erMedmorDelAvSøknaden } = useKvote();
 
@@ -676,7 +676,7 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
 }: {
-    kontoType: KontoTypeUttak_fpoversikt;
+    kontoType: KontoTypeUttak;
     erMedmorDelAvSøknaden?: boolean;
 }) => {
     switch (kontoType) {
@@ -715,7 +715,7 @@ const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }
 };
 
 type FordelingSegmentProps = {
-    kontoType?: KontoTypeUttak_fpoversikt;
+    kontoType?: KontoTypeUttak;
     prosent: number;
     erFyllt?: boolean;
     erOvertrukket?: boolean;
@@ -849,9 +849,7 @@ const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
     return dager;
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (
-    årsak: UttakOppholdÅrsak_fpoversikt,
-): KontoTypeUttak_fpoversikt | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoTypeUttak | undefined => {
     switch (årsak) {
         case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';
@@ -866,7 +864,7 @@ const getStønadskontoTypeFromOppholdÅrsakType = (
     }
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto_fpoversikt[]) => {
+const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
             if (p.oppholdÅrsak) {
@@ -909,7 +907,7 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto_fpovers
     return Math.floor(dagerTotalt);
 };
 
-const getUttaksKontoType = (p: SaksperiodeNy): KontoTypeUttak_fpoversikt | undefined => {
+const getUttaksKontoType = (p: SaksperiodeNy): KontoTypeUttak | undefined => {
     if (p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }

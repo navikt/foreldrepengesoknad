@@ -10,7 +10,11 @@ export default defineConfig({
             definitions: {
                 case: 'preserve',
                 name: (typeName) => {
-                    if (typeName.includes('.')) {
+                    if (typeName.includes('.fpsoknad.')) {
+                        const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
+                        return `${strippedName}`;
+                    }
+                    if (typeName.includes('.fpoversikt.')) {
                         const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
                         return `${strippedName}_fpoversikt`;
                     }

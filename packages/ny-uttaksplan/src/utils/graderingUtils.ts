@@ -1,4 +1,4 @@
-import { Gradering_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { Gradering_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -22,7 +22,7 @@ export const getGraderingsInfo = (periode: Planperiode | undefined): GraderingsT
 export const getGradering = (
     skalDuJobbe: boolean,
     stillingsprosent: string | undefined,
-    kontoType: KontoTypeUttak_fpoversikt | undefined,
+    kontoType: KontoTypeUttak | undefined,
 ): Gradering_fpoversikt | undefined => {
     if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return undefined;

@@ -21,7 +21,7 @@ import { loggUmamiEvent } from '@navikt/fp-metrics';
 import {
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
-    KontoBeregningDto_fpoversikt,
+    KontoBeregningDto,
     Periode as PeriodeType,
 } from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
@@ -47,7 +47,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
     handleOnPlanChange: (nyPlan: Periode[]) => void;
-    stønadskontoer: KontoBeregningDto_fpoversikt;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];

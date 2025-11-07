@@ -19,8 +19,8 @@ import {
 import {
     BrukerRolleSak_fpoversikt,
     EksternArbeidsforholdDto_fpoversikt,
-    KontoDto_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoDto,
+    KontoTypeUttak,
 } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -70,7 +70,7 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: KontoDto_fpoversikt[];
+    stønadskontoer: KontoDto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
@@ -99,10 +99,7 @@ const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Bruke
     return !((erFarEllerMedmor && forelder === 'FAR_MEDMOR') || (!erFarEllerMedmor && forelder === 'MOR'));
 };
 
-const erUttakAvAnnenForeldersKvote = (
-    konto: KontoTypeUttak_fpoversikt | '',
-    søkerErFarEllerMedmor: boolean,
-): boolean => {
+const erUttakAvAnnenForeldersKvote = (konto: KontoTypeUttak | '', søkerErFarEllerMedmor: boolean): boolean => {
     return (
         (konto === 'MØDREKVOTE' && søkerErFarEllerMedmor === true) ||
         (konto === 'FEDREKVOTE' && søkerErFarEllerMedmor === false)
@@ -112,7 +109,7 @@ const erUttakAvAnnenForeldersKvote = (
 const getPeriodeType = (
     periodenGjelder: BrukerRolleSak_fpoversikt | '',
     erFarEllerMedmor: boolean,
-    konto: KontoTypeUttak_fpoversikt | '',
+    konto: KontoTypeUttak | '',
     familiehendelsedato: Date,
     termindato: Date | undefined,
     tidsperiode: TidsperiodeDate,

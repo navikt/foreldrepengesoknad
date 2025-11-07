@@ -8,7 +8,7 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
-    KontoBeregningDto_fpoversikt,
+    KontoBeregningResultatDto,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     Tidsperiode,
@@ -21,7 +21,7 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
-    konto: `${urlPrefiks}/fpoversikt/external/konto`,
+    konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
@@ -125,10 +125,7 @@ export type DokumentereMorsArbeidParams = {
 export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
-        queryFn: () =>
-            ky
-                .post(API_URLS.konto, { json: data })
-                .json<{ '100': KontoBeregningDto_fpoversikt; '80': KontoBeregningDto_fpoversikt }>(),
+        queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
     });
 

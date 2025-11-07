@@ -1,7 +1,7 @@
 import { Arbeidsform, UttakRundtFødselÅrsak } from '@navikt/fp-common';
 import {
     BrukerRolleSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     MorsAktivitet,
     UttakOverføringÅrsak_fpoversikt,
 } from '@navikt/fp-types';
@@ -28,7 +28,7 @@ export enum PeriodeUttakFormField {
 export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.fom]: Date | undefined;
     [PeriodeUttakFormField.tom]: Date | undefined;
-    [PeriodeUttakFormField.konto]: KontoTypeUttak_fpoversikt | '';
+    [PeriodeUttakFormField.konto]: KontoTypeUttak | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
     [PeriodeUttakFormField.overføringsårsak]: UttakOverføringÅrsak_fpoversikt | '';

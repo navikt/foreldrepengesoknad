@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 
-import { KontoBeregningDto_fpoversikt, NavnPåForeldre } from '@navikt/fp-types';
+import { KontoBeregningDto, NavnPåForeldre } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -44,7 +44,7 @@ const kontoNårBeggeHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto_fpoversikt;
+} satisfies KontoBeregningDto;
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
@@ -403,7 +403,7 @@ const kontoNårBareFarHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto_fpoversikt;
+} satisfies KontoBeregningDto;
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
@@ -490,7 +490,7 @@ const kontoNårBareMorHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies KontoBeregningDto_fpoversikt;
+} satisfies KontoBeregningDto;
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {

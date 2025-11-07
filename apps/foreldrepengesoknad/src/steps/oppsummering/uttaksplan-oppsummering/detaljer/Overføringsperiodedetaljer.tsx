@@ -1,7 +1,7 @@
 import { IntlShape, useIntl } from 'react-intl';
 
 import { NavnPåForeldre, Overføringsperiode } from '@navikt/fp-common';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -11,7 +11,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
-const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak_fpoversikt, intl: IntlShape) => {
+const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak, intl: IntlShape) => {
     if (konto === 'FEDREKVOTE') {
         return navnPåForeldre.farMedmor;
     } else if (konto === 'MØDREKVOTE') {

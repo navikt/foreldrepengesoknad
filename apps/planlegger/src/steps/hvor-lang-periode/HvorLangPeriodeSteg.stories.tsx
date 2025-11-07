@@ -8,7 +8,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 
 import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
@@ -82,7 +82,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'MØDREKVOTE', dager: 75 },
@@ -91,7 +91,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -122,7 +122,7 @@ export const FlereForsørgereEttBarnBeggeHarRettAdopsjon: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'MØDREKVOTE', dager: 75 },
@@ -131,7 +131,7 @@ export const FlereForsørgereEttBarnBeggeHarRettAdopsjon: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -161,7 +161,7 @@ export const FlereForsørgereToBarn: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'MØDREKVOTE', dager: 75 },
@@ -170,7 +170,7 @@ export const FlereForsørgereToBarn: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -197,14 +197,14 @@ export const AleneforsørgerMorEttBarn: Story = {
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 230 },
                     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -236,7 +236,7 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 150 },
@@ -246,7 +246,7 @@ export const FlereForsørgereKunFarHarRett: Story = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -278,7 +278,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 150 },
@@ -288,7 +288,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -317,14 +317,14 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [{ konto: 'FORELDREPENGER', dager: 200 }],
                 minsteretter: {
                     farRundtFødsel: 10,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -348,11 +348,11 @@ export const AleneforsørgerFarToBarn: Story = {
             '80': {
                 kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '100': {
                 kontoer: [{ konto: 'FORELDREPENGER', dager: 230 }],
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
@@ -384,7 +384,7 @@ export const FarOgFarBeggeHarRett: Story = {
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
             '80': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 166 },
@@ -394,7 +394,7 @@ export const FarOgFarBeggeHarRett: Story = {
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
-            } satisfies KontoBeregningDto_fpoversikt,
+            } satisfies KontoBeregningDto,
         },
     },
 };
