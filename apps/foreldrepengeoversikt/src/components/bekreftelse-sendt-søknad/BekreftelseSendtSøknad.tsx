@@ -10,7 +10,7 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Bankkonto_fpoversikt, TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
-import { søkerInfoOptions } from '../../api/api.ts';
+import { søkerInfoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';

@@ -6,7 +6,7 @@ import { Tag, VStack } from '@navikt/ds-react';
 
 import { formaterDatoUtenDag } from '@navikt/fp-utils';
 
-import { hentInntektsmelding } from '../../api/api';
+import { hentInntektsmelding } from '../../api/queries.ts';
 import { InntektsmeldingOversiktHeader } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';

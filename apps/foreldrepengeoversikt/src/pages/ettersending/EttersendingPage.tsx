@@ -23,7 +23,7 @@ import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/api';
+import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/queries.ts';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';

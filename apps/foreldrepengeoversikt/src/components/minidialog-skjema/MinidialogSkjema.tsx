@@ -25,7 +25,7 @@ import { FileUploader } from '@navikt/fp-ui';
 import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, søkerInfoOptions } from '../../api/api';
+import { API_URLS, søkerInfoOptions } from '../../api/queries.ts';
 import { isAttachmentWithError } from '../../utils/attachmentUtils.ts';
 import { validateFritekstFelt } from '../../utils/validationUtils';
 import { ScrollToTop } from '../scroll-to-top/ScrollToTop';

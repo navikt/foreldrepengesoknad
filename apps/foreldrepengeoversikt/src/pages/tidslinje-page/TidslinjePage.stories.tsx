@@ -7,7 +7,7 @@ import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHe
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { API_URLS } from '../../api/api.ts';
+import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { TidslinjePage } from './TidslinjePage';
 

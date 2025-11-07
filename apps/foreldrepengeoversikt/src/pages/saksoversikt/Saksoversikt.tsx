@@ -11,7 +11,11 @@ import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentDokumenterOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
+import {
+    hentDokumenterOptions,
+    hentManglendeVedleggOptions,
+    hentTidslinjehendelserOptions,
+} from '../../api/queries.ts';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';

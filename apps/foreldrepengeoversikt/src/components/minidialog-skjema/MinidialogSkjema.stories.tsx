@@ -5,7 +5,7 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { API_URLS } from '../../api/api.ts';
+import { API_URLS } from '../../api/queries.ts';
 import { MinidialogSkjema } from './MinidialogSkjema';
 
 const meta = {

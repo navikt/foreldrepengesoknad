@@ -7,7 +7,7 @@ import { Heading, Loader } from '@navikt/ds-react';
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
+import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/queries.ts';
 import { DinSakHeader } from '../../components/header/Header';
 import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';

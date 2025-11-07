@@ -2,7 +2,7 @@ import { Link } from '@navikt/ds-react';
 
 import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 
-import { API_URLS } from '../../../api/api.ts';
+import { API_URLS } from '../../../api/queries.ts';
 
 export const DokumentLenke = ({ dokument }: { dokument: DokumentDto_fpoversikt }) => {
     return (

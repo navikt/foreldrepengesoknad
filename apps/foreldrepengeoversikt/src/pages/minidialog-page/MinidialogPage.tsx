@@ -7,7 +7,7 @@ import { Heading, Loader, VStack } from '@navikt/ds-react';
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { minidialogOptions, sendEttersending } from '../../api/api';
+import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader } from '../../components/header/Header';
 import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';

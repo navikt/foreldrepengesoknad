@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { KvoteOppsummering, Planperiode } from '@navikt/fp-uttaksplan-ny';
 
-import { hentUttaksKontoOptions } from '../../api/api';
+import { hentUttaksKontoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Foreldrepengesak } from '../../types/Sak';
 

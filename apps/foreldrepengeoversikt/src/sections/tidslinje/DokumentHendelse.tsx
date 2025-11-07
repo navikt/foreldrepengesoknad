@@ -6,7 +6,7 @@ import { Link } from '@navikt/ds-react';
 
 import { Dokument_fpoversikt } from '@navikt/fp-types';
 
-import { API_URLS, hentInntektsmelding } from '../../api/api';
+import { API_URLS, hentInntektsmelding } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
 
 interface Props {

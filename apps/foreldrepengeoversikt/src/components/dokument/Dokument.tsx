@@ -5,7 +5,7 @@ import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 import { DokumentDto_fpoversikt, JournalpostType_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 
-import { API_URLS } from '../../api/api.ts';
+import { API_URLS } from '../../api/queries.ts';
 
 interface Props {
     readonly dokument: DokumentDto_fpoversikt;

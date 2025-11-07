@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { minidialogOptions } from '../../api/api';
+import { minidialogOptions } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { guid } from '../../utils/guid';
 import { OppgaveLenkepanel } from '../oppgave-lenkepanel/OppgaveLenkepanel';

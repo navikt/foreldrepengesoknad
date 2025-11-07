@@ -2,7 +2,7 @@ import { SackKronerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import { hentInntektsmelding } from '../../api/api';
+import { hentInntektsmelding } from '../../api/queries.ts';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { OversiktRoutes } from '../../routes/routes';
 

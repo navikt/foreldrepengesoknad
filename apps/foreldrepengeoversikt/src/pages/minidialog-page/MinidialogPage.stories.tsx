@@ -7,7 +7,7 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 import { TilbakekrevingUttalelseOppgave_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { API_URLS } from '../../api/api.ts';
+import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from './../../routes/routes';
 import { MinidialogPage } from './MinidialogPage';
 

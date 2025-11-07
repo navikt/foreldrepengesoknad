@@ -13,7 +13,7 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
-import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
+import { hentSakerOptions, søkerInfoOptions } from '../../api/queries.ts';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { Sak } from '../../types/Sak';
 import {

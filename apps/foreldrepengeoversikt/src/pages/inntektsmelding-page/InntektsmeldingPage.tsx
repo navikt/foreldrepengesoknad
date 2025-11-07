@@ -14,7 +14,7 @@ import {
 } from '@navikt/fp-types';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
-import { hentInntektsmelding, hentSakerOptions } from '../../api/api';
+import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';

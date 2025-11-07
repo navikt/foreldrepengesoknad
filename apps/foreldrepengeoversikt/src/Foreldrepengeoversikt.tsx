@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Loader } from '@navikt/ds-react';
 
-import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
+import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';

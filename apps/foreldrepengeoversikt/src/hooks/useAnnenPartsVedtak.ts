@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { hentAnnenPartsVedtakOptions } from '../api/api';
+import { hentAnnenPartsVedtakOptions } from '../api/queries.ts';
 import { Sak } from '../types/Sak';
 import { getFamiliehendelseDato } from '../utils/sakerUtils';
 

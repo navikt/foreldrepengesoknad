@@ -10,7 +10,7 @@ import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table,
 import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentDokumenterOptions } from '../../api/api';
+import { hentDokumenterOptions } from '../../api/queries.ts';
 import { DokumenterHeader } from '../../components/header/Header';
 import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';

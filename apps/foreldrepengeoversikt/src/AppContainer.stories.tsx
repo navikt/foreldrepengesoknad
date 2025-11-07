@@ -10,7 +10,7 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { AppContainer } from './AppContainer';
-import { API_URLS } from './api/api.ts';
+import { API_URLS } from './api/queries.ts';
 
 const meta = {
     title: 'AppContainer',
