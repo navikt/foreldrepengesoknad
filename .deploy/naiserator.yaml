@@ -52,6 +52,7 @@ spec:
       rules:
         - application: fpsoknad
         - application: fpoversikt
+        - application: fpgrunndata
         - application: nav-dekoratoren
           namespace: personbruker
   env:
