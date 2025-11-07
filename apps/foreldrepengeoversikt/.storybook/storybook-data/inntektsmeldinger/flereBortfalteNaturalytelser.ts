@@ -1,4 +1,4 @@
-import { InntektsmeldingDto } from '../../../src/api/zodSchemas';
+import { FpOversiktInntektsmeldingDto_fpoversikt } from '@navikt/fp-types';
 
 export const flereBortfalteNaturalytelser = [
     {
@@ -34,4 +34,4 @@ export const flereBortfalteNaturalytelser = [
         ],
         refusjonsperioder: [],
     },
-] satisfies InntektsmeldingDto[];
+] satisfies FpOversiktInntektsmeldingDto_fpoversikt[];

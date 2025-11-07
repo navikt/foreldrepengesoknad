@@ -1,6 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
-import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
@@ -8,6 +7,7 @@ import {
     AnnenPartSak_fpoversikt,
     DokumentDto_fpoversikt,
     EttersendelseDto,
+    FpOversiktInntektsmeldingDto_fpoversikt,
     KontoBeregningGrunnlagDto_fpoversikt,
     KontoBeregningResultatDto,
     PersonMedArbeidsforholdDto_fpoversikt,
@@ -16,8 +16,6 @@ import {
     TilbakekrevingUttalelseOppgave_fpoversikt,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
-
-import { InntektsmeldingDtoSchema } from './zodSchemas';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -75,16 +73,12 @@ export const hentInntektsmelding = (saksnummer: string) =>
     queryOptions({
         queryKey: ['INNTEKTSMELDING', saksnummer],
         queryFn: async () => {
-            const response = await ky.get(API_URLS.inntektsmelding, { searchParams: { saksnummer } }).json();
-
-            const parsedJson = z.array(InntektsmeldingDtoSchema).safeParse(response);
-
-            if (!parsedJson.success) {
-                throw new Error('Responsen fra serveren matchet ikke forventet format');
-            }
+            const response = await ky
+                .get(API_URLS.inntektsmelding, { searchParams: { saksnummer } })
+                .json<FpOversiktInntektsmeldingDto_fpoversikt[]>();
 
             // Versjon 1 kan ikke brukes og skal ignoreres.
-            return parsedJson.data
+            return response
                 .filter((im) => im.versjon >= 2)
                 .map((im) => ({
                     ...im,

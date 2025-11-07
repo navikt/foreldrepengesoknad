@@ -7,10 +7,14 @@ import { Navigate, useParams } from 'react-router-dom';
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import {
+    BortfaltNaturalytelse_fpoversikt,
+    FpOversiktInntektsmeldingDto_fpoversikt,
+    NaturalytelseType_fpoversikt,
+} from '@navikt/fp-types';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions } from '../../api/api';
-import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
@@ -128,7 +132,7 @@ export const InntektsmeldingPage = () => {
     );
 };
 
-const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt }) => {
     const { inntektPrMnd, refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
 
     return (
@@ -186,7 +190,7 @@ const HvordanUtbetalesPengeneTekst = ({
     return '';
 };
 
-const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt }) => {
     if (inntektsmelding.bortfalteNaturalytelser.length === 0) {
         return 'Eventuelle naturalytelser eller “frynsegoder” som du får gjennom din arbeidsgiver vil du beholde under permisjonen.';
     }
@@ -209,7 +213,7 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: Inntektsmeld
 const BortfaltNaturalytelseTekst = ({
     bortfaltNaturalytelse,
 }: {
-    bortfaltNaturalytelse: InntektsmeldingDto['bortfalteNaturalytelser'][0];
+    bortfaltNaturalytelse: BortfaltNaturalytelse_fpoversikt;
 }) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
         // eslint-disable-next-line max-len
@@ -298,4 +302,4 @@ const NaturalytelseType = {
     YRKEBIL_TJENESTLIGBEHOV_KILOMETER: 'Yrkesbil tjenesteligbehov kilometer',
     YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS: 'Yrkesbil tjenesteligbehov listepris',
     INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING: 'Innbetaling utenlandsk pensjonsordning',
-} satisfies Record<Naturalytelsetype, string>;
+} satisfies Record<NaturalytelseType_fpoversikt, string>;

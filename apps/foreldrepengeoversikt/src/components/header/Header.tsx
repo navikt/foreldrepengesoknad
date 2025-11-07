@@ -6,11 +6,14 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { PersonMedArbeidsforholdDto_fpoversikt, Ytelse } from '@navikt/fp-types';
+import {
+    FpOversiktInntektsmeldingDto_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Ytelse,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
-import { InntektsmeldingDto } from '../../api/zodSchemas';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { Sak } from '../../types/Sak';
 import {
@@ -130,7 +133,11 @@ export function EttersendingHeader() {
     );
 }
 
-export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+export const InntektsmeldingHeader = ({
+    inntektsmelding,
+}: {
+    inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt;
+}) => {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">

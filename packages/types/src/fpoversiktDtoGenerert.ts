@@ -113,25 +113,25 @@ export type SokeFilterDto_fpoversikt = {
 };
 
 export type BortfaltNaturalytelse_fpoversikt = {
-    beløpPerMnd?: number;
-    fomDato?: string;
-    tomDato?: string;
-    type?: NaturalytelseType_fpoversikt;
+    beløpPerMnd: number;
+    fomDato: string;
+    tomDato: string;
+    type: NaturalytelseType_fpoversikt;
 };
 
 export type FpOversiktInntektsmeldingDto_fpoversikt = {
-    arbeidsgiverIdent?: string;
-    arbeidsgiverNavn?: string;
-    bortfalteNaturalytelser?: BortfaltNaturalytelse_fpoversikt[];
-    erAktiv?: boolean;
-    inntektPrMnd?: number;
-    journalpostId?: string;
-    mottattTidspunkt?: string;
+    arbeidsgiverIdent: string;
+    arbeidsgiverNavn: string;
+    bortfalteNaturalytelser: BortfaltNaturalytelse_fpoversikt[];
+    erAktiv: boolean;
+    inntektPrMnd: number;
+    journalpostId: string;
+    mottattTidspunkt: string;
     refusjonPrMnd?: number;
-    refusjonsperioder?: Refusjon_fpoversikt[];
+    refusjonsperioder: Refusjon_fpoversikt[];
     startDatoPermisjon?: string;
     stillingsprosent?: number;
-    versjon?: number;
+    versjon: number;
 };
 
 export type NaturalytelseType_fpoversikt =
@@ -156,8 +156,8 @@ export type NaturalytelseType_fpoversikt =
     | 'INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING';
 
 export type Refusjon_fpoversikt = {
-    fomDato?: string;
-    refusjonsbeløpMnd?: number;
+    fomDato: string;
+    refusjonsbeløpMnd: number;
 };
 
 export type DokumentType_fpoversikt =
