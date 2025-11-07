@@ -32,7 +32,6 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
@@ -272,14 +271,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 <UttaksplanKalender
                                     readOnly={true}
                                     saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
-                                    planleggerLegend={
-                                        <CalendarLabels
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            barnet={omBarnet}
-                                            hvemHarRett={hvemHarRett}
-                                            uttaksplan={[...planforslag.søker1, ...planforslag.søker2]}
-                                        />
-                                    }
                                     barnehagestartdato={barnehagestartdato}
                                 />
                             </UttaksplanDataProvider>

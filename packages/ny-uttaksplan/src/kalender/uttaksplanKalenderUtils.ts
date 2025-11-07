@@ -1,8 +1,14 @@
 import { IntlShape } from 'react-intl';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { Barn, UttakUtsettelseÅrsak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { Period } from '@navikt/fp-ui';
+import {
+    Barn,
+    LegendLabel,
+    Period,
+    UttakUtsettelseÅrsak_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,
@@ -43,7 +49,14 @@ const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpove
     return intl.formatMessage({ id: 'kalender.dinUtsettelse' });
 };
 
-export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): string => {
+export const getFamiliehendelseKalendarLabel = (barn: Barn): LegendLabel => {
+    if (!isAdoptertBarn(barn)) {
+        return isFødtBarn(barn) ? 'FØDSEL' : 'TERMIN';
+    }
+    return 'ADOPSJON';
+};
+
+export const getFamiliehendelseKalendarLabelForSkjermleser = (barn: Barn, intl: IntlShape): string => {
     if (!isAdoptertBarn(barn)) {
         return isFødtBarn(barn)
             ? intl.formatMessage({ id: 'kalender.fødsel' })
@@ -54,7 +67,7 @@ export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): st
 
 const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): string => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const familiehendelsenavn = getFamiliehendelseKalendarLabel(barn, intl);
+    const familiehendelsenavn = getFamiliehendelseKalendarLabelForSkjermleser(barn, intl);
     return intl.formatMessage(
         { id: 'kalender.skjermleser.familiehendelse' },
         { familiehendelsenavn, dato: formaterDatoUtenDag(familiehendelsesdato) },

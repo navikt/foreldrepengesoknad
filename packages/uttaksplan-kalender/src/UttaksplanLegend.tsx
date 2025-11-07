@@ -62,7 +62,7 @@ export const UttaksplanLegend = ({
         .filter((c) => c !== PeriodeColor.NONE)
         .map((color) => (
             <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.46rem', width: 'fit-content' }}>
-                <CalendarLabel iconType={color}>
+                <CalendarLabel color={color}>
                     <BodyShort style={{ whiteSpace: 'nowrap' }}>
                         {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
                     </BodyShort>

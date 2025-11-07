@@ -6,14 +6,15 @@ import styles from './calendarLabel.module.css';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
-    iconType: PeriodeColor;
+    color: PeriodeColor;
+    onClick?: () => void;
 }
 
-export const CalendarLabel = ({ children, iconType }: Props) => {
-    if (iconType !== PeriodeColor.DARKBLUE) {
+export const CalendarLabel = ({ children, color, onClick }: Props) => {
+    if (color !== PeriodeColor.DARKBLUE) {
         return (
-            <HStack gap="space-8" align="center">
-                {getRect(iconType)}
+            <HStack className={styles.calendarLabel} gap="space-8" align="center" onClick={onClick}>
+                {getRect(color)}
                 {children}
             </HStack>
         );

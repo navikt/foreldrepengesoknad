@@ -5,9 +5,8 @@ import { useStepData } from 'appData/useStepData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
-import { getFamiliesituasjon, mapOmBarnetTilBarn } from 'utils/barnetUtils';
+import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getFamiliehendelsedato, getSøkersPerioder } from 'utils/uttakUtils';
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
@@ -16,15 +15,12 @@ import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     KvoteOppsummeringWrapper,
-    Planperiode,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanNy,
-    finnOgSettInnHull,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
@@ -69,10 +65,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
-    const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-
-    const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
     const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
 
@@ -111,29 +104,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     };
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
-
-    const konverterTilPlanperiode = (periode: SaksperiodeNy): Planperiode => ({
-        ...periode,
-        id: `${periode.fom}-${periode.tom}`,
-        readOnly: false,
-        fom: periode.fom,
-        tom: periode.tom,
-    });
-
-    const søkersPerioder = getSøkersPerioder(erDeltUttak, gjeldendeUttaksplan, erFarEllerMedmor);
-    const søkersPerioderAsPlanperiode = søkersPerioder.map(konverterTilPlanperiode);
-
-    const perioderMedHull: Planperiode[] = finnOgSettInnHull(
-        søkersPerioderAsPlanperiode,
-        false,
-        familiehendelsedato,
-        familiesituasjon === 'adopsjon',
-        bareFarMedmorHarRett,
-        erFarEllerMedmor,
-        undefined,
-    );
-
-    const harTapteDager = perioderMedHull.some((periode) => periode.periodeHullÅrsak === 'Tapte dager');
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -280,15 +250,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                 <UttaksplanKalender
                                     readOnly={false}
                                     saksperioder={gjeldendeUttaksplan}
-                                    planleggerLegend={
-                                        <CalendarLabels
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            barnet={omBarnet}
-                                            hvemHarRett={hvemHarRett}
-                                            uttaksplan={gjeldendeUttaksplan}
-                                            inneholderTapteDager={harTapteDager}
-                                        />
-                                    }
                                     barnehagestartdato={barnehagestartdato}
                                     handleOnPlanChange={handleOnPlanChange}
                                 />

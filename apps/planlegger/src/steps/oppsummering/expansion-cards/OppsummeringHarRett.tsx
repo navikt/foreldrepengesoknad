@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { CalendarLabels } from 'components/labels/CalendarLabels';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -268,18 +267,6 @@ export const OppsummeringHarRett = ({
                             <UttaksplanKalender
                                 saksperioder={
                                     tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
-                                }
-                                planleggerLegend={
-                                    <CalendarLabels
-                                        hvemPlanlegger={hvemPlanlegger}
-                                        barnet={barnet}
-                                        hvemHarRett={hvemHarRett}
-                                        uttaksplan={
-                                            tilpassPlan
-                                                ? gjeldendeUttaksplan
-                                                : [...planforslag.søker1, ...planforslag.søker2]
-                                        }
-                                    />
                                 }
                                 barnehagestartdato={barnehagestartdato}
                                 readOnly
