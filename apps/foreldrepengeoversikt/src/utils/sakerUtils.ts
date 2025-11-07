@@ -34,7 +34,10 @@ function sorterPersonEtterEldstOgNavn(p1: BarnDto_fpoversikt, p2: BarnDto_fpover
     } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
         return -1;
     } else {
-        return p1.navn.fornavn < p2.navn.fornavn ? -1 : 1;
+        const fornavn1 = p1.navn?.fornavn ?? '';
+        const fornavn2 = p2.navn?.fornavn ?? '';
+
+        return fornavn1 < fornavn2 ? -1 : 1;
     }
 }
 
@@ -101,8 +104,8 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpove
 
     return {
         fornavn: alleBarn
-            ?.filter((b) => b.navn.fornavn !== undefined && b.navn.fornavn.trim() !== '')
-            .map((b) => [b.navn.fornavn, b.navn.mellomnavn ?? ''].join(' ')),
+            ?.filter((b) => b.navn?.fornavn !== undefined && b.navn.fornavn.trim() !== '')
+            .map((b) => [b.navn?.fornavn, b.navn?.mellomnavn ?? ''].join(' ')),
         fødselsdatoer,
         alleBarnaLever: !!alleBarn?.every((barn) => getLeverPerson(barn)),
     };
