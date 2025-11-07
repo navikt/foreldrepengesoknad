@@ -9,7 +9,7 @@ import {
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
@@ -43,7 +43,6 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
 
     useEffect(() => {
         if (isDesktop) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) Kan ein gjera dette på ein annan måte?
             setErMinimert(false);
         }
     }, [isDesktop]);
@@ -184,17 +183,17 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                     <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
                                 </Alert>
                             )}
-                            <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                                <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                            <Button
+                                variant="primary"
+                                size="small"
+                                onClick={() => setErIRedigeringsmodus(true)}
+                                type="button"
+                            >
+                                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
                             </Button>
                             <HStack justify="space-between">
-                                <Button
-                                    variant="primary"
-                                    size="small"
-                                    onClick={() => setErIRedigeringsmodus(true)}
-                                    type="button"
-                                >
-                                    <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                                <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                    <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                                 </Button>
                                 {ekisterendePerioderSomErValgt.length > 0 && (
                                     <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
@@ -311,6 +310,7 @@ const EksisterendePeriodeListe = ({
     perioder: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
 }) => {
+    const intl = useIntl();
     return (
         <VStack gap="space-12">
             {perioder.map((p) => (
@@ -370,7 +370,12 @@ const EksisterendePeriodeListe = ({
                         </BodyShort>
                     </VStack>
                     <Spacer />
-                    <TrashIcon title="a11y-title" fontSize="1.5rem" onClick={() => slettPeriode(p)} />
+                    <TrashIcon
+                        title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                        fontSize="1.5rem"
+                        className="cursor-pointer hover:opacity-70"
+                        onClick={() => slettPeriode(p)}
+                    />
                 </HStack>
             ))}
         </VStack>
