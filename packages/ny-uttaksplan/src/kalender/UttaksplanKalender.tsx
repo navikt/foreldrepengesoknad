@@ -392,7 +392,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
     const uttaksplan = useUttaksplan(saksperioder);
     const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
 
-    const [isRangeSelectorMode, setRangeSelectorMode] = useState(false);
+    const [isRangeSelectorMode, setRangeSelectorMode] = useState(true);
     const [valgtePerioder, setSelectedPeriods] = useState<Period[]>([]);
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
@@ -546,11 +546,11 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         value={isRangeSelectorMode}
                     >
                         <HStack gap="space-16">
-                            <Radio value={false}>
-                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
-                            </Radio>
                             <Radio value={true}>
                                 <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
                             </Radio>
                         </HStack>
                     </RadioGroup>
