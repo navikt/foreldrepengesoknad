@@ -32,7 +32,7 @@ import {
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -42,7 +42,7 @@ import { ContextDataType, useContextGetData } from '../../../app-data/Planlegger
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
-    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    valgtStønadskonto: KontoBeregningDto;
     hvorLangPeriode: HvorLangPeriode;
     hvemPlanlegger: HvemPlanlegger;
     barnet: OmBarnet;

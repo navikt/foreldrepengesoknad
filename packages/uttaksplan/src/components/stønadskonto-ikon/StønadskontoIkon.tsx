@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getUttaksperiodeFarge } from '@navikt/fp-utils';
 
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
@@ -10,7 +10,7 @@ import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 interface Props {
-    konto: KontoTypeUttak_fpoversikt;
+    konto: KontoTypeUttak;
     forelder?: BrukerRolleSak_fpoversikt;
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;

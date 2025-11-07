@@ -16,7 +16,7 @@ import {
     isInfoPeriode,
 } from '@navikt/fp-common';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
-import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -31,7 +31,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: KontoBeregningDto_fpoversikt;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];

@@ -1,11 +1,11 @@
 import { Periode } from '@navikt/fp-common';
-import { KontoBeregningDto_fpoversikt, KontoDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from './uttaksPlanStatus';
 
 export interface Uttaksstatus {
     gjelderDagerBrukt: boolean;
-    uttak: KontoDto_fpoversikt[];
+    uttak: KontoDto[];
 }
 
 export const getUttaksstatus = ({
@@ -34,6 +34,6 @@ interface UttaksstatusFuncParams {
     erEndringssøknad: boolean;
     harKomplettUttaksplan: boolean;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: KontoBeregningDto_fpoversikt;
+    tilgjengeligeStønadskontoer: KontoBeregningDto;
     uttaksplan: Periode[];
 }

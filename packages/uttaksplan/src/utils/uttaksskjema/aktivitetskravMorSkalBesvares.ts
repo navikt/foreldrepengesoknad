@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import { KontoDto_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
 
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 import kontoSkalBesvares from './kontoSkalBesvarer';
@@ -10,7 +10,7 @@ import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFøds
 export const farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    konto: KontoTypeUttak_fpoversikt | undefined,
+    konto: KontoTypeUttak | undefined,
     erMorForSyk: boolean | undefined,
     tidsperiode: TidsperiodeDate,
     situasjon: Situasjon,
@@ -30,7 +30,7 @@ export const aktivitetskravMorSkalBesvares = (
     samtidigUttak: boolean | undefined,
     erMorForSyk: boolean | undefined,
     periodetype: Periodetype,
-    kontotype: KontoTypeUttak_fpoversikt | undefined,
+    kontotype: KontoTypeUttak | undefined,
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
@@ -39,7 +39,7 @@ export const aktivitetskravMorSkalBesvares = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    stønadskontoer: KontoDto_fpoversikt[],
+    stønadskontoer: KontoDto[],
     bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (
@@ -50,7 +50,7 @@ export const aktivitetskravMorSkalBesvares = (
         søkerHarMidlertidigOmsorg ||
         uttakRundtFødselÅrsakSpørsmålSkalBesvares(
             periodetype,
-            kontotype as KontoTypeUttak_fpoversikt,
+            kontotype as KontoTypeUttak,
             tidsperiode,
             !søkerErMor,
             erAleneOmOmsorg,

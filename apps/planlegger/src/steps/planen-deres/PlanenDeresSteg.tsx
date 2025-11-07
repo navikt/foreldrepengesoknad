@@ -19,7 +19,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagFors
 
 import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
@@ -34,7 +34,7 @@ import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndring
 
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
-    stønadskontoer: { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt },
+    stønadskontoer: KontoBeregningResultatDto,
     fordeling: Fordeling,
 ) => {
     const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
@@ -45,7 +45,7 @@ const finnAntallDagerSøker1 = (
 };
 
 interface Props {
-    stønadskontoer: { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
+    stønadskontoer: KontoBeregningResultatDto;
 }
 
 export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {

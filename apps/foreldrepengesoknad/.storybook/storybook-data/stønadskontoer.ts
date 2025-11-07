@@ -1,4 +1,4 @@
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 export const stønadskontoer = {
     kontoer: [
@@ -27,4 +27,4 @@ export const stønadskontoer = {
         farRundtFødsel: 0,
         toTette: 0,
     },
-} satisfies KontoBeregningDto_fpoversikt;
+} satisfies KontoBeregningDto;

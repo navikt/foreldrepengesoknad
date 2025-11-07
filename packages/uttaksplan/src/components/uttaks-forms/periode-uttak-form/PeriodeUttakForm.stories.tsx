@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { IntlShape } from 'react-intl';
 
 import { Periode, Periodetype, Situasjon } from '@navikt/fp-common';
-import { KontoDto_fpoversikt } from '@navikt/fp-types';
+import { KontoDto } from '@navikt/fp-types';
 
 import PeriodeUttakForm from './PeriodeUttakForm';
 
@@ -11,21 +11,21 @@ const stønadskonto100MorFar = [
     { konto: 'FEDREKVOTE', dager: 75 },
     { konto: 'FELLESPERIODE', dager: 80 },
     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-] satisfies KontoDto_fpoversikt[];
+] satisfies KontoDto[];
 
 const stønadskonto100BFHR = [
     { konto: 'FORELDREPENGER', dager: 75 },
     { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
-] satisfies KontoDto_fpoversikt[];
+] satisfies KontoDto[];
 
-const stønadskonto100BFHRToBarnFørWLB = [{ konto: 'FORELDREPENGER', dager: 285 }] satisfies KontoDto_fpoversikt[];
+const stønadskonto100BFHRToBarnFørWLB = [{ konto: 'FORELDREPENGER', dager: 285 }] satisfies KontoDto[];
 
 const stønadskonto100BFHRToBarnEtterWLB = [
     { konto: 'FORELDREPENGER', dager: 200 },
     { konto: 'AKTIVITETSFRI_KVOTE', dager: 85 },
-] satisfies KontoDto_fpoversikt[];
+] satisfies KontoDto[];
 
-const stønadskonto100Aleneomsorg = [{ konto: 'FORELDREPENGER', dager: 150 }] satisfies KontoDto_fpoversikt[];
+const stønadskonto100Aleneomsorg = [{ konto: 'FORELDREPENGER', dager: 150 }] satisfies KontoDto[];
 
 const meta = {
     title: 'components/PeriodeUttakForm',

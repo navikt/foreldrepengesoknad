@@ -4,19 +4,16 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, KontoBeregningDto_fpoversikt, KontoTypeUttak_fpoversikt, Satser } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, KontoBeregningResultatDto, KontoTypeUttak, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
-const getDagerForKonto = (
-    stønadskontoer: KontoBeregningDto_fpoversikt,
-    stønadskontoType: KontoTypeUttak_fpoversikt,
-) => {
+const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager : 0;
 };
 
-const finnAntallUkerOgDager = (valgtStønadskonto: KontoBeregningDto_fpoversikt) => {
+const finnAntallUkerOgDager = (valgtStønadskonto: KontoBeregningDto) => {
     const totaltAntallDagerFellesperiode = getDagerForKonto(valgtStønadskonto, 'FELLESPERIODE');
     const antallDagerForeldrepengerFørFødsel = getDagerForKonto(valgtStønadskonto, 'FORELDREPENGER_FØR_FØDSEL');
     const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, 'MØDREKVOTE');
@@ -39,7 +36,7 @@ const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 interface Props {
     dekningsgrad: Dekningsgrad;
     gjennomsnittslønn: number;
-    stønadskontoer: { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
+    stønadskontoer: KontoBeregningResultatDto;
     satser: Satser;
 }
 

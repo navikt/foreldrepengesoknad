@@ -20,14 +20,14 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    valgtStønadskonto: KontoBeregningDto;
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;

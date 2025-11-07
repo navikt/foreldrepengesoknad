@@ -1,7 +1,7 @@
 import {
     Attachment,
     BrukerRolleSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     MorsAktivitet,
     Oppholdsårsak,
     UtsettelsesÅrsak,
@@ -36,7 +36,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
-    konto: KontoTypeUttak_fpoversikt;
+    konto: KontoTypeUttak;
     forelder: BrukerRolleSak_fpoversikt;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
@@ -74,7 +74,7 @@ export interface Oppholdsperiode extends PeriodeBase {
 
 export interface Overføringsperiode extends PeriodeBase {
     type: Periodetype.Overføring;
-    konto: KontoTypeUttak_fpoversikt;
+    konto: KontoTypeUttak;
     forelder: BrukerRolleSak_fpoversikt;
     årsak: UttakOverføringÅrsak_fpoversikt;
 }
@@ -102,7 +102,7 @@ export interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: KontoTypeUttak_fpoversikt | undefined;
+    kontoType: KontoTypeUttak | undefined;
     forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;

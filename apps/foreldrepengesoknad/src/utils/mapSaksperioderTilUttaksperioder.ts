@@ -22,7 +22,7 @@ import {
 import {
     BrukerRolleSak_fpoversikt,
     KontoType,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     Oppholdsårsak,
     UtsettelsesÅrsak,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -213,7 +213,7 @@ const beregnSamtidigUttaksProsent = (
     return undefined;
 };
 
-export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): KontoTypeUttak_fpoversikt => {
+export const getKontotypeBareFarHarRett = (periodeTrekkerMinsterett: boolean): KontoTypeUttak => {
     return periodeTrekkerMinsterett ? 'AKTIVITETSFRI_KVOTE' : 'FORELDREPENGER';
 };
 
@@ -221,7 +221,7 @@ const getErMorForSyk = (
     erFarEllerMedmor: boolean,
     saksperiode: Saksperiode,
     familiehendelsesdato: string,
-    konto: KontoTypeUttak_fpoversikt | undefined,
+    konto: KontoTypeUttak | undefined,
 ) => {
     if (
         erFarEllerMedmor &&

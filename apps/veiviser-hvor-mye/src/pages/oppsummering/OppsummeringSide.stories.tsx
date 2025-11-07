@@ -3,7 +3,7 @@ import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import { OppsummeringSide } from './OppsummeringSide';
@@ -32,7 +32,7 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
     '80': {
         kontoer: [
             {
@@ -56,7 +56,7 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    } satisfies KontoBeregningDto_fpoversikt,
+    } satisfies KontoBeregningDto,
 };
 
 interface StoryArgs {

@@ -4,7 +4,7 @@ import { IntlShape, injectIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { KontoDto_fpoversikt } from '@navikt/fp-types';
+import { KontoDto } from '@navikt/fp-types';
 
 import { getVarighetString } from '../../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import planBemUtils from '../../../utils/planBemUtils';
@@ -13,7 +13,7 @@ import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
 interface Props {
-    uttak: KontoDto_fpoversikt;
+    uttak: KontoDto;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     intl: IntlShape;

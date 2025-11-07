@@ -20,7 +20,7 @@ import {
 } from '@navikt/fp-common';
 import {
     BrukerRolleSak_fpoversikt,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     Oppholdsårsak,
     UtsettelsesÅrsak,
     UttakOverføringÅrsak_fpoversikt,
@@ -115,7 +115,7 @@ export const getOppholdskontoNavn = (intl: IntlShape, årsak: Oppholdsårsak, fo
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-export const getStønadskontoFromOppholdsårsak = (årsak: Oppholdsårsak): KontoTypeUttak_fpoversikt => {
+export const getStønadskontoFromOppholdsårsak = (årsak: Oppholdsårsak): KontoTypeUttak => {
     if (årsak === 'UTTAK_FEDREKVOTE_ANNEN_FORELDER') {
         return 'FEDREKVOTE';
     }
@@ -135,7 +135,7 @@ export const getStønadskontoFromOppholdsårsak = (årsak: Oppholdsårsak): Kont
     return 'FORELDREPENGER_FØR_FØDSEL';
 };
 
-export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak_fpoversikt): Oppholdsårsak | undefined => {
+export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak): Oppholdsårsak | undefined => {
     switch (konto) {
         case 'FEDREKVOTE':
             return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';

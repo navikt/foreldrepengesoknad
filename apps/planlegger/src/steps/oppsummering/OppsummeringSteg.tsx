@@ -11,7 +11,7 @@ import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from 
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { KontoBeregningDto_fpoversikt, Satser } from '@navikt/fp-types';
+import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -25,7 +25,7 @@ import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
 
 interface Props {
-    stønadskontoer?: { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
+    stønadskontoer?: KontoBeregningResultatDto;
     satser: Satser;
 }
 

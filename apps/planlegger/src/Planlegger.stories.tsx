@@ -5,7 +5,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -60,7 +60,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
+} satisfies KontoBeregningResultatDto;
 
 const meta = {
     title: 'PlanleggerDataFetcher',
@@ -149,7 +149,7 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                                 toTette: 0,
                             },
                         },
-                    } satisfies { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt }),
+                    } satisfies KontoBeregningResultatDto),
                 ),
             ],
         },

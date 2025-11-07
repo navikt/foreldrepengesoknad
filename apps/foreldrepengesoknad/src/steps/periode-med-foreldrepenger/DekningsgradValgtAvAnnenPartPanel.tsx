@@ -7,7 +7,7 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -21,7 +21,7 @@ type Props = {
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    valgtStønadskonto: KontoBeregningDto;
 };
 
 export const DekningsgradValgtAvAnnenPartPanel = ({

@@ -4,7 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KontoBeregningDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningResultatDto } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -57,7 +57,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies { '80': KontoBeregningDto_fpoversikt; '100': KontoBeregningDto_fpoversikt };
+} satisfies KontoBeregningResultatDto;
 
 const meta = {
     title: 'AppContainer',

@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,7 +51,7 @@ export const LeggTilPeriodePanelStep = ({
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
     const getForelderFromKontoType = (
-        ktValue: KontoTypeUttak_fpoversikt | undefined,
+        ktValue: KontoTypeUttak | undefined,
         fValue: BrukerRolleSak_fpoversikt | undefined,
     ): BrukerRolleSak_fpoversikt | undefined => {
         switch (ktValue) {
