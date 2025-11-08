@@ -358,7 +358,7 @@ const EksisterendePeriodeListe = ({
                                 <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
                             )}
                             {(p.kontoType === 'MØDREKVOTE' || p.kontoType === 'FEDREKVOTE') && (
-                                <FormattedMessage id="Foreldrepenger" />
+                                <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
                             )}
                             {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Fellesperiode" />}
                         </BodyShort>

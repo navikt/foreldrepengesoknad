@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { action } from 'storybook/actions';
 
 import { BodyShort, Checkbox, CheckboxGroup, Detail, VStack } from '@navikt/ds-react';
 
@@ -57,7 +56,6 @@ export const IkkeVisUkenr: Story = {
     args: {
         ...Default.args,
         showWeekNumbers: false,
-        dateClickCallback: action('button-click'),
     },
 };
 
@@ -140,7 +138,6 @@ export const PeriodsWithGap: Story = {
                 legendLabel: 'FEDREKVOTE',
             },
         ],
-        dateClickCallback: action('button-click'),
     },
 };
 
@@ -160,6 +157,5 @@ export const PeriodsThatSpanOverAYear: Story = {
                 legendLabel: 'FEDREKVOTE',
             },
         ],
-        dateClickCallback: action('button-click'),
     },
 };

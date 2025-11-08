@@ -60,6 +60,8 @@ const findMonths = (firstDate: string, lastDate: string) => {
     });
 };
 
+const getMonthKey = (year: number, month: number) => `${year}-${month}`;
+
 interface Props {
     periods: Period[];
     useSmallerWidth?: boolean;
@@ -75,25 +77,22 @@ export const Calendar = ({
     dateTooltipCallback,
     dateClickCallback,
 }: Props) => {
-    const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
     const lastDate = useMemo(() => findLastPeriodTom(periods), [periods]);
     const months = useMemo(() => findMonths(periods[0].fom, lastDate), [periods, lastDate]);
 
-    const findDayColor = (date: Dayjs) => {
-        const iso = date.format('YYYY-MM-DD');
-        const period = periodMap.get(iso);
-
-        if (!period) {
-            return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
-        }
-        if (period.color === PeriodeColor.PINK) {
-            return PeriodeColor.PINK;
-        }
-        if (period.color === PeriodeColor.PURPLE) {
-            return PeriodeColor.PURPLE;
-        }
-        return isWeekend(date) ? PeriodeColor.GRAY : period.color;
-    };
+    // group periods by month for memoization
+    const periodsByMonth = useMemo(() => {
+        const result = new Map<string, Period[]>();
+        months.forEach(({ year, month }) => {
+            const monthStart = dayjs().year(year).month(month).startOf('month');
+            const monthEnd = monthStart.endOf('month');
+            const relevant = periods.filter(
+                (p) => dayjs(p.tom).isAfter(monthStart, 'day') && dayjs(p.fom).isBefore(monthEnd, 'day'),
+            );
+            result.set(getMonthKey(year, month), relevant);
+        });
+        return result;
+    }, [months, periods]);
 
     return (
         <>
@@ -107,40 +106,102 @@ export const Calendar = ({
             )}
             <HGrid gap="space-24" columns={{ sm: 1, md: dateClickCallback ? 1 : 2 }}>
                 {months.map(({ month, year }) => {
-                    const yearAndMonth = dayjs().year(year).month(month);
-                    const daysInMonth = yearAndMonth.daysInMonth();
-                    const monthDays = Array.from({ length: daysInMonth }, (_, i) => yearAndMonth.date(i + 1));
-
+                    const key = getMonthKey(year, month);
+                    const monthPeriods = periodsByMonth.get(key) || [];
                     return (
-                        <Month
+                        <MonthWrapper
                             key={`${year}-${month}`}
                             year={year}
                             month={month}
                             headerLevel={useSmallerWidth ? '5' : '4'}
                             showWeekNumbers={showWeekNumbers}
-                        >
-                            {monthDays.map((date) => {
-                                const isoDate = formatDateIso(date);
-                                return (
-                                    <Day
-                                        key={isoDate}
-                                        day={date.date()}
-                                        periodeColor={findDayColor(date)}
-                                        dateTooltipCallback={
-                                            dateTooltipCallback ? () => dateTooltipCallback(isoDate) : undefined
-                                        }
-                                        dateClickCallback={
-                                            dateClickCallback && !isWeekend(date)
-                                                ? () => dateClickCallback(isoDate)
-                                                : undefined
-                                        }
-                                    />
-                                );
-                            })}
-                        </Month>
+                            dateTooltipCallback={dateTooltipCallback}
+                            dateClickCallback={dateClickCallback}
+                            periods={monthPeriods}
+                        />
                     );
                 })}
             </HGrid>
         </>
     );
+};
+
+interface MonthsProps {
+    year: number;
+    month: number;
+    headerLevel: '4' | '5';
+    showWeekNumbers: boolean;
+    dateTooltipCallback?: (date: string) => React.ReactElement | string;
+    dateClickCallback?: (date: string) => void;
+    periods: Period[];
+}
+
+const MonthWrapper = React.memo(
+    ({ year, month, headerLevel, showWeekNumbers, dateTooltipCallback, dateClickCallback, periods }: MonthsProps) => {
+        const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
+        const yearAndMonth = dayjs().year(year).month(month);
+        const daysInMonth = yearAndMonth.daysInMonth();
+        const monthDays = Array.from({ length: daysInMonth }, (_, i) => yearAndMonth.date(i + 1));
+        console.log('Rendering Month:', year, month);
+
+        return (
+            <Month
+                key={`${year}-${month}`}
+                year={year}
+                month={month}
+                headerLevel={headerLevel}
+                showWeekNumbers={showWeekNumbers}
+            >
+                {monthDays.map((date) => (
+                    <Day
+                        key={`${year}-${month}-${date.date()}`}
+                        isoDate={formatDateIso(date)}
+                        periodeColor={findDayColor(date, periodMap)}
+                        dateTooltipCallback={dateTooltipCallback}
+                        dateClickCallback={dateClickCallback && !isWeekend(date) ? dateClickCallback : undefined}
+                    />
+                ))}
+            </Month>
+        );
+    },
+    (prev, next) => {
+        // Re-render only if props actually changed
+        if (
+            prev.year !== next.year ||
+            prev.month !== next.month ||
+            prev.headerLevel !== next.headerLevel ||
+            prev.showWeekNumbers !== next.showWeekNumbers ||
+            prev.dateTooltipCallback !== next.dateTooltipCallback ||
+            prev.dateClickCallback !== next.dateClickCallback
+        ) {
+            return false;
+        }
+
+        // Shallow compare periods
+        if (prev.periods.length !== next.periods.length) return false;
+        for (let i = 0; i < prev.periods.length; i++) {
+            const a = prev.periods[i];
+            const b = next.periods[i];
+            if (a.fom !== b.fom || a.tom !== b.tom || a.color !== b.color || a.isSelected !== b.isSelected) {
+                return false;
+            }
+        }
+        return true;
+    },
+);
+
+const findDayColor = (date: Dayjs, periodMap: Map<string, Period>) => {
+    const iso = date.format('YYYY-MM-DD');
+    const period = periodMap.get(iso);
+
+    if (!period) {
+        return isWeekend(date) ? PeriodeColor.GRAY : PeriodeColor.NONE;
+    }
+    if (period.color === PeriodeColor.PINK) {
+        return PeriodeColor.PINK;
+    }
+    if (period.color === PeriodeColor.PURPLE) {
+        return PeriodeColor.PURPLE;
+    }
+    return isWeekend(date) ? PeriodeColor.GRAY : period.color;
 };

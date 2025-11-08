@@ -393,7 +393,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
     const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
 
     const [isRangeSelectorMode, setRangeSelectorMode] = useState(true);
-    const [valgtePerioder, setSelectedPeriods] = useState<Period[]>([]);
+    const [valgtePerioder, setValgtePerioder] = useState<Period[]>([]);
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
 
@@ -465,7 +465,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
     const dateClickCallback = useCallback(
         (selectedDate: string) => {
             if (isRangeSelectorMode) {
-                setSelectedPeriods((old) =>
+                setValgtePerioder((old) =>
                     old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
                         ? []
                         : [
@@ -480,8 +480,8 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                           ],
                 );
             } else {
-                setSelectedPeriods((old) =>
-                    valgtePerioder.some((p) => p.fom === selectedDate)
+                setValgtePerioder((old) =>
+                    old.some((p) => p.fom === selectedDate)
                         ? old.filter((p) => p.fom !== selectedDate)
                         : [
                               ...old,
@@ -497,7 +497,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                 );
             }
         },
-        [isRangeSelectorMode, valgtePerioder],
+        [isRangeSelectorMode],
     );
 
     return (
@@ -518,7 +518,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         erFarEllerMedmor={erFarEllerMedmor}
                         selectLegend={(color: PeriodeColor) => {
                             const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
-                            setSelectedPeriods((old) =>
+                            setValgtePerioder((old) =>
                                 old.some((p) => p.fom === periode.fom || p.tom === periode.tom)
                                     ? []
                                     : [
@@ -540,7 +540,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                     <RadioGroup
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
                         onChange={() => {
-                            setSelectedPeriods([]);
+                            setValgtePerioder([]);
                             setRangeSelectorMode(!isRangeSelectorMode);
                         }}
                         value={isRangeSelectorMode}
@@ -573,7 +573,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         >
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
-                                setSelectedPeriods={setSelectedPeriods}
+                                setSelectedPeriods={setValgtePerioder}
                                 komplettPlan={uttaksplan}
                                 handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                                 familiehendelsedato={familiehendelsedato}

@@ -70,7 +70,6 @@ export const Month = ({ year, month, children, headerLevel, showWeekNumbers }: P
             borderRadius="4"
             borderColor="neutral-subtle"
             data-testid={`year:${year};month:${month}`}
-            aria-hidden
         >
             <VStack gap="space-12">
                 <Heading size="small" level={headerLevel} align="center">
