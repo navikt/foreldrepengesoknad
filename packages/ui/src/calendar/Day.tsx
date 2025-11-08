@@ -1,5 +1,5 @@
-import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import React, { useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -7,13 +7,6 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import styles from './day.module.css';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
-
-export enum DayType {
-    FIRST_DAY = 'FIRST_DAY',
-    LAST_DAY = 'LAST_DAY',
-    FIRST_AND_LAST_DAY = 'FIRST_AND_LAST_DAY',
-    BETWEEN_DAY = 'BETWEEN_DAY',
-}
 
 const DAY_STYLE = {
     [PeriodeColor.NONE]: styles.none,
@@ -35,19 +28,19 @@ const DAY_STYLE = {
     [PeriodeColor.BLUESTRIPED]: styles.blueStripedDay,
 };
 
-const isDaysWithPeriode = (periodeColor: PeriodeColor) =>
-    periodeColor !== PeriodeColor.NONE && periodeColor !== PeriodeColor.GRAY;
-
 type Props = {
-    day: number;
+    isoDate: string;
     periodeColor: PeriodeColor;
-    dateTooltipCallback?: () => React.ReactElement | string;
-    dateClickCallback?: () => void;
+    dateTooltipCallback?: (date: string) => React.ReactElement | string;
+    dateClickCallback?: (date: string) => void;
 };
 
-export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback }: Props) => {
+export const Day = React.memo(({ isoDate, periodeColor, dateTooltipCallback, dateClickCallback }: Props) => {
+    const day = dayjs(isoDate).date();
+
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+    console.log('Rendering Day:', day, periodeColor);
 
     return (
         <button
@@ -58,14 +51,17 @@ export const Day = ({ day, periodeColor, dateTooltipCallback, dateClickCallback 
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
             onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
             onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
-            onClick={dateClickCallback ? () => dateClickCallback() : undefined}
+            onClick={dateClickCallback ? () => dateClickCallback(isoDate) : undefined}
         >
             {day}
-            {dateTooltipCallback && isDaysWithPeriode(periodeColor) && (
+            {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                 <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                    <Popover.Content>{dateTooltipCallback()}</Popover.Content>
+                    <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
                 </Popover>
             )}
         </button>
     );
-};
+});
+
+const isPeriodDifferentFromNoneOrGray = (periodeColor: PeriodeColor) =>
+    periodeColor !== PeriodeColor.NONE && periodeColor !== PeriodeColor.GRAY;
