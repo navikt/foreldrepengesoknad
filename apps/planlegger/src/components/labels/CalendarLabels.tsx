@@ -12,9 +12,8 @@ import {
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
-import { CalendarLabel } from '@navikt/fp-ui';
+import { CalendarLabel, PeriodColor } from '@navikt/fp-ui';
 
 import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
 import { AntallUkerFpLabel } from './calendar-labels/AntallUkerFpLabel';
@@ -64,14 +63,14 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel color={PeriodeColor.BLACK}>
+                        <CalendarLabel color={PeriodColor.BLACK}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.TapteDager" />
                             </BodyShort>
                         </CalendarLabel>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel color={PeriodeColor.BLUEOUTLINE}>
+                        <CalendarLabel color={PeriodColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.Ferie" />
                             </BodyShort>
@@ -86,14 +85,14 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel color={PeriodeColor.BLACK}>
+                        <CalendarLabel color={PeriodColor.BLACK}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.TapteDager" />
                             </BodyShort>
                         </CalendarLabel>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel color={PeriodeColor.BLUEOUTLINE}>
+                        <CalendarLabel color={PeriodColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.Ferie" />
                             </BodyShort>
@@ -107,14 +106,14 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel color={PeriodeColor.BLACK}>
+                        <CalendarLabel color={PeriodColor.BLACK}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.TapteDager" />
                             </BodyShort>
                         </CalendarLabel>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel color={PeriodeColor.BLUEOUTLINE}>
+                        <CalendarLabel color={PeriodColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.Ferie" />
                             </BodyShort>
@@ -128,14 +127,14 @@ export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett, uttaksplan
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                     {inneholderTapteDager && (
-                        <CalendarLabel color={PeriodeColor.BLACK}>
+                        <CalendarLabel color={PeriodColor.BLACK}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.TapteDager" />
                             </BodyShort>
                         </CalendarLabel>
                     )}
                     {inneholderFerie && (
-                        <CalendarLabel color={PeriodeColor.BLUEOUTLINE}>
+                        <CalendarLabel color={PeriodColor.BLUEOUTLINE}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 <FormattedMessage id="CalendarLabels.Ferie" />
                             </BodyShort>

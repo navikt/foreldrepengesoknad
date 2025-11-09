@@ -12,7 +12,6 @@ import {
     InfoPeriode,
     KontoTypeUttak_fpoversikt,
     Overføringsperiode,
-    Period,
     Periode,
     PeriodeUtenUttak,
     Utsettelsesperiode,
@@ -26,7 +25,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-types';
-import { Calendar } from '@navikt/fp-ui';
+import { Calendar, type CalendarPeriod, type CalendarPeriodColor } from '@navikt/fp-ui';
 import {
     Uttaksdagen,
     formatDateIso,
@@ -91,7 +90,7 @@ const getPerioderForKalendervisning = (
             p.tidsperiode.fom !== undefined &&
             p.tidsperiode.tom !== undefined,
     );
-    const periods: Period[] = perioderForVisning.map((p) => {
+    const periods = perioderForVisning.map<CalendarPeriod>((p) => {
         const color = getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn);
         return {
             fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
@@ -99,7 +98,6 @@ const getPerioderForKalendervisning = (
                 : formatDateIso(p.tidsperiode.fom),
             tom: formatDateIso(p.tidsperiode.tom),
             color,
-            legendLabel: 'NO_LABEL',
         };
     });
 
@@ -107,8 +105,7 @@ const getPerioderForKalendervisning = (
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
-        color: PeriodeColor.PINK,
-        legendLabel: 'NO_LABEL',
+        color: 'PINK',
     });
     const perioderSlåttSammen = slåSammenPeriods(periods);
     return perioderSlåttSammen.map((p) => ({

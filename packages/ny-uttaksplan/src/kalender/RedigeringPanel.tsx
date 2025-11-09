@@ -13,7 +13,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { Period } from '@navikt/fp-types';
+import { CalendarPeriod } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -23,11 +23,11 @@ import { LeggTilPeriodePanel, erFerieLovlig } from './legg-til-periode-panel/Leg
 type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
 type Props = {
-    valgtePerioder: Period[];
+    valgtePerioder: CalendarPeriod[];
     komplettPlan: Planperiode[];
     handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
     familiehendelsedato: string;
-    setSelectedPeriods: React.Dispatch<React.SetStateAction<Period[]>>;
+    setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
@@ -221,12 +221,12 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     );
 };
 
-const slåSammenTilstøtendePerioder = (perioder: Period[]): Period[] => {
+const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
     if (!perioder.length) return [];
 
     return [...perioder]
         .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
-        .reduce<Period[]>((acc, curr) => {
+        .reduce<CalendarPeriod[]>((acc, curr) => {
             const last = acc[acc.length - 1];
 
             if (last && dayjs(last.tom).add(1, 'day').isSame(dayjs(curr.fom))) {
@@ -242,14 +242,14 @@ const slåSammenTilstøtendePerioder = (perioder: Period[]): Period[] => {
         }, []);
 };
 
-const finnAntallDager = (perioder: Period[]): number => {
+const finnAntallDager = (perioder: CalendarPeriod[]): number => {
     return perioder.reduce((acc, periode) => {
         const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
         return acc + dager;
     }, 0);
 };
 
-const finnValgtePerioder = (perioder: Period[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
+const finnValgtePerioder = (perioder: CalendarPeriod[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
     return komplettPlan
         .map((p) => {
             let overlappendeDager = 0;

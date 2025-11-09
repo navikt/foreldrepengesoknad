@@ -14,9 +14,6 @@ export type { PlanForslag } from './src/PlanForslag';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { UttaksplanModus } from './src/UttaksplanModus';
 export type { Frilans } from './src/Frilans';
-export type { Period } from './src/Period';
-export type { LegendLabel } from './src/LegendLabel';
-export type { UttaksplanKalenderLegendInfo } from './src/UttaksplanKalenderLegendInfo';
 
 export { FRILANS_ID } from './src/Frilans';
 export type {

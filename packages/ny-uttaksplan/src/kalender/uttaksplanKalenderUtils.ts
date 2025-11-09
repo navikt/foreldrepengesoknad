@@ -1,14 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-import {
-    Barn,
-    LegendLabel,
-    Period,
-    UttakUtsettelseÅrsak_fpoversikt,
-    isAdoptertBarn,
-    isFødtBarn,
-} from '@navikt/fp-types';
+import { Barn, UttakUtsettelseÅrsak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,
@@ -121,7 +114,7 @@ export const getKalenderPeriodenavn = (
             return intl.formatMessage({ id: 'kalender.tapteDager' });
         case 'GRAY':
             return intl.formatMessage({ id: 'kalender.helg' });
-        case PeriodeColor.BLACKOUTLINE:
+        case 'BLACKOUTLINE':
             return intl.formatMessage({ id: 'kalender.pleiepenger' });
         default:
             return '';

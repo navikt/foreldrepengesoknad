@@ -5,12 +5,12 @@ import styles from './calendarLabel.module.css';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
-    color: PeriodeColor;
+    color: CalendarPeriodColor;
     onClick?: () => void;
 }
 
 export const CalendarLabel = ({ children, color, onClick }: Props) => {
-    if (color !== PeriodeColor.DARKBLUE) {
+    if (color !== 'DARKBLUE') {
         return (
             <HStack className={styles.calendarLabel} gap="space-8" align="center" onClick={onClick}>
                 {getRect(color)}
@@ -21,35 +21,35 @@ export const CalendarLabel = ({ children, color, onClick }: Props) => {
     return null;
 };
 
-const getRect = (color: PeriodeColor) => {
+const getRect = (color: CalendarPeriodColor) => {
     switch (color) {
-        case PeriodeColor.BLUE:
+        case 'BLUE':
             return <div className={styles.blueRect} />;
-        case PeriodeColor.GREEN:
+        case 'GREEN':
             return <div className={styles.greenRect} />;
-        case PeriodeColor.LIGHTBLUE:
-        case PeriodeColor.BLUEOUTLINE:
+        case 'LIGHTBLUE':
+        case 'BLUEOUTLINE':
             return <div className={styles.blueOutlineRect} />;
-        case PeriodeColor.BLACKOUTLINE:
+        case 'BLACKOUTLINE':
             return <div className={styles.blackOutlineRect} />;
-        case PeriodeColor.GREENOUTLINE:
-        case PeriodeColor.LIGHTGREEN:
+        case 'GREENOUTLINE':
+        case 'LIGHTGREEN':
             return <div className={styles.greenOutlineRect} />;
-        case PeriodeColor.BLACK:
+        case 'BLACK':
             return <div className={styles.blackRect} />;
-        case PeriodeColor.LIGHTBLUEGREEN:
+        case 'LIGHTBLUEGREEN':
             return <div className={styles.lightblueGreenRect} />;
-        case PeriodeColor.LIGHTGREENBLUE:
+        case 'LIGHTGREENBLUE':
             return <div className={styles.lightgreenBlueRect} />;
-        case PeriodeColor.BLUESTRIPED:
+        case 'BLUESTRIPED':
             return <div className={styles.blueStripedRect} />;
-        case PeriodeColor.GREENSTRIPED:
+        case 'GREENSTRIPED':
             return <div className={styles.greenStripedRect} />;
-        case PeriodeColor.GRAY:
+        case 'GRAY':
             return <div className={styles.grayRect} />;
-        case PeriodeColor.PURPLE:
+        case 'PURPLE':
             return <div className={styles.purpleRect} />;
-        case PeriodeColor.PINK:
+        case 'PINK':
             return <div className={styles.pinkRect} />;
         default:
             return null;

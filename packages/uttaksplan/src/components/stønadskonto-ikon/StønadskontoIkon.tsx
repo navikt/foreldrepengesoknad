@@ -84,7 +84,7 @@ const getForelderFarge = (forelder: BrukerRolleSak_fpoversikt, erFarEllerMedmor:
 };
 
 // Duplikat til bruk i denne pakka som skal slettast
-export enum PeriodColor {
+enum PeriodColor {
     NONE = 'NONE',
     PINK = 'PINK',
     PURPLE = 'PURPLE',
