@@ -2,7 +2,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 
 export const AktivitetskravLabel = ({ utenAktivitetskrav = false, isBluePanel = false }: Props) => {
     return (
-        <CalendarLabel color={isBluePanel ? PeriodeColor.BLUE : PeriodeColor.GREEN}>
+        <CalendarLabel color={isBluePanel ? 'BLUE' : 'GREEN'}>
             <BodyShort>
                 {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
                 {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}

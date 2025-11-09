@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -29,36 +29,36 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
 type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
+    isFocused: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
-    isFocused: boolean;
     setFocusedDate: (date: Dayjs) => void;
 };
 
 export const Day = React.memo(
-    ({ isoDate, periodeColor, dateTooltipCallback, dateClickCallback, isFocused, setFocusedDate }: Props) => {
+    ({ isoDate, periodeColor, isFocused, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
         const buttonRef = useRef<HTMLButtonElement>(null);
+
         const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
         console.log('Rendering Day:', day, periodeColor);
 
-        // Move DOM focus when focusedDate changes
-        React.useEffect(() => {
-            if (isFocused && buttonRef.current) {
-                buttonRef.current.focus();
+        useEffect(() => {
+            if (isFocused) {
+                buttonRef.current?.focus();
             }
         }, [isFocused]);
 
         return (
             <button
-                data-testid={`day:${day};dayColor:${periodeColor}`}
-                type="button"
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursorAndHoover}`}
                 ref={buttonRef}
+                type="button"
+                data-testid={`day:${day};dayColor:${periodeColor}`}
                 tabIndex={isFocused ? 0 : -1}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursorAndHoover}`}
                 onFocus={() => setFocusedDate(date)}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
