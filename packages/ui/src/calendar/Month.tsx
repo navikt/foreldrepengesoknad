@@ -16,12 +16,13 @@ dayjs.extend(isoWeek);
 interface MonthsProps {
     year: number;
     month: number;
+    isFirstMonth: boolean;
     headerLevel: '4' | '5';
     showWeekNumbers: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
     periods: CalendarPeriod[];
-    focusedDate: Dayjs;
+    focusedDate: Dayjs | undefined;
     setFocusedDate: (date: Dayjs) => void;
 }
 
@@ -29,6 +30,7 @@ export const Month = React.memo(
     ({
         year,
         month,
+        isFirstMonth,
         headerLevel,
         showWeekNumbers,
         dateTooltipCallback,
@@ -51,15 +53,15 @@ export const Month = React.memo(
                 headerLevel={headerLevel}
                 showWeekNumbers={showWeekNumbers}
             >
-                {monthDays.map((date) => (
+                {monthDays.map((date, index) => (
                     <Day
                         key={`${year}-${month}-${date.date()}`}
                         isoDate={formatDateIso(date)}
                         periodeColor={findDayColor(date, periodMap)}
                         dateTooltipCallback={dateTooltipCallback}
                         dateClickCallback={dateClickCallback && !isWeekend(date) ? dateClickCallback : undefined}
-                        isFocused={focusedDate.isSame(date, 'day')}
-                        onFocusChange={() => setFocusedDate(date)}
+                        isFocused={focusedDate?.isSame(date, 'day') ?? (isFirstMonth && index === 0) ?? false}
+                        setFocusedDate={setFocusedDate}
                     />
                 ))}
             </Month1>
