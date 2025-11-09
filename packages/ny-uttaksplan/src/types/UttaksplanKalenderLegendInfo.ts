@@ -1,8 +1,8 @@
-import { PeriodeColor } from '@navikt/fp-constants';
+import { CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { LegendLabel } from './LegendLabel';
 
 export type UttaksplanKalenderLegendInfo = {
-    color: PeriodeColor;
+    color: CalendarPeriodColor;
     label: LegendLabel;
 };

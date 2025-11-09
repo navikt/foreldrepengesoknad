@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
+import { CalendarPeriodColor } from '@navikt/fp-ui';
 import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 //TODO (TOR) Desse er kopiert fra pakka ny-uttaksplan. Bør ein bruke dei direkte i den pakka, eller
@@ -43,4 +44,47 @@ export const getAnnenForelderSamtidigUttakPeriode = (
     }
 
     return undefined;
+};
+
+export const getForelderFarge = (
+    forelder: BrukerRolleSak_fpoversikt,
+    erFarEllerMedmor: boolean,
+): CalendarPeriodColor => {
+    if (forelder === 'MOR') {
+        return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+    }
+    return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+};
+
+const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): CalendarPeriodColor => {
+    switch (konto) {
+        case 'FEDREKVOTE':
+        case 'AKTIVITETSFRI_KVOTE':
+            return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
+            return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+        case 'FORELDREPENGER':
+            return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+        case 'FELLESPERIODE':
+            return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
+        default:
+            return 'NONE';
+    }
+};
+
+export const getUttaksperiodeFarge = (
+    konto: KontoTypeUttak_fpoversikt,
+    forelder: BrukerRolleSak_fpoversikt | undefined,
+    erFarEllerMedmor: boolean,
+    harMidlertidigOmsorg?: boolean,
+): CalendarPeriodColor => {
+    if (harMidlertidigOmsorg) {
+        return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+    }
+
+    if (forelder === undefined) {
+        return getKontoFarge(konto, erFarEllerMedmor);
+    }
+    return getForelderFarge(forelder, erFarEllerMedmor);
 };

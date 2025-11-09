@@ -25,6 +25,8 @@ export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
 export { Calendar } from './src/calendar/Calendar';
 export { CalendarLabel } from './src/calendar/label/CalendarLabel';
+export type { CalendarPeriodColor } from './src/calendar/types/CalendarPeriodColor';
+export type { CalendarPeriod } from './src/calendar/types/CalendarPeriod';
 export type { ProgressStep } from './src/step/progress-stepper/ProgressStepper';
 export { Page } from './src/page/Page';
 export { BlueHeading } from './src/boxes/BlueHeading';

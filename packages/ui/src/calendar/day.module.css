@@ -17,8 +17,12 @@
     display: 'block';
 }
 
-.cursor {
+.cursorAndHoover {
     cursor: pointer;
+}
+
+.cursorAndHoover:hover {
+    background-color: var(--ax-accent-200);
 }
 
 .blueDay {

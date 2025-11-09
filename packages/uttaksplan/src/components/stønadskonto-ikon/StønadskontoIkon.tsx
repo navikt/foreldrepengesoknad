@@ -2,8 +2,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
-import { getUttaksperiodeFarge } from '@navikt/fp-utils';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
 
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
@@ -43,5 +42,71 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
         </IconBox>
     );
 };
+
+const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): PeriodColor => {
+    switch (konto) {
+        case 'FEDREKVOTE':
+        case 'AKTIVITETSFRI_KVOTE':
+            return erFarEllerMedmor ? PeriodColor.GREEN : PeriodColor.LIGHTGREEN;
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
+            return erFarEllerMedmor ? PeriodColor.LIGHTBLUE : PeriodColor.BLUE;
+        case 'FORELDREPENGER':
+            return erFarEllerMedmor ? PeriodColor.GREEN : PeriodColor.BLUE;
+        case 'FELLESPERIODE':
+            return erFarEllerMedmor ? PeriodColor.LIGHTBLUEGREEN : PeriodColor.LIGHTGREENBLUE;
+        default:
+            return PeriodColor.NONE;
+    }
+};
+
+const getUttaksperiodeFarge = (
+    konto: KontoTypeUttak_fpoversikt,
+    forelder: BrukerRolleSak_fpoversikt | undefined,
+    erFarEllerMedmor: boolean,
+    harMidlertidigOmsorg?: boolean,
+): PeriodColor => {
+    if (harMidlertidigOmsorg) {
+        return erFarEllerMedmor ? PeriodColor.GREEN : PeriodColor.BLUE;
+    }
+
+    if (forelder === undefined) {
+        return getKontoFarge(konto, erFarEllerMedmor);
+    }
+    return getForelderFarge(forelder, erFarEllerMedmor);
+};
+
+const getForelderFarge = (forelder: BrukerRolleSak_fpoversikt, erFarEllerMedmor: boolean): PeriodColor => {
+    if (forelder === 'MOR') {
+        return erFarEllerMedmor ? PeriodColor.LIGHTBLUE : PeriodColor.BLUE;
+    }
+    return erFarEllerMedmor ? PeriodColor.GREEN : PeriodColor.LIGHTGREEN;
+};
+
+// Duplikat til bruk i denne pakka som skal slettast
+enum PeriodColor {
+    NONE = 'NONE',
+    PINK = 'PINK',
+    PURPLE = 'PURPLE',
+    LIGHTBLUE = 'LIGHTBLUE',
+    BLUE = 'BLUE',
+    DARKBLUE = 'DARKBLUE',
+    GREEN = 'GREEN',
+    LIGHTGREEN = 'LIGHTGREEN',
+    GRAY = 'GRAY',
+    BLACK = 'BLACK',
+    BLACKOUTLINE = 'BLACKOUTLINE',
+    LIGHTBLUEGREEN = 'LIGHTBLUEGREEN',
+    LIGHTGREENBLUE = 'LIGHTGREENBLUE',
+    GREENSTRIPED = 'GREENSTRIPED',
+    BLUESTRIPED = 'BLUESTRIPED',
+    GREENOUTLINE = 'GREENOUTLINE',
+    BLUEOUTLINE = 'BLUEOUTLINE',
+}
+
+export const getUtsettelseFarge = (forelder: BrukerRolleSak_fpoversikt): PeriodColor => {
+    return forelder === 'FAR_MEDMOR' ? PeriodColor.GREENOUTLINE : PeriodColor.BLUEOUTLINE;
+};
+
 // eslint-disable-next-line import/no-default-export
 export default StønadskontoIkon;

@@ -3,9 +3,11 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-import { Barn, LegendLabel, UttakUtsettelseÅrsak_fpoversikt, UttaksplanKalenderLegendInfo } from '@navikt/fp-types';
-import { CalendarLabel } from '@navikt/fp-ui';
+import { Barn, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
+
+import { LegendLabel } from '../types/LegendLabel';
+import { UttaksplanKalenderLegendInfo } from '../types/UttaksplanKalenderLegendInfo';
 
 const getCalendarLabel = (
     label: LegendLabel,
@@ -29,23 +31,23 @@ const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         default:
             return label;
-        // case PeriodeColor.PINK:
+        // case CalendarPeriodColor.PINK:
         //     return getFamiliehendelseKalendarLabel(barn, intl);
-        // case PeriodeColor.BLUE:
-        // case PeriodeColor.GREEN:
-        // case PeriodeColor.BLUESTRIPED:
-        // case PeriodeColor.GREENSTRIPED:
-        // case PeriodeColor.LIGHTBLUE:
-        // case PeriodeColor.LIGHTGREEN:
-        // case PeriodeColor.LIGHTBLUEGREEN:
-        // case PeriodeColor.LIGHTGREENBLUE:
-        // case PeriodeColor.GREENOUTLINE:
-        // case PeriodeColor.BLUEOUTLINE:
-        // case PeriodeColor.BLACK:
-        // case PeriodeColor.GRAY:
-        // case PeriodeColor.BLACKOUTLINE:
+        // case CalendarPeriodColor.BLUE:
+        // case CalendarPeriodColor.GREEN:
+        // case CalendarPeriodColor.BLUESTRIPED:
+        // case CalendarPeriodColor.GREENSTRIPED:
+        // case CalendarPeriodColor.LIGHTBLUE:
+        // case CalendarPeriodColor.LIGHTGREEN:
+        // case CalendarPeriodColor.LIGHTBLUEGREEN:
+        // case CalendarPeriodColor.LIGHTGREENBLUE:
+        // case CalendarPeriodColor.GREENOUTLINE:
+        // case CalendarPeriodColor.BLUEOUTLINE:
+        // case CalendarPeriodColor.BLACK:
+        // case CalendarPeriodColor.GRAY:
+        // case CalendarPeriodColor.BLACKOUTLINE:
         //     return getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl);
-        // case PeriodeColor.PURPLE:
+        // case CalendarPeriodColor.PURPLE:
         //     return 'Barnehageplass';
         // default:
         //     return null;
@@ -53,12 +55,12 @@ const getCalendarLabel = (
 };
 
 interface Props {
-    uniqueColors: PeriodeColor[];
+    uniqueColors: CalendarPeriodColor[];
     barn: Barn;
     navnAnnenPart: string;
     unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[];
     erFarEllerMedmor: boolean;
-    selectLegend: (color: PeriodeColor) => void;
+    selectLegend: (color: CalendarPeriodColor) => void;
     legendInfo: UttaksplanKalenderLegendInfo[];
 }
 
@@ -74,14 +76,12 @@ export const UttaksplanLegend = ({
     return (
         <HStack gap="space-16" align="center">
             {legendInfo
-                .filter((info) => info.color !== PeriodeColor.NONE)
+                .filter((info) => info.color !== 'NONE')
                 .map((info) => (
                     <button
                         key={info.color}
                         onClick={
-                            info.color !== PeriodeColor.PINK &&
-                            info.color !== PeriodeColor.PURPLE &&
-                            info.color !== PeriodeColor.BLACKOUTLINE
+                            info.color !== 'PINK' && info.color !== 'PURPLE' && info.color !== 'BLACKOUTLINE'
                                 ? () => selectLegend(info.color)
                                 : undefined
                         }

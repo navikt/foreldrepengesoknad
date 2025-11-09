@@ -3,10 +3,8 @@ import { useState } from 'react';
 
 import { BodyShort, Checkbox, CheckboxGroup, Detail, VStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-import { Period } from '@navikt/fp-types';
-
 import { Calendar } from './Calendar';
+import { CalendarPeriod } from './types/CalendarPeriod';
 
 const meta = {
     title: 'Calendar',
@@ -27,26 +25,22 @@ export const Default: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
-                legendLabel: 'FORELDREPENGER_FØR_FØDSEL',
+                color: 'BLUE',
             },
             {
                 fom: '2024-02-21',
                 tom: '2024-02-21',
-                color: PeriodeColor.PINK,
-                legendLabel: 'FØDSEL',
+                color: 'PINK',
             },
             {
                 fom: '2024-02-22',
                 tom: '2024-05-05',
-                color: PeriodeColor.BLUE,
-                legendLabel: 'MØDREKVOTE',
+                color: 'BLUE',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
-                legendLabel: 'FEDREKVOTE',
+                color: 'LIGHTGREEN',
             },
         ],
     },
@@ -85,18 +79,16 @@ export const MedValgAvPerioder: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
-                legendLabel: 'MØDREKVOTE',
+                color: 'BLUE',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
-                legendLabel: 'FEDREKVOTE',
+                color: 'LIGHTGREEN',
             },
-        ] satisfies Period[];
+        ] satisfies CalendarPeriod[];
 
-        const [perioder, setPerioder] = useState<Period[]>(allePerioder);
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
 
         const handleChange = (val: string[]) => {
             setPerioder(
@@ -113,8 +105,8 @@ export const MedValgAvPerioder: Story = {
                     legend="Velg en periode for å se hvordan den vises i kalenderen."
                     onChange={handleChange}
                 >
-                    <Checkbox value={PeriodeColor.BLUE}>Blå</Checkbox>
-                    <Checkbox value={PeriodeColor.LIGHTGREEN}>Grøn</Checkbox>
+                    <Checkbox value="BLUE">Blå</Checkbox>
+                    <Checkbox value="LIGHTGREEN">Grøn</Checkbox>
                 </CheckboxGroup>
                 <Calendar periods={perioder} />
             </div>
@@ -128,14 +120,12 @@ export const PeriodsWithGap: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
-                legendLabel: 'MØDREKVOTE',
+                color: 'BLUE',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
-                legendLabel: 'FEDREKVOTE',
+                color: 'LIGHTGREEN',
             },
         ],
     },
@@ -147,14 +137,12 @@ export const PeriodsThatSpanOverAYear: Story = {
             {
                 fom: '2024-02-01',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
-                legendLabel: 'MØDREKVOTE',
+                color: 'BLUE',
             },
             {
                 fom: '2025-05-06',
                 tom: '2025-07-30',
-                color: PeriodeColor.LIGHTGREEN,
-                legendLabel: 'FEDREKVOTE',
+                color: 'LIGHTGREEN',
             },
         ],
     },
