@@ -5,7 +5,6 @@ import { getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 interface Props {
@@ -22,7 +21,7 @@ export const FamiliehendelseLabel = ({ barnet }: Props) => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     return (
-        <CalendarLabel color={PeriodeColor.PINK}>
+        <CalendarLabel color="PINK">
             <BodyShort>
                 {barnet.erFødsel && erFødt && (
                     <FormattedMessage

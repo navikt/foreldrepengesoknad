@@ -4,7 +4,6 @@ import { OmBarnet } from 'types/Barnet';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 interface Props {
@@ -17,7 +16,7 @@ export const BarnehageplassLabel = ({ barnet }: Props) => {
     const barnehageplassdato = barnehagestartDato(barnet);
 
     return (
-        <CalendarLabel color={PeriodeColor.PURPLE}>
+        <CalendarLabel color="PURPLE">
             <BodyShort>
                 <FormattedMessage
                     id="BarnehageplassLabel.Barnehagestartdato"

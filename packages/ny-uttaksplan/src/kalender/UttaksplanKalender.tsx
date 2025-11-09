@@ -88,6 +88,8 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
     return 'FERIE';
 };
 
+type CalendarPeriodWithLabel = CalendarPeriod & { legendLabel?: LegendLabel };
+
 const getPerioderForKalendervisning = (
     allePerioder: Planperiode[],
     erFarEllerMedmor: boolean,
@@ -98,7 +100,7 @@ const getPerioderForKalendervisning = (
     erIPlanleggerModus: boolean,
     foreldrepengerHarAktivitetskrav: boolean,
     barnehagestartdato?: string,
-): CalendarPeriod[] => {
+): CalendarPeriodWithLabel[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const allePerioderBortsettFraFamiliehendelseperioden = allePerioder.filter(
         (p) =>
@@ -114,13 +116,6 @@ const getPerioderForKalendervisning = (
         );
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, [] as Planperiode[]);
-
-    const barnehageperiode = {
-        fom: barnehagestartdato,
-        tom: barnehagestartdato,
-        color: 'PURPLE',
-        legendLabel: 'BARNEHAGEPLASS',
-    } as CalendarPeriod;
 
     const res = unikePerioder.reduce((acc, periode) => {
         const color = erIPlanleggerModus
@@ -164,11 +159,18 @@ const getPerioderForKalendervisning = (
                 legendLabel: getLegendLabelFromPeriode(periode),
             },
         ];
-    }, [] as CalendarPeriod[]);
+    }, [] as CalendarPeriodWithLabel[]);
 
     const perioderForVisning =
         barnehagestartdato !== undefined
-            ? res.concat(barnehageperiode).sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
+            ? res
+                  .concat({
+                      fom: barnehagestartdato,
+                      tom: barnehagestartdato,
+                      color: 'PURPLE',
+                      legendLabel: 'BARNEHAGEPLASS',
+                  } satisfies CalendarPeriodWithLabel)
+                  .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
             : res;
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(allePerioder, familiehendelsesdato) ?? 0;
@@ -460,7 +462,6 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                                   tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
                                   isSelected: true,
                                   srText: '',
-                                  legendLabel: old.length === 0 ? 'NO_LABEL' : old[0].legendLabel,
                               },
                           ],
                 );
@@ -476,8 +477,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                                   tom: selectedDate,
                                   isSelected: true,
                                   srText: '',
-                                  legendLabel: old.length === 0 ? 'NO_LABEL' : old[0].legendLabel,
-                              },
+                              } satisfies CalendarPeriod,
                           ].sort(sortPeriods),
                 );
             }
@@ -513,7 +513,6 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                                               tom: periode?.tom,
                                               isSelected: true,
                                               srText: '',
-                                              legendLabel: periode.legendLabel,
                                           },
                                       ],
                             );
