@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
@@ -32,12 +32,13 @@ type Props = {
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
     isFocused: boolean;
-    onFocusChange: () => void;
+    setFocusedDate: (date: Dayjs) => void;
 };
 
 export const Day = React.memo(
-    ({ isoDate, periodeColor, dateTooltipCallback, dateClickCallback, isFocused, onFocusChange }: Props) => {
-        const day = dayjs(isoDate).date();
+    ({ isoDate, periodeColor, dateTooltipCallback, dateClickCallback, isFocused, setFocusedDate }: Props) => {
+        const date = dayjs(isoDate);
+        const day = date.date();
 
         const buttonRef = useRef<HTMLButtonElement>(null);
         const [isTooltipOpen, setIsTooltipOpen] = useState(false);
@@ -57,8 +58,8 @@ export const Day = React.memo(
                 type="button"
                 className={`${styles.days} ${DAY_STYLE[periodeColor]} ${!!dateClickCallback && styles.cursorAndHoover}`}
                 ref={buttonRef}
-                tabIndex={isFocused ? 0 : -1} // only one tabbable element
-                onFocus={onFocusChange}
+                tabIndex={isFocused ? 0 : -1}
+                onFocus={() => setFocusedDate(date)}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={dateClickCallback ? () => dateClickCallback(isoDate) : undefined}

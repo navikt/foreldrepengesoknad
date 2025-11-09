@@ -30,7 +30,7 @@ export const Calendar = ({
     const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
     const periodsByMonth = useMemo(() => getPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
-    const [focusedDate, setFocusedDate] = useState(() => dayjs(periods[0]?.fom));
+    const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
 
     // 👇 Move focus with arrow keys
     const handleKeyNavigation = useCallback(
@@ -75,11 +75,13 @@ export const Calendar = ({
                 </div>
             )}
             <HGrid gap="space-24" columns={{ sm: 1, md: dateClickCallback ? 1 : 2 }}>
-                {allMonths.map(({ month, year }) => {
+                {allMonths.map(({ month, year }, index) => {
                     const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
+                    const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
                     return (
                         <Month
                             key={`${year}-${month}`}
+                            isFirstMonth={index === 0}
                             year={year}
                             month={month}
                             periods={monthPeriods}
@@ -87,7 +89,7 @@ export const Calendar = ({
                             showWeekNumbers={showWeekNumbers}
                             dateTooltipCallback={dateTooltipCallback}
                             dateClickCallback={dateClickCallback}
-                            focusedDate={focusedDate}
+                            focusedDate={isMonthInFocus ? focusedDate : undefined}
                             setFocusedDate={setFocusedDate}
                         />
                     );
