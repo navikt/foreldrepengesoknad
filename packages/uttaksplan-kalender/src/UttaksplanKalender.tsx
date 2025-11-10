@@ -10,7 +10,7 @@ import {
     Barn,
     BrukerRolleSak_fpoversikt,
     InfoPeriode,
-    KontoTypeUttak_fpoversikt,
+    KontoTypeUttak,
     Overføringsperiode,
     Periode,
     PeriodeUtenUttak,
@@ -273,7 +273,7 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
     );
 };
 
-const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): CalendarPeriodColor => {
+const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): CalendarPeriodColor => {
     switch (konto) {
         case 'FEDREKVOTE':
         case 'AKTIVITETSFRI_KVOTE':
@@ -291,7 +291,7 @@ const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boole
 };
 
 export const getUttaksperiodeFarge = (
-    konto: KontoTypeUttak_fpoversikt,
+    konto: KontoTypeUttak,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,

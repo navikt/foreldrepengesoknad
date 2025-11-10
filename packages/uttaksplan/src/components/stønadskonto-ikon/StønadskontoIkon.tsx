@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
@@ -43,7 +43,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     );
 };
 
-const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): PeriodColor => {
+const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): PeriodColor => {
     switch (konto) {
         case 'FEDREKVOTE':
         case 'AKTIVITETSFRI_KVOTE':
@@ -61,7 +61,7 @@ const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boole
 };
 
 const getUttaksperiodeFarge = (
-    konto: KontoTypeUttak_fpoversikt,
+    konto: KontoTypeUttak,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,

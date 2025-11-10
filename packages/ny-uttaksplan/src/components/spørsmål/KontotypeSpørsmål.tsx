@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -13,7 +13,7 @@ import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/En
 import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 interface Props {
-    gyldigeKontotyper?: KontoTypeUttak_fpoversikt[];
+    gyldigeKontotyper?: KontoTypeUttak[];
     skalViseTittel?: boolean;
 }
 

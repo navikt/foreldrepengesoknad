@@ -15,7 +15,7 @@ import {
     UttaksplanNy,
 } from '@navikt/fp-uttaksplan-ny';
 
-import { hentUttaksKontoOptions } from '../../api/api';
+import { hentUttaksKontoOptions } from '../../api/queries';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
@@ -34,19 +34,18 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
 
     const sak: Foreldrepengesak = harFpSak ? gjeldendeSak : ({} as Foreldrepengesak);
 
-    const kontoQuery = useQuery({
-        ...hentUttaksKontoOptions({
-            brukerrolle: sak?.forelder === 'MOR' ? 'MOR' : 'FAR',
-            morHarUføretrygd: sak?.morUføretrygd,
-            rettighetstype: sak?.rettighetType,
-            omsorgsovertakelseDato: sak?.familiehendelse.omsorgsovertakelse,
-            antallBarn: sak?.familiehendelse.antallBarn,
-            termindato: sak?.familiehendelse.termindato,
+    const kontoQuery = useQuery(
+        hentUttaksKontoOptions({
+            brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
+            morHarUføretrygd: sak.morUføretrygd,
+            rettighetstype: sak.rettighetType,
+            omsorgsovertakelseDato: sak.familiehendelse.omsorgsovertakelse,
+            antallBarn: sak.familiehendelse.antallBarn,
+            termindato: sak.familiehendelse.termindato,
             // Fødselsdato trumfer omsorgsovertakelseDato i APIet
-            fødselsdato: sak?.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
+            fødselsdato: sak.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
         }),
-        enabled: harFpSak,
-    });
+    );
     const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
     if (!harFpSak || !konto) {

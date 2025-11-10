@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { PanelButtons } from '../../components/panel-buttons/PanelButtons';
@@ -18,7 +18,7 @@ import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 
 type LeggTilPeriodePanelFormValues = {
-    kontoType?: KontoTypeUttak_fpoversikt;
+    kontoType?: KontoTypeUttak;
     forelder: BrukerRolleSak_fpoversikt;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
@@ -174,7 +174,7 @@ export const LeggTilPeriodePanel = ({
 };
 
 const getForelderFromKontoType = (
-    ktValue: KontoTypeUttak_fpoversikt | undefined,
+    ktValue: KontoTypeUttak | undefined,
     fValue: BrukerRolleSak_fpoversikt | undefined,
 ): BrukerRolleSak_fpoversikt | undefined => {
     switch (ktValue) {

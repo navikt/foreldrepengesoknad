@@ -1,12 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 
-import {
-    Barn,
-    Familiesituasjon,
-    KontoBeregningDto_fpoversikt,
-    NavnPåForeldre,
-    UttaksplanModus,
-} from '@navikt/fp-types';
+import { Barn, Familiesituasjon, KontoBeregningDto, NavnPåForeldre, UttaksplanModus } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 type Props = {
@@ -14,7 +8,7 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     modus: UttaksplanModus;
-    valgtStønadskonto: KontoBeregningDto_fpoversikt;
+    valgtStønadskonto: KontoBeregningDto;
     aleneOmOmsorg: boolean;
     erMedmorDelAvSøknaden: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;

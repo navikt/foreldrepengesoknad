@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak_fpoversikt, SaksperiodeNy } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak, SaksperiodeNy } from '@navikt/fp-types';
 import { CalendarPeriodColor } from '@navikt/fp-ui';
 import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
@@ -56,7 +56,7 @@ export const getForelderFarge = (
     return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
 };
 
-const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boolean): CalendarPeriodColor => {
+const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): CalendarPeriodColor => {
     switch (konto) {
         case 'FEDREKVOTE':
         case 'AKTIVITETSFRI_KVOTE':
@@ -74,7 +74,7 @@ const getKontoFarge = (konto: KontoTypeUttak_fpoversikt, erFarEllerMedmor: boole
 };
 
 export const getUttaksperiodeFarge = (
-    konto: KontoTypeUttak_fpoversikt,
+    konto: KontoTypeUttak,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
