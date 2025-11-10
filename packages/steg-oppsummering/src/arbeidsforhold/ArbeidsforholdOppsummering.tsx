@@ -14,15 +14,17 @@ import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-uti
 import { JaNeiTekst } from '../OppsummeringPanel';
 
 interface ArbeidsforholdOppsummeringProps {
-    readonly arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
-    readonly arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    readonly onVilEndreSvar: () => void;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    onVilEndreSvar: () => void;
+    skalViseAlertOmIM: boolean;
 }
 
 export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
     onVilEndreSvar,
+    skalViseAlertOmIM,
 }: ArbeidsforholdOppsummeringProps) => {
     if (!arbeidsforholdOgInntekt) {
         return null;
@@ -57,7 +59,7 @@ export const ArbeidsforholdOppsummering = ({
                             </FormSummary.Answers>
                         )}
                     </FormSummary.Value>
-                    {arbeidsforhold.length > 0 && (
+                    {skalViseAlertOmIM && (
                         <Alert variant="info" style={{ marginTop: 'var(--ax-space-8)' }}>
                             <FormattedMessage
                                 id="ArbeidsforholdOppsummering.inntektsmelding"

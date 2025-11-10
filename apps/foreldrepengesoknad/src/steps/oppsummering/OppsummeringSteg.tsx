@@ -157,6 +157,10 @@ export const OppsummeringSteg = (props: Props) => {
                     </>
                 )}
                 <ArbeidsforholdOppsummering
+                    // For FP ber vi alltid om IM hvis arbeidsforhold.
+                    // Men for SVP ber vi kun dersom det er tilrettelegging for et arbeidsforhold.
+                    // Derfor trengs denne prop'en selvom det kan se ut som den kan utledes i komponenten fra aktiveArbeidsforhold
+                    skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}

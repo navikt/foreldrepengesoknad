@@ -46,6 +46,9 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
+    const skalViseAlertOmIM = aktiveArbeidsforhold.some((arbeidsforhold) =>
+        valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
+    );
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -99,6 +102,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
+                    skalViseAlertOmIM={skalViseAlertOmIM}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
