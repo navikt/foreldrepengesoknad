@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
@@ -28,44 +28,12 @@ export const Calendar = ({
     dateClickCallback,
 }: Props) => {
     const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
-    const periodsByMonth = useMemo(() => getPeriodsByMonth(allMonths, periods), [allMonths, periods]);
+    const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
 
-    // 👇 Move focus with arrow keys
-    const handleKeyNavigation = useCallback(
-        (e: React.KeyboardEvent) => {
-            if (!focusedDate) return;
-            let nextDate = focusedDate;
-
-            switch (e.key) {
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    nextDate = focusedDate.subtract(1, 'day');
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    nextDate = focusedDate.add(1, 'day');
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    nextDate = focusedDate.subtract(7, 'day');
-                    break;
-                case 'ArrowDown':
-                    e.preventDefault();
-                    nextDate = focusedDate.add(7, 'day');
-                    break;
-                default:
-                    return;
-            }
-
-            setFocusedDate(nextDate);
-        },
-        [focusedDate],
-    );
-
     return (
-        <div onKeyDown={handleKeyNavigation}>
+        <>
             {periods.some((p) => p.srText) && (
                 <div className={styles.srOnly}>
                     {periods
@@ -78,6 +46,7 @@ export const Calendar = ({
                 {allMonths.map(({ month, year }, index) => {
                     const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
                     const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
+
                     return (
                         <Month
                             key={`${year}-${month}`}
@@ -95,7 +64,7 @@ export const Calendar = ({
                     );
                 })}
             </HGrid>
-        </div>
+        </>
     );
 };
 
@@ -127,7 +96,7 @@ const monthDiff = (d1: Date, d2: Date): number => {
 
 const getMonthKey = (year: number, month: number): string => `${year}-${month}`;
 
-const getPeriodsByMonth = (
+const groupPeriodsByMonth = (
     months: Array<{ month: number; year: number }>,
     periods: CalendarPeriod[],
 ): Map<string, CalendarPeriod[]> => {
