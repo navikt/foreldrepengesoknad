@@ -22,7 +22,7 @@ describe('<OppsummeringSteg>', () => {
         render(<Default />);
 
         expect(
-            screen.queryByText('Arbeidsgiverene dine blir kontaktet av Nav for å sende opplysninger om din inntekt'),
+            screen.queryByText('blir kontaktet av Nav for å sende opplysninger om din inntekt', { exact: false }),
         ).not.toBeInTheDocument();
     });
     it('skal ikke vise feilmelding, vilkår er godkjent', async () => {
