@@ -289,7 +289,7 @@ export type BarnDto_fpoversikt = {
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
-    navn: Navn_fpoversikt;
+    navn?: Navn_fpoversikt;
 };
 
 export type PersonMedArbeidsforholdDto_fpoversikt = {

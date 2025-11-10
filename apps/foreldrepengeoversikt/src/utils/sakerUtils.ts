@@ -15,7 +15,7 @@ import {
     SvpSak_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering';
 import { GruppertSak } from '../types/GruppertSak';
@@ -27,16 +27,6 @@ import { getLeverPerson } from './personUtils';
 export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
-
-function sorterPersonEtterEldstOgNavn(p1: BarnDto_fpoversikt, p2: BarnDto_fpoversikt) {
-    if (dayjs(p1.fødselsdato).isAfter(p2.fødselsdato, 'd')) {
-        return 1;
-    } else if (dayjs(p1.fødselsdato).isBefore(p2.fødselsdato, 'd')) {
-        return -1;
-    } else {
-        return p1.navn.fornavn < p2.navn.fornavn ? -1 : 1;
-    }
-}
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
@@ -101,8 +91,8 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpove
 
     return {
         fornavn: alleBarn
-            ?.filter((b) => b.navn.fornavn !== undefined && b.navn.fornavn.trim() !== '')
-            .map((b) => [b.navn.fornavn, b.navn.mellomnavn ?? ''].join(' ')),
+            ?.filter((b) => b.navn?.fornavn !== undefined && b.navn.fornavn.trim() !== '')
+            .map((b) => [b.navn?.fornavn, b.navn?.mellomnavn ?? ''].join(' ')),
         fødselsdatoer,
         alleBarnaLever: !!alleBarn?.every((barn) => getLeverPerson(barn)),
     };

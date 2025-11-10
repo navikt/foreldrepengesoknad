@@ -2,12 +2,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
-import {
-    getAndreBarnFødtSammenMedBarnet,
-    getDødeBarnetForMerEnn3MånederSiden,
-    getLeverBarnet,
-    sorterRegistrerteBarnEtterEldstOgNavn,
-} from 'utils/barnUtils';
+import { getAndreBarnFødtSammenMedBarnet, getDødeBarnetForMerEnn3MånederSiden, getLeverBarnet } from 'utils/barnUtils';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { erEldreEnn3ÅrOg3Måneder } from 'utils/personUtils';
@@ -19,7 +14,7 @@ import {
     Familiehendelse_fpoversikt,
     FpSak_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
+import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -117,8 +112,8 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: BarnDto
         fornavn:
             pdlBarn !== undefined && pdlBarn.length > 0
                 ? pdlBarn
-                      .filter((b) => b.navn.fornavn !== undefined && b.navn.fornavn.trim() !== '')
-                      .map((b) => [b.navn.fornavn, b.navn.mellomnavn ?? ''].join(' '))
+                      .filter((b) => b.navn?.fornavn !== undefined && b.navn.fornavn.trim() !== '')
+                      .map((b) => [b.navn?.fornavn, b.navn?.mellomnavn ?? ''].join(' '))
                 : undefined,
         fnr:
             pdlBarn !== undefined && pdlBarn.length > 0
@@ -133,9 +128,9 @@ const getSelectableBarnFraPDL = (
     registrertBarn: BarnDto_fpoversikt,
     annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn => {
-    const navn = registrertBarn.navn.mellomnavn
+    const navn = registrertBarn.navn?.mellomnavn
         ? [registrertBarn.navn.fornavn, registrertBarn.navn.mellomnavn].join(' ')
-        : registrertBarn.navn.fornavn;
+        : registrertBarn.navn?.fornavn;
     return {
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
@@ -154,7 +149,7 @@ const getSelectableFlerlingerFraPDL = (
     barnFødtISammePeriode: BarnDto_fpoversikt[],
     annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn | undefined => {
-    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldstOgNavn);
+    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterPersonEtterEldstOgNavn);
     const minstEttBarnDødeForMerEnn3MndSiden = alleBarna.some(
         (b) => !getLeverBarnet(b) && getDødeBarnetForMerEnn3MånederSiden(b),
     );
@@ -167,7 +162,7 @@ const getSelectableFlerlingerFraPDL = (
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: alleBarna.length,
         fødselsdatoer: alleBarna.map((b) => dayjs.utc(b.fødselsdato).toDate()),
-        fornavn: alleBarna.map((b) => [b.navn.fornavn, b.navn.mellomnavn ?? ''].join(' ')),
+        fornavn: alleBarna.map((b) => [b.navn?.fornavn ?? '', b.navn?.mellomnavn ?? ''].join(' ')),
         fnr: alleBarna.map((b) => b.fnr),
         sortableDato: dayjs.utc(alleBarna[0].fødselsdato).toDate(),
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
