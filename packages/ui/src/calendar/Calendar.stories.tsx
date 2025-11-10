@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { BodyShort, Checkbox, CheckboxGroup, Detail, VStack } from '@navikt/ds-react';
+import { BodyShort, Detail, VStack } from '@navikt/ds-react';
 
 import { Calendar } from './Calendar';
 import { CalendarPeriod } from './types/CalendarPeriod';
