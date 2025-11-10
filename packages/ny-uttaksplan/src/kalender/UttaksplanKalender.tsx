@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -449,42 +449,6 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
             (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
-    const dateClickCallback = useCallback(
-        (selectedDate: string) => {
-            if (isRangeSelectorMode) {
-                setValgtePerioder((old) =>
-                    old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
-                        ? []
-                        : [
-                              {
-                                  color: 'DARKBLUE',
-                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
-                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
-                                  isSelected: true,
-                                  srText: '',
-                              },
-                          ],
-                );
-            } else {
-                setValgtePerioder((old) =>
-                    old.some((p) => p.fom === selectedDate)
-                        ? old.filter((p) => p.fom !== selectedDate)
-                        : [
-                              ...old,
-                              {
-                                  color: 'DARKBLUE',
-                                  fom: selectedDate,
-                                  tom: selectedDate,
-                                  isSelected: true,
-                                  srText: '',
-                              } satisfies CalendarPeriod,
-                          ].sort(sortPeriods),
-                );
-            }
-        },
-        [isRangeSelectorMode],
-    );
-
     return (
         <VStack gap="space-8">
             {harAvslåttePerioderSomIkkeGirTapteDager && (
@@ -544,7 +508,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                     <div className="flex-1">
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
-                            dateClickCallback={readOnly ? undefined : dateClickCallback}
+                            setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
                         />
                     </div>
                     {handleOnPlanChange && valgtePerioder.length > 0 && (
@@ -578,10 +542,6 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
         </VStack>
     );
 };
-
-const findFomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date1 : date2);
-
-const findTomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date2 : date1);
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 

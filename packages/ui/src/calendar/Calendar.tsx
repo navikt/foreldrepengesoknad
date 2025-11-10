@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
@@ -17,7 +17,8 @@ interface Props {
     useSmallerWidth?: boolean;
     showWeekNumbers?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
-    dateClickCallback?: (date: string) => void;
+    setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
+    isRangeSelection?: boolean;
 }
 
 export const Calendar = ({
@@ -25,12 +26,53 @@ export const Calendar = ({
     useSmallerWidth = false,
     showWeekNumbers = true,
     dateTooltipCallback,
-    dateClickCallback,
+    setSelectedPeriods,
+    isRangeSelection = false,
 }: Props) => {
     const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+
+    const dateClickCallback = useCallback(
+        (selectedDate: string) => {
+            if (!setSelectedPeriods) {
+                return;
+            }
+
+            if (isRangeSelection) {
+                setSelectedPeriods((old) =>
+                    old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
+                        ? []
+                        : [
+                              {
+                                  color: 'DARKBLUE',
+                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
+                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
+                                  isSelected: true,
+                                  srText: '',
+                              },
+                          ],
+                );
+            } else {
+                setSelectedPeriods((old) =>
+                    old.some((p) => p.fom === selectedDate)
+                        ? old.filter((p) => p.fom !== selectedDate)
+                        : [
+                              ...old,
+                              {
+                                  color: 'DARKBLUE',
+                                  fom: selectedDate,
+                                  tom: selectedDate,
+                                  isSelected: true,
+                                  srText: '',
+                              } satisfies CalendarPeriod,
+                          ].sort(sortPeriods),
+                );
+            }
+        },
+        [isRangeSelection, setSelectedPeriods],
+    );
 
     return (
         <>
@@ -42,7 +84,7 @@ export const Calendar = ({
                         .toString()}
                 </div>
             )}
-            <HGrid gap="space-24" columns={{ sm: 1, md: dateClickCallback ? 1 : 2 }}>
+            <HGrid gap="space-24" columns={{ sm: 1, md: setSelectedPeriods ? 1 : 2 }}>
                 {allMonths.map(({ month, year }, index) => {
                     const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
                     const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
@@ -57,7 +99,7 @@ export const Calendar = ({
                             headerLevel={useSmallerWidth ? '5' : '4'}
                             showWeekNumbers={showWeekNumbers}
                             dateTooltipCallback={dateTooltipCallback}
-                            dateClickCallback={dateClickCallback}
+                            dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
                             focusedDate={isMonthInFocus ? focusedDate : undefined}
                             setFocusedDate={setFocusedDate}
                         />
@@ -111,3 +153,9 @@ const groupPeriodsByMonth = (
     });
     return result;
 };
+
+const findFomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date1 : date2);
+
+const findTomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date2 : date1);
+
+const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
