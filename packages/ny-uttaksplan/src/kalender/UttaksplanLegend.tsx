@@ -3,17 +3,16 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
 
-import { Barn, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
+import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { LegendLabel } from '../types/LegendLabel';
 import { UttaksplanKalenderLegendInfo } from '../types/UttaksplanKalenderLegendInfo';
 
 const getCalendarLabel = (
     label: LegendLabel,
-    _navnAnnenPart: string,
-    _unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[],
-    _erFarEllerMedmor: boolean,
+    navnAnnenPart: string,
+    erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): ReactNode => {
     switch (label) {
@@ -29,48 +28,35 @@ const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.adopsjon' });
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
+        case 'MORS_DEL':
+            return erFarEllerMedmor
+                ? intl.formatMessage(
+                      { id: 'kalender.annenPartPeriode' },
+                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+                  )
+                : intl.formatMessage({ id: 'kalender.dinPeriode' });
+        case 'FARS_DEL':
+            return erFarEllerMedmor
+                ? intl.formatMessage({ id: 'kalender.dinPeriode' })
+                : intl.formatMessage(
+                      { id: 'kalender.annenPartPeriode' },
+                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+                  );
+        case 'TAPTE_DAGER':
+            return intl.formatMessage({ id: 'kalender.tapteDager' });
         default:
             return label;
-        // case CalendarPeriodColor.PINK:
-        //     return getFamiliehendelseKalendarLabel(barn, intl);
-        // case CalendarPeriodColor.BLUE:
-        // case CalendarPeriodColor.GREEN:
-        // case CalendarPeriodColor.BLUESTRIPED:
-        // case CalendarPeriodColor.GREENSTRIPED:
-        // case CalendarPeriodColor.LIGHTBLUE:
-        // case CalendarPeriodColor.LIGHTGREEN:
-        // case CalendarPeriodColor.LIGHTBLUEGREEN:
-        // case CalendarPeriodColor.LIGHTGREENBLUE:
-        // case CalendarPeriodColor.GREENOUTLINE:
-        // case CalendarPeriodColor.BLUEOUTLINE:
-        // case CalendarPeriodColor.BLACK:
-        // case CalendarPeriodColor.GRAY:
-        // case CalendarPeriodColor.BLACKOUTLINE:
-        //     return getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl);
-        // case CalendarPeriodColor.PURPLE:
-        //     return 'Barnehageplass';
-        // default:
-        //     return null;
     }
 };
 
 interface Props {
-    uniqueColors: CalendarPeriodColor[];
-    barn: Barn;
     navnAnnenPart: string;
-    unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[];
     erFarEllerMedmor: boolean;
     selectLegend: (color: CalendarPeriodColor) => void;
     legendInfo: UttaksplanKalenderLegendInfo[];
 }
 
-export const UttaksplanLegend = ({
-    navnAnnenPart,
-    unikeUtsettelseÅrsaker,
-    erFarEllerMedmor,
-    selectLegend,
-    legendInfo,
-}: Props) => {
+export const UttaksplanLegend = ({ navnAnnenPart, erFarEllerMedmor, selectLegend, legendInfo }: Props) => {
     const intl = useIntl();
 
     return (
@@ -90,13 +76,7 @@ export const UttaksplanLegend = ({
                     >
                         <CalendarLabel color={info.color}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                {getCalendarLabel(
-                                    info.label,
-                                    navnAnnenPart,
-                                    unikeUtsettelseÅrsaker,
-                                    erFarEllerMedmor,
-                                    intl,
-                                )}
+                                {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
                             </BodyShort>
                         </CalendarLabel>
                     </button>

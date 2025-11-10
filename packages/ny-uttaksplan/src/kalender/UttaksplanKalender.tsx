@@ -59,17 +59,25 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
     if (p.kontoType) {
         switch (p.kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
-                return 'FORELDREPENGER_FØR_FØDSEL';
+                return 'MORS_DEL';
             case 'MØDREKVOTE':
-                return 'MØDREKVOTE';
             case 'FEDREKVOTE':
-                return 'FEDREKVOTE';
             case 'FELLESPERIODE':
-                return 'FELLESPERIODE';
             case 'FORELDREPENGER':
-                return 'FORELDREPENGER';
             case 'AKTIVITETSFRI_KVOTE':
-                return 'AKTIVITETSFRI_KVOTE';
+                if (p.forelder === 'FAR_MEDMOR') {
+                    if (p.gradering && p.gradering.arbeidstidprosent) {
+                        return 'FARS_DEL_GRADERT';
+                    }
+
+                    return 'FARS_DEL';
+                }
+
+                if (p.gradering && p.gradering.arbeidstidprosent) {
+                    return 'MORS_DEL_GRADERT';
+                }
+
+                return 'MORS_DEL';
             default:
                 return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
         }
@@ -77,7 +85,7 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
 
     if (p.periodeHullÅrsak) {
         if (p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-            return 'PERIODE_UTEN_UTTAK';
+            return 'NO_LABEL';
         }
 
         if (p.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
@@ -496,10 +504,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                 <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
                         legendInfo={legendInfo}
-                        uniqueColors={unikeLegendColors}
-                        barn={barn}
                         navnAnnenPart={navnAnnenPart}
-                        unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}
                         selectLegend={(color: CalendarPeriodColor) => {
                             const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
