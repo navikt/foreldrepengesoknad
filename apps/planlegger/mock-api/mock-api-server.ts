@@ -41,7 +41,7 @@ app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
 
-router.post('/fpoversikt/external/konto', async (req, res) => {
+router.post('/fpgrunndata/api/konto', async (req, res) => {
     try {
         const data = await fetch('https://fpoversikt.intern.dev.nav.no/fpoversikt/external/konto', {
             method: 'POST',

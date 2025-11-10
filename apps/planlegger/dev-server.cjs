@@ -53,9 +53,9 @@ const startServer = async () => {
     );
 
     server.use(
-        '/fpoversikt/external',
+        '/fpgrunndata/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/fpoversikt/external',
+            target: 'http://localhost:8888/fpgrunndata/api',
             changeOrigin: true,
             logger: console,
             on: {
