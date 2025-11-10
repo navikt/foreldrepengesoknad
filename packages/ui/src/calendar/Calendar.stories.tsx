@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { BodyShort, Checkbox, CheckboxGroup, Detail, VStack } from '@navikt/ds-react';
@@ -65,14 +66,7 @@ export const MedTooltip: Story = {
     },
 };
 
-export const VisAlertVedDatoklikk: Story = {
-    args: {
-        ...Default.args,
-        dateClickCallback: (date: string) => alert(`Du klikket på datoen: ${date}`),
-    },
-};
-
-export const MedValgAvPerioder: Story = {
+export const VisKalenderMedValgAvEnkeltdager: Story = {
     args: Default.args,
     render: () => {
         const allePerioder = [
@@ -88,29 +82,47 @@ export const MedValgAvPerioder: Story = {
             },
         ] satisfies CalendarPeriod[];
 
-        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
+        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
-        const handleChange = (val: string[]) => {
-            setPerioder(
-                perioder.map((p) => ({
-                    ...p,
-                    isSelected: val.includes(p.color),
-                })),
-            );
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
+        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
+            setPerioder((old) => {
+                const newValue = typeof value === 'function' ? value(old) : value;
+                return newValue.sort(sortPeriods);
+            });
         };
 
-        return (
-            <div style={{ maxWidth: '704px' }}>
-                <CheckboxGroup
-                    legend="Velg en periode for å se hvordan den vises i kalenderen."
-                    onChange={handleChange}
-                >
-                    <Checkbox value="BLUE">Blå</Checkbox>
-                    <Checkbox value="LIGHTGREEN">Grøn</Checkbox>
-                </CheckboxGroup>
-                <Calendar periods={perioder} />
-            </div>
-        );
+        return <Calendar periods={perioder} isRangeSelection={false} setSelectedPeriods={setSelectedPeriods} />;
+    },
+};
+
+export const VisKalenderMedValgAvPerioder: Story = {
+    args: Default.args,
+    render: () => {
+        const allePerioder = [
+            {
+                fom: '2024-01-31',
+                tom: '2024-02-20',
+                color: 'BLUE',
+            },
+            {
+                fom: '2024-05-06',
+                tom: '2024-08-30',
+                color: 'LIGHTGREEN',
+            },
+        ] satisfies CalendarPeriod[];
+
+        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
+        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
+            setPerioder((old) => {
+                const newValue = typeof value === 'function' ? value(old) : value;
+                return newValue.sort(sortPeriods);
+            });
+        };
+
+        return <Calendar periods={perioder} isRangeSelection setSelectedPeriods={setSelectedPeriods} />;
     },
 };
 
