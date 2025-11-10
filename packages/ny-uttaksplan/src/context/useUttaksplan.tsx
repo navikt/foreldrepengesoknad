@@ -30,7 +30,7 @@ export const useUttaksplan = (saksperioder: SaksperiodeNy[]): Planperiode[] => {
                 gjelderAdopsjon: familiesituasjon === 'adopsjon',
                 bareFarMedmorHarRett,
                 harAktivitetskravIPeriodeUtenUttak,
-                //todo denne er alltid undefined
+                //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
                 førsteUttaksdagNesteBarnsSak: undefined,
                 modus,
             }),

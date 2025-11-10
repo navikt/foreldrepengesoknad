@@ -17,9 +17,9 @@ import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils';
 
-import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { LeggTilPeriodePanel } from './legg-til-periode-panel/LeggTilPeriodePanel';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
 type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 

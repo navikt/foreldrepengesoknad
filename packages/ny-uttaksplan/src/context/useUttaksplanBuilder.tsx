@@ -31,7 +31,7 @@ export const useUttaksplanBuilder = (saksperioder: SaksperiodeNy[]): ReturnType<
         gjelderAdopsjon: familiesituasjon === 'adopsjon',
         bareFarMedmorHarRett,
         erFarEllerMedmor,
-        //todo denne er alltid undefined
+        //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
         førsteUttaksdagNesteBarnsSak: undefined,
         opprinneligPlan: annenPartsPlanperioder,
         erIPlanleggerModus: modus === 'planlegger',

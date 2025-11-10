@@ -6,7 +6,15 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { Barn, SaksperiodeNy, UttakUtsettelseÅrsak_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import {
+    Barn,
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    SaksperiodeNy,
+    UttakUtsettelseÅrsak_fpoversikt,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { UttaksdagenString, formatDateIso, getFamiliehendelsedato, omitMany } from '@navikt/fp-utils';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
@@ -18,19 +26,61 @@ import { useUttaksplanBuilder } from '../context/useUttaksplanBuilder';
 import { LegendLabel } from '../types/LegendLabel';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { UttaksplanKalenderLegendInfo } from '../types/UttaksplanKalenderLegendInfo';
-import { isHull, isPeriodeUtenUttak } from '../utils/periodeUtils';
-import { RedigeringPanel } from './RedigeringPanel';
-import { UttaksplanLegend } from './UttaksplanLegend';
 import {
     getAnnenForelderSamtidigUttakPeriode,
-    getForelderFarge,
     getIndexOfSistePeriodeFørDato,
-    getUttaksperiodeFarge,
     isAvslåttPeriode,
     isAvslåttPeriodeFørsteSeksUkerMor,
+    isHull,
+    isPeriodeUtenUttak,
     isUttaksperiode,
-} from './helpers/uttaksplanHelpers';
+} from '../utils/periodeUtils';
+import { UttaksplanLegend } from './UttaksplanLegend';
+import { RedigeringPanel } from './redigering/RedigeringPanel';
 import { getFamiliehendelseKalendarLabel, getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
+
+const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): CalendarPeriodColor => {
+    switch (konto) {
+        case 'FEDREKVOTE':
+        case 'AKTIVITETSFRI_KVOTE':
+            return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
+            return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+        case 'FORELDREPENGER':
+            return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+        case 'FELLESPERIODE':
+            return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
+        default:
+            return 'NONE';
+    }
+};
+
+export const getUttaksperiodeFarge = (
+    konto: KontoTypeUttak,
+    forelder: BrukerRolleSak_fpoversikt | undefined,
+    erFarEllerMedmor: boolean,
+    harMidlertidigOmsorg?: boolean,
+): CalendarPeriodColor => {
+    if (harMidlertidigOmsorg) {
+        return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+    }
+
+    if (forelder === undefined) {
+        return getKontoFarge(konto, erFarEllerMedmor);
+    }
+    return getForelderFarge(forelder, erFarEllerMedmor);
+};
+
+export const getForelderFarge = (
+    forelder: BrukerRolleSak_fpoversikt,
+    erFarEllerMedmor: boolean,
+): CalendarPeriodColor => {
+    if (forelder === 'MOR') {
+        return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+    }
+    return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+};
 
 const slåSammenPerioder = (periods: CalendarPeriod[]) => {
     if (periods.length <= 1) {
