@@ -46,9 +46,9 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
-    const skalViseAlertOmIM =
-        aktiveArbeidsforhold.filter((arbeidsforhold) => valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId))
-            .length > 0;
+    const skalViseAlertOmIM = aktiveArbeidsforhold.some((arbeidsforhold) =>
+        valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
+    );
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
