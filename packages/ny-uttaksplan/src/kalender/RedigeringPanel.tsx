@@ -13,12 +13,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
+import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { LeggTilPeriodePanel, erFerieLovlig } from './legg-til-periode-panel/LeggTilPeriodePanel';
+import { LeggTilPeriodePanel } from './legg-til-periode-panel/LeggTilPeriodePanel';
 
 type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
@@ -33,7 +34,6 @@ type Props = {
 export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const [erMinimert, setErMinimert] = useState(false);
-    const [kanIkkeLeggeTilFerie, setKanIkkeLeggeTilFerie] = useState(false);
 
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
@@ -96,28 +96,30 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
     };
 
     const leggTilFerie = () => {
-        if (!valgtePerioder.some((p) => erFerieLovlig(p, familiehendelsedato))) {
-            const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-                fom: p.fom,
-                tom: p.tom,
-                readOnly: false,
-                id: uniqueId(),
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-            }));
+        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+            fom: p.fom,
+            tom: p.tom,
+            readOnly: false,
+            id: uniqueId(),
+            utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+        }));
 
-            handleOnPlanChange(planperioder);
+        handleOnPlanChange(planperioder);
 
-            setErIRedigeringsmodus(false);
-            setSelectedPeriods([]);
-        } else {
-            setKanIkkeLeggeTilFerie(true);
-        }
+        setErIRedigeringsmodus(false);
+        setSelectedPeriods([]);
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
         () => finnValgtePerioder(valgtePerioder, komplettPlan),
         [valgtePerioder, komplettPlan],
+    );
+
+    const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
+    const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
+        valgtePerioder,
+        familiehendelsedato,
     );
 
     return (
@@ -178,9 +180,17 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                     />
                                 </>
                             )}
-                            {kanIkkeLeggeTilFerie && (
+                            {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
                                 <Alert variant="info" size="small">
-                                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilFerie" />
+                                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
+                                </Alert>
+                            )}
+                            {kanIkkeLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+                                <Alert variant="info" size="small">
+                                    <FormattedMessage
+                                        id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"
+                                        values={{ dato: dayjs(familiehendelsedato).format(DDMMM_DATE_FORMAT) }}
+                                    />
                                 </Alert>
                             )}
                             <Button
@@ -192,9 +202,11 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
                                 <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
                             </Button>
                             <HStack justify="space-between">
-                                <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                                    <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                                </Button>
+                                {!kanIkkeLeggeTilFerie && (
+                                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                        <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                                    </Button>
+                                )}
                                 {ekisterendePerioderSomErValgt.length > 0 && (
                                     <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
                                         <FormattedMessage id="RedigeringPanel.SlettAlle" />
@@ -403,4 +415,18 @@ const formaterDato = (fom: string, tom: string): string => {
     }
 
     return `${start.format('D. MMM YY')} - ${end.format('D. MMM YY.')}`;
+};
+
+const erFerieIkkeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
+    return dayjs(periode.tom).isBefore(familiehendelsedato);
+};
+
+const harValgtBådeFørOgEtterFamiliehendelsedato = (
+    perioder: CalendarPeriod[],
+    familiehendelsedato: string,
+): boolean => {
+    const harPeriodeFør = perioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+    const harPeriodeEtter = perioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
+
+    return harPeriodeFør && harPeriodeEtter;
 };

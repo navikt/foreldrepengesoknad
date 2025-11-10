@@ -379,7 +379,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
     const uttaksplan = useUttaksplan(saksperioder);
     const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
 
-    const [isRangeSelectorMode, setRangeSelectorMode] = useState(true);
+    const [isRangeSelection, setRangeSelectorMode] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
@@ -489,9 +489,9 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
                         onChange={() => {
                             setValgtePerioder([]);
-                            setRangeSelectorMode(!isRangeSelectorMode);
+                            setRangeSelectorMode(!isRangeSelection);
                         }}
-                        value={isRangeSelectorMode}
+                        value={isRangeSelection}
                     >
                         <HStack gap="space-16">
                             <Radio value={true}>
@@ -509,6 +509,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
+                            isRangeSelection={isRangeSelection}
                         />
                     </div>
                     {handleOnPlanChange && valgtePerioder.length > 0 && (

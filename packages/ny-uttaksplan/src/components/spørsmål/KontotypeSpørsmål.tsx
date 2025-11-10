@@ -24,13 +24,6 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }
 
     const kontoTypeValue = watch('kontoType');
 
-    const kontoTypeValidator = (kontotype: string | number | boolean): string | null => {
-        if (gyldigeKontotyper && !gyldigeKontotyper.some((konto) => konto === kontotype)) {
-            return intl.formatMessage({ id: 'KontotypeSpørsmål.ugyldigKontotype' });
-        }
-        return null;
-    };
-
     return (
         <VStack gap="space-16">
             {skalViseTittel && (
@@ -41,19 +34,21 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }
             <RhfRadioGroup
                 name="kontoType"
                 control={control}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.kontoType.påkrevd' })),
-                    kontoTypeValidator,
-                ]}
+                validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.kontoType.påkrevd' }))]}
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
-                {valgtStønadskonto.kontoer.map((konto) => {
-                    return (
-                        <Radio key={konto.konto} value={konto.konto}>
-                            {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
-                        </Radio>
-                    );
-                })}
+                {valgtStønadskonto.kontoer
+                    .filter(
+                        (kontotype) =>
+                            !gyldigeKontotyper || gyldigeKontotyper.some((konto) => konto === kontotype.konto),
+                    )
+                    .map((konto) => {
+                        return (
+                            <Radio key={konto.konto} value={konto.konto}>
+                                {getStønadskontoNavnSimple(intl, konto.konto, erMedmorDelAvSøknaden)}
+                            </Radio>
+                        );
+                    })}
             </RhfRadioGroup>
             {kontoTypeValue === 'FELLESPERIODE' && (
                 <RhfRadioGroup

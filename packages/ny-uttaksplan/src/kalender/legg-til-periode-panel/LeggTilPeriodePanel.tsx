@@ -97,7 +97,8 @@ export const LeggTilPeriodePanel = ({
         onCancel?.();
     };
 
-    const kanHaFerie = !valgtePerioder.some((p) => erFerieLovlig(p, familiehendelsedato));
+    const kanHaMødrekvote = valgtePerioder.some((p) => erMødrekvoteLovlig(p, familiehendelsedato));
+    const kanHaFedrekvote = valgtePerioder.some((p) => erFedrekvoteLovlig(p, familiehendelsedato));
     const kanHaFellesperiode = valgtePerioder.some((p) => erFellesperiodeLovlig(p, familiehendelsedato));
     const kanHaForeldrepengerFørFødsel = !valgtePerioder.some(
         (p) =>
@@ -114,7 +115,13 @@ export const LeggTilPeriodePanel = ({
             if (kt === 'FELLESPERIODE') {
                 return kanHaFellesperiode;
             }
-            return kanHaFerie;
+            if (kt === 'FEDREKVOTE' || kt === 'AKTIVITETSFRI_KVOTE') {
+                return kanHaFedrekvote;
+            }
+            if (kt === 'MØDREKVOTE' || kt === 'FORELDREPENGER') {
+                return kanHaMødrekvote;
+            }
+            return true;
         });
 
     return (
@@ -181,8 +188,12 @@ const getForelderFromKontoType = (
     }
 };
 
-export const erFerieLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isBefore(familiehendelsedato);
+const erMødrekvoteLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
+    return dayjs(periode.tom).isSameOrAfter(familiehendelsedato);
+};
+
+const erFedrekvoteLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
+    return dayjs(periode.tom).isSameOrAfter(familiehendelsedato);
 };
 
 const erFellesperiodeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
