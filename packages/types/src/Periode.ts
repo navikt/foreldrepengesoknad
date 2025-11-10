@@ -3,8 +3,13 @@ import { Arbeidsform, OpprinneligSøkt, PeriodeHullÅrsak, PeriodeInfoType, Peri
 import { Attachment } from './Attachment';
 import { TidsperiodeDate } from './TidsperiodeDate';
 import { KontoTypeUttak } from './fpgrunndataDtoGenerert';
-import { BrukerRolleSak_fpoversikt, UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
-import { MorsAktivitet, Oppholdsårsak, UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
+import {
+    BrukerRolleSak_fpoversikt,
+    MorsAktivitet,
+    Oppholdsårsak,
+    UtsettelsesÅrsak,
+    UttakOverføringÅrsak_fpoversikt,
+} from './genererteTyper';
 
 interface PeriodeBase {
     id: string;

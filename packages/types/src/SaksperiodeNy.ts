@@ -2,12 +2,12 @@ import { KontoTypeUttak } from './fpgrunndataDtoGenerert';
 import {
     BrukerRolleSak_fpoversikt,
     Gradering_fpoversikt,
-    MorsAktivitet_fpoversikt,
+    MorsAktivitet,
     UttakOppholdÅrsak_fpoversikt,
     UttakOverføringÅrsak_fpoversikt,
     UttakPeriodeResultat_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
-} from './fpoversiktDtoGenerert';
+} from './genererteTyper';
 
 export interface SaksperiodeNy {
     fom: string;
@@ -27,6 +27,6 @@ export interface SaksperiodeNy {
     utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
     overføringÅrsak?: UttakOverføringÅrsak_fpoversikt;
     samtidigUttak?: number;
-    morsAktivitet?: MorsAktivitet_fpoversikt;
+    morsAktivitet?: MorsAktivitet;
     trekkdager?: number;
 }

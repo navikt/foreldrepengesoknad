@@ -14,7 +14,7 @@ export default defineConfig({
                         const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
                         return `${strippedName}`;
                     }
-                    if (typeName.includes('.fpoversikt.')) {
+                    if (['no.nav.foreldrepenger.oversikt.', '.fpoversikt.'].some((t) => typeName.includes(t))) {
                         const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
                         return `${strippedName}_fpoversikt`;
                     }
