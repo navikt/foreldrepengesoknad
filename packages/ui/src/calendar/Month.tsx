@@ -58,7 +58,7 @@ export const Month = React.memo(
         return (
             <Box.New
                 borderWidth="1"
-                width="300px"
+                maxWidth="400px"
                 padding="5"
                 borderRadius="4"
                 borderColor="neutral-subtle"

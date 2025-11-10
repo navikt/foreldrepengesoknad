@@ -6,7 +6,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { HGrid } from '@navikt/ds-react';
 
 import { Month } from './Month';
-import styles from './calendar.module.css';
 import { CalendarPeriod } from './types/CalendarPeriod';
 
 dayjs.extend(isoWeek);
@@ -77,7 +76,7 @@ export const Calendar = ({
     return (
         <>
             {periods.some((p) => p.srText) && (
-                <div className={styles.srOnly}>
+                <div className="sr-only">
                     {periods
                         .filter((p) => p.srText)
                         .map((p) => p.srText)

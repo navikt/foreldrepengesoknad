@@ -554,8 +554,8 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                     </RadioGroup>
                 )}
 
-                <div className="flex flex-col sm:flex-row">
-                    <div className="flex-1">
+                <div className="ax-md:flex-row flex flex-col">
+                    <div className={readOnly ? 'flex-1' : 'ax-md:w-[300px]'}>
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
@@ -566,7 +566,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
-                                'sm:sticky sm:top-4 sm:max-w-[20.5rem] sm:self-start',
+                                'ax-md:sticky ax-md:top-4 ax-md:ml-4 ax-md:max-w-[20.5rem] ax-md:self-start',
                             ].join(' ')}
                             style={{ paddingBottom: 'env(safe-area-inset-bottom, 1rem)' }}
                         >
@@ -583,7 +583,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
             </VStack>
 
             <Button
-                className="mt-8 pb-20 sm:pb-0 print:hidden"
+                className="ax-md:pb-0 mt-8 pb-20 print:hidden"
                 variant="tertiary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => toPDF()}
