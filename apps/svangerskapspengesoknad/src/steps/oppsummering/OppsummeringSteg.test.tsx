@@ -18,6 +18,13 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Du må bekrefte at du har oppgitt riktige opplysninger')).toBeInTheDocument();
     });
+    it('skal ikke vise alert om IM dersom ingen valgte arbeidsforhold', async () => {
+        render(<Default />);
+
+        expect(
+            screen.queryByText('Arbeidsgiverene dine blir kontaktet av Nav for å sende opplysninger om din inntekt'),
+        ).not.toBeInTheDocument();
+    });
     it('skal ikke vise feilmelding, vilkår er godkjent', async () => {
         const sendSøknad = vi.fn();
 

@@ -45,9 +45,10 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato).filter(
-        (arbeidsforhold) => valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
-    );
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
+    const skalViseAlertOmIM =
+        aktiveArbeidsforhold.filter((arbeidsforhold) => valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId))
+            .length > 0;
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -101,6 +102,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
+                    skalViseAlertOmIM={skalViseAlertOmIM}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}

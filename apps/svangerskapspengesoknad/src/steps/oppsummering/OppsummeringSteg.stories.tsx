@@ -214,6 +214,7 @@ const meta = {
                             jobberFremdelesSomFrilans: false,
                             oppstart: '2023-01-01',
                         },
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: [ARBEIDSFORHOLD_ID],
                         [ContextDataType.EGEN_NÆRING]: {
                             navnPåNæringen: 'Skitt fiske',
                             fom: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),

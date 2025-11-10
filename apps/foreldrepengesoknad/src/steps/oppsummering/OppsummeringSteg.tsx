@@ -157,6 +157,7 @@ export const OppsummeringSteg = (props: Props) => {
                     </>
                 )}
                 <ArbeidsforholdOppsummering
+                    skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
