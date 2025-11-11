@@ -7,10 +7,10 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
     color: CalendarPeriodColor;
     onClick?: () => void;
-    selected: boolean;
+    selected?: boolean;
 }
 
-export const CalendarLabel = ({ children, color, onClick, selected }: Props) => {
+export const CalendarLabel = ({ children, color, onClick, selected = false }: Props) => {
     const getClassname = () => {
         if (selected) {
             if (color === 'GREEN' || color === 'GREENSTRIPED' || color === 'LIGHTGREEN' || color === 'LIGHTGREENBLUE') {
