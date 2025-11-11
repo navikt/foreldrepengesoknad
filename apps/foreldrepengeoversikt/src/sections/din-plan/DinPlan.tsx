@@ -113,6 +113,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                     />
                 </ToggleGroup>
                 <UttaksplanDataProvider
+                    saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
                     barn={barn}
                     erFarEllerMedmor={søkerErFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
@@ -126,23 +127,11 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy
-                                saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
-                                handleOnPlanChange={() => null}
-                            />
-                            <KvoteOppsummeringWrapper
-                                saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
-                                rettighetType={sak.rettighetType}
-                                visStatusIkoner={false}
-                            />
+                            <UttaksplanNy oppdaterUttaksplan={() => null} />
+                            <KvoteOppsummeringWrapper rettighetType={sak.rettighetType} visStatusIkoner={false} />
                         </>
                     )}
-                    {visKalender && (
-                        <UttaksplanKalender
-                            readOnly={true}
-                            saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
-                        />
-                    )}
+                    {visKalender && <UttaksplanKalender readOnly={true} />}
                 </UttaksplanDataProvider>
             </VStack>
         </VStack>

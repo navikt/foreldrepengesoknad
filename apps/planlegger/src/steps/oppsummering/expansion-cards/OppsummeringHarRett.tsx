@@ -263,14 +263,11 @@ export const OppsummeringHarRett = ({
                             bareFarMedmorHarRett={bareFarMedmorHarRett}
                             harAktivitetskravIPeriodeUtenUttak={false}
                             erDeltUttak={erDeltUttak}
+                            saksperioder={
+                                tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
+                            }
                         >
-                            <UttaksplanKalender
-                                saksperioder={
-                                    tilpassPlan ? gjeldendeUttaksplan : [...planforslag.søker1, ...planforslag.søker2]
-                                }
-                                barnehagestartdato={barnehagestartdato}
-                                readOnly
-                            />
+                            <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />
                         </UttaksplanDataProvider>
                     </VStack>
                 </ExpansionCard.Content>

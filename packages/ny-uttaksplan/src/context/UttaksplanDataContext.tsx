@@ -1,7 +1,17 @@
 import { createContext, useContext, useMemo } from 'react';
 
-import { Barn, Familiesituasjon, KontoBeregningDto, NavnPåForeldre, UttaksplanModus } from '@navikt/fp-types';
+import {
+    Barn,
+    Familiesituasjon,
+    KontoBeregningDto,
+    NavnPåForeldre,
+    SaksperiodeNy,
+    UttaksplanModus,
+} from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
+
+import { Planperiode } from '../types/Planperiode';
+import { utledKomplettPlan } from '../utils/periodeUtils';
 
 type Props = {
     barn: Barn;
@@ -14,12 +24,14 @@ type Props = {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
+    saksperioder: SaksperiodeNy[];
     children: React.ReactNode[] | React.ReactNode;
 };
 
 type ContextValues = Props & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
+    uttaksplan: Planperiode[];
 };
 
 const UttaksplanDataContext = createContext<Omit<ContextValues, 'children'> | null>(null);
@@ -27,14 +39,38 @@ const UttaksplanDataContext = createContext<Omit<ContextValues, 'children'> | nu
 export const UttaksplanDataProvider = (props: Props) => {
     const { children, ...otherProps } = props;
 
-    const value = useMemo(
-        () => ({
+    const value = useMemo(() => {
+        const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
+        const familiesituasjon = getFamiliesituasjon(otherProps.barn);
+        const søkersPerioder = getSøkersPerioder(
+            otherProps.erDeltUttak,
+            otherProps.saksperioder,
+            otherProps.erFarEllerMedmor,
+        );
+        const annenPartsPerioder = getAnnenpartsPerioder(
+            otherProps.erDeltUttak,
+            otherProps.saksperioder,
+            otherProps.erFarEllerMedmor,
+        );
+
+        return {
             ...otherProps,
-            familiehendelsedato: getFamiliehendelsedato(otherProps.barn),
-            familiesituasjon: getFamiliesituasjon(otherProps.barn),
-        }),
-        [otherProps],
-    );
+            familiehendelsedato,
+            familiesituasjon,
+            uttaksplan: utledKomplettPlan({
+                familiehendelsedato,
+                erFarEllerMedmor: otherProps.erFarEllerMedmor,
+                søkersPerioder: søkersPerioder,
+                annenPartsPerioder: annenPartsPerioder,
+                gjelderAdopsjon: familiesituasjon === 'adopsjon',
+                bareFarMedmorHarRett: otherProps.bareFarMedmorHarRett,
+                harAktivitetskravIPeriodeUtenUttak: otherProps.harAktivitetskravIPeriodeUtenUttak,
+                //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
+                førsteUttaksdagNesteBarnsSak: undefined,
+                modus: otherProps.modus,
+            }),
+        };
+    }, [otherProps]);
 
     return <UttaksplanDataContext value={value}>{children}</UttaksplanDataContext>;
 };
@@ -45,4 +81,24 @@ export const useUttaksplanData = () => {
         throw new Error('UttaksplanDataContext.Provider er ikke satt opp');
     }
     return context;
+};
+
+export const getSøkersPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: SaksperiodeNy[],
+    erFarEllerMedmor: boolean,
+) => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
+        : gjeldendeUttaksplan;
+};
+
+export const getAnnenpartsPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: SaksperiodeNy[],
+    erFarEllerMedmor: boolean,
+) => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
+        : [];
 };

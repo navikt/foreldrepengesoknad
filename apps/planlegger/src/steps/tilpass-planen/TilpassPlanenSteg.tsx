@@ -85,7 +85,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         return 'BARE_SØKER_RETT';
     };
 
-    const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
+    const oppdaterUttaksplan = (perioder: SaksperiodeNy[]) => {
         let nyUttaksplan = [];
 
         if (currentUttaksplanIndex !== uttaksplan.length - 1) {
@@ -151,6 +151,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={erDeltUttak}
+                saksperioder={gjeldendeUttaksplan}
             >
                 <VStack gap="space-24">
                     <Alert variant="info">
@@ -180,8 +181,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         {visningsmodus === 'liste' && (
                             <>
                                 <UttaksplanNy
-                                    saksperioder={gjeldendeUttaksplan}
-                                    handleOnPlanChange={handleOnPlanChange}
+                                    oppdaterUttaksplan={oppdaterUttaksplan}
                                     isAllAccordionsOpen={isAllAccordionsOpen}
                                 />
                                 <HStack gap="space-16">
@@ -235,11 +235,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                                     </Button>
                                 </HStack>
-                                <KvoteOppsummeringWrapper
-                                    saksperioder={gjeldendeUttaksplan}
-                                    visStatusIkoner
-                                    rettighetType={utledRettighetType()}
-                                />
+                                <KvoteOppsummeringWrapper visStatusIkoner rettighetType={utledRettighetType()} />
                             </>
                         )}
                     </VStack>
@@ -249,9 +245,8 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                             <div className="max-[479px]:p-0">
                                 <UttaksplanKalender
                                     readOnly={false}
-                                    saksperioder={gjeldendeUttaksplan}
                                     barnehagestartdato={barnehagestartdato}
-                                    handleOnPlanChange={handleOnPlanChange}
+                                    oppdaterUttaksplan={oppdaterUttaksplan}
                                 />
                             </div>
                         )}

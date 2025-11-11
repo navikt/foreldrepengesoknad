@@ -43,6 +43,7 @@ const customRenderer = ({
             bareFarMedmorHarRett={false}
             harAktivitetskravIPeriodeUtenUttak={false}
             erDeltUttak
+            saksperioder={[]}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>

@@ -33,7 +33,7 @@ interface Props {
     lukk: () => void;
     handleAddPeriode: (oppdatertePerioder: Planperiode[]) => void;
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     erMinimert: boolean;
     setErMinimert: (erMinimert: boolean) => void;
@@ -45,7 +45,7 @@ export const LeggTilPeriodePanel = ({
     lukk,
     handleAddPeriode,
     sammenslåtteValgtePerioder,
-    handleOnPlanChange,
+    oppdaterUttaksplan,
     setSelectedPeriods,
     erMinimert,
     setErMinimert,
@@ -80,7 +80,7 @@ export const LeggTilPeriodePanel = ({
             valgtePerioder={valgtePerioder}
             komplettPlan={komplettPlan}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            handleOnPlanChange={handleOnPlanChange}
+            oppdaterUttaksplan={oppdaterUttaksplan}
             setSelectedPeriods={setSelectedPeriods}
             erMinimert={erMinimert}
             setErMinimert={setErMinimert}

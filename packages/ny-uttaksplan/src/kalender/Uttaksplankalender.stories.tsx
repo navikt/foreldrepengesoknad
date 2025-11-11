@@ -18,7 +18,7 @@ const meta = {
     component: UttaksplanKalender,
     args: {
         modus: 'søknad',
-        handleOnPlanChange: action('button-click'),
+        oppdaterUttaksplan: action('button-click'),
         readOnly: false,
         valgtStønadskonto: {
             kontoer: [
@@ -39,7 +39,7 @@ const meta = {
 
         const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
             setPerioder(oppdatertePerioder);
-            args.handleOnPlanChange?.(oppdatertePerioder);
+            args.oppdaterUttaksplan?.(oppdatertePerioder);
         };
 
         return (
@@ -54,8 +54,9 @@ const meta = {
                 bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={args.erDeltUttak || false}
+                saksperioder={perioder}
             >
-                <UttaksplanKalender {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
+                <UttaksplanKalender {...args} oppdaterUttaksplan={handleOnPlanChange} />
             </UttaksplanDataProvider>
         );
     },

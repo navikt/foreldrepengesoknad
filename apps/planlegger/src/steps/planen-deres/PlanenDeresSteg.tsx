@@ -267,12 +267,9 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 erDeltUttak={fordeling !== undefined}
+                                saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
                             >
-                                <UttaksplanKalender
-                                    readOnly={true}
-                                    saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
-                                    barnehagestartdato={barnehagestartdato}
-                                />
+                                <UttaksplanKalender readOnly={true} barnehagestartdato={barnehagestartdato} />
                             </UttaksplanDataProvider>
                         </div>
                     </VStack>

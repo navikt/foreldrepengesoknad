@@ -3,23 +3,37 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
-import { useMedia } from '@navikt/fp-utils';
+import { omitMany, useMedia } from '@navikt/fp-utils';
 
+import { useUttaksplanBuilder } from '../../context/useUttaksplanBuilder';
 import { Planperiode } from '../../types/Planperiode';
+import { isHull, isPeriodeUtenUttak } from '../../utils/periodeUtils';
 import { InfoOgEnkelRedigeringPanel } from './InfoOgEnkelRedigeringPanel';
 import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
     uttaksplan: Planperiode[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
+    oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
 export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan, setValgtePerioder }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const [erMinimert, setErMinimert] = useState(false);
+
+    const uttaksplanBuilder = useUttaksplanBuilder();
+
+    const oppdater = (oppdatertPeriode: Planperiode[]) => {
+        const planperioder = uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
+        const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+        oppdaterUttaksplan(
+            resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
+        );
+    };
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
@@ -46,7 +60,7 @@ export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan
                     valgtePerioder={valgtePerioder}
                     komplettPlan={uttaksplan}
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-                    handleOnPlanChange={oppdaterUttaksplan}
+                    oppdaterUttaksplan={oppdater}
                     setSelectedPeriods={setValgtePerioder}
                     setErIRedigeringsmodus={setErIRedigeringsmodus}
                     erMinimert={erMinimert}
@@ -57,12 +71,12 @@ export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan
                 <LeggTilPeriodePanel
                     lukk={() => setErIRedigeringsmodus(false)}
                     handleAddPeriode={(nyePerioder) => {
-                        oppdaterUttaksplan(nyePerioder);
+                        oppdater(nyePerioder);
                         setValgtePerioder([]);
                     }}
                     komplettPlan={uttaksplan}
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-                    handleOnPlanChange={oppdaterUttaksplan}
+                    oppdaterUttaksplan={oppdater}
                     setSelectedPeriods={setValgtePerioder}
                     valgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}

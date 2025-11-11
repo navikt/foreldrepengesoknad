@@ -10,24 +10,21 @@ import { omitMany } from '@navikt/fp-utils';
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { useUttaksplanData } from './context/UttaksplanDataContext';
-import { useUttaksplan } from './context/useUttaksplan';
 import { useUttaksplanBuilder } from './context/useUttaksplanBuilder';
 import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
-    saksperioder: SaksperiodeNy[];
-    handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan: (perioder: SaksperiodeNy[]) => void;
     isAllAccordionsOpen?: boolean;
 }
 
-export const UttaksplanNy = ({ saksperioder, handleOnPlanChange, isAllAccordionsOpen }: Props) => {
+export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { modus } = useUttaksplanData();
+    const { modus, uttaksplan } = useUttaksplanData();
 
-    const uttaksplan = useUttaksplan(saksperioder);
-    const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
+    const uttaksplanBuilder = useUttaksplanBuilder();
 
     return (
         <>
@@ -35,16 +32,16 @@ export const UttaksplanNy = ({ saksperioder, handleOnPlanChange, isAllAccordions
                 <PeriodeListe
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
                     }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode), oppdaterUttaksplan);
                     }}
                     handleDeletePeriode={(slettetPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.slettPeriode(slettetPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.slettPeriode(slettetPeriode), oppdaterUttaksplan);
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
-                        modifyPlan(uttaksplanBuilder.slettPerioder(slettedePerioder), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.slettPerioder(slettedePerioder), oppdaterUttaksplan);
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
                 />
@@ -71,7 +68,7 @@ export const UttaksplanNy = ({ saksperioder, handleOnPlanChange, isAllAccordions
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
                         setIsLeggTilPeriodePanelOpen(false);
                     }}
                 />

@@ -17,7 +17,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     komplettPlan: Planperiode[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     erMinimert: boolean;
     setErMinimert: (erMinimert: boolean) => void;
@@ -29,7 +29,7 @@ export const InfoPanel = ({
     valgtePerioder,
     komplettPlan,
     sammenslåtteValgtePerioder,
-    handleOnPlanChange,
+    oppdaterUttaksplan,
     setSelectedPeriods,
     erMinimert,
     setErMinimert,
@@ -51,7 +51,7 @@ export const InfoPanel = ({
             return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
         });
 
-        handleOnPlanChange(
+        oppdaterUttaksplan(
             perioder.map<Planperiode>((p) => ({
                 forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,

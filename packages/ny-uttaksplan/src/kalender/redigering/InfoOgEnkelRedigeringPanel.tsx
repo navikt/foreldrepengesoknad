@@ -16,7 +16,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     komplettPlan: Planperiode[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
     erMinimert: boolean;
@@ -27,7 +27,7 @@ export const InfoOgEnkelRedigeringPanel = ({
     valgtePerioder,
     komplettPlan,
     sammenslåtteValgtePerioder,
-    handleOnPlanChange,
+    oppdaterUttaksplan,
     setSelectedPeriods,
     setErIRedigeringsmodus,
     erMinimert,
@@ -45,13 +45,13 @@ export const InfoOgEnkelRedigeringPanel = ({
             id: uniqueId(),
         }));
 
-        handleOnPlanChange(planperioder);
+        oppdaterUttaksplan(planperioder);
 
         setSelectedPeriods([]);
     };
 
     const leggTilFerie = () => {
-        handleOnPlanChange(
+        oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
                 forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 fom: p.fom,
@@ -79,7 +79,7 @@ export const InfoOgEnkelRedigeringPanel = ({
             valgtePerioder={valgtePerioder}
             komplettPlan={komplettPlan}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            handleOnPlanChange={handleOnPlanChange}
+            oppdaterUttaksplan={oppdaterUttaksplan}
             setSelectedPeriods={setSelectedPeriods}
             erMinimert={erMinimert}
             setErMinimert={setErMinimert}

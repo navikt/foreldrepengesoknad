@@ -1,11 +1,8 @@
-import { SaksperiodeNy } from '@navikt/fp-types';
-
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
 import { mapSaksperiodeTilPlanperiode } from '../utils/periodeUtils';
-import { useUttaksplanData } from './UttaksplanDataContext';
-import { getAnnenpartsPerioder, useUttaksplan } from './useUttaksplan';
+import { getAnnenpartsPerioder, useUttaksplanData } from './UttaksplanDataContext';
 
-export const useUttaksplanBuilder = (saksperioder: SaksperiodeNy[]): ReturnType<typeof Uttaksplanbuilder> => {
+export const useUttaksplanBuilder = (): ReturnType<typeof Uttaksplanbuilder> => {
     const {
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
@@ -14,18 +11,18 @@ export const useUttaksplanBuilder = (saksperioder: SaksperiodeNy[]): ReturnType<
         modus,
         bareFarMedmorHarRett,
         erDeltUttak,
+        saksperioder,
+        uttaksplan,
     } = useUttaksplanData();
 
     const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, saksperioder, erFarEllerMedmor);
-
-    const komplettPlan = useUttaksplan(saksperioder);
 
     const annenPartsPlanperioder = annenPartsPerioder
         ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
         : undefined;
 
-    const builder = Uttaksplanbuilder({
-        perioder: komplettPlan,
+    return Uttaksplanbuilder({
+        perioder: uttaksplan,
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
         gjelderAdopsjon: familiesituasjon === 'adopsjon',
@@ -36,6 +33,4 @@ export const useUttaksplanBuilder = (saksperioder: SaksperiodeNy[]): ReturnType<
         opprinneligPlan: annenPartsPlanperioder,
         erIPlanleggerModus: modus === 'planlegger',
     });
-
-    return builder;
 };

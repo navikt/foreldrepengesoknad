@@ -20,21 +20,24 @@ import {
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
-import { useUttaksplan } from './context/useUttaksplan';
 import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 //TODO (TOR) Fjern denne wrapperen og skriv om story
 export const KvoteOppsummeringWrapper = (props: {
-    saksperioder: SaksperiodeNy[];
     rettighetType: RettighetType_fpoversikt;
     visStatusIkoner: boolean;
 }) => {
-    const { familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus, erMedmorDelAvSøknaden } =
-        useUttaksplanData();
-
-    const uttaksplan = useUttaksplan(props.saksperioder);
+    const {
+        uttaksplan,
+        familiesituasjon,
+        valgtStønadskonto,
+        navnPåForeldre,
+        erFarEllerMedmor,
+        modus,
+        erMedmorDelAvSøknaden,
+    } = useUttaksplanData();
 
     return (
         <KvoteOppsummering

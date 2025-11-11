@@ -8,31 +8,22 @@ import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-rea
 
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { omitMany } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { useUttaksplan } from '../context/useUttaksplan';
-import { useUttaksplanBuilder } from '../context/useUttaksplanBuilder';
-import { Planperiode } from '../types/Planperiode';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor, isHull, isPeriodeUtenUttak } from '../utils/periodeUtils';
+import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { RedigeringPanel } from './redigering/RedigeringPanel';
 import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervisning';
 
 interface Props {
-    saksperioder: SaksperiodeNy[];
-    barnehagestartdato?: string;
     readOnly: boolean;
-    handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void;
+    barnehagestartdato?: string;
+    oppdaterUttaksplan?: (perioder: SaksperiodeNy[]) => void;
 }
 
-export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, readOnly, handleOnPlanChange }: Props) => {
-    const { erFarEllerMedmor, familiehendelsedato, navnPåForeldre } = useUttaksplanData();
-
-    const uttaksplan = useUttaksplan(saksperioder);
-    const uttaksplanBuilder = useUttaksplanBuilder(saksperioder);
+export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {
+    const { uttaksplan, saksperioder, erFarEllerMedmor, familiehendelsedato, navnPåForeldre } = useUttaksplanData();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -119,7 +110,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, readOnly,
                             isRangeSelection={isRangeSelection}
                         />
                     </div>
-                    {handleOnPlanChange && valgtePerioder.length > 0 && (
+                    {oppdaterUttaksplan && valgtePerioder.length > 0 && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
@@ -131,7 +122,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, readOnly,
                                 valgtePerioder={valgtePerioder}
                                 uttaksplan={uttaksplan}
                                 setValgtePerioder={setValgtePerioder}
-                                oppdaterUttaksplan={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
+                                oppdaterUttaksplan={oppdaterUttaksplan}
                             />
                         </div>
                     )}
@@ -151,17 +142,3 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, readOnly,
 };
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
-
-const getModifyPlan =
-    (
-        uttaksplanBuilder: ReturnType<typeof Uttaksplanbuilder>,
-        handleOnPlanChange: (perioder: SaksperiodeNy[]) => void,
-    ) =>
-    (oppdatertPeriode: Planperiode[]) => {
-        const planperioder = uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
-        const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        handleOnPlanChange(
-            resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
-        );
-    };

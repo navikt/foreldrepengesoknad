@@ -16,7 +16,7 @@ const MINSTERETTER = {
 const meta = {
     component: UttaksplanNy,
     args: {
-        handleOnPlanChange: action('button-click'),
+        oppdaterUttaksplan: action('button-click'),
         children: null,
         erMedmorDelAvSøknaden: false,
     },
@@ -25,7 +25,7 @@ const meta = {
 
         const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
             setPerioder(oppdatertePerioder);
-            args.handleOnPlanChange(oppdatertePerioder);
+            args.oppdaterUttaksplan(oppdatertePerioder);
         };
 
         return (
@@ -40,8 +40,9 @@ const meta = {
                 bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={args.erDeltUttak || false}
+                saksperioder={perioder}
             >
-                <UttaksplanNy {...args} saksperioder={perioder} handleOnPlanChange={handleOnPlanChange} />
+                <UttaksplanNy {...args} oppdaterUttaksplan={handleOnPlanChange} />
             </UttaksplanDataProvider>
         );
     },
