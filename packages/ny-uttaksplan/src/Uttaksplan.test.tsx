@@ -9,9 +9,9 @@ const { Default, MorOgMedmor, MorOgFarMedFerieopphold } = composeStories(stories
 
 describe('Uttaksplan', () => {
     it('skal legge til ny periode - ferie', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
         expect(screen.getByText('09. May')).toBeInTheDocument();
@@ -32,8 +32,8 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(handleOnPlanChange).toHaveBeenCalledTimes(1);
-        expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
                 forelder: 'MOR',
@@ -68,9 +68,9 @@ describe('Uttaksplan', () => {
     });
 
     it('skal legge til ny periode - Periode med foreldrepenger', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
         expect(screen.getByText('09. May')).toBeInTheDocument();
@@ -108,8 +108,8 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(handleOnPlanChange).toHaveBeenCalledTimes(1);
-        expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
                 forelder: 'MOR',
@@ -151,9 +151,9 @@ describe('Uttaksplan', () => {
     });
 
     it('Skal endre periode til ferie', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('12. Dec - 26. Mar')).toBeInTheDocument();
 
@@ -168,8 +168,8 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(handleOnPlanChange).toHaveBeenCalledTimes(1);
-        expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
                 forelder: 'MOR',
@@ -198,9 +198,9 @@ describe('Uttaksplan', () => {
     });
 
     it('Skal endre datoer for ferieperiode', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<MorOgFarMedFerieopphold handleOnPlanChange={handleOnPlanChange} />);
+        render(<MorOgFarMedFerieopphold oppdaterUttaksplan={oppdaterUttaksplan} />);
         expect(await screen.findByText('12. Dec - 15. Dec')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('12. Dec - 15. Dec'));
@@ -227,9 +227,9 @@ describe('Uttaksplan', () => {
     });
 
     it('Skal slette periode', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
 
@@ -241,8 +241,8 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
 
-        expect(handleOnPlanChange).toHaveBeenCalledTimes(1);
-        expect(handleOnPlanChange).toHaveBeenNthCalledWith(1, [
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -265,8 +265,8 @@ describe('Uttaksplan', () => {
     });
 
     it('Skal vise "Fars kvote" når det er morOgFar', async () => {
-        const handleOnPlanChange = vi.fn();
-        render(<Default handleOnPlanChange={handleOnPlanChange} />);
+        const oppdaterUttaksplan = vi.fn();
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
         await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
@@ -277,9 +277,9 @@ describe('Uttaksplan', () => {
     });
 
     it('Skal vise "Medmors kvote" når det er morOgmor', async () => {
-        const handleOnPlanChange = vi.fn();
+        const oppdaterUttaksplan = vi.fn();
 
-        render(<MorOgMedmor handleOnPlanChange={handleOnPlanChange} />);
+        render(<MorOgMedmor oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
         await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
