@@ -16,22 +16,25 @@ const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
 type InternError = 'NO_DATA';
 
+type ProblemDetailsErrorKode =
+    | 'IKKE_TILGANG'
+    | 'DUPLIKAT_FORSENDELSE'
+    | 'MELLOMLAGRING'
+    | 'MELLOMLAGRING_VEDLEGG'
+    | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
+    | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
+    | 'KRYPTERING_MELLOMLAGRING';
+
+type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
+
 type UploadError = {
-    feilKode:
-        | 'IKKE_TILGANG'
-        | 'DUPLIKAT_FORSENDELSE'
-        | 'MELLOMLAGRING'
-        | 'MELLOMLAGRING_VEDLEGG'
-        | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
-        | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
-        | 'KRYPTERING_MELLOMLAGRING';
-    status: number;
-    message: string;
     success: false;
+    feilKode: ProblemDetailsErrorKode | GenerelleErrorKoder;
 };
+
 type UploadSuccess = {
-    data: string;
     success: true;
+    data: string;
 };
 
 type SaveAttachment = (attachment: Attachment) => Promise<UploadSuccess | UploadError>;
@@ -96,25 +99,35 @@ const addOrReplaceAttachments = (
 const getErrorMessageMap = (
     intl: IntlShape,
 ): Record<FileRejectionReason | UploadError['feilKode'] | InternError, string> => ({
-    fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
+    fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.fileType' }),
     fileSize: intl.formatMessage(
-        { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
+        { id: 'FailedAttachment.Vedlegg.Feilmelding.fileSize' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
     NO_DATA: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.NO_DATA' }),
+
+    // Timeout
+    MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.TIMEOUT',
+    }),
+    TIMEOUT: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.TIMEOUT',
+    }),
+
     MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
         id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
     }),
-
     DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
-    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IKKE_TILGANG' }),
-    MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING' }),
-    MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG' }),
-    MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT: intl.formatMessage({
-        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT',
-    }),
+
+    // Mappes som generell feil
     KRYPTERING_MELLOMLAGRING: intl.formatMessage({
-        id: 'FailedAttachment.Vedlegg.Feilmelding.KRYPTERING_MELLOMLAGRING',
+        id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
+    }),
+    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    SERVER_ERROR: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
     }),
 });
 

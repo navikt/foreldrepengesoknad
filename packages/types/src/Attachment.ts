@@ -18,7 +18,9 @@ export type Attachment = {
     beskrivelse?: string;
 };
 
-export type AttachmentError =
+type InternError = 'NO_DATA';
+
+type ProblemDetailsErrorKode =
     | 'IKKE_TILGANG'
     | 'DUPLIKAT_FORSENDELSE'
     | 'MELLOMLAGRING'
@@ -26,3 +28,7 @@ export type AttachmentError =
     | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
     | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
     | 'KRYPTERING_MELLOMLAGRING';
+
+type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
+
+export type AttachmentError = GenerelleErrorKoder | ProblemDetailsErrorKode | InternError;
