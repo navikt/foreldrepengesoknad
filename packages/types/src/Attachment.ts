@@ -14,6 +14,15 @@ export type Attachment = {
     type: AttachmentType;
     skjemanummer: Skjemanummer;
     innsendingsType: InnsendingType;
-    error?: any;
+    error?: AttachmentError;
     beskrivelse?: string;
 };
+
+export type AttachmentError =
+    | 'IKKE_TILGANG'
+    | 'DUPLIKAT_FORSENDELSE'
+    | 'MELLOMLAGRING'
+    | 'MELLOMLAGRING_VEDLEGG'
+    | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
+    | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
+    | 'KRYPTERING_MELLOMLAGRING';

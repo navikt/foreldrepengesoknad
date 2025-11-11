@@ -8,15 +8,31 @@ import { Attachment } from '@navikt/fp-types';
 
 import { AttachmentList } from './AttachmentList';
 import { mapFileToAttachment } from './fileUtils';
-import { FileUploadError } from './typer/FileUploadError';
 import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
-// TODO typen som blir returnert er ikkje komplett. Ikkje dra inn ky-avhengighet her
-type SaveAttachment = (attachment: Attachment) => Promise<{ data: string }>;
+type UploadError = {
+    feilkode:
+        | 'IKKE_TILGANG'
+        | 'DUPLIKAT_FORSENDELSE'
+        | 'MELLOMLAGRING'
+        | 'MELLOMLAGRING_VEDLEGG'
+        | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
+        | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
+        | 'KRYPTERING_MELLOMLAGRING';
+    status: number;
+    message: string;
+    success: false;
+};
+type UploadSuccess = {
+    data: string;
+    success: true;
+};
+
+type SaveAttachment = (attachment: Attachment) => Promise<UploadSuccess | UploadError>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -37,21 +53,14 @@ const getPendingAttachmentFromFile = (
 };
 
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
-    try {
-        const response = await saveAttachment(attachment);
-        attachment.pending = false;
+    const response = await saveAttachment(attachment);
+
+    attachment.pending = false;
+    if (response.success) {
         attachment.uploaded = true;
         attachment.uuid = response.data;
-    } catch (error) {
-        // TODO Burde få ut feilmelding frå backend og vise denne
-        attachment.pending = false;
-
-        // @ts-expect-error TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
-        if (error?.response?.status === 408) {
-            attachment.error = FileUploadError.TIMEOUT;
-        } else {
-            attachment.error = FileUploadError.GENERAL;
-        }
+    } else {
+        attachment.error = response.feilkode;
     }
 };
 
@@ -82,15 +91,25 @@ const addOrReplaceAttachments = (
     });
 };
 
-const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileUploadError, string> => ({
+const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | UploadError['feilkode'], string> => ({
     fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
     fileSize: intl.formatMessage(
         { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
-    [FileUploadError.NO_DATA]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IngenData' }),
-    [FileUploadError.GENERAL]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet' }),
-    [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
+    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IKKE_TILGANG' }),
+    DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
+    MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING' }),
+    MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG' }),
+    MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT',
+    }),
+    MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
+    }),
+    KRYPTERING_MELLOMLAGRING: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.KRYPTERING_MELLOMLAGRING',
+    }),
 });
 
 // Etter refresh lokalt og i dev så er file = {}, så dette må til for å hindra feil i Aksel-komponent
@@ -106,13 +125,26 @@ const createFileIfEmpty = (attachment: Attachment): File => {
 };
 
 const convertToInternalFormat = (attachments: Attachment[]): FileUploaderAttachment[] => {
-    return attachments.map((a) => ({
-        attachmentData: a,
-        fileObject: {
-            file: createFileIfEmpty(a),
-            error: a.error,
-        },
-    }));
+    return attachments.map((a) => {
+        if (a.error === undefined) {
+            return {
+                attachmentData: a,
+                fileObject: {
+                    file: createFileIfEmpty(a),
+                    error: false,
+                },
+            };
+        } else {
+            return {
+                attachmentData: a,
+                fileObject: {
+                    file: createFileIfEmpty(a),
+                    error: true,
+                    reasons: [],
+                },
+            };
+        }
+    });
 };
 
 interface Props {
@@ -205,7 +237,7 @@ export const FileUploader = ({
                 onSelect={saveFiles}
                 validator={(file: File) => {
                     if (file.size === 0) {
-                        return FileUploadError.NO_DATA;
+                        return 'NO_DATA';
                     }
 
                     return true;
@@ -251,7 +283,7 @@ export const FileUploader = ({
                     deleteAttachment={deleteAttachment}
                     getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
                         rejectedAttachment.attachmentData.error
-                            ? errorMessageMap[rejectedAttachment.attachmentData.error as FileUploadError]
+                            ? errorMessageMap[rejectedAttachment.attachmentData.error]
                             : errorMessageMap[
                                   (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
                               ]
