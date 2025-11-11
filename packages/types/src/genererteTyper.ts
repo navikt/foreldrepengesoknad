@@ -26,7 +26,7 @@ export type { PersonMedArbeidsforholdDto_fpoversikt } from './fpoversiktDtoGener
 export type { AnnenPartRequest_fpoversikt } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType as KontoType } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet as MorsAktivitet } from './fpoversiktDtoGenerert';
-export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak as UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert'; // TODO
+export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak as UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';
 export type { Aktivitet_fpoversikt } from './fpoversiktDtoGenerert';
 export type { AktivitetType_fpoversikt } from './fpoversiktDtoGenerert';
 export type { AnnenPartSak_fpoversikt } from './fpoversiktDtoGenerert';

@@ -40,25 +40,25 @@ export type DokumentDto_fpoversikt = {
 export type JournalpostType_fpoversikt = 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
 
 export type BortfaltNaturalytelse_fpoversikt = {
-    beløpPerMnd?: number;
-    fomDato?: string;
-    tomDato?: string;
-    type?: NaturalytelseType_fpoversikt;
+    beløpPerMnd: number;
+    fomDato: string;
+    tomDato: string;
+    type: NaturalytelseType_fpoversikt;
 };
 
 export type FpOversiktInntektsmeldingDto_fpoversikt = {
-    arbeidsgiverIdent?: string;
-    arbeidsgiverNavn?: string;
-    bortfalteNaturalytelser?: BortfaltNaturalytelse_fpoversikt[];
-    erAktiv?: boolean;
-    inntektPrMnd?: number;
-    journalpostId?: string;
-    mottattTidspunkt?: string;
+    arbeidsgiverIdent: string;
+    arbeidsgiverNavn: string;
+    bortfalteNaturalytelser: BortfaltNaturalytelse_fpoversikt[];
+    erAktiv: boolean;
+    inntektPrMnd: number;
+    journalpostId: string;
+    mottattTidspunkt: string;
     refusjonPrMnd?: number;
-    refusjonsperioder?: Refusjon_fpoversikt[];
+    refusjonsperioder: Refusjon_fpoversikt[];
     startDatoPermisjon?: string;
     stillingsprosent?: number;
-    versjon?: number;
+    versjon: number;
 };
 
 export type NaturalytelseType_fpoversikt =
@@ -83,8 +83,8 @@ export type NaturalytelseType_fpoversikt =
     | 'INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING';
 
 export type Refusjon_fpoversikt = {
-    fomDato?: string;
-    refusjonsbeløpMnd?: number;
+    fomDato: string;
+    refusjonsbeløpMnd: number;
 };
 
 export type DokumentTypeHistoriske_fpoversikt =
@@ -200,7 +200,7 @@ export type BarnDto_fpoversikt = {
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
-    navn: Navn_fpoversikt;
+    navn?: Navn_fpoversikt;
 };
 
 export type Sivilstand_fpoversikt = {
@@ -307,10 +307,10 @@ export type UttakPeriode_fpoversikt = {
 };
 
 export type UttakPeriodeResultat_fpoversikt = {
-    innvilget?: boolean;
-    trekkerDager?: boolean;
-    trekkerMinsterett?: boolean;
-    årsak?: UttakPeriodeResultatÅrsak_fpoversikt;
+    innvilget: boolean;
+    trekkerDager: boolean;
+    trekkerMinsterett: boolean;
+    årsak: UttakPeriodeResultatÅrsak_fpoversikt;
 };
 
 export type UttakPeriodeResultatÅrsak_fpoversikt =
@@ -363,7 +363,7 @@ export type FpSak_fpoversikt = {
     barn?: Person_fpoversikt[];
     dekningsgrad?: DekningsgradSak_fpoversikt;
     familiehendelse: Familiehendelse_fpoversikt;
-    forelder?: BrukerRolleSak_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
     gjeldendeVedtak?: FpVedtak_fpoversikt;
     gjelderAdopsjon: boolean;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
