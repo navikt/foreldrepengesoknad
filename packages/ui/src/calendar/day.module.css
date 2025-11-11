@@ -1,7 +1,6 @@
 .days {
     height: 30px;
     width: 30px;
-    padding: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,12 +8,10 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
-    line-height: 40px;
     letter-spacing: 0.06px;
     border-radius: 4px;
     user-select: none;
     all: 'unset';
-    display: 'block';
 }
 
 @media (max-width: 768px) {
@@ -22,7 +19,6 @@
         height: 40px;
         width: 40px;
         font-size: 15px;
-        line-height: 50px;
     }
 }
 
@@ -31,7 +27,6 @@
         height: 30px;
         width: 30px;
         font-size: 14px;
-        line-height: 40px;
     }
 }
 
