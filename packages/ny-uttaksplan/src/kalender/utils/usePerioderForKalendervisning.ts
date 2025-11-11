@@ -34,13 +34,10 @@ import {
 
 export type CalendarPeriodWithLabel = CalendarPeriod & { legendLabel?: LegendLabel };
 
-export const usePerioderForKalendervisning = (
-    uttaksplan: Planperiode[],
-    barnehagestartdato?: string,
-): CalendarPeriodWithLabel[] => {
+export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriodWithLabel[] => {
     const intl = useIntl();
 
-    const { barn, erFarEllerMedmor, modus, navnPåForeldre } = useUttaksplanData();
+    const { uttaksplan, barn, erFarEllerMedmor, modus, navnPåForeldre } = useUttaksplanData();
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
 

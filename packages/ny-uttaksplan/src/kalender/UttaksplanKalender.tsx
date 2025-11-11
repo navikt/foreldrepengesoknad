@@ -23,12 +23,12 @@ interface Props {
 }
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {
-    const { uttaksplan, saksperioder, erFarEllerMedmor, familiehendelsedato, navnPåForeldre } = useUttaksplanData();
+    const { saksperioder, erFarEllerMedmor, familiehendelsedato, navnPåForeldre } = useUttaksplanData();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
 
-    const perioderForKalendervisning = usePerioderForKalendervisning(uttaksplan, barnehagestartdato);
+    const perioderForKalendervisning = usePerioderForKalendervisning(barnehagestartdato);
 
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
@@ -55,6 +55,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
+
             <VStack gap="space-16" ref={targetRef}>
                 <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
@@ -115,12 +116,11 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
                                 'ax-md:sticky ax-md:top-4 ax-md:ml-4 ax-md:max-w-[20.5rem] ax-md:self-start',
+                                'pb-[env(safe-area-inset-bottom,1rem)]',
                             ].join(' ')}
-                            style={{ paddingBottom: 'env(safe-area-inset-bottom, 1rem)' }}
                         >
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
-                                uttaksplan={uttaksplan}
                                 setValgtePerioder={setValgtePerioder}
                                 oppdaterUttaksplan={oppdaterUttaksplan}
                             />

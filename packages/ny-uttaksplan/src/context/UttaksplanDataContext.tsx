@@ -28,13 +28,13 @@ type Props = {
     children: React.ReactNode[] | React.ReactNode;
 };
 
-type ContextValues = Props & {
+type ContextValues = Omit<Props, 'children'> & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
     uttaksplan: Planperiode[];
 };
 
-const UttaksplanDataContext = createContext<Omit<ContextValues, 'children'> | null>(null);
+const UttaksplanDataContext = createContext<ContextValues | null>(null);
 
 export const UttaksplanDataProvider = (props: Props) => {
     const { children, ...otherProps } = props;
@@ -83,11 +83,7 @@ export const useUttaksplanData = () => {
     return context;
 };
 
-export const getSøkersPerioder = (
-    erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
-    erFarEllerMedmor: boolean,
-) => {
+const getSøkersPerioder = (erDeltUttak: boolean, gjeldendeUttaksplan: SaksperiodeNy[], erFarEllerMedmor: boolean) => {
     return erDeltUttak
         ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
         : gjeldendeUttaksplan;

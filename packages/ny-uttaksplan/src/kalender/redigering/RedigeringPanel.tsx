@@ -15,12 +15,11 @@ import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    uttaksplan: Planperiode[];
     oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
-export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan, setValgtePerioder }: Props) => {
+export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgtePerioder }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const [erMinimert, setErMinimert] = useState(false);
 
@@ -58,28 +57,26 @@ export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan
             {!erIRedigeringsmodus && (
                 <InfoOgEnkelRedigeringPanel
                     valgtePerioder={valgtePerioder}
-                    komplettPlan={uttaksplan}
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-                    oppdaterUttaksplan={oppdater}
-                    setSelectedPeriods={setValgtePerioder}
-                    setErIRedigeringsmodus={setErIRedigeringsmodus}
                     erMinimert={erMinimert}
+                    oppdaterUttaksplan={oppdater}
+                    setValgtePerioder={setValgtePerioder}
+                    setErIRedigeringsmodus={setErIRedigeringsmodus}
                     setErMinimert={setErMinimert}
                 />
             )}
             {erIRedigeringsmodus && (
                 <LeggTilPeriodePanel
-                    lukk={() => setErIRedigeringsmodus(false)}
-                    handleAddPeriode={(nyePerioder) => {
+                    valgtePerioder={sammenslåtteValgtePerioder}
+                    sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
+                    erMinimert={erMinimert}
+                    oppdaterUttaksplan={oppdater}
+                    setValgtePerioder={setValgtePerioder}
+                    lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
+                    leggTilValgtPeriode={(nyePerioder) => {
                         oppdater(nyePerioder);
                         setValgtePerioder([]);
                     }}
-                    komplettPlan={uttaksplan}
-                    sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-                    oppdaterUttaksplan={oppdater}
-                    setSelectedPeriods={setValgtePerioder}
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    erMinimert={erMinimert}
                     setErMinimert={setErMinimert}
                 />
             )}

@@ -29,25 +29,23 @@ type LeggTilPeriodePanelFormValues = {
 
 interface Props {
     valgtePerioder: CalendarPeriod[];
-    komplettPlan: Planperiode[];
-    lukk: () => void;
-    handleAddPeriode: (oppdatertePerioder: Planperiode[]) => void;
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     erMinimert: boolean;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
+    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    lukkRedigeringsmodus: () => void;
+    leggTilValgtPeriode: (oppdatertePerioder: Planperiode[]) => void;
     setErMinimert: (erMinimert: boolean) => void;
 }
 
 export const LeggTilPeriodePanel = ({
     valgtePerioder,
-    komplettPlan,
-    lukk,
-    handleAddPeriode,
     sammenslåtteValgtePerioder,
-    oppdaterUttaksplan,
-    setSelectedPeriods,
     erMinimert,
+    oppdaterUttaksplan,
+    setValgtePerioder,
+    lukkRedigeringsmodus,
+    leggTilValgtPeriode,
     setErMinimert,
 }: Props) => {
     const intl = useIntl();
@@ -57,7 +55,7 @@ export const LeggTilPeriodePanel = ({
     const formMethods = useForm<LeggTilPeriodePanelFormValues>();
 
     const onSubmit = (values: LeggTilPeriodePanelFormValues) => {
-        handleAddPeriode(
+        leggTilValgtPeriode(
             valgtePerioder.map((periode) => ({
                 fom: periode.fom,
                 tom: periode.tom,
@@ -70,7 +68,7 @@ export const LeggTilPeriodePanel = ({
             })),
         );
 
-        lukk();
+        lukkRedigeringsmodus();
     };
 
     const gyldigeKontotyper = finnGyldigeKontotyper(valgtePerioder, familiehendelsedato, valgtStønadskonto);
@@ -78,11 +76,10 @@ export const LeggTilPeriodePanel = ({
     return (
         <InfoPanel
             valgtePerioder={valgtePerioder}
-            komplettPlan={komplettPlan}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            oppdaterUttaksplan={oppdaterUttaksplan}
-            setSelectedPeriods={setSelectedPeriods}
             erMinimert={erMinimert}
+            oppdaterUttaksplan={oppdaterUttaksplan}
+            setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
             skalVisePeriodedetaljerSomStandard={false}
         >
@@ -94,7 +91,7 @@ export const LeggTilPeriodePanel = ({
                             {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
                             <GraderingSpørsmål />
                             <PanelButtons
-                                onCancel={lukk}
+                                onCancel={lukkRedigeringsmodus}
                                 isFinalStep={true}
                                 addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
                             />

@@ -15,22 +15,20 @@ import { Periodeoversikt, type PlanperiodeMedAntallDager } from './Periodeoversi
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    komplettPlan: Planperiode[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     erMinimert: boolean;
-    setErMinimert: (erMinimert: boolean) => void;
     skalVisePeriodedetaljerSomStandard: boolean;
     children: React.ReactNode[] | React.ReactNode;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
+    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setErMinimert: (erMinimert: boolean) => void;
 };
 
 export const InfoPanel = ({
     valgtePerioder,
-    komplettPlan,
     sammenslåtteValgtePerioder,
     oppdaterUttaksplan,
-    setSelectedPeriods,
+    setValgtePerioder,
     erMinimert,
     setErMinimert,
     skalVisePeriodedetaljerSomStandard,
@@ -38,7 +36,7 @@ export const InfoPanel = ({
 }: Props) => {
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(skalVisePeriodedetaljerSomStandard);
 
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { uttaksplan, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const slettPeriode = (periode: { fom: string; tom: string }) => {
         const start = dayjs(periode.fom);
@@ -62,7 +60,7 @@ export const InfoPanel = ({
             })),
         );
 
-        setSelectedPeriods((oldPeriods) =>
+        setValgtePerioder((oldPeriods) =>
             oldPeriods.filter(
                 (p) =>
                     !perioder.some(
@@ -73,8 +71,8 @@ export const InfoPanel = ({
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(valgtePerioder, komplettPlan),
-        [valgtePerioder, komplettPlan],
+        () => finnValgtePerioder(valgtePerioder, uttaksplan),
+        [valgtePerioder, uttaksplan],
     );
 
     const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));

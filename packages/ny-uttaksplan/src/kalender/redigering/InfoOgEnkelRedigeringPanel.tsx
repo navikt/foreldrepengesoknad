@@ -14,26 +14,24 @@ import { type PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    komplettPlan: Planperiode[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
     erMinimert: boolean;
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
+    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
     setErMinimert: (erMinimert: boolean) => void;
 };
 
 export const InfoOgEnkelRedigeringPanel = ({
     valgtePerioder,
-    komplettPlan,
     sammenslåtteValgtePerioder,
-    oppdaterUttaksplan,
-    setSelectedPeriods,
-    setErIRedigeringsmodus,
     erMinimert,
+    oppdaterUttaksplan,
+    setValgtePerioder,
+    setErIRedigeringsmodus,
     setErMinimert,
 }: Props) => {
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { uttaksplan, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
@@ -47,7 +45,7 @@ export const InfoOgEnkelRedigeringPanel = ({
 
         oppdaterUttaksplan(planperioder);
 
-        setSelectedPeriods([]);
+        setValgtePerioder([]);
     };
 
     const leggTilFerie = () => {
@@ -62,12 +60,12 @@ export const InfoOgEnkelRedigeringPanel = ({
             })),
         );
 
-        setSelectedPeriods([]);
+        setValgtePerioder([]);
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(valgtePerioder, komplettPlan),
-        [valgtePerioder, komplettPlan],
+        () => finnValgtePerioder(valgtePerioder, uttaksplan),
+        [valgtePerioder, uttaksplan],
     );
 
     const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
@@ -77,11 +75,10 @@ export const InfoOgEnkelRedigeringPanel = ({
     return (
         <InfoPanel
             valgtePerioder={valgtePerioder}
-            komplettPlan={komplettPlan}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            oppdaterUttaksplan={oppdaterUttaksplan}
-            setSelectedPeriods={setSelectedPeriods}
             erMinimert={erMinimert}
+            oppdaterUttaksplan={oppdaterUttaksplan}
+            setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
             skalVisePeriodedetaljerSomStandard
         >
@@ -104,12 +101,15 @@ export const InfoOgEnkelRedigeringPanel = ({
     );
 };
 
-const finnValgtePerioder = (perioder: CalendarPeriod[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
-    return komplettPlan
+const finnValgtePerioder = (
+    valgtePerioder: CalendarPeriod[],
+    uttaksplan: Planperiode[],
+): PlanperiodeMedAntallDager[] => {
+    return uttaksplan
         .map((p) => {
             let overlappendeDager = 0;
 
-            const overlappendePerioder = perioder.filter((periode) => {
+            const overlappendePerioder = valgtePerioder.filter((periode) => {
                 const fom1 = dayjs(periode.fom);
                 const tom1 = dayjs(periode.tom);
                 const fom2 = dayjs(p.fom);
