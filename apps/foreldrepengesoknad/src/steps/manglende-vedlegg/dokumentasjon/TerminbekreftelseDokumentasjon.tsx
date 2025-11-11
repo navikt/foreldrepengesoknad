@@ -75,13 +75,11 @@ export const skalViseTerminbekreftelseDokumentasjon = ({
     annenForelder?: AnnenForelder;
     erFarEllerMedmor: boolean;
 }) => {
-    if (søkersituasjon?.situasjon === 'adopsjon') {
-        return true;
+    if (!søkersituasjon || !barn) {
+        return null;
     }
 
     return (
-        søkersituasjon &&
-        barn &&
         isUfødtBarn(barn) &&
         (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
             getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
