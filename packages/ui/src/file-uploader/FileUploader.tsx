@@ -17,7 +17,7 @@ const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 type InternError = 'NO_DATA';
 
 type UploadError = {
-    feilkode:
+    feilKode:
         | 'IKKE_TILGANG'
         | 'DUPLIKAT_FORSENDELSE'
         | 'MELLOMLAGRING'
@@ -56,14 +56,13 @@ const getPendingAttachmentFromFile = (
 
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
     const response = await saveAttachment(attachment);
-    console.log('RESPON', response);
+
     attachment.pending = false;
     if (response.success) {
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } else {
-        console.log('ELSE');
-        attachment.error = response.feilkode;
+        attachment.error = response.feilKode;
     }
 };
 
@@ -96,7 +95,7 @@ const addOrReplaceAttachments = (
 
 const getErrorMessageMap = (
     intl: IntlShape,
-): Record<FileRejectionReason | UploadError['feilkode'] | InternError, string> => ({
+): Record<FileRejectionReason | UploadError['feilKode'] | InternError, string> => ({
     fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
     fileSize: intl.formatMessage(
         { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
@@ -179,7 +178,7 @@ export const FileUploader = ({
 }: Props) => {
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
-    console.log(errorMessageMap);
+
     const [attachments, setAttachments] = useState(convertToInternalFormat(existingAttachments));
 
     useEffect(() => {
@@ -213,7 +212,6 @@ export const FileUploader = ({
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.fileObject !== fileToRemove));
     }, []);
 
-    console.log(attachments);
     const uploadedAttachments = useMemo(
         () => attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error),
         [attachments],
@@ -290,12 +288,11 @@ export const FileUploader = ({
                     attachments={failedAttachments}
                     deleteAttachment={deleteAttachment}
                     getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
-                        console.log(rejectedAttachment) ||
-                        (rejectedAttachment.attachmentData.error
+                        rejectedAttachment.attachmentData.error
                             ? errorMessageMap[rejectedAttachment.attachmentData.error]
                             : errorMessageMap[
                                   (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
-                              ])
+                              ]
                     }
                 />
             )}

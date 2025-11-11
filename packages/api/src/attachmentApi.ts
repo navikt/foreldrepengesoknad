@@ -4,7 +4,7 @@ import { Attachment } from '@navikt/fp-types';
 
 type UploadError = {
     success: false;
-    feilkode:
+    feilKode:
         | 'IKKE_TILGANG'
         | 'DUPLIKAT_FORSENDELSE'
         | 'MELLOMLAGRING'
