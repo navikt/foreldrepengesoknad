@@ -20,7 +20,7 @@ export const urlPrefiks = import.meta.env.BASE_URL;
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart/v2`,
+    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
