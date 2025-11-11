@@ -52,9 +52,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
             slettMellomlagring();
             navigate(SøknadRoutes.KVITTERING);
         } catch (error: unknown) {
-            console.log(error);
             if (error instanceof HTTPError) {
-                console.log('HTTO');
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
