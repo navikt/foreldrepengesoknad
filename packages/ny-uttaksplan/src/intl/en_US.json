@@ -205,6 +205,7 @@
     "RedigeringPanel.SlettAlle": "Delete all",
     "RedigeringPanel.LeggInnFerie": "Add vacation",
     "RedigeringPanel.RedigerUttaksplan": "Add/change",
+    "RedigeringPanel.EndreTil": "What do you want to change to?",
     "RedigeringPanel.ValgteDager": "{antall} days",
     "RedigeringPanel.EksisterendePerioder": "Selected dates contain existing period(s)",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Parental benefits before birth",

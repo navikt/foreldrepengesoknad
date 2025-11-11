@@ -572,10 +572,9 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         >
                             <RedigeringPanel
                                 valgtePerioder={valgtePerioder}
-                                setSelectedPeriods={setValgtePerioder}
-                                komplettPlan={uttaksplan}
-                                handleOnPlanChange={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
-                                familiehendelsedato={familiehendelsedato}
+                                uttaksplan={uttaksplan}
+                                setValgtePerioder={setValgtePerioder}
+                                oppdaterUttaksplan={getModifyPlan(uttaksplanBuilder, handleOnPlanChange)}
                             />
                         </div>
                     )}

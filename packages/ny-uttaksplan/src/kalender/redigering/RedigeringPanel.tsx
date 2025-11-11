@@ -1,126 +1,35 @@
-import {
-    ChevronDownIcon,
-    ChevronUpIcon,
-    PersonGroupIcon,
-    PersonPregnantFillIcon,
-    PersonSuitFillIcon,
-    TrashIcon,
-} from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { uniqueId } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Box, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Box } from '@navikt/ds-react';
 
-import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Planperiode } from '../../types/Planperiode';
+import { InfoOgEnkelRedigeringPanel } from './InfoOgEnkelRedigeringPanel';
 import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
-
-type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    komplettPlan: Planperiode[];
-    handleOnPlanChange: (oppdatertePerioder: Planperiode[]) => void;
-    familiehendelsedato: string;
-    setSelectedPeriods: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    uttaksplan: Planperiode[];
+    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
+    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
-export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChange, setSelectedPeriods }: Props) => {
+export const RedigeringPanel = ({ valgtePerioder, uttaksplan, oppdaterUttaksplan, setValgtePerioder }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const [erMinimert, setErMinimert] = useState(false);
 
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
-
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
-    const isDesktop = useMedia('screen and (min-width: 640px)');
-
+    // Dette er her for å nullstille minimering når en går fra mobil til desktop
+    const isDesktop = useMedia('screen and (min-width: 768px)');
     useEffect(() => {
         if (isDesktop) {
             setErMinimert(false);
         }
     }, [isDesktop]);
-
-    const slettAllePerioder = () => {
-        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-            periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-            fom: p.fom,
-            tom: p.tom,
-            readOnly: false,
-            id: uniqueId(),
-        }));
-
-        handleOnPlanChange(planperioder);
-
-        setSelectedPeriods([]);
-    };
-
-    const slettPeriode = (periode: { fom: string; tom: string }) => {
-        const start = dayjs(periode.fom);
-        const end = dayjs(periode.tom);
-
-        const perioder = sammenslåtteValgtePerioder.filter((p) => {
-            const pStart = dayjs(p.fom);
-            const pEnd = dayjs(p.tom);
-
-            return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
-        });
-
-        const planperioder = perioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-            periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-            fom: p.fom,
-            tom: p.tom,
-            readOnly: false,
-            id: uniqueId(),
-        }));
-
-        handleOnPlanChange(planperioder);
-
-        setSelectedPeriods((oldPeriods) =>
-            oldPeriods.filter(
-                (p) =>
-                    // keep only those that do NOT overlap any deleted range
-                    !perioder.some(
-                        (rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'),
-                    ),
-            ),
-        );
-    };
-
-    const leggTilFerie = () => {
-        const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-            fom: p.fom,
-            tom: p.tom,
-            readOnly: false,
-            id: uniqueId(),
-            utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-        }));
-
-        handleOnPlanChange(planperioder);
-
-        setErIRedigeringsmodus(false);
-        setSelectedPeriods([]);
-    };
-
-    const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(valgtePerioder, komplettPlan),
-        [valgtePerioder, komplettPlan],
-    );
-
-    const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
-    const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
-        valgtePerioder,
-        familiehendelsedato,
-    );
 
     return (
         <Box.New
@@ -133,97 +42,28 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
             background="default"
         >
             {!erIRedigeringsmodus && (
-                <div className="p-4">
-                    <div className="block sm:hidden">
-                        <HStack justify="space-between" align="center" wrap={false}>
-                            <Heading size="xsmall">
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{ antall: finnAntallDager(valgtePerioder) }}
-                                />
-                            </Heading>
-                            {erMinimert ? (
-                                <ChevronUpIcon
-                                    title="a11y-title"
-                                    fontSize="1.5rem"
-                                    onClick={() => setErMinimert(false)}
-                                />
-                            ) : (
-                                <ChevronDownIcon
-                                    title="a11y-title"
-                                    fontSize="1.5rem"
-                                    onClick={() => setErMinimert(true)}
-                                />
-                            )}
-                        </HStack>
-                    </div>
-                    <div className={erMinimert ? 'hidden' : 'block'}>
-                        <VStack gap="space-16">
-                            {ekisterendePerioderSomErValgt.length === 0 && (
-                                <VStack gap="space-8">
-                                    <Heading size="xsmall">
-                                        <FormattedMessage id="RedigeringPanel.DuHarMarkertNyeDager" />
-                                    </Heading>
-                                    <BodyShort>
-                                        <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
-                                    </BodyShort>
-                                </VStack>
-                            )}
-                            {ekisterendePerioderSomErValgt.length > 0 && (
-                                <>
-                                    <BodyShort>
-                                        <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
-                                    </BodyShort>
-                                    <EksisterendePeriodeListe
-                                        perioder={ekisterendePerioderSomErValgt}
-                                        slettPeriode={slettPeriode}
-                                    />
-                                </>
-                            )}
-                            {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
-                                <Alert variant="info" size="small">
-                                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
-                                </Alert>
-                            )}
-                            {kanIkkeLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
-                                <Alert variant="info" size="small">
-                                    <FormattedMessage
-                                        id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"
-                                        values={{ dato: dayjs(familiehendelsedato).format(DDMMM_DATE_FORMAT) }}
-                                    />
-                                </Alert>
-                            )}
-                            <Button
-                                variant="primary"
-                                size="small"
-                                onClick={() => setErIRedigeringsmodus(true)}
-                                type="button"
-                            >
-                                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                            </Button>
-                            <HStack justify="space-between">
-                                {!kanIkkeLeggeTilFerie && (
-                                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                                        <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                                    </Button>
-                                )}
-                                {ekisterendePerioderSomErValgt.length > 0 && (
-                                    <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
-                                        <FormattedMessage id="RedigeringPanel.SlettAlle" />
-                                    </Button>
-                                )}
-                            </HStack>
-                        </VStack>
-                    </div>
-                </div>
+                <InfoOgEnkelRedigeringPanel
+                    valgtePerioder={valgtePerioder}
+                    komplettPlan={uttaksplan}
+                    sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
+                    handleOnPlanChange={oppdaterUttaksplan}
+                    setSelectedPeriods={setValgtePerioder}
+                    setErIRedigeringsmodus={setErIRedigeringsmodus}
+                    erMinimert={erMinimert}
+                    setErMinimert={setErMinimert}
+                />
             )}
             {erIRedigeringsmodus && (
                 <LeggTilPeriodePanel
-                    onCancel={() => setErIRedigeringsmodus(false)}
+                    lukk={() => setErIRedigeringsmodus(false)}
                     handleAddPeriode={(nyePerioder) => {
-                        handleOnPlanChange(nyePerioder);
-                        setSelectedPeriods([]);
+                        oppdaterUttaksplan(nyePerioder);
+                        setValgtePerioder([]);
                     }}
+                    komplettPlan={uttaksplan}
+                    sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
+                    handleOnPlanChange={oppdaterUttaksplan}
+                    setSelectedPeriods={setValgtePerioder}
                     valgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     setErMinimert={setErMinimert}
@@ -234,7 +74,9 @@ export const RedigeringPanel = ({ valgtePerioder, komplettPlan, handleOnPlanChan
 };
 
 const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
-    if (!perioder.length) return [];
+    if (!perioder.length) {
+        return [];
+    }
 
     return [...perioder]
         .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
@@ -252,181 +94,4 @@ const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPer
             acc.push(curr);
             return acc;
         }, []);
-};
-
-const finnAntallDager = (perioder: CalendarPeriod[]): number => {
-    return perioder.reduce((acc, periode) => {
-        const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
-        return acc + dager;
-    }, 0);
-};
-
-const finnValgtePerioder = (perioder: CalendarPeriod[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
-    return komplettPlan
-        .map((p) => {
-            let overlappendeDager = 0;
-
-            const overlappendePerioder = perioder.filter((periode) => {
-                const fom1 = dayjs(periode.fom);
-                const tom1 = dayjs(periode.tom);
-                const fom2 = dayjs(p.fom);
-                const tom2 = dayjs(p.tom);
-
-                const start = fom1.isAfter(fom2) ? fom1 : fom2;
-                const end = tom1.isBefore(tom2) ? tom1 : tom2;
-
-                if (start.isSameOrBefore(end, 'day')) {
-                    overlappendeDager += end.diff(start, 'day') + 1;
-                    return true;
-                }
-                return false;
-            });
-
-            if (overlappendeDager > 0) {
-                const fomDate = overlappendePerioder
-                    .map(({ fom }) => dayjs(fom))
-                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min))
-                    .format('YYYY-MM-DD');
-                const tomDate = overlappendePerioder
-                    .map(({ tom }) => dayjs(tom))
-                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max))
-                    .format('YYYY-MM-DD');
-
-                return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };
-            }
-
-            return null;
-        })
-        .filter((p): p is PlanperiodeMedAntallDager => p !== null)
-        .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
-            const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
-            if (duplikat) {
-                return acc
-                    .filter((p) => p.kontoType !== duplikat.kontoType)
-                    .concat({
-                        ...duplikat,
-                        // Keep earliest fom and latest tom across all merged periods
-                        fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
-                        tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
-                        overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
-                    });
-            }
-            return acc.concat(curr);
-        }, []);
-};
-
-const EksisterendePeriodeListe = ({
-    perioder,
-    slettPeriode,
-}: {
-    perioder: PlanperiodeMedAntallDager[];
-    slettPeriode: (periode: { fom: string; tom: string }) => void;
-}) => {
-    const intl = useIntl();
-    return (
-        <VStack gap="space-12">
-            {perioder.map((p) => (
-                <HStack gap="space-4" key={p.id} wrap={false}>
-                    {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
-                        <PersonPregnantFillIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-meta-purple-strong)"
-                        />
-                    )}
-                    {p.kontoType === 'FEDREKVOTE' && (
-                        <PersonSuitFillIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-success-strong)"
-                        />
-                    )}
-                    {p.kontoType === 'FELLESPERIODE' && (
-                        <PersonGroupIcon
-                            title="a11y-title"
-                            fontSize="1.5rem"
-                            height="35px"
-                            width="35px"
-                            color="var(--ax-bg-success-strong)"
-                        />
-                    )}
-                    <VStack gap="space-0">
-                        <Heading size="xsmall">
-                            {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
-                                <FormattedMessage id="RedigeringPanel.Mor" />
-                            )}
-                            {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Far" />}
-                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Felles" />}
-                            {p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
-                                <FormattedMessage id="RedigeringPanel.Ferie" />
-                            )}
-                        </Heading>
-                        <BodyShort>
-                            {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
-                                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
-                            )}
-                            {(p.kontoType === 'MØDREKVOTE' || p.kontoType === 'FEDREKVOTE') && (
-                                <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
-                            )}
-                            {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Fellesperiode" />}
-                        </BodyShort>
-                        <BodyShort>
-                            <FormattedMessage
-                                id="RedigeringPanel.Dager"
-                                values={{ dato: formaterDato(p.fom, p.tom), antall: p.overlappendeDager }}
-                            />
-                        </BodyShort>
-                    </VStack>
-                    <Spacer />
-                    <TrashIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                        fontSize="1.5rem"
-                        className="cursor-pointer hover:opacity-70"
-                        onClick={() => slettPeriode(p)}
-                    />
-                </HStack>
-            ))}
-        </VStack>
-    );
-};
-
-const formaterDato = (fom: string, tom: string): string => {
-    const start = dayjs(fom);
-    const end = dayjs(tom);
-
-    const sameDay = start.isSame(end, 'day');
-    const sameMonth = start.isSame(end, 'month');
-    const sameYear = start.isSame(end, 'year');
-
-    if (sameDay) {
-        return start.format('D. MMM YYYY.');
-    }
-
-    if (sameMonth && sameYear) {
-        return `${start.format('D.')}-${end.format('D. MMM.')}`;
-    }
-
-    if (!sameMonth && sameYear) {
-        return `${start.format('D. MMM')} - ${end.format('D. MMM.')}`;
-    }
-
-    return `${start.format('D. MMM YY')} - ${end.format('D. MMM YY.')}`;
-};
-
-const erFerieIkkeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isBefore(familiehendelsedato);
-};
-
-const harValgtBådeFørOgEtterFamiliehendelsedato = (
-    perioder: CalendarPeriod[],
-    familiehendelsedato: string,
-): boolean => {
-    const harPeriodeFør = perioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeEtter = perioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
-
-    return harPeriodeFør && harPeriodeEtter;
 };
