@@ -173,9 +173,9 @@ export type Kjønn_fpoversikt = 'M' | 'K' | 'U';
 export type Målform_fpoversikt = 'NB' | 'NN' | 'EN' | 'E';
 
 export type Navn_fpoversikt = {
-    fornavn: string;
+    fornavn?: string;
     mellomnavn?: string;
-    etternavn: string;
+    etternavn?: string;
 };
 
 export type PersonDto_fpoversikt = {
@@ -272,7 +272,7 @@ export type AnnenPartSak_fpoversikt = {
 };
 
 export type Arbeidsgiver_fpoversikt = {
-    id: string;
+    id?: string;
     type?: ArbeidsgiverType_fpoversikt;
 };
 
@@ -365,7 +365,7 @@ export type FpSak_fpoversikt = {
     barn?: Person_fpoversikt[];
     dekningsgrad?: DekningsgradSak_fpoversikt;
     familiehendelse: Familiehendelse_fpoversikt;
-    forelder: BrukerRolleSak_fpoversikt;
+    forelder?: BrukerRolleSak_fpoversikt;
     gjeldendeVedtak?: FpVedtak_fpoversikt;
     gjelderAdopsjon: boolean;
     harAnnenForelderTilsvarendeRettEØS?: boolean;

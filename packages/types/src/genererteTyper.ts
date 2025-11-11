@@ -127,6 +127,7 @@ export type { EttersendelseDto } from './fpsoknadDtoGenerert';
 export type { YtelseType } from './fpsoknadDtoGenerert';
 export type { no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType } from './fpsoknadDtoGenerert';
 export type { org_glassfish_jersey_media_multipart_FormDataContentDisposition } from './fpsoknadDtoGenerert';
+export type { no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus as ForsendelseStatus } from './fpsoknadDtoGenerert';
 
 // Types from fpgrunndataDtoGenerert
 export type { KontoBeregningDto } from './fpgrunndataDtoGenerert';
@@ -138,9 +139,3 @@ export type { KontoBeregningResultatDto } from './fpgrunndataDtoGenerert';
 export type { KontoBeregningGrunnlagDto } from './fpgrunndataDtoGenerert';
 export type { no_nav_foreldrepenger_stønadskonto_regelmodell_grunnlag_Brukerrolle } from './fpgrunndataDtoGenerert';
 export type { no_nav_foreldrepenger_stønadskonto_regelmodell_grunnlag_Rettighetstype } from './fpgrunndataDtoGenerert';
-
-// TODO: skal genereres
-export type ForsendelseStatus = {
-    status: 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG';
-    saksnummer?: number;
-};
