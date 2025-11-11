@@ -181,6 +181,7 @@
     "kalender.dinPeriode": "Din periode",
     "kalender.dinPeriode.gradert": "Du kombinerer jobb og foreldrepengar",
     "kalender.annenPartPeriode": "{navnAnnenPart} periode",
+    "kalender.annenPartPeriode.gradert": "{navnAnnenPart} kombinerer jobb og foreldrepengar",
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
     "kalender.dinUtsettelse": "Du utset foreldrepengar",
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} utset foreldrepengar",

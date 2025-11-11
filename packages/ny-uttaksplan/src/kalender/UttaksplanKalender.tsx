@@ -119,7 +119,27 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
             case 'FORELDREPENGER':
                 return 'FORELDREPENGER';
             case 'AKTIVITETSFRI_KVOTE':
-                return 'AKTIVITETSFRI_KVOTE';
+                if (p.forelder === 'FAR_MEDMOR') {
+                    if (p.samtidigUttak && p.samtidigUttak > 0) {
+                        return 'SAMTIDIG_UTTAK';
+                    }
+
+                    if (p.gradering && p.gradering.arbeidstidprosent) {
+                        return 'FARS_DEL_GRADERT';
+                    }
+
+                    return 'FARS_DEL';
+                }
+
+                if (p.samtidigUttak && p.samtidigUttak > 0) {
+                    return 'SAMTIDIG_UTTAK';
+                }
+
+                if (p.gradering && p.gradering.arbeidstidprosent) {
+                    return 'MORS_DEL_GRADERT';
+                }
+
+                return 'MORS_DEL';
             default:
                 return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
         }
@@ -343,11 +363,19 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     }
 
     if (periode.forelder === 'MOR') {
+        if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
+            return 'BLUESTRIPED';
+        }
+
         return 'BLUE';
     }
 
     if (periode.forelder === 'FAR_MEDMOR') {
-        return 'LIGHTGREEN';
+        if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
+            return 'GREENSTRIPED';
+        }
+
+        return 'GREEN';
     }
 
     return 'NONE';

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
@@ -29,6 +29,32 @@ const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.adopsjon' });
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
+        case 'MORS_DEL':
+            return erFarEllerMedmor
+                ? intl.formatMessage(
+                      { id: 'kalender.annenPartPeriode' },
+                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+                  )
+                : intl.formatMessage({ id: 'kalender.dinPeriode' });
+        case 'MORS_DEL_GRADERT':
+            return erFarEllerMedmor
+                ? intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart })
+                : intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
+        case 'FARS_DEL':
+            return erFarEllerMedmor
+                ? intl.formatMessage({ id: 'kalender.dinPeriode' })
+                : intl.formatMessage(
+                      { id: 'kalender.annenPartPeriode' },
+                      { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+                  );
+        case 'FARS_DEL_GRADERT':
+            return erFarEllerMedmor
+                ? intl.formatMessage({ id: 'kalender.dinPeriode.gradert' })
+                : intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
+        case 'TAPTE_DAGER':
+            return intl.formatMessage({ id: 'kalender.tapteDager' });
+        case 'SAMTIDIG_UTTAK':
+            return intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
             return label;
         // case CalendarPeriodColor.PINK:
@@ -67,10 +93,18 @@ interface Props {
 
 export const UttaksplanLegend = ({ navnAnnenPart, erFarEllerMedmor, selectLegend, legendInfo, readOnly }: Props) => {
     const intl = useIntl();
+    const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
+    const selectableLegends = legendInfo.filter(
+        (info) => info.color !== 'PINK' && info.color !== 'PURPLE' && info.color !== 'BLACKOUTLINE',
+    );
+    const nonSelectableLegends = legendInfo.filter(
+        (info) => info.color === 'PINK' || info.color === 'PURPLE' || info.color === 'BLACKOUTLINE',
+    );
+    const sortedLegends = [...selectableLegends, ...nonSelectableLegends];
 
     return (
         <HStack gap="space-16" align="center">
-            {legendInfo
+            {sortedLegends
                 .filter((info) => info.color !== 'NONE')
                 .map((info) => (
                     <button
@@ -80,13 +114,21 @@ export const UttaksplanLegend = ({ navnAnnenPart, erFarEllerMedmor, selectLegend
                             info.color !== 'PURPLE' &&
                             info.color !== 'BLACKOUTLINE' &&
                             !readOnly
-                                ? () => selectLegend(info.color)
+                                ? () => {
+                                      selectLegend(info.color);
+
+                                      if (selectedLabel === info.label) {
+                                          setSelectedLabel(undefined);
+                                      } else {
+                                          setSelectedLabel(info.label);
+                                      }
+                                  }
                                 : undefined
                         }
                         type="button"
-                        className={`inline-block w-fit pb-[0.46rem] pr-2 [all:unset] ${readOnly ? 'cursor-default' : 'cursor-pointer'}`}
+                        className={'inline-block w-fit pb-[0.46rem] pr-2 [all:unset]'}
                     >
-                        <CalendarLabel color={info.color}>
+                        <CalendarLabel color={info.color} selected={selectedLabel === info.label}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 {getCalendarLabel(
                                     info.label,

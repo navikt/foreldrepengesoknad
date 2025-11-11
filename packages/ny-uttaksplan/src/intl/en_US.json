@@ -182,6 +182,7 @@
     "kalender.dinPeriode": "Your period",
     "kalender.dinPeriode.gradert": "You combine work and parental benefits",
     "kalender.annenPartPeriode": "{navnAnnenPart} period",
+    "kalender.annenPartPeriode.gradert": "{navnAnnenPart} combines work and parental benefits",
     "kalender.samtidigUttak": "You and {navnAnnenPart} are on leave at the same time",
     "kalender.dinUtsettelse": "You postpone parental benefits",
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} postpones parental benefits",

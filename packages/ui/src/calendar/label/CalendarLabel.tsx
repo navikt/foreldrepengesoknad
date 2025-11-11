@@ -7,12 +7,38 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
     color: CalendarPeriodColor;
     onClick?: () => void;
+    selected: boolean;
 }
 
-export const CalendarLabel = ({ children, color, onClick }: Props) => {
+export const CalendarLabel = ({ children, color, onClick, selected }: Props) => {
+    const getClassname = () => {
+        if (selected) {
+            if (color === 'GREEN' || color === 'GREENSTRIPED' || color === 'LIGHTGREEN' || color === 'LIGHTGREENBLUE') {
+                return styles.greenSelected;
+            }
+            if (color === 'BLUE' || color === 'BLUESTRIPED' || color === 'LIGHTBLUE' || color === 'LIGHTBLUEGREEN') {
+                return styles.blueSelected;
+            }
+            if (color === 'BLUEOUTLINE') {
+                return styles.blueOutlineSelected;
+            }
+            if (color === 'BLACK') {
+                return styles.blackSelected;
+            }
+
+            return styles.calendarLabelSelected;
+        }
+
+        if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+            return [styles.calendarLabel, styles.selectableCalendarLabel].join(' ');
+        }
+
+        return styles.calendarLabel;
+    };
+
     if (color !== 'DARKBLUE') {
         return (
-            <HStack className={styles.calendarLabel} gap="space-8" align="center" onClick={onClick}>
+            <HStack className={getClassname()} gap="space-8" align="center" onClick={onClick}>
                 {getRect(color)}
                 {children}
             </HStack>
@@ -24,16 +50,16 @@ export const CalendarLabel = ({ children, color, onClick }: Props) => {
 const getRect = (color: CalendarPeriodColor) => {
     switch (color) {
         case 'BLUE':
+        case 'LIGHTBLUE':
             return <div className={styles.blueRect} />;
         case 'GREEN':
+        case 'LIGHTGREEN':
             return <div className={styles.greenRect} />;
-        case 'LIGHTBLUE':
         case 'BLUEOUTLINE':
             return <div className={styles.blueOutlineRect} />;
         case 'BLACKOUTLINE':
             return <div className={styles.blackOutlineRect} />;
         case 'GREENOUTLINE':
-        case 'LIGHTGREEN':
             return <div className={styles.greenOutlineRect} />;
         case 'BLACK':
             return <div className={styles.blackRect} />;
