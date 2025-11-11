@@ -8,7 +8,7 @@ import {
     DokumentDto_fpoversikt,
     EttersendelseDto,
     FpOversiktInntektsmeldingDto_fpoversikt,
-    KontoBeregningGrunnlagDto_fpoversikt,
+    KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
     PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
@@ -57,7 +57,7 @@ export const hentSakerOptions = () =>
         queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
     });
 
-export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto_fpoversikt) =>
+export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
         queryFn: () => ky.post(API_URLS.konto, { json: body }).json<KontoBeregningResultatDto>(),

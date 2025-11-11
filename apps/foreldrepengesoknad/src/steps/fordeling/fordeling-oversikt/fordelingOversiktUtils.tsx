@@ -29,7 +29,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { KontoBeregningDto, Minsteretter_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { KontoBeregningDto, Minsteretter, SøkersituasjonFp } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
 
@@ -778,7 +778,7 @@ export const getFarTekst = (erFarEllerMedmor: boolean, navnFar: string, intl: In
 
 export const getFordelingFraKontoer = (
     kontoer: KontoBeregningDto,
-    minsteretter: Minsteretter_fpoversikt,
+    minsteretter: Minsteretter,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     navnPåForeldre: NavnPåForeldre,

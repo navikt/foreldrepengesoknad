@@ -26,6 +26,7 @@ const KvitteringsInnhold = ({ forsendelseStatus }: { forsendelseStatus?: Forsend
     switch (status) {
         case 'PENDING':
             return <SakenProsesseres />;
+        case 'FORSENDELSE_FINNES_IKKE':
         case 'MIDLERTIDIG':
             return <GåTilMinSide />;
         case 'ENDELIG':
@@ -70,7 +71,7 @@ const GåTilMinSide = () => {
     );
 };
 
-const GåTilInnsyn = ({ saksnummer }: { saksnummer?: number }) => {
+const GåTilInnsyn = ({ saksnummer }: { saksnummer?: string }) => {
     if (saksnummer === undefined) {
         throw new Error('Udefinert saksnummer for status ENDELIG');
     }

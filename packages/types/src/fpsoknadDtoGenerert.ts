@@ -4,71 +4,7 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}/fpsoknad` | (string & {});
 };
 
-export type AdopsjonDto = {
-    adopsjonAvEktefellesBarn: boolean;
-    adopsjonsdato: string;
-    ankomstdato?: string;
-    antallBarn?: number;
-    fødselsdatoer?: string[];
-    søkerAdopsjonAlene?: boolean;
-};
-
-export type AnnenForelderDto = (
-    | ({
-          type: 'norsk';
-      } & NorskForelderDto)
-    | ({
-          type: 'utenlandsk';
-      } & UtenlandskForelderDto)
-) & {
-    type: string;
-};
-
-export type Arbeidsforhold = {
-    fom?: string;
-    navn?: string;
-    orgnummer?: string;
-    stillingsprosent?: number;
-    tom?: string;
-};
-
-export type ArbeidsforholdDto = (
-    | ({
-          type: 'frilanser';
-      } & FrilanserDto)
-    | ({
-          type: 'privat';
-      } & PrivatArbeidsgiverDto)
-    | ({
-          type: 'selvstendig';
-      } & SelvstendigNæringsdrivendeDto)
-    | ({
-          type: 'virksomhet';
-      } & VirksomhetDto)
-) & {
-    type: string;
-};
-
-export type BarnDto = (
-    | ({
-          type: 'adopsjon';
-      } & AdopsjonDto)
-    | ({
-          type: 'fødsel';
-      } & FødselDto)
-    | ({
-          type: 'omsorgsovertakelse';
-      } & OmsorgsovertakelseDto)
-    | ({
-          type: 'termin';
-      } & TerminDto)
-) & {
-    type: string;
-};
-
-export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR';
-
-export type CountryCode =
+export type com_neovisionaries_i18n_CountryCode =
     | 'UNDEFINED'
     | 'AC'
     | 'AD'
@@ -342,6 +278,258 @@ export type CountryCode =
     | 'ZR'
     | 'ZW';
 
+export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType =
+    | 'FELLESPERIODE'
+    | 'MØDREKVOTE'
+    | 'FEDREKVOTE'
+    | 'FORELDREPENGER'
+    | 'FORELDREPENGER_FØR_FØDSEL';
+
+export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet =
+    | 'ARBEID'
+    | 'UTDANNING'
+    | 'KVALPROG'
+    | 'INTROPROG'
+    | 'TRENGER_HJELP'
+    | 'INNLAGT'
+    | 'ARBEID_OG_UTDANNING'
+    | 'UFØRE'
+    | 'IKKE_OPPGITT';
+
+export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak =
+    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
+    | 'SYKDOM_ANNEN_FORELDER'
+    | 'ALENEOMSORG'
+    | 'IKKE_RETT_ANNEN_FORELDER';
+
+export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR';
+
+export type EndringssøknadForeldrepengerDto = {
+    annenForelder?: AnnenForelderDto;
+    barn: BarnDto;
+    mottattdato?: string;
+    rolle?: BrukerRolle;
+    saksnummer: string;
+    språkkode?: Målform;
+    søkerinfo: SøkerDto;
+    uttaksplan: UttaksplanDto;
+    vedlegg?: VedleggDto[];
+};
+
+export type Målform = 'NB' | 'NN' | 'EN' | 'E';
+
+export type SøkerDto = {
+    arbeidsforhold?: Arbeidsforhold[];
+    fnr: string;
+    navn: Navn;
+};
+
+export type Arbeidsforhold = {
+    fom?: string;
+    navn?: string;
+    orgnummer?: string;
+    stillingsprosent?: number;
+    tom?: string;
+};
+
+export type Navn = {
+    etternavn: string;
+    fornavn: string;
+    mellomnavn?: string;
+};
+
+export type AdopsjonDto = {
+    adopsjonAvEktefellesBarn: boolean;
+    adopsjonsdato: string;
+    ankomstdato?: string;
+    antallBarn?: number;
+    fødselsdatoer?: string[];
+    søkerAdopsjonAlene?: boolean;
+};
+
+export type BarnDto = (
+    | ({
+          type: 'adopsjon';
+      } & AdopsjonDto)
+    | ({
+          type: 'fødsel';
+      } & FødselDto)
+    | ({
+          type: 'omsorgsovertakelse';
+      } & OmsorgsovertakelseDto)
+    | ({
+          type: 'termin';
+      } & TerminDto)
+) & {
+    type: string;
+};
+
+export type FødselDto = {
+    antallBarn?: number;
+    fødselsdato: string;
+    termindato?: string;
+};
+
+export type OmsorgsovertakelseDto = {
+    antallBarn?: number;
+    foreldreansvarsdato: string;
+    fødselsdatoer?: string[];
+};
+
+export type TerminDto = {
+    antallBarn?: number;
+    terminbekreftelseDato?: string;
+    termindato: string;
+};
+
+export type AnnenForelderDto = (
+    | ({
+          type: 'norsk';
+      } & NorskForelderDto)
+    | ({
+          type: 'utenlandsk';
+      } & UtenlandskForelderDto)
+) & {
+    type: string;
+};
+
+export type Rettigheter = {
+    erAleneOmOmsorg?: boolean;
+    erInformertOmSøknaden?: boolean;
+    harAnnenForelderOppholdtSegIEØS?: boolean;
+    harAnnenForelderTilsvarendeRettEØS?: boolean;
+    harMorUføretrygd?: boolean;
+    harRettPåForeldrepenger: boolean;
+};
+
+export type NorskForelderDto = {
+    etternavn: string;
+    fnr: string;
+    fornavn: string;
+    rettigheter: Rettigheter;
+};
+
+export type UtenlandskForelderDto = {
+    bostedsland: com_neovisionaries_i18n_CountryCode;
+    etternavn: string;
+    fnr: string;
+    fornavn: string;
+    rettigheter: Rettigheter;
+};
+
+export type OppholdsPeriodeDto = {
+    fom: string;
+    tom: string;
+    årsak: Oppholdsårsak;
+};
+
+export type Oppholdsårsak =
+    | 'INGEN'
+    | 'UTTAK_MØDREKVOTE_ANNEN_FORELDER'
+    | 'UTTAK_FEDREKVOTE_ANNEN_FORELDER'
+    | 'UTTAK_FORELDREPENGER_ANNEN_FORELDER'
+    | 'UTTAK_FELLESP_ANNEN_FORELDER';
+
+export type OverføringsPeriodeDto = {
+    fom: string;
+    tom: string;
+    konto: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
+    årsak: no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak;
+};
+
+export type UtsettelsesPeriodeDto = {
+    fom: string;
+    tom: string;
+    erArbeidstaker?: boolean;
+    morsAktivitetIPerioden?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
+    årsak: UtsettelsesÅrsak;
+};
+
+export type UtsettelsesÅrsak =
+    | 'ARBEID'
+    | 'LOVBESTEMT_FERIE'
+    | 'SYKDOM'
+    | 'FRI'
+    | 'INSTITUSJONSOPPHOLD_SØKER'
+    | 'INSTITUSJONSOPPHOLD_BARNET'
+    | 'HV_OVELSE'
+    | 'NAV_TILTAK';
+
+export type UttaksPeriodeDto = {
+    fom: string;
+    tom: string;
+    gradering?: GraderingDto;
+    konto: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
+    morsAktivitetIPerioden?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
+    samtidigUttakProsent?: number;
+    ønskerFlerbarnsdager?: boolean;
+    ønskerGradering?: boolean;
+    ønskerSamtidigUttak?: boolean;
+};
+
+export type GraderingDto = {
+    erArbeidstaker?: boolean;
+    erFrilanser?: boolean;
+    erSelvstendig?: boolean;
+    orgnumre?: string[];
+    stillingsprosent: number;
+};
+
+export type UttaksplanDto = {
+    uttaksperioder: Uttaksplanperiode[];
+    ønskerJustertUttakVedFødsel?: boolean;
+};
+
+export type Uttaksplanperiode = (
+    | ({
+          type: 'opphold';
+      } & OppholdsPeriodeDto)
+    | ({
+          type: 'overføring';
+      } & OverføringsPeriodeDto)
+    | ({
+          type: 'utsettelse';
+      } & UtsettelsesPeriodeDto)
+    | ({
+          type: 'uttak';
+      } & UttaksPeriodeDto)
+) & {
+    type: string;
+};
+
+export type ArbeidsforholdDto = (
+    | ({
+          type: 'frilanser';
+      } & FrilanserDto)
+    | ({
+          type: 'privat';
+      } & PrivatArbeidsgiverDto)
+    | ({
+          type: 'selvstendig';
+      } & SelvstendigNæringsdrivendeDto)
+    | ({
+          type: 'virksomhet';
+      } & VirksomhetDto)
+) & {
+    type: string;
+};
+
+export type FrilanserDto = {
+    [key: string]: unknown;
+};
+
+export type PrivatArbeidsgiverDto = {
+    id: string;
+};
+
+export type SelvstendigNæringsdrivendeDto = {
+    [key: string]: unknown;
+};
+
+export type VirksomhetDto = {
+    id: string;
+};
+
 export type DokumentTypeId =
     | 'I000001'
     | 'I000002'
@@ -398,186 +586,7 @@ export type Dokumenterer = {
 
 export type DokumentererType = 'BARN' | 'OPPTJENING' | 'UTTAK' | 'TILRETTELEGGING';
 
-export type EndringssøknadForeldrepengerDto = {
-    annenForelder?: AnnenForelderDto;
-    barn: BarnDto;
-    mottattdato?: string;
-    rolle?: BrukerRolle;
-    saksnummer: string;
-    språkkode?: Målform;
-    søkerinfo: SøkerDto;
-    uttaksplan: UttaksplanDto;
-    vedlegg?: VedleggDto[];
-};
-
-export type FrilanserDto = {
-    [key: string]: unknown;
-};
-
-export type FødselDto = {
-    antallBarn?: number;
-    fødselsdato: string;
-    termindato?: string;
-};
-
-export type GraderingDto = {
-    erArbeidstaker?: boolean;
-    erFrilanser?: boolean;
-    erSelvstendig?: boolean;
-    orgnumre?: string[];
-    stillingsprosent: number;
-};
-
 export type InnsendingType = 'LASTET_OPP' | 'SEND_SENERE' | 'AUTOMATISK';
-
-export type KontoType = 'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
-
-export type MorsAktivitet =
-    | 'ARBEID'
-    | 'UTDANNING'
-    | 'KVALPROG'
-    | 'INTROPROG'
-    | 'TRENGER_HJELP'
-    | 'INNLAGT'
-    | 'ARBEID_OG_UTDANNING'
-    | 'UFØRE'
-    | 'IKKE_OPPGITT';
-
-export type Målform = 'NB' | 'NN' | 'EN' | 'E';
-
-export type Navn = {
-    etternavn: string;
-    fornavn: string;
-    mellomnavn?: string;
-};
-
-export type NorskForelderDto = {
-    etternavn: string;
-    fnr: string;
-    fornavn: string;
-    rettigheter: Rettigheter;
-};
-
-export type OmsorgsovertakelseDto = {
-    antallBarn?: number;
-    foreldreansvarsdato: string;
-    fødselsdatoer?: string[];
-};
-
-export type OppholdsPeriodeDto = {
-    fom: string;
-    tom: string;
-    årsak: Oppholdsårsak;
-};
-
-export type Oppholdsårsak =
-    | 'INGEN'
-    | 'UTTAK_MØDREKVOTE_ANNEN_FORELDER'
-    | 'UTTAK_FEDREKVOTE_ANNEN_FORELDER'
-    | 'UTTAK_FORELDREPENGER_ANNEN_FORELDER'
-    | 'UTTAK_FELLESP_ANNEN_FORELDER';
-
-export type OverføringsPeriodeDto = {
-    fom: string;
-    tom: string;
-    konto: KontoType;
-    årsak: Overføringsårsak;
-};
-
-export type Overføringsårsak =
-    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
-    | 'SYKDOM_ANNEN_FORELDER'
-    | 'ALENEOMSORG'
-    | 'IKKE_RETT_ANNEN_FORELDER';
-
-export type PrivatArbeidsgiverDto = {
-    id: string;
-};
-
-export type Rettigheter = {
-    erAleneOmOmsorg?: boolean;
-    erInformertOmSøknaden?: boolean;
-    harAnnenForelderOppholdtSegIEØS?: boolean;
-    harAnnenForelderTilsvarendeRettEØS?: boolean;
-    harMorUføretrygd?: boolean;
-    harRettPåForeldrepenger: boolean;
-};
-
-export type SelvstendigNæringsdrivendeDto = {
-    [key: string]: unknown;
-};
-
-export type SøkerDto = {
-    arbeidsforhold?: Arbeidsforhold[];
-    fnr: string;
-    navn: Navn;
-};
-
-export type TerminDto = {
-    antallBarn?: number;
-    terminbekreftelseDato?: string;
-    termindato: string;
-};
-
-export type UtenlandskForelderDto = {
-    bostedsland: CountryCode;
-    etternavn: string;
-    fnr: string;
-    fornavn: string;
-    rettigheter: Rettigheter;
-};
-
-export type UtsettelsesPeriodeDto = {
-    fom: string;
-    tom: string;
-    erArbeidstaker?: boolean;
-    morsAktivitetIPerioden?: MorsAktivitet;
-    årsak: UtsettelsesÅrsak;
-};
-
-export type UtsettelsesÅrsak =
-    | 'ARBEID'
-    | 'LOVBESTEMT_FERIE'
-    | 'SYKDOM'
-    | 'FRI'
-    | 'INSTITUSJONSOPPHOLD_SØKER'
-    | 'INSTITUSJONSOPPHOLD_BARNET'
-    | 'HV_OVELSE'
-    | 'NAV_TILTAK';
-
-export type UttaksPeriodeDto = {
-    fom: string;
-    tom: string;
-    gradering?: GraderingDto;
-    konto: KontoType;
-    morsAktivitetIPerioden?: MorsAktivitet;
-    samtidigUttakProsent?: number;
-    ønskerFlerbarnsdager?: boolean;
-    ønskerSamtidigUttak?: boolean;
-    ønskerGradering?: boolean;
-};
-
-export type UttaksplanDto = {
-    uttaksperioder: Uttaksplanperiode[];
-    ønskerJustertUttakVedFødsel?: boolean;
-};
-
-export type Uttaksplanperiode = (
-    | ({
-          type: 'opphold';
-      } & OppholdsPeriodeDto)
-    | ({
-          type: 'overføring';
-      } & OverføringsPeriodeDto)
-    | ({
-          type: 'utsettelse';
-      } & UtsettelsesPeriodeDto)
-    | ({
-          type: 'uttak';
-      } & UttaksPeriodeDto)
-) & {
-    type: string;
-};
 
 export type VedleggDto = {
     beskrivelse?: string;
@@ -585,10 +594,6 @@ export type VedleggDto = {
     innsendingsType: InnsendingType;
     skjemanummer: DokumentTypeId;
     uuid?: string;
-};
-
-export type VirksomhetDto = {
-    id: string;
 };
 
 export type ÅpenPeriodeDto = {
@@ -607,31 +612,10 @@ export type EngangsstønadDto = {
 
 export type UtenlandsoppholdsperiodeDto = {
     fom: string;
-    landkode: CountryCode;
+    landkode: com_neovisionaries_i18n_CountryCode;
     tom: string;
     fomAfterTom?: boolean;
 };
-
-export type AnnenInntektDto = {
-    arbeidsgiverNavn?: string;
-    fom: string;
-    land?: CountryCode;
-    tom?: string;
-    type: AnnenOpptjeningType;
-};
-
-export type AnnenOpptjeningType =
-    | 'ETTERLØNN_SLUTTPAKKE'
-    | 'ETTERLØNN_ARBEIDSGIVER'
-    | 'JOBB_I_UTLANDET'
-    | 'LØNN_UNDER_UTDANNING'
-    | 'MILITÆR_ELLER_SIVILTJENESTE'
-    | 'SLUTTPAKKE'
-    | 'VENTELØNN_VARTPENGER'
-    | 'VENTELØNN'
-    | 'VARTPENGER';
-
-export type Dekningsgrad = '80' | '100';
 
 export type ForeldrepengesøknadDto = {
     andreInntekterSiste10Mnd?: AnnenInntektDto[];
@@ -649,6 +633,27 @@ export type ForeldrepengesøknadDto = {
     vedlegg?: VedleggDto[];
 };
 
+export type Dekningsgrad = '80' | '100';
+
+export type AnnenInntektDto = {
+    arbeidsgiverNavn?: string;
+    fom: string;
+    land?: com_neovisionaries_i18n_CountryCode;
+    tom?: string;
+    type: AnnenOpptjeningType;
+};
+
+export type AnnenOpptjeningType =
+    | 'ETTERLØNN_SLUTTPAKKE'
+    | 'ETTERLØNN_ARBEIDSGIVER'
+    | 'JOBB_I_UTLANDET'
+    | 'LØNN_UNDER_UTDANNING'
+    | 'MILITÆR_ELLER_SIVILTJENESTE'
+    | 'SLUTTPAKKE'
+    | 'VENTELØNN_VARTPENGER'
+    | 'VENTELØNN'
+    | 'VARTPENGER';
+
 export type FrilansDto = {
     jobberFremdelesSomFrilans?: boolean;
     oppstart: string;
@@ -663,7 +668,7 @@ export type NæringDto = {
     næringstype: Virksomhetstype;
     oppstartsdato?: string;
     organisasjonsnummer?: string;
-    registrertILand?: CountryCode;
+    registrertILand?: com_neovisionaries_i18n_CountryCode;
     registrertINorge: boolean;
     tom?: string;
     varigEndringBeskrivelse?: string;
@@ -673,31 +678,6 @@ export type NæringDto = {
 };
 
 export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
-
-export type AvtaltFerieDto = {
-    arbeidsforhold: ArbeidsforholdDto;
-    fom: string;
-    tom: string;
-    arbeidsforholdVirksomhet?: boolean;
-};
-
-export type BarnSvpDto = {
-    fødselsdato?: string;
-    termindato: string;
-};
-
-export type Del = {
-    fom: string;
-    stillingsprosent: number;
-};
-
-export type Hel = {
-    fom: string;
-};
-
-export type Ingen = {
-    fom: string;
-};
 
 export type SvangerskapspengesøknadDto = {
     andreInntekterSiste10Mnd?: AnnenInntektDto[];
@@ -711,6 +691,27 @@ export type SvangerskapspengesøknadDto = {
     tilretteleggingsbehov: TilretteleggingbehovDto[];
     utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
     vedlegg: VedleggDto[];
+};
+
+export type AvtaltFerieDto = {
+    arbeidsforhold: ArbeidsforholdDto;
+    fom: string;
+    tom: string;
+    arbeidsforholdVirksomhet?: boolean;
+};
+
+export type BarnSvpDto = {
+    fødselsdato?: string;
+    termindato: string;
+};
+
+export type TilretteleggingbehovDto = {
+    arbeidsforhold: ArbeidsforholdDto;
+    behovForTilretteleggingFom: string;
+    risikofaktorer?: string;
+    tilrettelegginger?: TilretteleggingDto[];
+    tilretteleggingstiltak?: string;
+    risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
 };
 
 export type TilretteleggingDto = (
@@ -727,13 +728,17 @@ export type TilretteleggingDto = (
     type: string;
 };
 
-export type TilretteleggingbehovDto = {
-    arbeidsforhold: ArbeidsforholdDto;
-    behovForTilretteleggingFom: string;
-    risikofaktorer?: string;
-    tilrettelegginger?: TilretteleggingDto[];
-    tilretteleggingstiltak?: string;
-    risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
+export type Del = {
+    fom: string;
+    stillingsprosent: number;
+};
+
+export type Hel = {
+    fom: string;
+};
+
+export type Ingen = {
+    fom: string;
 };
 
 export type BrukerTekstDto = {
@@ -752,9 +757,23 @@ export type EttersendelseDto = {
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
-export type YtelseMellomlagringType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTONAD';
+export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus = {
+    saksnummer?: string;
+    status: no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status;
+};
 
-export type FormDataContentDisposition = {
+export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status =
+    | 'PENDING'
+    | 'MIDLERTIDIG'
+    | 'ENDELIG'
+    | 'FORSENDELSE_FINNES_IKKE';
+
+export type no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType =
+    | 'FORELDREPENGER'
+    | 'SVANGERSKAPSPENGER'
+    | 'ENGANGSSTONAD';
+
+export type org_glassfish_jersey_media_multipart_FormDataContentDisposition = {
     creationDate?: string;
     fileName?: string;
     modificationDate?: string;
@@ -765,447 +784,4 @@ export type FormDataContentDisposition = {
     readDate?: string;
     size?: number;
     type?: string;
-};
-
-export type ProsessTaskDataDto = {
-    gruppe: string;
-    id: number;
-    nesteKjøringEtter?: string;
-    sekvens: string;
-    sistKjørt?: string;
-    sisteFeilKode?: string;
-    status: string;
-    taskParametre?: {
-        [key: string]: string;
-    };
-    taskType: string;
-};
-
-export type ProsessTaskOpprettInputDto = {
-    taskParametre: {
-        [key: string]: string;
-    };
-    taskType: string;
-};
-
-export type FeiletProsessTaskDataDto = {
-    feiledeForsøk?: number;
-    gruppe: string;
-    id: number;
-    nesteKjøringEtter?: string;
-    sekvens: string;
-    sistKjørt?: string;
-    sisteFeilKode?: string;
-    status: string;
-    taskParametre?: {
-        [key: string]: string;
-    };
-    taskType: string;
-    sisteFeilTekst?: string;
-    sisteKjøringServerProsess?: string;
-};
-
-export type IkkeFerdigProsessTaskStatusEnum = 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT' | 'VETO' | 'KLAR';
-
-/**
- * Resultatet av asynkron-restart av en eksisterende prosesstask
- */
-export type ProsessTaskRestartResultatDto = {
-    /**
-     * Kjøretidspunkt for restart av prosessen
-     */
-    nesteKjoeretidspunkt: string;
-    prosessTaskId: number;
-    /**
-     * Nåværende status (KLAR)
-     */
-    prosessTaskStatus: string;
-};
-
-export type FeiletProsessTaskStatusEnum = 'FEILET' | 'VENTER_SVAR' | 'SUSPENDERT';
-
-/**
- * Resultatet av asynkron-restart av feilede prosesstasks
- */
-export type ProsessTaskRetryAllResultatDto = {
-    /**
-     * Prosesstasks som restartes
-     */
-    prosessTaskIds?: number[];
-};
-
-export type SokeFilterDto = {
-    sisteKjoeretidspunktFraOgMed?: string;
-    sisteKjoeretidspunktTilOgMed?: string;
-    tekst: string;
-};
-
-export type SendData = {
-    body: EndringssøknadForeldrepengerDto;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/foreldrepenger/endre';
-};
-
-export type SendResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type Send1Data = {
-    body: EngangsstønadDto;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/engangsstonad';
-};
-
-export type Send1Responses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type Send2Data = {
-    body: ForeldrepengesøknadDto;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/foreldrepenger';
-};
-
-export type Send2Responses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type Send3Data = {
-    body: SvangerskapspengesøknadDto;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/svangerskapspenger';
-};
-
-export type Send3Responses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type Send4Data = {
-    body: EttersendelseDto;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/ettersend';
-};
-
-export type Send4Responses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type StatusData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/soknad/status';
-};
-
-export type StatusResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type FinnesDetAktivMellomlagringData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/storage/aktive';
-};
-
-export type FinnesDetAktivMellomlagringResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type SlettMellomlagringData = {
-    body?: never;
-    path: {
-        ytelse: YtelseMellomlagringType;
-    };
-    query?: never;
-    url: '/api/storage/{ytelse}';
-};
-
-export type SlettMellomlagringResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type LesSøknadData = {
-    body?: never;
-    path: {
-        ytelse: YtelseMellomlagringType;
-    };
-    query?: never;
-    url: '/api/storage/{ytelse}';
-};
-
-export type LesSøknadResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type LagreSøknadYtelseData = {
-    body?: string;
-    path: {
-        ytelse: YtelseMellomlagringType;
-    };
-    query?: never;
-    url: '/api/storage/{ytelse}';
-};
-
-export type LagreSøknadYtelseResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type LagreVedleggData = {
-    body?: {
-        vedlegg?: FormDataContentDisposition;
-    };
-    path: {
-        ytelse: YtelseMellomlagringType;
-    };
-    query?: {
-        uuid?: string;
-    };
-    url: '/api/storage/{ytelse}/vedlegg';
-};
-
-export type LagreVedleggResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type SlettVedleggData = {
-    body?: never;
-    path: {
-        ytelse: YtelseMellomlagringType;
-        key: string;
-    };
-    query?: never;
-    url: '/api/storage/{ytelse}/vedlegg/{key}';
-};
-
-export type SlettVedleggResponses = {
-    /**
-     * default response
-     */
-    default: unknown;
-};
-
-export type LesVedleggData = {
-    body?: never;
-    path: {
-        ytelse: YtelseMellomlagringType;
-        key: string;
-    };
-    query?: never;
-    url: '/api/storage/{ytelse}/vedlegg/{key}';
-};
-
-export type LesVedleggResponses = {
-    /**
-     * default response
-     */
-    default: Blob | File;
-};
-
-export type LesVedleggResponse = LesVedleggResponses[keyof LesVedleggResponses];
-
-export type CreateProsessTaskData = {
-    /**
-     * Informasjon for restart en eksisterende prosesstask
-     */
-    body?: ProsessTaskOpprettInputDto;
-    path?: never;
-    query?: never;
-    url: '/api/prosesstask/create';
-};
-
-export type CreateProsessTaskErrors = {
-    /**
-     * Feilet pga ukjent feil eller tekniske/funksjonelle feil
-     */
-    500: unknown;
-};
-
-export type CreateProsessTaskResponses = {
-    /**
-     * Prosesstaskens oppdatert informasjon
-     */
-    202: ProsessTaskDataDto;
-};
-
-export type CreateProsessTaskResponse = CreateProsessTaskResponses[keyof CreateProsessTaskResponses];
-
-export type FinnFeiletProsessTaskData = {
-    body?: never;
-    path: {
-        prosessTaskId: number;
-    };
-    query?: never;
-    url: '/api/prosesstask/feil/{prosessTaskId}';
-};
-
-export type FinnFeiletProsessTaskErrors = {
-    /**
-     * Feil input
-     */
-    400: unknown;
-    /**
-     * Tom respons når angitt prosesstask-id ikke finnes
-     */
-    404: unknown;
-};
-
-export type FinnFeiletProsessTaskResponses = {
-    /**
-     * Angitt prosesstask-id finnes
-     */
-    200: FeiletProsessTaskDataDto;
-};
-
-export type FinnFeiletProsessTaskResponse = FinnFeiletProsessTaskResponses[keyof FinnFeiletProsessTaskResponses];
-
-export type FinnProsessTasksData = {
-    body?: never;
-    path: {
-        /**
-         * Liste av statuser som skal hentes.
-         */
-        prosessTaskStatus: IkkeFerdigProsessTaskStatusEnum;
-    };
-    query?: never;
-    url: '/api/prosesstask/list/{prosessTaskStatus}';
-};
-
-export type FinnProsessTasksResponses = {
-    /**
-     * Liste over prosesstasker, eller tom liste når angitt/default søkefilter ikke finner noen prosesstasker
-     */
-    200: ProsessTaskDataDto;
-};
-
-export type FinnProsessTasksResponse = FinnProsessTasksResponses[keyof FinnProsessTasksResponses];
-
-export type RestartProsessTaskData = {
-    body?: never;
-    path: {
-        prosessTaskId: number;
-        prosessTaskStatus: FeiletProsessTaskStatusEnum;
-    };
-    query?: never;
-    url: '/api/prosesstask/launch/{prosessTaskId}/{prosessTaskStatus}';
-};
-
-export type RestartProsessTaskErrors = {
-    /**
-     * Feilet pga ukjent feil eller tekniske/funksjonelle feil
-     */
-    500: unknown;
-};
-
-export type RestartProsessTaskResponses = {
-    /**
-     * Prosesstaskens oppdatert informasjon
-     */
-    200: ProsessTaskRestartResultatDto;
-};
-
-export type RestartProsessTaskResponse = RestartProsessTaskResponses[keyof RestartProsessTaskResponses];
-
-export type RetryAllProsessTaskData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/prosesstask/retryall';
-};
-
-export type RetryAllProsessTaskErrors = {
-    /**
-     * Feilet pga ukjent feil eller tekniske/funksjonelle feil
-     */
-    500: unknown;
-};
-
-export type RetryAllProsessTaskResponses = {
-    /**
-     * Response med liste av prosesstasks som restartes
-     */
-    200: ProsessTaskRetryAllResultatDto;
-};
-
-export type RetryAllProsessTaskResponse = RetryAllProsessTaskResponses[keyof RetryAllProsessTaskResponses];
-
-export type SearchProsessTasksData = {
-    /**
-     * Søkefilter for å begrense resultatet av returnerte prosesstask.
-     */
-    body?: SokeFilterDto;
-    path?: never;
-    query?: never;
-    url: '/api/prosesstask/search';
-};
-
-export type SearchProsessTasksResponses = {
-    /**
-     * Liste over prosesstasker, eller tom liste når angitt/default søkefilter ikke finner noen prosesstasker
-     */
-    200: ProsessTaskDataDto;
-};
-
-export type SearchProsessTasksResponse = SearchProsessTasksResponses[keyof SearchProsessTasksResponses];
-
-export type SetFeiletProsessTaskFerdigData = {
-    body?: never;
-    path: {
-        prosessTaskId: number;
-        prosessTaskStatus: IkkeFerdigProsessTaskStatusEnum;
-    };
-    query?: never;
-    url: '/api/prosesstask/setferdig/{prosessTaskId}/{prosessTaskStatus}';
-};
-
-export type SetFeiletProsessTaskFerdigErrors = {
-    /**
-     * Feilet pga ukjent feil eller tekniske/funksjonelle feil
-     */
-    500: unknown;
-};
-
-export type SetFeiletProsessTaskFerdigResponses = {
-    /**
-     * Angitt prosesstask-id satt til status FERDIG
-     */
-    200: unknown;
 };

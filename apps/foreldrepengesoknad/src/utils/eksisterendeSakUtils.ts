@@ -27,7 +27,7 @@ import {
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoType_fpoversikt,
+    KontoType,
     Oppholdsårsak,
     PersonDto_fpoversikt,
     Person_fpoversikt,
@@ -60,9 +60,7 @@ export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fp
     }
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (
-    årsak: UttakOppholdÅrsak_fpoversikt,
-): KontoType_fpoversikt | undefined => {
+const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoType | undefined => {
     switch (årsak) {
         case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';
