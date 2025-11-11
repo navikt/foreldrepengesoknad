@@ -52,9 +52,18 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
             slettMellomlagring();
             navigate(SøknadRoutes.KVITTERING);
         } catch (error: unknown) {
+            console.log(error);
             if (error instanceof HTTPError) {
+                console.log('HTTO');
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
+                }
+
+                // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
+                // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
+                if (error.response.status === 409) {
+                    slettMellomlagring();
+                    return navigate(SøknadRoutes.KVITTERING);
                 }
 
                 const jsonResponse = await error.response.json();
