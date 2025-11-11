@@ -8,12 +8,12 @@ const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
 describe('<Calendar>', () => {
     it('skal vise korrekt antall dager uten markering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:NONE', { exact: false })).toHaveLength(61);
+        expect(await screen.findAllByTestId('dayColor:NONE', { exact: false })).toHaveLength(43);
     });
 
     it('skal vise korrekt antall dager med helgemarkering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:GRAY', { exact: false })).toHaveLength(60);
+        expect(await screen.findAllByTestId('dayColor:GRAY', { exact: false })).toHaveLength(78);
     });
 
     it('skal vise korrekt antall dager med blå markering', async () => {
@@ -35,18 +35,18 @@ describe('<Calendar>', () => {
     it('skal vise korrekt navn på måneder når perioden går over to år', async () => {
         render(<PeriodsThatSpanOverAYear />);
 
-        expect(await screen.findByText('Januar')).toBeInTheDocument();
-        expect(screen.getAllByText('Februar')).toHaveLength(2);
-        expect(screen.getAllByText('Mars')).toHaveLength(2);
-        expect(screen.getAllByText('April')).toHaveLength(2);
-        expect(screen.getAllByText('Mai')).toHaveLength(2);
-        expect(screen.getAllByText('Juni')).toHaveLength(2);
-        expect(screen.getAllByText('Juli')).toHaveLength(2);
-        expect(screen.getAllByText('August')).toHaveLength(2);
-        expect(screen.getAllByText('September')).toHaveLength(2);
-        expect(screen.getByText('Oktober')).toBeInTheDocument();
-        expect(screen.getByText('November')).toBeInTheDocument();
-        expect(screen.getByText('Desember')).toBeInTheDocument();
-        expect(screen.getByText('Jan. (2025)')).toBeInTheDocument();
+        expect(await screen.findByText('Januar 2024')).toBeInTheDocument();
+        expect(screen.getByText('Februar 2024')).toBeInTheDocument();
+        expect(screen.getByText('Mars 2024')).toBeInTheDocument();
+        expect(screen.getByText('April 2024')).toBeInTheDocument();
+        expect(screen.getByText('Mai 2024')).toBeInTheDocument();
+        expect(screen.getByText('Juni 2024')).toBeInTheDocument();
+        expect(screen.getByText('Juli 2024')).toBeInTheDocument();
+        expect(screen.getByText('August 2024')).toBeInTheDocument();
+        expect(screen.getByText('September 2024')).toBeInTheDocument();
+        expect(screen.getByText('Oktober 2024')).toBeInTheDocument();
+        expect(screen.getByText('November 2024')).toBeInTheDocument();
+        expect(screen.getByText('Desember 2024')).toBeInTheDocument();
+        expect(screen.getByText('Januar 2025')).toBeInTheDocument();
     });
 });

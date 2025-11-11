@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 
 import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
-import { formatDateIso } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatDateIso } from '@navikt/fp-utils';
 
 import { Day, isWeekend, logOnLocalhost } from './Day';
 import styles from './month.module.css';
@@ -66,7 +66,7 @@ export const Month = React.memo(
             >
                 <VStack gap="space-12">
                     <Heading size="small" level={headerLevel} align="center">
-                        {`${firstDayOfMonth.format('MMMM')} ${year}`}
+                        {`${capitalizeFirstLetter(firstDayOfMonth.format('MMMM'))} ${year}`}
                     </Heading>
 
                     <div>
