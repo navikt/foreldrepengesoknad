@@ -57,6 +57,13 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                     throw error;
                 }
 
+                // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
+                // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
+                if (error.response.status === 409) {
+                    slettMellomlagring();
+                    return navigate(SøknadRoutes.KVITTERING);
+                }
+
                 const jsonResponse = await error.response.json();
                 Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
