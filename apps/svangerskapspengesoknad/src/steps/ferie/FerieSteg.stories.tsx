@@ -15,9 +15,9 @@ const arbeidsforhold = [
         arbeidsgiverId: '896929119',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        from: '2014-05-22T00:00:00.000Z',
+        fom: '2014-05-22T00:00:00.000Z',
         stillingsprosent: 32.63,
-        to: '2019-05-31T00:00:00.000Z',
+        tom: '2019-05-31T00:00:00.000Z',
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
