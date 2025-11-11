@@ -4,7 +4,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, AttachmentError, AttachmentUploadResult } from '@navikt/fp-types';
 
 import { AttachmentList } from './AttachmentList';
 import { mapFileToAttachment } from './fileUtils';
@@ -14,30 +14,7 @@ const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
-type InternError = 'NO_DATA';
-
-type ProblemDetailsErrorKode =
-    | 'IKKE_TILGANG'
-    | 'DUPLIKAT_FORSENDELSE'
-    | 'MELLOMLAGRING'
-    | 'MELLOMLAGRING_VEDLEGG'
-    | 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT'
-    | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
-    | 'KRYPTERING_MELLOMLAGRING';
-
-type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
-
-type UploadError = {
-    success: false;
-    feilKode: ProblemDetailsErrorKode | GenerelleErrorKoder;
-};
-
-type UploadSuccess = {
-    success: true;
-    data: string;
-};
-
-type SaveAttachment = (attachment: Attachment) => Promise<UploadSuccess | UploadError>;
+type SaveAttachment = (attachment: Attachment) => Promise<AttachmentUploadResult>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -96,9 +73,7 @@ const addOrReplaceAttachments = (
     });
 };
 
-const getErrorMessageMap = (
-    intl: IntlShape,
-): Record<FileRejectionReason | UploadError['feilKode'] | InternError, string> => ({
+const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | AttachmentError, string> => ({
     fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.fileType' }),
     fileSize: intl.formatMessage(
         { id: 'FailedAttachment.Vedlegg.Feilmelding.fileSize' },
@@ -256,7 +231,7 @@ export const FileUploader = ({
                 onSelect={saveFiles}
                 validator={(file: File) => {
                     if (file.size === 0) {
-                        return 'NO_DATA';
+                        return 'NO_DATA' satisfies AttachmentError;
                     }
 
                     return true;

@@ -31,4 +31,16 @@ type ProblemDetailsErrorKode =
 
 type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
 
+export type AttachmentUploadError = {
+    success: false;
+    feilKode: ProblemDetailsErrorKode | GenerelleErrorKoder;
+};
+
+export type AttachmentUploadSuccess = {
+    success: true;
+    data: string;
+};
+
+export type AttachmentUploadResult = AttachmentUploadSuccess | AttachmentUploadError;
+
 export type AttachmentError = GenerelleErrorKoder | ProblemDetailsErrorKode | InternError;
