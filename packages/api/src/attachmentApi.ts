@@ -31,7 +31,9 @@ export const getSaveAttachmentFetch = (sti: string) => async (attachment: Attach
             data: await response.json(),
         };
     } catch (error) {
+        console.log(error);
         if (error instanceof HTTPError) {
+            console.log('HTTPER');
             return error.response.json<UploadError>();
         }
 

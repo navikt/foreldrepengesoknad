@@ -14,6 +14,8 @@ const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
+type InternError = 'NO_DATA';
+
 type UploadError = {
     feilkode:
         | 'IKKE_TILGANG'
@@ -54,12 +56,13 @@ const getPendingAttachmentFromFile = (
 
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
     const response = await saveAttachment(attachment);
-
+    console.log('RESPON', response);
     attachment.pending = false;
     if (response.success) {
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } else {
+        console.log('ELSE');
         attachment.error = response.feilkode;
     }
 };
@@ -91,21 +94,25 @@ const addOrReplaceAttachments = (
     });
 };
 
-const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | UploadError['feilkode'], string> => ({
+const getErrorMessageMap = (
+    intl: IntlShape,
+): Record<FileRejectionReason | UploadError['feilkode'] | InternError, string> => ({
     fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
     fileSize: intl.formatMessage(
         { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
-    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IKKE_TILGANG' }),
+    NO_DATA: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.NO_DATA' }),
+    MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
+    }),
+
     DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
+    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IKKE_TILGANG' }),
     MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING' }),
     MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG' }),
     MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT: intl.formatMessage({
         id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT',
-    }),
-    MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
-        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
     }),
     KRYPTERING_MELLOMLAGRING: intl.formatMessage({
         id: 'FailedAttachment.Vedlegg.Feilmelding.KRYPTERING_MELLOMLAGRING',
@@ -172,7 +179,7 @@ export const FileUploader = ({
 }: Props) => {
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
-
+    console.log(errorMessageMap);
     const [attachments, setAttachments] = useState(convertToInternalFormat(existingAttachments));
 
     useEffect(() => {
@@ -206,12 +213,13 @@ export const FileUploader = ({
         setAttachments((currentAttachments) => currentAttachments.filter((a) => a.fileObject !== fileToRemove));
     }, []);
 
+    console.log(attachments);
     const uploadedAttachments = useMemo(
         () => attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error),
         [attachments],
     );
     const failedAttachments = useMemo(
-        () => attachments.filter((a) => !!a.attachmentData.error || !!a.fileObject.error),
+        () => attachments.filter((a) => !!a.attachmentData.error || a.fileObject.error),
         [attachments],
     );
 
@@ -282,11 +290,12 @@ export const FileUploader = ({
                     attachments={failedAttachments}
                     deleteAttachment={deleteAttachment}
                     getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
-                        rejectedAttachment.attachmentData.error
+                        console.log(rejectedAttachment) ||
+                        (rejectedAttachment.attachmentData.error
                             ? errorMessageMap[rejectedAttachment.attachmentData.error]
                             : errorMessageMap[
                                   (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
-                              ]
+                              ])
                     }
                 />
             )}
