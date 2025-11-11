@@ -51,7 +51,7 @@ describe('<Default>', () => {
             expect(screen.getByText('Din periode')).toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Du og Espen har permisjon samtidig')).toBeInTheDocument();
-            expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+            expect(screen.getByText('Helg')).toBeInTheDocument();
         }),
     );
 
@@ -70,7 +70,7 @@ describe('<Default>', () => {
             expect(screen.getByText('Du og Helga har permisjon samtidig')).toBeInTheDocument();
             expect(screen.getByText('Din periode')).toBeInTheDocument();
             expect(screen.getByText('Du kombinerer jobb og foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+            expect(screen.getByText('Helg')).toBeInTheDocument();
 
             const september = screen.getByTestId('year:2024;month:8');
             expect(within(september).getByTestId('day:10;dayColor:LIGHTBLUE')).toBeInTheDocument();

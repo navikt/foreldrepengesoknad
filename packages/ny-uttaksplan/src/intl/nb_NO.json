@@ -185,7 +185,7 @@
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
     "kalender.dinUtsettelse": "Du utsetter foreldrepenger",
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} utsetter foreldrepenger",
-    "kalender.helg": "Helg (er ikke dager med foreldrepenger)",
+    "kalender.helg": "Helg",
     "kalender.tapteDager": "Dager du kan tape",
     "kalender.pleiepenger": "Fratrekk for pleiepenger",
     "kalender.utsettelse": "Du utsetter foreldrepenger {årsak}",

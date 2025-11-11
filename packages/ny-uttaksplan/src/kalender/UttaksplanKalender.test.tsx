@@ -21,7 +21,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(screen.getByText('Du kombinerer jobb og foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Du og Hans har permisjon samtidig')).toBeInTheDocument();
         expect(screen.getByText("Hans' periode")).toBeInTheDocument();
-        expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+        expect(screen.getByText('Helg')).toBeInTheDocument();
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
         expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(11);
@@ -62,7 +62,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
         expect(screen.getByText('Du utsetter foreldrepenger fordi du skal jobbe')).toBeInTheDocument();
-        expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+        expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:1;dayColor:GREEN')).toBeInTheDocument();
         expect(within(juni).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
@@ -84,7 +84,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Du utsetter foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+        expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();
         expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
@@ -98,6 +98,6 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         render(<KortPeriodeUtenHelg />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
-        expect(screen.queryByText('Helg (er ikke dager med foreldrepenger)')).not.toBeInTheDocument();
+        expect(screen.queryByText('Helg')).not.toBeInTheDocument();
     });
 });
