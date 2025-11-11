@@ -62,15 +62,10 @@ interface Props {
     erFarEllerMedmor: boolean;
     selectLegend: (color: CalendarPeriodColor) => void;
     legendInfo: UttaksplanKalenderLegendInfo[];
+    readOnly: boolean;
 }
 
-export const UttaksplanLegend = ({
-    navnAnnenPart,
-    unikeUtsettelseÅrsaker,
-    erFarEllerMedmor,
-    selectLegend,
-    legendInfo,
-}: Props) => {
+export const UttaksplanLegend = ({ navnAnnenPart, erFarEllerMedmor, selectLegend, legendInfo, readOnly }: Props) => {
     const intl = useIntl();
 
     return (
@@ -81,12 +76,15 @@ export const UttaksplanLegend = ({
                     <button
                         key={info.color}
                         onClick={
-                            info.color !== 'PINK' && info.color !== 'PURPLE' && info.color !== 'BLACKOUTLINE'
+                            info.color !== 'PINK' &&
+                            info.color !== 'PURPLE' &&
+                            info.color !== 'BLACKOUTLINE' &&
+                            !readOnly
                                 ? () => selectLegend(info.color)
                                 : undefined
                         }
                         type="button"
-                        className="inline-block w-fit cursor-pointer pb-[0.46rem] pr-2 [all:unset]"
+                        className={`inline-block w-fit pb-[0.46rem] pr-2 [all:unset] ${readOnly ? 'cursor-default' : 'cursor-pointer'}`}
                     >
                         <CalendarLabel color={info.color}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>

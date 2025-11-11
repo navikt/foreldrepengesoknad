@@ -515,6 +515,7 @@ export const UttaksplanKalender = ({ saksperioder, barnehagestartdato, handleOnP
                         navnAnnenPart={navnAnnenPart}
                         unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}
+                        readOnly={readOnly}
                         selectLegend={(color: CalendarPeriodColor) => {
                             const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
                             setValgtePerioder((old) =>
