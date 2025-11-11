@@ -1,5 +1,3 @@
-// filepath: /Users/johannes/Documents/foreldrepengesoknad/packages/types/src/genererteTyper.ts
-
 // Types from fpoversiktDtoGenerert
 export type { EksternArbeidsforholdDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { MorArbeidRequest_fpoversikt } from './fpoversiktDtoGenerert';
