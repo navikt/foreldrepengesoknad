@@ -48,14 +48,14 @@ const DEFAULT_SØKER_INFO = {
             arbeidsgiverId: '9903232324',
             arbeidsgiverIdType: 'ikke-orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
-            from: '2018-06-25T00:00:00.000Z',
+            fom: '2018-06-25T00:00:00.000Z',
             stillingsprosent: 80,
         },
         {
             arbeidsgiverId: '990322244',
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-            from: '2017-04-05T00:00:00.000Z',
+            fom: '2017-04-05T00:00:00.000Z',
             stillingsprosent: 100,
         },
     ],
@@ -179,7 +179,7 @@ const EXPECTED_SØKER_INFO = {
         navn: af.arbeidsgiverNavn,
         orgnummer: af.arbeidsgiverId,
         stillingsprosent: af.stillingsprosent,
-        fom: af.from,
+        fom: af.fom,
     })),
 };
 

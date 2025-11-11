@@ -107,8 +107,8 @@ export const getAktiveArbeidsforhold = (
     const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>
-            a.to === undefined ||
-            a.to === null ||
-            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(dayjs.utc(a.to), 'days')),
+            a.tom === undefined ||
+            a.tom === null ||
+            (fraDato !== undefined && dayjs(fraDato).isSameOrBefore(dayjs.utc(a.tom), 'days')),
     );
 };
