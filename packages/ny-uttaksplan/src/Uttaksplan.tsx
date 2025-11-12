@@ -15,7 +15,7 @@ import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
-    oppdaterUttaksplan: (perioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan?: (perioder: SaksperiodeNy[]) => void;
     isAllAccordionsOpen?: boolean;
 }
 
@@ -28,7 +28,7 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
 
     return (
         <>
-            {uttaksplan.length > 0 && (
+            {uttaksplan.length > 0 && oppdaterUttaksplan && (
                 <PeriodeListe
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
@@ -64,7 +64,7 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isLeggTilPeriodePanelOpen && (
+            {isLeggTilPeriodePanelOpen && oppdaterUttaksplan && (
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {

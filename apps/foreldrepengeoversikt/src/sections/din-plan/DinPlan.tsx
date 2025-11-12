@@ -127,7 +127,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy oppdaterUttaksplan={() => null} />
+                            <UttaksplanNy />
                             <KvoteOppsummeringWrapper rettighetType={sak.rettighetType} visStatusIkoner={false} />
                         </>
                     )}
