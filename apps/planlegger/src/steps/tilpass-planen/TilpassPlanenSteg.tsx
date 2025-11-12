@@ -244,7 +244,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         {visningsmodus === 'kalender' && (
                             <div className="max-[479px]:p-0">
                                 <UttaksplanKalender
-                                    readOnly={false}
+                                    readOnly={true}
                                     barnehagestartdato={barnehagestartdato}
                                     oppdaterUttaksplan={oppdaterUttaksplan}
                                 />
