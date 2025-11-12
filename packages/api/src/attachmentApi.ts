@@ -57,5 +57,3 @@ const handleUploadError = async (error: unknown): Promise<AttachmentUploadError>
 
     throw error;
 };
-
-// TODO (TOR) Midlertidig funksjon til alle apps er over på Fetch og FileUploader kan oppdaterast
