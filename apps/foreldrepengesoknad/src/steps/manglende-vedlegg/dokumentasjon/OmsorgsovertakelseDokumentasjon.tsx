@@ -15,7 +15,7 @@ interface Props {
 export const OmsorgsovertakelseDokumentasjon = ({ attachments, updateAttachments, søkersituasjon }: Props) => {
     const intl = useIntl();
 
-    if (søkersituasjon.situasjon !== 'adopsjon') {
+    if (!skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon)) {
         return null;
     }
 
@@ -30,4 +30,8 @@ export const OmsorgsovertakelseDokumentasjon = ({ attachments, updateAttachments
             metadataType="BARN"
         />
     );
+};
+
+export const skalViseOmsorgsovertakelseDokumentasjon = (søkersituasjon?: Søkersituasjon) => {
+    return søkersituasjon?.situasjon === 'adopsjon';
 };
