@@ -83,7 +83,7 @@ export const Calendar = ({
                         .toString()}
                 </div>
             )}
-            <HGrid gap="space-24" columns={{ sm: 1, md: setSelectedPeriods ? 1 : 2 }}>
+            <HGrid gap="space-12" columns={{ sm: 1, md: setSelectedPeriods ? 1 : 2 }}>
                 {allMonths.map(({ month, year }, index) => {
                     const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
                     const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;

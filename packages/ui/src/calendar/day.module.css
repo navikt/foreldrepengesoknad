@@ -1,6 +1,5 @@
 .days {
     height: 30px;
-    width: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +16,6 @@
 @media (max-width: 768px) {
     .days {
         height: 40px;
-        width: 40px;
         font-size: 15px;
     }
 }
@@ -25,7 +23,6 @@
 @media (max-width: 480px) {
     .days {
         height: 30px;
-        width: 30px;
         font-size: 14px;
     }
 }

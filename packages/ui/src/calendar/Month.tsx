@@ -59,7 +59,7 @@ export const Month = React.memo(
             <Box.New
                 borderWidth="1"
                 maxWidth="400px"
-                padding="5"
+                padding="3"
                 borderRadius="4"
                 borderColor="neutral-subtle"
                 data-testid={`year:${year};month:${month}`}
