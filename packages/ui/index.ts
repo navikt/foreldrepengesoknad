@@ -14,7 +14,6 @@ export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
 export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
 export { ErrorPage } from './src/error/ErrorPage';
-export { FileUploader } from './src/file-uploader/FileUploader';
 export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';
 export { HorizontalLine } from './src/horizontal-line/HorizontalLine';

@@ -7,8 +7,8 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentError, AttachmentUploadResult } from '@navikt/fp-types';
 
 import { AttachmentList } from './AttachmentList';
+import { FileUploaderAttachment } from './FileUploaderAttachment';
 import { mapFileToAttachment } from './fileUtils';
-import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;

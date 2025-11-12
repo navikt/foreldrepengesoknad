@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { FileObject, FileUpload, Heading, VStack } from '@navikt/ds-react';
 
-import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
+import { FileUploaderAttachment } from './FileUploaderAttachment';
 
 interface Props {
     headingText: string;

@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, delay, http } from 'msw';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { AttachmentError } from '@navikt/fp-types';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 import { FileUploader } from './FileUploader';
+import { getSaveAttachmentFetch } from './attachmentApi';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
