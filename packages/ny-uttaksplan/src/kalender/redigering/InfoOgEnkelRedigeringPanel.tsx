@@ -63,7 +63,7 @@ export const InfoOgEnkelRedigeringPanel = ({
         setValgtePerioder([]);
     };
 
-    const ekisterendePerioderSomErValgt = useMemo(
+    const eksisterendePerioderSomErValgt = useMemo(
         () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
         [sammenslåtteValgtePerioder, uttaksplan],
     );
@@ -74,6 +74,7 @@ export const InfoOgEnkelRedigeringPanel = ({
         <InfoPanel
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
             erMinimert={erMinimert}
+            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
             oppdaterUttaksplan={oppdaterUttaksplan}
             setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
@@ -94,9 +95,9 @@ export const InfoOgEnkelRedigeringPanel = ({
                         </Button>
                     )}
                     {kanIkkeLeggeTilFerie && <div />}
-                    {ekisterendePerioderSomErValgt.length > 0 && (
+                    {eksisterendePerioderSomErValgt.length > 0 && (
                         <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
-                            {ekisterendePerioderSomErValgt.length === 1 ? (
+                            {eksisterendePerioderSomErValgt.length === 1 ? (
                                 <FormattedMessage id="RedigeringPanel.Slett" />
                             ) : (
                                 <FormattedMessage id="RedigeringPanel.SlettAlle" />
@@ -136,11 +137,11 @@ const finnValgtePerioder = (
             if (overlappendeDager > 0) {
                 const fomDate = overlappendePerioder
                     .map(({ fom }) => dayjs(fom))
-                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min))
+                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min), dayjs())
                     .format('YYYY-MM-DD');
                 const tomDate = overlappendePerioder
                     .map(({ tom }) => dayjs(tom))
-                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max))
+                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max), dayjs())
                     .format('YYYY-MM-DD');
 
                 return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };

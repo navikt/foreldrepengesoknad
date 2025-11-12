@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -19,6 +19,7 @@ type Props = {
     erMinimert: boolean;
     erEnkelRedigeringPanel: boolean;
     children: React.ReactNode[] | React.ReactNode;
+    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     setErMinimert: (erMinimert: boolean) => void;
@@ -26,16 +27,17 @@ type Props = {
 
 export const InfoPanel = ({
     sammenslåtteValgtePerioder,
-    oppdaterUttaksplan,
-    setValgtePerioder,
     erMinimert,
-    setErMinimert,
     erEnkelRedigeringPanel,
     children,
+    eksisterendePerioderSomErValgt,
+    oppdaterUttaksplan,
+    setValgtePerioder,
+    setErMinimert,
 }: Props) => {
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(erEnkelRedigeringPanel);
 
-    const { uttaksplan, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     // Dette er her for å fjern scrolling på bakgrunn på mobil
     const isDesktop = useMedia('screen and (min-width: 768px)');
@@ -77,11 +79,6 @@ export const InfoPanel = ({
             ),
         );
     };
-
-    const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
-        [sammenslåtteValgtePerioder, uttaksplan],
-    );
 
     const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
     const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
@@ -149,19 +146,19 @@ export const InfoPanel = ({
                         )}
                     </HStack>
                     <BodyShort>
-                        {ekisterendePerioderSomErValgt.length === 0 ? (
+                        {eksisterendePerioderSomErValgt.length === 0 ? (
                             <FormattedMessage id="RedigeringPanel.DuHarMarkertNyeDager" />
                         ) : (
                             <FormattedMessage
                                 id="RedigeringPanel.EksisterendePerioder"
-                                values={{ antall: ekisterendePerioderSomErValgt.length }}
+                                values={{ antall: eksisterendePerioderSomErValgt.length }}
                             />
                         )}
                     </BodyShort>
                     {!erEnkelRedigeringPanel && visPeriodeDetaljer && (
                         <Show above="md">
                             <Detaljer
-                                ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
+                                eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                                 slettPeriode={slettPeriode}
                                 kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
                                 harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
@@ -174,7 +171,7 @@ export const InfoPanel = ({
                     {!erEnkelRedigeringPanel && !erMinimert && (
                         <Show below="md">
                             <Detaljer
-                                ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
+                                eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                                 slettPeriode={slettPeriode}
                                 kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
                                 harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
@@ -191,7 +188,7 @@ export const InfoPanel = ({
                 <VStack gap="space-24">
                     {erEnkelRedigeringPanel && (
                         <Detaljer
-                            ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
+                            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                             slettPeriode={slettPeriode}
                             kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
                             harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
@@ -209,13 +206,13 @@ export const InfoPanel = ({
 };
 
 const Detaljer = ({
-    ekisterendePerioderSomErValgt,
+    eksisterendePerioderSomErValgt,
     slettPeriode,
     kanIkkeLeggeTilFerie,
     harValgtPerioderBådeFørOgEtterFamiliehendelsedato,
     familiehendelsedato,
 }: {
-    ekisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
+    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
     kanIkkeLeggeTilFerie: boolean;
     harValgtPerioderBådeFørOgEtterFamiliehendelsedato: boolean;
@@ -223,14 +220,14 @@ const Detaljer = ({
 }) => {
     return (
         <VStack gap="space-16">
-            {ekisterendePerioderSomErValgt.length === 0 && (
+            {eksisterendePerioderSomErValgt.length === 0 && (
                 <BodyShort>
                     <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
                 </BodyShort>
             )}
 
-            {ekisterendePerioderSomErValgt.length > 0 && (
-                <Periodeoversikt perioder={ekisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
+            {eksisterendePerioderSomErValgt.length > 0 && (
+                <Periodeoversikt perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
             {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
@@ -255,60 +252,6 @@ const finnAntallDager = (perioder: CalendarPeriod[]): number => {
         const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
         return acc + dager;
     }, 0);
-};
-
-const finnValgtePerioder = (perioder: CalendarPeriod[], uttaksplan: Planperiode[]): PlanperiodeMedAntallDager[] => {
-    return uttaksplan
-        .map((p) => {
-            let overlappendeDager = 0;
-
-            const overlappendePerioder = perioder.filter((periode) => {
-                const fom1 = dayjs(periode.fom);
-                const tom1 = dayjs(periode.tom);
-                const fom2 = dayjs(p.fom);
-                const tom2 = dayjs(p.tom);
-
-                const start = fom1.isAfter(fom2) ? fom1 : fom2;
-                const end = tom1.isBefore(tom2) ? tom1 : tom2;
-
-                if (start.isSameOrBefore(end, 'day')) {
-                    overlappendeDager += end.diff(start, 'day') + 1;
-                    return true;
-                }
-                return false;
-            });
-
-            if (overlappendeDager > 0) {
-                const fomDate = overlappendePerioder
-                    .map(({ fom }) => dayjs(fom))
-                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min))
-                    .format('YYYY-MM-DD');
-                const tomDate = overlappendePerioder
-                    .map(({ tom }) => dayjs(tom))
-                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max))
-                    .format('YYYY-MM-DD');
-
-                return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };
-            }
-
-            return null;
-        })
-        .filter((p): p is PlanperiodeMedAntallDager => p !== null)
-        .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
-            const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
-            if (duplikat) {
-                return acc
-                    .filter((p) => p.kontoType !== duplikat.kontoType)
-                    .concat({
-                        ...duplikat,
-                        // Keep earliest fom and latest tom across all merged periods
-                        fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
-                        tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
-                        overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
-                    });
-            }
-            return acc.concat(curr);
-        }, []);
 };
 
 const erFerieIkkeLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
