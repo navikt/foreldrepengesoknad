@@ -67,7 +67,7 @@ const meta = {
             handlers: [
                 http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://fpgrunnlag.intern.dev.nav.no/fpgrunndata/api/konto', {
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {
