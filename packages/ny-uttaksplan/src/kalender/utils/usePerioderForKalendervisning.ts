@@ -269,6 +269,7 @@ const getKalenderFargeForUttaksperiode = (
         ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
         : undefined;
 
+    const erAnnenForeldersPeriode = !erPeriodeForSøker(periode, erFarEllerMedmor);
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
@@ -280,7 +281,11 @@ const getKalenderFargeForUttaksperiode = (
         isUttaksperiode(periode) &&
         periode.gradering
     ) {
-        return erFarEllerMedmor ? 'GREENSTRIPED' : 'BLUESTRIPED';
+        if (erFarEllerMedmor) {
+            return erAnnenForeldersPeriode ? 'BLUESTRIPED' : 'GREENSTRIPED';
+        }
+
+        return erAnnenForeldersPeriode ? 'GREENSTRIPED' : 'BLUESTRIPED';
     }
 
     if (!periode.kontoType) {

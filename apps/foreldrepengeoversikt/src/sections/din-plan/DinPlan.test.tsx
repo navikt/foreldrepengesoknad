@@ -97,16 +97,16 @@ describe('<Default>', () => {
             const februar2025 = screen.getByTestId('year:2025;month:1');
             expect(within(februar2025).getByTestId('day:3;dayColor:GREEN')).toBeInTheDocument();
             expect(within(februar2025).getByTestId('day:4;dayColor:GREEN')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:5;dayColor:GREENSTRIPED')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:28;dayColor:GREENSTRIPED')).toBeInTheDocument();
-            expect(within(februar2025).getAllByTestId('dayColor:GREENSTRIPED', { exact: false })).toHaveLength(18);
+            expect(within(februar2025).getByTestId('day:5;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(februar2025).getByTestId('day:28;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(februar2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(18);
 
             const mars2025 = screen.getByTestId('year:2025;month:2');
-            expect(within(mars2025).getByTestId('day:3;dayColor:GREENSTRIPED')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:11;dayColor:GREENSTRIPED')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:3;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:11;dayColor:BLUESTRIPED')).toBeInTheDocument();
             expect(within(mars2025).getByTestId('day:19;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(mars2025).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(mars2025).getAllByTestId('dayColor:GREENSTRIPED', { exact: false })).toHaveLength(7);
+            expect(within(mars2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(7);
             expect(within(mars2025).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(9);
 
             const april2025 = screen.getByTestId('year:2025;month:3');
