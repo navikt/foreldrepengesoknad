@@ -7,9 +7,9 @@ import { BodyShort, HStack } from '@navikt/ds-react';
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 
-import { CalendarPeriodWithLabel } from '../../kalender/utils/usePerioderForKalendervisning';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanKalenderLegendInfo } from '../../types/UttaksplanKalenderLegendInfo';
+import { CalendarPeriodWithLabel } from '../utils/usePerioderForKalendervisning.ts';
 
 interface Props {
     perioderForKalendervisning: CalendarPeriodWithLabel[];
