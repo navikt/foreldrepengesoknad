@@ -22,7 +22,7 @@ export const getAktiveArbeidsforhold = (
     }
 
     return arbeidsforhold.filter((arb) =>
-        arb.to ? dayjs(arb.to).isSameOrAfter(dayjs(termindato).subtract(9, 'months'), 'day') : true,
+        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months'), 'day') : true,
     );
 };
 
@@ -60,8 +60,8 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
 const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
-            fom: p.from,
-            tom: p.to,
+            fom: p.fom,
+            tom: p.tom,
             stillingsprosent: p.stillingsprosent,
         };
     });
@@ -77,22 +77,22 @@ export const getUnikeArbeidsforhold = (
 
         const unike = uniqBy(aktiveArbeidsforhold, getArbeidsgiverId).map((forhold) => ({
             id: forhold.arbeidsgiverId,
-            fom: forhold.from,
-            tom: forhold.to,
+            fom: forhold.fom,
+            tom: forhold.tom,
             arbeidsgiverNavn: forhold.arbeidsgiverNavn,
             arbeidsgiverId: forhold.arbeidsgiverId,
             arbeidsgiverIdType: forhold.arbeidsgiverIdType,
-            stillinger: [{ fom: forhold.from, tom: forhold.to, stillingsprosent: forhold.stillingsprosent }],
+            stillinger: [{ fom: forhold.fom, tom: forhold.tom, stillingsprosent: forhold.stillingsprosent }],
         })) as UnikArbeidsforhold[];
         const unikeMedStillinger = unike.map((arbeid) => {
             const likeArbeidsforhold = aktiveArbeidsforhold.filter(
                 (a) => getArbeidsgiverId(a) === arbeid.arbeidsgiverId,
             );
             if (likeArbeidsforhold && likeArbeidsforhold.length > 1) {
-                const alleTom = likeArbeidsforhold.map((a) => a.to);
+                const alleTom = likeArbeidsforhold.map((a) => a.tom);
                 return {
                     ...arbeid,
-                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.from)))!.format(ISO_DATE_FORMAT),
+                    fom: dayjs.min(likeArbeidsforhold.map((a) => dayjs(a.fom)))!.format(ISO_DATE_FORMAT),
                     tom: alleTom.includes(undefined)
                         ? undefined
                         : dayjs.max(alleTom.map((tom) => dayjs(tom)))!.format(ISO_DATE_FORMAT),

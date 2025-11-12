@@ -41,7 +41,7 @@ export const søkerinfo = {
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
             stillingsprosent: 50,
-            from: dayjs().subtract(2, 'year').format('YYYY-MM-DD'),
+            fom: dayjs().subtract(2, 'year').format('YYYY-MM-DD'),
         },
     ],
 } satisfies PersonMedArbeidsforholdDto_fpoversikt;

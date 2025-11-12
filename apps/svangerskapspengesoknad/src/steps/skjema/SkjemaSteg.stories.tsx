@@ -29,15 +29,15 @@ const DEFAULT_ARBEIDSFORHOLD = [
         arbeidsgiverId: ANNEN_ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        from: '2014-05-22T00:00:00.000Z',
+        fom: '2014-05-22T00:00:00.000Z',
         stillingsprosent: 32.63,
-        to: '2019-05-31T00:00:00.000Z',
+        tom: '2019-05-31T00:00:00.000Z',
     },
     {
         arbeidsgiverId: ARBEIDSGIVER_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
-        from: '2017-04-05T00:00:00.000Z',
+        fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];

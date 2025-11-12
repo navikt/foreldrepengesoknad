@@ -19,7 +19,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
         arbeidsgiverId: '995090910',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
-        from: '2018-06-01T00:00:00.000Z',
+        fom: '2018-06-01T00:00:00.000Z',
         stillingsprosent: 0,
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
