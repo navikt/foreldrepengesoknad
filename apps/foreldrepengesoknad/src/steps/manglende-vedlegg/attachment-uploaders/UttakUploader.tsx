@@ -10,9 +10,8 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
-import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';

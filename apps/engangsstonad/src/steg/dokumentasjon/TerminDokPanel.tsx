@@ -7,10 +7,9 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 dayjs.extend(minMax);

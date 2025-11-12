@@ -2,9 +2,8 @@ import { API_URLS } from 'appData/queries';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 
 interface Props {
     attachments?: Attachment[];

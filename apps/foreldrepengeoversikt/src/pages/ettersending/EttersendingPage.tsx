@@ -17,9 +17,8 @@ import {
 } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

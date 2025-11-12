@@ -6,9 +6,8 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { AttachmentType } from '@navikt/fp-constants';
-import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment, DokumentererType } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
