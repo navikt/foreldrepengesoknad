@@ -2570,6 +2570,9 @@ importers:
       '@navikt/ds-react':
         specifier: 7.32.1
         version: 7.32.1(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@navikt/fp-api':
+        specifier: workspace:*
+        version: link:../api
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
