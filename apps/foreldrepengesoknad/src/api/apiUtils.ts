@@ -399,8 +399,8 @@ const mapSøkerInfoTilSøknadDto = (søkerinfo: PersonMedArbeidsforholdDto_fpove
             navn: af.arbeidsgiverNavn,
             orgnummer: af.arbeidsgiverId,
             stillingsprosent: af.stillingsprosent,
-            fom: af.from,
-            tom: af.to,
+            fom: af.fom,
+            tom: af.tom,
         })),
     };
 };

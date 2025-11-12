@@ -188,7 +188,7 @@ const arbeidsforholdMorJobber80Prosent = [
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Mors Arbeidsplass AS',
         stillingsprosent: 80,
-        from: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
@@ -526,15 +526,15 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Auto Joachim Bilpleie',
                     stillingsprosent: 80,
-                    from: '2015-01-01',
+                    fom: '2015-01-01',
                 },
                 {
                     arbeidsgiverId: '2',
                     arbeidsgiverIdType: 'orgnr',
                     arbeidsgiverNavn: 'Taco Express',
                     stillingsprosent: 20,
-                    from: '2019-01-01',
-                    to: '2021-01-01',
+                    fom: '2019-01-01',
+                    tom: '2021-01-01',
                 },
             ],
         },

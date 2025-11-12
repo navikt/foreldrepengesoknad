@@ -32,7 +32,7 @@ const søkerinfo = {
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'SAUEFABRIKK',
             stillingsprosent: 100,
-            from: '2018-03-01',
+            fom: '2018-03-01',
         },
     ],
 } satisfies PersonMedArbeidsforholdDto_fpoversikt;
