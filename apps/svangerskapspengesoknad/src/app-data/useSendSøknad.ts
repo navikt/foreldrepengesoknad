@@ -6,8 +6,8 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAbortSignal } from '@navikt/fp-api';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
