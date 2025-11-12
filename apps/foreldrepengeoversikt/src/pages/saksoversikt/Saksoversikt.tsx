@@ -27,7 +27,7 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { DinPlan } from '../../sections/din-plan/DinPlan';
+import { DinPlanWrapper } from '../../sections/din-plan/DinPlan.tsx';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { getNavnPåForeldre } from '../../utils/personUtils';
@@ -163,7 +163,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             showSkeleton={annenPartsVedtakQuery.isLoading}
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
-                            <DinPlan
+                            <DinPlanWrapper
                                 annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,

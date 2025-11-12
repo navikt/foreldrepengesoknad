@@ -24,15 +24,21 @@ interface Props {
     annenPartsPerioder: UttakPeriode_fpoversikt[];
 }
 
-export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
+// TODO (TOR) Send heller med gjeldendeSak som prop
+export const DinPlanWrapper = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
+
+    if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
+        return null;
+    }
+
+    return <DinPlan annenPartsPerioder={annenPartsPerioder} navnPåForeldre={navnPåForeldre} sak={gjeldendeSak} />;
+};
+
+const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Foreldrepengesak }) => {
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);
-
-    const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === 'FORELDREPENGER';
-
-    const sak: Foreldrepengesak = harFpSak ? gjeldendeSak : ({} as Foreldrepengesak);
 
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
@@ -48,7 +54,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     );
     const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
-    if (!harFpSak || !konto) {
+    if (!konto) {
         return null;
     }
 
