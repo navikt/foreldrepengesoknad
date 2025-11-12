@@ -11,7 +11,7 @@ import { FileUploader } from './FileUploader';
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
 
-const MOCK_API_PATH = '/mock';
+const MOCK_API_PATH = `${import.meta.env.BASE_URL}/mock`;
 
 const meta = {
     title: 'FileUploader',
