@@ -83,13 +83,13 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: 'HV_ØVELSE',
+                utsettelseÅrsak: 'ARBEID',
                 forelder: 'MOR',
                 resultat: {
-                    innvilget: false,
+                    innvilget: true,
                     trekkerDager: false,
                     trekkerMinsterett: false,
-                    årsak: 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID',
+                    årsak: 'ANNET',
                 },
             },
             {

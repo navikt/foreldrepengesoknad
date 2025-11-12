@@ -105,8 +105,8 @@ const getCalendarLabel = (
     switch (label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
-        case 'FERIE':
-            return intl.formatMessage({ id: 'kalender.ferie' });
+        case 'UTSETTELSE':
+            return intl.formatMessage({ id: 'kalender.utsettelse' });
         case 'TERMIN':
             return intl.formatMessage({ id: 'kalender.termin' });
         case 'FØDSEL':

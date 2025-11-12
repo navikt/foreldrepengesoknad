@@ -252,7 +252,7 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
         }
     }
 
-    return 'FERIE';
+    return 'UTSETTELSE';
 };
 
 const getKalenderFargeForUttaksperiode = (

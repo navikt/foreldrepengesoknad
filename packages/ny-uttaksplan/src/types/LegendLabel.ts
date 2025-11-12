@@ -10,5 +10,5 @@ export type LegendLabel =
     | 'FARS_DEL_GRADERT'
     | 'SAMTIDIG_UTTAK'
     | 'TAPTE_DAGER'
-    | 'FERIE'
+    | 'UTSETTELSE'
     | 'NO_LABEL';
