@@ -10,7 +10,7 @@ export const getSaveAttachmentFetch = (sti: string) => async (attachment: Attach
 
     const response = await ky.post<string>(sti, {
         body: formData,
-        timeout: false,
+        timeout: 1000 * 60 * 3, // Store vedlegg 10MB over dårlig nett kan ta så lang tid som 3 minutter
     });
 
     return {
