@@ -215,13 +215,12 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
-            case 'AKTIVITETSFRI_KVOTE':
                 if (p.forelder === 'FAR_MEDMOR') {
                     if (p.samtidigUttak && p.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
                     }
 
-                    if (p.gradering && p.gradering.arbeidstidprosent) {
+                    if (p.gradering?.arbeidstidprosent) {
                         return 'FARS_DEL_GRADERT';
                     }
 
@@ -232,11 +231,17 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
                     return 'SAMTIDIG_UTTAK';
                 }
 
-                if (p.gradering && p.gradering.arbeidstidprosent) {
+                if (p.gradering?.arbeidstidprosent) {
                     return 'MORS_DEL_GRADERT';
                 }
 
                 return 'MORS_DEL';
+            case 'AKTIVITETSFRI_KVOTE':
+                if (p.gradering?.arbeidstidprosent) {
+                    return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
+                }
+
+                return 'FARS_DEL_AKTIVITETSFRI';
             default:
                 return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
         }

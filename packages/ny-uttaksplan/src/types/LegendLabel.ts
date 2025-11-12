@@ -8,6 +8,8 @@ export type LegendLabel =
     | 'MORS_DEL_GRADERT'
     | 'FARS_DEL'
     | 'FARS_DEL_GRADERT'
+    | 'FARS_DEL_AKTIVITETSFRI'
+    | 'FARS_DEL_AKTIVITETSFRI_GRADERT'
     | 'SAMTIDIG_UTTAK'
     | 'TAPTE_DAGER'
     | 'UTSETTELSE'

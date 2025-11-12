@@ -93,8 +93,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
         expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
-        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
     });
 
     it('skal vise info der det er flere forsørgere og kun mor har rett til foreldrepenger', async () => {

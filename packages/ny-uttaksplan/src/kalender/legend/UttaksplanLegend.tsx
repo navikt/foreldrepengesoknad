@@ -137,6 +137,10 @@ const getCalendarLabel = (
             return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.dinPeriode.gradert' })
                 : intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
+        case 'FARS_DEL_AKTIVITETSFRI':
+            return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri' });
+        case 'FARS_DEL_AKTIVITETSFRI_GRADERT':
+            return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri.gradert' });
         case 'TAPTE_DAGER':
             return intl.formatMessage({ id: 'kalender.tapteDager' });
         case 'SAMTIDIG_UTTAK':
