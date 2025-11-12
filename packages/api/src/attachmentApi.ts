@@ -2,7 +2,6 @@ import ky, { HTTPError, TimeoutError } from 'ky';
 
 import { Attachment, AttachmentUploadError, AttachmentUploadResult } from '@navikt/fp-types';
 
-// TODO (TOR) Midlertidig funksjon til alle apps er over på Fetch og FileUploader kan oppdaterast
 export const getSaveAttachmentFetch =
     (sti: string) =>
     async (attachment: Attachment): Promise<AttachmentUploadResult> => {
@@ -20,35 +19,43 @@ export const getSaveAttachmentFetch =
                 data: await response.json(),
             };
         } catch (error) {
-            if (error instanceof TimeoutError) {
-                return {
-                    success: false,
-                    feilKode: 'TIMEOUT',
-                };
-            }
-
-            if (error instanceof HTTPError) {
-                const status = error.response.status;
-
-                if (status >= 400 && status < 500) {
-                    try {
-                        return await error.response.json<AttachmentUploadError>();
-                    } catch {
-                        return {
-                            success: false,
-                            feilKode: 'SERVER_ERROR',
-                        };
-                    }
-                }
-
-                if (status >= 500) {
-                    return {
-                        success: false,
-                        feilKode: 'SERVER_ERROR',
-                    };
-                }
-            }
-
-            throw error;
+            return handleUploadError(error);
         }
     };
+
+const handleHTTPError = async (error: HTTPError): Promise<AttachmentUploadError> => {
+    const status = error.response.status;
+
+    if (status >= 400 && status < 500) {
+        try {
+            return await error.response.json<AttachmentUploadError>();
+        } catch {
+            return {
+                success: false,
+                feilKode: 'SERVER_ERROR',
+            };
+        }
+    }
+
+    return {
+        success: false,
+        feilKode: 'SERVER_ERROR',
+    };
+};
+
+const handleUploadError = async (error: unknown): Promise<AttachmentUploadError> => {
+    if (error instanceof TimeoutError) {
+        return {
+            success: false,
+            feilKode: 'TIMEOUT',
+        };
+    }
+
+    if (error instanceof HTTPError) {
+        return handleHTTPError(error);
+    }
+
+    throw error;
+};
+
+// TODO (TOR) Midlertidig funksjon til alle apps er over på Fetch og FileUploader kan oppdaterast
