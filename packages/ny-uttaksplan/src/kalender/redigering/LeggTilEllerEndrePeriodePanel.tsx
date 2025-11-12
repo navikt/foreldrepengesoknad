@@ -17,6 +17,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 import { InfoPanel } from './InfoPanel';
+import { PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type FormValues = {
     kontoType?: KontoTypeUttak;
@@ -31,6 +32,7 @@ interface Props {
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
     erKunEnHelEksisterendePeriodeValgt: boolean;
+    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     lukkRedigeringsmodus: () => void;
@@ -41,6 +43,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
     sammenslåtteValgtePerioder,
     erMinimert,
     erKunEnHelEksisterendePeriodeValgt,
+    eksisterendePerioderSomErValgt,
     oppdaterUttaksplan,
     setValgtePerioder,
     lukkRedigeringsmodus,
@@ -82,6 +85,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
         <InfoPanel
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
             erMinimert={erMinimert}
+            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
             oppdaterUttaksplan={oppdaterUttaksplan}
             setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}

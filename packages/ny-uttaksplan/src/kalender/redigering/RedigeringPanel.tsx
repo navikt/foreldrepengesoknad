@@ -13,6 +13,7 @@ import { Planperiode } from '../../types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from '../../utils/periodeUtils';
 import { InfoOgEnkelRedigeringPanel } from './InfoOgEnkelRedigeringPanel';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
+import { PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
@@ -33,6 +34,11 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
     const erKunEnHelEksisterendePeriodeValgt =
         sammenslåtteValgtePerioder.length === 1 &&
         erValgtPeriodeEnHelEksisterendePeriode(uttaksplan, sammenslåtteValgtePerioder[0]);
+
+    const eksisterendePerioderSomErValgt = useMemo(
+        () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
+        [sammenslåtteValgtePerioder, uttaksplan],
+    );
 
     const oppdater = (oppdatertPeriode: Planperiode[]) => {
         const planperioder = erKunEnHelEksisterendePeriodeValgt
@@ -69,6 +75,7 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     erKunEnHelEksisterendePeriodeValgt={erKunEnHelEksisterendePeriodeValgt}
+                    eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                     oppdaterUttaksplan={oppdater}
                     setValgtePerioder={setValgtePerioder}
                     setErIRedigeringsmodus={setErIRedigeringsmodus}
@@ -81,6 +88,7 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     erKunEnHelEksisterendePeriodeValgt={erKunEnHelEksisterendePeriodeValgt}
+                    eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                     oppdaterUttaksplan={oppdater}
                     setValgtePerioder={setValgtePerioder}
                     lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
@@ -123,6 +131,63 @@ const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPer
 
             acc.push(curr);
             return acc;
+        }, []);
+};
+
+const finnValgtePerioder = (
+    valgtePerioder: CalendarPeriod[],
+    uttaksplan: Planperiode[],
+): PlanperiodeMedAntallDager[] => {
+    return uttaksplan
+        .map((p) => {
+            let overlappendeDager = 0;
+
+            const overlappendePerioder = valgtePerioder.filter((periode) => {
+                const fom1 = dayjs(periode.fom);
+                const tom1 = dayjs(periode.tom);
+                const fom2 = dayjs(p.fom);
+                const tom2 = dayjs(p.tom);
+
+                const start = fom1.isAfter(fom2) ? fom1 : fom2;
+                const end = tom1.isBefore(tom2) ? tom1 : tom2;
+
+                if (start.isSameOrBefore(end, 'day')) {
+                    overlappendeDager += end.diff(start, 'day') + 1;
+                    return true;
+                }
+                return false;
+            });
+
+            if (overlappendeDager > 0) {
+                const fomDate = overlappendePerioder
+                    .map(({ fom }) => dayjs(fom))
+                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min), dayjs())
+                    .format('YYYY-MM-DD');
+                const tomDate = overlappendePerioder
+                    .map(({ tom }) => dayjs(tom))
+                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max), dayjs())
+                    .format('YYYY-MM-DD');
+
+                return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };
+            }
+
+            return null;
+        })
+        .filter((p): p is PlanperiodeMedAntallDager => p !== null)
+        .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
+            const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
+            if (duplikat) {
+                return acc
+                    .filter((p) => p.kontoType !== duplikat.kontoType)
+                    .concat({
+                        ...duplikat,
+                        // Keep earliest fom and latest tom across all merged periods
+                        fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
+                        tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
+                        overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
+                    });
+            }
+            return acc.concat(curr);
         }, []);
 };
 
