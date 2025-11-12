@@ -21,7 +21,10 @@ const meta = {
 
         const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
             setPerioder(oppdatertePerioder);
-            args.oppdaterUttaksplan(oppdatertePerioder);
+
+            if (args.oppdaterUttaksplan) {
+                args.oppdaterUttaksplan(oppdatertePerioder);
+            }
         };
 
         return (
