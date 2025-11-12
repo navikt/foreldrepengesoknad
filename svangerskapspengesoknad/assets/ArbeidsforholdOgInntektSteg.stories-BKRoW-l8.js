@@ -1,0 +1,12 @@
+import{j as s}from"./iframe-DBfPZh8u.js";import{S as g,c as l,C as o}from"./routes-CDfMNdM-.js";import{A as t}from"./ArbeidsforholdOgInntektSteg-DSX54z1R.js";import{M as m}from"./useSvpNavigator-DsWT3J2H.js";import"./preload-helper-D9Z9MdNV.js";import"./useTilretteleggingerHelper-DCXCf2P3.js";const{action:i}=__STORYBOOK_MODULE_ACTIONS__,p=[{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2014-05-22T00:00:00.000Z",stillingsprosent:32.63,tom:"2019-05-31T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2018-04-09T00:00:00.000Z",stillingsprosent:0,tom:"2018-09-09T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2018-06-25T00:00:00.000Z",stillingsprosent:80,tom:"2018-08-05T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2019-06-01T00:00:00.000Z",stillingsprosent:85.09},{arbeidsgiverId:"990322244",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Omsorgspartner Vestfold AS",fom:"2017-04-05T00:00:00.000Z",stillingsprosent:100},{arbeidsgiverId:"995090910",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Re Kommune",fom:"2018-06-01T00:00:00.000Z",stillingsprosent:0}],a=()=>()=>(i("button-click")(),Promise.resolve()),T={title:"steps/ArbeidsforholdOgInntektSteg",component:t,render:({gåTilNesteSide:n=i("button-click"),...d})=>s.jsx(m,{initialEntries:[g.ARBEIDSFORHOLD_OG_INNTEKT],children:s.jsx(l,{onDispatch:n,initialState:{[o.UTENLANDSOPPHOLD]:{harBoddUtenforNorgeSiste12Mnd:!1,skalBoUtenforNorgeNeste12Mnd:!1},[o.OM_BARNET]:{erBarnetFødt:!1,termindato:"2024-02-18",fødselsdato:"2024-02-18"}},children:s.jsx(t,{...d})})})},e={args:{mellomlagreSøknadOgNaviger:a(),avbrytSøknad:a(),arbeidsforhold:p}},r={args:{...e.args,arbeidsforhold:[]}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction(),
+    arbeidsforhold: DEFAULT_ARBEIDSFORHOLD
+  }
+}`,...e.parameters?.docs?.source}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...Default.args,
+    arbeidsforhold: []
+  }
+}`,...r.parameters?.docs?.source}}};const k=["Default","BrukerKanIkkeSøke"];export{r as BrukerKanIkkeSøke,e as Default,k as __namedExportsOrder,T as default};
