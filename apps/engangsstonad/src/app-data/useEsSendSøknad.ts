@@ -9,8 +9,7 @@ import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
-import { useAbortSignal } from '@navikt/fp-utils';
-import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
