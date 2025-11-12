@@ -18,8 +18,8 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';

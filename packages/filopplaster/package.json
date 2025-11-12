@@ -1,5 +1,5 @@
 {
-    "name": "@navikt/fp-api",
+    "name": "@navikt/fp-filopplaster",
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",
@@ -30,6 +30,7 @@
         "react-intl": "7.1.11"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.6.6",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
@@ -44,6 +45,7 @@
         "@types/react": "19.1.13",
         "@vitest/browser": "3.2.4",
         "eslint": "9.36.0",
+        "fast-glob": "3.3.3",
         "storybook-react-intl": "4.0.7",
         "typescript": "5.9.2",
         "vite": "7.1.3",

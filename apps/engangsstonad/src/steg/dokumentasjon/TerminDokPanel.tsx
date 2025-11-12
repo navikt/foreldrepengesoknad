@@ -6,8 +6,8 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';

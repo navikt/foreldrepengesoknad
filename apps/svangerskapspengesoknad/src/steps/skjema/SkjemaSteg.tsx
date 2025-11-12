@@ -11,8 +11,8 @@ import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging 
 
 import { Link, VStack } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';

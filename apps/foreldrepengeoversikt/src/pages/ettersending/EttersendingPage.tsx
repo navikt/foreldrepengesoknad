@@ -16,8 +16,8 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';

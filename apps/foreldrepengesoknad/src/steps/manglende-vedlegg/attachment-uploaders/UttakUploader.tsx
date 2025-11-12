@@ -8,9 +8,9 @@ import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';

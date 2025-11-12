@@ -5,8 +5,8 @@ import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType } from '@navikt/fp-constants';
+import { getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
 import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
