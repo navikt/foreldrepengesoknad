@@ -216,8 +216,8 @@ const finnAntallDager = (perioder: CalendarPeriod[]): number => {
     }, 0);
 };
 
-const finnValgtePerioder = (perioder: CalendarPeriod[], komplettPlan: Planperiode[]): PlanperiodeMedAntallDager[] => {
-    return komplettPlan
+const finnValgtePerioder = (perioder: CalendarPeriod[], uttaksplan: Planperiode[]): PlanperiodeMedAntallDager[] => {
+    return uttaksplan
         .map((p) => {
             let overlappendeDager = 0;
 
@@ -270,7 +270,7 @@ const finnValgtePerioder = (perioder: CalendarPeriod[], komplettPlan: Planperiod
         }, []);
 };
 
-const erFerieIkkeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
+const erFerieIkkeLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
     return dayjs(periode.tom).isBefore(familiehendelsedato);
 };
 

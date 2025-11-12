@@ -16,6 +16,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
+    erKunEnHelEksisterendePeriodeValgt: boolean;
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,6 +27,7 @@ export const InfoOgEnkelRedigeringPanel = ({
     valgtePerioder,
     sammenslåtteValgtePerioder,
     erMinimert,
+    erKunEnHelEksisterendePeriodeValgt,
     oppdaterUttaksplan,
     setValgtePerioder,
     setErIRedigeringsmodus,
@@ -70,8 +72,6 @@ export const InfoOgEnkelRedigeringPanel = ({
 
     const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
 
-    //Legg til/endre knapp : Skal stå endre når en har valgt en hel periode, ellers legg til
-
     return (
         <InfoPanel
             valgtePerioder={valgtePerioder}
@@ -83,7 +83,11 @@ export const InfoOgEnkelRedigeringPanel = ({
             skalVisePeriodedetaljerSomStandard
         >
             <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
-                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                {erKunEnHelEksisterendePeriodeValgt ? (
+                    <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                ) : (
+                    <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
+                )}
             </Button>
             <HStack justify="space-between">
                 {!kanIkkeLeggeTilFerie && (
@@ -91,9 +95,14 @@ export const InfoOgEnkelRedigeringPanel = ({
                         <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                     </Button>
                 )}
+                {kanIkkeLeggeTilFerie && <div />}
                 {ekisterendePerioderSomErValgt.length > 0 && (
                     <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
-                        <FormattedMessage id="RedigeringPanel.SlettAlle" />
+                        {ekisterendePerioderSomErValgt.length === 1 ? (
+                            <FormattedMessage id="RedigeringPanel.Slett" />
+                        ) : (
+                            <FormattedMessage id="RedigeringPanel.SlettAlle" />
+                        )}
                     </Button>
                 )}
             </HStack>

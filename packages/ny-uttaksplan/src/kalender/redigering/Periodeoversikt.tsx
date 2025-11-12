@@ -8,13 +8,12 @@ import { Planperiode } from '../../types/Planperiode';
 
 export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
-export const Periodeoversikt = ({
-    perioder,
-    slettPeriode,
-}: {
+interface Props {
     perioder: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
-}) => {
+}
+
+export const Periodeoversikt = ({ perioder, slettPeriode }: Props) => {
     const intl = useIntl();
     return (
         <VStack gap="space-12">

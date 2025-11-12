@@ -18,10 +18,10 @@ import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 import { InfoPanel } from './InfoPanel';
 
-type LeggTilPeriodePanelFormValues = {
+type FormValues = {
     kontoType?: KontoTypeUttak;
-    forelder: BrukerRolleSak_fpoversikt;
-    skalDuJobbe: boolean;
+    forelder?: BrukerRolleSak_fpoversikt;
+    skalDuJobbe?: boolean;
     stillingsprosent?: string;
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
@@ -31,31 +31,35 @@ interface Props {
     valgtePerioder: CalendarPeriod[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
+    erKunEnHelEksisterendePeriodeValgt: boolean;
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     lukkRedigeringsmodus: () => void;
-    leggTilValgtPeriode: (oppdatertePerioder: Planperiode[]) => void;
     setErMinimert: (erMinimert: boolean) => void;
 }
 
-export const LeggTilPeriodePanel = ({
+export const LeggTilEllerEndrePeriodePanel = ({
     valgtePerioder,
     sammenslåtteValgtePerioder,
     erMinimert,
+    erKunEnHelEksisterendePeriodeValgt,
     oppdaterUttaksplan,
     setValgtePerioder,
     lukkRedigeringsmodus,
-    leggTilValgtPeriode,
     setErMinimert,
 }: Props) => {
     const intl = useIntl();
 
-    const { aleneOmOmsorg, familiehendelsedato, valgtStønadskonto } = useUttaksplanData();
+    const { uttaksplan, aleneOmOmsorg, familiehendelsedato, valgtStønadskonto } = useUttaksplanData();
 
-    const formMethods = useForm<LeggTilPeriodePanelFormValues>();
+    const formMethods = useForm<FormValues>({
+        defaultValues: erKunEnHelEksisterendePeriodeValgt
+            ? lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0])
+            : undefined,
+    });
 
-    const onSubmit = (values: LeggTilPeriodePanelFormValues) => {
-        leggTilValgtPeriode(
+    const onSubmit = (values: FormValues) => {
+        oppdaterUttaksplan(
             valgtePerioder.map((periode) => ({
                 fom: periode.fom,
                 tom: periode.tom,
@@ -63,10 +67,13 @@ export const LeggTilPeriodePanel = ({
                 id: `${periode.fom} - ${periode.tom} - ${values.kontoType}`,
                 kontoType: values.kontoType,
                 forelder: getForelderFraKontoType(values.kontoType, values.forelder),
-                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
+                gradering: values.skalDuJobbe
+                    ? getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType)
+                    : undefined,
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             })),
         );
+        setValgtePerioder([]);
 
         lukkRedigeringsmodus();
     };
@@ -161,4 +168,25 @@ const finnGyldigeKontotyper = (
             }
             return true;
         });
+};
+
+const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod): FormValues | undefined => {
+    const eksisterendePeriode = uttaksplan.find(
+        (periode) =>
+            dayjs(periode.fom).isSame(dayjs(valgtPeriode.fom), 'day') &&
+            dayjs(periode.tom).isSame(dayjs(valgtPeriode.tom), 'day'),
+    );
+
+    if (!eksisterendePeriode) {
+        return undefined;
+    }
+
+    return {
+        kontoType: eksisterendePeriode.kontoType,
+        forelder: eksisterendePeriode.forelder,
+        skalDuJobbe: eksisterendePeriode.gradering ? true : false,
+        stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),
+        samtidigUttak: eksisterendePeriode.samtidigUttak ? true : false,
+        samtidigUttaksprosent: eksisterendePeriode.samtidigUttak?.toString(),
+    };
 };
