@@ -98,9 +98,8 @@ export const UttaksplanLegend = ({
 
 const getCalendarLabel = (
     label: LegendLabel,
-    _navnAnnenPart: string,
-    _unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[],
-    _erFarEllerMedmor: boolean,
+    navnAnnenPart: string,
+    erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): ReactNode => {
     switch (label) {

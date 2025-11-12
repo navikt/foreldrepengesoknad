@@ -49,6 +49,7 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
     const isDesktop = useMedia('screen and (min-width: 768px)');
     useEffect(() => {
         if (isDesktop) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setErMinimert(false);
         }
     }, [isDesktop]);

@@ -61,7 +61,6 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                     <UttaksplanLegend
                         perioderForKalendervisning={perioderForKalendervisning}
                         navnAnnenPart={navnAnnenPart}
-                        unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}
                         readOnly={readOnly}
                         selectLegend={(color: CalendarPeriodColor) => {
