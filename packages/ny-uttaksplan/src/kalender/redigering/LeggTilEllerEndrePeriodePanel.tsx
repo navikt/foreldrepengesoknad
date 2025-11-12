@@ -28,7 +28,6 @@ type FormValues = {
 };
 
 interface Props {
-    valgtePerioder: CalendarPeriod[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
     erKunEnHelEksisterendePeriodeValgt: boolean;
@@ -39,7 +38,6 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodePanel = ({
-    valgtePerioder,
     sammenslåtteValgtePerioder,
     erMinimert,
     erKunEnHelEksisterendePeriodeValgt,
@@ -60,7 +58,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
 
     const onSubmit = (values: FormValues) => {
         oppdaterUttaksplan(
-            valgtePerioder.map((periode) => ({
+            sammenslåtteValgtePerioder.map((periode) => ({
                 fom: periode.fom,
                 tom: periode.tom,
                 readOnly: false,
@@ -78,17 +76,16 @@ export const LeggTilEllerEndrePeriodePanel = ({
         lukkRedigeringsmodus();
     };
 
-    const gyldigeKontotyper = finnGyldigeKontotyper(valgtePerioder, familiehendelsedato, valgtStønadskonto);
+    const gyldigeKontotyper = finnGyldigeKontotyper(sammenslåtteValgtePerioder, familiehendelsedato, valgtStønadskonto);
 
     return (
         <InfoPanel
-            valgtePerioder={valgtePerioder}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
             erMinimert={erMinimert}
             oppdaterUttaksplan={oppdaterUttaksplan}
             setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
-            skalVisePeriodedetaljerSomStandard={false}
+            erEnkelRedigeringPanel={false}
         >
             <div className={erMinimert ? 'hidden' : 'block'}>
                 <div className="px-4 pb-4 pt-4">

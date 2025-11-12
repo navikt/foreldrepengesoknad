@@ -3,7 +3,7 @@ import { uniqueId } from 'lodash';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack } from '@navikt/ds-react';
+import { Button, HStack, VStack } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
@@ -13,7 +13,6 @@ import { InfoPanel } from './InfoPanel';
 import { type PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type Props = {
-    valgtePerioder: CalendarPeriod[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
     erKunEnHelEksisterendePeriodeValgt: boolean;
@@ -24,7 +23,6 @@ type Props = {
 };
 
 export const InfoOgEnkelRedigeringPanel = ({
-    valgtePerioder,
     sammenslåtteValgtePerioder,
     erMinimert,
     erKunEnHelEksisterendePeriodeValgt,
@@ -66,46 +64,47 @@ export const InfoOgEnkelRedigeringPanel = ({
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(valgtePerioder, uttaksplan),
-        [valgtePerioder, uttaksplan],
+        () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
+        [sammenslåtteValgtePerioder, uttaksplan],
     );
 
-    const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
+    const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
 
     return (
         <InfoPanel
-            valgtePerioder={valgtePerioder}
             sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
             erMinimert={erMinimert}
             oppdaterUttaksplan={oppdaterUttaksplan}
             setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
-            skalVisePeriodedetaljerSomStandard
+            erEnkelRedigeringPanel
         >
-            <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
-                {erKunEnHelEksisterendePeriodeValgt ? (
-                    <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                ) : (
-                    <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
-                )}
-            </Button>
-            <HStack justify="space-between">
-                {!kanIkkeLeggeTilFerie && (
-                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                        <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                    </Button>
-                )}
-                {kanIkkeLeggeTilFerie && <div />}
-                {ekisterendePerioderSomErValgt.length > 0 && (
-                    <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
-                        {ekisterendePerioderSomErValgt.length === 1 ? (
-                            <FormattedMessage id="RedigeringPanel.Slett" />
-                        ) : (
-                            <FormattedMessage id="RedigeringPanel.SlettAlle" />
-                        )}
-                    </Button>
-                )}
-            </HStack>
+            <VStack gap="space-12">
+                <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
+                    {erKunEnHelEksisterendePeriodeValgt ? (
+                        <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                    ) : (
+                        <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
+                    )}
+                </Button>
+                <HStack justify="space-between">
+                    {!kanIkkeLeggeTilFerie && (
+                        <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                        </Button>
+                    )}
+                    {kanIkkeLeggeTilFerie && <div />}
+                    {ekisterendePerioderSomErValgt.length > 0 && (
+                        <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
+                            {ekisterendePerioderSomErValgt.length === 1 ? (
+                                <FormattedMessage id="RedigeringPanel.Slett" />
+                            ) : (
+                                <FormattedMessage id="RedigeringPanel.SlettAlle" />
+                            )}
+                        </Button>
+                    )}
+                </HStack>
+            </VStack>
         </InfoPanel>
     );
 };

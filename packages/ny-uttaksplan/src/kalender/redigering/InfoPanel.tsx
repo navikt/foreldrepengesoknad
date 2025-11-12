@@ -1,23 +1,23 @@
 import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Box, HStack, Heading, Show, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
+import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { Periodeoversikt, type PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type Props = {
-    valgtePerioder: CalendarPeriod[];
     sammenslåtteValgtePerioder: CalendarPeriod[];
     erMinimert: boolean;
-    skalVisePeriodedetaljerSomStandard: boolean;
+    erEnkelRedigeringPanel: boolean;
     children: React.ReactNode[] | React.ReactNode;
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
@@ -25,18 +25,26 @@ type Props = {
 };
 
 export const InfoPanel = ({
-    valgtePerioder,
     sammenslåtteValgtePerioder,
     oppdaterUttaksplan,
     setValgtePerioder,
     erMinimert,
     setErMinimert,
-    skalVisePeriodedetaljerSomStandard,
+    erEnkelRedigeringPanel,
     children,
 }: Props) => {
-    const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(skalVisePeriodedetaljerSomStandard);
+    const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(erEnkelRedigeringPanel);
 
     const { uttaksplan, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+
+    // Dette er her for å fjern scrolling på bakgrunn på mobil
+    const isDesktop = useMedia('screen and (min-width: 768px)');
+    useEffect(() => {
+        document.body.style.overflow = '';
+        if (!isDesktop && !erMinimert && !erEnkelRedigeringPanel) {
+            document.body.style.overflow = 'hidden';
+        }
+    }, [isDesktop, erMinimert]);
 
     const slettPeriode = (periode: { fom: string; tom: string }) => {
         const start = dayjs(periode.fom);
@@ -71,141 +79,174 @@ export const InfoPanel = ({
     };
 
     const ekisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(valgtePerioder, uttaksplan),
-        [valgtePerioder, uttaksplan],
+        () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
+        [sammenslåtteValgtePerioder, uttaksplan],
     );
 
-    const kanIkkeLeggeTilFerie = valgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
+    const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
     const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
-        valgtePerioder,
+        sammenslåtteValgtePerioder,
         familiehendelsedato,
     );
 
     return (
-        <>
-            <VStack gap="space-8">
-                <Box.New background="accent-soft" padding="4">
-                    <VStack gap="space-8">
+        <VStack
+            gap="space-24"
+            className={
+                !erEnkelRedigeringPanel && !erMinimert
+                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:overflow-visible'
+                    : undefined
+            }
+        >
+            <Box.New background="accent-soft" padding="4">
+                <VStack gap="space-8">
+                    {!erEnkelRedigeringPanel && (
                         <HStack gap="space-8" align="center" wrap={false}>
                             <PencilIcon title="a11y-title" fontSize="1.5rem" />
-                            <Heading size="xsmall">
+                            <Heading size="small">
                                 <FormattedMessage id="RedigeringPanel.EndreTil" />
                             </Heading>
-                            <Spacer />
-                            <Show below="md" asChild>
-                                {erMinimert ? (
+                        </HStack>
+                    )}
+                    <HStack justify="space-between" align="center" wrap={false}>
+                        <Heading size="xsmall">
+                            <FormattedMessage
+                                id="RedigeringPanel.ValgteDager"
+                                values={{ antall: finnAntallDager(sammenslåtteValgtePerioder) }}
+                            />
+                        </Heading>
+                        <Show below="md" asChild>
+                            {erMinimert ? (
+                                <ChevronUpIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(false)}
+                                />
+                            ) : (
+                                <ChevronDownIcon
+                                    title="a11y-title"
+                                    fontSize="1.5rem"
+                                    onClick={() => setErMinimert(true)}
+                                />
+                            )}
+                        </Show>
+                        {!erEnkelRedigeringPanel && (
+                            <Show above="md" asChild>
+                                {visPeriodeDetaljer ? (
                                     <ChevronUpIcon
                                         title="a11y-title"
                                         fontSize="1.5rem"
-                                        onClick={() => setErMinimert(false)}
+                                        onClick={() => setVisPeriodeDetaljer(false)}
                                     />
                                 ) : (
                                     <ChevronDownIcon
                                         title="a11y-title"
                                         fontSize="1.5rem"
-                                        onClick={() => setErMinimert(true)}
+                                        onClick={() => setVisPeriodeDetaljer(true)}
                                     />
                                 )}
                             </Show>
-                        </HStack>
-                        <HStack justify="space-between" align="center" wrap={false}>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{ antall: finnAntallDager(valgtePerioder) }}
-                                />
-                            </BodyShort>
-                            {!skalVisePeriodedetaljerSomStandard && (
-                                <Show above="md" asChild>
-                                    {visPeriodeDetaljer ? (
-                                        <ChevronUpIcon
-                                            title="a11y-title"
-                                            fontSize="1.5rem"
-                                            onClick={() => setVisPeriodeDetaljer(false)}
-                                        />
-                                    ) : (
-                                        <ChevronDownIcon
-                                            title="a11y-title"
-                                            fontSize="1.5rem"
-                                            onClick={() => setVisPeriodeDetaljer(true)}
-                                        />
-                                    )}
-                                </Show>
-                            )}
-                        </HStack>
-                        {!skalVisePeriodedetaljerSomStandard && visPeriodeDetaljer && (
+                        )}
+                    </HStack>
+                    <BodyShort>
+                        {ekisterendePerioderSomErValgt.length === 0 ? (
+                            <FormattedMessage id="RedigeringPanel.DuHarMarkertNyeDager" />
+                        ) : (
+                            <FormattedMessage
+                                id="RedigeringPanel.EksisterendePerioder"
+                                values={{ antall: ekisterendePerioderSomErValgt.length }}
+                            />
+                        )}
+                    </BodyShort>
+                    {!erEnkelRedigeringPanel && visPeriodeDetaljer && (
+                        <Show above="md">
                             <Detaljer
                                 ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
                                 slettPeriode={slettPeriode}
-                                erMinimert={false}
+                                kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
+                                    harValgtPerioderBådeFørOgEtterFamiliehendelsedato
+                                }
+                                familiehendelsedato={familiehendelsedato}
                             />
-                        )}
-                    </VStack>
-                </Box.New>
-                <VStack gap="space-16" className="p-4">
-                    {skalVisePeriodedetaljerSomStandard && visPeriodeDetaljer && (
+                        </Show>
+                    )}
+                    {!erEnkelRedigeringPanel && !erMinimert && (
+                        <Show below="md">
+                            <Detaljer
+                                ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
+                                slettPeriode={slettPeriode}
+                                kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
+                                    harValgtPerioderBådeFørOgEtterFamiliehendelsedato
+                                }
+                                familiehendelsedato={familiehendelsedato}
+                            />
+                        </Show>
+                    )}
+                </VStack>
+            </Box.New>
+
+            <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
+                <VStack gap="space-24">
+                    {erEnkelRedigeringPanel && (
                         <Detaljer
                             ekisterendePerioderSomErValgt={ekisterendePerioderSomErValgt}
                             slettPeriode={slettPeriode}
-                            erMinimert={erMinimert}
+                            kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                            harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
+                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato
+                            }
+                            familiehendelsedato={familiehendelsedato}
                         />
                     )}
-                    <div className={erMinimert ? 'hidden' : 'block'}>
-                        <VStack gap="space-16">
-                            {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
-                                <Alert variant="info" size="small">
-                                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
-                                </Alert>
-                            )}
-                            {kanIkkeLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
-                                <Alert variant="info" size="small">
-                                    <FormattedMessage
-                                        id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"
-                                        values={{ dato: dayjs(familiehendelsedato).format(DDMMM_DATE_FORMAT) }}
-                                    />
-                                </Alert>
-                            )}
-                            {children}
-                        </VStack>
-                    </div>
+
+                    {children}
                 </VStack>
-            </VStack>
-        </>
+            </div>
+        </VStack>
     );
 };
 
 const Detaljer = ({
     ekisterendePerioderSomErValgt,
     slettPeriode,
-    erMinimert,
+    kanIkkeLeggeTilFerie,
+    harValgtPerioderBådeFørOgEtterFamiliehendelsedato,
+    familiehendelsedato,
 }: {
     ekisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     slettPeriode: (periode: { fom: string; tom: string }) => void;
-    erMinimert: boolean;
+    kanIkkeLeggeTilFerie: boolean;
+    harValgtPerioderBådeFørOgEtterFamiliehendelsedato: boolean;
+    familiehendelsedato: string;
 }) => {
     return (
-        <>
+        <VStack gap="space-16">
             {ekisterendePerioderSomErValgt.length === 0 && (
-                <VStack gap="space-8">
-                    <Heading size="xsmall">
-                        <FormattedMessage id="RedigeringPanel.DuHarMarkertNyeDager" />
-                    </Heading>
-                    <BodyShort>
-                        <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
-                    </BodyShort>
-                </VStack>
+                <BodyShort>
+                    <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
+                </BodyShort>
             )}
+
             {ekisterendePerioderSomErValgt.length > 0 && (
-                <>
-                    <BodyShort>
-                        <FormattedMessage id="RedigeringPanel.EksisterendePerioder" />
-                    </BodyShort>
-                    {!erMinimert && (
-                        <Periodeoversikt perioder={ekisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
-                    )}
-                </>
+                <Periodeoversikt perioder={ekisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
-        </>
+
+            {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+                <Alert variant="info" size="small">
+                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
+                </Alert>
+            )}
+            {kanIkkeLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+                <Alert variant="info" size="small">
+                    <FormattedMessage
+                        id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"
+                        values={{ dato: dayjs(familiehendelsedato).format(DDMMM_DATE_FORMAT) }}
+                    />
+                </Alert>
+            )}
+        </VStack>
     );
 };
 
@@ -271,7 +312,7 @@ const finnValgtePerioder = (perioder: CalendarPeriod[], uttaksplan: Planperiode[
 };
 
 const erFerieIkkeLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isBefore(familiehendelsedato);
+    return dayjs(periode.fom).isBefore(familiehendelsedato);
 };
 
 const harValgtBådeFørOgEtterFamiliehendelsedato = (

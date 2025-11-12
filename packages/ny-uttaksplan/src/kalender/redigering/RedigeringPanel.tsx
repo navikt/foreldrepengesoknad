@@ -65,7 +65,6 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
         >
             {!erIRedigeringsmodus && (
                 <InfoOgEnkelRedigeringPanel
-                    valgtePerioder={valgtePerioder}
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     erKunEnHelEksisterendePeriodeValgt={erKunEnHelEksisterendePeriodeValgt}
@@ -78,7 +77,6 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
             {erIRedigeringsmodus && (
                 <LeggTilEllerEndrePeriodePanel
                     key={erKunEnHelEksisterendePeriodeValgt ? 1 : 0} // Reset av form når en går fra endre til legg til og omvendt
-                    valgtePerioder={sammenslåtteValgtePerioder}
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     erKunEnHelEksisterendePeriodeValgt={erKunEnHelEksisterendePeriodeValgt}
