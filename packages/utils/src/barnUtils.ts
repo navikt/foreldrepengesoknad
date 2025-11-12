@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Barn, BarnDto_fpoversikt, Familiesituasjon, isFødtBarn } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-types/src/Barn';
+import { isAdoptertBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-types/src/Barn';
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
@@ -34,6 +34,9 @@ export const getFamiliesituasjon = (barn: Barn): Familiesituasjon => {
     if (isUfødtBarn(barn)) {
         return 'termin';
     }
+    if (isAdoptertBarn(barn)) {
+        return 'adopsjon';
+    }
 
-    return 'adopsjon';
+    throw new Error('Ukjent barnetype');
 };

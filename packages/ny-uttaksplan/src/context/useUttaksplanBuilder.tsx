@@ -2,7 +2,7 @@ import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
 import { mapSaksperiodeTilPlanperiode } from '../utils/periodeUtils';
 import { getAnnenpartsPerioder, useUttaksplanData } from './UttaksplanDataContext';
 
-export const useUttaksplanBuilder = (): ReturnType<typeof Uttaksplanbuilder> => {
+export const useUttaksplanBuilder = () => {
     const {
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,

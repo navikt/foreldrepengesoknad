@@ -4,7 +4,7 @@ import { CalendarPeriodColor } from '../types/CalendarPeriodColor';
 import styles from './calendarLabel.module.css';
 
 interface Props {
-    children: React.ReactElement | React.ReactElement[];
+    children: React.ReactNode;
     color: CalendarPeriodColor;
     onClick?: () => void;
     selected?: boolean;

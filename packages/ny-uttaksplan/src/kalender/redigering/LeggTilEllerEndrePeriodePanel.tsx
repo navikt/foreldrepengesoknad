@@ -112,17 +112,17 @@ export const LeggTilEllerEndrePeriodePanel = ({
 };
 
 const getForelderFraKontoType = (
-    ktValue: KontoTypeUttak | undefined,
-    fValue: BrukerRolleSak_fpoversikt | undefined,
+    kontotype: KontoTypeUttak | undefined,
+    foreldre: BrukerRolleSak_fpoversikt | undefined,
 ): BrukerRolleSak_fpoversikt | undefined => {
-    switch (ktValue) {
+    switch (kontotype) {
         case 'FEDREKVOTE':
             return 'FAR_MEDMOR';
         case 'MØDREKVOTE':
         case 'FORELDREPENGER_FØR_FØDSEL':
             return 'MOR';
         default:
-            return fValue;
+            return foreldre;
     }
 };
 
@@ -185,9 +185,9 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
     return {
         kontoType: eksisterendePeriode.kontoType,
         forelder: eksisterendePeriode.forelder,
-        skalDuJobbe: eksisterendePeriode.gradering ? true : false,
+        skalDuJobbe: !!eksisterendePeriode.gradering,
         stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),
-        samtidigUttak: eksisterendePeriode.samtidigUttak ? true : false,
+        samtidigUttak: !!eksisterendePeriode.samtidigUttak,
         samtidigUttaksprosent: eksisterendePeriode.samtidigUttak?.toString(),
     };
 };

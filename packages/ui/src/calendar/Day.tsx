@@ -32,7 +32,7 @@ type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
     isFocused: boolean;
-    dateTooltipCallback?: (date: string) => React.ReactElement | string;
+    dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
 };

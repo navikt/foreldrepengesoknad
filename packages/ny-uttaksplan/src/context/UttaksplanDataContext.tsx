@@ -25,7 +25,7 @@ type Props = {
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
     saksperioder: SaksperiodeNy[];
-    children: React.ReactNode[] | React.ReactNode;
+    children: React.ReactNode;
 };
 
 type ContextValues = Omit<Props, 'children'> & {

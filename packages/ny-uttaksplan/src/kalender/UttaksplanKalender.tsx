@@ -1,11 +1,12 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -23,7 +24,8 @@ interface Props {
 }
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {
-    const { saksperioder, erFarEllerMedmor, familiehendelsedato, navnPåForeldre } = useUttaksplanData();
+    const intl = useIntl();
+    const { erFarEllerMedmor, navnPåForeldre } = useUttaksplanData();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -39,22 +41,11 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
-        (p) =>
-            isAvslåttPeriode(p) &&
-            p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
-    );
-
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <VStack gap="space-8">
-            {harAvslåttePerioderSomIkkeGirTapteDager && (
-                <Alert variant="info" className="my-6">
-                    <FormattedMessage id="kalender.avslåttePerioder" />
-                </Alert>
-            )}
+            <AvslåttePerioder />
 
             <VStack gap="space-16" ref={targetRef}>
                 <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
@@ -74,7 +65,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                               fom: periode?.fom,
                                               tom: periode?.tom,
                                               isSelected: true,
-                                              srText: '',
+                                              srText: intl.formatMessage(
+                                                  { id: 'UttaksplanKalender.valgtPeriode' },
+                                                  {
+                                                      fom: dayjs(periode?.fom).format(DDMMYYYY_DATE_FORMAT),
+                                                      tom: dayjs(periode?.tom).format(DDMMYYYY_DATE_FORMAT),
+                                                  },
+                                              ),
                                           },
                                       ],
                             );
@@ -141,3 +138,20 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
 };
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+const AvslåttePerioder = () => {
+    const { saksperioder, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+
+    const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
+        (p) =>
+            isAvslåttPeriode(p) &&
+            p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
+            (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+    );
+
+    return harAvslåttePerioderSomIkkeGirTapteDager ? (
+        <Alert variant="info" className="my-6">
+            <FormattedMessage id="kalender.avslåttePerioder" />
+        </Alert>
+    ) : null;
+};

@@ -38,8 +38,7 @@ export const UttaksplanLegend = ({
         color,
         label:
             unikeLegendLabels.find((label) => {
-                const periode = perioderForKalendervisning.find((p) => p.color === color && p.legendLabel === label);
-                return periode !== undefined;
+                return perioderForKalendervisning.some((p) => p.color === color && p.legendLabel === label);
             }) ?? 'NO_LABEL',
     }));
 

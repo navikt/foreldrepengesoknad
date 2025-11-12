@@ -13,12 +13,7 @@ import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt
 import { KontoBeregningResultatDto, SaksperiodeNy } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import {
-    KvoteOppsummeringWrapper,
-    UttaksplanDataProvider,
-    UttaksplanKalender,
-    UttaksplanNy,
-} from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
@@ -235,7 +230,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                                         <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                                     </Button>
                                 </HStack>
-                                <KvoteOppsummeringWrapper visStatusIkoner rettighetType={utledRettighetType()} />
+                                <KvoteOppsummering visStatusIkoner rettighetType={utledRettighetType()} />
                             </>
                         )}
                     </VStack>

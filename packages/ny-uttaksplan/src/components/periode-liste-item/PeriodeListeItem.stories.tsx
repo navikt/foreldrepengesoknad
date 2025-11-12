@@ -4,11 +4,40 @@ import { ComponentProps } from 'react';
 import { Accordion } from '@navikt/ds-react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
+import { Barn, KontoBeregningDto } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
+
+const kontoNårBeggeHarRett = {
+    kontoer: [
+        {
+            konto: 'FELLESPERIODE',
+            dager: 80,
+        },
+        {
+            konto: 'MØDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FEDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+    tillegg: {
+        flerbarn: 0,
+        prematur: 0,
+    },
+} satisfies KontoBeregningDto;
 
 type StoryArgs = {
     erFarEllerMedmor: boolean;
@@ -38,7 +67,7 @@ const customRenderer = ({
                 farMedmor: 'Far',
                 mor: 'Mor',
             }}
-            valgtStønadskonto={{} as any}
+            valgtStønadskonto={kontoNårBeggeHarRett}
             erMedmorDelAvSøknaden
             bareFarMedmorHarRett={false}
             harAktivitetskravIPeriodeUtenUttak={false}

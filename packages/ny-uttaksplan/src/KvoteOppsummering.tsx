@@ -1,123 +1,72 @@
 import { CheckmarkIcon, CircleBrokenIcon, ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { sum, sumBy } from 'lodash';
-import { ReactNode, createContext, useContext } from 'react';
+import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
 import {
-    BrukerRolleSak_fpoversikt,
-    Familiehendelse_fpoversikt,
-    KontoBeregningDto,
     KontoDto,
     KontoTypeUttak,
     RettighetType_fpoversikt,
     SaksperiodeNy,
     UttakOppholdÅrsak_fpoversikt,
-    UttaksplanModus,
 } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
-import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
-//TODO (TOR) Fjern denne wrapperen og skriv om story
-export const KvoteOppsummeringWrapper = (props: {
+interface Props {
+    rettighetType: RettighetType_fpoversikt;
+    visStatusIkoner: boolean;
+}
+
+export const KvoteOppsummering = ({ rettighetType, visStatusIkoner }: Props) => {
+    return (
+        <ExpansionCard aria-label="Kvoteoversikt" size="small">
+            <OppsummeringsTittel rettighetType={rettighetType} visStatusIkoner={visStatusIkoner} />
+            <ExpansionCard.Content>
+                <VStack gap="space-16">
+                    <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
+                    <MødreKvoter visStatusIkoner={visStatusIkoner} />
+                    <AktivitetsfriKvoter visStatusIkoner={visStatusIkoner} />
+                    <FedreKvoter visStatusIkoner={visStatusIkoner} />
+                    <KunEnHarForeldrepengeKvoter visStatusIkoner={visStatusIkoner} />
+                    <FellesKvoter visStatusIkoner={visStatusIkoner} />
+                </VStack>
+            </ExpansionCard.Content>
+        </ExpansionCard>
+    );
+};
+
+const OppsummeringsTittel = ({
+    rettighetType,
+    visStatusIkoner,
+}: {
     rettighetType: RettighetType_fpoversikt;
     visStatusIkoner: boolean;
 }) => {
-    const {
-        uttaksplan,
-        familiesituasjon,
-        valgtStønadskonto,
-        navnPåForeldre,
-        erFarEllerMedmor,
-        modus,
-        erMedmorDelAvSøknaden,
-    } = useUttaksplanData();
-
-    return (
-        <KvoteOppsummering
-            konto={valgtStønadskonto}
-            perioder={uttaksplan}
-            rettighetType={props.rettighetType}
-            forelder={erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'}
-            visStatusIkoner={props.visStatusIkoner}
-            familiesituasjon={familiesituasjon}
-            navnPåForeldre={navnPåForeldre}
-            modus={modus}
-            erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-        />
-    );
-};
-
-type Props = {
-    konto: KontoBeregningDto;
-    perioder: Planperiode[];
-    rettighetType: RettighetType_fpoversikt;
-    forelder: BrukerRolleSak_fpoversikt;
-    visStatusIkoner: boolean;
-    familiesituasjon: string;
-    familiehendelse?: Familiehendelse_fpoversikt;
-    navnPåForeldre: NavnPåForeldre;
-    modus: UttaksplanModus;
-    erMedmorDelAvSøknaden?: boolean;
-};
-const KvoteContext = createContext<Props | null>(null);
-
-const useKvote = () => {
-    const context = useContext(KvoteContext);
-    if (!context) {
-        throw new Error('useKvote må brukes i en KvoteContext.Provider');
-    }
-
-    return context;
-};
-
-export const KvoteOppsummering = (props: Props) => {
-    return (
-        <KvoteContext.Provider value={props}>
-            <ExpansionCard aria-label="Kvoteoversikt" size="small">
-                <OppsummeringsTittel />
-                <ExpansionCard.Content>
-                    <VStack gap="space-16">
-                        <ForeldrepengerFørFødselKvoter />
-                        <MødreKvoter />
-                        <AktivitetsfriKvoter />
-                        <FedreKvoter />
-                        <KunEnHarForeldrepengeKvoter />
-                        <FellesKvoter />
-                    </VStack>
-                </ExpansionCard.Content>
-            </ExpansionCard>
-        </KvoteContext.Provider>
-    );
-};
-
-const OppsummeringsTittel = () => {
-    const { rettighetType } = useKvote();
-
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
-        return <KvoteTittelKunEnHarForeldrepenger />;
+        return <KvoteTittelKunEnHarForeldrepenger visStatusIkoner={visStatusIkoner} />;
     }
-    return <KvoteTittel />;
+    return <KvoteTittel visStatusIkoner={visStatusIkoner} />;
 };
 
-const KvoteTittelKunEnHarForeldrepenger = () => {
-    const { konto, perioder, familiesituasjon, modus } = useKvote();
+const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, familiesituasjon, valgtStønadskonto, modus } = useUttaksplanData();
+
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
-        const aktuellKonto = konto.kontoer.find((k) => k.konto === kontoType);
+        const aktuellKonto = valgtStønadskonto.kontoer.find((k) => k.konto === kontoType);
         if (!aktuellKonto) {
             return null;
         }
 
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
         const brukteDager = summerDagerIPerioder(
-            perioder.filter((p) => {
+            uttaksplan.filter((p) => {
                 // Aktivitetsfri kvote har spesialhåndtering
                 if (kontoType === 'AKTIVITETSFRI_KVOTE') {
                     // I planlegger og søknad brukes denne kontoen på periodene.
@@ -136,7 +85,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
 
                 return kontoType === getUttaksKontoType(p);
             }),
-            konto.kontoer,
+            valgtStønadskonto.kontoer,
         );
         const ubrukteDager = aktuellKonto.dager - brukteDager;
         const overtrukketDager = ubrukteDager * -1;
@@ -172,6 +121,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                         values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
                     />
                 }
+                visStatusIkoner={visStatusIkoner}
                 beskrivelse={
                     <FormattedMessage
                         id="kvote.enRett.beskrivelse.forMyeTidIPlan"
@@ -187,6 +137,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
             <TittelKomponent
                 ikon={<AllTidIPlanIkon size="stor" />}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                visStatusIkoner={visStatusIkoner}
                 beskrivelse={
                     <FormattedMessage
                         id="kvote.enRett.beskrivelse.allTidIPlan"
@@ -206,47 +157,49 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
             }
+            visStatusIkoner={visStatusIkoner}
             beskrivelse={modus === 'innsyn' ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
         />
     );
 };
 
-const KvoteTittel = () => {
-    const { konto, perioder, familiesituasjon, modus, navnPåForeldre, forelder } = useKvote();
+const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus } =
+        useUttaksplanData();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
-        perioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
-        konto.kontoer,
+        uttaksplan.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
+        valgtStønadskonto.kontoer,
     );
     const dagerBruktAvMor = summerDagerIPerioder(
-        perioder.filter(
+        uttaksplan.filter(
             (p) =>
                 getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL' ||
                 getUttaksKontoType(p) === 'MØDREKVOTE' ||
                 p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
         ),
-        konto.kontoer,
+        valgtStønadskonto.kontoer,
     );
     const dagerBruktAvFar = summerDagerIPerioder(
-        perioder.filter(
+        uttaksplan.filter(
             (p) => getUttaksKontoType(p) === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER',
         ),
-        konto.kontoer,
+        valgtStønadskonto.kontoer,
     );
     const dagerFellesBrukt = summerDagerIPerioder(
-        perioder.filter(
+        uttaksplan.filter(
             (p) => getUttaksKontoType(p) === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER',
         ),
-        konto.kontoer,
+        valgtStønadskonto.kontoer,
     );
 
     const barnetErFødt = familiesituasjon === 'fødsel';
 
-    const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const fedreKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const førFødselKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødreKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     // Dersom barnet er født skal vi se bortifra ubrukte dager på mor sin "3 uker før fødsel" konto.
     const ubrukteDagerMor =
@@ -299,6 +252,7 @@ const KvoteTittel = () => {
                         values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
                     />
                 }
+                visStatusIkoner={visStatusIkoner}
                 beskrivelse={
                     <FormattedMessage
                         id="kvote.beskrivelse.forMyeTidIPlan"
@@ -345,6 +299,7 @@ const KvoteTittel = () => {
             <TittelKomponent
                 ikon={<AllTidIPlanIkon size="stor" />}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
+                visStatusIkoner={visStatusIkoner}
                 beskrivelse={
                     <FormattedMessage
                         id="kvote.beskrivelse.allTidIPlan"
@@ -388,7 +343,7 @@ const KvoteTittel = () => {
 
     const visInformasjonOmHvordanEndre = modus === 'innsyn';
 
-    const navnPåAnnenForelder = forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <TittelKomponent
@@ -399,6 +354,7 @@ const KvoteTittel = () => {
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
             }
+            visStatusIkoner={visStatusIkoner}
             beskrivelse={
                 <>
                     <FormattedMessage
@@ -429,12 +385,13 @@ const TittelKomponent = ({
     tittel,
     beskrivelse,
     ikon,
+    visStatusIkoner,
 }: {
     tittel: ReactNode;
     beskrivelse: ReactNode;
     ikon: ReactNode;
+    visStatusIkoner: boolean;
 }) => {
-    const { visStatusIkoner } = useKvote();
     return (
         <ExpansionCard.Header>
             <HStack wrap={false} gap="space-16" align="start">
@@ -448,40 +405,42 @@ const TittelKomponent = ({
     );
 };
 
-const ForeldrepengerFørFødselKvoter = () => {
-    const { konto, perioder } = useKvote();
+const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantePerioder = perioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
-    const relevantKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
+    const relevantePerioder = uttaksplan.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
+    const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const KunEnHarForeldrepengeKvoter = () => {
-    const { konto, perioder } = useKvote();
-    const relevantKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const relevantePerioder = perioder.filter(
+const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, valgtStønadskonto } = useUttaksplanData();
+
+    const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const relevantePerioder = uttaksplan.filter(
         (p) => getUttaksKontoType(p) === 'FORELDREPENGER' && p.morsAktivitet !== 'IKKE_OPPGITT',
     );
 
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
+    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const FedreKvoter = () => {
-    const { konto, perioder } = useKvote();
+const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const relevantePerioder = perioder.filter(
+    const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const relevantePerioder = uttaksplan.filter(
         (p) => getUttaksKontoType(p) === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER',
     );
 
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
+    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const AktivitetsfriKvoter = () => {
-    const { konto, perioder } = useKvote();
-    const relevantKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantePerioder = perioder.filter((p) => {
+    const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+
+    const relevantePerioder = uttaksplan.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
         const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
@@ -490,34 +449,36 @@ const AktivitetsfriKvoter = () => {
         return harMatchendePeriode || harMatchendeKonto;
     });
 
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
+    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const MødreKvoter = () => {
-    const { konto, perioder } = useKvote();
+const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+    const { uttaksplan, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const relevantePerioder = perioder.filter(
+    const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const relevantePerioder = uttaksplan.filter(
         (p) => getUttaksKontoType(p) === 'MØDREKVOTE' || p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
     );
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} />;
+    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const FellesKvoter = () => {
+const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const intl = useIntl();
-    const { konto, perioder, forelder, visStatusIkoner, navnPåForeldre } = useKvote();
-    const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const { uttaksplan, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
+
+    const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+    const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
         return null;
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
-        perioder.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder === forelder),
-        konto.kontoer,
+        uttaksplan.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder === forelder),
+        valgtStønadskonto.kontoer,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        perioder.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder !== forelder),
-        konto.kontoer,
+        uttaksplan.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder !== forelder),
+        valgtStønadskonto.kontoer,
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
     const ubrukteDager = fellesKonto.dager - samletBrukteDager;
@@ -606,9 +567,17 @@ const FellesKvoter = () => {
     );
 };
 
-const StandardVisning = ({ konto, perioder }: { konto?: KontoDto; perioder: SaksperiodeNy[] }) => {
+const StandardVisning = ({
+    konto,
+    perioder,
+    visStatusIkoner,
+}: {
+    konto?: KontoDto;
+    perioder: SaksperiodeNy[];
+    visStatusIkoner: boolean;
+}) => {
     const intl = useIntl();
-    const { visStatusIkoner, familiesituasjon, erMedmorDelAvSøknaden } = useKvote();
+    const { familiesituasjon, erMedmorDelAvSøknaden } = useUttaksplanData();
 
     if (!konto) {
         return null;
@@ -753,6 +722,7 @@ type FordelingSegmentProps = {
     erOvertrukket?: boolean;
     erUtløpt?: boolean;
 };
+
 const FordelingSegment = ({
     kontoType,
     prosent,
@@ -760,7 +730,8 @@ const FordelingSegment = ({
     erOvertrukket = false,
     erUtløpt,
 }: FordelingSegmentProps) => {
-    const { forelder } = useKvote();
+    const { erFarEllerMedmor } = useUttaksplanData();
+
     if (prosent <= 0) {
         return null;
     }
@@ -781,7 +752,7 @@ const FordelingSegment = ({
         );
     }
 
-    if (forelder === 'MOR') {
+    if (!erFarEllerMedmor) {
         if (
             kontoType === 'MØDREKVOTE' ||
             kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||

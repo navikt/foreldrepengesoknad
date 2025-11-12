@@ -227,5 +227,6 @@
     "UttaksplanKalender.VelgEnkeltDager": "Single days",
     "UttaksplanKalender.VelgPeriode": "Period (from - to)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Select days or period",
+    "UttaksplanKalender.ValgtPeriodeSrTekst": "Has selected period from {fom} to {tom}",
     "LeggTilPeriodePanel.Dager": "Selected days:"
 }

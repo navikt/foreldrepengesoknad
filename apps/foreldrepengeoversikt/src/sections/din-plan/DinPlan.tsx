@@ -8,12 +8,7 @@ import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import {
-    KvoteOppsummeringWrapper,
-    UttaksplanDataProvider,
-    UttaksplanKalender,
-    UttaksplanNy,
-} from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
@@ -133,8 +128,8 @@ const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Fo
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy oppdaterUttaksplan={() => null} />
-                            <KvoteOppsummeringWrapper rettighetType={sak.rettighetType} visStatusIkoner={false} />
+                            <UttaksplanNy />
+                            <KvoteOppsummering rettighetType={sak.rettighetType} visStatusIkoner={false} />
                         </>
                     )}
                     {visKalender && <UttaksplanKalender readOnly={true} />}

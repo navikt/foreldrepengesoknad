@@ -227,5 +227,6 @@
     "UttaksplanKalender.VelgEnkeltDager": "Enkeltdager",
     "UttaksplanKalender.VelgPeriode": "Periode (fra - til)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Velg dager eller periode",
+    "UttaksplanKalender.ValgtPeriodeSrTekst": "Har valgt periode fra {fom} til {tom}",
     "LeggTilPeriodePanel.Dager": "Valgte dager:"
 }

@@ -19,6 +19,8 @@ const meta = {
         oppdaterUttaksplan: action('button-click'),
         children: null,
         erMedmorDelAvSøknaden: false,
+        modus: 'planlegger',
+        harAktivitetskravIPeriodeUtenUttak: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
@@ -32,20 +34,8 @@ const meta = {
         };
 
         return (
-            <UttaksplanDataProvider
-                barn={args.barn}
-                erFarEllerMedmor={args.erFarEllerMedmor}
-                navnPåForeldre={args.navnPåForeldre}
-                modus="planlegger"
-                valgtStønadskonto={args.valgtStønadskonto}
-                aleneOmOmsorg={args.aleneOmOmsorg || false}
-                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
-                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
-                harAktivitetskravIPeriodeUtenUttak={false}
-                erDeltUttak={args.erDeltUttak || false}
-                saksperioder={perioder}
-            >
-                <UttaksplanNy {...args} oppdaterUttaksplan={handleOnPlanChange} />
+            <UttaksplanDataProvider {...args} saksperioder={perioder}>
+                <UttaksplanNy oppdaterUttaksplan={handleOnPlanChange} />
             </UttaksplanDataProvider>
         );
     },
