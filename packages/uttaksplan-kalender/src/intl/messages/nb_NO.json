@@ -5,8 +5,6 @@
     "kalender.avslåttePerioder": "Avslåtte perioder vises ikke i kalenderen.",
     "kalender.dinPeriode": "Din periode",
     "kalender.dinPeriode.gradert": "Du kombinerer jobb og foreldrepenger",
-    "kalender.dinPeriode.aktivitetsfri": "Din periode uten aktivitetskrav",
-    "kalender.dinPeriode.aktivitetsfri.gradert": "Du kombinerer jobb og foreldrepenger uten aktivitetskrav",
     "kalender.annenPartPeriode": "{navnAnnenPart} periode",
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
     "kalender.dinUtsettelse": "Du utsetter foreldrepenger",

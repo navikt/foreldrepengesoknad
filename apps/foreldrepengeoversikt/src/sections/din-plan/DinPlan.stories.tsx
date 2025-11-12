@@ -30,7 +30,21 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.post(API_URLS.konto, async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
+            ],
         },
     },
     args: {
@@ -54,6 +68,18 @@ export const FarSøker: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.post(API_URLS.konto, async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
                 http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [
@@ -167,6 +193,18 @@ export const MorOgFarOgFarGraderer: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.post(API_URLS.konto, async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
                 http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [

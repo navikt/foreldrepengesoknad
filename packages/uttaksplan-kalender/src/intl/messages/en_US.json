@@ -5,8 +5,6 @@
     "kalender.avslåttePerioder": "Rejected periods are not displayed in the calendar.",
     "kalender.dinPeriode": "Your period",
     "kalender.dinPeriode.gradert": "You combine work and parental benefits",
-    "kalender.dinPeriode.aktivitetsfri": "Your period with no activity requirement",
-    "kalender.dinPeriode.aktivitetsfri.gradert": "You combine work and parental benefits with no activity requirement",
     "kalender.annenPartPeriode": "{navnAnnenPart} period",
     "kalender.samtidigUttak": "You and {navnAnnenPart} are on leave at the same time",
     "kalender.dinUtsettelse": "You postpone parental benefits",
