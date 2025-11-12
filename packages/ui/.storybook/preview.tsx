@@ -7,9 +7,9 @@ import '@navikt/ds-css/darkside';
 
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
-import enMessages from '../src/i18n/messages/en_US.json';
-import nbMessages from '../src/i18n/messages/nb_NO.json';
-import nnMessages from '../src/i18n/messages/nn_NO.json';
+import enMessages from '../src/intl/messages/en_US.json';
+import nbMessages from '../src/intl/messages/nb_NO.json';
+import nnMessages from '../src/intl/messages/nn_NO.json';
 
 dayjs.locale('nb');
 

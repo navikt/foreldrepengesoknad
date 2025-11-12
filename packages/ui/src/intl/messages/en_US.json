@@ -15,7 +15,6 @@
     "FailedAttachment.Vedlegg.Feilmelding.NO_DATA": "The file has no content",
     "FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET": "The document is password protected and cannot be processed by Nav",
     "FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE": "Duplicate submission",
-    "FailedAttachment.Vedlegg.Feilmelding.KRYPTERING_MELLOMLAGRING": "Error during encryption of temporary storage",
     "FailedAttachment.Vedlegg.Feilmelding.TIMEOUT": "Your document took too long to upload. Check your network or try uploading fewer documents at once",
     "FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR": "Something went wrong. Try again.",
     "FailedAttachment.Vedlegg.Feilmelding.fileSize": "The attachment must be less than {maxStørrelse} MB.",
