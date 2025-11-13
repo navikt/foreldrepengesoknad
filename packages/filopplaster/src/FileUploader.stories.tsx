@@ -115,7 +115,7 @@ export const OpplastningTimeout: Story = {
         msw: {
             handlers: [
                 http.post(MOCK_API_PATH, async () => {
-                    await delay(20); // 20ms delay - longer than the 10ms timeout
+                    await delay(200); // 20ms delay - longer than the 10ms timeout
                     return new HttpResponse(JSON.stringify('uuid-test'), {
                         status: 200,
                     });
