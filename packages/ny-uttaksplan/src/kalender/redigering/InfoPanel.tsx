@@ -48,37 +48,12 @@ export const InfoPanel = ({
         }
     }, [isDesktop, erMinimert]);
 
-    const slettPeriode = (periode: { fom: string; tom: string }) => {
-        const start = dayjs(periode.fom);
-        const end = dayjs(periode.tom);
-
-        const perioder = sammenslåtteValgtePerioder.filter((p) => {
-            const pStart = dayjs(p.fom);
-            const pEnd = dayjs(p.tom);
-
-            return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
-        });
-
-        oppdaterUttaksplan(
-            perioder.map<Planperiode>((p) => ({
-                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-                fom: p.fom,
-                tom: p.tom,
-                readOnly: false,
-                id: uniqueId(),
-            })),
-        );
-
-        setValgtePerioder((oldPeriods) =>
-            oldPeriods.filter(
-                (p) =>
-                    !perioder.some(
-                        (rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'),
-                    ),
-            ),
-        );
-    };
+    const slettPeriode = getSlettPeriodeFn(
+        sammenslåtteValgtePerioder,
+        erFarEllerMedmor,
+        oppdaterUttaksplan,
+        setValgtePerioder,
+    );
 
     const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
     const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
@@ -267,3 +242,42 @@ const harValgtBådeFørOgEtterFamiliehendelsedato = (
 
     return harPeriodeFør && harPeriodeEtter;
 };
+
+const getSlettPeriodeFn =
+    (
+        sammenslåtteValgtePerioder: CalendarPeriod[],
+        erFarEllerMedmor: boolean,
+        oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void,
+        setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>,
+    ) =>
+    (periode: { fom: string; tom: string }) => {
+        const start = dayjs(periode.fom);
+        const end = dayjs(periode.tom);
+
+        const perioder = sammenslåtteValgtePerioder.filter((p) => {
+            const pStart = dayjs(p.fom);
+            const pEnd = dayjs(p.tom);
+
+            return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
+        });
+
+        oppdaterUttaksplan(
+            perioder.map<Planperiode>((p) => ({
+                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+                fom: p.fom,
+                tom: p.tom,
+                readOnly: false,
+                id: uniqueId(),
+            })),
+        );
+
+        setValgtePerioder((oldPeriods) =>
+            oldPeriods.filter(
+                (p) =>
+                    !perioder.some(
+                        (rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'),
+                    ),
+            ),
+        );
+    };
