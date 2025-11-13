@@ -6,11 +6,10 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 dayjs.extend(minMax);
@@ -67,7 +66,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+                uploadPath={API_URLS.sendVedlegg}
             />
         </>
     );

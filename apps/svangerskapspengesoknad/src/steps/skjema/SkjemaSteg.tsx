@@ -11,12 +11,12 @@ import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging 
 
 import { Link, VStack } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
-import { FileUploader, SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -151,7 +151,7 @@ export const SkjemaSteg = ({
                                 skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                                 existingAttachments={defaultValues?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+                                uploadPath={API_URLS.sendVedlegg}
                             />
                         </VStack>
                         <StepButtonsHookForm

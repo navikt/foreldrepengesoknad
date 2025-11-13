@@ -5,10 +5,9 @@ import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, DokumentererType } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
@@ -90,7 +89,7 @@ export const VedleggUploader = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+            uploadPath={API_URLS.sendVedlegg}
         />
     );
 };

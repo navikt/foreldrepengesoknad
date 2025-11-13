@@ -1,6 +1,7 @@
 import { Preview } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
@@ -34,6 +35,7 @@ const withIntlProvider = getIntlDecorator({
         ...egenNæringMessages.nb,
         ...arbeidsforholdOgInntektMessages.nb,
         ...formHookMessages.nb,
+        ...filopplasterMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -44,6 +46,7 @@ const withIntlProvider = getIntlDecorator({
         ...egenNæringMessages.nn,
         ...arbeidsforholdOgInntektMessages.nn,
         ...formHookMessages.nn,
+        ...filopplasterMessages.nn,
     },
 });
 

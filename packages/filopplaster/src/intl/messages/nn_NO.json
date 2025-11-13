@@ -1,0 +1,15 @@
+{
+    "FileInput.Vedlegg.Lovlige": "Du kan lasta opp dokument i formata PDF, JPEG, JPG og PNG. Filene kan væra opptil {maxStørrelse} MB.",
+    "FileInput.Vedlegg.Header": "Vedlegg ({length})",
+    "FileInput.Vedlegg.HeaderWithName": "Lastet opp ({length}) - {name}",
+    "FileInput.Vedlegg.Uploading": "Lastar opp...",
+    "FileInput.Vedlegg.Slett": "Slett filen",
+    "FileInput.Vedlegg.WithErrors": "Vedlegg med feil",
+    "FailedAttachment.Vedlegg.Feilmelding.NO_DATA": "Fila har ikkje noko innhald",
+    "FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET": "Dokumentet er passordbeskytta og kan derfor ikkje behandlast av Nav",
+    "FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE": "Duplikat forsendelse",
+    "FailedAttachment.Vedlegg.Feilmelding.TIMEOUT": "Det tok for lang tid å lasta opp dokumentet ditt. Sjekk nettverket ditt eller prøv å last opp færre dokument på ein gong",
+    "FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR": "Ops, noko gjekk gale prøv igjen",
+    "FailedAttachment.Vedlegg.Feilmelding.fileSize": "Fila er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}MB.",
+    "FailedAttachment.Vedlegg.Feilmelding.fileType": "Vedlegg er ikkje av gyldig type"
+}

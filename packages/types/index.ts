@@ -1,5 +1,11 @@
 export type { LocaleNo, LocaleAll } from './src/Locale';
-export type { Attachment } from './src/Attachment';
+export type {
+    Attachment,
+    AttachmentUploadResult,
+    AttachmentUploadSuccess,
+    AttachmentUploadError,
+    AttachmentError,
+} from './src/Attachment';
 export type { AttachmentMetadataTidsperiode } from './src/AttachmentMetadata';
 export type { Søkersituasjon, SøkersituasjonFp } from './src/Søkersituasjon';
 export type { Situasjon } from './src/Situasjon';

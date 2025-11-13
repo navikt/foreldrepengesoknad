@@ -28,7 +28,7 @@
         "@navikt/ds-css": "7.32.1",
         "@navikt/ds-react": "7.32.1",
         "@navikt/ds-tailwind": "7.32.1",
-        "@navikt/fp-api": "workspace:*",
+        "@navikt/fp-filopplaster": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",

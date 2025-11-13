@@ -18,10 +18,9 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -188,7 +187,7 @@ export const MinidialogSkjema = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachmentFetch(mapYtelse(sakstype))}
+                            uploadPath={mapYtelse(sakstype)}
                         />
                     </>
                 )}

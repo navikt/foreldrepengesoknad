@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
@@ -30,6 +31,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.nb,
         ...formHookMessages.nb,
         ...kvitteringMessages.nb,
+        ...filopplasterMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -39,6 +41,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.nn,
         ...formHookMessages.nn,
         ...kvitteringMessages.nn,
+        ...filopplasterMessages.nn,
     },
     en: {
         ...enMessages,
@@ -48,6 +51,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.en,
         ...formHookMessages.en,
         ...kvitteringMessages.en,
+        ...filopplasterMessages.en,
     },
 };
 
