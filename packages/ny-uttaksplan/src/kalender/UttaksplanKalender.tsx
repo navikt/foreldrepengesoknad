@@ -130,6 +130,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                 variant="tertiary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => toPDF()}
+                type="button"
             >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
