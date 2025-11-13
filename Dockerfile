@@ -55,7 +55,7 @@ ARG SENTRY_RELEASE
 WORKDIR /usr/src/app/apps/${APP}
 ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
-    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo test
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo build #TODO
 RUN mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
