@@ -48,7 +48,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
             <AvslåttePerioder />
 
             <VStack gap="space-16" ref={targetRef}>
-                <div className="mb-4 flex flex-wrap max-[768px]:pb-2" id="legend">
+                <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
                     <UttaksplanLegend
                         perioderForKalendervisning={perioderForKalendervisning}
                         navnAnnenPart={navnAnnenPart}
