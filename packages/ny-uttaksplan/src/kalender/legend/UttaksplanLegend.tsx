@@ -145,6 +145,10 @@ const getCalendarLabel = (
 };
 
 const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): boolean => {
+    if (periods.length === 0) {
+        return false;
+    }
+
     const førsteDag = periods[0].fom;
     const sisteDag = periods.at(-1)!.tom;
     if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
