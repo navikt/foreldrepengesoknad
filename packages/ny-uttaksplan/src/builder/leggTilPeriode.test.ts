@@ -597,7 +597,7 @@ describe('Test av split periode i uttaksplan', () => {
         tom: '2022-05-02',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FORELDREPENGER',
-        morsAktivitet: 'ARBEID',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     };
 
@@ -633,7 +633,7 @@ describe('Test av split periode i uttaksplan', () => {
         expect(testPerioder.length).toEqual(2);
         expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
         expect(testPerioder[0].tom).toEqual('2022-04-29');
-        expect(testPerioder[0].morsAktivitet).toBeUndefined();
+        expect(testPerioder[0].morsAktivitet).toEqual('IKKE_OPPGITT');
         expect(testPerioder[1].fom).toEqual(splitPeriodeFedrekvote.tom);
         expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
         expect(testPerioder[1].morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);

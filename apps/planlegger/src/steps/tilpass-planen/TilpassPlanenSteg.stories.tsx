@@ -10,7 +10,7 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { HvemPlanleggerType, SaksperiodeNy } from '@navikt/fp-types';
+import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { TilpassPlanenSteg } from './TilpassPlanenSteg';
 
@@ -26,8 +26,8 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-    uttaksplan: SaksperiodeNy[][];
-    originalUttaksplan: SaksperiodeNy[];
+    uttaksplan: UttakPeriode_fpoversikt[][];
+    originalUttaksplan: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof TilpassPlanenSteg>;
 
 const meta = {

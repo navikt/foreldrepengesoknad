@@ -43,7 +43,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const foreldrepengerHarAktivitetskrav =
         uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        uttaksplan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
+        uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT');
 
     const erIPlanleggerModus = modus === 'planlegger';
 
@@ -215,6 +215,14 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
+                if (p.morsAktivitet === 'IKKE_OPPGITT') {
+                    if (p.gradering?.arbeidstidprosent) {
+                        return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
+                    }
+
+                    return 'FARS_DEL_AKTIVITETSFRI';
+                }
+
                 if (p.forelder === 'FAR_MEDMOR') {
                     if (p.samtidigUttak && p.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
@@ -236,12 +244,6 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
                 }
 
                 return 'MORS_DEL';
-            case 'AKTIVITETSFRI_KVOTE':
-                if (p.gradering?.arbeidstidprosent) {
-                    return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
-                }
-
-                return 'FARS_DEL_AKTIVITETSFRI';
             default:
                 return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
         }
@@ -350,12 +352,8 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return 'BLUE';
     }
 
-    if (periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
-        return 'BLUE';
-    }
-
     if (periode.kontoType === 'FORELDREPENGER') {
-        if (foreldrepengerHarAktivitetskrav) {
+        if (foreldrepengerHarAktivitetskrav && periode.morsAktivitet !== 'IKKE_OPPGITT') {
             return erFarEllerMedmor ? 'LIGHTGREEN' : 'BLUE';
         }
 

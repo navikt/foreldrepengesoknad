@@ -3,7 +3,7 @@ import { ComponentProps, useState } from 'react';
 import { action } from 'storybook/internal/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -35,9 +35,9 @@ const meta = {
         children: null,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[]) => {
             setPerioder(oppdatertePerioder);
             args.oppdaterUttaksplan?.(oppdatertePerioder);
         };
@@ -130,7 +130,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -164,7 +164,7 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
                     årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
                 },
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -192,7 +192,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'ARBEID',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-05-31'],
@@ -226,7 +226,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'SØKER_INNLAGT',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-05-31'],
@@ -318,7 +318,7 @@ export const UtsettelseMorArbeid: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'ARBEID',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-06-14'],
@@ -346,7 +346,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-06-14'],
@@ -368,7 +368,7 @@ export const UtsettelseMorFri: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'FRI',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-06-14'],
@@ -390,7 +390,7 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'BARN_INNLAGT',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-04-04'],
@@ -412,7 +412,7 @@ export const UtsettelseMorInstitusjonSøker: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'SØKER_INNLAGT',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-04-04'],
@@ -434,7 +434,7 @@ export const UtsettelseMorNavTiltak: Story = {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'NAV_TILTAK',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-04-04'],
@@ -456,7 +456,7 @@ export const UtsettelseFarSykdom: Story = {
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'SØKER_SYKDOM',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-06-14'],
@@ -478,7 +478,7 @@ export const UtsettelseFarHvØvelse: Story = {
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'HV_ØVELSE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -506,7 +506,7 @@ export const UtsettelseFarFlereÅrsaker: Story = {
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'HV_ØVELSE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-04-04'],
@@ -546,7 +546,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
                 kontoType: 'FORELDREPENGER',
                 forelder: 'MOR',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2023-07-01'],
@@ -586,7 +586,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
                     årsak: 'AVSLAG_UTSETTELSE_TILBAKE_I_TID',
                 },
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2023-07-01'],
@@ -608,7 +608,7 @@ export const KortPeriodeMedHelg: Story = {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_ANNET_BARN,
             fødselsdatoer: ['2024-05-23'],
@@ -631,7 +631,7 @@ export const KortPeriodeUtenHelg: Story = {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -666,7 +666,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -690,7 +690,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
                 kontoType: 'MØDREKVOTE',
                 samtidigUttak: 50,
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -714,7 +714,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 70,
             },
-        ] satisfies SaksperiodeNy[],
+        ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2025-05-21'],

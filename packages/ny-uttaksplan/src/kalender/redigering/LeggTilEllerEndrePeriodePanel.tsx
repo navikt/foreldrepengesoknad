@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoType, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
@@ -20,7 +20,7 @@ import { InfoPanel } from './InfoPanel';
 import { PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type FormValues = {
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoType;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe?: boolean;
     stillingsprosent?: string;

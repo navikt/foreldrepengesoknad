@@ -52,6 +52,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     {periode.morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
+                    {/* @ts-expect-error temp */}
                     {periode.trekkdager !== undefined ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />

@@ -4,9 +4,9 @@ import { IntlShape } from 'react-intl';
 
 import {
     BrukerRolleSak_fpoversikt,
-    SaksperiodeNy,
     Tidsperiode,
     UttakOppholdÅrsak_fpoversikt,
+    UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
@@ -23,7 +23,7 @@ import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 
 dayjs.extend(isoWeekday);
 
-export function sorterPerioder(p1: Planperiode | SaksperiodeNy, p2: Planperiode | SaksperiodeNy) {
+export function sorterPerioder(p1: Planperiode | UttakPeriode_fpoversikt, p2: Planperiode | UttakPeriode_fpoversikt) {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
@@ -41,11 +41,11 @@ export function sorterPerioder(p1: Planperiode | SaksperiodeNy, p2: Planperiode 
     return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 }
 
-export const isUttaksperiode = (periode: Planperiode | SaksperiodeNy) => {
+export const isUttaksperiode = (periode: Planperiode | UttakPeriode_fpoversikt) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
 };
 
-export const isPrematuruker = (periode: Planperiode | SaksperiodeNy) => {
+export const isPrematuruker = (periode: Planperiode | UttakPeriode_fpoversikt) => {
     return periode.kontoType !== undefined && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
@@ -73,7 +73,8 @@ export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
     return periode.utsettelseÅrsak !== undefined;
 };
 
-export const isUttaksperiodeAnnenpartEøs = (periode: SaksperiodeNy) => {
+export const isUttaksperiodeAnnenpartEøs = (periode: UttakPeriode_fpoversikt) => {
+    /* @ts-expect-error temp */
     return periode.trekkdager !== undefined;
 };
 
@@ -89,7 +90,7 @@ export const isOppholdsperiode = (periode: Planperiode) => {
     return periode.oppholdÅrsak !== undefined;
 };
 
-export const isAvslåttPeriode = (periode: SaksperiodeNy | Planperiode) => {
+export const isAvslåttPeriode = (periode: UttakPeriode_fpoversikt | Planperiode) => {
     return periode.resultat && periode.resultat.innvilget !== true;
 };
 
@@ -181,6 +182,7 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
             };
 
             if (isUttaksperiodeAnnenpartEøs(endretPeriode)) {
+                /* @ts-expect-error temp */
                 oppsplittetPeriode.push({ ...endretPeriode, trekkdager: 0 });
             } else {
                 oppsplittetPeriode.push(endretPeriode);
@@ -259,7 +261,7 @@ const getReadOnlyStatus = (modus: UttaksplanModus, gjelderAnnenPart: boolean) =>
 };
 
 export const mapSaksperiodeTilPlanperiode = (
-    saksperioder: SaksperiodeNy[],
+    saksperioder: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     familiehendelsedato: string,
@@ -329,7 +331,10 @@ const getForelderForPeriode = (
     return søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 };
 
-export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: SaksperiodeNy, familiehendelsesdato: string): boolean => {
+export const isAvslåttPeriodeFørsteSeksUkerMor = (
+    periode: UttakPeriode_fpoversikt,
+    familiehendelsesdato: string,
+): boolean => {
     return (
         !!isAvslåttPeriode(periode) &&
         periode.forelder === 'MOR' &&
@@ -339,7 +344,7 @@ export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: SaksperiodeNy, fami
 };
 
 export const getIndexOfSistePeriodeFørDato = (
-    uttaksplan: SaksperiodeNy[] | Planperiode[],
+    uttaksplan: UttakPeriode_fpoversikt[] | Planperiode[],
     dato: string | undefined,
 ) => {
     if (dato !== undefined) {
@@ -348,9 +353,9 @@ export const getIndexOfSistePeriodeFørDato = (
     return undefined;
 };
 export const getAnnenForelderSamtidigUttakPeriode = (
-    periode: SaksperiodeNy,
-    perioder: SaksperiodeNy[],
-): SaksperiodeNy | undefined => {
+    periode: UttakPeriode_fpoversikt,
+    perioder: UttakPeriode_fpoversikt[],
+): UttakPeriode_fpoversikt | undefined => {
     const { forelder } = periode;
     if (isUttaksperiode(periode)) {
         const samtidigUttak = perioder
@@ -366,8 +371,8 @@ export const getAnnenForelderSamtidigUttakPeriode = (
 type UtledKomplettPlanParams = {
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
-    søkersPerioder: SaksperiodeNy[];
-    annenPartsPerioder?: SaksperiodeNy[];
+    søkersPerioder: UttakPeriode_fpoversikt[];
+    annenPartsPerioder?: UttakPeriode_fpoversikt[];
     gjelderAdopsjon: boolean;
     bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
