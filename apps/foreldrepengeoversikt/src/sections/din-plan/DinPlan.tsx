@@ -20,17 +20,17 @@ interface Props {
 }
 
 // TODO (TOR) Send heller med gjeldendeSak som prop
-export const DinPlanWrapper = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
+export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
         return null;
     }
 
-    return <DinPlan annenPartsPerioder={annenPartsPerioder} navnPåForeldre={navnPåForeldre} sak={gjeldendeSak} />;
+    return <DinPlanMedSak annenPartsPerioder={annenPartsPerioder} navnPåForeldre={navnPåForeldre} sak={gjeldendeSak} />;
 };
 
-const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Foreldrepengesak }) => {
+const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Foreldrepengesak }) => {
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);

@@ -120,10 +120,6 @@ const handleKeyNavigationAndSelection = (
             setFocusedDate(date.add(7, 'day'));
             break;
         case 'Enter':
-            if (isClickable) {
-                dateClickCallback(date.format(ISO_DATE_FORMAT));
-            }
-            break;
         case ' ':
             if (isClickable) {
                 dateClickCallback(date.format(ISO_DATE_FORMAT));

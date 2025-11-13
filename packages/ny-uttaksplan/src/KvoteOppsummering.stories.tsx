@@ -141,7 +141,6 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
     },
 };
 
-// FIXME Denne ser ulik ut i forhold til gammal versjon
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,

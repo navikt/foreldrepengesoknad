@@ -38,10 +38,7 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }
                 label={intl.formatMessage({ id: 'KontotypeSpørsmål.velgKontotype' })}
             >
                 {valgtStønadskonto.kontoer
-                    .filter(
-                        (kontotype) =>
-                            !gyldigeKontotyper || gyldigeKontotyper.some((konto) => konto === kontotype.konto),
-                    )
+                    .filter((kontotype) => !gyldigeKontotyper || gyldigeKontotyper.includes(kontotype.konto))
                     .map((konto) => {
                         return (
                             <Radio key={konto.konto} value={konto.konto}>

@@ -7,7 +7,7 @@ import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
-import { DinPlanWrapper as DinPlan } from './DinPlan';
+import { DinPlan } from './DinPlan';
 
 const STØNADSKONTOER = {
     '80': {

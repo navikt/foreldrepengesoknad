@@ -45,15 +45,14 @@ export const UttaksplanLegend = ({
     if (inkludererHelg) {
         legendInfo.push({
             color: 'GRAY',
-            // TODO (TOR): intl?
             label: 'HELG',
         });
     }
 
-    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE'] as CalendarPeriodColor[];
+    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE'] satisfies CalendarPeriodColor[];
 
-    const selectableLegends = legendInfo.filter((info) => !unselectableColors.includes(info.color));
-    const nonSelectableLegends = legendInfo.filter((info) => unselectableColors.includes(info.color));
+    const selectableLegends = legendInfo.filter((info) => !unselectableColors.some((color) => color === info.color));
+    const nonSelectableLegends = legendInfo.filter((info) => unselectableColors.some((color) => color === info.color));
     const sortedLegends = [...selectableLegends, ...nonSelectableLegends];
 
     return (
@@ -64,7 +63,7 @@ export const UttaksplanLegend = ({
                     <button
                         key={info.color}
                         onClick={
-                            unselectableColors.includes(info.color) || readOnly
+                            unselectableColors.some((color) => color === info.color) || readOnly
                                 ? undefined
                                 : () => {
                                       selectLegend(info.color);

@@ -142,14 +142,14 @@ const groupPeriodsByMonth = (
     periods: CalendarPeriod[],
 ): Map<string, CalendarPeriod[]> => {
     const result = new Map<string, CalendarPeriod[]>();
-    months.forEach(({ year, month }) => {
+    for (const { year, month } of months) {
         const monthStart = dayjs().year(year).month(month).startOf('month');
         const monthEnd = monthStart.endOf('month');
         const periodsForMonth = periods.filter(
             (p) => dayjs(p.tom).isSameOrAfter(monthStart, 'day') && dayjs(p.fom).isSameOrBefore(monthEnd, 'day'),
         );
         result.set(getMonthKey(year, month), periodsForMonth);
-    });
+    }
     return result;
 };
 

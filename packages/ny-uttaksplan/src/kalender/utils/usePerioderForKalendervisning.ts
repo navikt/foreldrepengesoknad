@@ -110,16 +110,16 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
     }, [] as CalendarPeriodWithLabel[]);
 
     const perioderForVisning =
-        barnehagestartdato !== undefined
+        barnehagestartdato === undefined
             ? res
+            : res
                   .concat({
                       fom: barnehagestartdato,
                       tom: barnehagestartdato,
                       color: 'PURPLE',
                       legendLabel: 'BARNEHAGEPLASS',
                   } satisfies CalendarPeriodWithLabel)
-                  .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
-            : res;
+                  .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(uttaksplan, familiehendelsesdato) ?? 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {

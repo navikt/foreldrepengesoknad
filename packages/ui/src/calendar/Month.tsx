@@ -166,16 +166,16 @@ const findDayColor = (date: Dayjs, periodMap: Map<string, CalendarPeriod>): Cale
 
 const buildPeriodMap = (periods: CalendarPeriod[]) => {
     const map = new Map<string, CalendarPeriod>();
-    periods.forEach((p) => {
-        let current = dayjs(p.fom);
-        const end = dayjs(p.tom);
+    for (const period of periods) {
+        let current = dayjs(period.fom);
+        const end = dayjs(period.tom);
         while (!current.isAfter(end, 'day')) {
             const iso = current.format('YYYY-MM-DD');
-            if (!map.has(iso) || p.isSelected) {
-                map.set(iso, p);
+            if (!map.has(iso) || period.isSelected) {
+                map.set(iso, period);
             }
             current = current.add(1, 'day');
         }
-    });
+    }
     return map;
 };
