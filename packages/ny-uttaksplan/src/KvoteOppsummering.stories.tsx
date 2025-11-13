@@ -81,6 +81,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         saksperioder: [],
         rettighetType: 'BEGGE_RETT',
         erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
@@ -146,7 +147,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
         valgtStønadskonto: kontoNårBeggeHarRett,
         saksperioder: [
             {
-                fom: '2024-11-10',
+                fom: '2024-11-18',
                 tom: '2024-12-08',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
@@ -154,7 +155,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
             },
             {
                 fom: '2024-12-09',
-                tom: '2025-03-18',
+                tom: '2025-03-21',
                 kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'MOR',
@@ -168,10 +169,10 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
             },
             {
                 fom: '2025-05-19',
-                tom: '2025-08-31',
+                tom: '2025-08-29',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
             },
             {
                 fom: '2025-07-28',
@@ -183,7 +184,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
             },
             {
                 fom: '2025-09-22',
-                tom: '2025-09-26',
+                tom: '2025-09-29',
                 kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'MOR',
@@ -191,6 +192,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
         ],
         rettighetType: 'BEGGE_RETT',
         erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
