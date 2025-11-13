@@ -50,12 +50,10 @@ export const UttaksplanLegend = ({
         });
     }
 
-    const selectableLegends = legendInfo.filter(
-        (info) => info.color !== 'PINK' && info.color !== 'PURPLE' && info.color !== 'BLACKOUTLINE',
-    );
-    const nonSelectableLegends = legendInfo.filter(
-        (info) => info.color === 'PINK' || info.color === 'PURPLE' || info.color === 'BLACKOUTLINE',
-    );
+    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE'] as CalendarPeriodColor[];
+
+    const selectableLegends = legendInfo.filter((info) => !unselectableColors.includes(info.color));
+    const nonSelectableLegends = legendInfo.filter((info) => unselectableColors.includes(info.color));
     const sortedLegends = [...selectableLegends, ...nonSelectableLegends];
 
     return (
@@ -66,10 +64,7 @@ export const UttaksplanLegend = ({
                     <button
                         key={info.color}
                         onClick={
-                            info.color !== 'PINK' &&
-                            info.color !== 'PURPLE' &&
-                            info.color !== 'BLACKOUTLINE' &&
-                            !readOnly
+                            !unselectableColors.includes(info.color) && !readOnly
                                 ? () => {
                                       selectLegend(info.color);
 
