@@ -2,7 +2,6 @@ import { Preview } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
-import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import '@navikt/ds-css/darkside';
 
