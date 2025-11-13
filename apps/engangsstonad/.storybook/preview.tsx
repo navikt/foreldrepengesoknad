@@ -2,6 +2,7 @@ import { Preview } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import 'styles/globals.css';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
@@ -29,6 +30,7 @@ const withIntlProvider = getIntlDecorator({
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...formHookMessages.nb,
+        ...filopplasterMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -36,6 +38,7 @@ const withIntlProvider = getIntlDecorator({
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...formHookMessages.nn,
+        ...filopplasterMessages.nn,
     },
     en: {
         ...enMessages,
@@ -43,6 +46,7 @@ const withIntlProvider = getIntlDecorator({
         ...utenlandsoppholdMessages.en,
         ...oppsummeringMessages.en,
         ...formHookMessages.en,
+        ...filopplasterMessages.en,
     },
 });
 

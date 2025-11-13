@@ -6,7 +6,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { AttachmentType } from '@navikt/fp-constants';
-import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
@@ -89,7 +89,7 @@ export const VedleggUploader = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+            uploadPath={API_URLS.sendVedlegg}
         />
     );
 };

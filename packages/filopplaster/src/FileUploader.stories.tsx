@@ -6,7 +6,6 @@ import { AttachmentError } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { FileUploader } from './FileUploader';
-import { getSaveAttachmentFetch } from './attachmentApi';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
@@ -46,7 +45,7 @@ export const Default: Story = {
         label: 'Last opp fil',
         attachmentType: AttachmentType.OMSORGSOVERTAKELSE,
         skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-        saveAttachment: getSaveAttachmentFetch(MOCK_API_PATH),
+        uploadPath: MOCK_API_PATH,
         updateAttachments: () => undefined,
         existingAttachments: [],
     },
@@ -110,7 +109,7 @@ export const OpplastningTimeout: Story = {
     args: {
         ...Default.args,
         existingAttachments: [],
-        saveAttachment: getSaveAttachmentFetch(MOCK_API_PATH, 10), // 10ms timeout for quick testing
+        timeout: 10,
     },
     parameters: {
         msw: {

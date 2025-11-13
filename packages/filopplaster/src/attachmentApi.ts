@@ -1,27 +1,33 @@
 import ky, { HTTPError, TimeoutError } from 'ky';
 
-import { Attachment, AttachmentUploadError, AttachmentUploadResult } from '@navikt/fp-types';
+import { Attachment, AttachmentUploadError, AttachmentUploadSuccess } from '@navikt/fp-types';
 
-export const getSaveAttachmentFetch =
-    (sti: string, timeout = 1000 * 60 * 3) =>
-    async (attachment: Attachment): Promise<AttachmentUploadResult> => {
-        const formData = new FormData();
-        formData.append('id', attachment.id);
-        formData.append('vedlegg', attachment.file, attachment.filename);
+export const getSaveAttachmentFetch = async ({
+    uploadPath,
+    timeout = 1000 * 60 * 3,
+    attachment,
+}: {
+    uploadPath: string;
+    timeout?: number;
+    attachment: Attachment;
+}) => {
+    const formData = new FormData();
+    formData.append('id', attachment.id);
+    formData.append('vedlegg', attachment.file, attachment.filename);
 
-        try {
-            const response = await ky.post<string>(sti, {
-                body: formData,
-                timeout, // Store vedlegg 10MB over dårlig nett kan ta så lang tid som 3 minutter
-            });
-            return {
-                success: true,
-                data: await response.json(),
-            };
-        } catch (error) {
-            return handleUploadError(error);
-        }
-    };
+    try {
+        const response = await ky.post<string>(uploadPath, {
+            body: formData,
+            timeout, // Store vedlegg 10MB over dårlig nett kan ta så lang tid som 3 minutter
+        });
+        return {
+            success: true,
+            data: await response.json<string>(),
+        } satisfies AttachmentUploadSuccess;
+    } catch (error) {
+        return handleUploadError(error);
+    }
+};
 
 const handleHTTPError = async (error: HTTPError): Promise<AttachmentUploadError> => {
     const status = error.response.status;

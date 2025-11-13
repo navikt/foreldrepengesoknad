@@ -7,7 +7,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -66,7 +66,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+                uploadPath={API_URLS.sendVedlegg}
             />
         </>
     );

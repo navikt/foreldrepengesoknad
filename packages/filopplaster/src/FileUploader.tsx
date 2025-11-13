@@ -4,17 +4,16 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentError, AttachmentUploadResult } from '@navikt/fp-types';
+import { Attachment, AttachmentError } from '@navikt/fp-types';
 
 import { AttachmentList } from './AttachmentList';
 import { FileUploaderAttachment } from './FileUploaderAttachment';
+import { getSaveAttachmentFetch } from './attachmentApi.ts';
 import { mapFileToAttachment } from './fileUtils';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
-
-type SaveAttachment = (attachment: Attachment) => Promise<AttachmentUploadResult>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -34,8 +33,8 @@ const getPendingAttachmentFromFile = (
     return newAttachment;
 };
 
-const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
-    const response = await saveAttachment(attachment);
+const uploadAttachment = async (attachment: Attachment, uploadPath: string, timeout?: number): Promise<void> => {
+    const response = await getSaveAttachmentFetch({ uploadPath, attachment, timeout });
 
     attachment.pending = false;
     if (response.success) {
@@ -45,8 +44,6 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
         attachment.error = response.feilKode;
     }
 };
-
-const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 const replaceAttachmentIfFound = (
     setAttachments: React.Dispatch<React.SetStateAction<FileUploaderAttachment[]>>,
@@ -148,21 +145,23 @@ interface Props {
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
-    saveAttachment: SaveAttachment;
     multiple?: boolean;
     skjemanummerTextMap?: Record<Skjemanummer, string>;
+    uploadPath: string;
+    timeout?: number; // Kun brukt for å sette custom timeout i test
 }
 
 export const FileUploader = ({
     label,
     description,
-    existingAttachments = EMPTY_ATTACHMENT_LIST,
+    existingAttachments = [],
     updateAttachments,
     attachmentType,
     skjemanummer,
-    saveAttachment,
     multiple = true,
     skjemanummerTextMap,
+    uploadPath,
+    timeout,
 }: Props) => {
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
@@ -182,7 +181,7 @@ export const FileUploader = ({
         (files: FileObject[]) => {
             const uploadAttachments = async (allPendingAttachments: FileUploaderAttachment[]) => {
                 for (const pendingAttachment of allPendingAttachments) {
-                    await uploadAttachment(pendingAttachment.attachmentData, saveAttachment);
+                    await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
                     replaceAttachmentIfFound(setAttachments, pendingAttachment);
                 }
             };
@@ -193,7 +192,7 @@ export const FileUploader = ({
             addOrReplaceAttachments(setAttachments, allPendingAttachments);
             uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
         },
-        [attachmentType, skjemanummer, saveAttachment],
+        [attachmentType, skjemanummer, uploadPath, timeout],
     );
 
     const deleteAttachment = useCallback((fileToRemove: FileObject) => {

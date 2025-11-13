@@ -10,7 +10,7 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
-import { FileUploader, getSaveAttachmentFetch } from '@navikt/fp-filopplaster';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment } from '@navikt/fp-types';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
@@ -101,7 +101,7 @@ export const UttakUploader = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(API_URLS.sendVedlegg)}
+            uploadPath={API_URLS.sendVedlegg}
         />
     );
 };
