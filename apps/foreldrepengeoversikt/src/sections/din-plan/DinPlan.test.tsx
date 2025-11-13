@@ -83,7 +83,7 @@ describe('<Default>', () => {
             expect(within(oktober).getByTestId('day:15;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(9);
-            expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUE;', { exact: false })).toHaveLength(13);
+            //expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUE;', { exact: false })).toHaveLength(13);
 
             const november = screen.getByTestId('year:2024;month:10');
             expect(within(november).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(21);

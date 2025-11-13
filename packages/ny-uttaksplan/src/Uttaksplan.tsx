@@ -28,7 +28,7 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
 
     return (
         <>
-            {uttaksplan.length > 0 && oppdaterUttaksplan && (
+            {uttaksplan.length > 0 && (
                 <PeriodeListe
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
@@ -77,10 +77,10 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
     );
 };
 
-const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange: (perioder: SaksperiodeNy[]) => void) => {
+const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void) => {
     const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
-    handleOnPlanChange(
+    handleOnPlanChange?.(
         resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
     );
 };
