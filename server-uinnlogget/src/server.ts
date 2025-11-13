@@ -7,6 +7,7 @@ import {
     setupActuators,
     setupAndServeHtml,
     setupServerDefaults,
+    setupSkjermleserCssTilgang,
 } from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy';
@@ -22,19 +23,7 @@ const publicRouter = express.Router();
 // Logging i json format
 server.use(logger.morganMiddleware);
 
-publicRouter.use((req, res, next) => {
-    const ua = req.headers.origin || '';
-
-    if (ua.includes('https://nav.psplugin.com')) {
-        res.setHeader('Cache-Control', 'no-store');
-        res.removeHeader('Etag');
-    }
-    if (req.path.endsWith('.css')) {
-        res.setHeader('Access-Control-Allow-Origin', 'https://nav.psplugin.com');
-    }
-
-    next();
-});
+setupSkjermleserCssTilgang(publicRouter);
 
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
