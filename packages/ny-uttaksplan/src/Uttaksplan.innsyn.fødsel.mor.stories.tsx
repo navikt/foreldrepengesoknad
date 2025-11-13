@@ -1,18 +1,38 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { ComponentProps, useState } from 'react';
 
 import { BarnType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
-import { withUttaksplanContextDecorator } from './storybook/decorators/withUttaksplanContextDecorator';
+import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
 
 const meta = {
     title: 'Uttaksplan - Innsyn',
     component: UttaksplanNy,
-    decorators: [withUttaksplanContextDecorator],
     args: {
-        handleOnPlanChange: () => null,
+        oppdaterUttaksplan: () => null,
+        children: null,
+        erMedmorDelAvSøknaden: false,
     },
-} satisfies Meta<typeof UttaksplanNy>;
+    render: (args) => {
+        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
+
+        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+            setPerioder(oppdatertePerioder);
+
+            if (args.oppdaterUttaksplan) {
+                args.oppdaterUttaksplan(oppdatertePerioder);
+            }
+        };
+
+        return (
+            <UttaksplanDataProvider {...args} saksperioder={perioder}>
+                <UttaksplanNy oppdaterUttaksplan={handleOnPlanChange} />
+            </UttaksplanDataProvider>
+        );
+    },
+} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanNy>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -27,20 +47,16 @@ export const MorAleneOmOmsorg: Story = {
             termindato: '2025-10-07',
             antallBarn: 1,
         },
-        erAleneOmOmsorg: true,
+        aleneOmOmsorg: true,
         erFarEllerMedmor: false,
-        familiehendelsedato: '2025-09-30',
-        familiesituasjon: 'fødsel',
-        førsteUttaksdagNesteBarnsSak: undefined,
-        gjelderAdopsjon: false,
-
         harAktivitetskravIPeriodeUtenUttak: false,
         modus: 'innsyn',
         navnPåForeldre: {
             farMedmor: 'Annen forelder',
             mor: 'Iris',
         },
-        søkersPerioder: [
+        erDeltUttak: false,
+        saksperioder: [
             {
                 fom: '2025-09-16',
                 tom: '2025-09-29',
@@ -95,19 +111,16 @@ export const PrematurUker: Story = {
             termindato: '2025-10-19',
             antallBarn: 1,
         },
-        erAleneOmOmsorg: false,
+        aleneOmOmsorg: false,
         erFarEllerMedmor: false,
-        familiehendelsedato: '2025-08-13',
-        familiesituasjon: 'fødsel',
-        førsteUttaksdagNesteBarnsSak: undefined,
-        gjelderAdopsjon: false,
+        erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         modus: 'innsyn',
         navnPåForeldre: {
             farMedmor: 'Annen forelder',
             mor: 'Avansert',
         },
-        søkersPerioder: [
+        saksperioder: [
             {
                 fom: '2025-08-13',
                 tom: '2025-10-10',

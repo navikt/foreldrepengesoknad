@@ -44,6 +44,7 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-uttaksplan": "workspace:*",
+        "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-uttaksplan-kalender": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@sentry/browser": "9.40.0",

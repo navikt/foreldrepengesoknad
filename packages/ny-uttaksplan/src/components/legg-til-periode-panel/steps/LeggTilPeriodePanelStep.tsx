@@ -6,9 +6,8 @@ import { VStack } from '@navikt/ds-react';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
@@ -23,21 +22,13 @@ import { HvaVilDuGjøre, LeggTilPeriodePanelFormValues } from '../types/LeggTilP
 interface Props {
     panelData: PanelData;
     closePanel: () => void;
-    erBarnetFødt: boolean;
-    gjelderAdopsjon: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
 }
 
-export const LeggTilPeriodePanelStep = ({
-    panelData,
-    closePanel,
-    handleAddPeriode,
-    erBarnetFødt,
-    gjelderAdopsjon,
-}: Props) => {
+export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriode }: Props) => {
     const intl = useIntl();
     const { forelder, kontoType, fom, tom } = panelData;
-    const erAleneOmOmsorg = notEmpty(useContextGetData(UttaksplanContextDataType.ALENE_OM_OMSORG));
+    const { aleneOmOmsorg } = useUttaksplanData();
 
     const formMethods = useForm<LeggTilPeriodePanelFormValues>({
         defaultValues: {
@@ -114,21 +105,13 @@ export const LeggTilPeriodePanelStep = ({
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
-                        <TidsperiodeSpørsmål
-                            erBarnetFødt={erBarnetFødt}
-                            gjelderAdopsjon={gjelderAdopsjon}
-                            hvaVilDuGjøre={hvaVilDuGjøre}
-                        />
-                        {!erAleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                        <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
+                        {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />
                     </>
                 ) : null}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD || hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE ? (
-                    <TidsperiodeSpørsmål
-                        erBarnetFødt={erBarnetFødt}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        hvaVilDuGjøre={hvaVilDuGjøre}
-                    />
+                    <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
                 ) : null}
 
                 <PanelButtons onCancel={closePanel} isFinalStep={true} />

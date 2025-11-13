@@ -4,60 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KontoBeregningDto } from '@navikt/fp-types';
-
 import { AppContainer } from './AppContainer';
-
-const STØNADSKONTOER = {
-    '100': {
-        kontoer: [
-            {
-                konto: 'MØDREKVOTE',
-                dager: 75,
-            },
-            {
-                konto: 'FEDREKVOTE',
-                dager: 75,
-            },
-            {
-                konto: 'FELLESPERIODE',
-                dager: 80,
-            },
-            {
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                dager: 15,
-            },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    } satisfies KontoBeregningDto,
-    '80': {
-        kontoer: [
-            {
-                konto: 'MØDREKVOTE',
-                dager: 95,
-            },
-            {
-                konto: 'FEDREKVOTE',
-                dager: 95,
-            },
-            {
-                konto: 'FELLESPERIODE',
-                dager: 90,
-            },
-            {
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                dager: 15,
-            },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    } satisfies KontoBeregningDto,
-};
 
 const meta = {
     title: 'AppContainer',
@@ -99,7 +46,22 @@ export const HvorMyeVeiviser: Story = {};
 export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
+            handlers: [
+                [
+                    http.post(API_URLS.konto, async ({ request }) => {
+                        const body = await request.json();
+                        const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                            body: JSON.stringify(body),
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        const json = await response.json();
+                        return HttpResponse.json(json);
+                    }),
+                ],
+            ],
         },
     },
 };

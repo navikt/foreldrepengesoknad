@@ -2,9 +2,8 @@ import dayjs from 'dayjs';
 import { Fragment } from 'react';
 
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { Periodene } from '../../utils/Periodene';
@@ -28,7 +27,7 @@ export const PeriodeListe = ({
     handleAddPeriode,
     isAllAccordionsOpen,
 }: Props) => {
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const { familiehendelsedato } = useUttaksplanData();
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);

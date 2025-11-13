@@ -27,6 +27,8 @@ export {
 } from './utils/periodeUtils';
 export { UttaksplanNy } from './Uttaksplan';
 export { KvoteOppsummering } from './KvoteOppsummering';
+export { UttaksplanKalender } from './kalender/UttaksplanKalender';
+export { UttaksplanDataProvider } from './context/UttaksplanDataContext';
 
 export const nyUttaksplanMessages = {
     nb: nbMessages,

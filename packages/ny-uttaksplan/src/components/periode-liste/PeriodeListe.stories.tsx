@@ -4,7 +4,7 @@ import { ComponentProps } from 'react';
 import { BarnType } from '@navikt/fp-constants';
 import { Barn } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListe } from './PeriodeListe';
 
@@ -17,7 +17,6 @@ type StoryArgs = {
 
 const customRenderer = ({
     perioder,
-    familiehendelsedato,
     barn,
     erFarEllerMedmor,
     erAleneOmOmsorg,
@@ -27,19 +26,21 @@ const customRenderer = ({
     handleDeletePerioder,
 }: StoryArgs) => {
     return (
-        <UttaksplanDataContext
-            initialState={{
-                [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: erFarEllerMedmor,
-                [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
-                [UttaksplanContextDataType.BARN]: barn,
-                [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
-                [UttaksplanContextDataType.MODUS]: 'planlegger',
-                [UttaksplanContextDataType.ALENE_OM_OMSORG]: erAleneOmOmsorg,
-                [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
-                    farMedmor: 'Far',
-                    mor: 'Mor',
-                },
+        <UttaksplanDataProvider
+            erFarEllerMedmor={erFarEllerMedmor}
+            barn={barn}
+            modus="planlegger"
+            aleneOmOmsorg={erAleneOmOmsorg}
+            navnPåForeldre={{
+                farMedmor: 'Far',
+                mor: 'Mor',
             }}
+            valgtStønadskonto={{} as any}
+            erMedmorDelAvSøknaden
+            bareFarMedmorHarRett={false}
+            harAktivitetskravIPeriodeUtenUttak={false}
+            erDeltUttak
+            saksperioder={[]}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <PeriodeListe
@@ -50,7 +51,7 @@ const customRenderer = ({
                     handleDeletePerioder={handleDeletePerioder}
                 />
             </div>
-        </UttaksplanDataContext>
+        </UttaksplanDataProvider>
     );
 };
 

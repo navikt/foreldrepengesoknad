@@ -18,7 +18,7 @@ Dette monorepoet bruker følgende verktøy:
 3. Velg en utløpsdato og trykk på "Generate token".
 4. Kopier tokenet ditt og lagre et trygt sted.
 5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
-6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin.
+6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin
 
 ### Installere dependencies og teste at alt bygger
 
@@ -67,13 +67,14 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 3. Kjør `pnpm run dev-api`
 4. Kjør `pnpm run dev`
 
-
 ### Autogenere Typescript typer fra backend
 
 Vi autogenerer typer fra backend sin openApi spec. For å synkronisere typene så kjører du:
+
 ```bash
-   ./generate-api-types.sh 
+   ./generate-api-types.sh
 ```
+
 Du må ha verdikjeden kjørende i autotest.
 
 ### Tester

@@ -200,15 +200,7 @@
     "OversiktSteg.Infoboks.Utkast.Tekst": "Her er et utkast til hvordan permisjonen kan se ut. {erAleneforsørger, select, true {Du} other {Dere}} kan tilpasse denne planen etter egne behov, for å teste ut hva som er mulig. Da kan {erAleneforsørger, select, true {du} other {dere}} endre periodene eller legge til ferie.",
     "OversiktSteg.Infoboks.TilpassPlanen": "Tilpass planen",
     "OversiktSteg.Infoboks.Tilpass": "Tilpass",
-    "OversiktSteg.UkerForeldrepenger": "{hvem}",
-    "OversiktSteg.UtenAktivitetskrav": "Uten aktivitetskrav",
-    "OversiktSteg.MedAktivitetskrav": "Med aktivitetskrav",
     "PlanenDeresSteg.Tittel": "Planen",
-    "FamiliehendelseLabel.Termindato": "Termin",
-    "FamiliehendelseLabel.Fødselsdato": "Fødselsdato",
-    "FamiliehendelseLabel.Omsorgsovertakelse": "Omsorgsovertakelse",
-    "BarnehageplassLabel.Barnehagestartdato": "Barnehageplass",
-    "OversiktSteg.ForeldrepengerLabel": "Foreldrepenger",
     "UforutsetteEndringer.UforutsetteEndringer": "Uforutsette endringer",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk": "Hvis man blir syk i sin periode med foreldrepenger",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "Hvis man blir syk når man har foreldrepenger",
@@ -269,7 +261,5 @@
     "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall. Bokstaver, mellomrom, punktum og komma er ikke tillatt.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepenger!",
     "SøkOmForeldrepenger.BasertPå": "Basert på {erAdopsjon, select, true {overtakelsesdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {dere}} søke om foreldrepenger nå.",
-    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger",
-    "CalendarLabels.TapteDager": "Tapte dager",
-    "CalendarLabels.Ferie": "Ferie"
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger"
 }

@@ -15,6 +15,7 @@ import {
     UttaksdagenString,
     capitalizeFirstLetter,
     isValidTidsperiodeString,
+    slutterTidsperiodeInnen6UkerEtterFødsel,
 } from '@navikt/fp-utils';
 
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
@@ -88,7 +89,7 @@ export const isOppholdsperiode = (periode: Planperiode) => {
     return periode.oppholdÅrsak !== undefined;
 };
 
-export const isAvslåttPeriode = (periode: Planperiode) => {
+export const isAvslåttPeriode = (periode: SaksperiodeNy | Planperiode) => {
     return periode.resultat && periode.resultat.innvilget !== true;
 };
 
@@ -326,6 +327,40 @@ const getForelderForPeriode = (
     }
 
     return søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+};
+
+export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: SaksperiodeNy, familiehendelsesdato: string): boolean => {
+    return (
+        !!isAvslåttPeriode(periode) &&
+        periode.forelder === 'MOR' &&
+        dayjs(periode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
+        slutterTidsperiodeInnen6UkerEtterFødsel({ fom: periode.fom, tom: periode.tom }, new Date(familiehendelsesdato))
+    );
+};
+
+export const getIndexOfSistePeriodeFørDato = (
+    uttaksplan: SaksperiodeNy[] | Planperiode[],
+    dato: string | undefined,
+) => {
+    if (dato !== undefined) {
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
+    }
+    return undefined;
+};
+export const getAnnenForelderSamtidigUttakPeriode = (
+    periode: SaksperiodeNy,
+    perioder: SaksperiodeNy[],
+): SaksperiodeNy | undefined => {
+    const { forelder } = periode;
+    if (isUttaksperiode(periode)) {
+        const samtidigUttak = perioder
+            .filter((p) => p.forelder !== forelder && isUttaksperiode(periode))
+            .find((p) => dayjs(periode.fom).isSame(p.fom));
+
+        return samtidigUttak;
+    }
+
+    return undefined;
 };
 
 type UtledKomplettPlanParams = {

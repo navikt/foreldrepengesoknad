@@ -5,10 +5,9 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, UttaksplanModus, isAdoptertBarn, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { Barn, UttaksplanModus, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
@@ -56,13 +55,9 @@ export const PeriodeListeContent = ({
         (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
     );
 
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
-    const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
+    const { navnPåForeldre, erFarEllerMedmor, barn, modus } = useUttaksplanData();
+
     const familiehendelseType = getFamiliehendelseType(barn);
-    const modus = notEmpty(useContextGetData(UttaksplanContextDataType.MODUS));
-    const gjelderAdopsjon = isAdoptertBarn(barn);
-    const erBarnetFødt = isFødtBarn(barn);
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -90,8 +85,6 @@ export const PeriodeListeContent = ({
                     handleAddPeriode={handleAddPeriode}
                     permisjonsperiode={permisjonsperiode}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
                 />
             ) : null}
             {isSlettPeriodePanelOpen ? (

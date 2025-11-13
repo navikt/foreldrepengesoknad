@@ -45,10 +45,17 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
+    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
+        '{{{APP_SETTINGS}}}',
+        JSON.stringify({
+            APP_VERSION: `${process.env.APP_VERSION}`,
+        }),
+    );
+
     server.use(
-        '/rest',
+        '/fpgrunndata/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpgrunndata/api',
             changeOrigin: true,
             logger: console,
             on: {
@@ -58,7 +65,7 @@ const startServer = async () => {
     );
 
     const fs = require('node:fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), htmlWithDecoratorInjected);
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
 
     const vite = await require('vite').createServer({
         root: __dirname,

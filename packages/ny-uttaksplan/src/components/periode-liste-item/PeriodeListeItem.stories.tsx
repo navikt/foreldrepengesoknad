@@ -4,11 +4,40 @@ import { ComponentProps } from 'react';
 import { Accordion } from '@navikt/ds-react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
+import { Barn, KontoBeregningDto } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
+
+const kontoNårBeggeHarRett = {
+    kontoer: [
+        {
+            konto: 'FELLESPERIODE',
+            dager: 80,
+        },
+        {
+            konto: 'MØDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FEDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+    tillegg: {
+        flerbarn: 0,
+        prematur: 0,
+    },
+} satisfies KontoBeregningDto;
 
 type StoryArgs = {
     erFarEllerMedmor: boolean;
@@ -21,7 +50,6 @@ const customRenderer = ({
     erFarEllerMedmor,
     erFamiliehendelse,
     permisjonsperiode,
-    familiehendelsedato,
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
@@ -30,19 +58,21 @@ const customRenderer = ({
     barn,
 }: StoryArgs) => {
     return (
-        <UttaksplanDataContext
-            initialState={{
-                [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: erFarEllerMedmor,
-                [UttaksplanContextDataType.BARN]: barn,
-                [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
-                [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
-                [UttaksplanContextDataType.ALENE_OM_OMSORG]: erAleneOmOmsorg,
-                [UttaksplanContextDataType.MODUS]: 'planlegger',
-                [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
-                    farMedmor: 'Far',
-                    mor: 'Mor',
-                },
+        <UttaksplanDataProvider
+            erFarEllerMedmor={erFarEllerMedmor}
+            barn={barn}
+            aleneOmOmsorg={erAleneOmOmsorg}
+            modus="planlegger"
+            navnPåForeldre={{
+                farMedmor: 'Far',
+                mor: 'Mor',
             }}
+            valgtStønadskonto={kontoNårBeggeHarRett}
+            erMedmorDelAvSøknaden
+            bareFarMedmorHarRett={false}
+            harAktivitetskravIPeriodeUtenUttak={false}
+            erDeltUttak
+            saksperioder={[]}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
@@ -56,7 +86,7 @@ const customRenderer = ({
                     />
                 </Accordion>
             </div>
-        </UttaksplanDataContext>
+        </UttaksplanDataProvider>
     );
 };
 
