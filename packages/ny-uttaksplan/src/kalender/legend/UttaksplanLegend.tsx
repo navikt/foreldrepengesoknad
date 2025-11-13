@@ -141,26 +141,6 @@ const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
             return label;
-        // case CalendarPeriodColor.PINK:
-        //     return getFamiliehendelseKalendarLabel(barn, intl);
-        // case CalendarPeriodColor.BLUE:
-        // case CalendarPeriodColor.GREEN:
-        // case CalendarPeriodColor.BLUESTRIPED:
-        // case CalendarPeriodColor.GREENSTRIPED:
-        // case CalendarPeriodColor.LIGHTBLUE:
-        // case CalendarPeriodColor.LIGHTGREEN:
-        // case CalendarPeriodColor.LIGHTBLUEGREEN:
-        // case CalendarPeriodColor.LIGHTGREENBLUE:
-        // case CalendarPeriodColor.GREENOUTLINE:
-        // case CalendarPeriodColor.BLUEOUTLINE:
-        // case CalendarPeriodColor.BLACK:
-        // case CalendarPeriodColor.GRAY:
-        // case CalendarPeriodColor.BLACKOUTLINE:
-        //     return getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl);
-        // case CalendarPeriodColor.PURPLE:
-        //     return 'Barnehageplass';
-        // default:
-        //     return null;
     }
 };
 
