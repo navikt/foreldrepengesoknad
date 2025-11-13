@@ -24,7 +24,7 @@ describe('FileUploader', () => {
             await userEvent.upload(fileInput, file);
 
             expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
-            expect(await screen.queryByText('Laster opp...')).not.toBeInTheDocument();
+            expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
         }),
     );
 
