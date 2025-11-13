@@ -20,6 +20,8 @@ export { shouldChangeBrowser } from './src/browserUtils';
 export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
+
+export { useAbortSignal } from './src/hooks/useAbortSignal';
 export { useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';

@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Provider, Theme } from '@navikt/ds-react';
 import { nb, nn } from '@navikt/ds-react/locales';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
@@ -39,6 +40,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...frilansMessages.nb,
         ...formHookMessages.nb,
         ...kvitteringMessages.nb,
+        ...filopplasterMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -52,6 +54,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...frilansMessages.nn,
         ...formHookMessages.nn,
         ...kvitteringMessages.nn,
+        ...filopplasterMessages.nn,
     },
 };
 

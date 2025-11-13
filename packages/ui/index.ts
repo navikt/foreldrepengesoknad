@@ -1,6 +1,6 @@
-import enMessages from './src/i18n/messages/en_US.json';
-import nbMessages from './src/i18n/messages/nb_NO.json';
-import nnMessages from './src/i18n/messages/nn_NO.json';
+import enMessages from './src/intl/messages/en_US.json';
+import nbMessages from './src/intl/messages/nb_NO.json';
+import nnMessages from './src/intl/messages/nn_NO.json';
 
 export const uiMessages = {
     nb: nbMessages,
@@ -14,12 +14,11 @@ export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
 export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
 export { ErrorPage } from './src/error/ErrorPage';
-export { FileUploader } from './src/file-uploader/FileUploader';
 export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';
 export { HorizontalLine } from './src/horizontal-line/HorizontalLine';
 export { Umyndig } from './src/umyndig/Umyndig';
-export { IntlProvider } from './src/i18n/IntlProvider';
+export { IntlProvider } from './src/intl/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';

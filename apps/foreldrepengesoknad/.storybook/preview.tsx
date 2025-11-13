@@ -4,6 +4,7 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
@@ -42,6 +43,7 @@ const withIntlProvider = getIntlDecorator({
         ...egenNæringMessages.nb,
         ...frilansMessages.nb,
         ...formHookMessages.nb,
+        ...filopplasterMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -53,6 +55,7 @@ const withIntlProvider = getIntlDecorator({
         ...egenNæringMessages.nn,
         ...frilansMessages.nn,
         ...formHookMessages.nn,
+        ...filopplasterMessages.nn,
     },
 });
 

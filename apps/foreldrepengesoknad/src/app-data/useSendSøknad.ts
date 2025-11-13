@@ -7,8 +7,8 @@ import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
-import { useAbortSignal } from '@navikt/fp-api';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';

@@ -2,13 +2,15 @@ import { Preview } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
+import { initialize, mswLoader } from 'msw-storybook-addon';
+
+import '@navikt/ds-css/darkside';
 
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
-import './index.css';
 
 dayjs.locale('nb');
 
@@ -59,6 +61,16 @@ export const globalTypes = {
 
 const preview: Preview = {
     decorators: [withIntlProvider, withThemeDecorator],
+    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
+    beforeAll: async () => {
+        initialize({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: {
+                url: './mockServiceWorker.js',
+            },
+        });
+    },
+    loaders: [mswLoader],
 };
 
 //eslint-disable-next-line import/no-default-export

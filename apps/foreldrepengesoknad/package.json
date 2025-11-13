@@ -29,7 +29,7 @@
         "@navikt/ds-react": "7.32.1",
         "@navikt/ds-tailwind": "7.32.1",
         "@navikt/fnrvalidator": "2.1.5",
-        "@navikt/fp-api": "workspace:*",
+        "@navikt/fp-filopplaster": "workspace:*",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",

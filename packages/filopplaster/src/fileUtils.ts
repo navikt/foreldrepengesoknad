@@ -2,7 +2,7 @@ import { FileObject } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
+import { FileUploaderAttachment } from './FileUploaderAttachment';
 
 const s4 = (): string =>
     Math.floor((1 + Math.random()) * 0x10000)

@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Provider, Theme } from '@navikt/ds-react';
 import { nb } from '@navikt/ds-react/locales';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
@@ -31,6 +32,7 @@ const allNbMessages = {
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
     ...formHookMessages.nb,
+    ...filopplasterMessages.nb,
 };
 
 declare global {

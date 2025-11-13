@@ -8,9 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { useAbortSignal } from '@navikt/fp-api';
 import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
-import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';

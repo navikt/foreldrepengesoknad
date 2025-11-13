@@ -4,19 +4,16 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, AttachmentError } from '@navikt/fp-types';
 
 import { AttachmentList } from './AttachmentList';
+import { FileUploaderAttachment } from './FileUploaderAttachment';
+import { getSaveAttachmentFetch } from './attachmentApi.ts';
 import { mapFileToAttachment } from './fileUtils';
-import { FileUploadError } from './typer/FileUploadError';
-import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
 const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
-
-// TODO typen som blir returnert er ikkje komplett. Ikkje dra inn ky-avhengighet her
-type SaveAttachment = (attachment: Attachment) => Promise<{ data: string }>;
 
 const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
     return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
@@ -36,26 +33,17 @@ const getPendingAttachmentFromFile = (
     return newAttachment;
 };
 
-const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
-    try {
-        const response = await saveAttachment(attachment);
-        attachment.pending = false;
+const uploadAttachment = async (attachment: Attachment, uploadPath: string, timeout?: number): Promise<void> => {
+    const response = await getSaveAttachmentFetch({ uploadPath, attachment, timeout });
+
+    attachment.pending = false;
+    if (response.success) {
         attachment.uploaded = true;
         attachment.uuid = response.data;
-    } catch (error) {
-        // TODO Burde få ut feilmelding frå backend og vise denne
-        attachment.pending = false;
-
-        // @ts-expect-error TODO Fix typing her (Mogleg  mykje av logikken her bør ligga inne i saveAttachment, så slepp ein da inn Axios her)
-        if (error?.response?.status === 408) {
-            attachment.error = FileUploadError.TIMEOUT;
-        } else {
-            attachment.error = FileUploadError.GENERAL;
-        }
+    } else {
+        attachment.error = response.feilKode;
     }
 };
-
-const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 const replaceAttachmentIfFound = (
     setAttachments: React.Dispatch<React.SetStateAction<FileUploaderAttachment[]>>,
@@ -82,15 +70,37 @@ const addOrReplaceAttachments = (
     });
 };
 
-const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileUploadError, string> => ({
-    fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
+const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | AttachmentError, string> => ({
+    fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.fileType' }),
     fileSize: intl.formatMessage(
-        { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
+        { id: 'FailedAttachment.Vedlegg.Feilmelding.fileSize' },
         { maxStørrelse: MAX_FIL_STØRRELSE_MB },
     ),
-    [FileUploadError.NO_DATA]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.IngenData' }),
-    [FileUploadError.GENERAL]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet' }),
-    [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
+    NO_DATA: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.NO_DATA' }),
+
+    // Timeout
+    MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.TIMEOUT',
+    }),
+    TIMEOUT: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.TIMEOUT',
+    }),
+
+    MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
+    }),
+    DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
+
+    // Mappes som generell feil
+    KRYPTERING_MELLOMLAGRING: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
+    }),
+    IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    SERVER_ERROR: intl.formatMessage({
+        id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
+    }),
 });
 
 // Etter refresh lokalt og i dev så er file = {}, så dette må til for å hindra feil i Aksel-komponent
@@ -106,13 +116,26 @@ const createFileIfEmpty = (attachment: Attachment): File => {
 };
 
 const convertToInternalFormat = (attachments: Attachment[]): FileUploaderAttachment[] => {
-    return attachments.map((a) => ({
-        attachmentData: a,
-        fileObject: {
-            file: createFileIfEmpty(a),
-            error: a.error,
-        },
-    }));
+    return attachments.map((a) => {
+        if (a.error === undefined) {
+            return {
+                attachmentData: a,
+                fileObject: {
+                    file: createFileIfEmpty(a),
+                    error: false,
+                },
+            };
+        } else {
+            return {
+                attachmentData: a,
+                fileObject: {
+                    file: createFileIfEmpty(a),
+                    error: true,
+                    reasons: [],
+                },
+            };
+        }
+    });
 };
 
 interface Props {
@@ -122,21 +145,23 @@ interface Props {
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
     existingAttachments?: Attachment[];
-    saveAttachment: SaveAttachment;
     multiple?: boolean;
     skjemanummerTextMap?: Record<Skjemanummer, string>;
+    uploadPath: string;
+    timeout?: number; // Kun brukt for å sette custom timeout i test
 }
 
 export const FileUploader = ({
     label,
     description,
-    existingAttachments = EMPTY_ATTACHMENT_LIST,
+    existingAttachments = [],
     updateAttachments,
     attachmentType,
     skjemanummer,
-    saveAttachment,
     multiple = true,
     skjemanummerTextMap,
+    uploadPath,
+    timeout,
 }: Props) => {
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
@@ -156,7 +181,7 @@ export const FileUploader = ({
         (files: FileObject[]) => {
             const uploadAttachments = async (allPendingAttachments: FileUploaderAttachment[]) => {
                 for (const pendingAttachment of allPendingAttachments) {
-                    await uploadAttachment(pendingAttachment.attachmentData, saveAttachment);
+                    await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
                     replaceAttachmentIfFound(setAttachments, pendingAttachment);
                 }
             };
@@ -167,7 +192,7 @@ export const FileUploader = ({
             addOrReplaceAttachments(setAttachments, allPendingAttachments);
             uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
         },
-        [attachmentType, skjemanummer, saveAttachment],
+        [attachmentType, skjemanummer, uploadPath, timeout],
     );
 
     const deleteAttachment = useCallback((fileToRemove: FileObject) => {
@@ -179,7 +204,7 @@ export const FileUploader = ({
         [attachments],
     );
     const failedAttachments = useMemo(
-        () => attachments.filter((a) => !!a.attachmentData.error || !!a.fileObject.error),
+        () => attachments.filter((a) => !!a.attachmentData.error || a.fileObject.error),
         [attachments],
     );
 
@@ -205,7 +230,7 @@ export const FileUploader = ({
                 onSelect={saveFiles}
                 validator={(file: File) => {
                     if (file.size === 0) {
-                        return FileUploadError.NO_DATA;
+                        return 'NO_DATA' satisfies AttachmentError;
                     }
 
                     return true;
@@ -251,7 +276,7 @@ export const FileUploader = ({
                     deleteAttachment={deleteAttachment}
                     getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
                         rejectedAttachment.attachmentData.error
-                            ? errorMessageMap[rejectedAttachment.attachmentData.error as FileUploadError]
+                            ? errorMessageMap[rejectedAttachment.attachmentData.error]
                             : errorMessageMap[
                                   (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
                               ]
