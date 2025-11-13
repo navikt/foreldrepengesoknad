@@ -34,7 +34,7 @@ export {
     replaceInvisibleCharsWithSpace,
     formatOppramsing,
 } from './src/stringUtils';
-export { getFamiliehendelsedato, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
+export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
 export {

@@ -9,7 +9,6 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
@@ -23,7 +22,6 @@ const withIntlProvider = getIntlDecorator({
         ...uiMessages.nb,
         ...utilsMessages.nb,
         ...nyUttaksplanMessages.nb,
-        ...uttaksplanKalenderMessages.nb,
         ...formHookMessages.nb,
         ...filopplasterMessages.nb,
     },

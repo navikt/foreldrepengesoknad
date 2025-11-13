@@ -1,92 +1,128 @@
-import { useRef, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import styles from './day.module.css';
+import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 
-export enum DayType {
-    FIRST_DAY = 'FIRST_DAY',
-    LAST_DAY = 'LAST_DAY',
-    FIRST_AND_LAST_DAY = 'FIRST_AND_LAST_DAY',
-    BETWEEN_DAY = 'BETWEEN_DAY',
-}
-
-const DAY_STYLE = {
-    [PeriodeColor.NONE]: styles.none,
-    [PeriodeColor.BLUE]: styles.blueDay,
-    [PeriodeColor.LIGHTGREEN]: styles.lightgreenDay,
-    [PeriodeColor.GRAY]: styles.grayDay,
-    [PeriodeColor.PINK]: styles.pinkDay,
-    [PeriodeColor.PURPLE]: styles.purpleDay,
-    [PeriodeColor.BLACK]: styles.blackDay,
-    [PeriodeColor.BLUEOUTLINE]: styles.blueOutlineDay,
-    [PeriodeColor.GREENOUTLINE]: styles.greenOutlineDay,
-    [PeriodeColor.LIGHTBLUE]: styles.lightblueDay,
-    [PeriodeColor.GREEN]: styles.greenDay,
-    [PeriodeColor.LIGHTBLUEGREEN]: styles.lightblueGreenDay,
-    [PeriodeColor.LIGHTGREENBLUE]: styles.lightgreenBlueDay,
-    [PeriodeColor.GREENSTRIPED]: styles.greenStripedDay,
-    [PeriodeColor.BLUESTRIPED]: styles.blueStripedDay,
+const DAY_STYLE: Record<CalendarPeriodColor, string> = {
+    ['NONE']: styles.none,
+    ['BLUE']: styles.blueDay,
+    ['DARKBLUE']: styles.darkblueDay,
+    ['LIGHTGREEN']: styles.lightgreenDay,
+    ['GRAY']: styles.grayDay,
+    ['PINK']: styles.pinkDay,
+    ['PURPLE']: styles.purpleDay,
+    ['BLACK']: styles.blackDay,
+    ['BLACKOUTLINE']: styles.blackOutlineDay,
+    ['BLUEOUTLINE']: styles.blueOutlineDay,
+    ['GREENOUTLINE']: styles.greenOutlineDay,
+    ['LIGHTBLUE']: styles.lightblueDay,
+    ['GREEN']: styles.greenDay,
+    ['LIGHTBLUEGREEN']: styles.lightblueGreenDay,
+    ['LIGHTGREENBLUE']: styles.lightgreenBlueDay,
+    ['GREENSTRIPED']: styles.greenStripedDay,
+    ['BLUESTRIPED']: styles.blueStripedDay,
 };
-
-const SELECTED_DAY_STYLE = {
-    [PeriodeColor.NONE]: styles.none,
-    [PeriodeColor.BLUE]: styles.blueDaySelected,
-    [PeriodeColor.LIGHTGREEN]: styles.lightgreenSelected,
-    [PeriodeColor.GRAY]: styles.grayDay,
-    [PeriodeColor.PINK]: styles.pinkDay,
-    [PeriodeColor.PURPLE]: styles.purpleDaySelected,
-    [PeriodeColor.BLACK]: styles.blackDaySelected,
-    [PeriodeColor.BLUEOUTLINE]: styles.blueOutlineSelected,
-    [PeriodeColor.GREENOUTLINE]: styles.greenOutlineDaySelected,
-    [PeriodeColor.LIGHTBLUE]: styles.lightblueDaySelected,
-    [PeriodeColor.GREEN]: styles.greenDaySelected,
-    [PeriodeColor.LIGHTBLUEGREEN]: styles.lightblueGreenDaySelected,
-    [PeriodeColor.LIGHTGREENBLUE]: styles.lightgreenBlueDaySelected,
-    [PeriodeColor.GREENSTRIPED]: styles.greenStripedDaySelected,
-    [PeriodeColor.BLUESTRIPED]: styles.blueStripedDaySelected,
-};
-
-const isDaysWithPeriode = (periodeColor: PeriodeColor) =>
-    periodeColor !== PeriodeColor.NONE && periodeColor !== PeriodeColor.GRAY;
 
 type Props = {
-    day: number;
-    periodeColor: PeriodeColor;
-    dayType: DayType;
-    isSelected: boolean;
-    dateTooltipCallback?: () => React.ReactElement | string;
-    dateClickCallback?: () => void;
+    isoDate: string;
+    periodeColor: CalendarPeriodColor;
+    isFocused: boolean;
+    dateTooltipCallback?: (date: string) => React.ReactNode | string;
+    dateClickCallback?: (date: string) => void;
+    setFocusedDate: (date: Dayjs) => void;
 };
 
-export const Day = ({ day, periodeColor, dayType, isSelected, dateTooltipCallback, dateClickCallback }: Props) => {
-    const isStart = dayType === DayType.FIRST_DAY;
-    const isEnd = dayType === DayType.LAST_DAY;
-    const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
+export const Day = React.memo(
+    ({ isoDate, periodeColor, isFocused, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
+        const date = dayjs(isoDate);
+        const day = date.date();
 
-    const buttonRef = useRef<HTMLDivElement>(null);
-    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
 
-    return (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div
-            data-testid={`day:${day};dayColor:${periodeColor};dayType:${dayType}`}
-            // eslint-disable-next-line max-len
-            className={`${styles.days} ${!isSelected && DAY_STYLE[periodeColor]} ${isSelected && SELECTED_DAY_STYLE[periodeColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay} ${!!dateClickCallback && styles.cursor}`}
-            ref={buttonRef}
-            // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
-            onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
-            onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
-            onClick={dateClickCallback && isDaysWithPeriode(periodeColor) ? () => dateClickCallback() : undefined}
-        >
-            {day}
-            {dateTooltipCallback && isDaysWithPeriode(periodeColor) && (
-                <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                    <Popover.Content>{dateTooltipCallback()}</Popover.Content>
-                </Popover>
-            )}
-        </div>
-    );
+        const buttonRef = useRef<HTMLButtonElement>(null);
+
+        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+
+        useEffect(() => {
+            if (isFocused) {
+                buttonRef.current?.focus();
+            }
+        }, [isFocused]);
+
+        const isClickable = !!dateClickCallback && !isWeekend(date);
+
+        return (
+            <button
+                ref={buttonRef}
+                type="button"
+                data-testid={`day:${day};dayColor:${periodeColor}`}
+                tabIndex={isFocused ? 0 : -1}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover}`}
+                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+                onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
+                onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
+                onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
+                onKeyDown={
+                    dateClickCallback
+                        ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
+                        : undefined
+                }
+            >
+                {day}
+                {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
+                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
+                        <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
+                    </Popover>
+                )}
+            </button>
+        );
+    },
+);
+
+const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
+    periodeColor !== 'NONE' && periodeColor !== 'GRAY';
+
+export const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
+
+export const logOnLocalhost = (message: string) => {
+    const isVitest = typeof process !== 'undefined' && process.env.VITEST === 'true';
+    if (globalThis.location.hostname === 'localhost' && !isVitest) {
+        // eslint-disable-next-line no-console -- Logg rendring av Month og Day på localhost for å enkelt avdekke ytelsesproblem
+        console.log(message);
+    }
+};
+
+const handleKeyNavigationAndSelection = (
+    e: React.KeyboardEvent,
+    date: Dayjs,
+    dateClickCallback: (date: string) => void,
+    setFocusedDate: (date: Dayjs) => void,
+) => {
+    e.preventDefault();
+    const isClickable = !!dateClickCallback && !isWeekend(date);
+
+    switch (e.key) {
+        case 'ArrowLeft':
+            setFocusedDate(date.subtract(1, 'day'));
+            break;
+        case 'ArrowRight':
+            setFocusedDate(date.add(1, 'day'));
+            break;
+        case 'ArrowUp':
+            setFocusedDate(date.subtract(7, 'day'));
+            break;
+        case 'ArrowDown':
+            setFocusedDate(date.add(7, 'day'));
+            break;
+        case 'Enter':
+        case ' ':
+            if (isClickable) {
+                dateClickCallback(date.format(ISO_DATE_FORMAT));
+            }
+    }
 };

@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-
 import { CalendarLabel } from './CalendarLabel';
 
 const meta = {
@@ -14,83 +12,83 @@ type Story = StoryObj<typeof meta>;
 
 export const GreenLabel: Story = {
     args: {
-        iconType: PeriodeColor.GREEN,
+        color: 'GREEN',
         children: <div>green</div>,
     },
 };
 
 export const BlueLabel: Story = {
     args: {
-        iconType: PeriodeColor.BLUE,
+        color: 'BLUE',
         children: <div>blue</div>,
     },
 };
 export const PinkLabel: Story = {
     args: {
-        iconType: PeriodeColor.PINK,
+        color: 'PINK',
         children: <div>pink</div>,
     },
 };
 
 export const BlueOutlineLabel: Story = {
     args: {
-        iconType: PeriodeColor.BLUEOUTLINE,
+        color: 'BLUEOUTLINE',
         children: <div>blue outline</div>,
     },
 };
 
 export const BlueStripedLabel: Story = {
     args: {
-        iconType: PeriodeColor.BLUESTRIPED,
+        color: 'BLUESTRIPED',
         children: <div>blue striped</div>,
     },
 };
 
 export const GreenOutlineLabel: Story = {
     args: {
-        iconType: PeriodeColor.GREENOUTLINE,
+        color: 'GREENOUTLINE',
         children: <div>green outline</div>,
     },
 };
 
 export const GreenStripedLabel: Story = {
     args: {
-        iconType: PeriodeColor.GREENSTRIPED,
+        color: 'GREENSTRIPED',
         children: <div>green striped</div>,
     },
 };
 
 export const LightBlueLabel: Story = {
     args: {
-        iconType: PeriodeColor.LIGHTBLUE,
+        color: 'LIGHTBLUE',
         children: <div>light blue</div>,
     },
 };
 
 export const LightGreenLabel: Story = {
     args: {
-        iconType: PeriodeColor.LIGHTGREEN,
+        color: 'LIGHTGREEN',
         children: <div>light green</div>,
     },
 };
 
 export const LightGreenBlueLabel: Story = {
     args: {
-        iconType: PeriodeColor.LIGHTGREENBLUE,
+        color: 'LIGHTGREENBLUE',
         children: <div>light green blue</div>,
     },
 };
 
 export const LightBlueGreenLabel: Story = {
     args: {
-        iconType: PeriodeColor.LIGHTBLUEGREEN,
+        color: 'LIGHTBLUEGREEN',
         children: <div>light blue green</div>,
     },
 };
 
 export const BlackLabel: Story = {
     args: {
-        iconType: PeriodeColor.BLACK,
+        color: 'BLACK',
         children: <div>black</div>,
     },
 };

@@ -36,7 +36,7 @@ export const SamtidigUttakSpørsmål = () => {
             {samtidigUttakValue && (
                 <RhfNumericField
                     control={control}
-                    className="w-xs"
+                    className="max-w-xs"
                     label="Hvor mange prosent?"
                     name="samtidigUttaksprosent"
                     validate={[valideringSamtidigUttak(intl, stillingsprosentValue)]}

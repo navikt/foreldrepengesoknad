@@ -1,9 +1,9 @@
 import { useIntl } from 'react-intl';
 
 import { BrukerRolleSak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
-import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import IconBox from '../icon-box/IconBox';
+import { getUtsettelseFarge } from '../stønadskonto-ikon/StønadskontoIkon';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 interface Props {
@@ -39,5 +39,6 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
         </IconBox>
     );
 };
+
 // eslint-disable-next-line import/no-default-export
 export default UtsettelseIkon;

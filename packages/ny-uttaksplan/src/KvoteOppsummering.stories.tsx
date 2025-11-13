@@ -1,21 +1,50 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import dayjs from 'dayjs';
+import { ComponentProps } from 'react';
 
-import { KontoBeregningDto, NavnPåForeldre } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
-import { KvoteOppsummering } from '.';
+import { KvoteOppsummering } from './KvoteOppsummering';
+import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
 
 const meta = {
     component: KvoteOppsummering,
-} satisfies Meta<typeof KvoteOppsummering>;
+    args: {
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Espen',
+        },
+        barn: {
+            type: BarnType.UFØDT,
+            termindato: '2025-05-06',
+            antallBarn: 1,
+        },
+        visStatusIkoner: true,
+        modus: 'innsyn',
+        aleneOmOmsorg: false,
+        erMedmorDelAvSøknaden: true,
+        harAktivitetskravIPeriodeUtenUttak: true,
+        bareFarMedmorHarRett: false,
+        erDeltUttak: false,
+    },
+    render: (args) => {
+        const { rettighetType, visStatusIkoner, ...rest } = args;
+        return (
+            <UttaksplanDataProvider
+                {...rest}
+                aleneOmOmsorg={rettighetType === 'ALENEOMSORG'}
+                erDeltUttak={rettighetType === 'BEGGE_RETT'}
+            >
+                <KvoteOppsummering rettighetType={rettighetType} visStatusIkoner={visStatusIkoner} />
+            </UttaksplanDataProvider>
+        );
+    },
+} satisfies Meta<
+    Omit<ComponentProps<typeof UttaksplanDataProvider>, 'children'> & ComponentProps<typeof KvoteOppsummering>
+>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-const navnPåForeldre = {
-    mor: 'Helga',
-    farMedmor: 'Espen',
-} satisfies NavnPåForeldre;
 
 const kontoNårBeggeHarRett = {
     kontoer: [
@@ -48,23 +77,18 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [],
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
                 fom: '2025-05-06',
                 tom: '2025-05-26',
@@ -77,8 +101,6 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 },
                 flerbarnsdager: false,
                 forelder: 'MOR',
-                id: '2025-05-06 - 2025-05-26 - FORELDREPENGER_FØR_FØDSEL',
-                readOnly: true,
             },
             {
                 fom: '2025-05-27',
@@ -92,8 +114,6 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 },
                 flerbarnsdager: false,
                 forelder: 'MOR',
-                id: '2025-05-27 - 2025-09-08 - MØDREKVOTE',
-                readOnly: true,
             },
             {
                 fom: '2025-09-09',
@@ -107,8 +127,6 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 },
                 flerbarnsdager: false,
                 forelder: 'MOR',
-                id: '2025-09-09 - 2025-12-29 - FELLESPERIODE',
-                readOnly: true,
             },
             {
                 fom: '2025-12-30',
@@ -116,43 +134,32 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 kontoType: 'FEDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'FAR_MEDMOR',
-                id: '2025-12-30 - 2026-04-13 - FEDREKVOTE',
-                readOnly: true,
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
-                fom: '2024-11-10',
+                fom: '2024-11-18',
                 tom: '2024-12-08',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
-                tom: '2025-03-18',
+                tom: '2025-03-21',
                 kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-05-16',
                 kontoType: 'FELLESPERIODE',
@@ -160,17 +167,13 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
-                tom: '2025-08-31',
+                tom: '2025-08-29',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-29',
                 oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
@@ -179,30 +182,24 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
-                tom: '2025-09-26',
+                tom: '2025-09-29',
                 kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'MOR',
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-06',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -210,8 +207,6 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-03-14',
                 kontoType: 'MØDREKVOTE',
@@ -220,8 +215,6 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-05-16',
                 kontoType: 'FELLESPERIODE',
@@ -235,8 +228,6 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-31',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
@@ -245,20 +236,15 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-02',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -266,8 +252,6 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-02-14',
                 kontoType: 'MØDREKVOTE',
@@ -275,8 +259,6 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-04-16',
                 kontoType: 'FELLESPERIODE',
@@ -284,8 +266,6 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
@@ -293,8 +273,6 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
                 oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
@@ -302,8 +280,6 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
                 tom: '2025-09-24',
                 kontoType: 'MØDREKVOTE',
@@ -312,21 +288,20 @@ export const BeggeRettMorLedigeDager: Story = {
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-05-06'],
+            antallBarn: 1,
+        },
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-02',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -334,8 +309,6 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-02-14',
                 kontoType: 'MØDREKVOTE',
@@ -343,8 +316,6 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-04-16',
                 kontoType: 'FELLESPERIODE',
@@ -352,8 +323,6 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
@@ -361,8 +330,6 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
                 oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
@@ -370,8 +337,6 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
                 tom: '2025-09-24',
                 kontoType: 'MØDREKVOTE',
@@ -380,7 +345,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
@@ -407,14 +372,9 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareFarHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareFarHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-06',
                 tom: '2025-02-13',
                 kontoType: 'FORELDREPENGER',
@@ -423,8 +383,6 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-02-14',
                 tom: '2025-09-11',
                 kontoType: 'FORELDREPENGER',
@@ -434,20 +392,16 @@ export const EnRettFarAlleDagerBrukt: Story = {
             },
         ],
         rettighetType: 'BARE_SØKER_RETT',
-        forelder: 'FAR_MEDMOR',
+        erFarEllerMedmor: true,
     },
 };
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        navnPåForeldre,
         modus: 'planlegger',
-        visStatusIkoner: true,
-        konto: kontoNårBareFarHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareFarHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-06',
                 tom: '2025-02-06',
                 kontoType: 'FORELDREPENGER',
@@ -456,8 +410,6 @@ export const EnRettFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-02-14',
                 tom: '2025-09-04',
                 kontoType: 'FORELDREPENGER',
@@ -467,7 +419,7 @@ export const EnRettFarLedigeDager: Story = {
             },
         ],
         rettighetType: 'BARE_SØKER_RETT',
-        forelder: 'FAR_MEDMOR',
+        erFarEllerMedmor: true,
     },
 };
 
@@ -494,14 +446,9 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-09',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -509,8 +456,6 @@ export const EnRettMorAlleDagerBrukt: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-27',
                 kontoType: 'FORELDREPENGER',
@@ -519,20 +464,15 @@ export const EnRettMorAlleDagerBrukt: Story = {
             },
         ],
         rettighetType: 'BARE_SØKER_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const EnRettMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-01',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -540,8 +480,6 @@ export const EnRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-13',
                 kontoType: 'FORELDREPENGER',
@@ -550,20 +488,15 @@ export const EnRettMorLedigeDager: Story = {
             },
         ],
         rettighetType: 'BARE_SØKER_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-01',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -571,8 +504,6 @@ export const AleneomsorgMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-13',
                 kontoType: 'FORELDREPENGER',
@@ -581,16 +512,13 @@ export const AleneomsorgMorLedigeDager: Story = {
             },
         ],
         rettighetType: 'ALENEOMSORG',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: {
+        valgtStønadskonto: {
             kontoer: [
                 {
                     konto: 'FORELDREPENGER',
@@ -606,10 +534,8 @@ export const AleneomsorgFarLedigeDager: Story = {
                 prematur: 0,
             },
         },
-        perioder: [
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-01',
                 tom: '2025-07-04',
                 kontoType: 'FORELDREPENGER',
@@ -617,8 +543,6 @@ export const AleneomsorgFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-12',
                 tom: '2025-09-25',
                 kontoType: 'FORELDREPENGER',
@@ -627,16 +551,13 @@ export const AleneomsorgFarLedigeDager: Story = {
             },
         ],
         rettighetType: 'ALENEOMSORG',
-        forelder: 'FAR_MEDMOR',
+        erFarEllerMedmor: true,
     },
 };
 
 export const AleneomsorgFarForMangeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: {
+        valgtStønadskonto: {
             kontoer: [
                 {
                     konto: 'FORELDREPENGER',
@@ -652,10 +573,8 @@ export const AleneomsorgFarForMangeDager: Story = {
                 prematur: 0,
             },
         },
-        perioder: [
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-01',
                 tom: '2025-07-04',
                 kontoType: 'FORELDREPENGER',
@@ -663,8 +582,6 @@ export const AleneomsorgFarForMangeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-12',
                 tom: '2025-12-30',
                 kontoType: 'FORELDREPENGER',
@@ -673,7 +590,7 @@ export const AleneomsorgFarForMangeDager: Story = {
             },
         ],
         rettighetType: 'ALENEOMSORG',
-        forelder: 'FAR_MEDMOR',
+        erFarEllerMedmor: true,
     },
 };
 
@@ -691,10 +608,7 @@ export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
 export const MorHarPrematuruker: Story = {
     name: 'Mor har prematuruker',
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: {
+        valgtStønadskonto: {
             kontoer: [
                 {
                     konto: 'FELLESPERIODE',
@@ -722,10 +636,8 @@ export const MorHarPrematuruker: Story = {
                 prematur: 48,
             },
         },
-        perioder: [
+        saksperioder: [
             {
-                id: 'whatever',
-                readOnly: true,
                 fom: '2025-08-13',
                 tom: '2025-10-10',
                 kontoType: 'FELLESPERIODE',
@@ -740,8 +652,6 @@ export const MorHarPrematuruker: Story = {
                 forelder: 'MOR',
             },
             {
-                id: 'whatever',
-                readOnly: true,
                 fom: '2025-10-11',
                 tom: '2025-11-25',
                 kontoType: 'MØDREKVOTE',
@@ -756,6 +666,6 @@ export const MorHarPrematuruker: Story = {
             },
         ],
         rettighetType: 'BEGGE_RETT',
-        forelder: 'MOR',
+        erFarEllerMedmor: false,
     },
 };

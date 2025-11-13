@@ -5,9 +5,8 @@ import { Button, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { formatDate } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { PanelData } from '../EndrePeriodePanel';
@@ -25,8 +24,7 @@ interface FormValues {
 
 export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closePanel }: Props) => {
     const intl = useIntl();
-    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
-    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const { navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>({
         defaultValues: {

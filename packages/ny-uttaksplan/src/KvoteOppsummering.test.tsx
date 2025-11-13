@@ -95,7 +95,7 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorForMangeDagerBrukt >', async () => {
         render(<BeggeRettMorForMangeDagerBrukt />);
 
-        expect(screen.getByText('Det er lagt til 2 uker og 3 dager for mye')).toBeInTheDocument();
+        expect(screen.getByText('Det er lagt til 1 uke og 1 dag for mye')).toBeInTheDocument();
     });
 
     it('<MorOgMedmorBeggeRettMorIngenDagerBrukt - Medmors kvote skal være "Medmorkvote" >', async () => {

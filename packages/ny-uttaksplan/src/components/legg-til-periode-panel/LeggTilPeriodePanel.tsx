@@ -20,11 +20,9 @@ export interface PanelData {
 interface Props {
     onCancel?: () => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    erBarnetFødt: boolean;
-    gjelderAdopsjon: boolean;
 }
 
-export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode, erBarnetFødt, gjelderAdopsjon }: Props) => {
+export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode }: Props) => {
     const panelData: PanelData = {
         hvaVilDuGjøre: undefined,
         fom: undefined,
@@ -44,8 +42,6 @@ export const LeggTilPeriodePanel = ({ onCancel, handleAddPeriode, erBarnetFødt,
             <LeggTilPeriodePanelStep
                 panelData={panelData}
                 closePanel={onCancel || (() => {})}
-                erBarnetFødt={erBarnetFødt}
-                gjelderAdopsjon={gjelderAdopsjon}
                 handleAddPeriode={handleAddPeriode}
             />
         </VStack>

@@ -4,126 +4,49 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import {
-    Barn,
-    Familiesituasjon,
-    KontoBeregningDto,
-    SaksperiodeNy,
-    UttaksplanModus,
-    isFødtBarn,
-} from '@navikt/fp-types';
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
-import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
-import { UttaksplanDataContext } from './context/UttaksplanDataContext';
+import { useUttaksplanData } from './context/UttaksplanDataContext';
+import { useUttaksplanBuilder } from './context/useUttaksplanBuilder';
 import { Planperiode } from './types/Planperiode';
-import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from './utils/periodeUtils';
+import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
-    familiehendelsedato: string;
-    erFarEllerMedmor: boolean;
-    navnPåForeldre: NavnPåForeldre;
-    barn: Barn;
-    søkersPerioder: SaksperiodeNy[];
-    annenPartsPerioder?: SaksperiodeNy[];
-    gjelderAdopsjon: boolean;
-    bareFarMedmorHarRett: boolean;
-    harAktivitetskravIPeriodeUtenUttak: boolean;
-    førsteUttaksdagNesteBarnsSak: string | undefined;
-    familiesituasjon: Familiesituasjon;
-    handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
-    modus: UttaksplanModus;
-    valgtStønadskonto?: KontoBeregningDto;
-    erAleneOmOmsorg: boolean;
+    oppdaterUttaksplan?: (perioder: SaksperiodeNy[]) => void;
     isAllAccordionsOpen?: boolean;
-    erMedmorDelAvSøknaden?: boolean;
 }
 
-export const UttaksplanNy = ({
-    familiehendelsedato,
-    erFarEllerMedmor,
-    navnPåForeldre,
-    barn,
-    søkersPerioder,
-    annenPartsPerioder,
-    gjelderAdopsjon,
-    bareFarMedmorHarRett,
-    harAktivitetskravIPeriodeUtenUttak,
-    førsteUttaksdagNesteBarnsSak,
-    familiesituasjon,
-    handleOnPlanChange,
-    modus,
-    valgtStønadskonto,
-    erAleneOmOmsorg,
-    isAllAccordionsOpen,
-    erMedmorDelAvSøknaden = false,
-}: Props) => {
+export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const komplettPlan = utledKomplettPlan({
-        familiehendelsedato,
-        erFarEllerMedmor,
-        søkersPerioder,
-        annenPartsPerioder,
-        gjelderAdopsjon,
-        bareFarMedmorHarRett,
-        harAktivitetskravIPeriodeUtenUttak,
-        førsteUttaksdagNesteBarnsSak,
-        modus,
-    });
+    const { modus, uttaksplan } = useUttaksplanData();
 
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
-        : undefined;
-    const builder = Uttaksplanbuilder({
-        perioder: komplettPlan,
-        familiehendelsedato,
-        harAktivitetskravIPeriodeUtenUttak,
-        gjelderAdopsjon,
-        bareFarMedmorHarRett,
-        erFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak,
-        opprinneligPlan: annenPartsPlanperioder,
-        erIPlanleggerModus: true,
-    });
+    const uttaksplanBuilder = useUttaksplanBuilder();
 
     return (
-        <UttaksplanDataContext
-            initialState={{
-                BARN: barn,
-                ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
-                FAMILIEHENDELSEDATO: familiehendelsedato,
-                NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: komplettPlan,
-                FAMILIESITUASJON: familiesituasjon,
-                MODUS: modus,
-                VALGT_STØNADSKONTO: valgtStønadskonto,
-                ALENE_OM_OMSORG: erAleneOmOmsorg,
-                ER_MEDMOR_DEL_AV_SØKNADEN: erMedmorDelAvSøknaden,
-            }}
-        >
-            {komplettPlan.length > 0 && (
+        <>
+            {uttaksplan.length > 0 && (
                 <PeriodeListe
-                    perioder={komplettPlan}
+                    perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
                     }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
-                        modifyPlan(builder.oppdaterPeriode(oppdatertPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode), oppdaterUttaksplan);
                     }}
                     handleDeletePeriode={(slettetPeriode: Planperiode) => {
-                        modifyPlan(builder.slettPeriode(slettetPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.slettPeriode(slettetPeriode), oppdaterUttaksplan);
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
-                        modifyPlan(builder.slettPerioder(slettedePerioder), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.slettPerioder(slettedePerioder), oppdaterUttaksplan);
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
                 />
             )}
-            {komplettPlan.length === 0 && (
+            {uttaksplan.length === 0 && (
                 <HStack gap="space-12">
                     <NotePencilDashIcon fontSize={24} />
                     <VStack gap="space-8">
@@ -141,25 +64,23 @@ export const UttaksplanNy = ({
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isLeggTilPeriodePanelOpen && (
+            {isLeggTilPeriodePanelOpen && oppdaterUttaksplan && (
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(builder.leggTilPeriode(nyPeriode), handleOnPlanChange);
+                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
                         setIsLeggTilPeriodePanelOpen(false);
                     }}
-                    erBarnetFødt={isFødtBarn(barn)}
-                    gjelderAdopsjon={gjelderAdopsjon}
                 />
             )}
-        </UttaksplanDataContext>
+        </>
     );
 };
 
-const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange: (perioder: SaksperiodeNy[]) => void) => {
+const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void) => {
     const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
-    handleOnPlanChange(
+    handleOnPlanChange?.(
         resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
     );
 };

@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
+import { stønadskontoer as stønadskontoer1 } from 'storybookData/stønadskontoer/stønadskontoer1';
+import { stønadskontoer as stønadskontoer2 } from 'storybookData/stønadskontoer/stønadskontoer2';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -30,7 +32,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer1)),
+            ],
         },
     },
     args: {
@@ -54,6 +59,7 @@ export const FarSøker: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer2)),
                 http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [
@@ -167,6 +173,7 @@ export const MorOgFarOgFarGraderer: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer2)),
                 http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [
