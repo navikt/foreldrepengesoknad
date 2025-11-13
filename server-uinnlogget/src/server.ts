@@ -23,7 +23,10 @@ const publicRouter = express.Router();
 server.use(logger.morganMiddleware);
 
 publicRouter.use((req, res, next) => {
-    const ua = req.headers['Origin'] || '';
+    const ua = req.headers.origin || '';
+    logger.info(JSON.stringify(req.headers));
+    console.log(req.headers);
+    logger.info(ua);
 
     if (ua === 'https://nav.psplugin.com') {
         res.setHeader('Cache-Control', 'no-store');
