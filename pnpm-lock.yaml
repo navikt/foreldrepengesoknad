@@ -1903,8 +1903,8 @@ importers:
         specifier: workspace:*
         version: link:../config-eslint
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 3.4.0
-        version: 3.4.0(csp-header@6.2.0)(html-react-parser@5.2.7(@types/react@19.1.13)(react@19.1.1))(jsdom@26.1.0)(react@19.1.1)
+        specifier: 3.5.0
+        version: 3.5.0(csp-header@6.2.0)(html-react-parser@5.2.7(@types/react@19.1.13)(react@19.1.1))(jsdom@26.1.0)(react@19.1.1)
       '@navikt/vite-mode':
         specifier: 0.13.6
         version: 0.13.6(express@5.1.0)
@@ -1931,8 +1931,8 @@ importers:
         specifier: 1.10.1
         version: 1.10.1
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
       winston:
         specifier: 3.17.0
         version: 3.17.0
