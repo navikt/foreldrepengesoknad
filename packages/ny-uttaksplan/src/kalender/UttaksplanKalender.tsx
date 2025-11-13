@@ -66,7 +66,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                               tom: periode?.tom,
                                               isSelected: true,
                                               srText: intl.formatMessage(
-                                                  { id: 'UttaksplanKalender.valgtPeriode' },
+                                                  { id: 'UttaksplanKalender.ValgtPeriodeSrTekst' },
                                                   {
                                                       fom: dayjs(periode?.fom).format(DDMMYYYY_DATE_FORMAT),
                                                       tom: dayjs(periode?.tom).format(DDMMYYYY_DATE_FORMAT),
