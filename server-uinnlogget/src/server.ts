@@ -24,11 +24,8 @@ server.use(logger.morganMiddleware);
 
 publicRouter.use((req, res, next) => {
     const ua = req.headers.origin || '';
-    logger.info(JSON.stringify(req.headers));
-    console.log(req.headers);
-    logger.info(ua);
 
-    if (ua === 'https://nav.psplugin.com') {
+    if (ua === 'https://nav.psplugin.com' || true) {
         res.setHeader('Cache-Control', 'no-store');
         res.removeHeader('ETag');
     }
