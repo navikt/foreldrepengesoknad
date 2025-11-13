@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -17,6 +18,9 @@ import { useKalenderRedigeringContext } from './context/KalenderRedigeringContex
 type Props = {
     children: React.ReactNode[] | React.ReactNode;
     kanLeggeTilFerie: boolean;
+    valgtePerioder: CalendarPeriod[];
+    oppdaterUttaksplan: (oppdatertePerioder: UttakPeriode_fpoversikt[]) => void;
+    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
 export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {

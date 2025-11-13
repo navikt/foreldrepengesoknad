@@ -48,7 +48,6 @@ export type {
     Uttaksperiode,
     Oppholdsperiode,
 } from './src/Periode';
-export type { SaksperiodeNy } from './src/SaksperiodeNy';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export { HvemPlanleggerType } from './src/HvemPlanleggerType';
 export * from './src/Ytelse';

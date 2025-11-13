@@ -9,7 +9,8 @@ const perioder: Planperiode[] = [
         fom: '2022-07-21',
         tom: '2022-08-31',
         forelder: 'FAR_MEDMOR',
-        kontoType: 'AKTIVITETSFRI_KVOTE',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     },
     {
@@ -17,7 +18,8 @@ const perioder: Planperiode[] = [
         fom: '2022-09-01',
         tom: '2022-09-14',
         forelder: 'FAR_MEDMOR',
-        kontoType: 'AKTIVITETSFRI_KVOTE',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     },
 ];

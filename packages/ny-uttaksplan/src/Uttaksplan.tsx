@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
@@ -15,7 +15,7 @@ import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
-    oppdaterUttaksplan?: (perioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan?: (perioder: UttakPeriode_fpoversikt[]) => void;
     isAllAccordionsOpen?: boolean;
 }
 
@@ -77,7 +77,7 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
     );
 };
 
-const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange?: (perioder: SaksperiodeNy[]) => void) => {
+const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange?: (perioder: UttakPeriode_fpoversikt[]) => void) => {
     const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
     handleOnPlanChange?.(

@@ -1,6 +1,6 @@
-import { SaksperiodeNy } from './SaksperiodeNy';
+import { UttakPeriode_fpoversikt } from './fpoversiktDtoGenerert';
 
 export interface PlanForslag {
-    søker1: SaksperiodeNy[];
-    søker2: SaksperiodeNy[];
+    søker1: UttakPeriode_fpoversikt[];
+    søker2: UttakPeriode_fpoversikt[];
 }

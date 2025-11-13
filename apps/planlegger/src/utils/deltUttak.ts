@@ -1,4 +1,4 @@
-import { KontoDto, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
+import { KontoDto, PlanForslag, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
@@ -23,8 +23,8 @@ export const deltUttak = ({
     }
 
     const førsteUttaksdag = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
-    const morsPerioder: SaksperiodeNy[] = [];
-    const farsPerioder: SaksperiodeNy[] = [];
+    const morsPerioder: UttakPeriode_fpoversikt[] = [];
+    const farsPerioder: UttakPeriode_fpoversikt[] = [];
     const fellesperiodeDagerFarMedmor =
         tilgjengeligeStønadskontoer.find((k) => k.konto === 'FELLESPERIODE')!.dager - fellesperiodeDagerMor;
     const foreldrepengerFørFødsel = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -37,7 +37,7 @@ export const deltUttak = ({
             UttaksdagenString(currentTomDate).trekkFra(15),
             foreldrepengerFørFødsel.dager,
         );
-        const periodeFPFF: SaksperiodeNy = {
+        const periodeFPFF: UttakPeriode_fpoversikt = {
             forelder: 'MOR',
             kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             fom: tidsperiode.fom,
@@ -51,7 +51,7 @@ export const deltUttak = ({
 
     if (mødrekvote !== undefined) {
         const tidsperiode = getTidsperiodeString(currentTomDate, mødrekvote.dager);
-        const periodeMødrekvote: SaksperiodeNy = {
+        const periodeMødrekvote: UttakPeriode_fpoversikt = {
             forelder: 'MOR',
             kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
@@ -65,7 +65,7 @@ export const deltUttak = ({
 
     if (fellesperiodeDagerMor !== undefined && fellesperiodeDagerMor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerMor);
-        const periodeFellesperiode: SaksperiodeNy = {
+        const periodeFellesperiode: UttakPeriode_fpoversikt = {
             forelder: 'MOR',
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
@@ -79,7 +79,7 @@ export const deltUttak = ({
 
     if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
-        const periodeFellesperiode: SaksperiodeNy = {
+        const periodeFellesperiode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
@@ -93,7 +93,7 @@ export const deltUttak = ({
 
     if (fedrekvote !== undefined) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fedrekvote.dager);
-        const periodeFedrekvote: SaksperiodeNy = {
+        const periodeFedrekvote: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FEDREKVOTE',
             fom: tidsperiode.fom,

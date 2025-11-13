@@ -9,8 +9,8 @@ import {
     KontoDto,
     KontoTypeUttak,
     RettighetType_fpoversikt,
-    SaksperiodeNy,
     UttakOppholdÅrsak_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
@@ -573,7 +573,7 @@ const StandardVisning = ({
     visStatusIkoner,
 }: {
     konto?: KontoDto;
-    perioder: SaksperiodeNy[];
+    perioder: UttakPeriode_fpoversikt[];
     visStatusIkoner: boolean;
 }) => {
     const intl = useIntl();
@@ -833,11 +833,14 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
     </div>
 );
 
-const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+const finnAntallDagerÅTrekke = (periode: UttakPeriode_fpoversikt) => {
     if (periode.resultat?.trekkerDager === false) {
         return 0;
     }
+
+    /* @ts-expect-error temp */
     if (periode.trekkdager !== undefined) {
+        /* @ts-expect-error temp */
         return periode.trekkdager;
     }
 
@@ -870,7 +873,7 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fp
     }
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
+const summerDagerIPerioder = (perioder: UttakPeriode_fpoversikt[], konto: KontoDto[]) => {
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
             if (p.oppholdÅrsak) {
@@ -913,7 +916,7 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
     return Math.floor(dagerTotalt);
 };
 
-const getUttaksKontoType = (p: SaksperiodeNy): KontoTypeUttak | undefined => {
+const getUttaksKontoType = (p: UttakPeriode_fpoversikt): KontoTypeUttak | undefined => {
     if (p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }
