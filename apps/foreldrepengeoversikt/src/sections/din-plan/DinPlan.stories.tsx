@@ -9,6 +9,65 @@ import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlanWrapper as DinPlan } from './DinPlan';
 
+const STØNADSKONTOER = {
+    '80': {
+        kontoer: [
+            {
+                konto: 'FELLESPERIODE',
+                dager: 90,
+            },
+            {
+                konto: 'MØDREKVOTE',
+                dager: 95,
+            },
+            {
+                konto: 'FEDREKVOTE',
+                dager: 95,
+            },
+            {
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+        tillegg: {
+            flerbarn: 0,
+            prematur: 0,
+        },
+    },
+    '100': {
+        kontoer: [
+            {
+                konto: 'FELLESPERIODE',
+                dager: 80,
+            },
+            {
+                konto: 'MØDREKVOTE',
+                dager: 75,
+            },
+            {
+                konto: 'FEDREKVOTE',
+                dager: 75,
+            },
+            {
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+        tillegg: {
+            flerbarn: 0,
+            prematur: 0,
+        },
+    },
+};
+
 const meta = {
     title: 'DinPlan',
     component: DinPlan,
@@ -32,18 +91,7 @@ export const Default: Story = {
         msw: {
             handlers: [
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.post(API_URLS.konto, async ({ request }) => {
-                    const body = await request.json();
-                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
-                        body: JSON.stringify(body),
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    const json = await response.json();
-                    return HttpResponse.json(json);
-                }),
+                http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER)),
             ],
         },
     },
