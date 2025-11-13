@@ -2,6 +2,7 @@ import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, S
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
+import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -101,14 +102,14 @@ const showManglendeDokumentasjonSteg = (
             !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
 
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-
-        const skalHaOmBarnetDok = skalViseTerminbekreftelseDokumentasjon({
+        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
             søkersituasjon,
             barn,
             erFarEllerMedmor,
             arbeidsforhold,
             annenForelder,
         });
+        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
         const skalHaUttakDok =
             annenForelder && uttaksplan
@@ -125,7 +126,13 @@ const showManglendeDokumentasjonSteg = (
             (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
         );
 
-        return skalHaAleneomsorgDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
+        return (
+            skalHaAleneomsorgDok ||
+            skalHaTerminDokumentasjon ||
+            skalHaAdopsjonDokumentasjon ||
+            skalHaUttakDok ||
+            skalHaAndreInntekterDok
+        );
     }
 
     return false;
