@@ -1,9 +1,9 @@
 {
-  "sakenProsesseres.info": "Vi henter nå status på saken din. Dette tar som regel under ett minutt. Du trenger ikke gjøre noe – siden oppdateres automatisk.",
-  "sakenProsesseres.loader": "Henter status på saken …",
-  "minSide.info": "Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.",
-  "minSide.button": "Se søknaden din på Min side",
-  "innsyn.info": "Saken er registrert hos Nav og har fått et saksnummer.",
-  "innsyn.followup": "Du kan følge behandlingen og se dokumentene dine på Min side.",
-  "header.title": "Søknaden din er mottatt"
+    "sakenProsesseres.info": "Vi henter nå status på saken din. Dette tar som regel under ett minutt. Du trenger ikke gjøre noe – siden oppdateres automatisk.",
+    "sakenProsesseres.loader": "Henter status på saken …",
+    "minSide.info": "Vi har mottatt søknaden din og alt er i orden. Saken behandles av en saksbehandler.",
+    "minSide.button": "Se søknaden din på Min side",
+    "innsyn.info": "Saken er registrert hos Nav og har fått et saksnummer.",
+    "innsyn.followup": "Du kan følge behandlingen og se dokumentene dine på Min side.",
+    "header.title": "Søknaden din er mottatt"
 }
