@@ -21,7 +21,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
         <VStack gap="space-8">
             {arbeidsforhold.map((arbforhold) => (
                 <Box.New
-                    key={arbforhold.arbeidsgiverId + arbforhold.from + arbforhold.to}
+                    key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.fom}
                     padding="4"
                     background="brand-blue-moderate"
                     borderRadius="medium"
@@ -58,9 +58,9 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             <FormattedMessage
                                 id="inntektsinformasjon.arbeidsforhold.periode"
                                 values={{
-                                    fom: formatDate(arbforhold.from),
-                                    tom: arbforhold.to
-                                        ? formatDate(arbforhold.to)
+                                    fom: formatDate(arbforhold.fom),
+                                    tom: arbforhold.tom
+                                        ? formatDate(arbforhold.tom)
                                         : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
                                 }}
                             />

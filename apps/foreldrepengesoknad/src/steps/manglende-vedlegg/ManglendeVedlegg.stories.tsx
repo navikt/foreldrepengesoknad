@@ -188,7 +188,7 @@ const arbeidsforholdMorJobber80Prosent = [
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Mors Arbeidsplass AS',
         stillingsprosent: 80,
-        from: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
     },
 ];
 

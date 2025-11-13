@@ -27,3 +27,8 @@ body {
         @apply inline-block;
     }
 }
+
+/* Fiks for å unngå scroll på skyra-survey. */
+skyra-survey {
+--skyra-option-list-max-height: 500px;
+}

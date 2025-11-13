@@ -143,8 +143,10 @@ const ArbeidsforholdFormSummaryValue = ({
                 <FormattedMessage
                     id="ArbeidsforholdFormSummaryValue.arbeidsforhold.periode"
                     values={{
-                        fom: formatDate(arbeidsforhold.from),
-                        tom: arbeidsforhold.to ? formatDate(arbeidsforhold.to) : intl.formatMessage({ id: 'pågående' }),
+                        fom: formatDate(arbeidsforhold.fom),
+                        tom: arbeidsforhold.tom
+                            ? formatDate(arbeidsforhold.tom)
+                            : intl.formatMessage({ id: 'pågående' }),
                     }}
                 />
             </FormSummary.Value>

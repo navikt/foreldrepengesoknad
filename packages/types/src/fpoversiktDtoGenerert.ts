@@ -8,9 +8,9 @@ export type EksternArbeidsforholdDto_fpoversikt = {
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;
     arbeidsgiverNavn: string;
-    from: string;
+    fom: string;
     stillingsprosent: number;
-    to?: string;
+    tom?: string;
 };
 
 export type MorArbeidRequest_fpoversikt = {
