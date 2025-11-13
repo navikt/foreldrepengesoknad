@@ -29,6 +29,9 @@ publicRouter.use((req, res, next) => {
         res.setHeader('Cache-Control', 'no-store');
         res.removeHeader('Etag');
     }
+    if (req.path.endsWith('.css')) {
+        res.setHeader('Access-Control-Allow-Origin', 'https://nav.psplugin.com');
+    }
 
     next();
 });
