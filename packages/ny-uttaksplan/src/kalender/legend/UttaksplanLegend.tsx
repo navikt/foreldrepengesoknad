@@ -64,8 +64,9 @@ export const UttaksplanLegend = ({
                     <button
                         key={info.color}
                         onClick={
-                            !unselectableColors.includes(info.color) && !readOnly
-                                ? () => {
+                            unselectableColors.includes(info.color) || readOnly
+                                ? undefined
+                                : () => {
                                       selectLegend(info.color);
 
                                       if (selectedLabel === info.label) {
@@ -74,7 +75,6 @@ export const UttaksplanLegend = ({
                                           setSelectedLabel(info.label);
                                       }
                                   }
-                                : undefined
                         }
                         type="button"
                         className={'inline-block w-fit pb-[0.46rem] pr-2 [all:unset]'}
