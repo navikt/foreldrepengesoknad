@@ -2,9 +2,10 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { PlanForslag } from 'types/PlanForslag';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { HvemPlanleggerType, KontoBeregningDto, KontoDto, PlanForslag, SaksperiodeNy } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -355,7 +356,7 @@ export const lagForslagTilPlan = ({
 
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
+    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
@@ -365,7 +366,7 @@ export const getSøkersPerioder = (
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
+    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak

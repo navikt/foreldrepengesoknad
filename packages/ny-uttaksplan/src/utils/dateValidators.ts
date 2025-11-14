@@ -57,7 +57,6 @@ export const getFomValidators = ({
     const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
-        case 'AKTIVITETSFRI_KVOTE':
         case 'MØDREKVOTE':
         case 'FORELDREPENGER':
             validators.push(
@@ -238,7 +237,6 @@ export const getTomValidators = ({
     const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
 
     switch (kontoType) {
-        case 'AKTIVITETSFRI_KVOTE':
         case 'MØDREKVOTE':
         case 'FORELDREPENGER':
             validators.push(

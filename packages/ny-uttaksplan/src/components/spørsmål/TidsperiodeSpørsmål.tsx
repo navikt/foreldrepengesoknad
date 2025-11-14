@@ -39,7 +39,11 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) =
             return PeriodeHullType.PERIODE_UTEN_UTTAK;
         }
 
-        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        if (
+            !valgtPeriode?.erAnnenPartEøs &&
+            valgtPeriode?.utsettelseÅrsak &&
+            valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE'
+        ) {
             return valgtPeriode.utsettelseÅrsak;
         }
 

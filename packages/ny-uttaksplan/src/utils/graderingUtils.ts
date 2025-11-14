@@ -9,7 +9,7 @@ type GraderingsType = {
 };
 
 export const getGraderingsInfo = (periode: Planperiode | undefined): GraderingsType | undefined => {
-    if (periode && periode.gradering) {
+    if (periode && !periode.erAnnenPartEøs && periode.gradering) {
         return {
             skalDuJobbe: true,
             stillingsprosent: periode.gradering.arbeidstidprosent.toString(),

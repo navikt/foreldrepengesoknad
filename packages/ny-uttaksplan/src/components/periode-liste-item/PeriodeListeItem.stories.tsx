@@ -122,6 +122,7 @@ export const UttaksperiodeMor: Story = {
             forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-30',
@@ -157,6 +158,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
             forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
@@ -165,6 +167,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
@@ -200,6 +203,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
             forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
@@ -207,6 +211,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
@@ -215,6 +220,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-29',
                     tom: '2024-08-23',
@@ -260,6 +266,7 @@ export const UttaksperiodeFar: Story = {
             forelder: 'FAR_MEDMOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
@@ -295,6 +302,7 @@ export const PeriodeUtenUttak: Story = {
             },
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-08-01',
                     tom: '2024-08-31',

@@ -39,7 +39,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(forslag.søker1.length).toEqual(2);
         expect(forslag.søker1[0].fom).toEqual(startdato);
         expect(forslag.søker1[0].tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0].kontoType).toEqual('AKTIVITETSFRI_KVOTE');
+        expect(forslag.søker1[0].kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.søker1[0].morsAktivitet).toEqual('IKKE_OPPGITT');
         expect(forslag.søker1[1].fom).toEqual('2022-10-03');
         expect(forslag.søker1[1].tom).toEqual('2023-01-13');
         expect(forslag.søker1[1].kontoType).toEqual('FORELDREPENGER');
@@ -61,7 +62,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(forslag.søker1.length).toEqual(2);
         expect(forslag.søker1[0].fom).toEqual(famDato);
         expect(forslag.søker1[0].tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0].kontoType).toEqual('AKTIVITETSFRI_KVOTE');
+        expect(forslag.søker1[0].kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.søker1[0].morsAktivitet).toEqual('IKKE_OPPGITT');
         expect(forslag.søker1[1].fom).toEqual('2022-10-03');
         expect(forslag.søker1[1].tom).toEqual('2023-01-13');
         expect(forslag.søker1[1].kontoType).toEqual('FORELDREPENGER');

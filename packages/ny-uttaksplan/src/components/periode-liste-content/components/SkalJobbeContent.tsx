@@ -18,7 +18,7 @@ export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
     const erHull = permisjonsperiode.perioder.some(isHull);
     const erPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
     const skalJobbeIPermisjonsperioden = permisjonsperiode.perioder.some(
-        (p) => isUttaksperiode(p) && p.gradering !== undefined,
+        (p) => isUttaksperiode(p) && !p.erAnnenPartEøs && p.gradering !== undefined,
     );
 
     if (

@@ -46,8 +46,10 @@ export const slåSammenLikePerioder = (
             if (
                 annenPartsUttak &&
                 isUttaksperiode(periode) &&
+                !periode.erAnnenPartEøs &&
                 periode.samtidigUttak &&
                 isUttaksperiode(forrigePeriode) &&
+                !forrigePeriode.erAnnenPartEøs &&
                 forrigePeriode.samtidigUttak
             ) {
                 const overlappendePerioderAnnenPartForrigePeriode =
@@ -206,6 +208,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 };
 
 const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
+    erAnnenPartEøs: false,
     id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
@@ -214,6 +217,7 @@ const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
 });
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
+    erAnnenPartEøs: false,
     id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
@@ -351,6 +355,10 @@ const beregnSamtidiguttaksprosent = (overlappendePeriode: Planperiode) => {
      Men den må utledes utifra maks tillat prosent. Dette avhenger av hvilke kontoer som benyttes, eller om det er flerbarnsdager osv.
      For nå gjør vi det enkelt slik at det blir rett i innsyn for eksisterende planer.
     */
+    if (overlappendePeriode.erAnnenPartEøs) {
+        return 100;
+    }
+
     return overlappendePeriode.samtidigUttak ?? 100;
 };
 
@@ -375,7 +383,12 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.samtidigUttak !== undefined && initiellMappingFraSaksperioder) {
+            if (
+                isUttaksperiode(p) &&
+                !p.erAnnenPartEøs &&
+                p.samtidigUttak !== undefined &&
+                initiellMappingFraSaksperioder
+            ) {
                 res.push({
                     ...p,
                 });
@@ -395,11 +408,11 @@ export const settInnAnnenPartsUttak = (
             return res;
         }
 
-        if (isUttaksperiode(p) && p.samtidigUttak) {
+        if (isUttaksperiode(p) && !p.erAnnenPartEøs && p.samtidigUttak) {
             const overlappendePeriode = overlappendePerioderAnnenPart[0];
             res.push(p);
 
-            if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
+            if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode) && !overlappendePeriode.erAnnenPartEøs) {
                 res.push({
                     ...overlappendePeriode,
                     samtidigUttak: beregnSamtidiguttaksprosent(overlappendePeriode),

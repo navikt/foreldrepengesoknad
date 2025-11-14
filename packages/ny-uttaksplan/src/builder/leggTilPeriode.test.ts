@@ -5,6 +5,7 @@ import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './le
 
 const perioder: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-04-14',
         tom: '2022-05-04',
@@ -13,6 +14,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-05-05',
         tom: '2022-08-17',
@@ -21,6 +23,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-08-18',
         tom: '2022-10-12',
@@ -32,6 +35,7 @@ const perioder: Planperiode[] = [
 
 const perioderMedHull: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-03-01',
         tom: '2022-03-31',
@@ -40,6 +44,7 @@ const perioderMedHull: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-04-01',
         tom: '2022-04-29',
@@ -47,6 +52,7 @@ const perioderMedHull: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '4',
         fom: '2022-05-02',
         tom: '2022-05-31',
@@ -58,6 +64,7 @@ const perioderMedHull: Planperiode[] = [
 
 const periodeMedAnnenPartsUttak: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2024-04-01',
         tom: '2024-04-30',
@@ -66,6 +73,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2024-05-01',
         tom: '2024-05-31',
@@ -74,6 +82,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2024-06-03',
         tom: '2024-06-28',
@@ -85,6 +94,7 @@ const periodeMedAnnenPartsUttak: Planperiode[] = [
 
 const perioderKunAnnenPartsUttak: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-10-04',
         tom: '2022-12-12',
@@ -96,6 +106,7 @@ const perioderKunAnnenPartsUttak: Planperiode[] = [
 
 const toPerioder: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2024-05-01',
         tom: '2024-05-31',
@@ -104,6 +115,7 @@ const toPerioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2024-06-03',
         tom: '2024-06-28',
@@ -119,6 +131,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             ' perioden, og ikke forskyve noen andre perioder',
         () => {
             const nyPeriode: Planperiode = {
+                erAnnenPartEøs: false,
                 id: '4',
                 fom: '2022-07-11',
                 tom: '2022-07-22',
@@ -150,6 +163,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge legge til ny periode korrekt som skal delvis overlappe et hull i starten', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '7',
             fom: '2022-03-15',
             tom: '2022-04-15',
@@ -187,6 +201,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge legge til ny periode korrekt som skal delvis overlappe et hull i slutten', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-04-15',
             tom: '2022-05-12',
@@ -219,6 +234,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge legge til ny periode korrekt som skal helt overlappe et hull', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-04-01',
             tom: '2022-04-29',
@@ -246,6 +262,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge til søkerens periode korrekt midt i annen parts uttak og så kunne utvide denne perioden ved å legge til ny', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2024-05-15',
             tom: '2024-05-22',
@@ -275,6 +292,7 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(omitOne(result[4], 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[2], 'id'));
 
         const nyPeriode2: Planperiode = {
+            erAnnenPartEøs: false,
             id: '5',
             fom: '2024-05-23',
             tom: '2024-05-24',
@@ -300,6 +318,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde bare innehold ny periode om planen er tom', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-07-11',
             tom: '2022-07-22',
@@ -325,6 +344,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge til periode før første periode korrekt', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-03-31',
             tom: '2022-04-13',
@@ -350,6 +370,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge til periode før første periode korrekt og legge til periode uten uttak mellom den nye perioden og de gamle periodene', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-03-31',
             tom: '2022-04-07',
@@ -376,6 +397,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge til periode etter siste periode korrekt', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-10-13',
             tom: '2022-10-26',
@@ -401,6 +423,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Burde legge til periode etter siste periode korrekt med periode uten uttak mellom de gamle periodene og den nye', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-10-26',
             tom: '2022-11-08',
@@ -427,6 +450,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Skal legge til utsettelse korrekt', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-05-05',
             tom: '2022-05-18',
@@ -454,6 +478,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Skal ignorere perioder hvis tidsperiode starter før famdato og ender etter', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-05-03',
             tom: '2022-05-06',
@@ -477,6 +502,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Skal overskrive annen parts uttak om periode overlapper', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-09-12',
             tom: '2022-10-14',
@@ -510,6 +536,7 @@ describe('Test av legg til periode i uttaksplan', () => {
             ' periode uten uttak som overlapper med neste barns stønadsperiode start, skal periode uten uttak splittes.',
         () => {
             const nyPeriode: Planperiode = {
+                erAnnenPartEøs: false,
                 id: '6',
                 fom: '2023-05-12',
                 tom: '2023-09-19',
@@ -542,6 +569,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
     it('Skal legge til ny periode som overlapper to gamle perioder.', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '6',
             fom: '2024-04-15',
             tom: '2024-07-15',
@@ -583,6 +611,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
 describe('Test av split periode i uttaksplan', () => {
     const splitPeriodeFedrekvote: Planperiode = {
+        erAnnenPartEøs: false,
         id: '156',
         fom: '2022-04-14',
         tom: '2022-05-02',
@@ -592,12 +621,13 @@ describe('Test av split periode i uttaksplan', () => {
     };
 
     const splitPeriodeBFHRMedAktivitetskrav: Planperiode = {
+        erAnnenPartEøs: false,
         id: '157',
         fom: '2022-04-14',
         tom: '2022-05-02',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FORELDREPENGER',
-        morsAktivitet: 'ARBEID',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     };
 
@@ -606,12 +636,18 @@ describe('Test av split periode i uttaksplan', () => {
         const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(testPerioder.length).toEqual(2);
         expect(testPerioder[0].id).toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[0].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[0].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+            expect(testPerioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        }
         expect(testPerioder[0].kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
         expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
         expect(testPerioder[0].tom).toEqual('2022-04-29');
         expect(testPerioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+            expect(testPerioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        }
         expect(testPerioder[1].kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
         expect(testPerioder[1].fom).toEqual(splitteDato);
         expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
@@ -633,9 +669,15 @@ describe('Test av split periode i uttaksplan', () => {
         expect(testPerioder.length).toEqual(2);
         expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
         expect(testPerioder[0].tom).toEqual('2022-04-29');
-        expect(testPerioder[0].morsAktivitet).toBeUndefined();
+        expect(testPerioder[0].erAnnenPartEøs).toEqual(false);
+        if (!testPerioder[0].erAnnenPartEøs) {
+            expect(testPerioder[0].morsAktivitet).toEqual('IKKE_OPPGITT');
+        }
         expect(testPerioder[1].fom).toEqual(splitPeriodeFedrekvote.tom);
         expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
-        expect(testPerioder[1].morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);
+        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs);
+        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs) {
+            expect(testPerioder[1].morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);
+        }
     });
 });

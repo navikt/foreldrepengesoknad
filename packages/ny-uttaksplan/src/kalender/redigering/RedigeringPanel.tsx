@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { omitMany, useMedia } from '@navikt/fp-utils';
 
@@ -17,7 +17,9 @@ import { PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan: (
+        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 

@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoType, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
@@ -20,7 +20,7 @@ import { InfoPanel } from './InfoPanel';
 import { PlanperiodeMedAntallDager } from './Periodeoversikt';
 
 type FormValues = {
-    kontoType?: KontoTypeUttak;
+    kontoType?: KontoType;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe?: boolean;
     stillingsprosent?: string;
@@ -62,6 +62,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
     const onSubmit = (values: FormValues) => {
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map((periode) => ({
+                erAnnenPartEøs: false,
                 fom: periode.fom,
                 tom: periode.tom,
                 readOnly: false,
@@ -178,7 +179,7 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
             dayjs(periode.tom).isSame(dayjs(valgtPeriode.tom), 'day'),
     );
 
-    if (!eksisterendePeriode) {
+    if (!eksisterendePeriode || eksisterendePeriode.erAnnenPartEøs) {
         return undefined;
     }
 

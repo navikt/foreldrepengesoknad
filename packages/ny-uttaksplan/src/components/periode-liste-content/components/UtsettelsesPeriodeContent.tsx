@@ -16,9 +16,8 @@ interface Props {
 
 export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
     const intl = useIntl();
-    const { utsettelseÅrsak } = periode;
 
-    if (!utsettelseÅrsak) {
+    if (periode.erAnnenPartEøs || !periode.utsettelseÅrsak) {
         return null;
     }
 
@@ -44,7 +43,7 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
                     {periode.utsettelseÅrsak !== 'FRI' && (
-                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, utsettelseÅrsak)}</BodyShort>
+                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, periode.utsettelseÅrsak)}</BodyShort>
                     )}
                 </HStack>
             </VStack>
