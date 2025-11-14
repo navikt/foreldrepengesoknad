@@ -336,11 +336,11 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(22);
+        expect(within(juli).getByTestId('day:2;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(22);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(12);
+        expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - begge har rett', async () => {

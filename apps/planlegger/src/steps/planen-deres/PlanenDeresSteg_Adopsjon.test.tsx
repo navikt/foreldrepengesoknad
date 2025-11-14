@@ -283,12 +283,12 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:8;dayColor:PINK')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
+        expect(within(juli).getByTestId('day:9;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(mai2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(17);
+        expect(within(mai2025).getByTestId('day:23;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - begge har rett', async () => {
