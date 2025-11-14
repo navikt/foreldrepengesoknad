@@ -146,6 +146,7 @@ const AvslåttePerioder = () => {
     const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
         (p) =>
             isAvslåttPeriode(p) &&
+            !('trekkdager' in p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
             (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );

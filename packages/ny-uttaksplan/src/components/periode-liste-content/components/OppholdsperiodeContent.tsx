@@ -42,9 +42,11 @@ export const OppholdsPeriodeContent = ({
                         )}
                     </BodyShort>
                 </HStack>
-                <BodyShort>
-                    {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
-                </BodyShort>
+                {!periode.erAnnenPartEøs && (
+                    <BodyShort>
+                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
+                    </BodyShort>
+                )}
             </VStack>
         </HStack>
     );

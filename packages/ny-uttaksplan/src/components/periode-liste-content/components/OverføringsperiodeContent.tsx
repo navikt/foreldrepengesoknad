@@ -19,15 +19,15 @@ interface Props {
 
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
-    const { forelder } = periode;
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
         // TODO fiks bruk av !
         periode.kontoType!,
         navnPåForeldre,
-        forelder === 'FAR_MEDMOR',
+        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR',
     );
-    const navnPåAnnenForelder = forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder =
+        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
@@ -44,14 +44,16 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                         )}
                     </BodyShort>
                 </HStack>
-                <HStack gap="space-8">
-                    <BodyShort>
-                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
-                    </BodyShort>
-                    {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                    )}
-                </HStack>
+                {!periode.erAnnenPartEøs && (
+                    <HStack gap="space-8">
+                        <BodyShort>
+                            {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                        </BodyShort>
+                        {!periode.erAnnenPartEøs && periode.gradering !== undefined && (
+                            <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                        )}
+                    </HStack>
+                )}
             </VStack>
         </HStack>
     );

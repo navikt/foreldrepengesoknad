@@ -13,7 +13,6 @@ export {
 export {
     isUttaksperiode,
     isUtsettelsesperiode,
-    isUttaksperiodeAnnenPart,
     isAnnenPartsPeriode,
     isAvslåttPeriode,
     isForeldrepengerFørFødselPeriode,

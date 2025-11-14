@@ -3,6 +3,7 @@ import { Uttaksplanbuilder } from './Uttaksplanbuilder';
 
 const perioder: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-04-11',
         tom: '2022-04-29',
@@ -11,6 +12,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-05-02',
         tom: '2022-08-12',
@@ -19,6 +21,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-08-15',
         tom: '2022-10-07',
@@ -30,6 +33,7 @@ const perioder: Planperiode[] = [
 
 const perioderMedToPerioderFørFødsel: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2021-12-06',
         tom: '2021-12-15',
@@ -38,6 +42,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2021-12-16',
         tom: '2022-01-05',
@@ -46,6 +51,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-01-06',
         tom: '2022-05-18',
@@ -54,6 +60,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '4',
         fom: '2022-05-19',
         tom: '2022-07-01',
@@ -62,6 +69,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '5',
         fom: '2022-07-04',
         tom: '2022-07-15',
@@ -69,6 +77,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '6',
         fom: '2022-07-18',
         tom: '2022-09-23',
@@ -80,6 +89,7 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
 
 const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2021-08-18',
         tom: '2021-09-03',
@@ -88,6 +98,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2021-09-06',
         tom: '2021-09-10',
@@ -96,6 +107,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2021-09-13',
         tom: '2021-12-10',
@@ -104,6 +116,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '4',
         fom: '2021-12-13',
         tom: '2021-12-31',
@@ -112,6 +125,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '5',
         fom: '2022-01-03',
         tom: '2022-01-07',
@@ -120,6 +134,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '6',
         fom: '2022-01-10',
         tom: '2022-04-29',
@@ -128,6 +143,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '7',
         fom: '2022-05-02',
         tom: '2022-05-10',
@@ -136,6 +152,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: true,
     },
     {
+        erAnnenPartEøs: false,
         id: '8',
         fom: '2022-05-11',
         tom: '2022-07-08',
@@ -144,6 +161,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: true,
     },
     {
+        erAnnenPartEøs: false,
         id: '9',
         fom: '2022-07-11',
         tom: '2022-07-29',
@@ -152,6 +170,7 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         readOnly: true,
     },
     {
+        erAnnenPartEøs: false,
         id: '10',
         fom: '2022-08-01',
         tom: '2022-09-13',
@@ -170,6 +189,7 @@ const omitIdForComparison = (periode: Planperiode) => {
 describe('Uttaksplanbuilder tester', () => {
     it('Å legge til en utsettelse skal ikke forskyve en annen utsettelse', () => {
         const nyPeriode: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-08-15',
             tom: '2022-08-26',
@@ -192,6 +212,7 @@ describe('Uttaksplanbuilder tester', () => {
         expect(omitIdForComparison(result[2])).toEqual(omitIdForComparison(nyPeriode));
 
         const nyPeriode2: Planperiode = {
+            erAnnenPartEøs: false,
             id: '4',
             fom: '2022-05-23',
             tom: '2022-05-27',
@@ -220,6 +241,7 @@ describe('Uttaksplanbuilder tester', () => {
 
     it('Skal fungere med to perioder før fødsel i uttaksplan når man legger til en periode på slutten', () => {
         const nyPeriodeISluttenAvPlanen: Planperiode = {
+            erAnnenPartEøs: false,
             id: '6',
             fom: '2022-10-26',
             tom: '2022-11-11',
@@ -258,6 +280,7 @@ describe('Uttaksplanbuilder tester', () => {
                 return { fom: periode.fom, tom: periode.tom };
             });
             const nyUtsettelseISluttenAvPlanen: Planperiode = {
+                erAnnenPartEøs: false,
                 id: '11',
                 fom: '2022-09-14',
                 tom: '2022-09-16',
@@ -282,7 +305,10 @@ describe('Uttaksplanbuilder tester', () => {
                 const opprinneligPeriode = p;
                 const opprinneligTidsperiode = originaleTidsperiodePerioder[index];
                 expect({ fom: resultPeriode.fom, tom: resultPeriode.tom }).toEqual(opprinneligTidsperiode);
-                expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
+                expect(resultPeriode.erAnnenPartEøs).toEqual(opprinneligPeriode.erAnnenPartEøs);
+                if (!resultPeriode.erAnnenPartEøs && !opprinneligPeriode.erAnnenPartEøs) {
+                    expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
+                }
             });
             expect(result[10]).toEqual(nyUtsettelseISluttenAvPlanen);
         },

@@ -3,6 +3,7 @@ import { mapPerioderToPermisjonsperiode } from './permisjonsperiodeUtils';
 
 const perioder1: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1791107651-23530-4156-5672-8510082949258',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -11,6 +12,7 @@ const perioder1: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '09238903-7649-00572-15237-195982427421289',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
@@ -19,6 +21,7 @@ const perioder1: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '089661209-7068-02331-5876-8543970929124',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
@@ -27,6 +30,7 @@ const perioder1: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '111936683-3265-22855-8575-1519220835469',
         fom: '2024-09-27',
         tom: '2024-10-10',
@@ -34,6 +38,7 @@ const perioder1: Planperiode[] = [
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
     },
     {
+        erAnnenPartEøs: false,
         id: '19249909-1513-07778-7453-3721234202253',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',

@@ -5,6 +5,7 @@ import {
     Familiesituasjon,
     KontoBeregningDto,
     NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
@@ -24,7 +25,7 @@ type Props = {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
-    saksperioder: UttakPeriode_fpoversikt[];
+    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     children: React.ReactNode;
 };
 
@@ -85,20 +86,24 @@ export const useUttaksplanData = () => {
 
 const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
-) => {
+): UttakPeriode_fpoversikt[] => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
+        ? gjeldendeUttaksplan.filter(
+              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+          )
         : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
-) => {
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
+        ? gjeldendeUttaksplan.filter(
+              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+          )
         : [];
 };
