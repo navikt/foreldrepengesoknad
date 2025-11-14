@@ -28,7 +28,7 @@ interface Props {
 export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriode }: Props) => {
     const intl = useIntl();
     const { forelder, kontoType, fom, tom } = panelData;
-    const { aleneOmOmsorg } = useUttaksplanData();
+    const { erDeltUttak } = useUttaksplanData();
 
     const formMethods = useForm<LeggTilPeriodePanelFormValues>({
         defaultValues: {
@@ -106,7 +106,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                     <>
                         <KontotypeSpørsmål />
                         <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
-                        {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                        {erDeltUttak && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />
                     </>
                 ) : null}
