@@ -41,10 +41,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
 
-    const foreldrepengerHarAktivitetskrav =
-        uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        uttaksplan.some((p) => p.kontoType === 'AKTIVITETSFRI_KVOTE');
-
     const erIPlanleggerModus = modus === 'planlegger';
 
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -67,12 +63,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const res = unikePerioder.reduce((acc, periode) => {
         const color = erIPlanleggerModus
-            ? getKalenderFargeForPeriodeTypePlanlegger(
-                  periode,
-                  erFarEllerMedmor,
-                  uttaksplan,
-                  foreldrepengerHarAktivitetskrav,
-              )
+            ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, uttaksplan)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, uttaksplan, barn);
 
         if (
@@ -323,7 +314,6 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: Planperiode,
     erFarEllerMedmor: boolean,
     allePerioder: Planperiode[],
-    foreldrepengerHarAktivitetskrav: boolean,
 ): CalendarPeriodColor => {
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
@@ -346,25 +336,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return 'NONE';
     }
 
-    if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return 'BLUE';
-    }
-
-    if (periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
-        return 'BLUE';
-    }
-
-    if (periode.kontoType === 'FORELDREPENGER') {
-        if (foreldrepengerHarAktivitetskrav) {
-            if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
-                return 'GREENSTRIPED';
-            }
-
-            return erFarEllerMedmor ? 'LIGHTGREEN' : 'BLUE';
-        }
-    }
-
-    if (periode.forelder === 'MOR') {
+    if (periode.forelder === 'MOR' || periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
