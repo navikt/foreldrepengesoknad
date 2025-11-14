@@ -55,9 +55,33 @@ const startServer = async () => {
     );
 
     server.use(
-        '/rest',
+        '/fpoversikt/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpoversikt/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
+        }),
+    );
+
+    server.use(
+        '/fpsoknad/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpsoknad/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
+        }),
+    );
+
+    server.use(
+        '/fpgrunndata/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpgrunndata/api',
             changeOrigin: true,
             logger: console,
             on: {
