@@ -381,7 +381,7 @@ export const getAnnenForelderSamtidigUttakPeriode = (
 type UtledKomplettPlanParams = {
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
-    søkersPerioder: UttakPeriode[];
+    søkersPerioder: UttakPeriode_fpoversikt[];
     annenPartsPerioder?: UttakPeriode[];
     gjelderAdopsjon: boolean;
     bareFarMedmorHarRett: boolean;

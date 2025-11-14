@@ -16,7 +16,6 @@ export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
-export type { PlanForslag } from './src/PlanForslag';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { UttaksplanModus } from './src/UttaksplanModus';
 export type { Frilans } from './src/Frilans';

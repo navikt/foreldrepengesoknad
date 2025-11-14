@@ -1,4 +1,6 @@
-import { KontoDto, PlanForslag, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PlanForslag } from 'types/PlanForslag';
+
+import { KontoDto, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 

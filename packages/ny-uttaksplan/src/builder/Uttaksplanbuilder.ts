@@ -211,7 +211,7 @@ const getPerioderPåForelder = ({
     }
 
     if (erAnnenPart) {
-        return perioder.filter((p) => !p.erAnnenPartEøs && p.forelder === forelder);
+        return perioder.filter((p) => p.erAnnenPartEøs || p.forelder === forelder);
     }
 
     return finnOgSettInnHull(

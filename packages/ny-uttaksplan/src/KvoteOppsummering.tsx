@@ -847,7 +847,7 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
 );
 
 const finnAntallDagerÅTrekke = (periode: Planperiode) => {
-    if ('trekkdager' in periode) {
+    if (periode.erAnnenPartEøs) {
         return periode.trekkdager;
     }
 
