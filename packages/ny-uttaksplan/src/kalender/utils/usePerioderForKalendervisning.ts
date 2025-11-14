@@ -356,10 +356,12 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
 
     if (periode.kontoType === 'FORELDREPENGER') {
         if (foreldrepengerHarAktivitetskrav) {
+            if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
+                return 'GREENSTRIPED';
+            }
+
             return erFarEllerMedmor ? 'LIGHTGREEN' : 'BLUE';
         }
-
-        return 'BLUE';
     }
 
     if (periode.forelder === 'MOR') {
