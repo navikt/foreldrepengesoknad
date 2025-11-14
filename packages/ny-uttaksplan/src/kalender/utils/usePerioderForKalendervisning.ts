@@ -336,19 +336,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return 'NONE';
     }
 
-    if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return 'BLUE';
-    }
-
-    if (periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
-        if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
-            return 'BLUESTRIPED';
-        }
-
-        return 'BLUE';
-    }
-
-    if (periode.forelder === 'MOR') {
+    if (periode.forelder === 'MOR' || periode.kontoType === 'AKTIVITETSFRI_KVOTE') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
