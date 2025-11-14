@@ -51,7 +51,7 @@ export const EndrePeriodePanelStep = ({
     const intl = useIntl();
     const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
-    const { aleneOmOmsorg } = useUttaksplanData();
+    const { erDeltUttak } = useUttaksplanData();
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
@@ -170,7 +170,7 @@ export const EndrePeriodePanelStep = ({
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre!} />
-                {!aleneOmOmsorg && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
+                {erDeltUttak && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
                 <PanelButtons
                     onCancel={closePanel}
