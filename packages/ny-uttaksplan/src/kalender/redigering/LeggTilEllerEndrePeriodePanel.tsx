@@ -74,6 +74,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
 
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map((periode) => ({
+                erAnnenPartEøs: false,
                 fom: periode.fom,
                 tom: periode.tom,
                 readOnly: false,
@@ -146,7 +147,7 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
             dayjs(periode.tom).isSame(dayjs(valgtPeriode.tom), 'day'),
     );
 
-    if (!eksisterendePeriode) {
+    if (!eksisterendePeriode || eksisterendePeriode.erAnnenPartEøs) {
         return undefined;
     }
 

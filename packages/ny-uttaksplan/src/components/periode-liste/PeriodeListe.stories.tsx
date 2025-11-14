@@ -83,6 +83,7 @@ export const UttaksperioderMor: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
@@ -91,6 +92,7 @@ export const UttaksperioderMor: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
@@ -99,6 +101,7 @@ export const UttaksperioderMor: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-10',
@@ -106,6 +109,7 @@ export const UttaksperioderMor: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '4',
                 fom: '2024-06-11',
                 tom: '2024-06-28',
@@ -115,6 +119,7 @@ export const UttaksperioderMor: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '5',
                 fom: '2024-07-01',
                 tom: '2024-07-02',
@@ -123,6 +128,7 @@ export const UttaksperioderMor: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '6',
                 fom: '2024-07-03',
                 tom: '2024-07-10',
@@ -163,6 +169,7 @@ export const UttaksperioderMorOgFar: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
@@ -171,6 +178,7 @@ export const UttaksperioderMorOgFar: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-03',
@@ -180,6 +188,7 @@ export const UttaksperioderMorOgFar: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '3',
                 fom: '2024-04-22',
                 tom: '2024-05-03',
@@ -189,6 +198,7 @@ export const UttaksperioderMorOgFar: Story = {
                 readOnly: true,
             },
             {
+                erAnnenPartEøs: false,
                 id: '4',
                 fom: '2024-05-06',
                 tom: '2024-05-31',
@@ -197,6 +207,7 @@ export const UttaksperioderMorOgFar: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '5',
                 fom: '2024-06-03',
                 tom: '2024-06-28',
@@ -205,6 +216,7 @@ export const UttaksperioderMorOgFar: Story = {
                 readOnly: true,
             },
             {
+                erAnnenPartEøs: false,
                 id: '6',
                 fom: '2024-07-01',
                 tom: '2024-07-08',
@@ -235,6 +247,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-05-01',
                 tom: '2024-08-21',
@@ -243,6 +256,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-08-22',
                 tom: '2024-08-29',
@@ -252,6 +266,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-08-30',
                 tom: '2024-09-13',
@@ -259,6 +274,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-09-16',
                 tom: '2024-09-23',
@@ -299,6 +315,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
@@ -307,6 +324,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
@@ -317,6 +335,7 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '3',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
@@ -349,6 +368,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
@@ -357,6 +377,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
@@ -364,6 +385,7 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-28',
@@ -394,6 +416,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
         },
         perioder: [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
@@ -402,6 +425,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
@@ -410,6 +434,7 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-28',

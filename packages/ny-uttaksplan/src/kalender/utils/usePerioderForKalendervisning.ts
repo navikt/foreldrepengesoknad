@@ -43,7 +43,9 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const foreldrepengerHarAktivitetskrav =
         uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT');
+        uttaksplan.some(
+            (p) => p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT',
+        );
 
     const erIPlanleggerModus = modus === 'planlegger';
 
@@ -210,7 +212,7 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
-                if (p.morsAktivitet === 'IKKE_OPPGITT') {
+                if (!p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT') {
                     if (p.gradering?.arbeidstidprosent) {
                         return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
                     }
@@ -218,7 +220,7 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
                     return 'FARS_DEL_AKTIVITETSFRI';
                 }
 
-                if (p.forelder === 'FAR_MEDMOR') {
+                if (!p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR') {
                     if (p.samtidigUttak && p.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
                     }
@@ -230,11 +232,11 @@ const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
                     return 'FARS_DEL';
                 }
 
-                if (p.samtidigUttak && p.samtidigUttak > 0) {
+                if (!p.erAnnenPartEøs && p.samtidigUttak && p.samtidigUttak > 0) {
                     return 'SAMTIDIG_UTTAK';
                 }
 
-                if (p.gradering?.arbeidstidprosent) {
+                if (!p.erAnnenPartEøs && p.gradering?.arbeidstidprosent) {
                     return 'MORS_DEL_GRADERT';
                 }
 
@@ -267,7 +269,8 @@ const getKalenderFargeForUttaksperiode = (
         : undefined;
 
     const erAnnenForeldersPeriode = !erPeriodeForSøker(periode, erFarEllerMedmor);
-    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
+    const samtidigUttaksprosent =
+        isUttaksperiode(periode) && !periode.erAnnenPartEøs ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
@@ -276,6 +279,7 @@ const getKalenderFargeForUttaksperiode = (
         !annenForelderSamtidigUttaksperiode &&
         !samtidigUttaksprosent &&
         isUttaksperiode(periode) &&
+        !periode.erAnnenPartEøs &&
         periode.gradering
     ) {
         if (erFarEllerMedmor) {
@@ -289,7 +293,8 @@ const getKalenderFargeForUttaksperiode = (
         return 'NONE';
     }
 
-    return getUttaksperiodeFarge(periode.kontoType, periode.forelder, erFarEllerMedmor);
+    const forelder = periode.erAnnenPartEøs ? undefined : periode.forelder;
+    return getUttaksperiodeFarge(periode.kontoType, forelder, erFarEllerMedmor);
 };
 
 const getKalenderFargeForPeriodeUtenUttak = (periode: Planperiode, barn: Barn): CalendarPeriodColor => {
@@ -303,10 +308,10 @@ const getKalenderFargeForPeriodeUtenUttak = (periode: Planperiode, barn: Barn): 
 };
 
 const getKalenderFargeForAnnenPart = (periode: Planperiode, erFarEllerMedmor: boolean): CalendarPeriodColor => {
-    if (periode.utsettelseÅrsak) {
+    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak) {
         return erFarEllerMedmor ? 'BLUEOUTLINE' : 'GREENOUTLINE';
     }
-    if (periode.forelder && (periode.overføringÅrsak || isUttaksperiode(periode))) {
+    if (!periode.erAnnenPartEøs && periode.forelder && (periode.overføringÅrsak || isUttaksperiode(periode))) {
         return getForelderFarge(periode.forelder, erFarEllerMedmor);
     }
 
@@ -314,7 +319,8 @@ const getKalenderFargeForAnnenPart = (periode: Planperiode, erFarEllerMedmor: bo
 };
 
 const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
-    (periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor);
+    !periode.erAnnenPartEøs &&
+    ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: Planperiode,
@@ -325,12 +331,13 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
         : undefined;
 
-    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
+    const samtidigUttaksprosent =
+        isUttaksperiode(periode) && !periode.erAnnenPartEøs ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
-    if (periode.utsettelseÅrsak) {
+    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak) {
         return 'BLUEOUTLINE';
     }
 
@@ -347,14 +354,14 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     }
 
     if (periode.kontoType === 'FORELDREPENGER') {
-        if (foreldrepengerHarAktivitetskrav && periode.morsAktivitet !== 'IKKE_OPPGITT') {
+        if (foreldrepengerHarAktivitetskrav && !periode.erAnnenPartEøs && periode.morsAktivitet !== 'IKKE_OPPGITT') {
             return erFarEllerMedmor ? 'LIGHTGREEN' : 'BLUE';
         }
 
         return 'BLUE';
     }
 
-    if (periode.forelder === 'MOR') {
+    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
@@ -362,7 +369,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return 'BLUE';
     }
 
-    if (periode.forelder === 'FAR_MEDMOR') {
+    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
@@ -380,14 +387,14 @@ const getKalenderFargeForPeriodeType = (
     barn: Barn,
 ): CalendarPeriodColor => {
     if (isAvslåttPeriode(periode)) {
-        if (periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        if (!periode.erAnnenPartEøs && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'BLACKOUTLINE';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
         return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato) ? 'BLACK' : 'NONE';
     }
 
-    if (periode.utsettelseÅrsak) {
+    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak) {
         return periode.forelder === 'FAR_MEDMOR' ? 'GREENOUTLINE' : 'BLUEOUTLINE';
     }
 
@@ -399,11 +406,11 @@ const getKalenderFargeForPeriodeType = (
         return 'BLACK';
     }
 
-    if (periode.overføringÅrsak || isUttaksperiode(periode)) {
+    if ((!periode.erAnnenPartEøs && periode.overføringÅrsak) || isUttaksperiode(periode)) {
         return getKalenderFargeForUttaksperiode(periode, allePerioder, erFarEllerMedmor);
     }
 
-    if (periode.oppholdÅrsak && periode.forelder) {
+    if (!periode.erAnnenPartEøs && periode.oppholdÅrsak && periode.forelder) {
         return getForelderFarge(periode.forelder, erFarEllerMedmor);
     }
 
@@ -416,6 +423,7 @@ const getKalenderFargeForPeriodeType = (
 
 const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
     const utsettelseÅrsaker = allePerioderInklHull
+        .filter((p) => !p.erAnnenPartEøs)
         .map((u) => u.utsettelseÅrsak)
         .filter((utsettelseÅrsak): utsettelseÅrsak is UttakUtsettelseÅrsak_fpoversikt => !!utsettelseÅrsak);
     return [...new Set(utsettelseÅrsaker)];

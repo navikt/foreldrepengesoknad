@@ -62,6 +62,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
 
         if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             handleAddPeriode({
+                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
@@ -71,6 +72,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
+                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
@@ -80,6 +82,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
             });
         } else {
             handleAddPeriode({
+                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${kontoType}`,

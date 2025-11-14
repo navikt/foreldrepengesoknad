@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
@@ -15,7 +15,7 @@ import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
-    oppdaterUttaksplan?: (perioder: UttakPeriode_fpoversikt[]) => void;
+    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
     isAllAccordionsOpen?: boolean;
 }
 
@@ -77,10 +77,22 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
     );
 };
 
-const modifyPlan = (planperiode: Planperiode[], handleOnPlanChange?: (perioder: UttakPeriode_fpoversikt[]) => void) => {
+const modifyPlan = (
+    planperiode: Planperiode[],
+    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void,
+) => {
     const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
-    handleOnPlanChange?.(
-        resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
+    oppdaterUttaksplan?.(
+        resultUtenHull.map(
+            (p) =>
+                omitMany(p, [
+                    'id',
+                    'periodeHullÅrsak',
+                    'readOnly',
+                    'skalIkkeHaUttakFørTermin',
+                    'erAnnenPartEøs',
+                ]) satisfies UttakPeriode_fpoversikt,
+        ),
     );
 };

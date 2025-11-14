@@ -49,11 +49,10 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 </HStack>
                 <VStack gap="space-8">
                     <BodyShort>{stønadskontoNavn}</BodyShort>
-                    {periode.morsAktivitet !== undefined && (
+                    {!periode.erAnnenPartEøs && periode.morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
                     )}
-                    {/* @ts-expect-error temp */}
-                    {periode.trekkdager !== undefined ? (
+                    {periode.erAnnenPartEøs && periode.trekkdager !== undefined ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />
                         </BodyShort>
@@ -106,16 +105,21 @@ const getTekstForArbeidOgSamtidigUttak = (
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
 ) => {
-    if ((periode.gradering !== undefined && periode.samtidigUttak !== undefined) || periode.gradering !== undefined) {
-        return <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>;
-    }
+    if (!periode.erAnnenPartEøs) {
+        if (
+            (periode.gradering !== undefined && periode.samtidigUttak !== undefined) ||
+            periode.gradering !== undefined
+        ) {
+            return <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>;
+        }
 
-    if (periode.samtidigUttak !== undefined) {
-        return (
-            <BodyShort>
-                {getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre)}
-            </BodyShort>
-        );
+        if (periode.samtidigUttak !== undefined) {
+            return (
+                <BodyShort>
+                    {getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre)}
+                </BodyShort>
+            );
+        }
     }
 
     return undefined;
