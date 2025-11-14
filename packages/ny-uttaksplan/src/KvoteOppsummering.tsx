@@ -834,6 +834,9 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
 );
 
 const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+    if (periode.resultat?.trekkerDager === false) {
+        return 0;
+    }
     if (periode.trekkdager !== undefined) {
         return periode.trekkdager;
     }
