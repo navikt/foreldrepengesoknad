@@ -6,8 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -19,7 +18,9 @@ type Props = {
     children: React.ReactNode[] | React.ReactNode;
     kanLeggeTilFerie: boolean;
     valgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: UttakPeriode_fpoversikt[]) => void;
+    oppdaterUttaksplan: (
+        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 

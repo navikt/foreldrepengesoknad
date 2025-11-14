@@ -2,7 +2,6 @@ import enMessages from './intl/en_US.json';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
-export { splittSaksperiodePåDato, splittSaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 export { tidperiodeOverlapperDato, andreAugust2022ReglerGjelder } from './utils/dateUtils';
 export {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,

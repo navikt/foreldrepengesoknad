@@ -1,4 +1,6 @@
-import { KontoDto, PlanForslag, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PlanForslag } from 'types/PlanForslag';
+
+import { KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 

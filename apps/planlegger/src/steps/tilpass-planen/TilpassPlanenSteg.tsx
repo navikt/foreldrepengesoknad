@@ -10,11 +10,7 @@ import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarR
 
 import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
 
-import {
-    KontoBeregningResultatDto,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
@@ -84,7 +80,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         return 'BARE_SØKER_RETT';
     };
 
-    const oppdaterUttaksplan = (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => {
+    const oppdaterUttaksplan = (perioder: UttakPeriode_fpoversikt[]) => {
         let nyUttaksplan = [];
 
         if (currentUttaksplanIndex !== uttaksplan.length - 1) {

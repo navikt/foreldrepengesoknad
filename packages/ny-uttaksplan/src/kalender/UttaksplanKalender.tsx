@@ -7,7 +7,7 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -20,7 +20,7 @@ import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervis
 interface Props {
     readOnly: boolean;
     barnehagestartdato?: string;
-    oppdaterUttaksplan?: (perioder: UttakPeriode_fpoversikt[]) => void;
+    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
 }
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {

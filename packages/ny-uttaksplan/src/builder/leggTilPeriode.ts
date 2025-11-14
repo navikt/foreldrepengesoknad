@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -26,22 +25,6 @@ export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planpe
     return [periodeFørDato, periodeFraOgMedDato];
 };
 
-export const splittSaksperiodePåDato = (periode: UttakPeriode_fpoversikt, dato: string): UttakPeriode_fpoversikt[] => {
-    const periodeFørDato: UttakPeriode_fpoversikt = {
-        ...periode,
-        fom: periode.fom,
-        tom: UttaksdagenString(dato).forrige(),
-    };
-
-    const periodeFraOgMedDato: UttakPeriode_fpoversikt = {
-        ...periode,
-        fom: UttaksdagenString(periodeFørDato.tom).neste(),
-        tom: periode.tom,
-    };
-
-    return [periodeFørDato, periodeFraOgMedDato];
-};
-
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode, famDato: string): Planperiode[] => {
     const periodeFørFamDato: Planperiode = {
         ...periode,
@@ -51,23 +34,6 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode,
     const periodeFraOgMedFamDato: Planperiode = {
         ...periode,
         id: guid(),
-        fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
-    };
-
-    return [periodeFørFamDato, periodeFraOgMedFamDato];
-};
-
-export const splittSaksperiodePåFamiliehendelsesdato = (
-    periode: UttakPeriode_fpoversikt,
-    famDato: string,
-): UttakPeriode_fpoversikt[] => {
-    const periodeFørFamDato: UttakPeriode_fpoversikt = {
-        ...periode,
-        tom: UttaksdagenString(famDato).forrige(),
-    };
-
-    const periodeFraOgMedFamDato: UttakPeriode_fpoversikt = {
-        ...periode,
         fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
     };
 
