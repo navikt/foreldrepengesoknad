@@ -61,25 +61,21 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
         const brukteDager = summerDagerIPerioder(
             uttaksplan.filter((p) => {
+                const harMatchendePeriode =
+                    !p.erAnnenPartEøs &&
+                    getUttaksKontoType(p) === 'FORELDREPENGER' &&
+                    p.morsAktivitet === 'IKKE_OPPGITT';
                 // Aktivitetsfri kvote har spesialhåndtering
                 if (kontoType === 'AKTIVITETSFRI_KVOTE') {
                     // I planlegger og søknad brukes denne kontoen på periodene.
                     const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
                     // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
-                    const harMatchendePeriode =
-                        !p.erAnnenPartEøs &&
-                        getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                        p.morsAktivitet === 'IKKE_OPPGITT';
                     return harMatchendePeriode || harMatchendeKonto;
                 }
 
                 // Disse periodene skal kun telles for aktivitetsfri kvoter
-                if (
-                    !p.erAnnenPartEøs &&
-                    getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                    p.morsAktivitet === 'IKKE_OPPGITT'
-                ) {
+                if (harMatchendePeriode) {
                     return false;
                 }
 
