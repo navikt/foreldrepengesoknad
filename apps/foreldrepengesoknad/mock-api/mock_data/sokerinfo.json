@@ -1,32 +1,30 @@
 {
-    "søker": {
-        "fnr": "13410550312",
-        "fornavn": "Ullen",
-        "etternavn": "Brosme",
-        "kjønn": "K",
-        "fødselsdato": "2005-01-13",
-        "bankkonto": {
-            "kontonummer": "",
-            "banknavn": ""
-        },
-        "barn": [
-            {
-                "fnr": "22412450632",
-                "fornavn": "Oppriktig",
-                "etternavn": "Opposisjon",
-                "kjønn": "K",
-                "fødselsdato": "2024-02-06",
-                "annenForelder": {
-                    "fnr": "16500479977",
-                    "fornavn": "Rund",
-                    "etternavn": "Håndkrem",
-                    "fødselsdato": "2004-10-16"
-                }
-            }
-        ],
-        "sivilstand": {
-            "type": "GIFT"
-        }
+  "person": {
+    "aktørid": "123123",
+    "fnr": "13410550312",
+    "fødselsdato": "2005-01-13",
+    "navn": {
+      "fornavn": "Ullen",
+      "etternavn": "Brosme"
+    },      
+    "kjønn": "K",
+    "bankkonto": {
+      "kontonummer": "1323",
+      "banknavn": "DNB ASA"
     },
-    "arbeidsforhold": []
+    "sivilstand": {
+      "type": "UGIFT"
+    },
+    "barn": []
+  },
+  "arbeidsforhold": [
+    {
+      "arbeidsgiverId": "123",
+      "arbeidsgiverIdType": "orgnr",
+      "arbeidsgiverNavn": "Fullstendig Ekte Arbeidsgiver",
+      "stillingsprosent": 100,
+      "fom": "2020-01-01",
+      "from": "2020-01-01"
+    }
+  ]
 }

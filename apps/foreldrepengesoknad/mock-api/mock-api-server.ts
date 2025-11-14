@@ -53,7 +53,7 @@ export const getSokerInfo = () => {
 
 export const getStønadskontoer = async (req: any) => {
     try {
-        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+        const data = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
             method: 'POST',
             headers: {
                 accept: 'application/json, text/plain, */*',
@@ -175,56 +175,56 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-router.get(['/rest/sokerinfo'], (_req, res) => {
+router.get(['/fpoversikt/api/person/info-med-arbeidsforhold'], (_req, res) => {
     res.send(getSokerInfo());
 });
 
-router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
+router.post('/fpoversikt/api/engangsstonad', (_req, res) => res.sendStatus(200));
 
-router.get('/rest/storage/foreldrepenger', (_req, res) => {
+router.get('/fpsoknad/api/storage/FORELDREPENGER', (_req, res) => {
     res.send(getSoknad());
 });
 
-router.get('/rest/innsyn/v2/saker', (_req, res) => {
-    res.send(getSaker());
-});
-
-router.post('/rest/innsyn/v2/annenPartVedtak', (_req, res) => {
-    res.send(getAnnenPartVedtak());
-});
-
-router.get('/rest/innsyn/uttaksplan', (_req, res) => {
-    res.send(getUttaksplan());
-});
-
-router.get('/rest/innsyn/uttaksplanannen', (_req, res) => {
-    res.send(getUttaksplanannen());
-});
-
-router.post('/rest/konto', async (req, res) => {
-    const response = await getStønadskontoer(req);
-    res.send(response);
-});
-
-router.post('/rest/storage/foreldrepenger', (req, res) => {
+router.post('/fpsoknad/api/storage/FORELDREPENGER', (req, res) => {
     updateSoknad(req.body);
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage/foreldrepenger', (_req, res) => {
+router.delete('/fpsoknad/api/storage/FORELDREPENGER', (_req, res) => {
     deleteSoknad();
     return res.sendStatus(200);
 });
 
-router.post('/rest/soknad/foreldrepenger', (_req, res) => {
+router.get('/fpoversikt/api/saker', (_req, res) => {
+    res.send(getSaker());
+});
+
+router.post('/fpoversikt/api/innsyn/v2/annenPartVedtak', (_req, res) => {
+    res.send(getAnnenPartVedtak());
+});
+
+router.get('/fpoversikt/api/innsyn/uttaksplan', (_req, res) => {
+    res.send(getUttaksplan());
+});
+
+router.get('/fpoversikt/api/innsyn/uttaksplanannen', (_req, res) => {
+    res.send(getUttaksplanannen());
+});
+
+router.post('/fpgrunndata/api/konto', async (req, res) => {
+    const response = await getStønadskontoer(req);
+    res.send(response);
+});
+
+router.post('/fpoversikt/api/soknad/foreldrepenger', (_req, res) => {
     return res.send(getSoknadSendt());
 });
 
-router.post('/rest/soknad/foreldrepenger/endre', (_req, res) => {
+router.post('/fpoversikt/api/soknad/foreldrepenger/endre', (_req, res) => {
     return res.send(getSoknadSendt());
 });
 
-router.delete('/rest/storage/foreldrepenger/vedlegg', (_req, res) => {
+router.delete('/fpoversikt/api/storage/foreldrepenger/vedlegg', (_req, res) => {
     deleteSoknad();
     return res.sendStatus(200);
 });
