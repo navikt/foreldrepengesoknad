@@ -1,10 +1,35 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-    input: ['./fpoversikt.json', './fpsoknad.json'],
-    output: ['temp-fpoversikt-types', 'temp-fpsoknad-types'],
+    input: ['./fpoversikt-swagger.json', './fpsoknad-swagger.json'],
+    output: [
+        {
+            clean: false,
+            format: 'prettier',
+            lint: 'eslint',
+            path: 'packages/types/src/',
+            fileName: {
+                name: 'fpoversiktDtoGenerert',
+                suffix: null,
+            },
+        },
+        {
+            clean: false,
+            format: 'prettier',
+            lint: 'eslint',
+            path: 'packages/types/src/',
+            fileName: {
+                name: 'fpsoknadDtoGenerert',
+                suffix: null,
+            },
+        },
+    ],
+    parser: {
+        transforms: {
+            readWrite: false,
+        },
+    },
     plugins: [
-        '@hey-api/client-fetch',
         {
             name: '@hey-api/typescript',
             definitions: {
@@ -22,6 +47,7 @@ export default defineConfig({
                     return typeName;
                 },
             },
+            exportFromIndex: false,
         },
     ],
 });
