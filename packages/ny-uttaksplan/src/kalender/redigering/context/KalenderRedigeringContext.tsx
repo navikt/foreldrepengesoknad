@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { Planperiode } from 'types/Planperiode';
 
 import { SaksperiodeNy } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -7,6 +6,7 @@ import { omitMany } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanBuilder } from '../../../context/useUttaksplanBuilder';
+import { Planperiode } from '../../../types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from '../../../utils/periodeUtils';
 import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
 import {

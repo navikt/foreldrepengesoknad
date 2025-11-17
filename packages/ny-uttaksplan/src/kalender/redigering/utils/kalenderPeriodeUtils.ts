@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { Planperiode } from 'types/Planperiode';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
