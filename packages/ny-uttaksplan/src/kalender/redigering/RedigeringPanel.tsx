@@ -45,7 +45,10 @@ export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
                 <VStack gap="space-8">
                     {!erIRedigeringsmodus && (
                         <HStack gap="space-8" align="center" wrap={false}>
-                            <PencilIcon title="a11y-title" fontSize="1.5rem" />
+                            <PencilIcon
+                                title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
+                                fontSize="1.5rem"
+                            />
                             <Heading size="small">
                                 <FormattedMessage id="RedigeringPanel.EndreTil" />
                             </Heading>

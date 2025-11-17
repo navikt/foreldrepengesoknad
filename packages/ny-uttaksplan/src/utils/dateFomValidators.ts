@@ -119,7 +119,7 @@ export const getFomDiverseValidators = (
         ) {
             validators.push((date: string) => {
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
-                    return 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
+                    return intl.formatMessage({ id: 'endreTidsPeriodeModal.kanIkkeKombinere' });
                 } else {
                     return null;
                 }

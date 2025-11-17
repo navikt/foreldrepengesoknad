@@ -132,8 +132,8 @@ export const getTomDiverseValidators = (
                 if (dayjs(date).isBetween(familiehendelsedato, seksUkerEtterFamiliehendelse, 'day', '[]')) {
                     const feilmelding =
                         kontoType === 'FORELDREPENGER' && forelder === 'MOR'
-                            ? 'Du kan ikke kombinere foreldrepenger med arbeid de første seks ukene'
-                            : 'Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene';
+                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.duKanIkkeKombinere' })
+                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.kanIkkeKombinere' });
 
                     return feilmelding;
                 } else {

@@ -7,6 +7,7 @@ import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
+import { getTomPeriodeUtenUttakValidator } from '../../utils/dateTomValidators';
 
 export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
@@ -20,7 +21,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
 
     const periodeUtenUttakFomValidatorer = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
-    const periodeUtenUttakTomValidatorer = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
+    const periodeUtenUttakTomValidatorer = getTomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
 
     return (
         <VStack gap="space-12">
@@ -32,7 +33,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                     <HStack gap="space-4" key={p.id} wrap={false}>
                         {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
                             <PersonPregnantFillIcon
-                                title="a11y-title"
+                                title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
                                 fontSize="1.5rem"
                                 height="35px"
                                 width="35px"
@@ -41,7 +42,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                         )}
                         {p.kontoType === 'FEDREKVOTE' && (
                             <PersonSuitFillIcon
-                                title="a11y-title"
+                                title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
                                 fontSize="1.5rem"
                                 height="35px"
                                 width="35px"
@@ -50,7 +51,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                         )}
                         {p.kontoType === 'FELLESPERIODE' && (
                             <PersonGroupIcon
-                                title="a11y-title"
+                                title={intl.formatMessage({ id: 'RedigeringPanel.Felles' })}
                                 fontSize="1.5rem"
                                 height="35px"
                                 width="35px"

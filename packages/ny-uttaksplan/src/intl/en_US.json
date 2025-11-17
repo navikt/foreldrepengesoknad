@@ -170,6 +170,8 @@
     "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Vacation cannot be scheduled during the first six weeks after the due date.",
     "endreTidsPeriodeModal.minDato": "The first possible date for the period is {minDate}",
     "endreTidsPeriodeModal.maksDato": "The latest possible date for the period is {maxDate}",
+    "endreTidsPeriodeModal.kanIkkeKombinere": "Mother can not combine parental benefits with work the first six weeks",
+    "endreTidsPeriodeModal.duKanIkkeKombinere": "You can not combine parental benefits with work the first six weeks",
     "TidsperiodeSpørsmål.fom": "From date",
     "TidsperiodeSpørsmål.tom": "To date",
     "KontotypeSpørsmål.velgKontotype": "Select account type",
