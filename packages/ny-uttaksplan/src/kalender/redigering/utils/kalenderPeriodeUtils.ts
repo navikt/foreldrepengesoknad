@@ -6,7 +6,7 @@ import { Planperiode } from '../../../types/Planperiode';
 import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
-    if (!perioder.length) {
+    if (perioder.length === 0) {
         return [];
     }
 

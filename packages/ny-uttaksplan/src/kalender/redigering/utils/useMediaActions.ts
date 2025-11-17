@@ -14,12 +14,12 @@ export const useMediaActions = () => {
         if (!isDesktop && !erMinimert && erIRedigeringsmodus) {
             document.body.style.overflow = 'hidden';
         }
-    }, [isDesktop, erMinimert]);
+    }, [isDesktop, erMinimert, erIRedigeringsmodus]);
 
     // For å nullstille minimering når en går fra mobil til desktop
     useEffect(() => {
         if (isDesktop) {
             setErMinimert(false);
         }
-    }, [isDesktop]);
+    }, [isDesktop, setErMinimert]);
 };

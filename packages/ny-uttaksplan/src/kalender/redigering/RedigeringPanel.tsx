@@ -217,12 +217,9 @@ const getSlettPeriodeFn =
             })),
         );
 
-        setValgtePerioder((oldPeriods) =>
-            oldPeriods.filter(
-                (p) =>
-                    !perioder.some(
-                        (rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'),
-                    ),
-            ),
-        );
+        const erPerioderOverlappendeFn = getErPerioderOverlappende(perioder);
+        setValgtePerioder((oldPeriods) => oldPeriods.filter(erPerioderOverlappendeFn));
     };
+
+const getErPerioderOverlappende = (perioder: CalendarPeriod[]) => (p: CalendarPeriod) =>
+    !perioder.some((rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'));

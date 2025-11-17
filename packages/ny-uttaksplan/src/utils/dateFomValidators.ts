@@ -189,7 +189,7 @@ export const getFomFerieValidators = (
     if (!gjelderAdopsjon) {
         const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
 
-        //FIXME: Denne er vel feil? Denne slår til uansett om dato er valgt før familiehendelsedato
+        //TODO: Denne er vel feil? Denne slår til uansett om dato er valgt før familiehendelsedato
         validators.push(
             isAfterOrSame(
                 erBarnetFødt
