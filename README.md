@@ -77,6 +77,12 @@ Vi autogenerer typer fra backend sin openApi spec. For å synkronisere typene s�
 
 Du må ha verdikjeden kjørende i autotest.
 
+### Oppgradere avhengigheter
+
+Avhengigheter kan enkelt oppgraderes på tvers av alle workspaces med
+```bash
+pnpm -r up --interactive --latest
+```
 ### Tester
 
 For å kjøre tester for en app:
