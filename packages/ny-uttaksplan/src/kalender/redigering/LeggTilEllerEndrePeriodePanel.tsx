@@ -17,7 +17,7 @@ import { SamtidigUttakSpørsmål } from '../../components/spørsmål/SamtidigUtt
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
-import { InfoPanel } from './InfoPanel';
+import { RedigeringPanel } from './RedigeringPanel';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
@@ -94,7 +94,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
-        <InfoPanel kanLeggeTilFerie={false}>
+        <RedigeringPanel kanLeggeTilFerie={false}>
             <div className={erMinimert ? 'hidden' : 'block'}>
                 <div className="px-4 pb-4 pt-4">
                     <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
@@ -112,7 +112,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
                     </RhfForm>
                 </div>
             </div>
-        </InfoPanel>
+        </RedigeringPanel>
     );
 };
 

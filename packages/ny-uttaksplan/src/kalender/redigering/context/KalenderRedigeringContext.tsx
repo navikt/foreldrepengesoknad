@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { Planperiode } from 'types/Planperiode';
 
 import { SaksperiodeNy } from '@navikt/fp-types';
@@ -17,29 +17,29 @@ import {
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
+    children: React.ReactNode;
     oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    children: React.ReactNode;
 };
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
     erIRedigeringsmodus: boolean;
-    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
     erMinimert: boolean;
-    setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
+    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     erKunEnHelEksisterendePeriodeValgt: boolean;
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     oppdaterUttaksplan: (oppdatertPeriode: Planperiode[]) => void;
+    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
+    setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
 export const KalenderRedigeringProvider = ({
     valgtePerioder,
+    children,
     oppdaterUttaksplan,
     setValgtePerioder,
-    children,
 }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
     const [erMinimert, setErMinimert] = useState(false);
@@ -59,27 +59,32 @@ export const KalenderRedigeringProvider = ({
         [sammenslåtteValgtePerioder, uttaksplan],
     );
 
-    const oppdater = (oppdatertPeriode: Planperiode[]) => {
-        const planperioder = erKunEnHelEksisterendePeriodeValgt
-            ? uttaksplanBuilder.oppdaterPerioder(oppdatertPeriode)
-            : uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
-        const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+    const oppdater = useCallback(
+        (oppdatertPeriode: Planperiode[]) => {
+            const planperioder = erKunEnHelEksisterendePeriodeValgt
+                ? uttaksplanBuilder.oppdaterPerioder(oppdatertPeriode)
+                : uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
+            const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
-        oppdaterUttaksplan(
-            resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin'])),
-        );
-    };
+            oppdaterUttaksplan(
+                resultUtenHull.map((p) =>
+                    omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin']),
+                ),
+            );
+        },
+        [erKunEnHelEksisterendePeriodeValgt, uttaksplanBuilder, oppdaterUttaksplan],
+    );
 
     const value = useMemo(() => {
         return {
             erIRedigeringsmodus,
-            setErIRedigeringsmodus,
             erMinimert,
-            setErMinimert,
             sammenslåtteValgtePerioder,
             erKunEnHelEksisterendePeriodeValgt,
-            oppdaterUttaksplan: oppdater,
             eksisterendePerioderSomErValgt,
+            setErIRedigeringsmodus,
+            setErMinimert,
+            oppdaterUttaksplan: oppdater,
             setValgtePerioder,
         };
     }, [

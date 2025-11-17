@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons'
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -19,7 +19,9 @@ type Props = {
     kanLeggeTilFerie: boolean;
 };
 
-export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
+export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
+    const intl = useIntl();
+
     const {
         erMinimert,
         erIRedigeringsmodus,
@@ -59,13 +61,13 @@ export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
                         <Show below="md" asChild>
                             {erMinimert ? (
                                 <ChevronUpIcon
-                                    title="a11y-title"
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
                                     fontSize="1.5rem"
                                     onClick={() => setErMinimert(false)}
                                 />
                             ) : (
                                 <ChevronDownIcon
-                                    title="a11y-title"
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
                                     fontSize="1.5rem"
                                     onClick={() => setErMinimert(true)}
                                 />
@@ -75,13 +77,13 @@ export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
                             <Show above="md" asChild>
                                 {visPeriodeDetaljer ? (
                                     <ChevronUpIcon
-                                        title="a11y-title"
+                                        title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
                                         fontSize="1.5rem"
                                         onClick={() => setVisPeriodeDetaljer(false)}
                                     />
                                 ) : (
                                     <ChevronDownIcon
-                                        title="a11y-title"
+                                        title={intl.formatMessage({ id: 'RedigeringPanel.VisDetaljer' })}
                                         fontSize="1.5rem"
                                         onClick={() => setVisPeriodeDetaljer(true)}
                                     />
@@ -101,12 +103,12 @@ export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
                     </BodyShort>
                     {erIRedigeringsmodus && visPeriodeDetaljer && (
                         <Show above="md">
-                            <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />
+                            <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />
                         </Show>
                     )}
                     {erIRedigeringsmodus && !erMinimert && (
                         <Show below="md">
-                            <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />
+                            <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />
                         </Show>
                     )}
                 </VStack>
@@ -114,8 +116,7 @@ export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <VStack gap="space-24">
-                    {!erIRedigeringsmodus && <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />}
-
+                    {!erIRedigeringsmodus && <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />}
                     {children}
                 </VStack>
             </div>
@@ -123,7 +124,7 @@ export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
     );
 };
 
-const Detaljer = ({ kanLeggeTilFerie }: { kanLeggeTilFerie: boolean }) => {
+const PeriodeDetaljerOgInfoMeldinger = ({ kanLeggeTilFerie }: { kanLeggeTilFerie: boolean }) => {
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, eksisterendePerioderSomErValgt, oppdaterUttaksplan, setValgtePerioder } =

@@ -7,7 +7,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
 import { getTomPeriodeUtenUttakValidator } from '../../utils/dateTomValidators';
-import { InfoPanel } from './InfoPanel';
+import { RedigeringPanel } from './RedigeringPanel';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
@@ -66,7 +66,7 @@ export const ValgteDagerPanel = () => {
     );
 
     return (
-        <InfoPanel kanLeggeTilFerie={!erFerieValgbart}>
+        <RedigeringPanel kanLeggeTilFerie={!erFerieValgbart}>
             <VStack gap="space-12">
                 <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
                     {erKunEnHelEksisterendePeriodeValgt ? (
@@ -93,6 +93,6 @@ export const ValgteDagerPanel = () => {
                     )}
                 </HStack>
             </VStack>
-        </InfoPanel>
+        </RedigeringPanel>
     );
 };
