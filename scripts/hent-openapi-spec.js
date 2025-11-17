@@ -70,16 +70,14 @@ async function hentOpenAPISpec(source, token) {
     fs.writeFileSync(fileName, json);
 }
 
-(async () => {
-    try {
-        console.log(`Kjører i ${isLokal ? 'lokal' : 'remote'} modus.`);
+try {
+    console.log(`Kjører i ${isLokal ? 'lokal' : 'remote'} modus.`);
 
-        for (const source of SOURCES) {
-            const token = await hentToken(isLokal, source.aud);
-            await hentOpenAPISpec(source, token);
-        }
-    } catch (error) {
-        console.error(error);
-        process.exit(1);
+    for (const source of SOURCES) {
+        const token = await hentToken(isLokal, source.aud);
+        await hentOpenAPISpec(source, token);
     }
-})();
+} catch (error) {
+    console.error(error);
+    process.exit(1);
+}
