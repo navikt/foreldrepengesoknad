@@ -1,11 +1,20 @@
-import { useUttaksplanData } from 'context/UttaksplanDataContext';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { getFomDiverseValidators, getFomFerieValidators, getFomKontoTypeValidators } from 'utils/dateFomValidators';
-import { getMaxDate, getMinDate } from 'utils/dateLimits';
-import { getTomDiverseValidators, getTomFerieValidators, getTomKontoTypeValidators } from 'utils/dateTomValidators';
 
 import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
+import {
+    getFomDiverseValidators,
+    getFomFerieValidators,
+    getFomKontoTypeValidators,
+} from '../../../utils/dateFomValidators';
+import { getMaxDate, getMinDate } from '../../../utils/dateLimits';
+import {
+    getTomDiverseValidators,
+    getTomFerieValidators,
+    getTomKontoTypeValidators,
+} from '../../../utils/dateTomValidators';
 
 type Periode = {
     fom: string;

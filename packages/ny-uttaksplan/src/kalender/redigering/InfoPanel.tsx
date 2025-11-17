@@ -1,81 +1,47 @@
 import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
-import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { EksisterendeValgtePerioder, type PlanperiodeMedAntallDager } from './EksisterendeValgtePerioder';
+import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
+import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 type Props = {
-    sammenslåtteValgtePerioder: CalendarPeriod[];
-    erMinimert: boolean;
-    erEnkelRedigeringPanel: boolean;
     children: React.ReactNode[] | React.ReactNode;
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    erFerieValgbart: boolean;
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    setErMinimert: (erMinimert: boolean) => void;
+    kanLeggeTilFerie: boolean;
 };
 
-//del dette i to
-
-export const InfoPanel = ({
-    sammenslåtteValgtePerioder,
-    erMinimert,
-    erEnkelRedigeringPanel,
-    children,
-    eksisterendePerioderSomErValgt,
-    erFerieValgbart,
-    oppdaterUttaksplan,
-    setValgtePerioder,
-    setErMinimert,
-}: Props) => {
-    const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(erEnkelRedigeringPanel);
-
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
-
-    // Dette er her for å fjern scrolling på bakgrunn på mobil
-    const isDesktop = useMedia('screen and (min-width: 768px)');
-    useEffect(() => {
-        document.body.style.overflow = '';
-        if (!isDesktop && !erMinimert && !erEnkelRedigeringPanel) {
-            document.body.style.overflow = 'hidden';
-        }
-    }, [isDesktop, erMinimert]);
-
-    const slettPeriode = getSlettPeriodeFn(
+export const InfoPanel = ({ children, kanLeggeTilFerie }: Props) => {
+    const {
+        erMinimert,
+        erIRedigeringsmodus,
         sammenslåtteValgtePerioder,
-        erFarEllerMedmor,
-        oppdaterUttaksplan,
-        setValgtePerioder,
-    );
+        eksisterendePerioderSomErValgt,
+        setErMinimert,
+    } = useKalenderRedigeringContext();
 
-    const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
-        sammenslåtteValgtePerioder,
-        familiehendelsedato,
-    );
+    const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(!erIRedigeringsmodus);
 
     return (
         <VStack
             gap="space-24"
             className={
-                !erEnkelRedigeringPanel && !erMinimert
+                erIRedigeringsmodus && !erMinimert
                     ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:overflow-visible'
                     : undefined
             }
         >
             <Box.New background="accent-soft" padding="4">
                 <VStack gap="space-8">
-                    {!erEnkelRedigeringPanel && (
+                    {!erIRedigeringsmodus && (
                         <HStack gap="space-8" align="center" wrap={false}>
                             <PencilIcon title="a11y-title" fontSize="1.5rem" />
                             <Heading size="small">
@@ -105,7 +71,7 @@ export const InfoPanel = ({
                                 />
                             )}
                         </Show>
-                        {!erEnkelRedigeringPanel && (
+                        {erIRedigeringsmodus && (
                             <Show above="md" asChild>
                                 {visPeriodeDetaljer ? (
                                     <ChevronUpIcon
@@ -133,30 +99,14 @@ export const InfoPanel = ({
                             />
                         )}
                     </BodyShort>
-                    {!erEnkelRedigeringPanel && visPeriodeDetaljer && (
+                    {erIRedigeringsmodus && visPeriodeDetaljer && (
                         <Show above="md">
-                            <Detaljer
-                                eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-                                slettPeriode={slettPeriode}
-                                kanIkkeLeggeTilFerie={!erFerieValgbart}
-                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
-                                    harValgtPerioderBådeFørOgEtterFamiliehendelsedato
-                                }
-                                familiehendelsedato={familiehendelsedato}
-                            />
+                            <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />
                         </Show>
                     )}
-                    {!erEnkelRedigeringPanel && !erMinimert && (
+                    {erIRedigeringsmodus && !erMinimert && (
                         <Show below="md">
-                            <Detaljer
-                                eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-                                slettPeriode={slettPeriode}
-                                kanIkkeLeggeTilFerie={!erFerieValgbart}
-                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
-                                    harValgtPerioderBådeFørOgEtterFamiliehendelsedato
-                                }
-                                familiehendelsedato={familiehendelsedato}
-                            />
+                            <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />
                         </Show>
                     )}
                 </VStack>
@@ -164,17 +114,7 @@ export const InfoPanel = ({
 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <VStack gap="space-24">
-                    {erEnkelRedigeringPanel && (
-                        <Detaljer
-                            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-                            slettPeriode={slettPeriode}
-                            kanIkkeLeggeTilFerie={!erFerieValgbart}
-                            harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
-                                harValgtPerioderBådeFørOgEtterFamiliehendelsedato
-                            }
-                            familiehendelsedato={familiehendelsedato}
-                        />
-                    )}
+                    {!erIRedigeringsmodus && <Detaljer kanLeggeTilFerie={kanLeggeTilFerie} />}
 
                     {children}
                 </VStack>
@@ -183,19 +123,24 @@ export const InfoPanel = ({
     );
 };
 
-const Detaljer = ({
-    eksisterendePerioderSomErValgt,
-    slettPeriode,
-    kanIkkeLeggeTilFerie,
-    harValgtPerioderBådeFørOgEtterFamiliehendelsedato,
-    familiehendelsedato,
-}: {
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    slettPeriode: (periode: { fom: string; tom: string }) => void;
-    kanIkkeLeggeTilFerie: boolean;
-    harValgtPerioderBådeFørOgEtterFamiliehendelsedato: boolean;
-    familiehendelsedato: string;
-}) => {
+const Detaljer = ({ kanLeggeTilFerie }: { kanLeggeTilFerie: boolean }) => {
+    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+
+    const { sammenslåtteValgtePerioder, eksisterendePerioderSomErValgt, oppdaterUttaksplan, setValgtePerioder } =
+        useKalenderRedigeringContext();
+
+    const slettPeriode = getSlettPeriodeFn(
+        sammenslåtteValgtePerioder,
+        erFarEllerMedmor,
+        oppdaterUttaksplan,
+        setValgtePerioder,
+    );
+
+    const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
+        sammenslåtteValgtePerioder,
+        familiehendelsedato,
+    );
+
     return (
         <VStack gap="space-16">
             {eksisterendePerioderSomErValgt.length === 0 && (
@@ -208,12 +153,12 @@ const Detaljer = ({
                 <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
-            {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+            {!kanLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
                 <Alert variant="info" size="small">
                     <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
                 </Alert>
             )}
-            {kanIkkeLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+            {!kanLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
                 <Alert variant="info" size="small">
                     <FormattedMessage
                         id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"

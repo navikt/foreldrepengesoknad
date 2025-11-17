@@ -17,9 +17,9 @@ import { SamtidigUttakSpørsmål } from '../../components/spørsmål/SamtidigUtt
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
-import { PlanperiodeMedAntallDager } from './EksisterendeValgtePerioder';
 import { InfoPanel } from './InfoPanel';
-import { usePeriodeValidator } from './valideringshjelper';
+import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type FormValues = {
     kontoType?: KontoTypeUttak;
@@ -30,31 +30,26 @@ type FormValues = {
     samtidigUttaksprosent?: string;
 };
 
-interface Props {
-    sammenslåtteValgtePerioder: CalendarPeriod[];
-    erMinimert: boolean;
-    erKunEnHelEksisterendePeriodeValgt: boolean;
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    lukkRedigeringsmodus: () => void;
-    setErMinimert: (erMinimert: boolean) => void;
-}
-
-export const LeggTilEllerEndrePeriodePanel = ({
-    sammenslåtteValgtePerioder,
-    erMinimert,
-    erKunEnHelEksisterendePeriodeValgt,
-    eksisterendePerioderSomErValgt,
-    oppdaterUttaksplan,
-    setValgtePerioder,
-    lukkRedigeringsmodus,
-    setErMinimert,
-}: Props) => {
+export const LeggTilEllerEndrePeriodePanel = () => {
     const intl = useIntl();
+
     const [feilmeldinger, setFeilmeldinger] = useState<string[]>([]);
 
     const { uttaksplan, aleneOmOmsorg } = useUttaksplanData();
+
+    const {
+        erMinimert,
+        erKunEnHelEksisterendePeriodeValgt,
+        sammenslåtteValgtePerioder,
+        setErIRedigeringsmodus,
+        oppdaterUttaksplan,
+        setValgtePerioder,
+    } = useKalenderRedigeringContext();
+
+    const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
+        usePeriodeValidator(sammenslåtteValgtePerioder);
+
+    const lukkRedigeringsmodus = () => setErIRedigeringsmodus(false);
 
     const formMethods = useForm<FormValues>({
         defaultValues: erKunEnHelEksisterendePeriodeValgt
@@ -62,20 +57,18 @@ export const LeggTilEllerEndrePeriodePanel = ({
             : undefined,
     });
 
-    const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
-        usePeriodeValidator(sammenslåtteValgtePerioder);
-
     const onSubmit = (values: FormValues) => {
-        const valideringsfeil1 = finnKontotypeGyldigFeilmeldinger(values.kontoType, values.samtidigUttak);
-        const valideringsfeil2 = finnPerioderGyldigeFeilmeldinger(
-            values.kontoType,
-            values.samtidigUttak,
-            values.skalDuJobbe,
-            values.forelder,
+        const valideringsfeil = finnKontotypeGyldigFeilmeldinger(values.kontoType, values.samtidigUttak).concat(
+            finnPerioderGyldigeFeilmeldinger(
+                values.kontoType,
+                values.samtidigUttak,
+                values.skalDuJobbe,
+                values.forelder,
+            ),
         );
 
-        setFeilmeldinger(valideringsfeil1.concat(valideringsfeil2));
-        if (valideringsfeil1.concat(valideringsfeil2).length > 0) {
+        setFeilmeldinger(valideringsfeil);
+        if (valideringsfeil.length > 0) {
             return;
         }
 
@@ -101,16 +94,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
-        <InfoPanel
-            sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            erMinimert={erMinimert}
-            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-            oppdaterUttaksplan={oppdaterUttaksplan}
-            setValgtePerioder={setValgtePerioder}
-            setErMinimert={setErMinimert}
-            erEnkelRedigeringPanel={false}
-            erFerieValgbart={false}
-        >
+        <InfoPanel kanLeggeTilFerie={false}>
             <div className={erMinimert ? 'hidden' : 'block'}>
                 <div className="px-4 pb-4 pt-4">
                     <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
