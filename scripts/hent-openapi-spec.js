@@ -18,7 +18,7 @@ const SOURCES = [
     },
 ];
 
-async function hentToken(isLokal) {
+async function hentToken(isLokal, aud) {
     if (isLokal) {
         console.log('Henter token fra VTP.');
         const res = await fetch('http://localhost:8060/rest/azuread/token', {
@@ -47,7 +47,7 @@ async function hentToken(isLokal) {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                aud: 'dev-fss:teamforeldrepenger:fpsak',
+                aud,
             }).toString(),
         });
         return res.text();
@@ -74,8 +74,8 @@ async function hentOpenAPISpec(source, token) {
     try {
         console.log(`Kjører i ${isLokal ? 'lokal' : 'remote'} modus.`);
 
-        const token = await hentToken(isLokal);
         for (const source of SOURCES) {
+            const token = await hentToken(isLokal, source.aud);
             await hentOpenAPISpec(source, token);
         }
     } catch (error) {
