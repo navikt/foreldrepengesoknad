@@ -11,9 +11,9 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useUttaksplanBuilder } from '../../context/useUttaksplanBuilder';
 import { Planperiode } from '../../types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from '../../utils/periodeUtils';
-import { InfoOgEnkelRedigeringPanel } from './InfoOgEnkelRedigeringPanel';
+import { PlanperiodeMedAntallDager } from './EksisterendeValgtePerioder';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
-import { PlanperiodeMedAntallDager } from './Periodeoversikt';
+import { ValgteDagerPanel } from './ValgteDagerPanel';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
@@ -21,7 +21,7 @@ type Props = {
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
-export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgtePerioder }: Props) => {
+export const RedigerKalenderIndex = ({ valgtePerioder, oppdaterUttaksplan, setValgtePerioder }: Props) => {
     const { uttaksplan } = useUttaksplanData();
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
@@ -71,7 +71,7 @@ export const RedigeringPanel = ({ valgtePerioder, oppdaterUttaksplan, setValgteP
             background="default"
         >
             {!erIRedigeringsmodus && (
-                <InfoOgEnkelRedigeringPanel
+                <ValgteDagerPanel
                     sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
                     erMinimert={erMinimert}
                     erKunEnHelEksisterendePeriodeValgt={erKunEnHelEksisterendePeriodeValgt}
@@ -107,7 +107,7 @@ const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPer
     return [...perioder]
         .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
         .reduce<CalendarPeriod[]>((acc, curr) => {
-            const last = acc[acc.length - 1];
+            const last = acc.at(-1);
 
             if (last) {
                 const sisteDag = dayjs(last.tom);
@@ -139,6 +139,7 @@ const finnValgtePerioder = (
     uttaksplan: Planperiode[],
 ): PlanperiodeMedAntallDager[] => {
     return uttaksplan
+        .filter((p) => !p.periodeHullÅrsak)
         .map((p) => {
             let overlappendeDager = 0;
 

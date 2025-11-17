@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getTomPeriodeUtenUttakValidator } from 'utils/dateTomValidators';
 
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
@@ -8,8 +8,10 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
+import { type PlanperiodeMedAntallDager } from './EksisterendeValgtePerioder';
 import { InfoPanel } from './InfoPanel';
-import { type PlanperiodeMedAntallDager } from './Periodeoversikt';
+import { usePeriodeValidator } from './valideringshjelper';
 
 type Props = {
     sammenslåtteValgtePerioder: CalendarPeriod[];
@@ -22,7 +24,7 @@ type Props = {
     setErMinimert: (erMinimert: boolean) => void;
 };
 
-export const InfoOgEnkelRedigeringPanel = ({
+export const ValgteDagerPanel = ({
     sammenslåtteValgtePerioder,
     erMinimert,
     erKunEnHelEksisterendePeriodeValgt,
@@ -32,6 +34,9 @@ export const InfoOgEnkelRedigeringPanel = ({
     setErIRedigeringsmodus,
     setErMinimert,
 }: Props) => {
+    const intl = useIntl();
+    const { familiesituasjon } = useUttaksplanData();
+
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const slettAllePerioder = () => {
@@ -64,7 +69,15 @@ export const InfoOgEnkelRedigeringPanel = ({
         setValgtePerioder([]);
     };
 
-    const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
+    const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
+    const erFerieValgbart = erFeriePerioderGyldige();
+
+    const periodeUtenUttakValidatorerFom = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
+    const periodeUtenUttakValidatorerTom = getTomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
+
+    const erSlettValgbart = sammenslåtteValgtePerioder.some(
+        (p) => periodeUtenUttakValidatorerFom(p.fom) === null && periodeUtenUttakValidatorerTom(p.tom) === null,
+    );
 
     return (
         <InfoPanel
@@ -75,6 +88,7 @@ export const InfoOgEnkelRedigeringPanel = ({
             setValgtePerioder={setValgtePerioder}
             setErMinimert={setErMinimert}
             erEnkelRedigeringPanel
+            erFerieValgbart={erFerieValgbart}
         >
             <VStack gap="space-12">
                 <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
@@ -85,13 +99,13 @@ export const InfoOgEnkelRedigeringPanel = ({
                     )}
                 </Button>
                 <HStack justify="space-between">
-                    {!kanIkkeLeggeTilFerie && (
+                    {erFerieValgbart && (
                         <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
                             <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                         </Button>
                     )}
-                    {kanIkkeLeggeTilFerie && <div />}
-                    {eksisterendePerioderSomErValgt.length > 0 && (
+                    {!erFerieValgbart && <div />}
+                    {eksisterendePerioderSomErValgt.length > 0 && erSlettValgbart && (
                         <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
                             {eksisterendePerioderSomErValgt.length === 1 ? (
                                 <FormattedMessage id="RedigeringPanel.Slett" />
@@ -104,8 +118,4 @@ export const InfoOgEnkelRedigeringPanel = ({
             </VStack>
         </InfoPanel>
     );
-};
-
-const erFerieIkkeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isBefore(familiehendelsedato);
 };

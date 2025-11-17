@@ -12,7 +12,7 @@ import { useMedia } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { Periodeoversikt, type PlanperiodeMedAntallDager } from './Periodeoversikt';
+import { EksisterendeValgtePerioder, type PlanperiodeMedAntallDager } from './EksisterendeValgtePerioder';
 
 type Props = {
     sammenslåtteValgtePerioder: CalendarPeriod[];
@@ -20,10 +20,13 @@ type Props = {
     erEnkelRedigeringPanel: boolean;
     children: React.ReactNode[] | React.ReactNode;
     eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
+    erFerieValgbart: boolean;
     oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     setErMinimert: (erMinimert: boolean) => void;
 };
+
+//del dette i to
 
 export const InfoPanel = ({
     sammenslåtteValgtePerioder,
@@ -31,6 +34,7 @@ export const InfoPanel = ({
     erEnkelRedigeringPanel,
     children,
     eksisterendePerioderSomErValgt,
+    erFerieValgbart,
     oppdaterUttaksplan,
     setValgtePerioder,
     setErMinimert,
@@ -55,7 +59,6 @@ export const InfoPanel = ({
         setValgtePerioder,
     );
 
-    const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
     const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
         sammenslåtteValgtePerioder,
         familiehendelsedato,
@@ -135,7 +138,7 @@ export const InfoPanel = ({
                             <Detaljer
                                 eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                                 slettPeriode={slettPeriode}
-                                kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                                kanIkkeLeggeTilFerie={!erFerieValgbart}
                                 harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
                                     harValgtPerioderBådeFørOgEtterFamiliehendelsedato
                                 }
@@ -148,7 +151,7 @@ export const InfoPanel = ({
                             <Detaljer
                                 eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                                 slettPeriode={slettPeriode}
-                                kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                                kanIkkeLeggeTilFerie={!erFerieValgbart}
                                 harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
                                     harValgtPerioderBådeFørOgEtterFamiliehendelsedato
                                 }
@@ -165,7 +168,7 @@ export const InfoPanel = ({
                         <Detaljer
                             eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
                             slettPeriode={slettPeriode}
-                            kanIkkeLeggeTilFerie={kanIkkeLeggeTilFerie}
+                            kanIkkeLeggeTilFerie={!erFerieValgbart}
                             harValgtPerioderBådeFørOgEtterFamiliehendelsedato={
                                 harValgtPerioderBådeFørOgEtterFamiliehendelsedato
                             }
@@ -202,7 +205,7 @@ const Detaljer = ({
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (
-                <Periodeoversikt perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
+                <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
             {kanIkkeLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
@@ -227,10 +230,6 @@ const finnAntallDager = (perioder: CalendarPeriod[]): number => {
         const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
         return acc + dager;
     }, 0);
-};
-
-const erFerieIkkeLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
-    return dayjs(periode.fom).isBefore(familiehendelsedato);
 };
 
 const harValgtBådeFørOgEtterFamiliehendelsedato = (

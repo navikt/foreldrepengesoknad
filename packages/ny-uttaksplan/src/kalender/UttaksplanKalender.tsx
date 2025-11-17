@@ -14,7 +14,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
-import { RedigeringPanel } from './redigering/RedigeringPanel';
+import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
 import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervisning';
 
 interface Props {
@@ -115,7 +115,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                 'pb-[env(safe-area-inset-bottom,1rem)]',
                             ].join(' ')}
                         >
-                            <RedigeringPanel
+                            <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setValgtePerioder}
                                 oppdaterUttaksplan={oppdaterUttaksplan}
