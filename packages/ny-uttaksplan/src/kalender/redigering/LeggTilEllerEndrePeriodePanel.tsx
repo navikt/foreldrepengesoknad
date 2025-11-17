@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { VStack } from '@navikt/ds-react';
+import { ErrorMessage, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
@@ -16,8 +17,9 @@ import { SamtidigUttakSpørsmål } from '../../components/spørsmål/SamtidigUtt
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
-import { InfoPanel } from './InfoPanel';
-import { PlanperiodeMedAntallDager } from './Periodeoversikt';
+import { RedigeringPanel } from './RedigeringPanel';
+import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type FormValues = {
     kontoType?: KontoTypeUttak;
@@ -28,30 +30,26 @@ type FormValues = {
     samtidigUttaksprosent?: string;
 };
 
-interface Props {
-    sammenslåtteValgtePerioder: CalendarPeriod[];
-    erMinimert: boolean;
-    erKunEnHelEksisterendePeriodeValgt: boolean;
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    lukkRedigeringsmodus: () => void;
-    setErMinimert: (erMinimert: boolean) => void;
-}
-
-export const LeggTilEllerEndrePeriodePanel = ({
-    sammenslåtteValgtePerioder,
-    erMinimert,
-    erKunEnHelEksisterendePeriodeValgt,
-    eksisterendePerioderSomErValgt,
-    oppdaterUttaksplan,
-    setValgtePerioder,
-    lukkRedigeringsmodus,
-    setErMinimert,
-}: Props) => {
+export const LeggTilEllerEndrePeriodePanel = () => {
     const intl = useIntl();
 
-    const { uttaksplan, aleneOmOmsorg, familiehendelsedato, valgtStønadskonto } = useUttaksplanData();
+    const [feilmeldinger, setFeilmeldinger] = useState<string[]>([]);
+
+    const { uttaksplan, aleneOmOmsorg } = useUttaksplanData();
+
+    const {
+        erMinimert,
+        erKunEnHelEksisterendePeriodeValgt,
+        sammenslåtteValgtePerioder,
+        setErIRedigeringsmodus,
+        oppdaterUttaksplan,
+        setValgtePerioder,
+    } = useKalenderRedigeringContext();
+
+    const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
+        usePeriodeValidator(sammenslåtteValgtePerioder);
+
+    const lukkRedigeringsmodus = () => setErIRedigeringsmodus(false);
 
     const formMethods = useForm<FormValues>({
         defaultValues: erKunEnHelEksisterendePeriodeValgt
@@ -60,6 +58,20 @@ export const LeggTilEllerEndrePeriodePanel = ({
     });
 
     const onSubmit = (values: FormValues) => {
+        const valideringsfeil = finnKontotypeGyldigFeilmeldinger(values.kontoType, values.samtidigUttak).concat(
+            finnPerioderGyldigeFeilmeldinger(
+                values.kontoType,
+                values.samtidigUttak,
+                values.skalDuJobbe,
+                values.forelder,
+            ),
+        );
+
+        setFeilmeldinger(valideringsfeil);
+        if (valideringsfeil.length > 0) {
+            return;
+        }
+
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map((periode) => ({
                 fom: periode.fom,
@@ -79,22 +91,15 @@ export const LeggTilEllerEndrePeriodePanel = ({
         lukkRedigeringsmodus();
     };
 
-    const gyldigeKontotyper = finnGyldigeKontotyper(sammenslåtteValgtePerioder, familiehendelsedato, valgtStønadskonto);
+    const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
-        <InfoPanel
-            sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            erMinimert={erMinimert}
-            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-            oppdaterUttaksplan={oppdaterUttaksplan}
-            setValgtePerioder={setValgtePerioder}
-            setErMinimert={setErMinimert}
-            erEnkelRedigeringPanel={false}
-        >
+        <RedigeringPanel kanLeggeTilFerie={false}>
             <div className={erMinimert ? 'hidden' : 'block'}>
                 <div className="px-4 pb-4 pt-4">
                     <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                         <VStack gap="space-16">
+                            {feilmeldinger.length > 0 && <ErrorMessage>{feilmeldinger.join(', ')}</ErrorMessage>}
                             <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
                             {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
                             <GraderingSpørsmål />
@@ -107,7 +112,7 @@ export const LeggTilEllerEndrePeriodePanel = ({
                     </RhfForm>
                 </div>
             </div>
-        </InfoPanel>
+        </RedigeringPanel>
     );
 };
 
@@ -126,49 +131,12 @@ const getForelderFraKontoType = (
     }
 };
 
-const erMødrekvoteLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isSameOrAfter(familiehendelsedato);
-};
+const useGyldigeKontotyper = (valgtePerioder: CalendarPeriod[]) => {
+    const { valgtStønadskonto } = useUttaksplanData();
 
-const erFedrekvoteLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isSameOrAfter(familiehendelsedato);
-};
+    const { erKontotypeGyldigForPerioder } = usePeriodeValidator(valgtePerioder);
 
-const erFellesperiodeLovlig = (periode: CalendarPeriod, familiehendelsedato: string): boolean => {
-    return dayjs(periode.fom).isAfter(dayjs(familiehendelsedato).subtract(12, 'weeks'));
-};
-
-const finnGyldigeKontotyper = (
-    valgtePerioder: CalendarPeriod[],
-    familiehendelsedato: string,
-    valgtStønadskonto: KontoBeregningDto,
-) => {
-    const kanHaMødrekvote = valgtePerioder.some((p) => erMødrekvoteLovlig(p, familiehendelsedato));
-    const kanHaFedrekvote = valgtePerioder.some((p) => erFedrekvoteLovlig(p, familiehendelsedato));
-    const kanHaFellesperiode = valgtePerioder.some((p) => erFellesperiodeLovlig(p, familiehendelsedato));
-    const kanHaForeldrepengerFørFødsel = !valgtePerioder.some(
-        (p) =>
-            dayjs(p.fom).isBefore(dayjs(familiehendelsedato).startOf('day').subtract(21, 'days')) ||
-            dayjs(p.tom).isAfter(dayjs(familiehendelsedato).subtract(1, 'days').startOf('day')),
-    );
-
-    return valgtStønadskonto.kontoer
-        .map((k) => k.konto)
-        .filter((kt) => {
-            if (kt === 'FORELDREPENGER_FØR_FØDSEL') {
-                return kanHaForeldrepengerFørFødsel;
-            }
-            if (kt === 'FELLESPERIODE') {
-                return kanHaFellesperiode;
-            }
-            if (kt === 'FEDREKVOTE' || kt === 'AKTIVITETSFRI_KVOTE') {
-                return kanHaFedrekvote;
-            }
-            if (kt === 'MØDREKVOTE' || kt === 'FORELDREPENGER') {
-                return kanHaMødrekvote;
-            }
-            return true;
-        });
+    return valgtStønadskonto.kontoer.map((k) => k.konto).filter((kt) => erKontotypeGyldigForPerioder(kt));
 };
 
 const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod): FormValues | undefined => {

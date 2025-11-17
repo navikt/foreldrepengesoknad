@@ -1,38 +1,29 @@
-import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
-import { CalendarPeriod } from '@navikt/fp-ui';
-
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { InfoPanel } from './InfoPanel';
-import { type PlanperiodeMedAntallDager } from './Periodeoversikt';
+import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
+import { getTomPeriodeUtenUttakValidator } from '../../utils/dateTomValidators';
+import { RedigeringPanel } from './RedigeringPanel';
+import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
-type Props = {
-    sammenslåtteValgtePerioder: CalendarPeriod[];
-    erMinimert: boolean;
-    erKunEnHelEksisterendePeriodeValgt: boolean;
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void;
-    setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
-    setErMinimert: (erMinimert: boolean) => void;
-};
+export const ValgteDagerPanel = () => {
+    const intl = useIntl();
 
-export const InfoOgEnkelRedigeringPanel = ({
-    sammenslåtteValgtePerioder,
-    erMinimert,
-    erKunEnHelEksisterendePeriodeValgt,
-    eksisterendePerioderSomErValgt,
-    oppdaterUttaksplan,
-    setValgtePerioder,
-    setErIRedigeringsmodus,
-    setErMinimert,
-}: Props) => {
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { erFarEllerMedmor, familiehendelsedato, familiesituasjon } = useUttaksplanData();
+
+    const {
+        sammenslåtteValgtePerioder,
+        erKunEnHelEksisterendePeriodeValgt,
+        eksisterendePerioderSomErValgt,
+        oppdaterUttaksplan,
+        setValgtePerioder,
+        setErIRedigeringsmodus,
+    } = useKalenderRedigeringContext();
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
@@ -64,18 +55,18 @@ export const InfoOgEnkelRedigeringPanel = ({
         setValgtePerioder([]);
     };
 
-    const kanIkkeLeggeTilFerie = sammenslåtteValgtePerioder.some((p) => erFerieIkkeLovlig(p, familiehendelsedato));
+    const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
+    const erFerieValgbart = erFeriePerioderGyldige();
+
+    const periodeUtenUttakValidatorerFom = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
+    const periodeUtenUttakValidatorerTom = getTomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
+
+    const erSlettValgbart = sammenslåtteValgtePerioder.some(
+        (p) => periodeUtenUttakValidatorerFom(p.fom) === null && periodeUtenUttakValidatorerTom(p.tom) === null,
+    );
 
     return (
-        <InfoPanel
-            sammenslåtteValgtePerioder={sammenslåtteValgtePerioder}
-            erMinimert={erMinimert}
-            eksisterendePerioderSomErValgt={eksisterendePerioderSomErValgt}
-            oppdaterUttaksplan={oppdaterUttaksplan}
-            setValgtePerioder={setValgtePerioder}
-            setErMinimert={setErMinimert}
-            erEnkelRedigeringPanel
-        >
+        <RedigeringPanel kanLeggeTilFerie={!erFerieValgbart}>
             <VStack gap="space-12">
                 <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
                     {erKunEnHelEksisterendePeriodeValgt ? (
@@ -85,13 +76,13 @@ export const InfoOgEnkelRedigeringPanel = ({
                     )}
                 </Button>
                 <HStack justify="space-between">
-                    {!kanIkkeLeggeTilFerie && (
+                    {erFerieValgbart && (
                         <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
                             <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                         </Button>
                     )}
-                    {kanIkkeLeggeTilFerie && <div />}
-                    {eksisterendePerioderSomErValgt.length > 0 && (
+                    {!erFerieValgbart && <div />}
+                    {eksisterendePerioderSomErValgt.length > 0 && erSlettValgbart && (
                         <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
                             {eksisterendePerioderSomErValgt.length === 1 ? (
                                 <FormattedMessage id="RedigeringPanel.Slett" />
@@ -102,10 +93,6 @@ export const InfoOgEnkelRedigeringPanel = ({
                     )}
                 </HStack>
             </VStack>
-        </InfoPanel>
+        </RedigeringPanel>
     );
-};
-
-const erFerieIkkeLovlig = (periode: { fom: string; tom: string }, familiehendelsedato: string): boolean => {
-    return dayjs(periode.tom).isBefore(familiehendelsedato);
 };
