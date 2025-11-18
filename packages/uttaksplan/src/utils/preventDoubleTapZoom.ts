@@ -16,7 +16,7 @@ export const preventDoubleTapZoom = (event: React.TouchEvent<HTMLButtonElement>)
 
     const tapAt = new Date().getTime();
     const timeDiff = tapAt - lastTapAt;
-    const { clientX, clientY } = event.touches[0];
+    const { clientX, clientY } = event.touches[0]!;
     const xDiff = Math.abs(lastClientX - clientX);
     const yDiff = Math.abs(lastClientY - clientY);
     if (xDiff < minZoomTouchDelta && yDiff < minZoomTouchDelta && event.touches.length === 1 && timeDiff < delay) {

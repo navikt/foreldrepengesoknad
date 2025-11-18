@@ -50,7 +50,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                 timeout: 120 * 1000,
             });
             slettMellomlagring();
-            navigate(SøknadRoutes.KVITTERING);
+            void navigate(SøknadRoutes.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
@@ -64,7 +64,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                     return navigate(SøknadRoutes.KVITTERING);
                 }
 
-                const jsonResponse = await error.response.json();
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
                 Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);

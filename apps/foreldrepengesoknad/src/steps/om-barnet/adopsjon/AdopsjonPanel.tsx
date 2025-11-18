@@ -138,7 +138,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         <RhfDatepicker
                             name="ankomstdato"
                             control={formMethods.control}
-                            minDate={fødselsdatoer ? dayjs(fødselsdatoer[0].dato).toDate() : undefined}
+                            minDate={fødselsdatoer ? dayjs(fødselsdatoer[0]!.dato).toDate() : undefined}
                             maxDate={dayjs().add(6, 'months').toDate()}
                             label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}
                             validate={[

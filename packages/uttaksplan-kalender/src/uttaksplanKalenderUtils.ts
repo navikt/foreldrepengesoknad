@@ -36,7 +36,7 @@ const getUtsettelseÅrsakTekst = (årsak: UtsettelsesÅrsak, intl: IntlShape) =>
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelsesÅrsak[], intl: IntlShape): string => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== 'FRI') {
-        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
+        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0]!, intl);
         return intl.formatMessage({ id: 'kalender.utsettelse' }, { årsak: årsakTekst });
     }
     return intl.formatMessage({ id: 'kalender.dinUtsettelse' });

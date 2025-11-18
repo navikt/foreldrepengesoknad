@@ -146,7 +146,7 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname))),
+        () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
 
@@ -169,7 +169,7 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
             appPathList.map((p, index) => ({
                 index,
                 id: p,
-                label: pathToLabelMap[p],
+                label: pathToLabelMap[p]!,
                 isSelected: p === currentPath,
             })),
         [appPathList, currentPath, pathToLabelMap],

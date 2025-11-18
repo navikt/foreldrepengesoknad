@@ -36,7 +36,7 @@ export const slåSammenLikePerioder = (
         return perioder;
     }
     const nyePerioder: Periode[] = [];
-    let forrigePeriode: Periode | undefined = { ...perioder[0] };
+    let forrigePeriode: Periode | undefined = { ...perioder[0]! };
     perioder.forEach((periode, index) => {
         if (index === 0) {
             return;
@@ -312,7 +312,7 @@ export const finnOgSettInnHull = (
             return res;
         }
 
-        const nestePeriode = perioder[index + 1];
+        const nestePeriode = perioder[index + 1]!;
 
         const tidsperiodeMellomPerioder: TidsperiodeDate = {
             fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
@@ -373,7 +373,7 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
             return;
         }
 
-        oppsplittetPeriode[index - 1].tidsperiode.tom = datoWrapper.erFom
+        oppsplittetPeriode[index - 1]!.tidsperiode.tom = datoWrapper.erFom
             ? Uttaksdagen(datoWrapper.dato).forrige()
             : datoWrapper.dato;
 
@@ -501,7 +501,7 @@ export const settInnAnnenPartsUttak = (
 
             return res;
         }
-        const overlappendePeriode = overlappendePerioderAnnenPart[0]; // Finnes alltid bare 1.
+        const overlappendePeriode = overlappendePerioderAnnenPart[0]!; // Finnes alltid bare 1.
         if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
             res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Periode);
             return res;
@@ -528,7 +528,7 @@ export const settInnAnnenPartsUttak = (
 
     result.sort(sorterPerioder);
 
-    const førstePeriodeStartdato = perioder[0].tidsperiode.fom;
+    const førstePeriodeStartdato = perioder[0]!.tidsperiode.fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day'),
     );

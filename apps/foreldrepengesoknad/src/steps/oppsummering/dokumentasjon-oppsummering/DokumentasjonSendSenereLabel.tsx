@@ -67,6 +67,7 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter(isPeriodeMedMorInnleggelse)
         .some((p) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison -- dette er riktig sjekk, men med to forskjellige Enums. Burde fikses
             if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
                 return true;
             }

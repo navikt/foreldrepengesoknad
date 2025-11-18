@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 export interface QuestionConfig<Payload, QuestionKeys, ErrorFormat = any> {
     [key: string]: {
         /** Depends on parentQuestions visibility, so if parent is hidden,
@@ -34,7 +35,7 @@ const isQuestionVisible = <Payload, QuestionKeys, ErrorFormat>(
         return false;
     }
     if (config.parentQuestion !== undefined) {
-        const parentQuestion = questions[config.parentQuestion as any];
+        const parentQuestion = questions[config.parentQuestion as any]!;
         return isQuestionVisible(questions, config.parentQuestion, payload) && parentQuestion.isAnswered(payload);
     }
     return true;
@@ -70,8 +71,8 @@ const areAllQuestionsAnswered = <Payload, QuestionKeys, ErrorFormat>(
 ): boolean => {
     let allQuestionsHasAnswers = true;
     for (const key of Object.keys(questions)) {
-        const question = questions[key];
-        if (isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key as any, payload)) {
+        const question = questions[key]!;
+        if (isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key as QuestionKeys, payload)) {
             const isOptional = question.isOptional !== undefined ? question.isOptional(payload) === true : false;
             allQuestionsHasAnswers = allQuestionsHasAnswers === true && (question.isAnswered(payload) || isOptional);
         }
@@ -86,7 +87,7 @@ const getIncludedQuestions = <QuestionKeys, Payload, ErrorFormat>(
     const keys = Object.keys(questions).filter((key) => {
         return isQuestionIncluded(questions, key as any, payload);
     });
-    return keys as any[];
+    return keys as QuestionKeys[];
 };
 
 const validateQuestion = <Value, QuestionKeys, Payload, ErrorFormat = any>(
@@ -95,7 +96,7 @@ const validateQuestion = <Value, QuestionKeys, Payload, ErrorFormat = any>(
     question: QuestionKeys,
     payload: Payload,
 ): undefined | boolean | ErrorFormat | ErrorFormat[] => {
-    const config = questions[question as any];
+    const config = questions[question as any]!;
     if (!config.validate) {
         return undefined;
     }
@@ -134,12 +135,11 @@ export const Questions = <Payload, QuestionKeys, ErrorFormat = undefined>(
             getIncludedQuestions<QuestionKeys, Payload, ErrorFormat>(questions, payload),
     }),
     getQuestionVisbilityInfo: (key: QuestionKeys, payload: Payload): QuestionVisibilityInfo<ErrorFormat> => {
-        const info: QuestionVisibilityInfo = {
+        return {
             validate: (value: any) =>
                 validateQuestion<any, QuestionKeys, Payload, ErrorFormat>(value, questions, key, payload),
             isVisible: () => isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key, payload),
             isAnswered: () => isQuestionAnswered<Payload, QuestionKeys, ErrorFormat>(questions, key, payload),
         };
-        return info;
     },
 });

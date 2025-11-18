@@ -77,8 +77,8 @@ const getMeldingOmOverlappendeUtsettelser = (
         return intl.formatMessage(
             { id: 'valideringsfeil.overlapperEnUtsettelse' },
             {
-                fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
-                tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
+                fom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.fom),
+                tom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.tom),
             },
         );
     }

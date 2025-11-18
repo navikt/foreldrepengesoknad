@@ -14,5 +14,6 @@ const UttaksplanFormConfig: QuestionConfig<UttaksplanQuestionPayload, Uttaksplan
 };
 
 export const uttaksplanQuestionsConfig = Questions<UttaksplanQuestionPayload, UttaksplanFormField>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     UttaksplanFormConfig,
 );

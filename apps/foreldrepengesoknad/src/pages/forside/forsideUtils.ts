@@ -107,7 +107,7 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: BarnDto
         sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
         startdatoFørsteStønadsperiode:
             sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
-                ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
+                ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0]!.fom)!).denneEllerNeste()
                 : undefined,
         fornavn:
             pdlBarn !== undefined && pdlBarn.length > 0
@@ -164,7 +164,7 @@ const getSelectableFlerlingerFraPDL = (
         fødselsdatoer: alleBarna.map((b) => dayjs.utc(b.fødselsdato).toDate()),
         fornavn: alleBarna.map((b) => [b.navn?.fornavn ?? '', b.navn?.mellomnavn ?? ''].join(' ')),
         fnr: alleBarna.map((b) => b.fnr),
-        sortableDato: dayjs.utc(alleBarna[0].fødselsdato).toDate(),
+        sortableDato: dayjs.utc(alleBarna[0]!.fødselsdato).toDate(),
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
         annenForelder,
     };
@@ -270,7 +270,7 @@ export const getBarnFraNesteSak = (valgteBarn: ValgtBarn, selectableBarn: ValgtB
             barn.sak !== undefined &&
             barn.id !== valgteBarn.id &&
             barn.familiehendelsesdato !== undefined &&
-            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day'),
+            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato, 'day'),
     );
     allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst);
     const nesteBarn = allePåfølgendeBarn.at(-1);

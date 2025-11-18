@@ -306,9 +306,9 @@ export const ForeldrepengesøknadRoutes = ({
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
-                navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
-                navigate(SøknadRoutes.UTTAKSPLAN);
+                void navigate(currentRoute);
+            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
+                void navigate(SøknadRoutes.UTTAKSPLAN);
             }
         }
     }, [

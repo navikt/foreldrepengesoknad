@@ -409,7 +409,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     );
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for far som søker første gang hvis søkedato er etter 1 juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        // @ts-expect-error -- usikker på beste approach
+        mswWrapper(({ setHandlers }) => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
@@ -422,7 +423,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                await screen.queryByText(
+                screen.queryByText(
                     'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
                 ),
             ).not.toBeInTheDocument();
@@ -455,7 +456,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning' +
             ' hvis søkedato er etter 1 juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        // @ts-expect-error -- usikker på beste approach
+        mswWrapper(({ setHandlers }) => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
@@ -468,7 +470,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                await screen.queryByText(
+                screen.queryByText(
                     'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
                 ),
             ).not.toBeInTheDocument();

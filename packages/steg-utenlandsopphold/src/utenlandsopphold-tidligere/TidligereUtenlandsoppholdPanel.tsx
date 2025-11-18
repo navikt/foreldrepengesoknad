@@ -23,7 +23,7 @@ const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
 
 interface Props<TYPE> {
     tidligereUtenlandsopphold: UtenlandsoppholdPeriode[];
-    saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => Promise<void>;
+    saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
     saveOnPrevious: (data: UtenlandsoppholdPeriode[]) => void;
     onStepChange?: (id: TYPE) => void;
     onAvsluttOgSlett: () => void;

@@ -354,7 +354,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             ...defaultSøkerinfoFar,
             arbeidsforhold: [
                 {
-                    ...arbeidsforholdMorJobber80Prosent[0],
+                    ...arbeidsforholdMorJobber80Prosent[0]!,
                     stillingsprosent: 70,
                 },
             ],
@@ -449,7 +449,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.trengerDokumentereMorsArbeid, async () => {
+                http.post(API_URLS.trengerDokumentereMorsArbeid, () => {
                     return HttpResponse.json(true);
                 }),
             ],

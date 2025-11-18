@@ -12,7 +12,7 @@ import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
 interface Props {
     alleVedlegg?: VedleggDataType;
-    onVilEndreSvar: () => Promise<void>;
+    onVilEndreSvar: () => void;
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
@@ -66,7 +66,7 @@ export const DokumentasjonOppsummering = ({
                                 if (idOgVedlegg[1].length === 0) {
                                     return false;
                                 }
-                                const vedlegg = idOgVedlegg[1][0];
+                                const vedlegg = idOgVedlegg[1][0]!;
 
                                 if (vedlegg.innsendingsType === 'AUTOMATISK') {
                                     return false;
@@ -74,17 +74,17 @@ export const DokumentasjonOppsummering = ({
                                 return true;
                             })
                             .map((idOgVedlegg) => (
-                                <FormSummary.Answer key={idOgVedlegg[1][0].id}>
+                                <FormSummary.Answer key={idOgVedlegg[1][0]!.id}>
                                     <FormSummary.Label>
-                                        {idOgVedlegg[1][0].innsendingsType === 'SEND_SENERE' ? (
+                                        {idOgVedlegg[1][0]!.innsendingsType === 'SEND_SENERE' ? (
                                             <DokumentasjonSendSenereLabel
-                                                attachment={idOgVedlegg[1][0]}
+                                                attachment={idOgVedlegg[1][0]!}
                                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                                                 navnPåForeldre={navnPåForeldre}
                                                 uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
                                             />
                                         ) : (
-                                            <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]} />
+                                            <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]!} />
                                         )}
                                     </FormSummary.Label>
                                     <FormSummary.Value>

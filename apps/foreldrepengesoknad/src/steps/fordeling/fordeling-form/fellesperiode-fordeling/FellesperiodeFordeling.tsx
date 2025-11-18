@@ -150,7 +150,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                                     antallDagerFellesperiodeTilSøker,
                                 ),
                             ]}
-                            onChange={() => isSubmitted && trigger()}
+                            onChange={() => isSubmitted && void trigger()}
                         />
                         {!harHeleUkerTilFordeling && (
                             <RhfTextField
@@ -168,7 +168,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                                         antallUkerFellesperiodeTilSøker,
                                     ),
                                 ]}
-                                onChange={() => isSubmitted && trigger()}
+                                onChange={() => isSubmitted && void trigger()}
                             />
                         )}
                     </HStack>

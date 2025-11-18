@@ -27,7 +27,7 @@ export const AndreInntektskilderFieldArray = () => {
     return (
         <VStack gap="space-40">
             {fields.map((field, index) => {
-                const inntektskilde = andreInntektskilder[index];
+                const inntektskilde = andreInntektskilder[index]!;
                 return (
                     <VStack gap="space-40" key={field.id}>
                         <RhfRadioGroup

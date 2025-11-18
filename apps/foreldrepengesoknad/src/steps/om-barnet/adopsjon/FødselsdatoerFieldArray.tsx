@@ -69,12 +69,12 @@ export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
         const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : Number.parseInt(antallBarnDropDown, 10);
         const diff = fields.length - antall;
         if (diff > 0) {
-            [...new Array(diff)].forEach((_unused, index) => {
+            Array.from({ length: diff }).forEach((_unused, index) => {
                 remove(fields.length - index - 1);
             });
         }
         if (diff < 0) {
-            [...new Array(antall - fields.length)].forEach(() => {
+            Array.from({ length: antall - fields.length }).forEach(() => {
                 append({ dato: undefined });
             });
         }

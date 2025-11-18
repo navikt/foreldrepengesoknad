@@ -54,8 +54,8 @@ const getRadioBeskrivelse = (
 };
 
 type Props = {
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
     barn: Barn;
