@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 export const DefaultDinSakHeader: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
         },
     },

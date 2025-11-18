@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const AktivSak: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
         },
         harMinstEttArbeidsforhold: true,
@@ -24,7 +24,7 @@ export const AktivSak: Story = {
 export const AvsluttetSak: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             sakAvsluttet: true,
         },
@@ -35,7 +35,7 @@ export const AvsluttetSak: Story = {
 export const UnderBehandling: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             åpenBehandling: {
                 søknadsperioder: [],
@@ -49,7 +49,7 @@ export const UnderBehandling: Story = {
 export const VenterPåInntektsmelding: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             åpenBehandling: {
                 søknadsperioder: [],
@@ -63,7 +63,7 @@ export const VenterPåInntektsmelding: Story = {
 export const VenterPåBehandling: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             åpenBehandling: {
                 søknadsperioder: [],
@@ -77,7 +77,7 @@ export const VenterPåBehandling: Story = {
 export const TidligSøknad: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             åpenBehandling: {
                 søknadsperioder: [],
@@ -91,7 +91,7 @@ export const TidligSøknad: Story = {
 export const VenterPåMeldekort: Story = {
     args: {
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
             åpenBehandling: {
                 søknadsperioder: [],
