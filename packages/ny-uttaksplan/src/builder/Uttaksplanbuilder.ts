@@ -211,11 +211,11 @@ const getPerioderPåForelder = ({
     }
 
     if (erAnnenPart) {
-        return perioder.filter((p) => p.forelder === forelder);
+        return perioder.filter((p) => p.erAnnenPartEøs || p.forelder === forelder);
     }
 
     return finnOgSettInnHull(
-        perioder.filter((p) => p.forelder === forelder),
+        perioder.filter((p) => !p.erAnnenPartEøs && p.forelder === forelder),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -272,7 +272,7 @@ const getSøkerOgAnnenpartsPerioder = ({
     opprinneligPlan,
     ...commonGetPerioderProps
 }: GetSøkerOgAnnenpartsPerioderParams): SøkerOgAnnenpartsPerioder => {
-    const forelder = periode.forelder;
+    const forelder = periode.erAnnenPartEøs ? undefined : periode.forelder;
     const annenPart = getAnnenPart(forelder);
     const egnePerioder = erIPlanleggerModus
         ? getPerioderPåForelder({
@@ -352,7 +352,7 @@ export const Uttaksplanbuilder = ({
             );
         },
         leggTilPerioder: (nyePerioder: Planperiode[]) => {
-            const annenPart = getAnnenPart(nyePerioder[0]!.forelder);
+            const annenPart = getAnnenPart(nyePerioder[0]!.erAnnenPartEøs ? undefined : nyePerioder[0].forelder);
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
@@ -419,7 +419,9 @@ export const Uttaksplanbuilder = ({
             );
         },
         oppdaterPerioder: (oppdatertePerioder: Planperiode[]) => {
-            const annenPart = getAnnenPart(oppdatertePerioder[0]!.forelder);
+            const annenPart = getAnnenPart(
+                oppdatertePerioder[0].erAnnenPartEøs ? undefined : oppdatertePerioder[0]!.forelder,
+            );
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
@@ -486,7 +488,9 @@ export const Uttaksplanbuilder = ({
             );
         },
         slettPerioder: (slettedePerioder: Planperiode[]) => {
-            const annenPart = getAnnenPart(slettedePerioder[0]!.forelder);
+            const annenPart = getAnnenPart(
+                slettedePerioder[0].erAnnenPartEøs ? undefined : slettedePerioder[0]!.forelder,
+            );
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,

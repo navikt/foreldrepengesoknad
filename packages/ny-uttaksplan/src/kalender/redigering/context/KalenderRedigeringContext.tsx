@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { omitMany } from '@navikt/fp-utils';
 
@@ -18,7 +18,9 @@ import {
 type Props = {
     valgtePerioder: CalendarPeriod[];
     children: React.ReactNode;
-    oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan: (
+        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 

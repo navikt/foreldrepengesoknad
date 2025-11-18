@@ -27,6 +27,7 @@ export const ValgteDagerPanel = () => {
 
     const slettAllePerioder = () => {
         const planperioder = sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
+            erAnnenPartEøs: false,
             forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             fom: p.fom,
@@ -43,6 +44,7 @@ export const ValgteDagerPanel = () => {
     const leggTilFerie = () => {
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
+                erAnnenPartEøs: false,
                 forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 fom: p.fom,
                 tom: p.tom,

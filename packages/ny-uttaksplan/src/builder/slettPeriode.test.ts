@@ -5,6 +5,7 @@ import { slettPeriode } from './slettPeriode';
 
 const perioder: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-04-14',
         tom: '2022-05-04',
@@ -13,6 +14,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-05-05',
         tom: '2022-08-17',
@@ -21,6 +23,7 @@ const perioder: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-08-18',
         tom: '2022-10-12',
@@ -32,6 +35,7 @@ const perioder: Planperiode[] = [
 
 const perioder2: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-05-11',
         tom: '2022-05-31',
@@ -40,6 +44,7 @@ const perioder2: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-06-01',
         tom: '2022-08-09',
@@ -48,6 +53,7 @@ const perioder2: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-08-10',
         tom: '2022-08-23',
@@ -56,6 +62,7 @@ const perioder2: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '4',
         fom: '2022-08-24',
         tom: '2022-08-30',
@@ -64,6 +71,7 @@ const perioder2: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '5',
         fom: '2022-08-31',
         tom: '2022-10-12',
@@ -120,6 +128,7 @@ describe('Test av slett periode', () => {
 
 const perioderFar: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-07-25',
         tom: '2022-08-01',
@@ -128,6 +137,7 @@ const perioderFar: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-08-02',
         tom: '2022-08-08',
@@ -136,6 +146,7 @@ const perioderFar: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '3',
         fom: '2022-08-11',
         tom: '2022-09-11',
@@ -143,6 +154,7 @@ const perioderFar: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '4',
         fom: '2022-09-12',
         tom: '2022-09-19',
@@ -151,6 +163,7 @@ const perioderFar: Planperiode[] = [
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '5',
         fom: '2022-09-20',
         tom: '2022-10-25',

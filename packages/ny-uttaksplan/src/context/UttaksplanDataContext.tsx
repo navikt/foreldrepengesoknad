@@ -5,7 +5,8 @@ import {
     Familiesituasjon,
     KontoBeregningDto,
     NavnPåForeldre,
-    SaksperiodeNy,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
     UttaksplanModus,
 } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
@@ -24,7 +25,7 @@ type Props = {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
-    saksperioder: SaksperiodeNy[];
+    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     children: React.ReactNode;
 };
 
@@ -83,18 +84,26 @@ export const useUttaksplanData = () => {
     return context;
 };
 
-const getSøkersPerioder = (erDeltUttak: boolean, gjeldendeUttaksplan: SaksperiodeNy[], erFarEllerMedmor: boolean) => {
+const getSøkersPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    erFarEllerMedmor: boolean,
+): UttakPeriode_fpoversikt[] => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
+        ? gjeldendeUttaksplan.filter(
+              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+          )
         : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
-) => {
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
+        ? gjeldendeUttaksplan.filter(
+              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+          )
         : [];
 };

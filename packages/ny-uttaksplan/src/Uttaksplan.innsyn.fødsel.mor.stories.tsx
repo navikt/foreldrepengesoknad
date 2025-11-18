@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps, useState } from 'react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
@@ -16,9 +16,9 @@ const meta = {
         erMedmorDelAvSøknaden: false,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<SaksperiodeNy[]>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: SaksperiodeNy[]) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[]) => {
             setPerioder(oppdatertePerioder);
 
             if (args.oppdaterUttaksplan) {

@@ -61,7 +61,10 @@ const getIkonFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: 
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
 
-    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0]!.utsettelseÅrsak : undefined;
+    const utsettelseÅrsak =
+        erUtsettelse && !permisjonsperiode.perioder[0].erAnnenPartEøs
+            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
+            : undefined;
 
     if (erFamiliehendelse) {
         return 'text-ax-danger-600';
@@ -101,8 +104,13 @@ export const getTekst = (
         !!permisjonsperiode.erUtsettelse === false;
 
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0]!.utsettelseÅrsak : undefined;
-    const erPrematuruker = permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    const utsettelseÅrsak =
+        erUtsettelse && !permisjonsperiode.perioder[0].erAnnenPartEøs
+            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
+            : undefined;
+    const erPrematuruker =
+        !permisjonsperiode.perioder[0].erAnnenPartEøs &&
+        permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
@@ -171,8 +179,13 @@ export const getIkon = (
 ) => {
     const { erUtsettelse, erHull } = permisjonsperiode;
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
-    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0]!.utsettelseÅrsak : undefined;
-    const isPrematuruker = permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    const utsettelseÅrsak =
+        erUtsettelse && !permisjonsperiode.perioder[0].erAnnenPartEøs
+            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
+            : undefined;
+    const isPrematuruker =
+        !permisjonsperiode.perioder[0].erAnnenPartEøs &&
+        permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     const erPeriodeUtenUttak =
         permisjonsperiode.forelder === undefined &&
         !!permisjonsperiode.samtidigUttak === false &&

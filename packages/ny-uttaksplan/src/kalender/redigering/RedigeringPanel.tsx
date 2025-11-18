@@ -211,6 +211,7 @@ const getSlettPeriodeFn =
 
         oppdaterUttaksplan(
             perioder.map<Planperiode>((p) => ({
+                erAnnenPartEøs: false,
                 forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
                 fom: p.fom,

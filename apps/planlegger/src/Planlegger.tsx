@@ -90,7 +90,7 @@ export const PlanleggerDataFetcher = () => {
             // Bearbeide hver dekningsgrad
             for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];
-                if (stønadskonto?.kontoer) {
+                if (stønadskonto?.kontoer && stønadskonto?.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE')) {
                     // Summer antall dager i alle kontoer
                     const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
                     // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen

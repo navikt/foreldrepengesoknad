@@ -134,15 +134,15 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) =
 };
 
 const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre, valgtPeriode: Planperiode | undefined) => {
-    if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-        return 'LOVBESTEMT_FERIE';
-    }
-
     if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
         return PeriodeHullType.PERIODE_UTEN_UTTAK;
     }
 
-    if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (
+        !valgtPeriode?.erAnnenPartEøs &&
+        valgtPeriode?.utsettelseÅrsak &&
+        valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE'
+    ) {
         return valgtPeriode.utsettelseÅrsak;
     }
 

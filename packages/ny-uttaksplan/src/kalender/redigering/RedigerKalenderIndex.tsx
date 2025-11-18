@@ -1,6 +1,6 @@
 import { Box } from '@navikt/ds-react';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
@@ -10,12 +10,14 @@ import { useMediaActions } from './utils/useMediaActions';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (oppdatertePerioder: SaksperiodeNy[]) => void;
+    oppdaterUttaksplan: (
+        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
-export const RedigerKalenderIndex = (Props: Props) => (
-    <KalenderRedigeringProvider {...Props}>
+export const RedigerKalenderIndex = (props: Props) => (
+    <KalenderRedigeringProvider {...props}>
         <RedigerKalender />
     </KalenderRedigeringProvider>
 );
