@@ -69,7 +69,7 @@ export function DokumentasjonOppsummering({
             <FormSummary.Footer>
                 <FormSummary.EditLink
                     onClick={() =>
-                        onVilEndreSvar(
+                        void onVilEndreSvar(
                             erTerminDokumentasjon(dokumentasjon) ? Path.TERMINBEKREFTELSE : Path.ADOPSJONSBEKREFTELSE,
                         )
                     }
