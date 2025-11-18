@@ -244,6 +244,6 @@ export const Default: Story = {
         sendSøknad: () => Promise.resolve(),
         søkerInfo: DEFAULT_SØKERINFO,
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => undefined,
     },
 };

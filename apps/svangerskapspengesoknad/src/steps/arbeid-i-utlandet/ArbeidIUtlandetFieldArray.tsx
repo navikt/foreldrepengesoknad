@@ -132,7 +132,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
                     </RhfRadioGroup>
-                    {alleArbeidIUtlandet![index].pågående === false && (
+                    {alleArbeidIUtlandet[index].pågående === false && (
                         <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
                             control={formMethods.control}

@@ -171,7 +171,7 @@ const validateAtPeriodeIkkeOverlapper = (
             }
             if (periodeTom) {
                 return overlapperTidsperioder(
-                    { fom: fom!, tom: tom || sisteDagForSvangerskapspenger },
+                    { fom: fom, tom: tom || sisteDagForSvangerskapspenger },
                     { fom: p.fom, tom: periodeTom },
                 );
             }

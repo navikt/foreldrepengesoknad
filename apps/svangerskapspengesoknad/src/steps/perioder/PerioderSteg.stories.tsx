@@ -141,7 +141,7 @@ export const Default: Story = {
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         valgteArbeidsforhold: [TILRETTELEGGING_ID],
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => undefined,
         tilrettelegging: {
             type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,

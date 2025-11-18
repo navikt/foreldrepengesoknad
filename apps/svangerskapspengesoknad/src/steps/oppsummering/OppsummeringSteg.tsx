@@ -28,7 +28,7 @@ import { PerioderOppsummering } from './PerioderOppsummering';
 type Props = {
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 

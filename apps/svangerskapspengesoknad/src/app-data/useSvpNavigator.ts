@@ -16,19 +16,19 @@ export const useSvpNavigator = (
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? SøknadRoute.FORSIDE;
         oppdaterPath(previousPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToStep = (path: SøknadRoute | string) => {
         oppdaterPath(path);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
         oppdaterPath(nextPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const fortsettSøknadSenere = () => {

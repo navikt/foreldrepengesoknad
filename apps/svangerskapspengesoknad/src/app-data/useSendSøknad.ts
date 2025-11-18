@@ -37,7 +37,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
             });
 
             slettMellomlagring();
-            navigate(SøknadRoute.KVITTERING);
+            void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 Sentry.captureMessage(error.message);
@@ -46,7 +46,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json();
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
                 Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);

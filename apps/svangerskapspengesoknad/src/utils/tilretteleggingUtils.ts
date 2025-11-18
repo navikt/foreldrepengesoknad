@@ -168,7 +168,7 @@ export const getOpprinneligStillingsprosent = (
     stillinger: Stilling[],
 ) => {
     const sorterePerioder = allePerioder ? [...allePerioder].sort(sorterTilretteleggingsperioder) : undefined;
-    const førstePeriodeFom = sorterePerioder && sorterePerioder.length > 0 ? sorterePerioder[0].fom : undefined;
+    const førstePeriodeFom = sorterePerioder && sorterePerioder.length > 0 ? sorterePerioder[0]!.fom : undefined;
     return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;
 };
 
@@ -298,7 +298,7 @@ export const getRuteVelgArbeidEllerSkjema = (
     return harKunEtArbeid
         ? addTilretteleggingIdToRoute(
               SøknadRoute.SKJEMA,
-              getTilretteleggingId(aktiveArbeidsforhold, termindato, arbeidsforholdOgInntekt),
+              getTilretteleggingId(aktiveArbeidsforhold, termindato, arbeidsforholdOgInntekt)!,
           )
         : SøknadRoute.VELG_ARBEID;
 };

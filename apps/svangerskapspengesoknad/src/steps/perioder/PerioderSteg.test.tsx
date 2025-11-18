@@ -142,15 +142,15 @@ describe('<PerioderSteg>', () => {
         await user.click(screen.getByText('Legg til ny periode'));
 
         expect(screen.getAllByText('Du skal jobbe fra:')[1]).toBeInTheDocument();
-        const fradatoInput = screen.getAllByText('Du skal jobbe fra:')[1];
+        const fradatoInput = screen.getAllByText('Du skal jobbe fra:')[1]!;
         await user.type(fradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
         await user.tab();
 
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]);
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
 
         expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Fjern perioden')[0]);
+        await user.click(screen.getAllByText('Fjern perioden')[0]!);
 
         expect(screen.queryByText('30.10.2023 - 3 uker før termin (12 uker 6 dager)')).not.toBeInTheDocument();
     });
@@ -162,22 +162,22 @@ describe('<PerioderSteg>', () => {
         await user.click(screen.getByText('Legg til ny periode'));
 
         expect(screen.getAllByText('Du skal jobbe fra:')[1]).toBeInTheDocument();
-        const andreFradatoInput = screen.getAllByText('Du skal jobbe fra:')[1];
+        const andreFradatoInput = screen.getAllByText('Du skal jobbe fra:')[1]!;
         await user.type(andreFradatoInput, dayjs('2024-01-01').format('DD.MM.YYYY'));
         await user.tab();
 
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]);
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
 
         expect(screen.getByText('01.01.2024 - 3 uker før termin (3 uker 6 dager)')).toBeInTheDocument();
 
         expect(screen.getAllByText('Du skal jobbe fra:')[0]).toBeInTheDocument();
-        const førsteFradatoInput = screen.getAllByText('Du skal jobbe fra:')[0];
+        const førsteFradatoInput = screen.getAllByText('Du skal jobbe fra:')[0]!;
         await user.type(førsteFradatoInput, dayjs('2023-10-30').format('DD.MM.YYYY'));
         await user.tab();
 
         expect(screen.getAllByText('Frem til en dato')[0]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Frem til en dato')[0]);
+        await user.click(screen.getAllByText('Frem til en dato')[0]!);
 
         expect(screen.getByText('Til og med dato')).toBeInTheDocument();
         const førsteTildatoInput = screen.getByText('Til og med dato');
@@ -224,7 +224,7 @@ describe('<PerioderSteg>', () => {
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 30 %.',
             )[0],
         ).toBeInTheDocument();
@@ -249,7 +249,7 @@ describe('<PerioderSteg>', () => {
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på 100 %.',
             )[0],
         ).toBeInTheDocument();
@@ -274,12 +274,12 @@ describe('<PerioderSteg>', () => {
         await user.tab();
 
         await user.click(screen.getByText('Legg til ny periode'));
-        const stillingInput2 = screen.getAllByText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1];
+        const stillingInput2 = screen.getAllByText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]!;
         await user.type(stillingInput2, '10');
 
         await user.click(screen.getByText('Neste steg'));
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Du må sende ny søknad hvis du skal jobbe redusert etter perioden som starter 02.11.2023',
                 { exact: false },
             )[0],
@@ -306,7 +306,7 @@ describe('<PerioderSteg>', () => {
 
         await user.click(screen.getByText('Neste steg'));
         expect(
-            await screen.getAllByText(
+            screen.getAllByText(
                 'Du kan ikke kun legge til perioder der du jobber din opprinnelige stillingsprosent på 100 %. Da har du ikke behov for svangerskapspenger.',
                 { exact: false },
             )[0],

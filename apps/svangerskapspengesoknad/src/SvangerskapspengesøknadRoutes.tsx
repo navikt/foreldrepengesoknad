@@ -40,7 +40,7 @@ const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
-    avbrytSøknad: () => Promise<void>,
+    avbrytSøknad: () => void,
     sendSøknad: () => Promise<void>,
 ) => {
     if (!harGodkjentVilkår) {
@@ -212,7 +212,7 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
         if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {
             // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, kun kjørt ved endringa av ekstern data
             setHarGodkjentVilkår(true);
-            navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
+            void navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }
     }, [mellomlagretData]);
 
