@@ -313,5 +313,6 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
 };
 
 export const periodeUttakFormQuestionsConfig = Questions<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     PeriodeUttakFormConfig,
 );

@@ -175,6 +175,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDateInRange({
                                             intl,
+                                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                                             date: ISOStringToDate(value),
                                             minDate: datoAvgrensninger.fra.minDato,
                                             maxDate: datoAvgrensninger.fra.maksDato,
@@ -195,6 +196,7 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                     validate: (value) =>
                                         dateRangeValidation.validateToDateInRange({
                                             intl,
+                                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                                             date: ISOStringToDate(value),
                                             minDate: datoAvgrensninger.til.minDato,
                                             maxDate: datoAvgrensninger.til.maksDato,

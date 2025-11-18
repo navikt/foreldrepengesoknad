@@ -56,7 +56,7 @@ function FormikDatepicker<FieldName, ErrorType>({
             {({ field, form }: FieldProps<string>) => {
                 const handleOnChange = (dateString = '') => {
                     if (field.value !== dateString) {
-                        form.setFieldValue(field.name, dateString);
+                        void form.setFieldValue(field.name, dateString);
                         if (onChange) {
                             onChange(dateString);
                         }
@@ -69,6 +69,7 @@ function FormikDatepicker<FieldName, ErrorType>({
                 return (
                     <DateInputAndPicker
                         inputId={inputId}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         name={name as any}
                         onChange={handleOnChange}
                         value={field.value}

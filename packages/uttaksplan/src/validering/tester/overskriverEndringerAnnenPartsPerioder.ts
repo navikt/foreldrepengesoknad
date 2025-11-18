@@ -56,6 +56,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                     tidsperiode: (intl: IntlShape) => Tidsperioden(periode.tidsperiode).formaterStringKort(intl),
                     forelder: fornavnAnnenForelder,
                     forelders: (intl: IntlShape) => getNavnGenitivEierform(fornavnAnnenForelder, intl.locale),
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     strong: () => (msg: any) => msg,
                 },
             };

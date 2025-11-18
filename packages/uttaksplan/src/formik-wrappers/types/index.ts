@@ -18,7 +18,7 @@ export interface DateRange {
 }
 export type CancelButtonTypes = 'primary' | 'secondary' | 'tertiary' | 'danger';
 
-export type FormError = React.ReactNode | boolean;
+export type FormError = React.ReactNode;
 
 export interface TestProps {
     'data-testid'?: string;

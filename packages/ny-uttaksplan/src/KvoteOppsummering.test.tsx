@@ -19,7 +19,7 @@ const {
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
-    it('<BeggeRettMorLedigeDager >', async () => {
+    it('<BeggeRettMorLedigeDager >', () => {
         render(<BeggeRettMorLedigeDager />);
 
         expect(screen.getByText('Det er 32 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('<KvoteOppsummering >', () => {
         ).toBeInTheDocument();
     });
 
-    it('<AleneomsorgMorLedigeDager >', async () => {
+    it('<AleneomsorgMorLedigeDager >', () => {
         render(<AleneomsorgMorLedigeDager />);
 
         expect(
@@ -55,7 +55,7 @@ describe('<KvoteOppsummering >', () => {
         ).toBeInTheDocument();
     });
 
-    it('<BeggeRettMorAlleDagerBrukt >', async () => {
+    it('<BeggeRettMorAlleDagerBrukt >', () => {
         render(<BeggeRettMorAlleDagerBrukt />);
 
         expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe('<KvoteOppsummering >', () => {
             screen.getByText('16 uker av fellesperioden, 18 uker til Helga og 15 uker til Espen er lagt til i planen.'),
         ).toBeInTheDocument();
     });
-    it('<EnRettFarAlleDagerBrukt >', async () => {
+    it('<EnRettFarAlleDagerBrukt >', () => {
         render(<EnRettFarAlleDagerBrukt />);
 
         expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
@@ -85,14 +85,14 @@ describe('<KvoteOppsummering >', () => {
         expect(screen.getByText('9 uker er lagt til, 1 uke gjenstår')).toBeInTheDocument();
         expect(screen.getByText('29 uker er lagt til, 1 uke gjenstår')).toBeInTheDocument();
     });
-    it('<AleneomsorgFarForMangeDager >', async () => {
+    it('<AleneomsorgFarForMangeDager >', () => {
         render(<AleneomsorgFarForMangeDager />);
 
         expect(screen.getByText('Det er lagt til 4 uker og 4 dager for mye')).toBeInTheDocument();
         expect(screen.getByText('Du har lagt til 4 uker og 4 dager for mye i planen.')).toBeInTheDocument();
     });
 
-    it('<BeggeRettMorForMangeDagerBrukt >', async () => {
+    it('<BeggeRettMorForMangeDagerBrukt >', () => {
         render(<BeggeRettMorForMangeDagerBrukt />);
 
         expect(screen.getByText('Det er lagt til 1 uke og 1 dag for mye')).toBeInTheDocument();

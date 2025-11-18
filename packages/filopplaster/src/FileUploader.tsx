@@ -190,7 +190,7 @@ export const FileUploader = ({
                 getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
             );
             addOrReplaceAttachments(setAttachments, allPendingAttachments);
-            uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
+            void uploadAttachments(allPendingAttachments.filter((pa) => !pa.fileObject.error));
         },
         [attachmentType, skjemanummer, uploadPath, timeout],
     );

@@ -103,7 +103,7 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
             id: opphold.id,
             tidsperiode: opphold.tidsperiode,
             type: Periodetype.Uttak,
-            konto: getStønadskontoFromOppholdsårsak(opphold.årsak)!,
+            konto: getStønadskontoFromOppholdsårsak(opphold.årsak),
             forelder: opphold.forelder,
         }),
     );
@@ -131,6 +131,7 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
     perioder
         .filter((periode) => isAvslåttPeriode(periode) === false)
         .forEach((periode) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison -- to forskjellige enums med samme innhold
             if (periode.infotype === PeriodeInfoType.uttakAnnenPart) {
                 oppholdAnnenPart.push(periode);
             }

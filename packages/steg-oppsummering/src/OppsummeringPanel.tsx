@@ -54,7 +54,7 @@ export const OppsummeringPanel = <TYPE extends string>({
     const send = () => {
         if (isChecked) {
             setIsSubmitting(true);
-            sendSøknad();
+            void sendSøknad();
         } else {
             setIsError(true);
         }

@@ -1,3 +1,5 @@
+// eslint-disable-next-line max-len
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access */
 import { useFormikContext } from 'formik';
 import { FunctionComponent, useEffect, useRef } from 'react';
 
@@ -49,8 +51,8 @@ export const SubmitListener: FunctionComponent<Props> = ({ cleanup }) => {
             }
 
             if (!valuesEqualLastValues) {
-                setValues(cleanedValues);
-                setTimeout(() => submitForm(), 0);
+                void setValues(cleanedValues);
+                setTimeout(() => void submitForm(), 0);
             }
         }
     }, [isSubmitting, isValidating, submitForm, setValues, cleanedValues, cleanup]);

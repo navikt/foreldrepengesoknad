@@ -44,6 +44,7 @@ function FormikTextField<FieldName, ErrorType>({
                         autoComplete={autoComplete}
                         className={getTextFieldWidthClassName(width, className)}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={field.value === undefined ? '' : field.value}
                     />
                 );

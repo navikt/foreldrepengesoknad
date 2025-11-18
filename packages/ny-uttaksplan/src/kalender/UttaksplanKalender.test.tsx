@@ -11,7 +11,7 @@ const {
 } = composeStories(stories);
 
 describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
-    it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', async () => {
+    it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(within(juli).getByTestId('day:3;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:15;dayColor:LIGHTGREEN')).toBeInTheDocument();
     });
-    it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', async () => {
+    it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', () => {
         render(<FarSøkerMedTapteDagerOgUtsettelse />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
         expect(within(juli).getByTestId('day:16;dayColor:GREENOUTLINE')).toBeInTheDocument();
     });
-    it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', async () => {
+    it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', () => {
         render(<MorSøkerMedFlereUtsettelser />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -93,7 +93,7 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
         expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
     });
-    it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', async () => {
+    it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
         render(<KortPeriodeUtenHelg />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();

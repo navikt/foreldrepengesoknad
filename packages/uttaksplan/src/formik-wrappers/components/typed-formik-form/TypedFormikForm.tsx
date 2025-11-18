@@ -1,3 +1,5 @@
+// eslint-disable-next-line max-len
+/* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-assignment */
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import { FieldInputProps, FormikProps, useFormikContext } from 'formik';
 import React, { createContext, useEffect, useRef, useState } from 'react';
@@ -125,7 +127,7 @@ function TypedFormikForm<FormValues, ErrorType>({
     const runCleanup = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.stopPropagation();
         evt.preventDefault();
-        formik.setValues(cleanup ? cleanup(formik.values) : formik.values);
+        void formik.setValues(cleanup ? cleanup(formik.values) : formik.values);
     };
 
     const onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
@@ -160,7 +162,7 @@ function TypedFormikForm<FormValues, ErrorType>({
             onAfterFieldValueSet: () => {
                 if (runDelayedFormValidation && formik.status?.showErrors) {
                     setTimeout(() => {
-                        formik.validateForm();
+                        void formik.validateForm();
                     });
                 }
             },

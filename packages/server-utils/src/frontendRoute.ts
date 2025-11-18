@@ -28,7 +28,7 @@ export const setupAndServeHtml = async (router: Router) => {
     });
     const renderedHtml = replaceAppSettings(html);
 
-    router.get('*splat', async (_, response) => {
+    router.get('*splat', (_, response) => {
         response.send(renderedHtml);
     });
 };

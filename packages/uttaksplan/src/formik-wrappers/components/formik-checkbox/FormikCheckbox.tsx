@@ -43,7 +43,7 @@ function FormikCheckbox<FieldName, ErrorType>({
                         autoComplete="off"
                         onChange={(evt) => {
                             const newValue = evt.target.checked;
-                            form.setFieldValue(field.name, newValue);
+                            void form.setFieldValue(field.name, newValue);
                             if (afterOnChange) {
                                 afterOnChange(newValue);
                             }

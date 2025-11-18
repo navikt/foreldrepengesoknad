@@ -13,6 +13,7 @@ const ForelderIkon: React.FunctionComponent<Props> = ({ forelder, width }) => {
     const scaledWidth = 31 * scale;
     const scaledHeight = 45 * scale;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return getForeldreparIkon(forelder, 'forelderIkon', scaledWidth, scaledHeight);
 };
 

@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 
-export const setupServerDefaults = async (server: Express) => {
+export const setupServerDefaults = (server: Express) => {
     server.disable('x-powered-by');
     server.use((_req, res, next) => {
         res.removeHeader('X-Powered-By');
