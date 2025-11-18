@@ -109,10 +109,10 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
                             ),
                             (fom) => {
-                                if (alleArbeidIUtlandet[index].tom) {
+                                if (alleArbeidIUtlandet[index]!.tom) {
                                     return isBeforeDate(
                                         intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
-                                        alleArbeidIUtlandet[index].tom,
+                                        alleArbeidIUtlandet[index]!.tom,
                                     )(fom);
                                 }
                                 return null;
@@ -132,7 +132,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
                     </RhfRadioGroup>
-                    {alleArbeidIUtlandet[index].pågående === false && (
+                    {alleArbeidIUtlandet[index]!.pågående === false && (
                         <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
                             control={formMethods.control}
@@ -155,11 +155,11 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 ),
                                 isAfterDate(
                                     intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
-                                    alleArbeidIUtlandet[index].fom,
+                                    alleArbeidIUtlandet[index]!.fom,
                                 ),
                             ]}
                             maxDate={dayjs().add(9, 'month').toDate()}
-                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index].fom, DATE_5_MONTHS_AGO)}
+                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index]!.fom, DATE_5_MONTHS_AGO)}
                         />
                     )}
                     {index < fields.length - 1 && <HorizontalLine />}

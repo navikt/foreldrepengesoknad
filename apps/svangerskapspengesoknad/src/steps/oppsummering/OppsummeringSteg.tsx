@@ -55,7 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         barn.termindato,
         arbeidsforholdOgInntekt,
         valgteArbeidsforhold,
-    );
+    )!;
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

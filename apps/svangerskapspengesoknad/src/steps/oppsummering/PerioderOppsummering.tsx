@@ -73,7 +73,7 @@ function VirksomhetSummary({
     }
 
     return tilretteleggingIder.map((tilretteleggingId) => {
-        const tilrettelegging = tilrettelegginger[tilretteleggingId];
+        const tilrettelegging = tilrettelegginger[tilretteleggingId]!;
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const arbeidsforhold = alleArbeidsforhold.find((a) => a.arbeidsgiverId === tilretteleggingId);
@@ -95,7 +95,7 @@ function VirksomhetSummary({
                 <FormSummary.Value>
                     <FormSummary.Answers>
                         {mappedPerioder.length === 1 ? (
-                            <KunEnPeriode periode={mappedPerioder[0]} />
+                            <KunEnPeriode periode={mappedPerioder[0]!} />
                         ) : (
                             <FlerePerioder perioder={mappedPerioder} />
                         )}
@@ -117,7 +117,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { sisteDagForSvangers
         return null;
     }
 
-    const frilansTilrettelegging = tilrettelegginger[FRILANS_ID];
+    const frilansTilrettelegging = tilrettelegginger[FRILANS_ID]!;
     const perioder = tilretteleggingerPerioder?.[FRILANS_ID];
 
     const stillinger = [{ fom: frilans.oppstart, stillingsprosent: 100 }];
@@ -153,7 +153,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { sisteDagForSvangers
                         </FormSummary.Value>
                     </FormSummary.Answer>
                     {mappedPerioder.length === 1 ? (
-                        <KunEnPeriode periode={mappedPerioder[0]} />
+                        <KunEnPeriode periode={mappedPerioder[0]!} />
                     ) : (
                         <FlerePerioder perioder={mappedPerioder} />
                     )}
@@ -180,7 +180,7 @@ function SelvstendigNæringsdrivendeSummary({
         return null;
     }
 
-    const tilretteleggingMedSN = tilrettelegginger[EGEN_NÆRING_ID];
+    const tilretteleggingMedSN = tilrettelegginger[EGEN_NÆRING_ID]!;
     const perioder = tilretteleggingerPerioder?.[EGEN_NÆRING_ID];
 
     const stillinger = [{ fom: egenNæring.fom, tom: egenNæring.tom, stillingsprosent: 100 }];
@@ -224,7 +224,7 @@ function SelvstendigNæringsdrivendeSummary({
                         </FormSummary.Value>
                     </FormSummary.Answer>
                     {mappedPerioder.length === 1 ? (
-                        <KunEnPeriode periode={mappedPerioder[0]} />
+                        <KunEnPeriode periode={mappedPerioder[0]!} />
                     ) : (
                         <FlerePerioder perioder={mappedPerioder} />
                     )}

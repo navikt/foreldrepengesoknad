@@ -25,7 +25,7 @@ describe('<EgenNæringSteg>', () => {
         await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
 
         expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
         await userEvent.type(orgnummerInput, '997519485');
@@ -35,7 +35,7 @@ describe('<EgenNæringSteg>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         const næringsresultatInput = screen.getByLabelText(
             'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
@@ -45,7 +45,7 @@ describe('<EgenNæringSteg>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]);
+        await userEvent.click(screen.getAllByText('Nei')[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 

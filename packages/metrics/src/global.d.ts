@@ -1,11 +1,8 @@
+// Kopierte fra navikt/nav-dekoratoren-moduler/src/csr/typings.d.ts
 declare global {
-    interface Window {
-        dekoratorenAnalytics: (params?: {
-            origin: unknown | string;
-            eventName: unknown | string;
-            eventData?: unknown;
-        }) => Promise<unknown>;
-    }
+    var dekoratorenAnalytics:
+        | ((params?: { origin: string; eventName: string; eventData?: Record<string, unknown> }) => Promise<unknown>)
+        | undefined;
 }
 
 export {};

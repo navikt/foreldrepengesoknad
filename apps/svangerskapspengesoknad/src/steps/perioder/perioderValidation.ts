@@ -99,8 +99,8 @@ export const validatePeriodeFom =
         sluttDatoArbeid: string | undefined,
     ) =>
     (fom: string) => {
-        const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
-        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
+        const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index]!.tom : undefined;
+        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index]!.tomType : undefined;
         if (fom && behovForTilretteleggingFom && dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom' });
         }
@@ -178,13 +178,13 @@ const validateAtPeriodeIkkeOverlapper = (
             return false;
         });
         if (overlappendePerioder.length > 0) {
-            const tilOgMedDato = overlappendePerioder[0].tom
-                ? overlappendePerioder[0].tom
+            const tilOgMedDato = overlappendePerioder[0]!.tom
+                ? overlappendePerioder[0]!.tom
                 : sisteDagForSvangerskapspenger;
             return intl.formatMessage(
                 { id: 'valideringsfeil.periode.overlapper' },
                 {
-                    fom: formatDate(overlappendePerioder[0].fom),
+                    fom: formatDate(overlappendePerioder[0]!.fom),
                     tom: formatDate(tilOgMedDato),
                 },
             );

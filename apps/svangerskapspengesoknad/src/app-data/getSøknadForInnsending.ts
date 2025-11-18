@@ -35,7 +35,7 @@ const finnTilretteleggingsbehov = (
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
     return Object.keys(tilrettelegginger).map((tilretteleggingId) => {
-        const tilrettelegging = tilrettelegginger[tilretteleggingId];
+        const tilrettelegging = tilrettelegginger[tilretteleggingId]!;
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
@@ -67,7 +67,7 @@ const finnVedlegg = (
     alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ): VedleggDto[] => {
     const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
-        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
+        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId]!;
         const arbeidsforhold = {
             id: tilretteleggingId,
             type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),

@@ -24,12 +24,14 @@ export const loggUmamiEvent = ({
     eventName: EventNamesTaksonomi;
     eventData?: Record<string, string>;
 }) => {
-    if (process.env.NODE_ENV === 'production' && (globalThis as any).dekoratorenAnalytics) {
-        // @ts-expect-error -- ts-expect-error sier den er unused. Men uten ts-expect-error så feil tsc
-        globalThis.dekoratorenAnalytics({
-            origin,
-            eventName,
-            eventData,
-        });
+    if (process.env.NODE_ENV === 'production') {
+        const analytics = globalThis.dekoratorenAnalytics;
+        if (analytics) {
+            void analytics({
+                origin,
+                eventName,
+                eventData,
+            });
+        }
     }
 };
