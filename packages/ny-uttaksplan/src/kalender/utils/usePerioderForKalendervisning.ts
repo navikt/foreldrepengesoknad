@@ -23,7 +23,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LegendLabel } from '../../types/LegendLabel';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { PeriodeHullType, Planperiode, PlanperiodeVanlig } from '../../types/Planperiode';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -409,7 +409,7 @@ const getKalenderFargeForPeriodeType = (
 
 const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
     const utsettelseÅrsaker = allePerioderInklHull
-        .filter((p) => !p.erAnnenPartEøs)
+        .filter((p): p is PlanperiodeVanlig => !p.erAnnenPartEøs)
         .map((u) => u.utsettelseÅrsak)
         .filter((utsettelseÅrsak): utsettelseÅrsak is UttakUtsettelseÅrsak_fpoversikt => !!utsettelseÅrsak);
     return [...new Set(utsettelseÅrsaker)];

@@ -35,11 +35,11 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Nei')[0]);
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[1]);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
-        await userEvent.click(screen.getAllByText('Ja')[2]);
+        await userEvent.click(screen.getAllByText('Ja')[2]!);
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -69,8 +69,8 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Slett søknaden')[0]);
-        await userEvent.click(screen.getAllByText('Slett søknaden')[1]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });
