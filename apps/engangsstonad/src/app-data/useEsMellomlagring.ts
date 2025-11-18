@@ -38,7 +38,7 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
 
                 const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
-                    navigate(currentPath);
+                    void navigate(currentPath);
 
                     try {
                         const data = {
@@ -53,7 +53,7 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json();
+                            const jsonResponse = await error.response.json<{ uuid?: string }>();
                             const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                             Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                             throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
@@ -69,7 +69,7 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
 
                     setVelkommen(false);
                     resetState();
-                    navigate('/');
+                    void navigate('/');
                 }
 
                 if (promiseRef.current) {
@@ -91,11 +91,9 @@ export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkomme
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
-        const promise = new Promise<void>((resolve) => {
+        return new Promise<void>((resolve) => {
             promiseRef.current = resolve;
         });
-
-        return promise;
     }, []);
 
     return mellomlagreOgNaviger;

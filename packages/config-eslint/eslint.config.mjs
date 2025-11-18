@@ -27,7 +27,15 @@ export default [
         languageOptions: { globals: globals.browser },
     },
     pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+    {
+        languageOptions: {
+            parserOptions: {
+                projectService: '../config-typescript/tsconfig.json',
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
     ...storybook.configs['flat/recommended'],
     pluginReact.configs.flat.recommended,
     jsxA11y.flatConfigs.recommended,
@@ -108,6 +116,16 @@ export default [
         rules: {
             'import/no-default-export': OFF,
             'react-hooks/rules-of-hooks': OFF,
+        },
+    },
+    {
+        files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/no-unsafe-assignment': OFF,
+            '@typescript-eslint/no-unsafe-argument': OFF,
+            '@typescript-eslint/no-unsafe-member-access': OFF,
+            '@typescript-eslint/no-unsafe-call': OFF,
+            '@typescript-eslint/no-unsafe-return': OFF,
         },
     },
 ];

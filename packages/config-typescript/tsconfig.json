@@ -16,6 +16,8 @@
         "declaration": false,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+        "noUncheckedIndexedAccess": true,
+        "noFallthroughCasesInSwitch": true,
         "inlineSources": false,
         "isolatedModules": true,
         "moduleResolution": "bundler",

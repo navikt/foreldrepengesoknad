@@ -22,7 +22,7 @@ const isUtstedtDatoIUke22 = (termindato: string, intl: IntlShape) => (terminBekr
     const utstedtDato = dayjs(terminBekreftelseDato).startOf('day');
     const terminDato = dayjs(termindato).startOf('day');
     const uke22 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    const erUtstedtDataIUke22 = dayjs.max(uke22, utstedtDato)!.isSame(utstedtDato);
+    const erUtstedtDataIUke22 = dayjs.max(uke22, utstedtDato).isSame(utstedtDato);
 
     return erUtstedtDataIUke22
         ? null

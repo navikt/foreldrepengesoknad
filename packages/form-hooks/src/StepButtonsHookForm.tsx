@@ -8,7 +8,7 @@ interface Props<DATA_TYPE extends FieldValues> {
     saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
     nextButtonOnClick?: () => void;
     onFortsettSenere?: () => void;
-    onAvsluttOgSlett?: () => void;
+    onAvsluttOgSlett?: () => Promise<void>;
     isDisabledAndLoading?: boolean;
     useSimplifiedTexts?: boolean;
 }

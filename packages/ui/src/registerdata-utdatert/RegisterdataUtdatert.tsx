@@ -8,7 +8,7 @@ import { AppName } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
-    slettMellomlagringOgLastSidePåNytt: () => void;
+    slettMellomlagringOgLastSidePåNytt: () => Promise<void>;
     appName: AppName;
 }
 
@@ -43,7 +43,7 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                     </VStack>
                 </Alert>
                 <div>
-                    <Button type="button" variant="primary" onClick={slettMellomlagringOgLastSidePåNytt}>
+                    <Button type="button" variant="primary" onClick={void slettMellomlagringOgLastSidePåNytt}>
                         <FormattedMessage id="RegisterdataUtdatert.StartPaNytt" />
                     </Button>
                 </div>
