@@ -9,7 +9,9 @@ export type EksternArbeidsforholdDto_fpoversikt = {
     arbeidsgiverIdType: string;
     arbeidsgiverNavn: string;
     fom: string;
+    from: string;
     stillingsprosent: number;
+    to?: string;
     tom?: string;
 };
 
@@ -17,7 +19,7 @@ export type MorArbeidRequest_fpoversikt = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
     familiehendelse?: string;
-    perioder?: PeriodeRequest_fpoversikt[];
+    perioder?: Array<PeriodeRequest_fpoversikt>;
 };
 
 export type PeriodeRequest_fpoversikt = {
@@ -49,13 +51,13 @@ export type BortfaltNaturalytelse_fpoversikt = {
 export type FpOversiktInntektsmeldingDto_fpoversikt = {
     arbeidsgiverIdent: string;
     arbeidsgiverNavn: string;
-    bortfalteNaturalytelser: BortfaltNaturalytelse_fpoversikt[];
+    bortfalteNaturalytelser: Array<BortfaltNaturalytelse_fpoversikt>;
     erAktiv: boolean;
     inntektPrMnd: number;
     journalpostId: string;
     mottattTidspunkt: string;
     refusjonPrMnd?: number;
-    refusjonsperioder: Refusjon_fpoversikt[];
+    refusjonsperioder: Array<Refusjon_fpoversikt>;
     startDatoPermisjon?: string;
     stillingsprosent?: number;
     versjon: number;
@@ -179,7 +181,7 @@ export type Navn_fpoversikt = {
 export type PersonDto_fpoversikt = {
     aktørid?: string;
     bankkonto?: Bankkonto_fpoversikt;
-    barn: BarnDto_fpoversikt[];
+    barn: Array<BarnDto_fpoversikt>;
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
@@ -220,7 +222,7 @@ export type SivilstandType_fpoversikt =
     | 'GJENLEVENDE_PARTNER';
 
 export type PersonMedArbeidsforholdDto_fpoversikt = {
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    arbeidsforhold: Array<EksternArbeidsforholdDto_fpoversikt>;
     person: PersonDto_fpoversikt;
 };
 
@@ -265,7 +267,7 @@ export type AktivitetType_fpoversikt = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTE
 export type AnnenPartSak_fpoversikt = {
     antallBarn: number;
     dekningsgrad: DekningsgradSak_fpoversikt;
-    perioder: UttakPeriode_fpoversikt[];
+    perioder: Array<UttakPeriode_fpoversikt>;
     termindato?: string;
 };
 
@@ -360,7 +362,7 @@ export type Familiehendelse_fpoversikt = {
 
 export type FpSak_fpoversikt = {
     annenPart?: Person_fpoversikt;
-    barn?: Person_fpoversikt[];
+    barn?: Array<Person_fpoversikt>;
     dekningsgrad?: DekningsgradSak_fpoversikt;
     familiehendelse: Familiehendelse_fpoversikt;
     forelder: BrukerRolleSak_fpoversikt;
@@ -379,12 +381,12 @@ export type FpSak_fpoversikt = {
 };
 
 export type FpVedtak_fpoversikt = {
-    perioder: UttakPeriode_fpoversikt[];
-    perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs_fpoversikt[];
+    perioder: Array<UttakPeriode_fpoversikt>;
+    perioderAnnenpartEøs?: Array<UttakPeriodeAnnenpartEøs_fpoversikt>;
 };
 
 export type FpÅpenBehandling_fpoversikt = {
-    søknadsperioder: UttakPeriode_fpoversikt[];
+    søknadsperioder: Array<UttakPeriode_fpoversikt>;
     tilstand: BehandlingTilstand_fpoversikt;
 };
 
@@ -396,9 +398,9 @@ export type Person_fpoversikt = {
 export type RettighetType_fpoversikt = 'ALENEOMSORG' | 'BEGGE_RETT' | 'BARE_SØKER_RETT';
 
 export type Saker_fpoversikt = {
-    engangsstønad: EsSak_fpoversikt[];
-    foreldrepenger: FpSak_fpoversikt[];
-    svangerskapspenger: SvpSak_fpoversikt[];
+    engangsstønad: Array<EsSak_fpoversikt>;
+    foreldrepenger: Array<FpSak_fpoversikt>;
+    svangerskapspenger: Array<SvpSak_fpoversikt>;
 };
 
 export type UttakPeriodeAnnenpartEøs_fpoversikt = {
@@ -440,9 +442,9 @@ export type SvpArbeidsforhold_fpoversikt = {
     aktivitet: Aktivitet_fpoversikt;
     avslutningÅrsak?: AvslutningÅrsak_fpoversikt;
     behovFrom?: string;
-    oppholdsperioder: OppholdPeriode_fpoversikt[];
+    oppholdsperioder: Array<OppholdPeriode_fpoversikt>;
     risikofaktorer?: string;
-    tilrettelegginger: Tilrettelegging_fpoversikt[];
+    tilrettelegginger: Array<Tilrettelegging_fpoversikt>;
     tiltak?: string;
 };
 
@@ -461,7 +463,7 @@ export type SvpÅpenBehandling_fpoversikt = {
 };
 
 export type Søknad_fpoversikt = {
-    arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
+    arbeidsforhold: Array<SvpArbeidsforhold_fpoversikt>;
 };
 
 export type Tilrettelegging_fpoversikt = {
@@ -475,7 +477,7 @@ export type Tilrettelegging_fpoversikt = {
 export type TilretteleggingType_fpoversikt = 'HEL' | 'DELVIS' | 'INGEN';
 
 export type Vedtak_fpoversikt = {
-    arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
+    arbeidsforhold: Array<SvpArbeidsforhold_fpoversikt>;
     avslagÅrsak?: AvslagÅrsak_fpoversikt;
 };
 
@@ -487,7 +489,7 @@ export type AvslagÅrsak_fpoversikt =
 
 export type TidslinjeHendelseDto_fpoversikt = {
     aktørType: AktørType_fpoversikt;
-    dokumenter: Dokument_fpoversikt[];
+    dokumenter: Array<Dokument_fpoversikt>;
     opprettet: string;
     tidslinjeHendelseType: TidslinjeHendelseType_fpoversikt;
 };
