@@ -9,9 +9,7 @@ export type EksternArbeidsforholdDto_fpoversikt = {
     arbeidsgiverIdType: string;
     arbeidsgiverNavn: string;
     fom: string;
-    from: string;
     stillingsprosent: number;
-    to?: string;
     tom?: string;
 };
 
@@ -408,7 +406,6 @@ export type UttakPeriodeAnnenpartEøs_fpoversikt = {
     kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
     tom: string;
     trekkdager: number;
-    trekkonto: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
 };
 
 export type AvslutningÅrsak_fpoversikt =
