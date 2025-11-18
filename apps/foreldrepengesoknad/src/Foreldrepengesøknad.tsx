@@ -77,7 +77,7 @@ export const Foreldrepengesøknad = () => {
     }
 
     return (
-        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={void slettMellomlagringOgLastSidePåNytt}>
+        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
                     søkerInfo={søkerinfoQuery.data}

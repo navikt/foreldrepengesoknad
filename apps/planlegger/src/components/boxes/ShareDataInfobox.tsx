@@ -38,7 +38,7 @@ export const ShareDataInfobox = ({ erAlenesøker }: Props) => (
                 <Button
                     variant="primary"
                     icon={<LinkIcon aria-hidden height={24} width={24} />}
-                    onClick={void copyUrlToClipboard}
+                    onClick={() => void copyUrlToClipboard()}
                 >
                     <FormattedMessage id="OppsummeringSteg.KopierUrl" />
                 </Button>

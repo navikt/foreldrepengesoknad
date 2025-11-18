@@ -96,7 +96,7 @@ export const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <Theme theme="light">
-                <ErrorBoundary appName="engangsstonad" retryCallback={void slettMellomlagringOgLastSidePåNytt}>
+                <ErrorBoundary appName="engangsstonad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />
                         <Provider locale={getDsProviderLocale(locale)}>

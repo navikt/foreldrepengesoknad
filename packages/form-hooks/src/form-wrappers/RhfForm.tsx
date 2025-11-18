@@ -25,7 +25,13 @@ export const RhfForm = <FormValues extends FieldValues>({
             <form
                 style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
                 className={className}
-                onSubmit={onSubmit ? void handleSubmit((values) => onSubmit(values)) : undefined}
+                onSubmit={
+                    onSubmit
+                        ? (event) => {
+                              void handleSubmit(onSubmit)(event);
+                          }
+                        : undefined
+                }
                 id={id}
             >
                 {children}

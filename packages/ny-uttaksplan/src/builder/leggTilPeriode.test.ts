@@ -636,16 +636,16 @@ describe('Test av split periode i uttaksplan', () => {
         const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(testPerioder.length).toEqual(2);
         expect(testPerioder[0]!.id).toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[0].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
-        if (!testPerioder[0].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+        expect(testPerioder[0]!.erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[0]!.erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
             expect(testPerioder[0]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
         }
         expect(testPerioder[0]!.kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
         expect(testPerioder[0]!.fom).toEqual(splitPeriodeFedrekvote.fom);
         expect(testPerioder[0]!.tom).toEqual('2022-04-29');
         expect(testPerioder[1]!.id).not.toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
-        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+        expect(testPerioder[1]!.erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[1]!.erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
             expect(testPerioder[1]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
         }
         expect(testPerioder[1]!.kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
@@ -669,14 +669,14 @@ describe('Test av split periode i uttaksplan', () => {
         expect(testPerioder.length).toEqual(2);
         expect(testPerioder[0]!.fom).toEqual(splitPeriodeFedrekvote.fom);
         expect(testPerioder[0]!.tom).toEqual('2022-04-29');
-        expect(testPerioder[0].erAnnenPartEøs).toEqual(false);
-        if (!testPerioder[0].erAnnenPartEøs) {
+        expect(testPerioder[0]!.erAnnenPartEøs).toEqual(false);
+        if (!testPerioder[0]!.erAnnenPartEøs) {
             expect(testPerioder[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
         }
         expect(testPerioder[1]!.fom).toEqual(splitPeriodeFedrekvote.tom);
         expect(testPerioder[1]!.tom).toEqual(splitPeriodeFedrekvote.tom);
-        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs);
-        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs) {
+        expect(testPerioder[1]!.erAnnenPartEøs).toEqual(splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs);
+        if (!testPerioder[1]!.erAnnenPartEøs && !splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs) {
             expect(testPerioder[1]!.morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);
         }
     });

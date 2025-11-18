@@ -43,7 +43,7 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                     </VStack>
                 </Alert>
                 <div>
-                    <Button type="button" variant="primary" onClick={void slettMellomlagringOgLastSidePåNytt}>
+                    <Button type="button" variant="primary" onClick={() => void slettMellomlagringOgLastSidePåNytt()}>
                         <FormattedMessage id="RegisterdataUtdatert.StartPaNytt" />
                     </Button>
                 </div>

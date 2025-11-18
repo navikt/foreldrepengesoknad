@@ -100,7 +100,7 @@ export const AppContainer = () => {
             <Theme theme="light">
                 <ErrorBoundary
                     appName="svangerskapspengesoknad"
-                    retryCallback={void slettMellomlagringOgLastSidePåNytt}
+                    retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
                 >
                     <ByttBrowserModal />
                     <QueryClientProvider client={queryClient}>
