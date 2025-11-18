@@ -25,13 +25,8 @@ export const RhfForm = <FormValues extends FieldValues>({
             <form
                 style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
                 className={className}
-                onSubmit={
-                    onSubmit
-                        ? (event) => {
-                              void handleSubmit(onSubmit)(event);
-                          }
-                        : undefined
-                }
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
                 id={id}
             >
                 {children}
