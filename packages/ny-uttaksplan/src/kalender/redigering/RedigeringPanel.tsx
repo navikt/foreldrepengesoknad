@@ -1,10 +1,10 @@
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, ChevronUpIcon, PencilIcon, XMarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
@@ -27,6 +27,7 @@ export const RedigeringPanel = ({ children }: Props) => {
         sammenslåtteValgtePerioder,
         eksisterendePerioderSomErValgt,
         setErMinimert,
+        setValgtePerioder,
     } = useKalenderRedigeringContext();
 
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(!erIRedigeringsmodus);
@@ -43,14 +44,24 @@ export const RedigeringPanel = ({ children }: Props) => {
             <Box.New background="accent-soft" padding="4">
                 <VStack gap="space-8">
                     {!erIRedigeringsmodus && (
-                        <HStack gap="space-8" align="center" wrap={false}>
-                            <PencilIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
-                                fontSize="1.5rem"
+                        <HStack gap="space-8" align="center" justify="space-between" wrap={false}>
+                            <HStack gap="space-8" align="center">
+                                <PencilIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
+                                    fontSize="1.5rem"
+                                />
+                                <Heading size="small">
+                                    <FormattedMessage id="RedigeringPanel.EndreTil" />
+                                </Heading>
+                            </HStack>
+                            <Button
+                                variant="tertiary"
+                                icon={<XMarkIcon />}
+                                size="small"
+                                title={intl.formatMessage({ id: 'RedigeringPanel.LukkRedigeringsmodus' })}
+                                aria-label={intl.formatMessage({ id: 'RedigeringPanel.LukkRedigeringsmodus' })}
+                                onClick={() => setValgtePerioder([])}
                             />
-                            <Heading size="small">
-                                <FormattedMessage id="RedigeringPanel.EndreTil" />
-                            </Heading>
                         </HStack>
                     )}
                     <HStack justify="space-between" align="center" wrap={false}>
