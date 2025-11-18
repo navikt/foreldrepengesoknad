@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { ErrorMessage, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoType, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
