@@ -7,7 +7,7 @@ export default defineConfig({
             clean: false,
             format: 'prettier',
             lint: 'eslint',
-            path: 'packages/types/src/',
+            path: 'src/',
             fileName: {
                 name: 'fpoversiktDtoGenerert',
                 suffix: null,
@@ -17,7 +17,7 @@ export default defineConfig({
             clean: false,
             format: 'prettier',
             lint: 'eslint',
-            path: 'packages/types/src/',
+            path: 'src/',
             fileName: {
                 name: 'fpsoknadDtoGenerert',
                 suffix: null,
