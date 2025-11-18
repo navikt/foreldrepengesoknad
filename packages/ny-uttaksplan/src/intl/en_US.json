@@ -230,6 +230,7 @@
     "RedigeringPanel.Minimer": "Minimize panel",
     "RedigeringPanel.SkjulDetaljer": "Hide period information",
     "RedigeringPanel.VisDetaljer": "Show period information",
+    "RedigeringPanel.LukkRedigeringsmodus": "Close editing mode",
     "UttaksplanKalender.VelgEnkeltDager": "Single days",
     "UttaksplanKalender.VelgPeriode": "Period (from - to)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Select days or period",
