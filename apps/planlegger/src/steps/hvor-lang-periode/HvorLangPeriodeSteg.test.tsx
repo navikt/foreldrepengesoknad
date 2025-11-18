@@ -242,7 +242,7 @@ describe('<HvorLangPeriodeSteg>', () => {
     it('skal vise Forslag hvor lenge, omsorgsovertakelse tilbake i tid', async () => {
         render(<FlereForsørgereEttBarnBeggeHarRettAdopsjon />);
 
-        await expect(screen.getByText('80 % eller 100 %?')).toBeInTheDocument();
+        expect(screen.getByText('80 % eller 100 %?')).toBeInTheDocument();
         expect(screen.getByText('Hvor lang periode med foreldrepenger ønsker dere?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));

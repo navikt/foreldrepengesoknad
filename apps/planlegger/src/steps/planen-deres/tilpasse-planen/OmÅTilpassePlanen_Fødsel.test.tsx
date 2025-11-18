@@ -73,7 +73,7 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
-    it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();

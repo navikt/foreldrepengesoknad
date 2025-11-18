@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
+import {
+    ContextDataMap,
+    ContextDataType,
+    PlanleggerDataContext,
+    useContextGetData,
+} from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useLocation } from 'react-router-dom';
@@ -79,7 +84,7 @@ export const PlanleggerDataFetcher = () => {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data
-            const modifiserteData: KontoBeregningResultatDto = JSON.parse(JSON.stringify(data));
+            const modifiserteData = JSON.parse(JSON.stringify(data)) as KontoBeregningResultatDto;
             // Liste over dekningsgrader vi skal prosessere
             const dekningsgrader = ['80', '100'] as const;
             // Bearbeide hver dekningsgrad
@@ -109,7 +114,7 @@ export const PlanleggerDataInit = () => {
     const locations = useLocation();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
+    const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
 
     return (
         <PlanleggerDataContext initialState={data}>

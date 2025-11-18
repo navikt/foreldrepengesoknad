@@ -138,7 +138,7 @@ export const getDefaultNavnSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: Intl
 };
 
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0];
+    return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0]!;
 };
 
 export const getFornavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {

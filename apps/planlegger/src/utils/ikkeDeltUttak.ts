@@ -41,8 +41,8 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
             const aktivitetsFriPeriode: SaksperiodeNy = {
                 kontoType: 'AKTIVITETSFRI_KVOTE',
-                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
+                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
             };
 
             perioder.push(aktivitetsFriPeriode);
@@ -188,8 +188,8 @@ const ikkeDeltUttakFødselFarMedmor = (
             ) {
                 const aktivitetsFriPeriode: SaksperiodeNy = {
                     kontoType: 'AKTIVITETSFRI_KVOTE',
-                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
+                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
                 };
 
                 perioder.push(aktivitetsFriPeriode);

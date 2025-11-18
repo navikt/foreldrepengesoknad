@@ -32,7 +32,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             'false',
         );
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til far' }) as HTMLOptionElement).selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             'false',
         );
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til medmor' }) as HTMLOptionElement).selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til medmor' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -426,7 +426,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             'false',
         );
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til far' }) as HTMLOptionElement).selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -466,7 +466,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('80 % i 61 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe('true');
 
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 20 uker og en dag til far' }) as HTMLOptionElement)
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 20 uker og en dag til far' })
                 .selected,
         ).toBe(true);
 
@@ -498,8 +498,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         await userEvent.selectOptions(utils.getByDisplayValue('Fellesperioden: 16 uker til far'), '40');
 
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 8 til mor, 8 til far' }) as HTMLOptionElement)
-                .selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 8 til mor, 8 til far' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();

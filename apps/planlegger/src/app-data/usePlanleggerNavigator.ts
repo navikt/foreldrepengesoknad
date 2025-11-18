@@ -22,7 +22,7 @@ export const usePlanleggerNavigator = () => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
+            void navigate(`${path}?data=${encodeToBase64(JSON.stringify(contextToEncode))}`);
         }
     }, [path]);
 

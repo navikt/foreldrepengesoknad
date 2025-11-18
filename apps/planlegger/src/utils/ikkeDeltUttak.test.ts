@@ -37,12 +37,12 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         });
 
         expect(forslag.søker1.length).toEqual(2);
-        expect(forslag.søker1[0].fom).toEqual(startdato);
-        expect(forslag.søker1[0].tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0].kontoType).toEqual('AKTIVITETSFRI_KVOTE');
-        expect(forslag.søker1[1].fom).toEqual('2022-10-03');
-        expect(forslag.søker1[1].tom).toEqual('2023-01-13');
-        expect(forslag.søker1[1].kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.søker1[0]!.fom).toEqual(startdato);
+        expect(forslag.søker1[0]!.tom).toEqual('2022-09-30');
+        expect(forslag.søker1[0]!.kontoType).toEqual('AKTIVITETSFRI_KVOTE');
+        expect(forslag.søker1[1]!.fom).toEqual('2022-10-03');
+        expect(forslag.søker1[1]!.tom).toEqual('2023-01-13');
+        expect(forslag.søker1[1]!.kontoType).toEqual('FORELDREPENGER');
     });
 
     it('skal legge til en periode på 8 uker etter fødsel hvis WLB gjelder og situasjon er fødsel og startdato blir satt til lørdag rett før fødsel', () => {
@@ -59,11 +59,11 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             farOgFar: false,
         });
         expect(forslag.søker1.length).toEqual(2);
-        expect(forslag.søker1[0].fom).toEqual(famDato);
-        expect(forslag.søker1[0].tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0].kontoType).toEqual('AKTIVITETSFRI_KVOTE');
-        expect(forslag.søker1[1].fom).toEqual('2022-10-03');
-        expect(forslag.søker1[1].tom).toEqual('2023-01-13');
-        expect(forslag.søker1[1].kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.søker1[0]!.fom).toEqual(famDato);
+        expect(forslag.søker1[0]!.tom).toEqual('2022-09-30');
+        expect(forslag.søker1[0]!.kontoType).toEqual('AKTIVITETSFRI_KVOTE');
+        expect(forslag.søker1[1]!.fom).toEqual('2022-10-03');
+        expect(forslag.søker1[1]!.tom).toEqual('2023-01-13');
+        expect(forslag.søker1[1]!.kontoType).toEqual('FORELDREPENGER');
     });
 });
