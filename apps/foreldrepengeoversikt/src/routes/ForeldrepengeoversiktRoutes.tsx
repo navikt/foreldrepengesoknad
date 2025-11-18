@@ -78,7 +78,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
 
     if (viErPåLandingSiden && !harRedirectet.current && harKunDetteSaksnummeret) {
         harRedirectet.current = true;
-        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
+        void navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
     }
 
     return <Outlet />;

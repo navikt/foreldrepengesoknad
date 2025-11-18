@@ -82,7 +82,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
         return selectText;
     }
 
-    const snr = Object.values(Skjemanummer).find((value) => value === selectText);
+    const snr = Object.values(Skjemanummer).find((value) => value.toString() === selectText);
     if (snr) {
         return snr;
     }

@@ -68,7 +68,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpove
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
+    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
     const pdlBarnMedSammeFødselsdato = fødselsdatoFraSak
         ? registrerteBarn.filter(
               (barn) =>

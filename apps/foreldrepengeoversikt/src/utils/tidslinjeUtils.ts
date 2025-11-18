@@ -319,7 +319,7 @@ const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand_fpoversik
 
 const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBehandling_fpoversikt) => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
-    const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
+    const førsteUttaksdagISaken = dayjs(søknadsperioder[0].fom).toDate();
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
