@@ -21,20 +21,20 @@ describe('<Default>', () => {
 
             const allButtons = screen.getAllByRole('button');
 
-            expect(within(allButtons[1]).getByText('10. juni - 30. juni')).toBeInTheDocument();
-            expect(within(allButtons[1]).getByText('3 uker')).toBeInTheDocument();
-            expect(within(allButtons[1]).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[1]!).getByText('10. juni - 30. juni')).toBeInTheDocument();
+            expect(within(allButtons[1]!).getByText('3 uker')).toBeInTheDocument();
+            expect(within(allButtons[1]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[2]).getByText('01. juli')).toBeInTheDocument();
-            expect(within(allButtons[2]).getAllByText('Fødsel')).toHaveLength(2);
+            expect(within(allButtons[2]!).getByText('01. juli')).toBeInTheDocument();
+            expect(within(allButtons[2]!).getAllByText('Fødsel')).toHaveLength(2);
 
-            expect(within(allButtons[3]).getByText('01. juli - 13. okt.')).toBeInTheDocument();
-            expect(within(allButtons[3]).getByText('15 uker')).toBeInTheDocument();
-            expect(within(allButtons[3]).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[3]!).getByText('01. juli - 13. okt.')).toBeInTheDocument();
+            expect(within(allButtons[3]!).getByText('15 uker')).toBeInTheDocument();
+            expect(within(allButtons[3]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[4]).getByText('14. okt. - 21. des.')).toBeInTheDocument();
-            expect(within(allButtons[4]).getByText('9 uker og 4 dager')).toBeInTheDocument();
-            expect(within(allButtons[4]).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[4]!).getByText('14. okt. - 21. des.')).toBeInTheDocument();
+            expect(within(allButtons[4]!).getByText('9 uker og 4 dager')).toBeInTheDocument();
+            expect(within(allButtons[4]!).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
         }),
     );
 

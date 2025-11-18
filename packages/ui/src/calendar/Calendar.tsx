@@ -28,7 +28,7 @@ export const Calendar = ({
     setSelectedPeriods,
     isRangeSelection = false,
 }: Props) => {
-    const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
+    const allMonths = useMemo(() => findMonths(periods[0]!.fom, findLatestTom(periods)), [periods]);
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
@@ -46,8 +46,8 @@ export const Calendar = ({
                         : [
                               {
                                   color: 'DARKBLUE',
-                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
-                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
+                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0]!.fom, selectedDate),
+                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0]!.fom, selectedDate),
                                   isSelected: true,
                                   srText: '',
                               },
@@ -110,7 +110,7 @@ export const Calendar = ({
 };
 
 const findLatestTom = (periods: CalendarPeriod[]): string =>
-    periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0].tom);
+    periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0]!.tom);
 
 const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
     const first = dayjs(firstDate);

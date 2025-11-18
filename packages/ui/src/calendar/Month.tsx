@@ -135,8 +135,8 @@ export const Month = React.memo(
             return false;
         }
         for (let i = 0; i < prev.periods.length; i++) {
-            const prevPeriod = prev.periods[i];
-            const nextPeriod = next.periods[i];
+            const prevPeriod = prev.periods[i]!;
+            const nextPeriod = next.periods[i]!;
             const periodKeys = Object.keys(prevPeriod) as Array<keyof typeof prevPeriod>;
             for (const key of periodKeys) {
                 if (prevPeriod[key] !== nextPeriod[key]) {

@@ -43,7 +43,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             </Heading>
             <VStack gap="space-16" className="bg-ax-bg-default p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
-                    <React.Fragment key={gruppertePerioder[0].fom}>
+                    <React.Fragment key={gruppertePerioder[0]!.fom}>
                         <GruppertePerioder perioder={gruppertePerioder} />
                         <hr className="text-ax-border-neutral-subtle" />
                     </React.Fragment>

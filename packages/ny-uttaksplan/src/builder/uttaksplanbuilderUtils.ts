@@ -30,7 +30,7 @@ export const slåSammenLikePerioder = (
         return perioder;
     }
     const nyePerioder: Planperiode[] = [];
-    let forrigePeriode: Planperiode | undefined = { ...perioder[0] };
+    let forrigePeriode: Planperiode | undefined = { ...perioder[0]! };
     perioder.forEach((periode, index) => {
         if (index === 0) {
             return;
@@ -308,7 +308,7 @@ export const finnOgSettInnHull = (
             return res;
         }
 
-        const nestePeriode = perioder[index + 1];
+        const nestePeriode = perioder[index + 1]!;
 
         const tidsperiodeMellomPerioder: Tidsperiode = {
             fom: UttaksdagenString(periode.tom).neste(),
@@ -389,14 +389,14 @@ export const settInnAnnenPartsUttak = (
         }
 
         if (isPeriodeUtenUttak(p) || isHull(p)) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+            const overlappendePeriode = overlappendePerioderAnnenPart[0]!;
 
             res.push({ ...overlappendePeriode });
             return res;
         }
 
         if (isUttaksperiode(p) && p.samtidigUttak) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+            const overlappendePeriode = overlappendePerioderAnnenPart[0]!;
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
@@ -415,7 +415,7 @@ export const settInnAnnenPartsUttak = (
 
     result.sort(sorterPerioder);
 
-    const førstePeriodeStartdato = perioder[0].fom;
+    const førstePeriodeStartdato = perioder[0]!.fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tom).isBefore(førstePeriodeStartdato, 'day'),
     );

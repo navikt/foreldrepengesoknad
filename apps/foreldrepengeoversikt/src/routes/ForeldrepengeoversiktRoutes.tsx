@@ -71,7 +71,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
     const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
 
     const alleSaker = getAlleYtelser(saker);
-    const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0].saksnummer : undefined;
+    const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0]!.saksnummer : undefined;
 
     // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
     const harRedirectet = useRef(false);
