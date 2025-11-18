@@ -41,12 +41,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(uttaksplan);
 
-    const foreldrepengerHarAktivitetskrav =
-        uttaksplan.some((p) => p.kontoType === 'FORELDREPENGER') &&
-        uttaksplan.some(
-            (p) => p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT',
-        );
-
     const erIPlanleggerModus = modus === 'planlegger';
 
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -349,19 +343,11 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
         return 'NONE';
     }
 
-    if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return 'BLUE';
-    }
-
-    if (periode.kontoType === 'FORELDREPENGER') {
-        if (foreldrepengerHarAktivitetskrav && !periode.erAnnenPartEøs && periode.morsAktivitet !== 'IKKE_OPPGITT') {
-            return erFarEllerMedmor ? 'LIGHTGREEN' : 'BLUE';
-        }
-
-        return 'BLUE';
-    }
-
-    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
+    if (
+        !periode.erAnnenPartEøs &&
+        (periode.forelder === 'MOR' ||
+            (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'))
+    ) {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
