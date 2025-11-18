@@ -6,14 +6,19 @@
     "scripts": {
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src"
+        "prettier": "prettier --write src",
+        "update-swagger": "node hent-openapi-spec.js",
+        "generate:local": "pnpm run update-swagger lokal && openapi-ts -",
+        "generate": "pnpm run update-swagger && openapi-ts",
+        "openapi-ts": "openapi-ts"
     },
     "dependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "eslint": "9.36.0"
+        "eslint": "9.36.0",
+        "@hey-api/openapi-ts": "0.87.5"
     },
     "packageManager": "pnpm@10.18.3"
 }

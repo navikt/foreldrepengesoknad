@@ -6,7 +6,7 @@ const avhengigheterViVilHaUansett = [
     '@navikt/ds-css',
     '@navikt/ds-tailwind',
     '@tailwindcss/vite',
-    'tailwindcss',
+    'tailwindcss'
 ];
 
 // Usikker på om de med storybook trengs. jsdom og coverage refereres av vitest.
@@ -15,14 +15,13 @@ const avhengigheterRelatertTilTest = [
     'jsdom',
     '@storybook/addon-actions',
     '@storybook/cli',
-    'playwright',
+    'playwright'
 ];
 
 const avhenegigheterKnipIkkeForstårBrukes = [
     '@formatjs/intl-pluralrules',
-    '@trivago/prettier-plugin-sort-imports',
     '@sentry/browser',
-    'i18n-iso-countries',
+    'i18n-iso-countries'
 ];
 
 const config: KnipConfig = {
@@ -31,14 +30,17 @@ const config: KnipConfig = {
         '**/mock-storage.cjs',
         '**/@types/externals.d.ts',
         '**/bootstrap.tsx',
-        'openapi-ts.config.ts',
+        '**/openapi-ts.config.ts',
+        '**/hent-openapi-spec.js',
+        '**/fpoversiktDtoGenerert.ts',
+        '**/fpsoknadDtoGenerert.ts'
     ],
-    ignoreBinaries: ['prettier', 'formatjs'],
+    ignoreBinaries: ['formatjs'],
     ignoreDependencies: [
         ...avhengigheterViVilHaUansett,
         ...avhengigheterRelatertTilTest,
-        ...avhenegigheterKnipIkkeForstårBrukes,
-    ],
+        ...avhenegigheterKnipIkkeForstårBrukes
+    ]
 };
 
 export default config;

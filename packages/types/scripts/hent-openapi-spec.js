@@ -1,6 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 import fs from 'node:fs';
 
+// eslint-disable-next-line no-undef
 const isLokal = process.argv.includes('lokal');
 
 const SOURCES = [
@@ -18,7 +20,7 @@ const SOURCES = [
     },
 ];
 
-async function hentToken(isLokal, aud) {
+async function hentToken(aud) {
     if (isLokal) {
         console.log('Henter token fra VTP.');
         const res = await fetch('http://localhost:8060/rest/azuread/token', {
@@ -74,10 +76,11 @@ try {
     console.log(`Kjører i ${isLokal ? 'lokal' : 'remote'} modus.`);
 
     for (const source of SOURCES) {
-        const token = await hentToken(isLokal, source.aud);
+        const token = await hentToken(source.aud);
         await hentOpenAPISpec(source, token);
     }
 } catch (error) {
     console.error(error);
+    // eslint-disable-next-line no-undef
     process.exit(1);
 }

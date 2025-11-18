@@ -27,9 +27,6 @@ importers:
         specifier: 2.5.6
         version: 2.5.6
     devDependencies:
-      '@hey-api/openapi-ts':
-        specifier: 0.87.5
-        version: 0.87.5(typescript@5.9.3)
       '@trivago/prettier-plugin-sort-imports':
         specifier: 5.2.2
         version: 5.2.2(prettier@3.6.2)
@@ -2627,6 +2624,9 @@ importers:
         specifier: workspace:*
         version: link:../constants
     devDependencies:
+      '@hey-api/openapi-ts':
+        specifier: 0.87.5
+        version: 0.87.5(typescript@5.9.3)
       eslint:
         specifier: 9.36.0
         version: 9.36.0(jiti@2.6.1)
