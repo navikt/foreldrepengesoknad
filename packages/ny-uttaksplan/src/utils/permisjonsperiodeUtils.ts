@@ -118,7 +118,10 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode)) {
+        if (
+            !periode.erAnnenPartEøs &&
+            (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode))
+        ) {
             const forelderType = periode.forelder;
 
             if (nyPermisjonsperiode) {
@@ -186,7 +189,7 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = undefined;
         }
 
-        if (isPrematuruker(periode)) {
+        if (!periode.erAnnenPartEøs && isPrematuruker(periode)) {
             const forelderType = periode.forelder;
 
             nyPermisjonsperiode = {

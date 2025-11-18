@@ -5,19 +5,23 @@ import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuil
 
 const perioder: Planperiode[] = [
     {
+        erAnnenPartEøs: false,
         id: '1',
         fom: '2022-07-21',
         tom: '2022-08-31',
         forelder: 'FAR_MEDMOR',
-        kontoType: 'AKTIVITETSFRI_KVOTE',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     },
     {
+        erAnnenPartEøs: false,
         id: '2',
         fom: '2022-09-01',
         tom: '2022-09-14',
         forelder: 'FAR_MEDMOR',
-        kontoType: 'AKTIVITETSFRI_KVOTE',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'IKKE_OPPGITT',
         readOnly: false,
     },
 ];
@@ -76,6 +80,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
     it('Skal dele opp søkerens periode hvis annen parts periode er i midten av perioden', () => {
         const morsPerioder: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
@@ -85,6 +90,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
@@ -94,6 +100,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
@@ -106,6 +113,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
 
         const annenPartsUttakIMidten: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '4',
                 fom: '2022-02-14',
                 tom: '2022-02-18',
@@ -130,35 +138,36 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         expect(andrePeriode.fom).toEqual('2022-01-31');
         expect(andrePeriode.tom).toEqual('2022-02-11');
         expect(andrePeriode.kontoType).toEqual(morsPerioder[1].kontoType);
-        expect(andrePeriode.forelder).toEqual(morsPerioder[1].forelder);
-        expect(andrePeriode.samtidigUttak).toEqual(morsPerioder[1].samtidigUttak);
+        expect(andrePeriode.erAnnenPartEøs).toEqual(morsPerioder[1].erAnnenPartEøs);
+        erForeldreLike(andrePeriode, morsPerioder[1]);
 
         const tredjePeriode = result[2];
         expect(tredjePeriode.fom).toEqual('2022-02-14');
         expect(tredjePeriode.tom).toEqual('2022-02-18');
         expect(tredjePeriode.kontoType).toEqual(morsPerioder[1].kontoType);
-        expect(tredjePeriode.forelder).toEqual(morsPerioder[1].forelder);
-        expect(tredjePeriode.samtidigUttak).toEqual(morsPerioder[1].samtidigUttak);
+        expect(tredjePeriode.erAnnenPartEøs).toEqual(morsPerioder[1].erAnnenPartEøs);
+        erForeldreLike(tredjePeriode, morsPerioder[1]);
 
         const fjerdePeriode = result[3];
         expect(fjerdePeriode.fom).toEqual('2022-02-14');
         expect(fjerdePeriode.tom).toEqual('2022-02-18');
-        expect(fjerdePeriode.oppholdÅrsak).toEqual(annenPartsUttakIMidten[0].oppholdÅrsak);
-        expect(fjerdePeriode.forelder).toEqual(annenPartsUttakIMidten[0].forelder);
-        expect(fjerdePeriode.samtidigUttak).toEqual(annenPartsUttakIMidten[0].samtidigUttak);
+        expect(fjerdePeriode.erAnnenPartEøs).toEqual(morsPerioder[1].erAnnenPartEøs);
+        erForeldreLike(fjerdePeriode, annenPartsUttakIMidten[0]);
 
         const femtePeriode = result[4];
         expect(femtePeriode.fom).toEqual('2022-02-21');
         expect(femtePeriode.tom).toEqual('2022-02-25');
         expect(femtePeriode.kontoType).toEqual(morsPerioder[1].kontoType);
-        expect(femtePeriode.forelder).toEqual(morsPerioder[1].forelder);
-        expect(femtePeriode.samtidigUttak).toEqual(morsPerioder[1].samtidigUttak);
+        expect(femtePeriode.erAnnenPartEøs).toEqual(morsPerioder[1].erAnnenPartEøs);
+        erForeldreLike(femtePeriode, morsPerioder[1]);
 
         expect(result[5]).toEqual(morsPerioder[2]);
     });
+
     it('Skal dele opp annen parts periode hvis søkerens periode er i midten av perioden', () => {
         const søkerensPerioder: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
@@ -168,6 +177,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
@@ -177,6 +187,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 readOnly: false,
             },
             {
+                erAnnenPartEøs: false,
                 id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
@@ -189,6 +200,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
 
         const annenPartsUttak: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '4',
                 fom: '2022-01-24',
                 tom: '2022-03-04',
@@ -212,61 +224,58 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         expect(førstePeriode.fom).toEqual('2022-01-21');
         expect(førstePeriode.tom).toEqual('2022-01-21');
         expect(førstePeriode.kontoType).toEqual(søkerensPerioder[0].kontoType);
-        expect(førstePeriode.forelder).toEqual(søkerensPerioder[0].forelder);
-        expect(førstePeriode.samtidigUttak).toEqual(søkerensPerioder[0].samtidigUttak);
+        expect(førstePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
+        erForeldreLike(førstePeriode, søkerensPerioder[0]);
 
         const andrePeriode = result[1];
         expect(andrePeriode.fom).toEqual('2022-01-24');
         expect(andrePeriode.tom).toEqual('2022-01-28');
         expect(andrePeriode.kontoType).toEqual(søkerensPerioder[0].kontoType);
-        expect(andrePeriode.forelder).toEqual(søkerensPerioder[0].forelder);
-        expect(andrePeriode.samtidigUttak).toEqual(søkerensPerioder[0].samtidigUttak);
+        expect(andrePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
+        erForeldreLike(andrePeriode, søkerensPerioder[0]);
 
         const tredjePeriode = result[2];
         expect(tredjePeriode.fom).toEqual('2022-01-24');
         expect(tredjePeriode.tom).toEqual('2022-01-28');
-        expect(tredjePeriode.oppholdÅrsak).toEqual(annenPartsUttak[0].oppholdÅrsak);
-        expect(tredjePeriode.forelder).toEqual(annenPartsUttak[0].forelder);
-        expect(tredjePeriode.samtidigUttak).toEqual(annenPartsUttak[0].samtidigUttak);
+        expect(tredjePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
+        erForeldreLike(tredjePeriode, annenPartsUttak[0]);
 
         const fjerdePeriode = result[3];
         expect(fjerdePeriode.fom).toEqual('2022-01-31');
         expect(fjerdePeriode.tom).toEqual('2022-02-25');
+        expect(fjerdePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
         expect(fjerdePeriode.kontoType).toEqual(søkerensPerioder[1].kontoType);
-        expect(fjerdePeriode.forelder).toEqual(søkerensPerioder[1].forelder);
-        expect(fjerdePeriode.samtidigUttak).toEqual(søkerensPerioder[1].samtidigUttak);
+        erForeldreLike(fjerdePeriode, søkerensPerioder[1]);
 
         const femtePeriode = result[4];
         expect(femtePeriode.fom).toEqual('2022-01-31');
         expect(femtePeriode.tom).toEqual('2022-02-25');
-        expect(femtePeriode.oppholdÅrsak).toEqual(annenPartsUttak[0].oppholdÅrsak);
-        expect(femtePeriode.forelder).toEqual(annenPartsUttak[0].forelder);
-        expect(femtePeriode.samtidigUttak).toEqual(annenPartsUttak[0].samtidigUttak);
+        erForeldreLike(femtePeriode, annenPartsUttak[0]);
 
         const sjettePeriode = result[5];
         expect(sjettePeriode.fom).toEqual('2022-02-28');
         expect(sjettePeriode.tom).toEqual('2022-03-04');
+        expect(sjettePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
         expect(sjettePeriode.kontoType).toEqual(søkerensPerioder[2].kontoType);
-        expect(sjettePeriode.forelder).toEqual(søkerensPerioder[2].forelder);
-        expect(sjettePeriode.samtidigUttak).toEqual(søkerensPerioder[2].samtidigUttak);
+        erForeldreLike(sjettePeriode, søkerensPerioder[2]);
 
         const syvendePeriode = result[6];
         expect(syvendePeriode.fom).toEqual('2022-02-28');
         expect(syvendePeriode.tom).toEqual('2022-03-04');
-        expect(femtePeriode.oppholdÅrsak).toEqual(annenPartsUttak[0].oppholdÅrsak);
-        expect(femtePeriode.forelder).toEqual(annenPartsUttak[0].forelder);
-        expect(femtePeriode.samtidigUttak).toEqual(annenPartsUttak[0].samtidigUttak);
+        expect(syvendePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
+        erForeldreLike(femtePeriode, annenPartsUttak[0]);
 
         const sistePeriode = result[7];
         expect(sistePeriode.fom).toEqual('2022-03-07');
         expect(sistePeriode.tom).toEqual('2022-04-22');
+        expect(sistePeriode.erAnnenPartEøs).toEqual(søkerensPerioder[0].erAnnenPartEøs);
         expect(sistePeriode.kontoType).toEqual(søkerensPerioder[2].kontoType);
-        expect(sistePeriode.forelder).toEqual(søkerensPerioder[2].forelder);
-        expect(sistePeriode.samtidigUttak).toEqual(søkerensPerioder[2].samtidigUttak);
+        erForeldreLike(sistePeriode, søkerensPerioder[2]);
     });
     it('Skal returnere annen parts uttak hvis søkerens perioder er tomme men det finnes annen parts uttak (førstegangssøknad med annen parts uttak)', () => {
         const kunAnnenPartsUttak: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '0',
                 fom: '2022-01-01',
                 tom: '2022-02-04',
@@ -286,6 +295,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             ' (som ikke er fri utsettelse), skal delen til annen part som overlapper bli borte',
         () => {
             const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
+                erAnnenPartEøs: false,
                 id: '0',
                 fom: '2021-01-05',
                 tom: '2021-01-06',
@@ -294,6 +304,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             };
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
+                    erAnnenPartEøs: false,
                     id: '1',
                     fom: '2021-01-04',
                     tom: '2021-01-07',
@@ -321,6 +332,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
 
     it('Hvis en utsettelsesperiode (som ikke er fri utsettelse) overlapper annen parts uttak helt, returner kun utsettelsen', () => {
         const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
+            erAnnenPartEøs: false,
             id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
@@ -329,6 +341,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2021-01-05',
                 tom: '2021-01-05',
@@ -351,6 +364,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
 
     it('Hvis annen parts uttak overlapper starten av utsettelsesperioden (som ikke er fri utsettelse) returner kun delen som ikke overlapper', () => {
         const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
+            erAnnenPartEøs: false,
             id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
@@ -360,6 +374,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
+                erAnnenPartEøs: false,
                 id: '1',
                 fom: '2021-01-01',
                 tom: '2021-01-04',
@@ -387,6 +402,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             ' (som ikke er fri utsettelse) returner kun delen som ikke overlapper som infoperiode',
         () => {
             const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
+                erAnnenPartEøs: false,
                 id: '0',
                 fom: '2021-01-04',
                 tom: '2021-01-07',
@@ -395,6 +411,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             };
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
+                    erAnnenPartEøs: false,
                     id: '1',
                     fom: '2021-01-07',
                     tom: '2021-01-08',
@@ -417,4 +434,13 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             expect(result[1].readOnly).toEqual(true);
         },
     );
+
+    const erForeldreLike = (periode1: Planperiode, periode2: Planperiode) => {
+        expect(periode1.erAnnenPartEøs).toEqual(periode2.erAnnenPartEøs);
+        if (!periode1.erAnnenPartEøs && !periode2.erAnnenPartEøs) {
+            expect(periode1.oppholdÅrsak).toEqual(periode2.oppholdÅrsak);
+            expect(periode1.forelder).toEqual(periode2.forelder);
+            expect(periode1.samtidigUttak).toEqual(periode2.samtidigUttak);
+        }
+    };
 });

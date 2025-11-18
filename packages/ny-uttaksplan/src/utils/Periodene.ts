@@ -295,7 +295,7 @@ export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
         return false;
     }
 
-    return perioderUtenInfoPerioder.every((periode) => periode.oppholdÅrsak !== undefined);
+    return perioderUtenInfoPerioder.every((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined);
 };
 
 export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean => {
@@ -304,10 +304,14 @@ export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean =>
             .filter((p) => !p.readOnly)
             .slice()
             .reverse()
-            .findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0
+            .findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0
     );
 };
 
 export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return perioder.filter((p) => !p.readOnly).findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0;
+    return (
+        perioder
+            .filter((p) => !p.readOnly)
+            .findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0
+    );
 };

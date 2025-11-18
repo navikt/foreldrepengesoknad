@@ -5,18 +5,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import {
-    KontoDto,
-    KontoTypeUttak,
-    RettighetType_fpoversikt,
-    SaksperiodeNy,
-    UttakOppholdÅrsak_fpoversikt,
-} from '@navikt/fp-types';
+import { KontoDto, KontoTypeUttak, RettighetType_fpoversikt, UttakOppholdÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
+import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
-import { isUttaksperiodeAnnenpartEøs } from './utils/periodeUtils';
 
 interface Props {
     rettighetType: RettighetType_fpoversikt;
@@ -67,19 +61,21 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
         const brukteDager = summerDagerIPerioder(
             uttaksplan.filter((p) => {
+                const harMatchendePeriode =
+                    !p.erAnnenPartEøs &&
+                    getUttaksKontoType(p) === 'FORELDREPENGER' &&
+                    p.morsAktivitet === 'IKKE_OPPGITT';
                 // Aktivitetsfri kvote har spesialhåndtering
                 if (kontoType === 'AKTIVITETSFRI_KVOTE') {
                     // I planlegger og søknad brukes denne kontoen på periodene.
                     const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
                     // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
-                    const harMatchendePeriode =
-                        getUttaksKontoType(p) === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT';
                     return harMatchendePeriode || harMatchendeKonto;
                 }
 
                 // Disse periodene skal kun telles for aktivitetsfri kvoter
-                if (getUttaksKontoType(p) === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
+                if (harMatchendePeriode) {
                     return false;
                 }
 
@@ -177,19 +173,23 @@ const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
             (p) =>
                 getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL' ||
                 getUttaksKontoType(p) === 'MØDREKVOTE' ||
-                p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
+                (!p.erAnnenPartEøs && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
         ),
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvFar = summerDagerIPerioder(
         uttaksplan.filter(
-            (p) => getUttaksKontoType(p) === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER',
+            (p) =>
+                getUttaksKontoType(p) === 'FEDREKVOTE' ||
+                (!p.erAnnenPartEøs && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
         ),
         valgtStønadskonto.kontoer,
     );
     const dagerFellesBrukt = summerDagerIPerioder(
         uttaksplan.filter(
-            (p) => getUttaksKontoType(p) === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER',
+            (p) =>
+                getUttaksKontoType(p) === 'FELLESPERIODE' ||
+                (!p.erAnnenPartEøs && p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
         ),
         valgtStønadskonto.kontoer,
     );
@@ -418,7 +418,7 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
     const relevantePerioder = uttaksplan.filter(
-        (p) => getUttaksKontoType(p) === 'FORELDREPENGER' && p.morsAktivitet !== 'IKKE_OPPGITT',
+        (p) => getUttaksKontoType(p) === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet !== 'IKKE_OPPGITT',
     );
 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
@@ -429,7 +429,9 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const relevantePerioder = uttaksplan.filter(
-        (p) => getUttaksKontoType(p) === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER',
+        (p) =>
+            getUttaksKontoType(p) === 'FEDREKVOTE' ||
+            (!p.erAnnenPartEøs && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
     );
 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
@@ -445,7 +447,8 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
         const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
         // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
-        const harMatchendePeriode = getUttaksKontoType(p) === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT';
+        const harMatchendePeriode =
+            getUttaksKontoType(p) === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT';
         return harMatchendePeriode || harMatchendeKonto;
     });
 
@@ -457,7 +460,9 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const relevantePerioder = uttaksplan.filter(
-        (p) => getUttaksKontoType(p) === 'MØDREKVOTE' || p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
+        (p) =>
+            getUttaksKontoType(p) === 'MØDREKVOTE' ||
+            (!p.erAnnenPartEøs && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
     );
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
@@ -473,11 +478,15 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
         return null;
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
-        uttaksplan.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder === forelder),
+        uttaksplan.filter(
+            (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder === forelder,
+        ),
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        uttaksplan.filter((p) => getUttaksKontoType(p) === 'FELLESPERIODE' && p.forelder !== forelder),
+        uttaksplan.filter(
+            (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder !== forelder,
+        ),
         valgtStønadskonto.kontoer,
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
@@ -573,7 +582,7 @@ const StandardVisning = ({
     visStatusIkoner,
 }: {
     konto?: KontoDto;
-    perioder: SaksperiodeNy[];
+    perioder: Planperiode[];
     visStatusIkoner: boolean;
 }) => {
     const intl = useIntl();
@@ -833,11 +842,8 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
     </div>
 );
 
-const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
-    if (periode.resultat?.trekkerDager === false) {
-        return 0;
-    }
-    if (periode.trekkdager !== undefined) {
+const finnAntallDagerÅTrekke = (periode: Planperiode) => {
+    if (periode.erAnnenPartEøs) {
         return periode.trekkdager;
     }
 
@@ -870,10 +876,10 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fp
     }
 };
 
-const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
+const summerDagerIPerioder = (perioder: Planperiode[], konto: KontoDto[]) => {
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
-            if (p.oppholdÅrsak) {
+            if (!p.erAnnenPartEøs && p.oppholdÅrsak) {
                 return getStønadskontoTypeFromOppholdÅrsakType(p.oppholdÅrsak);
             }
 
@@ -897,14 +903,14 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
         const dagerEøs = Math.min(
             sum(
                 perioder
-                    .filter((p) => isUttaksperiodeAnnenpartEøs(p) && getUttaksKontoType(p) === aktuellKontoType)
+                    .filter((p) => p.erAnnenPartEøs && getUttaksKontoType(p) === aktuellKontoType)
                     .map(finnAntallDagerÅTrekke),
             ),
             gjeldendeKonto.dager,
         );
         const dagerNorge = sum(
             perioder
-                .filter((p) => !isUttaksperiodeAnnenpartEøs(p) && getUttaksKontoType(p) === aktuellKontoType)
+                .filter((p) => !p.erAnnenPartEøs && getUttaksKontoType(p) === aktuellKontoType)
                 .map(finnAntallDagerÅTrekke),
         );
         dagerTotalt += dagerEøs + dagerNorge;
@@ -913,8 +919,8 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[], konto: KontoDto[]) => {
     return Math.floor(dagerTotalt);
 };
 
-const getUttaksKontoType = (p: SaksperiodeNy): KontoTypeUttak | undefined => {
-    if (p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
+const getUttaksKontoType = (p: Planperiode): KontoTypeUttak | undefined => {
+    if (p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }
 

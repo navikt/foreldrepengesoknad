@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
@@ -31,7 +31,7 @@ interface Props {
 export interface EndrePeriodePanelStepFormValues {
     fom: string | undefined;
     tom: string | undefined;
-    kontoType: KontoTypeUttak;
+    kontoType: KontoType;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
@@ -55,7 +55,7 @@ export const EndrePeriodePanelStep = ({
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
-            if (valgtPeriode.utsettelseÅrsak) {
+            if (!valgtPeriode.erAnnenPartEøs && valgtPeriode.utsettelseÅrsak) {
                 return HvaVilDuGjøre.LEGG_TIL_FERIE;
             }
 
@@ -70,17 +70,19 @@ export const EndrePeriodePanelStep = ({
     };
 
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
-        defaultValues: {
-            fom: valgtPeriode?.fom,
-            tom: valgtPeriode?.tom,
-            forelder: valgtPeriode?.forelder,
-            kontoType: valgtPeriode?.kontoType,
-            skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
-            stillingsprosent: graderingsInfo?.stillingsprosent,
-            samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
-            samtidigUttaksprosent: valgtPeriode?.samtidigUttak?.toString(),
-            hvaVilDuGjøre: getHvaVilDuGjøre(),
-        },
+        defaultValues: valgtPeriode?.erAnnenPartEøs
+            ? undefined
+            : {
+                  fom: valgtPeriode?.fom,
+                  tom: valgtPeriode?.tom,
+                  forelder: valgtPeriode?.forelder,
+                  kontoType: valgtPeriode?.kontoType,
+                  skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
+                  stillingsprosent: graderingsInfo?.stillingsprosent,
+                  samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
+                  samtidigUttaksprosent: valgtPeriode?.samtidigUttak?.toString(),
+                  hvaVilDuGjøre: getHvaVilDuGjøre(),
+              },
     });
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
@@ -110,7 +112,7 @@ export const EndrePeriodePanelStep = ({
         }
 
         if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            if (valgtPeriode && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+            if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
                 return handleUpdatePeriode;
             }
 
@@ -128,6 +130,7 @@ export const EndrePeriodePanelStep = ({
             const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
 
             handleFunc({
+                erAnnenPartEøs: false,
                 id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
                 readOnly: false,
                 fom: fomValue,
@@ -137,6 +140,7 @@ export const EndrePeriodePanelStep = ({
             });
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
+                erAnnenPartEøs: false,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 readOnly: false,
                 fom: fomValue,
@@ -148,6 +152,7 @@ export const EndrePeriodePanelStep = ({
             const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
 
             handleFunc({
+                erAnnenPartEøs: false,
                 id: valgtPeriode!.id,
                 readOnly: false,
                 fom: fomValue,

@@ -65,7 +65,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 )}
                                 {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.Far" />}
                                 {p.kontoType === 'FELLESPERIODE' && <FormattedMessage id="RedigeringPanel.Felles" />}
-                                {p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
+                                {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
                                     <FormattedMessage id="RedigeringPanel.Ferie" />
                                 )}
                             </Heading>
