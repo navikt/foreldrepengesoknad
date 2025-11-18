@@ -70,8 +70,9 @@ export const EndrePeriodePanelStep = ({
     };
 
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
-        defaultValues: !valgtPeriode?.erAnnenPartEøs
-            ? {
+        defaultValues: valgtPeriode?.erAnnenPartEøs
+            ? undefined
+            : {
                   fom: valgtPeriode?.fom,
                   tom: valgtPeriode?.tom,
                   forelder: valgtPeriode?.forelder,
@@ -81,8 +82,7 @@ export const EndrePeriodePanelStep = ({
                   samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
                   samtidigUttaksprosent: valgtPeriode?.samtidigUttak?.toString(),
                   hvaVilDuGjøre: getHvaVilDuGjøre(),
-              }
-            : undefined,
+              },
     });
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');

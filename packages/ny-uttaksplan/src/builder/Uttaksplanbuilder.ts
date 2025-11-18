@@ -272,7 +272,7 @@ const getSøkerOgAnnenpartsPerioder = ({
     opprinneligPlan,
     ...commonGetPerioderProps
 }: GetSøkerOgAnnenpartsPerioderParams): SøkerOgAnnenpartsPerioder => {
-    const forelder = !periode.erAnnenPartEøs ? periode.forelder : undefined;
+    const forelder = periode.erAnnenPartEøs ? undefined : periode.forelder;
     const annenPart = getAnnenPart(forelder);
     const egnePerioder = erIPlanleggerModus
         ? getPerioderPåForelder({
