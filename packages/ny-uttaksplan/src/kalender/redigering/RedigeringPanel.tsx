@@ -139,8 +139,9 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
         setValgtePerioder,
     );
 
-    const harPeriodeFør = sammenslåtteValgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeEtter = sammenslåtteValgtePerioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
+    const harPeriodeFørEllerEtter = sammenslåtteValgtePerioder.some(
+        (p) => dayjs(p.fom).isBefore(familiehendelsedato) || dayjs(p.tom).isSameOrAfter(familiehendelsedato),
+    );
 
     const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
     const erFerieValgbart = erFeriePerioderGyldige();
@@ -157,20 +158,12 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
                 <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
-            {!erFerieValgbart && harPeriodeFør && (
+            {!erFerieValgbart && harPeriodeFørEllerEtter && (
                 <Alert variant="info" size="small">
-                    <Heading spacing size="xsmall" level="3">
+                    <Heading size="xsmall" level="3">
                         <FormattedMessage id="RedigeringPanel.OmFerie" />
                     </Heading>
-                    <FormattedMessage id="RedigeringPanel.FerieForTermin" />
-                </Alert>
-            )}
-            {!erFerieValgbart && harPeriodeEtter && (
-                <Alert variant="info" size="small">
-                    <Heading spacing size="xsmall" level="3">
-                        <FormattedMessage id="RedigeringPanel.OmFerie" />
-                    </Heading>
-                    <FormattedMessage id="RedigeringPanel.FerieEtterTermin" />
+                    <FormattedMessage id="RedigeringPanel.FerieForEllerEtterTermin" />
                 </Alert>
             )}
         </VStack>
