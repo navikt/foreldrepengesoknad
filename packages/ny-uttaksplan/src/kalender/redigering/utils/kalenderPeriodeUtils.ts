@@ -69,11 +69,11 @@ export const finnValgtePerioder = (
             if (overlappendeDager > 0) {
                 const fomDate = overlappendePerioder
                     .map(({ fom }) => dayjs(fom))
-                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min), dayjs())
+                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min), dayjs(overlappendePerioder.at(0)?.fom))
                     .format('YYYY-MM-DD');
                 const tomDate = overlappendePerioder
                     .map(({ tom }) => dayjs(tom))
-                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max), dayjs())
+                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max), dayjs(overlappendePerioder.at(0)?.tom))
                     .format('YYYY-MM-DD');
 
                 return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };

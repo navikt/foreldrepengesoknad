@@ -6,20 +6,19 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { DDMMM_DATE_FORMAT } from '@navikt/fp-constants';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type Props = {
     children: React.ReactNode[] | React.ReactNode;
-    kanLeggeTilFerie: boolean;
 };
 
-export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
+export const RedigeringPanel = ({ children }: Props) => {
     const intl = useIntl();
 
     const {
@@ -106,12 +105,12 @@ export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
                     </BodyShort>
                     {erIRedigeringsmodus && visPeriodeDetaljer && (
                         <Show above="md">
-                            <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />
+                            <PeriodeDetaljerOgInfoMeldinger />
                         </Show>
                     )}
                     {erIRedigeringsmodus && !erMinimert && (
                         <Show below="md">
-                            <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />
+                            <PeriodeDetaljerOgInfoMeldinger />
                         </Show>
                     )}
                 </VStack>
@@ -119,7 +118,7 @@ export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <VStack gap="space-24">
-                    {!erIRedigeringsmodus && <PeriodeDetaljerOgInfoMeldinger kanLeggeTilFerie={kanLeggeTilFerie} />}
+                    {!erIRedigeringsmodus && <PeriodeDetaljerOgInfoMeldinger />}
                     {children}
                 </VStack>
             </div>
@@ -127,7 +126,7 @@ export const RedigeringPanel = ({ children, kanLeggeTilFerie }: Props) => {
     );
 };
 
-const PeriodeDetaljerOgInfoMeldinger = ({ kanLeggeTilFerie }: { kanLeggeTilFerie: boolean }) => {
+const PeriodeDetaljerOgInfoMeldinger = () => {
     const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, eksisterendePerioderSomErValgt, oppdaterUttaksplan, setValgtePerioder } =
@@ -140,10 +139,11 @@ const PeriodeDetaljerOgInfoMeldinger = ({ kanLeggeTilFerie }: { kanLeggeTilFerie
         setValgtePerioder,
     );
 
-    const harValgtPerioderBådeFørOgEtterFamiliehendelsedato = harValgtBådeFørOgEtterFamiliehendelsedato(
-        sammenslåtteValgtePerioder,
-        familiehendelsedato,
-    );
+    const harPeriodeFør = sammenslåtteValgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+    const harPeriodeEtter = sammenslåtteValgtePerioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
+
+    const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
+    const erFerieValgbart = erFeriePerioderGyldige();
 
     return (
         <VStack gap="space-16">
@@ -157,17 +157,20 @@ const PeriodeDetaljerOgInfoMeldinger = ({ kanLeggeTilFerie }: { kanLeggeTilFerie
                 <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
-            {!kanLeggeTilFerie && !harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+            {!erFerieValgbart && harPeriodeFør && (
                 <Alert variant="info" size="small">
-                    <FormattedMessage id="RedigeringPanel.KanIkkeLeggeTilPeriode" />
+                    <Heading spacing size="xsmall" level="3">
+                        <FormattedMessage id="RedigeringPanel.OmFerie" />
+                    </Heading>
+                    <FormattedMessage id="RedigeringPanel.FerieForTermin" />
                 </Alert>
             )}
-            {!kanLeggeTilFerie && harValgtPerioderBådeFørOgEtterFamiliehendelsedato && (
+            {!erFerieValgbart && harPeriodeEtter && (
                 <Alert variant="info" size="small">
-                    <FormattedMessage
-                        id="RedigeringPanel.KanIkkeLeggeTilPeriodeValgForOgEtter"
-                        values={{ dato: dayjs(familiehendelsedato).format(DDMMM_DATE_FORMAT) }}
-                    />
+                    <Heading spacing size="xsmall" level="3">
+                        <FormattedMessage id="RedigeringPanel.OmFerie" />
+                    </Heading>
+                    <FormattedMessage id="RedigeringPanel.FerieEtterTermin" />
                 </Alert>
             )}
         </VStack>
@@ -179,16 +182,6 @@ const finnAntallDager = (perioder: CalendarPeriod[]): number => {
         const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
         return acc + dager;
     }, 0);
-};
-
-const harValgtBådeFørOgEtterFamiliehendelsedato = (
-    perioder: CalendarPeriod[],
-    familiehendelsedato: string,
-): boolean => {
-    const harPeriodeFør = perioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeEtter = perioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
-
-    return harPeriodeFør && harPeriodeEtter;
 };
 
 const getSlettPeriodeFn =
