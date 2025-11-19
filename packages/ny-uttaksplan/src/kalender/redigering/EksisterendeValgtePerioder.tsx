@@ -11,10 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
-import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
-import { getTomPeriodeUtenUttakValidator } from '../../utils/dateTomValidators';
 
 export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
@@ -25,19 +22,17 @@ interface Props {
 
 export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) => {
     const intl = useIntl();
-    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
-
-    const periodeUtenUttakFomValidatorer = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
-    const periodeUtenUttakTomValidatorer = getTomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
 
     return (
         <VStack gap="space-12">
             {perioder.map((p) => {
-                const erPeriodeSlettbar =
-                    periodeUtenUttakFomValidatorer(p.fom) === null && periodeUtenUttakTomValidatorer(p.tom) === null;
-
                 return (
-                    <HStack gap="space-8" key={p.id} wrap={false}>
+                    <HStack
+                        gap="space-8"
+                        key={p.id}
+                        wrap={false}
+                        data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
+                    >
                         {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'MØDREKVOTE') && (
                             <PersonPregnantFillIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -124,14 +119,12 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                             </BodyShort>
                         </VStack>
                         <Spacer />
-                        {erPeriodeSlettbar && (
-                            <TrashIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                                fontSize="1.5rem"
-                                className="cursor-pointer hover:opacity-70"
-                                onClick={() => slettPeriode(p)}
-                            />
-                        )}
+                        <TrashIcon
+                            title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                            fontSize="1.5rem"
+                            className="cursor-pointer hover:opacity-70"
+                            onClick={() => slettPeriode(p)}
+                        />
                     </HStack>
                 );
             })}
