@@ -110,15 +110,11 @@ const getTekstForArbeidOgSamtidigUttak = (
             (periode.gradering !== undefined && periode.samtidigUttak !== undefined) ||
             periode.gradering !== undefined
         ) {
-            return <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>;
+            return getArbeidsTekst(periode.gradering.arbeidstidprosent);
         }
 
         if (periode.samtidigUttak !== undefined) {
-            return (
-                <BodyShort>
-                    {getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre)}
-                </BodyShort>
-            );
+            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre);
         }
     }
 

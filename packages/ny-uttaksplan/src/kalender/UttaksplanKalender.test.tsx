@@ -243,4 +243,33 @@ describe('UttaksplanKalender', () => {
             ),
         ).toBeInTheDocument();
     });
+
+    it('skal vise endre-knapp og preutfylte felter når en velger en hel periode', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:4;dayColor:PINK'));
+        await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
+
+        await userEvent.click(screen.getByText('Endre'));
+
+        expect(await screen.findByText('Velg kontotype')).toBeInTheDocument();
+        expect(screen.getByText('Mors kvote')).toBeInTheDocument();
+        expect(screen.getByLabelText('Mors kvote')).toBeChecked();
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
+
+        expect(await screen.findByText('Skal du ha samtidig uttak?')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Nei')[0]).toBeChecked();
+
+        expect(await screen.findByText('Skal du kombinere foreldrepengene med arbeid?')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[1]).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Nei')[1]).toBeChecked();
+    });
 });
