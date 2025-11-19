@@ -96,7 +96,7 @@ export const ValgteDagerPanel = () => {
                     )}
                 </HStack>
                 <HStack justify="space-between">
-                    <Button variant="secondary" size="small" onClick={() => setValgtePerioder([])}>
+                    <Button type="button" variant="secondary" size="small" onClick={() => setValgtePerioder([])}>
                         <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
                     </Button>
                     <div />
