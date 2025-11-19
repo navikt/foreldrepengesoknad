@@ -121,7 +121,9 @@ export const PlanleggerDataInit = () => {
     // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
     useEffect(() => {
         if (locations.pathname.includes('tilpass-planen')) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (typeof (globalThis as any).skyra?.reload === 'function') {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
                 (globalThis as any).skyra.reload();
                 // eslint-disable-next-line no-console
                 console.log(`skyra.reload() kjørt på ${locations.pathname}`);
