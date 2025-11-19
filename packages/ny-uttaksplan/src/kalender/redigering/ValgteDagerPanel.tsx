@@ -9,7 +9,6 @@ import { getFomPeriodeUtenUttakValidator } from '../../utils/dateFomValidators';
 import { getTomPeriodeUtenUttakValidator } from '../../utils/dateTomValidators';
 import { RedigeringPanel } from './RedigeringPanel';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 export const ValgteDagerPanel = () => {
     const intl = useIntl();
@@ -57,9 +56,6 @@ export const ValgteDagerPanel = () => {
         setValgtePerioder([]);
     };
 
-    const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
-    const erFerieValgbart = erFeriePerioderGyldige();
-
     const periodeUtenUttakValidatorerFom = getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
     const periodeUtenUttakValidatorerTom = getTomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon);
 
@@ -68,7 +64,7 @@ export const ValgteDagerPanel = () => {
     );
 
     return (
-        <RedigeringPanel kanLeggeTilFerie={!erFerieValgbart}>
+        <RedigeringPanel>
             <VStack gap="space-12">
                 <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
                     {erKunEnHelEksisterendePeriodeValgt ? (
@@ -78,12 +74,9 @@ export const ValgteDagerPanel = () => {
                     )}
                 </Button>
                 <HStack justify="space-between">
-                    {erFerieValgbart && (
-                        <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                            <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                        </Button>
-                    )}
-                    {!erFerieValgbart && <div />}
+                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                        <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                    </Button>
                     {eksisterendePerioderSomErValgt.length > 0 && erSlettValgbart && (
                         <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
                             {eksisterendePerioderSomErValgt.length === 1 ? (
@@ -94,6 +87,11 @@ export const ValgteDagerPanel = () => {
                         </Button>
                     )}
                 </HStack>
+                <div>
+                    <Button type="button" variant="secondary" size="small" onClick={() => setValgtePerioder([])}>
+                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                    </Button>
+                </div>
             </VStack>
         </RedigeringPanel>
     );
