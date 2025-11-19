@@ -14,7 +14,9 @@ describe('intl foreldrepengeoversikt', () => {
     };
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
 
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
@@ -41,7 +43,9 @@ describe('intl foreldrepengeoversikt', () => {
     });
 
     it('Check that all i18n strings nb_NO language file exists in code', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
         });
