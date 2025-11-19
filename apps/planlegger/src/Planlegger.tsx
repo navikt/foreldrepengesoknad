@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -110,6 +111,21 @@ export const PlanleggerDataInit = () => {
 
     const dataParam = new URLSearchParams(locations.search).get('data');
     const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
+
+    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges på tilpass-planen siden
+    // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
+    useEffect(() => {
+        if (locations.pathname.includes('tilpass-planen')) {
+            if (typeof (globalThis as any).skyra?.reload === 'function') {
+                (globalThis as any).skyra.reload();
+                // eslint-disable-next-line no-console
+                console.log(`skyra.reload() kjørt på ${locations.pathname}`);
+            } else {
+                // eslint-disable-next-line no-console
+                console.warn('skyra.reload() ikke tilgjengelig');
+            }
+        }
+    }, [locations.pathname]);
 
     return (
         <PlanleggerDataContext initialState={data}>
