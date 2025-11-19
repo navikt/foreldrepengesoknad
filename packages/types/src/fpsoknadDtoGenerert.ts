@@ -313,13 +313,13 @@ export type EndringssøknadForeldrepengerDto = {
     språkkode?: Målform;
     søkerinfo: SøkerDto;
     uttaksplan: UttaksplanDto;
-    vedlegg?: Array<VedleggDto>;
+    vedlegg?: VedleggDto[];
 };
 
 export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 
 export type SøkerDto = {
-    arbeidsforhold?: Array<Arbeidsforhold>;
+    arbeidsforhold?: Arbeidsforhold[];
     fnr: string;
     navn: Navn;
 };
@@ -343,7 +343,7 @@ export type AdopsjonDto = {
     adopsjonsdato: string;
     ankomstdato?: string;
     antallBarn?: number;
-    fødselsdatoer?: Array<string>;
+    fødselsdatoer?: string[];
     søkerAdopsjonAlene?: boolean;
 };
 
@@ -373,7 +373,7 @@ export type FødselDto = {
 export type OmsorgsovertakelseDto = {
     antallBarn?: number;
     foreldreansvarsdato: string;
-    fødselsdatoer?: Array<string>;
+    fødselsdatoer?: string[];
 };
 
 export type TerminDto = {
@@ -471,12 +471,12 @@ export type GraderingDto = {
     erArbeidstaker?: boolean;
     erFrilanser?: boolean;
     erSelvstendig?: boolean;
-    orgnumre?: Array<string>;
+    orgnumre?: string[];
     stillingsprosent: number;
 };
 
 export type UttaksplanDto = {
-    uttaksperioder: Array<Uttaksplanperiode>;
+    uttaksperioder: Uttaksplanperiode[];
     ønskerJustertUttakVedFødsel?: boolean;
 };
 
@@ -580,7 +580,7 @@ export type DokumentTypeId =
 
 export type Dokumenterer = {
     arbeidsforhold?: ArbeidsforholdDto;
-    perioder?: Array<ÅpenPeriodeDto>;
+    perioder?: ÅpenPeriodeDto[];
     type: DokumentererType;
 };
 
@@ -606,8 +606,8 @@ export type EngangsstønadDto = {
     mottattdato?: string;
     språkkode: Målform;
     søkerinfo: SøkerDto;
-    utenlandsopphold?: Array<UtenlandsoppholdsperiodeDto>;
-    vedlegg?: Array<VedleggDto>;
+    utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
+    vedlegg?: VedleggDto[];
 };
 
 export type UtenlandsoppholdsperiodeDto = {
@@ -618,7 +618,7 @@ export type UtenlandsoppholdsperiodeDto = {
 };
 
 export type ForeldrepengesøknadDto = {
-    andreInntekterSiste10Mnd?: Array<AnnenInntektDto>;
+    andreInntekterSiste10Mnd?: AnnenInntektDto[];
     annenForelder?: AnnenForelderDto;
     barn: BarnDto;
     dekningsgrad: Dekningsgrad;
@@ -628,9 +628,9 @@ export type ForeldrepengesøknadDto = {
     rolle?: BrukerRolle;
     språkkode?: Målform;
     søkerinfo: SøkerDto;
-    utenlandsopphold?: Array<UtenlandsoppholdsperiodeDto>;
+    utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
     uttaksplan: UttaksplanDto;
-    vedlegg?: Array<VedleggDto>;
+    vedlegg?: VedleggDto[];
 };
 
 export type Dekningsgrad = '80' | '100';
@@ -680,17 +680,17 @@ export type NæringDto = {
 export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type SvangerskapspengesøknadDto = {
-    andreInntekterSiste10Mnd?: Array<AnnenInntektDto>;
-    avtaltFerie: Array<AvtaltFerieDto>;
+    andreInntekterSiste10Mnd?: AnnenInntektDto[];
+    avtaltFerie: AvtaltFerieDto[];
     barn: BarnSvpDto;
     egenNæring?: NæringDto;
     frilans?: FrilansDto;
     mottattdato?: string;
     språkkode: Målform;
     søkerinfo: SøkerDto;
-    tilretteleggingsbehov: Array<TilretteleggingbehovDto>;
-    utenlandsopphold?: Array<UtenlandsoppholdsperiodeDto>;
-    vedlegg: Array<VedleggDto>;
+    tilretteleggingsbehov: TilretteleggingbehovDto[];
+    utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
+    vedlegg: VedleggDto[];
 };
 
 export type AvtaltFerieDto = {
@@ -709,7 +709,7 @@ export type TilretteleggingbehovDto = {
     arbeidsforhold: ArbeidsforholdDto;
     behovForTilretteleggingFom: string;
     risikofaktorer?: string;
-    tilrettelegginger?: Array<TilretteleggingDto>;
+    tilrettelegginger?: TilretteleggingDto[];
     tilretteleggingstiltak?: string;
     risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
 };
@@ -752,7 +752,7 @@ export type EttersendelseDto = {
     mottattdato?: string;
     saksnummer: string;
     type: YtelseType;
-    vedlegg: Array<VedleggDto>;
+    vedlegg: VedleggDto[];
 };
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
