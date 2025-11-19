@@ -352,7 +352,6 @@ export const Uttaksplanbuilder = ({
             );
         },
         leggTilPerioder: (nyePerioder: Planperiode[]) => {
-            const annenPart = getAnnenPart(nyePerioder[0].erAnnenPartEøs ? undefined : nyePerioder[0].forelder);
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
@@ -375,16 +374,20 @@ export const Uttaksplanbuilder = ({
                         førsteUttaksdagNesteBarnsSak,
                     );
                 } else {
+                    const annenPart = getAnnenPart(
+                        nyePerioder[index].erAnnenPartEøs ? undefined : nyePerioder[index].forelder,
+                    );
                     const nyAnnenPartsUttak = erIPlanleggerModus
                         ? getPerioderPåForelder({
                               ...commonGetPerioderProps,
+                              perioder: resultat,
                               forelder: annenPart,
                               erAnnenPart: true,
                           })
                         : getAnnenPartsUttak(opprinneligPlan);
 
                     resultat = leggTilPeriodeOgBuild(
-                        resultat,
+                        resultat.filter((p) => p.forelder !== annenPart),
                         periode,
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
