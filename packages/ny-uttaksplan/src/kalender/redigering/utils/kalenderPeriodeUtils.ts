@@ -48,38 +48,20 @@ export const finnValgtePerioder = (
     return uttaksplan
         .filter((p) => !p.periodeHullÅrsak)
         .map((p) => {
-            let overlappendeDager = 0;
+            const fom2 = dayjs(p.fom);
+            const tom2 = dayjs(p.tom);
 
-            const overlappendePerioder = valgtePerioder.filter((periode) => {
+            const overlappendeDager = valgtePerioder.reduce((sum, periode) => {
                 const fom1 = dayjs(periode.fom);
                 const tom1 = dayjs(periode.tom);
-                const fom2 = dayjs(p.fom);
-                const tom2 = dayjs(p.tom);
 
                 const start = fom1.isAfter(fom2) ? fom1 : fom2;
                 const end = tom1.isBefore(tom2) ? tom1 : tom2;
 
-                if (start.isSameOrBefore(end, 'day')) {
-                    overlappendeDager += end.diff(start, 'day') + 1;
-                    return true;
-                }
-                return false;
-            });
+                return start.isSameOrBefore(end, 'day') ? sum + end.diff(start, 'day') + 1 : sum;
+            }, 0);
 
-            if (overlappendeDager > 0) {
-                const fomDate = overlappendePerioder
-                    .map(({ fom }) => dayjs(fom))
-                    .reduce((min, curr) => (curr.isBefore(min) ? curr : min), dayjs())
-                    .format('YYYY-MM-DD');
-                const tomDate = overlappendePerioder
-                    .map(({ tom }) => dayjs(tom))
-                    .reduce((max, curr) => (curr.isAfter(max) ? curr : max), dayjs())
-                    .format('YYYY-MM-DD');
-
-                return { ...p, fom: fomDate, tom: tomDate, overlappendeDager };
-            }
-
-            return null;
+            return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
         })
         .filter((p): p is PlanperiodeMedAntallDager => p !== null)
         .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {

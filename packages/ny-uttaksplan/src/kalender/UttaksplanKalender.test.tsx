@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import * as stories from './Uttaksplankalender.stories';
 
@@ -10,7 +11,7 @@ const {
     KortPeriodeUtenHelg,
 } = composeStories(stories);
 
-describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
+describe('UttaksplanKalender', () => {
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
@@ -98,5 +99,177 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
         expect(screen.queryByText('Helg')).not.toBeInTheDocument();
+    });
+
+    it('skal markere en periode som ikke overlapper med eksisterende perioder', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const januar = screen.getByTestId('year:2024;month:0');
+
+        await userEvent.click(within(januar).getByText('10', { exact: false }));
+        await userEvent.click(within(januar).getByText('26', { exact: false }));
+
+        expect(await screen.findByText('17 dager valgt')).toBeInTheDocument();
+        expect(screen.getByText('Du har markert nye dager')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
+            ),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Valgte datoer inneholder eksisterende perioder')).not.toBeInTheDocument();
+
+        expect(within(januar).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:26;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:27;dayColor:GRAY')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:29;dayColor:NONE')).toBeInTheDocument();
+        expect(within(januar).getAllByTestId('dayColor:DARKBLUE', { exact: false })).toHaveLength(13);
+    });
+
+    it('skal velge enkeltperioder', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Enkeltdager'));
+
+        const januar = screen.getByTestId('year:2024;month:0');
+
+        await userEvent.click(within(januar).getByText('10', { exact: false }));
+        await userEvent.click(within(januar).getByText('26', { exact: false }));
+
+        expect(await screen.findByText('2 dager valgt')).toBeInTheDocument();
+
+        expect(within(januar).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:11;dayColor:NONE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:25;dayColor:NONE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:26;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:27;dayColor:GRAY')).toBeInTheDocument();
+        expect(within(januar).getAllByTestId('dayColor:DARKBLUE', { exact: false })).toHaveLength(2);
+    });
+
+    it('skal markere en periode som overlapper med eksisterende perioder', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+        const mai = screen.getByTestId('year:2024;month:4');
+
+        await userEvent.click(within(mars).getByText('14', { exact: false }));
+        await userEvent.click(within(mai).getByText('31', { exact: false }));
+
+        expect(await screen.findByText('79 dager valgt')).toBeInTheDocument();
+        expect(screen.getByText('Valgte datoer inneholder eksisterende perioder')).toBeInTheDocument();
+        expect(screen.queryByText('Du har markert nye dager')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
+            ),
+        ).not.toBeInTheDocument();
+
+        const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
+        expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
+        expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('15. Mar - 3. Apr. 20 dager')).toBeInTheDocument();
+
+        const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
+        expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
+        expect(foreldrepengerPeriode.getByText('Foreldrepenger')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('4.-18. Apr. 15 dager')).toBeInTheDocument();
+
+        const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
+        expect(arbeidPeriode.getByText('Mor')).toBeInTheDocument();
+        expect(arbeidPeriode.getAllByText('Arbeid')).toHaveLength(2);
+        expect(arbeidPeriode.getByText('17.-23. May. 7 dager')).toBeInTheDocument();
+
+        const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
+        expect(fellesperiode.getAllByText('Begge foreldre')).toHaveLength(2);
+        expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
+        expect(fellesperiode.getByText('31. May - 13. Jun. 1 dag')).toBeInTheDocument();
+    });
+
+    it('skal vise infomelding når en velger dag før fødselsdato', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByText('28', { exact: false }));
+
+        expect(
+            await screen.findByText(
+                'Du mister foreldrepenger hvis du velger ferie før termin eller i de seks første ukene etter termin.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal vise infomelding når en velger dag i de første 6 ukene etter fødselsdato', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByText('12', { exact: false }));
+
+        expect(
+            await screen.findByText(
+                'Du mister foreldrepenger hvis du velger ferie før termin eller i de seks første ukene etter termin.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal vise infomelding når valg av dager gir ingen mulige kontotyper', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(mars).getByText('28', { exact: false }));
+        await userEvent.click(within(april).getByText('12', { exact: false }));
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(
+            await screen.findByText(
+                'Du har valgt en kombinasjon av dager som ikke tillater noen kontotyper, og du kan derfor ikke legge til en periode.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal vise endre-knapp og preutfylte felter når en velger en hel periode', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:4;dayColor:PINK'));
+        await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
+
+        await userEvent.click(screen.getByText('Endre'));
+
+        expect(await screen.findByText('Velg kontotype')).toBeInTheDocument();
+        expect(screen.getByText('Mors kvote')).toBeInTheDocument();
+        expect(screen.getByLabelText('Mors kvote')).toBeChecked();
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
+
+        expect(await screen.findByText('Skal du ha samtidig uttak?')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Nei')[0]).toBeChecked();
+
+        expect(await screen.findByText('Skal du kombinere foreldrepengene med arbeid?')).toBeInTheDocument();
+        expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
+        expect(screen.getAllByText('Nei')[1]).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Nei')[1]).toBeChecked();
     });
 });

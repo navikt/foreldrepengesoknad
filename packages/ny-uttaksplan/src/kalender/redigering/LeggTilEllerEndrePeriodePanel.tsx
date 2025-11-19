@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { ErrorMessage, VStack } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
@@ -95,22 +95,36 @@ export const LeggTilEllerEndrePeriodePanel = () => {
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
-        <RedigeringPanel kanLeggeTilFerie={false}>
+        <RedigeringPanel>
             <div className={erMinimert ? 'hidden' : 'block'}>
                 <div className="px-4 pb-4 pt-4">
-                    <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    {gyldigeKontotyper.length === 0 && (
                         <VStack gap="space-16">
-                            {feilmeldinger.length > 0 && <ErrorMessage>{feilmeldinger.join(', ')}</ErrorMessage>}
-                            <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
-                            {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
-                            <GraderingSpørsmål />
-                            <PanelButtons
-                                onCancel={lukkRedigeringsmodus}
-                                isFinalStep={true}
-                                addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
-                            />
+                            <Alert variant="info" role="alert">
+                                <FormattedMessage id="LeggTilPeriodePanel.IngenGyldigeKontotyper" />
+                            </Alert>
+                            <div>
+                                <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
+                                    <FormattedMessage id="uttaksplan.gåTilbake" />
+                                </Button>
+                            </div>
                         </VStack>
-                    </RhfForm>
+                    )}
+                    {gyldigeKontotyper.length > 0 && (
+                        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                            <VStack gap="space-16">
+                                {feilmeldinger.length > 0 && <ErrorMessage>{feilmeldinger.join(', ')}</ErrorMessage>}
+                                <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
+                                {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                                <GraderingSpørsmål />
+                                <PanelButtons
+                                    onCancel={lukkRedigeringsmodus}
+                                    isFinalStep={true}
+                                    addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
+                                />
+                            </VStack>
+                        </RhfForm>
+                    )}
                 </div>
             </div>
         </RedigeringPanel>
