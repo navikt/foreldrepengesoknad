@@ -83,6 +83,7 @@ export const ValgteDagerPanel = () => {
                             <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
                         </Button>
                     )}
+
                     {!erFerieValgbart && <div />}
                     {eksisterendePerioderSomErValgt.length > 0 && erSlettValgbart && (
                         <Button variant="tertiary" size="small" onClick={slettAllePerioder} type="button">
@@ -94,6 +95,11 @@ export const ValgteDagerPanel = () => {
                         </Button>
                     )}
                 </HStack>
+                <div>
+                    <Button type="button" variant="secondary" size="small" onClick={() => setValgtePerioder([])}>
+                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                    </Button>
+                </div>
             </VStack>
         </RedigeringPanel>
     );
