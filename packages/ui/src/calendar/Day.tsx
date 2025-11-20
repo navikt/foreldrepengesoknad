@@ -32,13 +32,14 @@ type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
     isFocused: boolean;
+    srText?: string;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
 };
 
 export const Day = React.memo(
-    ({ isoDate, periodeColor, isFocused, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
+    ({ isoDate, periodeColor, isFocused, srText, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
@@ -74,6 +75,7 @@ export const Day = React.memo(
                 }
             >
                 {day}
+                {srText && <span className={styles.srOnly}>{srText}</span>}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>

@@ -13,20 +13,20 @@ dayjs.extend(isBetween);
 
 interface Props {
     periods: CalendarPeriod[];
-    useSmallerWidth?: boolean;
     showWeekNumbers?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     isRangeSelection?: boolean;
+    getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
 }
 
 export const Calendar = ({
     periods,
-    useSmallerWidth = false,
     showWeekNumbers = true,
     dateTooltipCallback,
     setSelectedPeriods,
     isRangeSelection = false,
+    getSrTextForSelectedPeriod,
 }: Props) => {
     const allMonths = useMemo(() => findMonths(periods[0].fom, findLatestTom(periods)), [periods]);
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
@@ -35,24 +35,26 @@ export const Calendar = ({
 
     const dateClickCallback = useCallback(
         (selectedDate: string) => {
-            if (!setSelectedPeriods) {
+            if (!setSelectedPeriods || !getSrTextForSelectedPeriod) {
                 return;
             }
 
             if (isRangeSelection) {
-                setSelectedPeriods((old) =>
-                    old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
+                setSelectedPeriods((old) => {
+                    const fom = old.length === 0 ? selectedDate : findFomDate(old[0], selectedDate);
+                    const tom = old.length === 0 ? selectedDate : findTomDate(old[0], selectedDate);
+                    return old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
                         ? []
                         : [
                               {
                                   color: 'DARKBLUE',
-                                  fom: old.length === 0 ? selectedDate : findFomDate(old[0].fom, selectedDate),
-                                  tom: old.length === 0 ? selectedDate : findTomDate(old[0].fom, selectedDate),
+                                  fom,
+                                  tom,
                                   isSelected: true,
-                                  srText: '',
+                                  srText: getSrTextForSelectedPeriod({ fom, tom }),
                               },
-                          ],
-                );
+                          ];
+                });
             } else {
                 setSelectedPeriods((old) =>
                     old.some((p) => p.fom === selectedDate)
@@ -64,18 +66,18 @@ export const Calendar = ({
                                   fom: selectedDate,
                                   tom: selectedDate,
                                   isSelected: true,
-                                  srText: '',
+                                  srText: getSrTextForSelectedPeriod({ fom: selectedDate, tom: selectedDate }),
                               } satisfies CalendarPeriod,
                           ].sort(sortPeriods),
                 );
             }
         },
-        [isRangeSelection, setSelectedPeriods],
+        [isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods],
     );
 
     return (
         <>
-            {periods.some((p) => p.srText) && (
+            {!setSelectedPeriods && periods.some((p) => p.srText) && (
                 <div className="sr-only">
                     {periods
                         .filter((p) => p.srText)
@@ -95,7 +97,6 @@ export const Calendar = ({
                             year={year}
                             month={month}
                             periods={monthPeriods}
-                            headerLevel={useSmallerWidth ? '5' : '4'}
                             showWeekNumbers={showWeekNumbers}
                             dateTooltipCallback={dateTooltipCallback}
                             dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
@@ -153,8 +154,15 @@ const groupPeriodsByMonth = (
     return result;
 };
 
-const findFomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date1 : date2);
+const findFomDate = (period: CalendarPeriod, selectedDate: string) =>
+    dayjs(period.fom).isBefore(dayjs(selectedDate)) ? period.fom : selectedDate;
 
-const findTomDate = (date1: string, date2: string) => (dayjs(date1).isBefore(dayjs(date2)) ? date2 : date1);
+const findTomDate = (period: CalendarPeriod, selectedDate: string) => {
+    const parsedSelectedDate = dayjs(selectedDate);
+    if (dayjs(period.tom).isAfter(parsedSelectedDate) && dayjs(period.fom).isBefore(parsedSelectedDate)) {
+        return selectedDate;
+    }
+    return dayjs(period.tom).isBefore(parsedSelectedDate) ? selectedDate : period.tom;
+};
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
