@@ -160,7 +160,7 @@ describe('UttaksplanKalender', () => {
         const mai = screen.getByTestId('year:2024;month:4');
 
         await userEvent.click(within(mars).getByText('14', { exact: false }));
-        await userEvent.click(within(mai).getByText('31', { exact: false }));
+        await userEvent.click(within(mai).getByTestId('day:31;dayColor:BLUE'));
 
         expect(await screen.findByText('79 dager valgt')).toBeInTheDocument();
         expect(screen.getByText('Valgte datoer inneholder eksisterende perioder')).toBeInTheDocument();

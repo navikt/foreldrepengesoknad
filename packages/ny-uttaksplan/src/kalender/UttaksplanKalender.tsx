@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -43,6 +43,19 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
 
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
+    const getSrTextForSelectedPeriod = useCallback(
+        (periode: { fom: string; tom: string }) => {
+            return intl.formatMessage(
+                { id: 'UttaksplanKalender.ValgtPeriodeSrTekst' },
+                {
+                    fom: dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT),
+                    tom: dayjs(periode.tom).format(DDMMYYYY_DATE_FORMAT),
+                },
+            );
+        },
+        [intl],
+    );
+
     return (
         <VStack gap="space-8">
             <AvslåttePerioder />
@@ -65,13 +78,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                               fom: periode?.fom,
                                               tom: periode?.tom,
                                               isSelected: true,
-                                              srText: intl.formatMessage(
-                                                  { id: 'UttaksplanKalender.ValgtPeriodeSrTekst' },
-                                                  {
-                                                      fom: dayjs(periode?.fom).format(DDMMYYYY_DATE_FORMAT),
-                                                      tom: dayjs(periode?.tom).format(DDMMYYYY_DATE_FORMAT),
-                                                  },
-                                              ),
+                                              srText: getSrTextForSelectedPeriod(periode),
                                           },
                                       ],
                             );
@@ -104,6 +111,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
+                            getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             isRangeSelection={isRangeSelection}
                         />
                     </div>
