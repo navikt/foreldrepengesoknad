@@ -1,6 +1,6 @@
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
-import { Planperiode } from '../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { isAnnenPartsPeriode } from '../utils/periodeUtils';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
@@ -23,9 +23,19 @@ const leggTilPeriodeOgBuild = (
     annenPartsUttak: Planperiode[] | undefined,
     førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
+    const perioderMedHull = finnOgSettInnHull(
+        perioder,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsesdato,
+        erAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
-            perioder,
+            perioder: perioderMedHull,
             nyPeriode,
             familiehendelsesdato,
             harAktivitetskravIPeriodeUtenUttak,
@@ -387,7 +397,10 @@ export const Uttaksplanbuilder = ({
                         : getAnnenPartsUttak(opprinneligPlan);
 
                     resultat = leggTilPeriodeOgBuild(
-                        resultat.filter((p) => p.forelder !== annenPart),
+                        resultat.filter(
+                            (p) =>
+                                p.forelder !== annenPart || p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK,
+                        ),
                         periode,
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
