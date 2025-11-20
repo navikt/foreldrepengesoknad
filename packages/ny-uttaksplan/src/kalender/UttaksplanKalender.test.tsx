@@ -187,7 +187,7 @@ describe('UttaksplanKalender', () => {
         expect(arbeidPeriode.getByText('17.-23. May. 7 dager')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
-        expect(fellesperiode.getAllByText('Begge foreldre')).toHaveLength(2);
+        expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);
         expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
         expect(fellesperiode.getByText('31. May - 13. Jun. 1 dag')).toBeInTheDocument();
     });
