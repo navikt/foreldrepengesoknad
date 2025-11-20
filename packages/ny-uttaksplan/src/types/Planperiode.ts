@@ -1,8 +1,4 @@
-import {
-    BrukerRolleSak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 export enum PeriodeHullType {
     PERIODE_UTEN_UTTAK = 'Periode uten uttak',
@@ -23,7 +19,6 @@ interface PlanperiodeAnnenpartEøs extends UttakPeriodeAnnenpartEøs_fpoversikt 
     skalIkkeHaUttakFørTermin?: boolean;
     id: string;
     readOnly: boolean;
-    forelder?: BrukerRolleSak_fpoversikt; // burde denne komme fra backend?
 }
 
 export type Planperiode = PlanperiodeVanlig | PlanperiodeAnnenpartEøs;
