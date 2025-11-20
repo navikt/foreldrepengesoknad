@@ -219,6 +219,8 @@
     "RedigeringPanel.SlettPeriode": "Remove days from period",
     "RedigeringPanel.Felles": "Both parents",
     "RedigeringPanel.Fellesperiode": "Shared period",
+    "RedigeringPanel.MorKvote": "Mother's quota",
+    "RedigeringPanel.FarKvote": "Father's quota",
     "RedigeringPanel.Ferie": "Vacation",
     "RedigeringPanel.Arbeid": "Work",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",

@@ -178,7 +178,7 @@ describe('UttaksplanKalender', () => {
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
-        expect(foreldrepengerPeriode.getByText('Foreldrepenger')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('Mors kvote')).toBeInTheDocument();
         expect(foreldrepengerPeriode.getByText('4.-18. Apr. 15 dager')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
@@ -257,7 +257,6 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Endre'));
 
         expect(await screen.findByText('Velg kontotype')).toBeInTheDocument();
-        expect(screen.getByText('Mors kvote')).toBeInTheDocument();
         expect(screen.getByLabelText('Mors kvote')).toBeChecked();
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();

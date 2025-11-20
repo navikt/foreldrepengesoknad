@@ -215,6 +215,8 @@
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Foreldrepenger før fødsel",
     "RedigeringPanel.Foreldrepenger": "Foreldrepenger",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
+    "RedigeringPanel.MorKvote": "Mors kvote",
+    "RedigeringPanel.FarKvote": "Fars kvote",
     "RedigeringPanel.SlettPeriode": "Slett dager fra periode",
     "RedigeringPanel.Felles": "Begge foreldre",
     "RedigeringPanel.Ferie": "Ferie",
