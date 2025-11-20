@@ -1,0 +1,1 @@
+import{a0 as a,bn as T}from"./iframe-BlnI--Gk.js";a.extend(T);const u=10,i=1e3,o=s=>s!==""&&s!==void 0&&s!==null,l=(s,t)=>{let e=t;if(s&&o(s)){const n=a.max([a(t),a(s)]);e=n?n.toDate():t}return e},d=(s,t)=>a().isBefore(a(s),"d")?t.formatMessage({id:"slutter"}):t.formatMessage({id:"sluttet"});export{i as T,d as a,u as b,l as g,o as h};

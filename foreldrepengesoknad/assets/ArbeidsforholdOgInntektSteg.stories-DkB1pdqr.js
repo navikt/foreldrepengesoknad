@@ -1,0 +1,12 @@
+import{l as s,bz as l}from"./iframe-BElrApUZ.js";import{F as g,C as o}from"./FpDataContext-CuTFLlOx.js";import{M as m,S as p}from"./useFpNavigator-Cfewm8Gd.js";import{A as a}from"./ArbeidsforholdOgInntektSteg-BfvI2_aZ.js";import"./preload-helper-D9Z9MdNV.js";const{action:i}=__STORYBOOK_MODULE_ACTIONS__,c=[{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2014-05-22T00:00:00.000Z",stillingsprosent:32.63,tom:"2019-05-31T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2018-04-09T00:00:00.000Z",stillingsprosent:0,tom:"2018-09-09T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2018-06-25T00:00:00.000Z",stillingsprosent:80,tom:"2018-08-05T00:00:00.000Z"},{arbeidsgiverId:"975326209",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Sykehuset i Vestfold",fom:"2019-06-01T00:00:00.000Z",stillingsprosent:85.09},{arbeidsgiverId:"990322244",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Omsorgspartner Vestfold AS",fom:"2017-04-05T00:00:00.000Z",stillingsprosent:100},{arbeidsgiverId:"995090910",arbeidsgiverIdType:"orgnr",arbeidsgiverNavn:"Re Kommune",fom:"2018-06-01T00:00:00.000Z",stillingsprosent:0}],t=()=>()=>(i("button-click")(),Promise.resolve()),T={title:"steps/ArbeidsforholdOgInntektSteg",component:a,render:({gåTilNesteSide:n=i("button-click"),...d})=>s.jsx(m,{initialEntries:[p.ARBEID_OG_INNTEKT],children:s.jsx(g,{onDispatch:n,initialState:{[o.SØKERSITUASJON]:{rolle:"mor",situasjon:"fødsel"},[o.OM_BARNET]:{termindato:"2024-02-18",type:l.FØDT,fødselsdatoer:["2024-02-18"],antallBarn:1}},children:s.jsx(a,{...d})})})},e={args:{mellomlagreSøknadOgNaviger:t(),avbrytSøknad:t(),arbeidsforhold:c}},r={args:{...e.args,arbeidsforhold:[]}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction(),
+    arbeidsforhold: DEFAULT_ARBEIDSFORHOLD
+  }
+}`,...e.parameters?.docs?.source}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...Default.args,
+    arbeidsforhold: []
+  }
+}`,...r.parameters?.docs?.source}}};const I=["Default","BrukerKanSøkeVedKunNeiSvar"];export{r as BrukerKanSøkeVedKunNeiSvar,e as Default,I as __namedExportsOrder,T as default};
