@@ -17,7 +17,6 @@ interface Props {
     year: number;
     month: number;
     isFirstMonth: boolean;
-    headerLevel: '4' | '5';
     showWeekNumbers: boolean;
     periods: CalendarPeriod[];
     focusedDate: Dayjs | undefined;
@@ -31,7 +30,6 @@ export const Month = React.memo(
         year,
         month,
         isFirstMonth,
-        headerLevel,
         showWeekNumbers,
         periods,
         focusedDate,
@@ -65,7 +63,7 @@ export const Month = React.memo(
                 data-testid={`year:${year};month:${month}`}
             >
                 <VStack gap="space-12">
-                    <Heading size="small" level={headerLevel} align="center">
+                    <Heading size="small" level="4" align="center">
                         {`${capitalizeFirstLetter(firstDayOfMonth.format('MMMM'))} ${year}`}
                     </Heading>
 
@@ -98,11 +96,14 @@ export const Month = React.memo(
 
                                         const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
 
+                                        const period = periodMap.get(date.format('YYYY-MM-DD'));
+
                                         return (
                                             <Day
                                                 key={`${year}-${month}-${date.date()}`}
                                                 isoDate={formatDateIso(date)}
-                                                periodeColor={findDayColor(date, periodMap)}
+                                                periodeColor={findDayColor(date, period)}
+                                                srText={period?.srText}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={
@@ -148,10 +149,7 @@ export const Month = React.memo(
     },
 );
 
-const findDayColor = (date: Dayjs, periodMap: Map<string, CalendarPeriod>): CalendarPeriodColor => {
-    const iso = date.format('YYYY-MM-DD');
-    const period = periodMap.get(iso);
-
+const findDayColor = (date: Dayjs, period?: CalendarPeriod): CalendarPeriodColor => {
     if (!period) {
         return isWeekend(date) ? 'GRAY' : 'NONE';
     }
