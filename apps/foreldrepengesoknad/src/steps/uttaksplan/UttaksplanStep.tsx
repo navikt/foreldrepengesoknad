@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call */
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
@@ -166,7 +167,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const initialRender = useRef(true);
     useEffect(() => {
         if (initialRender.current === false) {
-            mellomlagreSøknadOgNaviger();
+            void mellomlagreSøknadOgNaviger();
         }
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
@@ -217,7 +218,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
         oppdaterAppRoute(SøknadRoutes.FORDELING);
-        mellomlagreSøknadOgNaviger();
+        void mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };
 
@@ -302,12 +303,12 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                 settInnAnnenPartsUttak(
                     opprinneligPlan,
                     eksisterendeVedtakAnnenPart.uttaksplan,
-                    familiehendelsesdatoDate!,
+                    familiehendelsesdatoDate,
                     førsteUttaksdagNesteBarnsSak,
                     true,
                 ),
                 harAktivitetskravIPeriodeUtenUttak,
-                familiehendelsesdatoDate!,
+                familiehendelsesdatoDate,
                 erAdopsjon,
                 bareFarMedmorHarRett,
                 erFarEllerMedmor,
@@ -372,7 +373,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         uttaksplanMetadata,
     ]);
 
-    const onSubmit = async () => {
+    const onSubmit = () => {
         setIsSubmitting(true);
         setSubmitIsClicked(true);
 
@@ -388,13 +389,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         uttaksplan,
-        familiehendelsesdatoDate!,
+        familiehendelsesdatoDate,
         termindato ? dayjs(termindato).toDate() : undefined,
     );
 
     const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
         erFarEllerMedmor,
-        familiehendelsesdatoDate!,
+        familiehendelsesdatoDate,
         situasjon,
         perioderMedUttakRundtFødsel,
         barn,
@@ -422,7 +423,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const ref = useRef<FormikValues>(null);
-    const clickHandler = async (values: FormikValues) => {
+    const clickHandler = (values: FormikValues) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
             setIsSubmitting(true);
@@ -433,7 +434,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig();
 
             if (ønskerJustertUttakVedFødselErBesvart(values.ønskerAutomatiskJustering)) {
-                await onSubmit();
+                onSubmit();
             }
         }
     };
@@ -497,7 +498,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             );
             oppdaterUttaksplan(uttaksplanForslag);
             setHarPlanForslagIFørstegangssøknad(true);
-            mellomlagreSøknadOgNaviger();
+            void mellomlagreSøknadOgNaviger();
         }
     }, []);
 

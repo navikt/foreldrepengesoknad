@@ -54,7 +54,7 @@ const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindat
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
@@ -149,7 +149,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                 ]}
                                 minDate={halvannetÅrSiden(new Date())}
                                 maxDate={dayjs().toDate()}
-                                onChange={() => formMethods.formState.isSubmitted && formMethods.trigger()}
+                                onChange={() => void (formMethods.formState.isSubmitted && formMethods.trigger())}
                             />
                         )}
                         <div>

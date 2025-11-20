@@ -34,12 +34,13 @@ function FormikTextarea<FieldName, ErrorType>({
                         {...field}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
                         onChange={(evt) => {
-                            form.setFieldValue(field.name, evt.target.value);
+                            void form.setFieldValue(field.name, evt.target.value);
                             if (context) {
                                 context.onAfterFieldValueSet();
                             }
                         }}
                         autoComplete="off"
+                        //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={field.value || ''}
                     />
                 );

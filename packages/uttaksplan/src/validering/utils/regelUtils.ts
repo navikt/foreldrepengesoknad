@@ -122,6 +122,7 @@ export const getRegelIntlValues = (
     for (const key of Object.keys(values)) {
         const valueOrFunc = values[key];
         if (valueOrFunc) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/restrict-template-expressions
             newValues[key] = typeof valueOrFunc === 'function' ? valueOrFunc(intl) : `${valueOrFunc}`;
         }
     }

@@ -32,7 +32,7 @@ import {
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
@@ -142,9 +142,9 @@ function FeriePerioder() {
     const params = useParams<RouteParams>();
     const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const tilrettelegginer = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const startDatoSvp = tilrettelegginer[arbeidsgiverId].behovForTilretteleggingFom;
+    const startDatoSvp = tilrettelegginer[arbeidsgiverId]!.behovForTilretteleggingFom;
 
-    const { watch } = useFormContext();
+    const { watch } = useFormContext<FerieFormData>();
     const skalHaFerie = watch('skalHaFerie');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
@@ -222,8 +222,9 @@ function FeriePerioder() {
                                         },
                                         { periode: index },
                                     ),
-                                    { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
-                                    [watch('feriePerioder')[index - 1] ?? []].flat(),
+                                    { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
+                                    // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
+                                    [(watch('feriePerioder')[index - 1] as AvtaltFerieDto) ?? []].flat(),
                                 ),
                             ]}
                             validateTo={[

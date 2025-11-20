@@ -322,7 +322,7 @@ export const endringFPSøknad = {
                 termindato: '2023-01-10',
                 antallBarn: 1,
             },
-            gjeldendeVedtak: saker.foreldrepenger[0].gjeldendeVedtak,
+            gjeldendeVedtak: saker.foreldrepenger[0]!.gjeldendeVedtak,
             åpenBehandling: {
                 søknadsperioder: [],
                 tilstand: 'UNDER_BEHANDLING',

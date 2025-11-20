@@ -69,8 +69,8 @@ describe('<Arbeid som frilanser>', () => {
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Slett søknaden')[0]);
-        await userEvent.click(screen.getAllByText('Slett søknaden')[1]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });

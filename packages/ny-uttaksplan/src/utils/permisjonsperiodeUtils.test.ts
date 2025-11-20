@@ -54,28 +54,28 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
 
         expect(permisjonsperioder.length).toBe(4);
 
-        expect(permisjonsperioder[0].forelder).toEqual('MOR');
-        expect(permisjonsperioder[0].tidsperiode).toEqual({
-            fom: perioder1[0].fom,
-            tom: perioder1[0].tom,
+        expect(permisjonsperioder[0]!.forelder).toEqual('MOR');
+        expect(permisjonsperioder[0]!.tidsperiode).toEqual({
+            fom: perioder1[0]!.fom,
+            tom: perioder1[0]!.tom,
         });
 
-        expect(permisjonsperioder[1].forelder).toEqual('MOR');
-        expect(permisjonsperioder[1].tidsperiode).toEqual({
-            fom: perioder1[1].fom,
-            tom: perioder1[2].tom,
+        expect(permisjonsperioder[1]!.forelder).toEqual('MOR');
+        expect(permisjonsperioder[1]!.tidsperiode).toEqual({
+            fom: perioder1[1]!.fom,
+            tom: perioder1[2]!.tom,
         });
 
-        expect(permisjonsperioder[2].forelder).toEqual(undefined);
-        expect(permisjonsperioder[2].tidsperiode).toEqual({
-            fom: perioder1[3].fom,
-            tom: perioder1[3].tom,
+        expect(permisjonsperioder[2]!.forelder).toEqual(undefined);
+        expect(permisjonsperioder[2]!.tidsperiode).toEqual({
+            fom: perioder1[3]!.fom,
+            tom: perioder1[3]!.tom,
         });
 
-        expect(permisjonsperioder[3].forelder).toEqual('MOR');
-        expect(permisjonsperioder[3].tidsperiode).toEqual({
-            fom: perioder1[4].fom,
-            tom: perioder1[4].tom,
+        expect(permisjonsperioder[3]!.forelder).toEqual('MOR');
+        expect(permisjonsperioder[3]!.tidsperiode).toEqual({
+            fom: perioder1[4]!.fom,
+            tom: perioder1[4]!.tom,
         });
     });
 });

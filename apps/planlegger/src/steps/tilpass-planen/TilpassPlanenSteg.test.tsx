@@ -6,7 +6,7 @@ import * as stories from './TilpassPlanenSteg.stories';
 const { MorOgFarBeggeHarRett } = composeStories(stories);
 
 describe('<TilpassPlanenSteg - fødsel>', () => {
-    it('skal vise expansion card: Hva er mulig når man tilpasser?', async () => {
+    it('skal vise expansion card: Hva er mulig når man tilpasser?', () => {
         render(<MorOgFarBeggeHarRett />);
 
         expect(screen.getAllByText('Tilpass planen')).toHaveLength(1);

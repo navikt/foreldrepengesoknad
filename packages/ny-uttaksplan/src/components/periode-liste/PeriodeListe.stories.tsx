@@ -35,6 +35,7 @@ const customRenderer = ({
                 farMedmor: 'Far',
                 mor: 'Mor',
             }}
+            //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             valgtStønadskonto={{} as any}
             erMedmorDelAvSøknaden
             bareFarMedmorHarRett={false}

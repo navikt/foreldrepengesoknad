@@ -23,7 +23,7 @@ export const Default: Story = {
     args: {
         harMinstEttArbeidsforhold: true,
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
             ytelse: 'FORELDREPENGER',
         },
     },

@@ -81,7 +81,7 @@ describe('Uttaksplan', () => {
         await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
 
         expect(await screen.findByText('Hvilken del av foreldrepengene vil du bruke?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fellesperiode')[1]);
+        await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
         expect(await screen.findByText('Hvem gjelder fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor'));
@@ -95,13 +95,13 @@ describe('Uttaksplan', () => {
         await userEvent.tab();
 
         expect(await screen.findByText('Skal du ha samtidig uttak?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         expect(await screen.findByText('Hvor mange prosent?')).toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Hvor mange prosent?'), '50');
 
         expect(await screen.findByText('Skal du kombinere foreldrepengene med arbeid?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         expect(await screen.findByText('Hvor mange prosent skal du jobbe?')).toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Hvor mange prosent skal du jobbe?'), '50');
@@ -159,7 +159,7 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
 
-        await userEvent.click(screen.getAllByText('Endre')[2]);
+        await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(await screen.findByText('Endre periode')).toBeInTheDocument();
         expect(screen.getByText('Hva vil du endre til?')).toBeInTheDocument();
@@ -235,7 +235,7 @@ describe('Uttaksplan', () => {
 
         await userEvent.click(screen.getByText('09. May - 11. Dec'));
 
-        await userEvent.click(screen.getAllByText('Slett')[1]);
+        await userEvent.click(screen.getAllByText('Slett')[1]!);
 
         await userEvent.click(screen.getByText('09.05.2025 - 21.08.2025 - Olga Utviklers kvote'));
 
@@ -270,7 +270,7 @@ describe('Uttaksplan', () => {
 
         expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
         await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
-        await userEvent.click(screen.getAllByText('Endre')[2]);
+        await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.queryByText('Medmors kvote')).not.toBeInTheDocument();
@@ -283,7 +283,7 @@ describe('Uttaksplan', () => {
 
         expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
         await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
-        await userEvent.click(screen.getAllByText('Endre')[2]);
+        await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(screen.getByText('Medmors kvote')).toBeInTheDocument();
         expect(screen.queryByText('Fars kvote')).not.toBeInTheDocument();

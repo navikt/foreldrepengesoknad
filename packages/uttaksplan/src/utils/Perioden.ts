@@ -55,11 +55,14 @@ function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const sortedPeriode: any = {};
     Object.keys(rest)
         .sort((a, b) => a.localeCompare(b))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         .filter((key) => (rest as any)[key] !== undefined)
         .forEach((key) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
             sortedPeriode[key] = (rest as any)[key];
         });
     if (inkluderTidsperiode && tidsperiode) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         sortedPeriode.tidsperiode = {
             fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
             tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined,

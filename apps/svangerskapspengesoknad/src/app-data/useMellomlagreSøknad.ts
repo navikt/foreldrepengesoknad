@@ -43,7 +43,7 @@ export const useMellomlagreSøknad = (
 
                 const currentPath = state[ContextDataType.APP_ROUTE];
                 if (currentPath) {
-                    navigate(currentPath);
+                    void navigate(currentPath);
 
                     try {
                         const data = {
@@ -58,7 +58,7 @@ export const useMellomlagreSøknad = (
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json();
+                            const jsonResponse = await error.response.json<{ uuid?: string }>();
                             const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                             Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                             throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
@@ -71,7 +71,7 @@ export const useMellomlagreSøknad = (
                 } else {
                     setHarGodkjentVilkår(false);
                     resetState();
-                    navigate('/');
+                    void navigate('/');
 
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
                     slettMellomlagring();

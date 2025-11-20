@@ -269,7 +269,7 @@ export const getPeriodeUttakFormInitialValues = (
 
 const getFrilansSNEllerOrgnr = (arbeidsformer: Arbeidsform[], orgnumre?: string[]): Arbeidsform => {
     if (arbeidsformer.includes(Arbeidsform.frilans) || arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)) {
-        return arbeidsformer[0];
+        return arbeidsformer[0]!;
     }
 
     return orgnumre![0] as Arbeidsform;

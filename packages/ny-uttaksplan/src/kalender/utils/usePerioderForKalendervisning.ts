@@ -23,7 +23,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LegendLabel } from '../../types/LegendLabel';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { PeriodeHullType, Planperiode, PlanperiodeVanlig } from '../../types/Planperiode';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -409,7 +409,7 @@ const getKalenderFargeForPeriodeType = (
 
 const getUnikeUtsettelsesårsaker = (allePerioderInklHull: Planperiode[]) => {
     const utsettelseÅrsaker = allePerioderInklHull
-        .filter((p) => !p.erAnnenPartEøs)
+        .filter((p): p is PlanperiodeVanlig => !p.erAnnenPartEøs)
         .map((u) => u.utsettelseÅrsak)
         .filter((utsettelseÅrsak): utsettelseÅrsak is UttakUtsettelseÅrsak_fpoversikt => !!utsettelseÅrsak);
     return [...new Set(utsettelseÅrsaker)];
@@ -442,7 +442,7 @@ const getUtsettelseÅrsakTekst = (årsak: UttakUtsettelseÅrsak_fpoversikt, intl
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UttakUtsettelseÅrsak_fpoversikt[], intl: IntlShape): string => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== 'FRI') {
-        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
+        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0]!, intl);
         return intl.formatMessage({ id: 'kalender.utsettelse' }, { årsak: årsakTekst });
     }
     return intl.formatMessage({ id: 'kalender.dinUtsettelse' });

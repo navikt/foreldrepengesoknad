@@ -97,6 +97,7 @@ export const MorAleneOmOmsorg: Story = {
                 forelder: 'MOR',
             },
         ],
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         valgtStønadskonto: {} as any,
     },
 };
@@ -149,6 +150,7 @@ export const PrematurUker: Story = {
                 forelder: 'MOR',
             },
         ],
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         valgtStønadskonto: {} as any,
     },
 };

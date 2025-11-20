@@ -52,6 +52,6 @@ export const Default: Story = {
     args: {
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
     },
 };

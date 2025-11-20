@@ -12,9 +12,6 @@ export type ISODateString = string;
 /** DD-MM-YYYY */
 type InputDateString = string;
 
-/** Type used when input date is invalid  */
-type INVALID_DATE_TYPE = 'Invalid date';
-
 export const INVALID_DATE_VALUE = 'Invalid date';
 const INPUT_DATE_STRING_FORMAT: InputDateString = 'DD.MM.YYYY';
 export const ISO_DATE_STRING_FORMAT: ISODateString = 'YYYY-MM-DD';
@@ -38,7 +35,7 @@ const stringToUTCDate = (dateString: string | undefined, formatString: string): 
     }
     return undefined;
 };
-export const dateToISODateString = (date: Date): ISODateString | INVALID_DATE_TYPE => {
+export const dateToISODateString = (date: Date): ISODateString => {
     return isValid(date) ? format(date, ISO_DATE_STRING_FORMAT_date_fns) : date.toString();
 };
 
@@ -81,7 +78,7 @@ const assignCenturyToDateWithTwoYearDigits = (dateString: string) => {
     return INVALID_DATE_VALUE;
 };
 
-export const InputDateStringToISODateString = (inputDateString: InputDateString): string | INVALID_DATE_TYPE => {
+export const InputDateStringToISODateString = (inputDateString: InputDateString): string => {
     if (hasTwoDigitYear(inputDateString)) {
         return assignCenturyToDateWithTwoYearDigits(inputDateString);
     }

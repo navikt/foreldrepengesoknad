@@ -38,7 +38,7 @@ function FormikCountrySelect<FieldName, ErrorType>({
                         data-testid={testKey}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
                         onChange={(value) => {
-                            form.setFieldValue(field.name, value);
+                            void form.setFieldValue(field.name, value);
                             if (context) {
                                 context.onAfterFieldValueSet();
                             }

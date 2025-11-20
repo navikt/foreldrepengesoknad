@@ -315,7 +315,7 @@ describe('dateUtils', () => {
                     endretPlan as Periode[],
                     true,
                 );
-                expect(endringstidspunkt).toEqual(endretPlan[4].tidsperiode?.fom);
+                expect(endringstidspunkt).toEqual(endretPlan[4]!.tidsperiode?.fom);
             },
         );
 
@@ -327,29 +327,29 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper periode uten uttak', () => {
             const endretPlan = [
                 opprinneligPlan[0],
-                { tidsperiode: opprinneligPlan[1].tidsperiode, type: Periodetype.PeriodeUtenUttak },
+                { tidsperiode: opprinneligPlan[1]!.tidsperiode, type: Periodetype.PeriodeUtenUttak },
                 opprinneligPlan[2],
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper hull', () => {
             const endretPlan = [
                 opprinneligPlan[0],
-                { tidsperiode: opprinneligPlan[1].tidsperiode, type: Periodetype.Hull },
+                { tidsperiode: opprinneligPlan[1]!.tidsperiode, type: Periodetype.Hull },
                 opprinneligPlan[2],
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått senere sluttdato (blitt lenger)', () => {
@@ -357,16 +357,16 @@ describe('dateUtils', () => {
                 opprinneligPlan[0],
                 {
                     ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1].tidsperiode?.fom, tom: new Date('2020-01-14') },
+                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: new Date('2020-01-14') },
                 },
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { fom: new Date('2020-01-15'), tom: opprinneligPlan[2].tidsperiode?.tom },
+                    tidsperiode: { fom: new Date('2020-01-15'), tom: opprinneligPlan[2]!.tidsperiode?.tom },
                 },
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått tidligere sluttdato (blitt kortere)', () => {
@@ -374,27 +374,27 @@ describe('dateUtils', () => {
                 opprinneligPlan[0],
                 {
                     ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1].tidsperiode?.fom, tom: new Date('2020-01-12') },
+                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: new Date('2020-01-12') },
                 },
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { fom: new Date('2020-01-13'), tom: opprinneligPlan[2].tidsperiode?.tom },
+                    tidsperiode: { fom: new Date('2020-01-13'), tom: opprinneligPlan[2]!.tidsperiode?.tom },
                 },
             ];
 
             const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(endretPlan[2].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(endretPlan[2]!.tidsperiode?.fom);
         });
 
         it('Hvis en periode med periode uten uttak foran får tidligere startdato, skal endringstidspunktet være lik den nye startdatoen.', () => {
             const nyPeriodeUtenUttak = {
                 ...opprinneligPlanMedHull[2],
-                tidsperiode: { fom: opprinneligPlanMedHull[2].tidsperiode.fom, tom: new Date('2022-12-26') },
+                tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: new Date('2022-12-26') },
             };
             const nyFom = new Date('2022-12-27');
             const nyUttaksperiodePeriodeMedTidligStart = {
                 ...opprinneligPlanMedHull[3],
-                tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3].tidsperiode.tom },
+                tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
             };
             const endretPlanMedHull = [
                 opprinneligPlanMedHull[0],
@@ -419,12 +419,12 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: opprinneligPlanMedHull[2].tidsperiode.fom, tom: new Date('2022-12-28') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: new Date('2022-12-28') },
                 };
                 const nyFom = new Date('2022-12-29');
                 const nyUttaksperiodePeriodeMedTidligStart = {
                     ...opprinneligPlanMedHull[3],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3].tidsperiode.tom },
+                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
                 };
                 const endretPlanMedHull = [
                     opprinneligPlanMedHull[0],
@@ -450,12 +450,12 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUttak = {
                     ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1].tidsperiode.fom, tom: new Date('2022-12-14') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: new Date('2022-12-14') },
                 };
                 const nyFom = new Date('2022-12-15');
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2].tidsperiode.tom },
+                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
                 };
                 const endretPlanMedHull = [
                     opprinneligPlanMedHull[0],
@@ -481,7 +481,7 @@ describe('dateUtils', () => {
                 opprinneligPlan[1],
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2].tidsperiode, tom: new Date('2020-04-30') },
+                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: new Date('2020-04-30') },
                 },
             ];
 
@@ -490,7 +490,7 @@ describe('dateUtils', () => {
                 endretPlanMedForkortetSistePeriode as Periode[],
                 true,
             );
-            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.tidsperiode?.fom);
         });
 
         it('Hvis en periode i slutten av planen har fått senere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
@@ -499,7 +499,7 @@ describe('dateUtils', () => {
                 opprinneligPlan[1],
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2].tidsperiode, tom: new Date('2020-0-02') },
+                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: new Date('2020-0-02') },
                 },
             ];
 
@@ -508,7 +508,7 @@ describe('dateUtils', () => {
                 endretPlanMedForkortetSistePeriode as Periode[],
                 true,
             );
-            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2].tidsperiode?.fom);
+            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.tidsperiode?.fom);
         });
 
         it(
@@ -517,12 +517,12 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUttak = {
                     ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1].tidsperiode.fom, tom: new Date('2022-12-12') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: new Date('2022-12-12') },
                 };
                 const nyFom = new Date('2022-12-13');
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2].tidsperiode.tom },
+                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
                 };
                 const endretPlanMedHull = [
                     opprinneligPlanMedHull[0],
@@ -640,7 +640,7 @@ describe('dateUtils', () => {
                 true,
             );
 
-            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3].tidsperiode?.fom);
+            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3]!.tidsperiode?.fom);
         });
 
         it(
@@ -683,7 +683,7 @@ describe('dateUtils', () => {
                     true,
                 );
 
-                expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode?.fom);
+                expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1]!.tidsperiode?.fom);
             },
         );
     });

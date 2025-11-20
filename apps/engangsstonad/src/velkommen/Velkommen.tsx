@@ -36,7 +36,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
             setIsError(true);
         } else {
             startSøknad(true);
-            navigator.goToNextDefaultStep();
+            void navigator.goToNextDefaultStep();
         }
     };
 

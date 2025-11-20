@@ -17,10 +17,8 @@ export const getErrorPropForFormikInput = ({
     return error || (context ? context.getAndRenderFieldErrorMessage(field, form) : undefined);
 };
 
-export const getErrorForField = <FormValues>(
-    elementName: string,
-    errors: FormikErrors<FormValues>,
-): any | undefined => {
+export const getErrorForField = <FormValues>(elementName: string, errors: FormikErrors<FormValues>): any => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const fieldErrors: string[] | string = getIn(errors, elementName);
     if (fieldErrors === null) {
         return undefined;
@@ -39,6 +37,7 @@ export const getErrorForField = <FormValues>(
 };
 
 export const isValidationErrorsVisible = (formik: FormikProps<any>): boolean => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return formik?.status?.showErrors === true;
 };
 
@@ -55,7 +54,9 @@ export const getAllFieldsWithErrors = (allErrors: any, errorObjectChecker?: Erro
                 keys.push(parentKey);
                 return keys;
             }
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             Object.keys(errors).forEach((key) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
                 const error = errors[key];
                 if (Array.isArray(error)) {
                     error.forEach((err, idx) => {

@@ -20,7 +20,7 @@ export const useAvbrytSøknad = (
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const avbrytSøknadHandler = useCallback(async () => {
+    const avbrytSøknadHandler = useCallback(() => {
         loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'skjema avbrutt',
@@ -34,7 +34,7 @@ export const useAvbrytSøknad = (
 
         slettMellomlagring();
 
-        navigate('/');
+        void navigate('/');
     }, [slettMellomlagring, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
 
     return avbrytSøknadHandler;

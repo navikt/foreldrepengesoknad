@@ -31,7 +31,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
             'false',
         );
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til far' }) as HTMLOptionElement).selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -141,7 +141,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
             'false',
         );
         expect(
-            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til medmor' }) as HTMLOptionElement).selected,
+            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til medmor' }).selected,
         ).toBe(true);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();

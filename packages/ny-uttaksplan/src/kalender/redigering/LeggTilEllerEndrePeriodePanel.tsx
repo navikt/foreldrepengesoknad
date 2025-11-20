@@ -53,7 +53,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
 
     const formMethods = useForm<FormValues>({
         defaultValues: erKunEnHelEksisterendePeriodeValgt
-            ? lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0])
+            ? lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0]!)
             : undefined,
     });
 

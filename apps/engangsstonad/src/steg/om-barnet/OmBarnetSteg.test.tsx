@@ -98,7 +98,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi om du adopterer alene')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -274,7 +274,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi hvor mange barn du venter')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvor mange barn venter du?')[1], '3');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvor mange barn venter du?')[1]!, '3');
 
         await userEvent.click(screen.getByText('Neste steg'));
 

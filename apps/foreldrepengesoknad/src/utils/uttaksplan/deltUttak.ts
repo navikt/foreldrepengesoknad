@@ -407,7 +407,7 @@ const deltUttakFødsel = (
     farSinFørsteUttaksdag: Date | undefined,
     annenForelderHarRettPåForeldrepengerIEØS: boolean | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
-    termindato?: Date | undefined,
+    termindato?: Date,
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakFødselMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeDagerMor);

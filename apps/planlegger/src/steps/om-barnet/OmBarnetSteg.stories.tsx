@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -13,7 +12,7 @@ import { OmBarnetSteg } from './OmBarnetSteg';
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof OmBarnetSteg>;
+};
 
 const meta = {
     title: 'steg/OmBarnetSteg',

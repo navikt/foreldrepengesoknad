@@ -122,7 +122,7 @@ export const useMellomlagreSøknad = (
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
-                navigate(currentRoute);
+                void navigate(currentRoute);
 
                 const data = getDataForMellomlagring(
                     foreldrepengerSaker,
@@ -146,7 +146,7 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = await error.response.json();
+                        const jsonResponse = await error.response.json<{ uuid?: string }>();
                         const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                         Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
@@ -164,6 +164,7 @@ export const useMellomlagreSøknad = (
 
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
                 Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {

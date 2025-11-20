@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
+import {
+    ContextDataMap,
+    ContextDataType,
+    PlanleggerDataContext,
+    useContextGetData,
+} from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useEffect } from 'react';
@@ -80,7 +85,7 @@ export const PlanleggerDataFetcher = () => {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data
-            const modifiserteData: KontoBeregningResultatDto = JSON.parse(JSON.stringify(data));
+            const modifiserteData = JSON.parse(JSON.stringify(data)) as KontoBeregningResultatDto;
             // Liste over dekningsgrader vi skal prosessere
             const dekningsgrader = ['80', '100'] as const;
             // Bearbeide hver dekningsgrad
@@ -110,13 +115,15 @@ export const PlanleggerDataInit = () => {
     const locations = useLocation();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
+    const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges på tilpass-planen siden
     // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
     useEffect(() => {
         if (locations.pathname.includes('tilpass-planen')) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (typeof (globalThis as any).skyra?.reload === 'function') {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
                 (globalThis as any).skyra.reload();
                 // eslint-disable-next-line no-console
                 console.log(`skyra.reload() kjørt på ${locations.pathname}`);

@@ -352,12 +352,12 @@ export const Uttaksplanbuilder = ({
             );
         },
         leggTilPerioder: (nyePerioder: Planperiode[]) => {
-            const annenPart = getAnnenPart(nyePerioder[0].erAnnenPartEøs ? undefined : nyePerioder[0].forelder);
+            const annenPart = getAnnenPart(nyePerioder[0]!.erAnnenPartEøs ? undefined : nyePerioder[0]!.forelder);
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
                 opprinneligPlan,
-                periode: nyePerioder[0],
+                periode: nyePerioder[0]!,
             });
 
             let resultat: Planperiode[] = [];
@@ -420,13 +420,13 @@ export const Uttaksplanbuilder = ({
         },
         oppdaterPerioder: (oppdatertePerioder: Planperiode[]) => {
             const annenPart = getAnnenPart(
-                oppdatertePerioder[0].erAnnenPartEøs ? undefined : oppdatertePerioder[0].forelder,
+                oppdatertePerioder[0]!.erAnnenPartEøs ? undefined : oppdatertePerioder[0]!.forelder,
             );
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
                 opprinneligPlan,
-                periode: oppdatertePerioder[0],
+                periode: oppdatertePerioder[0]!,
             });
 
             let resultat: Planperiode[] = [];
@@ -489,13 +489,13 @@ export const Uttaksplanbuilder = ({
         },
         slettPerioder: (slettedePerioder: Planperiode[]) => {
             const annenPart = getAnnenPart(
-                slettedePerioder[0].erAnnenPartEøs ? undefined : slettedePerioder[0].forelder,
+                slettedePerioder[0]!.erAnnenPartEøs ? undefined : slettedePerioder[0]!.forelder,
             );
             const { søkersPerioder, annenpartsPerioder } = getSøkerOgAnnenpartsPerioder({
                 ...commonGetPerioderProps,
                 erIPlanleggerModus,
                 opprinneligPlan,
-                periode: slettedePerioder[0],
+                periode: slettedePerioder[0]!,
             });
 
             let resultat: Planperiode[] = [];

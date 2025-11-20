@@ -39,7 +39,7 @@ type SkjemaFormData = {
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     maxAntallVedlegg?: number;
 }
@@ -75,7 +75,7 @@ export const SkjemaSteg = ({
         const antallVedleggAndreTilrettelegginger = tilretteleggingerVedlegg
             ? Object.keys(tilretteleggingerVedlegg)
                   .filter((id) => id !== tilretteleggingId)
-                  .reduce((total, id) => total + tilretteleggingerVedlegg[id].length, 0)
+                  .reduce((total, id) => total + tilretteleggingerVedlegg[id]!.length, 0)
             : 0;
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;

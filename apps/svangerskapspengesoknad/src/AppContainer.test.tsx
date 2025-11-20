@@ -47,9 +47,9 @@ describe('<AppContainer>', () => {
 
             expect(await screen.findByText('Steg 3 av 8')).toBeInTheDocument();
             expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-            await userEvent.click(screen.getAllByText('Nei')[0]);
-            await userEvent.click(screen.getAllByText('Nei')[1]);
-            await userEvent.click(screen.getAllByText('Nei')[2]);
+            await userEvent.click(screen.getAllByText('Nei')[0]!);
+            await userEvent.click(screen.getAllByText('Nei')[1]!);
+            await userEvent.click(screen.getAllByText('Nei')[2]!);
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(await screen.findByText('Steg 4 av 8')).toBeInTheDocument();

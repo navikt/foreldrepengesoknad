@@ -27,11 +27,11 @@ describe('lagKronologiskeSvpPerioder', () => {
 });
 
 describe('<Svangerskapspenger>', () => {
-    it('Skal vise i tittel at det er fra søknaden', async () => {
+    it('Skal vise i tittel at det er fra søknaden', () => {
         render(<SøknadUtenVedtak />);
         expect(screen.getByText('Dette har du søkt om')).toBeInTheDocument();
     });
-    it('Skal vise i tittel at det er fra vedtak', async () => {
+    it('Skal vise i tittel at det er fra vedtak', () => {
         render(<Case1 />);
         expect(screen.getByText('Dette har du fått vedtatt')).toBeInTheDocument();
     });

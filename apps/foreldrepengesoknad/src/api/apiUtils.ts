@@ -121,7 +121,7 @@ const cleanBarn = (barn: Barn): BarnDto => {
         return {
             type: 'fødsel',
             antallBarn: barn.antallBarn,
-            fødselsdato: barn.fødselsdatoer[0],
+            fødselsdato: barn.fødselsdatoer[0]!,
             termindato: barn.termindato,
         };
     }
@@ -186,8 +186,9 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
     }
 };
 
-const getPeriodeForInnsending = (periode: any): Uttaksplanperiode => {
+const getPeriodeForInnsending = (periode: Periode): Uttaksplanperiode => {
     const { tidsperiode, ...periodeRest } = periode;
+    // @ts-expect-error -- kontoType må mappes om
     return {
         ...periodeRest,
         fom: dateToISOString(tidsperiode.fom),

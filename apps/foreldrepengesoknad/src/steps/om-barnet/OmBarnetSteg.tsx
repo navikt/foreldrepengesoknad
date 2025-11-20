@@ -164,7 +164,7 @@ const OmBarnetStegInner = ({
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
     const skalInkludereTermindato = skalViseTermindato(
         søkersituasjon.rolle,
-        fødselsdatoer ? fødselsdatoer[0].dato : undefined,
+        fødselsdatoer ? fødselsdatoer[0]!.dato : undefined,
         valgteRegistrerteBarn,
         søkersituasjon.situasjon,
     );

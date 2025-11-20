@@ -145,7 +145,7 @@ describe('useEsSendSøknad', () => {
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
-                            ...DOKUMENTASJON.vedlegg[0],
+                            ...DOKUMENTASJON.vedlegg[0]!,
                             dokumenterer: {
                                 type: 'BARN',
                             },
@@ -239,7 +239,7 @@ describe('useEsSendSøknad', () => {
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
-                            ...DOKUMENTASJON.vedlegg[0],
+                            ...DOKUMENTASJON.vedlegg[0]!,
                             dokumenterer: {
                                 type: 'BARN',
                             },

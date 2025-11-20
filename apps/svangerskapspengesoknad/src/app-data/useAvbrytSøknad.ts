@@ -15,7 +15,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const avbrytSøknadHandler = async () => {
+    const avbrytSøknadHandler = () => {
         loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
 
         reset();
@@ -24,7 +24,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
 
         slettMellomlagring();
 
-        navigate('/');
+        void navigate('/');
     };
 
     return avbrytSøknadHandler;

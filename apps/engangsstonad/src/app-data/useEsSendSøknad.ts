@@ -87,15 +87,15 @@ export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
                 signal,
             });
 
-            ky.delete(API_URLS.mellomlagring);
-            navigate(Path.KVITTERING);
+            void ky.delete(API_URLS.mellomlagring);
+            void navigate(Path.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json();
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
                 Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);

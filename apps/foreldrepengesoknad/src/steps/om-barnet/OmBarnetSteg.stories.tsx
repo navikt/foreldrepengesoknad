@@ -122,7 +122,7 @@ export const MorFødsel: Story = {
         søkerInfo: defaultSøkerinfo,
         søknadGjelderNyttBarn: true,
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         barn: undefined,
     },
 };

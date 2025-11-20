@@ -29,20 +29,20 @@ export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFøds
     const svarteJaMenStarterIkkeLengerPåTermin =
         brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        !dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
+        !dayjs(perioderMedUttakRundtFødsel[0]!.tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
     const svarteJaMenEndretPeriodenPåTermin =
         brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        ((isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
+        dayjs(perioderMedUttakRundtFødsel[0]!.tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        ((isUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
             (perioderMedUttakRundtFødsel[0].konto !== 'FEDREKVOTE' ||
                 !perioderMedUttakRundtFødsel[0].ønskerSamtidigUttak)) ||
-            isOverføringsperiode(perioderMedUttakRundtFødsel[0]));
+            isOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
     const svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager =
         brukerSvarteJaPåAutoJustering &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        dayjs(perioderMedUttakRundtFødsel[0].tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        isUttaksperiode(perioderMedUttakRundtFødsel[0]) &&
+        dayjs(perioderMedUttakRundtFødsel[0]!.tidsperiode.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        isUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
         perioderMedUttakRundtFødsel[0].konto === 'FEDREKVOTE' &&
         perioderMedUttakRundtFødsel[0].ønskerFlerbarnsdager === true;
 

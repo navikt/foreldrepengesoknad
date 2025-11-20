@@ -55,7 +55,7 @@ export const filteredListEØSCountries = (countryOptionValue: string, shouldFilt
 export const getAlpha3Code = (alpha2Code: string) => {
     const countryAlpha3Code = countries.alpha2ToAlpha3(alpha2Code);
     if (!countryAlpha3Code) {
-        throw `countryUtils: getAlpha3Code:  ${alpha2Code}`;
+        throw new Error(`countryUtils: getAlpha3Code:  ${alpha2Code}`);
     }
 
     // i18n-iso-countries 7.5.0 bruker 'XKX' 'alpha3Code' for Kosovo. 'XXK' kode brukes i NAV.

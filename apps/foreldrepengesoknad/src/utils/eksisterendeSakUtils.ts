@@ -154,7 +154,7 @@ export const getStartdatoFørstePeriodeAnnenPart = (
     if (!annenPartsSak || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
-    return ISOStringToDate(annenPartsSak.perioder[0].fom);
+    return ISOStringToDate(annenPartsSak.perioder[0]!.fom);
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
@@ -307,7 +307,7 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] =
     if (valgteBarn.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
-        return new Array(sak.antallBarn).fill(sak.fødselsdato!);
+        return new Array<string>(sak.antallBarn).fill(sak.fødselsdato);
     }
     return [];
 };
