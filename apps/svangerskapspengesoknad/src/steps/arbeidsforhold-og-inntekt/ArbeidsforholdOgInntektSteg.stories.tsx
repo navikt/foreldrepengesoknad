@@ -99,7 +99,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: () => undefined,
+        avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
     },
 };
