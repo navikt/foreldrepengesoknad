@@ -27,7 +27,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@d82a6fe449f56938a073da20baca50bed596a800
+    uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@main
     with:
       language: javascript
     secrets:
