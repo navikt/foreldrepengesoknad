@@ -1,7 +1,6 @@
 import {
     BriefcaseFillIcon,
     ParasolBeachIcon,
-    PersonGroupIcon,
     PersonPregnantFillIcon,
     PersonSuitFillIcon,
     TrashIcon,
@@ -26,11 +25,10 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
     return (
         <VStack gap="space-12">
             {perioder.map((p) => {
-                const erFellesperiodeMedSamtidigUttak =
-                    p.kontoType === 'FELLESPERIODE' && !p.erAnnenPartEøs && !!p.samtidigUttak;
-                const erFellesperiodeMedSamtidigUttakOgMor = erFellesperiodeMedSamtidigUttak && p.forelder === 'MOR';
-                const erFellesperiodeMedSamtidigUttakOgFar =
-                    erFellesperiodeMedSamtidigUttak && p.forelder === 'FAR_MEDMOR';
+                const erFellesperiodeOgMor =
+                    p.kontoType === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder === 'MOR';
+                const erFellesperiodeOgFar =
+                    p.kontoType === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR';
 
                 return (
                     <HStack
@@ -41,7 +39,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                     >
                         {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
                             p.kontoType === 'MØDREKVOTE' ||
-                            erFellesperiodeMedSamtidigUttakOgMor) && (
+                            erFellesperiodeOgMor) && (
                             <PersonPregnantFillIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
                                 fontSize="1.5rem"
@@ -50,7 +48,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 color="var(--ax-bg-meta-purple-strong)"
                             />
                         )}
-                        {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeMedSamtidigUttakOgFar) && (
+                        {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar) && (
                             <PersonSuitFillIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
                                 fontSize="1.5rem"
@@ -59,17 +57,6 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 color="var(--ax-bg-success-strong)"
                             />
                         )}
-                        {p.kontoType === 'FELLESPERIODE' &&
-                            !erFellesperiodeMedSamtidigUttakOgMor &&
-                            !erFellesperiodeMedSamtidigUttakOgFar && (
-                                <PersonGroupIcon
-                                    title={intl.formatMessage({ id: 'RedigeringPanel.Felles' })}
-                                    fontSize="1.5rem"
-                                    height="35px"
-                                    width="35px"
-                                    color="var(--ax-bg-success-strong)"
-                                />
-                            )}
                         {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
                             <ParasolBeachIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Ferie' })}
@@ -92,17 +79,10 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                             <Heading size="xsmall">
                                 {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
                                     p.kontoType === 'MØDREKVOTE' ||
-                                    erFellesperiodeMedSamtidigUttakOgMor) && (
-                                    <FormattedMessage id="RedigeringPanel.Mor" />
-                                )}
-                                {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeMedSamtidigUttakOgFar) && (
+                                    erFellesperiodeOgMor) && <FormattedMessage id="RedigeringPanel.Mor" />}
+                                {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar) && (
                                     <FormattedMessage id="RedigeringPanel.Far" />
                                 )}
-                                {p.kontoType === 'FELLESPERIODE' &&
-                                    !erFellesperiodeMedSamtidigUttakOgMor &&
-                                    !erFellesperiodeMedSamtidigUttakOgFar && (
-                                        <FormattedMessage id="RedigeringPanel.Felles" />
-                                    )}
                                 {!p.erAnnenPartEøs &&
                                     p.kontoType === undefined &&
                                     p.utsettelseÅrsak !== undefined &&

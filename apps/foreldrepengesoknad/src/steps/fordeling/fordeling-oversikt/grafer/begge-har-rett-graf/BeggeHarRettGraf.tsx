@@ -23,23 +23,23 @@ const getRowClass = (antallPerioder: number, periodeIndex: number) => {
 export const getFargeClass = (fargekode: FordelingFargekode): string => {
     switch (fargekode) {
         case FordelingFargekode.ANNEN_PART_FAR:
-            return styles.annenPartFar;
+            return styles.annenPartFar!;
         case FordelingFargekode.ANNEN_PART_MOR:
-            return styles.annenPartMor;
+            return styles.annenPartMor!;
         case FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR:
-            return styles.fedrekvoteBruktAvMor;
+            return styles.fedrekvoteBruktAvMor!;
         case FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR:
-            return styles.fellesperiodeBruktAvFar;
+            return styles.fellesperiodeBruktAvFar!;
         case FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR:
-            return styles.fellesperiodeBruktAvMor;
+            return styles.fellesperiodeBruktAvMor!;
         case FordelingFargekode.IKKE_TILDELT:
-            return styles.ikkeTildelt;
+            return styles.ikkeTildelt!;
         case FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR:
-            return styles.mødrekvoteBruktAvFar;
+            return styles.mødrekvoteBruktAvFar!;
         case FordelingFargekode.SØKER_FAR:
-            return styles.søkerFar;
+            return styles.søkerFar!;
         case FordelingFargekode.SØKER_MOR:
-            return styles.søkerMor;
+            return styles.søkerMor!;
     }
 };
 

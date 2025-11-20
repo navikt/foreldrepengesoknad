@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import React from 'react';
 
 import { FormError } from './../../../types';
@@ -29,7 +30,7 @@ export default class FileInput extends React.Component<FileInputProps> {
     }
 
     fileSelectHandler(fileList: FileList) {
-        const files = Array.from(fileList) as File[];
+        const files = Array.from(fileList);
         this.props.onFilesSelect(files);
     }
 

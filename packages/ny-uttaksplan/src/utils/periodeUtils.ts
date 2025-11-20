@@ -176,7 +176,7 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
             return;
         }
 
-        const oppPeriode = oppsplittetPeriode[index - 1];
+        const oppPeriode = oppsplittetPeriode[index - 1]!;
         oppPeriode.tom = datoWrapper.erFom ? UttaksdagenString(datoWrapper.dato).forrige() : datoWrapper.dato;
         oppPeriode.id = `${oppPeriode.fom} - ${oppPeriode.tom} - ${oppPeriode.kontoType || oppPeriode.periodeHullÅrsak || oppPeriode.utsettelseÅrsak}`;
 

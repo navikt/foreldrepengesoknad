@@ -12,7 +12,7 @@ const {
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
-    it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', async () => {
+    it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getByTestId('day:3;dayColor:LIGHTGREEN')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:15;dayColor:LIGHTGREEN')).toBeInTheDocument();
     });
-    it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', async () => {
+    it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', () => {
         render(<FarSøkerMedTapteDagerOgUtsettelse />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
         expect(within(juli).getByTestId('day:16;dayColor:GREENOUTLINE')).toBeInTheDocument();
     });
-    it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', async () => {
+    it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', () => {
         render(<MorSøkerMedFlereUtsettelser />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
         expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
     });
-    it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', async () => {
+    it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
         render(<KortPeriodeUtenHelg />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -187,7 +187,7 @@ describe('UttaksplanKalender', () => {
         expect(arbeidPeriode.getByText('17.-23. May. 7 dager')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
-        expect(fellesperiode.getAllByText('Begge foreldre')).toHaveLength(2);
+        expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);
         expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
         expect(fellesperiode.getByText('31. May - 13. Jun. 1 dag')).toBeInTheDocument();
     });

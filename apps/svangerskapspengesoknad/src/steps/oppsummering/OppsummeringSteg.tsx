@@ -28,7 +28,7 @@ import { PerioderOppsummering } from './PerioderOppsummering';
 type Props = {
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 
@@ -55,7 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         barn.termindato,
         arbeidsforholdOgInntekt,
         valgteArbeidsforhold,
-    );
+    )!;
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

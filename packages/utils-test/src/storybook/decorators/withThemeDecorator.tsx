@@ -5,11 +5,11 @@ import { Theme } from '@navikt/ds-react';
 
 export const withThemeDecorator: DecoratorFunction = (Story, context) => {
     const Wrapper = () => {
-        const theme = context.globals['theme'];
+        const theme = context.globals['theme'] as string;
         useEffect(() => {
             const elements = document.getElementsByClassName('sb-show-main');
             if (elements.length > 0) {
-                elements[0].setAttribute(
+                elements[0]!.setAttribute(
                     'style',
                     theme === 'dark' ? 'background: #0e151f !important' : 'background: #fff !important',
                 );

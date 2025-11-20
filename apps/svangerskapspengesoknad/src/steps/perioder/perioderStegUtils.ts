@@ -53,7 +53,7 @@ export const getPeriodeInfoTekst = (
     varierendePerioder?: PeriodeMedVariasjon[],
 ) => {
     const erSisteDagMedSvpValgt =
-        varierendePerioder && varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
+        varierendePerioder && varierendePerioder[index]!.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
 
     if (varierendePerioder?.[index]?.fom && (erSisteDagMedSvpValgt || varierendePerioder[index].tom)) {
         const fomDato = varierendePerioder[index].fom;

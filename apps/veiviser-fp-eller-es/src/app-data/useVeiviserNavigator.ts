@@ -7,7 +7,7 @@ export const useVeiviserNavigator = () => {
 
     const goToRoute = useCallback(
         (path: FpEllerEsRoutes) => {
-            navigate(path);
+            void navigate(path);
         },
         [navigate],
     );

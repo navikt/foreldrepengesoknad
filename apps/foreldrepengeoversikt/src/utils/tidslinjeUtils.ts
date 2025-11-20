@@ -239,7 +239,7 @@ export const getTidslinjehendelseTittel = (
         );
     }
     if (hendelsetype === 'VENT_DOKUMENTASJON' && manglendeVedleggData?.length === 1) {
-        const navnPåDokumentasjon = intl.formatMessage({ id: `ettersendelse.${manglendeVedleggData[0]}` });
+        const navnPåDokumentasjon = intl.formatMessage({ id: `ettersendelse.${manglendeVedleggData[0]!}` });
         const dokumentasjonLowerCase = navnPåDokumentasjon.charAt(0).toLowerCase() + navnPåDokumentasjon.slice(1);
         return intl.formatMessage({ id: 'tidslinje.navVenterPå' }, { dokumentasjon: dokumentasjonLowerCase });
     }
@@ -319,7 +319,7 @@ const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand_fpoversik
 
 const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: FpÅpenBehandling_fpoversikt) => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
-    const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
+    const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).toDate();
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 

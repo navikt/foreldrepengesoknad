@@ -18,12 +18,7 @@ import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation
 
 import { BlueRadioGroup } from '../BlueRadioGroup';
 
-export enum Situasjon {
-    MOR = 'mor',
-    FAR = 'far',
-    MEDMOR = 'medmor',
-}
-
+export type Situasjon = 'mor' | 'far' | 'medmor';
 export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
@@ -114,13 +109,13 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         onChange={resetFieldsAndScroll('situasjon')}
                     >
-                        <Radio value={Situasjon.MOR} autoFocus>
+                        <Radio value={'mor' satisfies Situasjon} autoFocus>
                             <FormattedMessage id="SituasjonSide.Mor" />
                         </Radio>
-                        <Radio value={Situasjon.FAR}>
+                        <Radio value={'far' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Far" />
                         </Radio>
-                        <Radio value={Situasjon.MEDMOR}>
+                        <Radio value={'medmor' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Medmor" />
                         </Radio>
                     </BlueRadioGroup>

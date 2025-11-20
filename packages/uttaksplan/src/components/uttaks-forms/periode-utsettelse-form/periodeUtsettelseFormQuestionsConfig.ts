@@ -44,4 +44,5 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
 export const periodeUtsettelseFormQuestionsConfig = Questions<
     PeriodeUtsettelseFormConfigPayload,
     PeriodeUtsettelseFormField
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 >(PeriodeUtsettelseFormConfig);

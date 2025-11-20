@@ -6,10 +6,10 @@ import * as stories from './SimpleErrorPage.stories';
 const { Default } = composeStories(stories);
 
 describe('<SimpleErrorPage>', () => {
-    it('skal vise feilside', async () => {
+    it('skal vise feilside', () => {
         render(<Default />);
         expect(
-            await screen.getByText('Beklager, det ser ut som at noe har gått galt på grunn av en teknisk feil hos Nav'),
+            screen.getByText('Beklager, det ser ut som at noe har gått galt på grunn av en teknisk feil hos Nav'),
         ).toBeInTheDocument();
     });
 });

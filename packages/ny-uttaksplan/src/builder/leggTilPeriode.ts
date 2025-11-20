@@ -86,7 +86,7 @@ export const leggTilPeriode = ({
         //     return [...perioder];
         // }
 
-        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]);
+        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]!);
         const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtePerioder.at(-1)!);
 
         //TODO: Må endre navn i normaliserPerioder hvis denne skal brukes
@@ -101,8 +101,8 @@ export const leggTilPeriode = ({
         });
 
         //Når ny periode starter før alle de gamle periodene
-        if (dayjs(normaliserteNyePerioder[0].fom).isBefore(normaliserteBerørtePerioder[0].fom, 'd')) {
-            erstattedeBerørtePerioder.unshift(normaliserteNyePerioder[0]);
+        if (dayjs(normaliserteNyePerioder[0]!.fom).isBefore(normaliserteBerørtePerioder[0]!.fom, 'd')) {
+            erstattedeBerørtePerioder.unshift(normaliserteNyePerioder[0]!);
         }
 
         //Når ny periode slutter etter alle de gamle periodene
@@ -112,7 +112,7 @@ export const leggTilPeriode = ({
 
         return [...foregåendePerioder, ...erstattedeBerørtePerioder, ...påfølgendePerioder];
     } else {
-        const førstePeriode = perioder[0];
+        const førstePeriode = perioder[0]!;
         const sistePeriode = perioder.at(-1);
         const nyPeriodeFom = dayjs(nyPeriode.fom);
 

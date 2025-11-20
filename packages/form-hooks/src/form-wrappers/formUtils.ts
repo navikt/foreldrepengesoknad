@@ -19,5 +19,6 @@ export const getError = <T extends FieldValues>(
     // @ts-expect-error Denne må ein testa før ein fjernar
     const error = name.split('.').reduce((o, i) => (o !== undefined ? o[i] : o), errors);
     // @ts-expect-error fiks
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return error?.message;
 };

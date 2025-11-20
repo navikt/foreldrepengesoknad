@@ -81,7 +81,7 @@ export const AppContainer = () => {
     const initialLocale = getDecoratorLanguageCookie('decorator-language') as LocaleAll;
     const [locale, setLocale] = useState<LocaleNo>(initialLocale === 'en' ? 'nb' : initialLocale);
 
-    setAvailableLanguages([
+    void setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
         { locale: 'nn', handleInApp: true },
     ]);
@@ -100,7 +100,10 @@ export const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <Theme theme="light">
-                <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+                <ErrorBoundary
+                    appName="foreldrepengesoknad"
+                    retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+                >
                     <ByttBrowserModal />
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />

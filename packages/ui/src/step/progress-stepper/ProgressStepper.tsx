@@ -33,7 +33,7 @@ export const ProgressStepper = <TYPE extends string>({
         <VStack gap="space-16">
             {!hideHeader && (
                 <Heading size="large" level="2">
-                    {steps[currentStepIndex].label}
+                    {steps[currentStepIndex]!.label}
                 </Heading>
             )}
             <FormProgress
@@ -42,7 +42,7 @@ export const ProgressStepper = <TYPE extends string>({
                 onStepChange={(step) => {
                     setActiveStep(step);
                     if (onStepChange) {
-                        onStepChange(steps[step - 1].id);
+                        onStepChange(steps[step - 1]!.id);
                     }
                 }}
                 interactiveSteps={!!onStepChange}

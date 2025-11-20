@@ -35,13 +35,13 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1], 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'AS');
 
-        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1];
+        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().subtract(22, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
-        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1]!;
         await userEvent.type(tilOgMedP2, dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMedP2);
 

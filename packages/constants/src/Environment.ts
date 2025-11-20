@@ -15,10 +15,10 @@ const initEnvironment = () => {
         return {};
     }
 
-    const appSettings = JSON.parse((settingsNode as HTMLScriptElement).text);
+    const appSettings = JSON.parse((settingsNode as HTMLScriptElement).text) as Record<string, string>;
 
     return {
-        APP_VERSION: formatAppVersion(appSettings.APP_VERSION),
+        APP_VERSION: formatAppVersion(appSettings.APP_VERSION!),
         INNSYN: appSettings.INNSYN,
         FEATURE_TEST_1JULI2024_REGLER: appSettings.FEATURE_TEST_1JULI2024_REGLER,
         LOG_VALIDATION: appSettings.LOG_VALIDATION,

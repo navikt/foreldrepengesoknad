@@ -13,7 +13,7 @@ const runValidators = (validators: Validator[] | undefined, inputName: string): 
     });
 
     const valid = results.length === 0;
-    const tests: ValidationTestVerdict[] = valid === false ? [{ verdict: false, failText: results[0].failText }] : [];
+    const tests: ValidationTestVerdict[] = valid === false ? [{ verdict: false, failText: results[0]!.failText }] : [];
 
     return {
         name: inputName,

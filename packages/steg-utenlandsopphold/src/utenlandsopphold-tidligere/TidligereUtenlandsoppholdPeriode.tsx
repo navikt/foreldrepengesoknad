@@ -104,7 +104,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
                 defaultMonth={tom ? dayjs(tom).toDate() : undefined}
             />
             <RhfDatepicker
@@ -144,7 +144,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
             />
             {index > 0 && (
                 <Button

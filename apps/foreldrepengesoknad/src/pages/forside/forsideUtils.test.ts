@@ -55,63 +55,63 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
         fnr: '123456788',
         kjønn: 'K',
     } satisfies BarnDto_fpoversikt;
-    it('skal kun returnere ett barn hvis barn fra PDL og sak har fødselsdato', async () => {
+    it('skal kun returnere ett barn hvis barn fra PDL og sak har fødselsdato', () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL]);
         expect(result.length).toBe(1);
-        expect(result[0].fornavn).toEqual(['Grønn ']);
-        expect(result[0].fnr).toEqual(['123456789']);
+        expect(result[0]!.fornavn).toEqual(['Grønn ']);
+        expect(result[0]!.fnr).toEqual(['123456789']);
     });
-    it('skal returnere to barn hvis barn fra PDL og barn ikke har samme fødselsdato som saken', async () => {
+    it('skal returnere to barn hvis barn fra PDL og barn ikke har samme fødselsdato som saken', () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL2]);
         expect(result.length).toBe(2);
-        expect(result[0].fornavn).toEqual(undefined);
-        expect(result[0].fnr).toEqual(undefined);
-        expect(result[1].fornavn).toEqual(['Svart']);
-        expect(result[1].fnr).toEqual(['123456780']);
+        expect(result[0]!.fornavn).toEqual(undefined);
+        expect(result[0]!.fnr).toEqual(undefined);
+        expect(result[1]!.fornavn).toEqual(['Svart']);
+        expect(result[1]!.fnr).toEqual(['123456780']);
     });
-    it('skal returnere kun ett valgt hvis to barn fra PDL er født innen en dag fra hverandre', async () => {
+    it('skal returnere kun ett valgt hvis to barn fra PDL er født innen en dag fra hverandre', () => {
         const result = getSelectableBarnOptions([], [barnFraPDL, barnTvilling]);
         expect(result.length).toBe(1);
-        expect(result[0].fornavn).toEqual(['Grønn ', 'Blå ']);
-        expect(result[0].fnr).toEqual(['123456789', '123456788']);
+        expect(result[0]!.fornavn).toEqual(['Grønn ', 'Blå ']);
+        expect(result[0]!.fnr).toEqual(['123456789', '123456788']);
     });
-    it('skal ikke vise barna fra pdl som er over 3 år gamle og 3 måneder', async () => {
+    it('skal ikke vise barna fra pdl som er over 3 år gamle og 3 måneder', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal ikke vise barna fra pdl som er døde for mer enn 3 måneder siden', async () => {
+    it('skal ikke vise barna fra pdl som er døde for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal ikke vise barna fra pdl som er dødfødte for mer enn 3 måneder siden', async () => {
+    it('skal ikke vise barna fra pdl som er dødfødte for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal  vise barna fra pdl som er døde for mer enn 3 måneder siden og har en sak', async () => {
+    it('skal  vise barna fra pdl som er døde for mer enn 3 måneder siden og har en sak', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal  vise barna fra pdl som er dødfødte for mer enn 3 måneder siden og har en sak', async () => {
+    it('skal  vise barna fra pdl som er dødfødte for mer enn 3 måneder siden og har en sak', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal ikke vise tvillinger fra pdl hvis en er død for mer enn 3 måneder siden', async () => {
+    it('skal ikke vise tvillinger fra pdl hvis en er død for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal ikke vise tvillinger fra pdl hvis en dødfødte for mer enn 3 måneder siden', async () => {
+    it('skal ikke vise tvillinger fra pdl hvis en dødfødte for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal vise tvillinger fra pdl hvis de har en sak og en er død for mer enn 3 måneder siden', async () => {
+    it('skal vise tvillinger fra pdl hvis de har en sak og en er død for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal vise tvillinger fra pdl hvis de har en sak og en er dødfødt for mer enn 3 måneder siden', async () => {
+    it('skal vise tvillinger fra pdl hvis de har en sak og en er dødfødt for mer enn 3 måneder siden', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
-    it('skal ikke vise PDL barn som har avsluttet sak', async () => {
+    it('skal ikke vise PDL barn som har avsluttet sak', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
@@ -123,12 +123,12 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         type: ValgtBarnType.FØDT,
         antallBarn: 1,
         sortableDato: new Date('2022-06-01'),
-        sak: { ...saker.foreldrepenger[0], saksnummer: '1' },
+        sak: { ...saker.foreldrepenger[0]!, saksnummer: '1' },
         familiehendelsesdato: new Date('2022-06-01'),
         fnr: ['1234'],
         alleBarnaLever: true,
     };
-    it('skal returnere det første barnet etter barnet som er valgt', async () => {
+    it('skal returnere det første barnet etter barnet som er valgt', () => {
         const alleBarna = [
             selectedBarn,
             {
@@ -136,7 +136,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { ...saker.foreldrepenger[0], saksnummer: '2' },
+                sak: { ...saker.foreldrepenger[0]!, saksnummer: '2' },
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -147,7 +147,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2023-04-01'),
-                sak: { ...saker.foreldrepenger[0], saksnummer: '3' },
+                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
                 familiehendelsesdato: new Date('2023-04-01'),
                 alleBarnaLever: true,
                 startdatoFørsteStønadsperiode: new Date('2023-03-15'),
@@ -157,7 +157,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2024-04-01'),
-                sak: { ...saker.foreldrepenger[0], saksnummer: '3' },
+                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
                 familiehendelsesdato: new Date('2024-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2024-03-15'),
                 alleBarnaLever: true,
@@ -168,7 +168,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         expect(res?.familiehendelsesdato).toEqual(new Date('2023-04-01'));
         expect(res?.startdatoFørsteStønadsperiode).toEqual(new Date('2023-03-15'));
     });
-    it('skal ikke returnere noe hvis bare eldre barn finnes', async () => {
+    it('skal ikke returnere noe hvis bare eldre barn finnes', () => {
         const alleBarna = [
             selectedBarn,
             {
@@ -176,7 +176,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.FØDT,
                 antallBarn: 2,
                 sortableDato: new Date('2021-05-01'),
-                sak: { ...saker.foreldrepenger[0], saksnummer: '2' },
+                sak: { ...saker.foreldrepenger[0]!, saksnummer: '2' },
                 familiehendelsesdato: new Date('2021-05-01'),
                 fnr: ['1235', '1236'],
                 startdatoFørsteStønadsperiode: new Date('2021-05-01'),
@@ -187,7 +187,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
                 type: ValgtBarnType.UFØDT,
                 antallBarn: 1,
                 sortableDato: new Date('2021-04-01'),
-                sak: { ...saker.foreldrepenger[0], saksnummer: '3' },
+                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
                 familiehendelsesdato: new Date('2021-04-01'),
                 startdatoFørsteStønadsperiode: new Date('2021-03-15'),
                 alleBarnaLever: true,
@@ -196,7 +196,7 @@ describe('velkommenUtils - getBarnFraNesteSak', () => {
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);
         expect(res).toEqual(undefined);
     });
-    it('skal ikke returnere seg selv', async () => {
+    it('skal ikke returnere seg selv', () => {
         const alleBarna = [selectedBarn];
         const res = getBarnFraNesteSak(selectedBarn, alleBarna);
         expect(res).toEqual(undefined);

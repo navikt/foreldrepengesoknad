@@ -19,7 +19,7 @@ const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 

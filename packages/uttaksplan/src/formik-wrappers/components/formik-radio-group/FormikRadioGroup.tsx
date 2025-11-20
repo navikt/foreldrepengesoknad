@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FastField, Field, FieldProps } from 'formik';
 import React, { useContext } from 'react';
 
@@ -54,7 +55,7 @@ function FormikRadioGroup<FieldName, ErrorType>({
                                     {...rest}
                                     name={field.name as any}
                                     onChange={(evt) => {
-                                        form.setFieldValue(field.name, evt.target.value);
+                                        void form.setFieldValue(field.name, evt.target.value);
                                         const newValue = evt.target.value;
                                         if (afterOnChange) {
                                             afterOnChange(newValue);

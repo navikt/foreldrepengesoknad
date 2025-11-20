@@ -20,8 +20,8 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
 };

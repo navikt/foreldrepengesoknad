@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 
-import { Situasjon } from '../situasjon/SituasjonSide';
 import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
 
 const meta = {
@@ -31,7 +30,7 @@ export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: '20000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -45,7 +44,7 @@ export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -59,7 +58,7 @@ export const FarKanHaRettTilFp: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: true,
         },
     },
@@ -73,7 +72,7 @@ export const FarKanHaRettTilEs: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '1000',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: true,
         },
     },
@@ -87,7 +86,7 @@ export const MorHarRettTilEs: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '1000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -102,7 +101,7 @@ export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -117,7 +116,7 @@ export const FarHarIkkeRett: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '0',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: false,
         },
     },
@@ -131,7 +130,7 @@ export const MorHarIkkeRettJobberIkkeINorgeMenIUtlandet: Story = {
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: false,
         },
     },

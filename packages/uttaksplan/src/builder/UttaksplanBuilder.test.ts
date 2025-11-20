@@ -264,7 +264,7 @@ describe('Uttaksplanbuilder tester', () => {
         expect(result2.length).toBe(7);
         expect(result2[2]).toEqual(nyPeriode2);
         expect(result2[4]).toEqual(nyPeriode);
-        expect(result2[4].tidsperiode).toEqual({ fom: new Date('2022-08-15'), tom: new Date('2022-08-26') });
+        expect(result2[4]!.tidsperiode).toEqual({ fom: new Date('2022-08-15'), tom: new Date('2022-08-26') });
     });
     it('Skal fungere med to perioder før fødsel i uttaksplan når man legger til en periode på slutten', () => {
         const nyPeriodeISluttenAvPlanen: Periode = {
@@ -294,8 +294,8 @@ describe('Uttaksplanbuilder tester', () => {
         expect(result[3]).toEqual(perioderMedToPerioderFørFødsel[3]);
         expect(result[4]).toEqual(perioderMedToPerioderFørFødsel[4]);
         expect(result[5]).toEqual(perioderMedToPerioderFørFødsel[5]);
-        expect(result[6].tidsperiode.fom).toEqual(new Date('2022-09-26'));
-        expect(result[6].tidsperiode.tom).toEqual(new Date('2022-10-25'));
+        expect(result[6]!.tidsperiode.fom).toEqual(new Date('2022-09-26'));
+        expect(result[6]!.tidsperiode.tom).toEqual(new Date('2022-10-25'));
         expect(result[7]).toEqual(nyPeriodeISluttenAvPlanen);
     });
     it(

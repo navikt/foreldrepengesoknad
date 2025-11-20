@@ -74,7 +74,9 @@ const meta = {
                             'Content-Type': 'application/json',
                         },
                     });
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const json = await response.json();
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     return HttpResponse.json(json);
                 }),
             ],

@@ -53,7 +53,7 @@ const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversi
 const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
     const { engangstønad } = satser;
     if (!søknadstidspunkt) {
-        return engangstønad[0].verdi;
+        return engangstønad[0]!.verdi;
     }
 
     return engangstønad.find((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))?.verdi;

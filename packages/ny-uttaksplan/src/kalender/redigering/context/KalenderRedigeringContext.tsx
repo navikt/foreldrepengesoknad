@@ -139,7 +139,7 @@ export const KalenderRedigeringProvider = ({
 
     const erKunEnHelEksisterendePeriodeValgt =
         sammenslåtteValgtePerioder.length === 1 &&
-        erValgtPeriodeEnHelEksisterendePeriode(uttaksplan, sammenslåtteValgtePerioder[0]);
+        erValgtPeriodeEnHelEksisterendePeriode(uttaksplan, sammenslåtteValgtePerioder[0]!);
 
     const eksisterendePerioderSomErValgt = useMemo(
         () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),

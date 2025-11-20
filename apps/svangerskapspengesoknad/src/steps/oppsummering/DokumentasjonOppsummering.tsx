@@ -35,7 +35,7 @@ export function DokumentasjonOppsummering({
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <VStack>
-                                {tilretteleggingerVedlegg[tilretteleggingId].map((vedlegg) => {
+                                {tilretteleggingerVedlegg[tilretteleggingId]?.map((vedlegg) => {
                                     return vedlegg.uuid ? (
                                         <Link
                                             key={vedlegg.id}

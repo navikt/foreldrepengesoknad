@@ -98,7 +98,7 @@ type Story = StoryObj<typeof meta>;
 export const ForArbeidsforhold: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         valgtTilretteleggingId: VALGT_TILRETTELEGGING_ID,
     },

@@ -109,10 +109,10 @@ export const PerioderFieldArray = ({
             {fields.map((field, index) => {
                 const måSendeNySøknad = getMåSendeNySøknad(
                     periodeDerSøkerErTilbakeIOpprinneligStilling,
-                    alleVarierendePerioder[index],
+                    alleVarierendePerioder[index]!,
                     opprinneligStillingsprosent,
                 );
-                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index].fom, behovForTilretteleggingFom);
+                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index]!.fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
 
                 return (
@@ -152,7 +152,7 @@ export const PerioderFieldArray = ({
                                 isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.fom.gyldigDato' })),
                                 isBeforeOrSame(
                                     intl.formatMessage({ id: 'valideringsfeil.periode.fom.førTilDato' }),
-                                    alleVarierendePerioder[index].tom,
+                                    alleVarierendePerioder[index]!.tom,
                                 ),
                                 isBeforeOrSame(
                                     kanHaSVPFremTilTreUkerFørTermin
@@ -197,7 +197,7 @@ export const PerioderFieldArray = ({
                                 )}
                             </Radio>
                         </RhfRadioGroup>
-                        {alleVarierendePerioder[index].tomType === TilOgMedDatoType.VALGFRI_DATO && (
+                        {alleVarierendePerioder[index]!.tomType === TilOgMedDatoType.VALGFRI_DATO && (
                             <RhfDatepicker
                                 name={`varierendePerioder.${index}.tom`}
                                 control={formMethods.control}
@@ -207,7 +207,7 @@ export const PerioderFieldArray = ({
                                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.tom.gyldigDato' })),
                                     isAfterOrSame(
                                         intl.formatMessage({ id: 'valideringsfeil.periode.tom.etterTilDato' }),
-                                        alleVarierendePerioder[index].fom,
+                                        alleVarierendePerioder[index]!.fom,
                                     ),
                                     isBeforeOrSame(
                                         kanHaSVPFremTilTreUkerFørTermin

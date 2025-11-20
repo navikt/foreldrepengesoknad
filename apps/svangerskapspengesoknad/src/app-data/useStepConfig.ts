@@ -123,7 +123,7 @@ const getTilretteleggingLabels = (
 const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<SøknadRoute | string> => ({
     id: route,
     label: getStepLabels(intl)[route],
-    isSelected: currentPath === route,
+    isSelected: currentPath === route.toString(),
 });
 
 const getStepConfig = (
@@ -203,14 +203,14 @@ const getStepConfig = (
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);
         const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, tilretteleggingId);
-        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId!, arbeidsforhold);
 
         steps.push(
             ...createTilretteleggingSteps({
                 currentPath,
                 labels,
-                tilretteleggingId,
-                tilrettelegging: tilrettelegginger?.[tilretteleggingId],
+                tilretteleggingId: tilretteleggingId!,
+                tilrettelegging: tilrettelegginger?.[tilretteleggingId!],
                 typeArbeidsgiver,
             }),
         );

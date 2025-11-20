@@ -948,7 +948,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
             ...defaultSøkerinfoFar,
             arbeidsforhold: [
                 {
-                    ...arbeidsforholdMorJobber80Prosent[0],
+                    ...arbeidsforholdMorJobber80Prosent[0]!,
                     stillingsprosent: 70,
                 },
             ],

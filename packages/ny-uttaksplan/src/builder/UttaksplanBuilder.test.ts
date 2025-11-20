@@ -209,7 +209,7 @@ describe('Uttaksplanbuilder tester', () => {
             erIPlanleggerModus: true,
         }).leggTilPeriode(nyPeriode);
         expect(result.length).toBe(4);
-        expect(omitIdForComparison(result[2])).toEqual(omitIdForComparison(nyPeriode));
+        expect(omitIdForComparison(result[2]!)).toEqual(omitIdForComparison(nyPeriode));
 
         const nyPeriode2: Planperiode = {
             erAnnenPartEøs: false,
@@ -233,10 +233,10 @@ describe('Uttaksplanbuilder tester', () => {
         }).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(6);
-        expect(omitIdForComparison(result2[2])).toEqual(omitIdForComparison(nyPeriode2));
-        expect(omitIdForComparison(result2[4])).toEqual(omitIdForComparison(nyPeriode));
-        expect(result2[4].fom).toEqual('2022-08-15');
-        expect(result2[4].tom).toEqual('2022-08-26');
+        expect(omitIdForComparison(result2[2]!)).toEqual(omitIdForComparison(nyPeriode2));
+        expect(omitIdForComparison(result2[4]!)).toEqual(omitIdForComparison(nyPeriode));
+        expect(result2[4]!.fom).toEqual('2022-08-15');
+        expect(result2[4]!.tom).toEqual('2022-08-26');
     });
 
     it('Skal fungere med to perioder før fødsel i uttaksplan når man legger til en periode på slutten', () => {
@@ -261,14 +261,14 @@ describe('Uttaksplanbuilder tester', () => {
         }).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
-        expect(omitIdForComparison(result[0])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[0]));
-        expect(omitIdForComparison(result[1])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[1]));
-        expect(omitIdForComparison(result[2])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[2]));
-        expect(omitIdForComparison(result[3])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[3]));
-        expect(omitIdForComparison(result[4])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[4]));
-        expect(omitIdForComparison(result[5])).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[5]));
-        expect(result[6].fom).toEqual('2022-09-26');
-        expect(result[6].tom).toEqual('2022-10-25');
+        expect(omitIdForComparison(result[0]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[0]!));
+        expect(omitIdForComparison(result[1]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[1]!));
+        expect(omitIdForComparison(result[2]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[2]!));
+        expect(omitIdForComparison(result[3]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[3]!));
+        expect(omitIdForComparison(result[4]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[4]!));
+        expect(omitIdForComparison(result[5]!)).toEqual(omitIdForComparison(perioderMedToPerioderFørFødsel[5]!));
+        expect(result[6]!.fom).toEqual('2022-09-26');
+        expect(result[6]!.tom).toEqual('2022-10-25');
         expect(result[7]).toEqual(nyPeriodeISluttenAvPlanen);
     });
 
@@ -301,7 +301,7 @@ describe('Uttaksplanbuilder tester', () => {
 
             expect(result.length).toEqual(11);
             perioderMedAnnenPartsUttakOgUtsettelserISlutten.forEach((p, index) => {
-                const resultPeriode = result[index];
+                const resultPeriode = result[index]!;
                 const opprinneligPeriode = p;
                 const opprinneligTidsperiode = originaleTidsperiodePerioder[index];
                 expect({ fom: resultPeriode.fom, tom: resultPeriode.tom }).toEqual(opprinneligTidsperiode);

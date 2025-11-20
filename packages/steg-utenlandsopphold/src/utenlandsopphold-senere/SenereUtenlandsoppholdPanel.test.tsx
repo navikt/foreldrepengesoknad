@@ -56,13 +56,13 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1], 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'AS');
 
-        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1];
+        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().add(22, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
-        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1]!;
         await userEvent.type(tilOgMedP2, dayjs().add(30, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMedP2);
 
@@ -102,13 +102,13 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1], 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'AS');
 
-        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1];
+        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().add(15, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
-        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1]!;
         await userEvent.type(tilOgMedP2, dayjs().add(29, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMedP2);
 
@@ -163,8 +163,8 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Slett søknaden')[0]);
-        await userEvent.click(screen.getAllByText('Slett søknaden')[1]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });

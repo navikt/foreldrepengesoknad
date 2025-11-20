@@ -39,7 +39,7 @@ export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
-    const GRUNNBELØP = DEFAULT_SATSER.grunnbeløp[0].verdi;
+    const GRUNNBELØP = DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const ytelseTekst = useGetYtelse() === 'SVANGERSKAPSPENGER' ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();
@@ -196,7 +196,7 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: FpOversiktIn
     }
 
     if (inntektsmelding.bortfalteNaturalytelser.length === 1) {
-        return <BortfaltNaturalytelseTekst bortfaltNaturalytelse={inntektsmelding.bortfalteNaturalytelser[0]} />;
+        return <BortfaltNaturalytelseTekst bortfaltNaturalytelse={inntektsmelding.bortfalteNaturalytelser[0]!} />;
     }
 
     return (

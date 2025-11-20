@@ -63,9 +63,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
 };
 
 export const getEldsteRegistrerteBarn = (registrerteBarn: BarnDto_fpoversikt[]): BarnDto_fpoversikt => {
-    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1))[
-        registrerteBarn.length - 1
-    ];
+    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
 export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
@@ -73,7 +71,7 @@ export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
 };
 
 export const getEldsteDato = (dato: Date[]): string => {
-    return sorterDatoEtterEldst(dato)[0];
+    return sorterDatoEtterEldst(dato)[0]!;
 };
 
 type DateValue = Date | undefined;
@@ -254,7 +252,7 @@ export const getEndringstidspunkt = (
         }
     } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
-        return søkerensUpdatedPlan[0].tidsperiode.fom;
+        return søkerensUpdatedPlan[0]!.tidsperiode.fom;
     }
 
     return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);

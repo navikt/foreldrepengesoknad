@@ -58,7 +58,7 @@ const dagerForTerminbekreftelse = ukerAaTrekkeFraTerminDato * 7 + ekstraDagerAaT
 export const erIUke22Pluss3 = (dato: string) => {
     const terminDato = dayjs(dato);
     const uke22Pluss3 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day'))!.isSame(dayjs().startOf('day'));
+    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day')).isSame(dayjs().startOf('day'));
 };
 
 export const getIllegalChars = (value: string): string => {

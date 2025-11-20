@@ -132,9 +132,9 @@ describe('<Planlegger>', () => {
             await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
             expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Far og far'));
-            const morNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0];
+            const morNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0]!;
             await userEvent.type(morNavn, 'Anders');
-            const farNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[1];
+            const farNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[1]!;
             await userEvent.type(farNavn, 'Espen');
             await userEvent.click(screen.getByText('Neste'));
 
@@ -158,7 +158,7 @@ describe('<Planlegger>', () => {
             await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
             expect(screen.getByText('Steg 4 av 9')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja'));
-            await userEvent.click(screen.getAllByText('Ja')[1]);
+            await userEvent.click(screen.getAllByText('Ja')[1]!);
             await userEvent.click(screen.getByText('Neste'));
 
             await waitFor(() => expect(screen.getAllByText('Hvor mye')).toHaveLength(2));
@@ -176,7 +176,7 @@ describe('<Planlegger>', () => {
 
             expect(await screen.findByText('Planen deres')).toBeInTheDocument();
             expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Oppsummering')[1]);
+            await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
             expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
             expect(screen.getByText('Planen deres')).toBeInTheDocument();

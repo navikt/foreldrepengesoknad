@@ -30,8 +30,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-08-19T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2022-08-19T00:00:00.000Z'));
     });
     it('skal legge til 1 uke etter fødsel hvis WLB gjelder, situasjon er fødsel og far velger 5. uken etter fødsel som start', () => {
         const perioder = deltUttak({
@@ -50,8 +50,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-12T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-16T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-09-12T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2022-09-16T00:00:00.000Z'));
     });
     it('skal legge til to perioder: en som slutter rett før fødsel og en som starter på fødselsdato hvis far velger å starte uken før fødsel', () => {
         const perioder = deltUttak({
@@ -70,10 +70,10 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(2);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-01T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-08-05T00:00:00.000Z'));
-        expect(perioder[1].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
-        expect(perioder[1].tidsperiode.tom).toEqual(new Date('2022-08-12T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-08-01T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2022-08-05T00:00:00.000Z'));
+        expect(perioder[1]!.tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
+        expect(perioder[1]!.tidsperiode.tom).toEqual(new Date('2022-08-12T00:00:00.000Z'));
     });
     it('skal legge til fars 5 uker etter fødsel hvis WLB gjelder, situasjon er fødsel og far velger startdato etter 6 uken etter fødsel', () => {
         const perioder = deltUttak({
@@ -92,8 +92,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-09-19T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-10-21T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-09-19T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2022-10-21T00:00:00.000Z'));
     });
     it('skal legge til 5 uker for far hvis WLB gjelder og situasjon er adopsjon.', () => {
         const perioder = deltUttak({
@@ -112,8 +112,8 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-09-09T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-08-08T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2022-09-09T00:00:00.000Z'));
     });
 });
 
@@ -161,7 +161,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
         expect(perioder.length).toEqual(1);
-        expect(perioder[0].tidsperiode.fom).toEqual(new Date('2022-12-28T00:00:00.000Z'));
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2023-01-31T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.fom).toEqual(new Date('2022-12-28T00:00:00.000Z'));
+        expect(perioder[0]!.tidsperiode.tom).toEqual(new Date('2023-01-31T00:00:00.000Z'));
     });
 });

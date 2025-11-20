@@ -187,9 +187,9 @@ export const leggTilPeriode = ({
             // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for overskriving
             return [
                 ...foregåendePerioder,
-                berørtPeriodeSplittetPåNyPeriode[0],
-                berørtPeriodeSplittetPåNyPeriode[1],
-                ...Periodene([berørtPeriodeSplittetPåNyPeriode[2], ...påfølgendePerioder]).forskyvPerioder(
+                berørtPeriodeSplittetPåNyPeriode[0]!,
+                berørtPeriodeSplittetPåNyPeriode[1]!,
+                ...Periodene([berørtPeriodeSplittetPåNyPeriode[2]!, ...påfølgendePerioder]).forskyvPerioder(
                     antallDagerINyPeriode,
                 ),
             ];
@@ -201,7 +201,7 @@ export const leggTilPeriode = ({
             ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
         ];
     } else {
-        const førstePeriode = perioder[0];
+        const førstePeriode = perioder[0]!;
         const sistePeriode = perioder.at(-1)!;
         const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
         const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);

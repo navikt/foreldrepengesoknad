@@ -142,7 +142,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Nei'));
 
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         await userEvent.click(screen.getByText('Neste'));
 

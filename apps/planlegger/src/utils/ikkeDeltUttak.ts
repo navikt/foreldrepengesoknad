@@ -46,8 +46,8 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
                 kontoType: 'FORELDREPENGER',
                 morsAktivitet: 'IKKE_OPPGITT',
-                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
+                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
             };
 
             perioder.push(aktivitetsFriPeriode);
@@ -204,8 +204,8 @@ const ikkeDeltUttakFødselFarMedmor = (
                 const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
                     kontoType: 'FORELDREPENGER',
                     morsAktivitet: 'IKKE_OPPGITT',
-                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
+                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
                 };
 
                 perioder.push(aktivitetsFriPeriode);

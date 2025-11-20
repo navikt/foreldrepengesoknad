@@ -29,7 +29,7 @@ type TilretteleggingPerioderFormValues = {
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
@@ -54,7 +54,7 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
 
     const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
-    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId];
+    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId]!;
 
     const onSubmit = (values: TilretteleggingPerioderFormValues) => {
         oppdaterTilretteleggingerPerioder({

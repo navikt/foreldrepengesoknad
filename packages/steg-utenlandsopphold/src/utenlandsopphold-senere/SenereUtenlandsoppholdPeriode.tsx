@@ -105,7 +105,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
             />
             <RhfDatepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
@@ -144,7 +144,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
                 defaultMonth={fom ? dayjs(fom).toDate() : undefined}
             />
             {index > 0 && (

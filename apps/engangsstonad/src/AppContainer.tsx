@@ -77,7 +77,7 @@ dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
 
-    setAvailableLanguages([
+    void setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
         { locale: 'nn', handleInApp: true },
         { locale: 'en', handleInApp: true },
@@ -96,7 +96,7 @@ export const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <Theme theme="light">
-                <ErrorBoundary appName="engangsstonad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+                <ErrorBoundary appName="engangsstonad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />
                         <Provider locale={getDsProviderLocale(locale)}>

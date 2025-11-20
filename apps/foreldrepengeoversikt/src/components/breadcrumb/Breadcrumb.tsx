@@ -9,7 +9,7 @@ import { OversiktRoutes } from './../../routes/routes';
 
 const minSide = {
     title: 'Min side',
-    url: 'https://www.nav.no/minside',
+    url: 'https://www.nav.no/minside' as const,
     handleInApp: false,
 };
 
@@ -84,7 +84,7 @@ const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     }
 };
 
-const getRoute = (route: string, saksnummer: string | undefined): string => {
+const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
     const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
     if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
@@ -116,11 +116,11 @@ export const Breadcrumb = () => {
     const sak = useGetSelectedSak();
 
     const mappedPaths = breadcrumbs.map((b) => ({ ...b, url: getRoute(b.url, sak?.saksnummer) }));
-    setBreadcrumbs(mappedPaths);
+    void setBreadcrumbs(mappedPaths);
 
     // Denne trigges for breadcrumbs der handleInApp: true
     onBreadcrumbClick((breadcrumb) => {
-        navigate(breadcrumb.url);
+        void navigate(breadcrumb.url);
     });
 
     return <Outlet />;

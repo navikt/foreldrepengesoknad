@@ -56,7 +56,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
-    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex] : [];
+    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex]! : [];
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);

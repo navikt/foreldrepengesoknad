@@ -32,12 +32,12 @@ describe('getUnikeArbeidsforhold', () => {
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold, '2024-02-15');
         expect(unike.length).toEqual(2);
-        expect(unike[0].stillinger.length).toEqual(2);
-        expect(unike[0].fom).toEqual('2020-08-26');
-        expect(unike[0].tom).toEqual('2023-12-01');
-        expect(unike[1].stillinger.length).toEqual(1);
-        expect(unike[1].fom).toEqual('2020-02-01');
-        expect(unike[1].tom).toBeUndefined();
+        expect(unike[0]!.stillinger.length).toEqual(2);
+        expect(unike[0]!.fom).toEqual('2020-08-26');
+        expect(unike[0]!.tom).toEqual('2023-12-01');
+        expect(unike[1]!.stillinger.length).toEqual(1);
+        expect(unike[1]!.fom).toEqual('2020-02-01');
+        expect(unike[1]!.tom).toBeUndefined();
     });
     it('Skal sette den tidliste fom fra stillingene og la det unike arbeidsforholdet være pågående (uten tom) hvis et av stillinene er uten tom', () => {
         const arbeidsforhold2 = [
@@ -68,8 +68,8 @@ describe('getUnikeArbeidsforhold', () => {
 
         const unike = getUnikeArbeidsforhold(arbeidsforhold2, '2024-02-15');
         expect(unike.length).toEqual(1);
-        expect(unike[0].fom).toEqual('2016-08-26');
-        expect(unike[0].tom).toBeUndefined();
+        expect(unike[0]!.fom).toEqual('2016-08-26');
+        expect(unike[0]!.tom).toBeUndefined();
     });
 });
 

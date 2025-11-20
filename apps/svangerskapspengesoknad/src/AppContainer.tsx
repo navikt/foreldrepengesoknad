@@ -80,7 +80,7 @@ export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(initialLocale === 'en' ? 'nb' : initialLocale);
     const { pathname } = useLocation();
 
-    setAvailableLanguages([
+    void setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
         { locale: 'nn', handleInApp: true },
     ]);
@@ -98,7 +98,10 @@ export const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <Theme theme="light">
-                <ErrorBoundary appName="svangerskapspengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+                <ErrorBoundary
+                    appName="svangerskapspengesoknad"
+                    retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+                >
                     <ByttBrowserModal />
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />

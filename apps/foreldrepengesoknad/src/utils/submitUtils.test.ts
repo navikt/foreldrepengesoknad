@@ -80,9 +80,9 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             );
             expect(endringerIPlan.length).toEqual(1);
             const utsettelseForSlettetPeriode = endringerIPlan[0] as Utsettelsesperiode;
-            expect(utsettelseForSlettetPeriode.tidsperiode.fom).toEqual(opprinneligPlan[2].tidsperiode.fom);
-            expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[2].tidsperiode.tom);
-            expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+            expect(utsettelseForSlettetPeriode.tidsperiode.fom).toEqual(opprinneligPlan[2]!.tidsperiode.fom);
+            expect(endringerIPlan[0]!.tidsperiode.tom).toEqual(opprinneligPlan[2]!.tidsperiode.tom);
+            expect(endringerIPlan[0]!.type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseForSlettetPeriode.årsak).toEqual('FRI');
             expect(utsettelseForSlettetPeriode.forelder).toEqual('FAR_MEDMOR');
         },
@@ -102,16 +102,16 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             );
             expect(endringerIPlan.length).toEqual(1);
             const utsettelseForSlettedePerioder = endringerIPlan[0] as Utsettelsesperiode;
-            expect(utsettelseForSlettedePerioder.tidsperiode.fom).toEqual(opprinneligPlan[1].tidsperiode.fom);
-            expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlan[1].tidsperiode.tom);
-            expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+            expect(utsettelseForSlettedePerioder.tidsperiode.fom).toEqual(opprinneligPlan[1]!.tidsperiode.fom);
+            expect(endringerIPlan[0]!.tidsperiode.tom).toEqual(opprinneligPlan[1]!.tidsperiode.tom);
+            expect(endringerIPlan[0]!.type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseForSlettedePerioder.årsak).toEqual('FRI');
             expect(utsettelseForSlettedePerioder.forelder).toEqual('FAR_MEDMOR');
         },
     );
     it('finnEndringerIUttaksplan - Skal returnere en utsettelsesperiode hvis opprinnelig plan hadde kun en periode og den ble slettet', () => {
-        const opprinneligPlanMedKunEnPeriode = [opprinneligPlan[0]];
-        const endringstidspunkt = opprinneligPlan[0].tidsperiode.fom;
+        const opprinneligPlanMedKunEnPeriode = [opprinneligPlan[0]!];
+        const endringstidspunkt = opprinneligPlan[0]!.tidsperiode.fom;
         const nyPlanIngenPerioder: Periode[] = [];
         const endringerIPlan = finnEndringerIUttaksplan(
             opprinneligPlanMedKunEnPeriode,
@@ -121,9 +121,9 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
         );
         expect(endringerIPlan.length).toEqual(1);
         const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
-        expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(opprinneligPlanMedKunEnPeriode[0].tidsperiode.fom);
-        expect(endringerIPlan[0].tidsperiode.tom).toEqual(opprinneligPlanMedKunEnPeriode[0].tidsperiode.tom);
-        expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+        expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(opprinneligPlanMedKunEnPeriode[0]!.tidsperiode.fom);
+        expect(endringerIPlan[0]!.tidsperiode.tom).toEqual(opprinneligPlanMedKunEnPeriode[0]!.tidsperiode.tom);
+        expect(endringerIPlan[0]!.type).toEqual(Periodetype.Utsettelse);
         expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
         expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
     });
@@ -153,12 +153,12 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                     konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
-            const endringstidspunkt = opprinneligPlan[2].tidsperiode.fom;
+            const endringstidspunkt = opprinneligPlan[2]!.tidsperiode.fom;
             const nyPlanSlettetMorsSistePeriode = [
-                opprinneligPlanAnnenPartsPeriodePåSlutten[0],
-                opprinneligPlanAnnenPartsPeriodePåSlutten[1],
-                opprinneligPlanAnnenPartsPeriodePåSlutten[3],
-                opprinneligPlanAnnenPartsPeriodePåSlutten[4],
+                opprinneligPlanAnnenPartsPeriodePåSlutten[0]!,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[1]!,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[3]!,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[4]!,
             ];
             const endringerIPlan = finnEndringerIUttaksplan(
                 opprinneligPlanAnnenPartsPeriodePåSlutten,
@@ -169,12 +169,12 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(endringerIPlan.length).toEqual(1);
             const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
             expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(
-                opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.fom,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[2]!.tidsperiode.fom,
             );
-            expect(endringerIPlan[0].tidsperiode.tom).toEqual(
-                opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom,
+            expect(endringerIPlan[0]!.tidsperiode.tom).toEqual(
+                opprinneligPlanAnnenPartsPeriodePåSlutten[2]!.tidsperiode.tom,
             );
-            expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+            expect(endringerIPlan[0]!.type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
             expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
         },
@@ -197,10 +197,10 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                     konto: 'FELLESPERIODE',
                 },
             ] as Periode[];
-            const endringstidspunkt = opprinneligPlan[2].tidsperiode.fom;
+            const endringstidspunkt = opprinneligPlan[2]!.tidsperiode.fom;
             const nyPlanSlettetMorsSistePeriodeFørAnnenPart = [
-                opprinneligPlanAnnenPartsPeriodePåSlutten[0],
-                opprinneligPlanAnnenPartsPeriodePåSlutten[1],
+                opprinneligPlanAnnenPartsPeriodePåSlutten[0]!,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[1]!,
                 {
                     id: '3',
                     type: Periodetype.PeriodeUtenUttak,
@@ -209,7 +209,7 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
                         tom: new Date('2022-10-01'),
                     },
                 } as PeriodeUtenUttak,
-                opprinneligPlanAnnenPartsPeriodePåSlutten[3],
+                opprinneligPlanAnnenPartsPeriodePåSlutten[3]!,
             ];
             const endringerIPlan = finnEndringerIUttaksplan(
                 opprinneligPlanAnnenPartsPeriodePåSlutten,
@@ -220,12 +220,12 @@ describe('finnEndringerIUttaksplan - skal returnere kun perioder som er endret i
             expect(endringerIPlan.length).toEqual(1);
             const utsettelseSomSendesInn = endringerIPlan[0] as Utsettelsesperiode;
             expect(utsettelseSomSendesInn.tidsperiode.fom).toEqual(
-                opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.fom,
+                opprinneligPlanAnnenPartsPeriodePåSlutten[2]!.tidsperiode.fom,
             );
-            expect(endringerIPlan[0].tidsperiode.tom).toEqual(
-                opprinneligPlanAnnenPartsPeriodePåSlutten[2].tidsperiode.tom,
+            expect(endringerIPlan[0]!.tidsperiode.tom).toEqual(
+                opprinneligPlanAnnenPartsPeriodePåSlutten[2]!.tidsperiode.tom,
             );
-            expect(endringerIPlan[0].type).toEqual(Periodetype.Utsettelse);
+            expect(endringerIPlan[0]!.type).toEqual(Periodetype.Utsettelse);
             expect(utsettelseSomSendesInn.årsak).toEqual('FRI');
             expect(utsettelseSomSendesInn.forelder).toEqual('FAR_MEDMOR');
         },

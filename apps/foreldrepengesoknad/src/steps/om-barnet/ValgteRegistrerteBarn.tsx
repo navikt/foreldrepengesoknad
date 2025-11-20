@@ -33,7 +33,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
     const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterPersonEtterEldstOgNavn);
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
-    const fødselsdato = sorterteBarn[0].fødselsdato;
+    const fødselsdato = sorterteBarn[0]!.fødselsdato;
 
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const harTerminDatoFraVedtak =
@@ -59,7 +59,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                     ))
                 ) : (
                     <RegistrertePersonalia
-                        person={sorterteBarn[0]}
+                        person={sorterteBarn[0]!}
                         fødselsdatoForVisning={formaterFødselsdatoerPåBarn(fødselsdatoer)}
                         altTekstHvisUkjentNavn={getTittelBarnNårNavnSkalIkkeVises(
                             undefined,

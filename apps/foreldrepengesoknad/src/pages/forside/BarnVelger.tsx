@@ -34,7 +34,7 @@ const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
                     id="velkommen.barnVelger.ufødtBarn"
                     values={{
                         antallBarnTekst: getTekstForAntallBarn(barn.antallBarn, intl),
-                        termin: dayjs(barn.termindato!).format(DDMMMMYYY_DATE_FORMAT),
+                        termin: dayjs(barn.termindato).format(DDMMMMYYY_DATE_FORMAT),
                         b: (chunks) => <b>{chunks}</b>,
                     }}
                 />
@@ -63,7 +63,7 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
         const fødtAdoptertDatoTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? fødselsdatoerTekst
-                : dayjs(barn.omsorgsovertagelse!).format(DDMMMMYYY_DATE_FORMAT);
+                : dayjs(barn.omsorgsovertagelse).format(DDMMMMYYY_DATE_FORMAT);
         const situasjonTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? intl.formatMessage({ id: 'velkommen.barnVelger.født' })

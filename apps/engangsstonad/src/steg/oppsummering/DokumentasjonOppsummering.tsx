@@ -46,7 +46,7 @@ export function DokumentasjonOppsummering({
     onVilEndreSvar,
 }: {
     readonly dokumentasjon?: Dokumentasjon;
-    readonly onVilEndreSvar: (path: Path) => Promise<void>;
+    readonly onVilEndreSvar: (path: Path) => void;
 }) {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;

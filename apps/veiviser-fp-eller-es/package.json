@@ -17,6 +17,7 @@
         "test:browser:watch": "vitest --project=browser --watch=true",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --write src",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 7003",

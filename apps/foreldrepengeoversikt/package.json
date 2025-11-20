@@ -11,7 +11,7 @@
         "test:browser:watch": "vitest --project=browser --watch=true",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
+        "lint:fix": "eslint --quiet --fix  \"./src/**/*.{js,ts,tsx}\"",
         "prettier": "prettier --write src",
         "start-express": "node ./server.cjs",
         "dev-api": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",

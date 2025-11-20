@@ -129,8 +129,8 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Slett søknaden')[0]);
-        await userEvent.click(screen.getAllByText('Slett søknaden')[1]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });

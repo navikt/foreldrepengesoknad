@@ -174,7 +174,7 @@ export const EndrePeriodePanelStep = ({
                     erEndring={true}
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
-                <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre!} />
+                <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
                 {erDeltUttak && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
                 <PanelButtons

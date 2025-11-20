@@ -94,7 +94,7 @@ export const useStepConfig = () => {
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
-        () => notEmpty(Object.values(Path).find((v) => v === decodeURIComponent(location.pathname))),
+        () => notEmpty(Object.values(Path).find((v: string) => v === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
 

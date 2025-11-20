@@ -48,6 +48,7 @@ export const RhfRadioGroup = <T extends FieldValues>({
             error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             onChange={(value) => {
                 if (onChange) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     onChange(value);
                 }
                 field.onChange(value);

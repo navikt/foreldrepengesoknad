@@ -192,7 +192,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0];
+        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
             const vismerButton = expansionCard.querySelector('button[aria-expanded="false"]');

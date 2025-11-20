@@ -35,6 +35,7 @@ function FormikSelect<FieldName, ErrorType>({
                         {...field}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
                         autoComplete="off"
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={field.value === undefined ? '' : field.value}
                     >
                         {children}

@@ -18,12 +18,12 @@ export const useFpNavigator = (
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? SøknadRoutes.VELKOMMEN;
         oppdaterPath(previousPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextStep = (path: SøknadRoutes) => {
         oppdaterPath(path);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
@@ -31,7 +31,7 @@ export const useFpNavigator = (
         const nextPath = stepConfig[index]?.id;
 
         oppdaterPath(nextPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const fortsettSøknadSenere = () => {

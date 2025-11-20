@@ -12,12 +12,12 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? Path.VELKOMMEN;
         oppdaterPath(previousPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextStep = (path: Path) => {
         oppdaterPath(path);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
@@ -25,12 +25,12 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         const nextPath = stepConfig[index]?.id;
 
         oppdaterPath(nextPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const avbrytSøknad = () => {
         oppdaterPath(undefined);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const fortsettSøknadSenere = () => {

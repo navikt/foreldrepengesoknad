@@ -1,6 +1,7 @@
+import { ContextDataMap } from 'appData/FpDataContext.tsx';
 import { useEffect, useState } from 'react';
 
-export const useDebounce = (value: any, delay: number) => {
+export const useDebounce = (value: ContextDataMap, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(() => {

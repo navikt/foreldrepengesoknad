@@ -5,7 +5,7 @@ import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
-const defaultRetryCallback = async () => {
+const defaultRetryCallback = () => {
     globalThis.location.href = globalThis.location.origin;
 };
 

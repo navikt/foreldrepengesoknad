@@ -24,7 +24,7 @@ const erMorForForSykSkalBesvares = (
 ): boolean => {
     const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
         periodetype,
-        konto as KontoTypeUttak,
+        konto,
         tidsperiode,
         søkerErFarEllerMedmor,
         erAleneOmOmsorg,

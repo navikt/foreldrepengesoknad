@@ -1,5 +1,12 @@
 import { AppName } from '@navikt/fp-types';
 
+// Ambient global variable provided by dekoratoren runtime script. Declared inline so consuming packages see it when this file is compiled.
+declare global {
+    var dekoratorenAnalytics:
+        | ((params?: { origin: string; eventName: string; eventData?: Record<string, unknown> }) => Promise<unknown>)
+        | undefined;
+}
+
 /**
  * Bruk kun navn fra denne taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy utvides etter behov.
  * Den er ikke veldig omstendelig. FOreslår vi legger oss på 'AKSEL-COMPONENT HANDLING'. Feks "button klikk", "radio valgt", "readmore åpnet" osv
@@ -24,12 +31,14 @@ export const loggUmamiEvent = ({
     eventName: EventNamesTaksonomi;
     eventData?: Record<string, string>;
 }) => {
-    if (process.env.NODE_ENV === 'production' && (globalThis as any).dekoratorenAnalytics) {
-        // @ts-expect-error -- ts-expect-error sier den er unused. Men uten ts-expect-error så feil tsc
-        globalThis.dekoratorenAnalytics({
-            origin,
-            eventName,
-            eventData,
-        });
+    if (process.env.NODE_ENV === 'production') {
+        const analytics = typeof dekoratorenAnalytics === 'function' ? dekoratorenAnalytics : undefined;
+        if (analytics) {
+            void analytics({
+                origin,
+                eventName,
+                eventData,
+            });
+        }
     }
 };

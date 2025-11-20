@@ -22,7 +22,7 @@ type Props = Omit<DatePickerProps, 'onChange' | 'fromDate' | 'toDate'> &
         inputDisabled?: boolean;
         description?: React.ReactNode;
         value?: string;
-        onChange: (date: ISODateString | string) => void;
+        onChange: (date: ISODateString) => void;
     };
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
 const DateInputAndPicker: React.FunctionComponent<Props> = ({
@@ -53,6 +53,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
     const onInputBlur = (evt: any) => {
         setInputHasFocus(false);
         if (inputProps.onBlur) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onBlur(evt);
         }
         if (selectedDay === undefined && typeof inputProps.value === 'string') {
@@ -72,6 +73,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
 
     const onInputFocus = (evt: any) => {
         if (inputProps.onFocus) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onFocus(evt);
         }
         setInputHasFocus(true);

@@ -1,11 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import { OmPlanleggerenSteg } from './OmPlanleggerenSteg';
+
+type StoryArgs = {
+    gåTilNesteSide?: (action: Action) => void;
+};
 
 const meta = {
     title: 'steg/OmPlanleggerenSteg',
@@ -19,11 +22,8 @@ const meta = {
             </MemoryRouter>
         );
     },
-} satisfies Meta<
-    ComponentProps<typeof OmPlanleggerenSteg> & {
-        gåTilNesteSide?: (action: Action) => void;
-    }
->;
+} satisfies Meta<StoryArgs>;
+
 export default meta;
 
 type Story = StoryObj<typeof meta>;

@@ -73,10 +73,10 @@ describe('<HvemPlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('Far og far'));
 
-        const far1Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0];
+        const far1Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0]!;
         await userEvent.type(far1Navn, 'Espen');
 
-        const far2Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[1];
+        const far2Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[1]!;
         await userEvent.type(far2Navn, 'Peder');
 
         await userEvent.click(screen.getByText('Neste'));

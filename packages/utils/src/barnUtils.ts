@@ -5,7 +5,7 @@ import { isAdoptertBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-t
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
-        return barn.fødselsdatoer[0];
+        return barn.fødselsdatoer[0]!;
     }
     if (isUfødtBarn(barn)) {
         return barn.termindato;

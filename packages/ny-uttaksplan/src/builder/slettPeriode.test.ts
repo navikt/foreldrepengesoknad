@@ -83,7 +83,7 @@ const perioder2: Planperiode[] = [
 
 describe('Test av slett periode', () => {
     it('Skal sette inn hull første seks uker og periode uten uttak etter', () => {
-        const slettetPeriode = perioder[1];
+        const slettetPeriode = perioder[1]!;
 
         const result = slettPeriode({
             perioder,
@@ -97,16 +97,16 @@ describe('Test av slett periode', () => {
         });
 
         expect(result.length).toEqual(4);
-        expect(result[1].fom).toEqual('2022-05-05');
-        expect(result[1].tom).toEqual('2022-06-15');
-        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
-        expect(result[2].fom).toEqual('2022-06-16');
-        expect(result[2].tom).toEqual('2022-08-17');
-        expect(result[2].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(result[1]!.fom).toEqual('2022-05-05');
+        expect(result[1]!.tom).toEqual('2022-06-15');
+        expect(result[1]!.periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
+        expect(result[2]!.fom).toEqual('2022-06-16');
+        expect(result[2]!.tom).toEqual('2022-08-17');
+        expect(result[2]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it('Skal sette inn periode uten uttak etter sletting', () => {
-        const slettetPeriode = perioder2[3];
+        const slettetPeriode = perioder2[3]!;
 
         const result = slettPeriode({
             perioder: perioder2,
@@ -120,9 +120,9 @@ describe('Test av slett periode', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[3].fom).toEqual(slettetPeriode.fom);
-        expect(result[3].tom).toEqual(slettetPeriode.tom);
-        expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(result[3]!.fom).toEqual(slettetPeriode.fom);
+        expect(result[3]!.tom).toEqual(slettetPeriode.tom);
+        expect(result[3]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 });
 
@@ -183,7 +183,7 @@ describe('Test av slett periode for far - etter WLB', () => {
     });
 
     it('Skal sette inn periode uten uttak hvis slettet periode er innenfor de første seks ukene.', () => {
-        const slettetPeriode = perioderFar[1];
+        const slettetPeriode = perioderFar[1]!;
 
         const result = slettPeriode({
             perioder: perioderFar,
@@ -197,16 +197,16 @@ describe('Test av slett periode for far - etter WLB', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[1].fom).toEqual(slettetPeriode.fom);
-        expect(result[1].tom).toEqual(slettetPeriode.tom);
-        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(result[1]!.fom).toEqual(slettetPeriode.fom);
+        expect(result[1]!.tom).toEqual(slettetPeriode.tom);
+        expect(result[1]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it(
         'Skal sette inn periode uten uttak og hull (tapte dager) hvis slettet' +
             ' starter innenfor de første seks ukene men slutter etter de første seks ukene.',
         () => {
-            const slettetPeriode = perioderFar[3];
+            const slettetPeriode = perioderFar[3]!;
 
             const result = slettPeriode({
                 perioder: perioderFar,
@@ -220,12 +220,12 @@ describe('Test av slett periode for far - etter WLB', () => {
             });
 
             expect(result.length).toEqual(6);
-            expect(result[3].fom).toEqual(slettetPeriode.fom);
-            expect(result[3].tom).toEqual('2022-09-12');
-            expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
-            expect(result[4].fom).toEqual('2022-09-13');
-            expect(result[4].tom).toEqual(slettetPeriode.tom);
-            expect(result[4].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
+            expect(result[3]!.fom).toEqual(slettetPeriode.fom);
+            expect(result[3]!.tom).toEqual('2022-09-12');
+            expect(result[3]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+            expect(result[4]!.fom).toEqual('2022-09-13');
+            expect(result[4]!.tom).toEqual(slettetPeriode.tom);
+            expect(result[4]!.periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
         },
     );
 });
@@ -240,7 +240,7 @@ describe('Test av slett periode for far - før WLB', () => {
     });
 
     it('Skal sette inn hull (ubegrunnet opphold) hvis slettet periode er innenfor de første seks ukene og før WLB regler gjelder.', () => {
-        const slettetPeriode = perioderFar[1];
+        const slettetPeriode = perioderFar[1]!;
 
         const result = slettPeriode({
             perioder: perioderFar,
@@ -253,9 +253,9 @@ describe('Test av slett periode for far - før WLB', () => {
             førsteUttaksdagNesteBarnsSak: undefined,
         });
 
-        expect(result.length).toEqual(5);
-        expect(result[1].fom).toEqual(slettetPeriode.fom);
-        expect(result[1].tom).toEqual(slettetPeriode.tom);
-        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
+        expect(result.length).toEqual(5)!;
+        expect(result[1]!.fom).toEqual(slettetPeriode.fom);
+        expect(result[1]!.tom).toEqual(slettetPeriode.tom);
+        expect(result[1]!.periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
     });
 });

@@ -72,7 +72,7 @@ export const isDateRangesOverlapping = (ranges: Period[]): boolean => {
         const sortedDates = [...ranges].sort(sortDateRange);
         const hasOverlap = sortedDates.find((d, idx) => {
             if (idx < sortedDates.length - 1) {
-                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1].from);
+                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1]!.from);
             }
             return false;
         });

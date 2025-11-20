@@ -152,12 +152,12 @@ describe('Test av legg til periode i uttaksplan', () => {
             });
 
             expect(result.length).toEqual(5);
-            expect(result[1].tom).toEqual('2022-07-08');
+            expect(result[1]!.tom).toEqual('2022-07-08');
             expect(result[2]).toEqual(nyPeriode);
-            expect(result[3].fom).toEqual('2022-07-25');
-            expect(result[3].tom).toEqual(perioder[1].tom);
-            expect(result[4].fom).toEqual(perioder[2].fom);
-            expect(result[4].tom).toEqual(perioder[2].tom);
+            expect(result[3]!.fom).toEqual('2022-07-25');
+            expect(result[3]!.tom).toEqual(perioder[1]!.tom);
+            expect(result[4]!.fom).toEqual(perioder[2]!.fom);
+            expect(result[4]!.tom).toEqual(perioder[2]!.tom);
         },
     );
 
@@ -184,18 +184,18 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[0].fom).toEqual(perioderMedHull[0].fom);
-        expect(result[0].tom).toEqual('2022-03-14');
-        expect(result[1].fom).toEqual(nyPeriode.fom);
-        expect(result[1].tom).toEqual('2022-03-31');
-        expect(result[2].fom).toEqual('2022-04-01');
-        expect(result[2].tom).toEqual(nyPeriode.tom);
-        expect(result[3].fom).toEqual('2022-04-18');
-        expect(result[3].tom).toEqual(perioderMedHull[1].tom);
+        expect(result[0]!.fom).toEqual(perioderMedHull[0]!.fom);
+        expect(result[0]!.tom).toEqual('2022-03-14');
+        expect(result[1]!.fom).toEqual(nyPeriode.fom);
+        expect(result[1]!.tom).toEqual('2022-03-31');
+        expect(result[2]!.fom).toEqual('2022-04-01');
+        expect(result[2]!.tom).toEqual(nyPeriode.tom);
+        expect(result[3]!.fom).toEqual('2022-04-18');
+        expect(result[3]!.tom).toEqual(perioderMedHull[1]!.tom);
         expect(result[4]).toEqual(perioderMedHull[2]);
-        const nyPeriodeDel1 = result[1];
+        const nyPeriodeDel1 = result[1]!;
         expect(nyPeriodeDel1.kontoType).toEqual('FELLESPERIODE');
-        const nyPeriodeDel2 = result[2];
+        const nyPeriodeDel2 = result[2]!;
         expect(nyPeriodeDel2.kontoType).toEqual('FELLESPERIODE');
     });
 
@@ -223,13 +223,13 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(5);
         expect(result[0]).toEqual(perioderMedHull[0]);
-        expect(result[1].fom).toEqual(perioderMedHull[1].fom);
-        expect(result[1].tom).toEqual('2022-04-14');
-        expect(result[2].fom).toEqual(nyPeriode.fom);
-        expect(result[2].tom).toEqual('2022-04-29');
-        expect(result[3].fom).toEqual('2022-05-02');
-        expect(result[3].tom).toEqual(nyPeriode.tom);
-        expect(result[4].tom).toEqual(perioderMedHull[2].tom);
+        expect(result[1]!.fom).toEqual(perioderMedHull[1]!.fom);
+        expect(result[1]!.tom).toEqual('2022-04-14');
+        expect(result[2]!.fom).toEqual(nyPeriode.fom);
+        expect(result[2]!.tom).toEqual('2022-04-29');
+        expect(result[3]!.fom).toEqual('2022-05-02');
+        expect(result[3]!.tom).toEqual(nyPeriode.tom);
+        expect(result[4]!.tom).toEqual(perioderMedHull[2]!.tom);
     });
 
     it('Burde legge legge til ny periode korrekt som skal helt overlappe et hull', () => {
@@ -256,7 +256,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(3);
         expect(result[0]).toEqual(perioderMedHull[0]);
-        expect(omitOne(result[1], 'id')).toEqual(omitOne(nyPeriode, 'id'));
+        expect(omitOne(result[1]!, 'id')).toEqual(omitOne(nyPeriode, 'id'));
         expect(result[2]).toEqual(perioderMedHull[2]);
     });
 
@@ -283,13 +283,13 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(omitOne(result[0], 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[0], 'id'));
-        expect(result[1].fom).toEqual(periodeMedAnnenPartsUttak[1].fom);
-        expect(result[1].tom).toEqual('2024-05-14');
-        expect(omitOne(result[2], 'id')).toEqual(omitOne(nyPeriode, 'id'));
-        expect(result[3].fom).toEqual('2024-05-23');
-        expect(result[3].tom).toEqual(periodeMedAnnenPartsUttak[1].tom);
-        expect(omitOne(result[4], 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[2], 'id'));
+        expect(omitOne(result[0]!, 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[0]!, 'id'));
+        expect(result[1]!.fom).toEqual(periodeMedAnnenPartsUttak[1]!.fom);
+        expect(result[1]!.tom).toEqual('2024-05-14');
+        expect(omitOne(result[2]!, 'id')).toEqual(omitOne(nyPeriode, 'id'));
+        expect(result[3]!.fom).toEqual('2024-05-23');
+        expect(result[3]!.tom).toEqual(periodeMedAnnenPartsUttak[1]!.tom);
+        expect(omitOne(result[4]!, 'id')).toEqual(omitOne(periodeMedAnnenPartsUttak[2]!, 'id'));
 
         const nyPeriode2: Planperiode = {
             erAnnenPartEøs: false,
@@ -313,7 +313,7 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result2.length).toEqual(6);
-        expect(omitOne(result2[3], 'id')).toEqual(omitOne(nyPeriode2, 'id'));
+        expect(omitOne(result2[3]!, 'id')).toEqual(omitOne(nyPeriode2, 'id'));
     });
 
     it('Burde bare innehold ny periode om planen er tom', () => {
@@ -392,7 +392,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(5);
         expect(result[0]).toEqual(nyPeriode);
-        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(result[1]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it('Burde legge til periode etter siste periode korrekt', () => {
@@ -445,7 +445,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(5);
         expect(result[4]).toEqual(nyPeriode);
-        expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(result[3]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it('Skal legge til utsettelse korrekt', () => {
@@ -471,9 +471,9 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(4);
-        expect(omitOne(result[1], 'id')).toEqual(omitOne(nyPeriode, 'id'));
-        expect(result[2].fom).toEqual('2022-05-19');
-        expect(result[2].tom).toEqual('2022-08-17');
+        expect(omitOne(result[1]!, 'id')).toEqual(omitOne(nyPeriode, 'id'));
+        expect(result[2]!.fom).toEqual('2022-05-19');
+        expect(result[2]!.tom).toEqual('2022-08-17');
     });
 
     it('Skal ignorere perioder hvis tidsperiode starter før famdato og ender etter', () => {
@@ -523,12 +523,12 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(3);
-        expect(result[0].fom).toEqual(nyPeriode.fom);
-        expect(result[0].tom).toEqual('2022-10-03');
-        expect(result[1].fom).toEqual(perioderKunAnnenPartsUttak[0].fom);
-        expect(result[1].tom).toEqual(nyPeriode.tom);
-        expect(result[2].fom).toEqual('2022-10-17');
-        expect(result[2].tom).toEqual(perioderKunAnnenPartsUttak[0].tom);
+        expect(result[0]!.fom).toEqual(nyPeriode.fom);
+        expect(result[0]!.tom).toEqual('2022-10-03');
+        expect(result[1]!.fom).toEqual(perioderKunAnnenPartsUttak[0]!.fom);
+        expect(result[1]!.tom).toEqual(nyPeriode.tom);
+        expect(result[2]!.fom).toEqual('2022-10-17');
+        expect(result[2]!.tom).toEqual(perioderKunAnnenPartsUttak[0]!.tom);
     });
 
     it(
@@ -557,12 +557,12 @@ describe('Test av legg til periode i uttaksplan', () => {
             });
 
             expect(result.length).toEqual(6);
-            expect(result[3].fom).toEqual('2022-10-13');
-            expect(result[3].tom).toEqual('2023-03-20');
-            expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
-            expect(result[4].fom).toEqual('2023-03-21');
-            expect(result[4].tom).toEqual('2023-05-11');
-            expect(result[4].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+            expect(result[3]!.fom).toEqual('2022-10-13');
+            expect(result[3]!.tom).toEqual('2023-03-20');
+            expect(result[3]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+            expect(result[4]!.fom).toEqual('2023-03-21');
+            expect(result[4]!.tom).toEqual('2023-05-11');
+            expect(result[4]!.periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
             expect(result[5]).toEqual(nyPeriode);
         },
     );
@@ -590,21 +590,21 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(4);
-        expect(result[0].fom).toEqual(nyPeriode.fom);
-        expect(result[0].tom).toEqual('2024-04-30');
-        const periode1 = result[0];
+        expect(result[0]!.fom).toEqual(nyPeriode.fom);
+        expect(result[0]!.tom).toEqual('2024-04-30');
+        const periode1 = result[0]!;
         expect(periode1.kontoType).toEqual('FELLESPERIODE');
-        expect(result[1].fom).toEqual(toPerioder[0].fom);
-        expect(result[1].tom).toEqual(toPerioder[0].tom);
-        const periode2 = result[1];
+        expect(result[1]!.fom).toEqual(toPerioder[0]!.fom);
+        expect(result[1]!.tom).toEqual(toPerioder[0]!.tom);
+        const periode2 = result[1]!;
         expect(periode2.kontoType).toEqual('FELLESPERIODE');
-        expect(result[2].fom).toEqual(toPerioder[1].fom);
-        expect(result[2].tom).toEqual(toPerioder[1].tom);
-        const periode3 = result[2];
+        expect(result[2]!.fom).toEqual(toPerioder[1]!.fom);
+        expect(result[2]!.tom).toEqual(toPerioder[1]!.tom);
+        const periode3 = result[2]!;
         expect(periode3.kontoType).toEqual('FELLESPERIODE');
-        expect(result[3].fom).toEqual('2024-07-01');
-        expect(result[3].tom).toEqual(nyPeriode.tom);
-        const periode4 = result[2];
+        expect(result[3]!.fom).toEqual('2024-07-01');
+        expect(result[3]!.tom).toEqual(nyPeriode.tom);
+        const periode4 = result[2]!;
         expect(periode4.kontoType).toEqual('FELLESPERIODE');
     });
 });
@@ -635,49 +635,49 @@ describe('Test av split periode i uttaksplan', () => {
         const splitteDato = '2022-05-02';
         const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(testPerioder.length).toEqual(2);
-        expect(testPerioder[0].id).toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[0].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
-        if (!testPerioder[0].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
-            expect(testPerioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[0]!.id).toEqual(splitPeriodeFedrekvote.id);
+        expect(testPerioder[0]!.erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[0]!.erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+            expect(testPerioder[0]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
         }
-        expect(testPerioder[0].kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
-        expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
-        expect(testPerioder[0].tom).toEqual('2022-04-29');
-        expect(testPerioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
-        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
-        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
-            expect(testPerioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[0]!.kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
+        expect(testPerioder[0]!.fom).toEqual(splitPeriodeFedrekvote.fom);
+        expect(testPerioder[0]!.tom).toEqual('2022-04-29');
+        expect(testPerioder[1]!.id).not.toEqual(splitPeriodeFedrekvote.id);
+        expect(testPerioder[1]!.erAnnenPartEøs).toEqual(splitPeriodeFedrekvote.erAnnenPartEøs);
+        if (!testPerioder[1]!.erAnnenPartEøs && !splitPeriodeFedrekvote.erAnnenPartEøs) {
+            expect(testPerioder[1]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
         }
-        expect(testPerioder[1].kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
-        expect(testPerioder[1].fom).toEqual(splitteDato);
-        expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
+        expect(testPerioder[1]!.kontoType).toEqual(splitPeriodeFedrekvote.kontoType);
+        expect(testPerioder[1]!.fom).toEqual(splitteDato);
+        expect(testPerioder[1]!.tom).toEqual(splitPeriodeFedrekvote.tom);
     });
 
     it('Skal spitte periodeperiode med fedrekvote med familiehendelsesdato på en helgedag i to perioder med riktige datoer', () => {
         const splitteDato = '2022-05-01';
         const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(testPerioder.length).toEqual(2);
-        expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
-        expect(testPerioder[0].tom).toEqual('2022-04-29');
-        expect(testPerioder[1].fom).toEqual(splitPeriodeFedrekvote.tom);
-        expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
+        expect(testPerioder[0]!.fom).toEqual(splitPeriodeFedrekvote.fom);
+        expect(testPerioder[0]!.tom).toEqual('2022-04-29');
+        expect(testPerioder[1]!.fom).toEqual(splitPeriodeFedrekvote.tom);
+        expect(testPerioder[1]!.tom).toEqual(splitPeriodeFedrekvote.tom);
     });
 
     it('Skal spitte periode med aktivitetskrav der BFHR slik at perioden før familiehendelsesdato blir automatisk satt til uten aktivitetskrav', () => {
         const splitteDato = '2022-05-02';
         const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeBFHRMedAktivitetskrav, splitteDato);
         expect(testPerioder.length).toEqual(2);
-        expect(testPerioder[0].fom).toEqual(splitPeriodeFedrekvote.fom);
-        expect(testPerioder[0].tom).toEqual('2022-04-29');
-        expect(testPerioder[0].erAnnenPartEøs).toEqual(false);
-        if (!testPerioder[0].erAnnenPartEøs) {
-            expect(testPerioder[0].morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(testPerioder[0]!.fom).toEqual(splitPeriodeFedrekvote.fom);
+        expect(testPerioder[0]!.tom).toEqual('2022-04-29');
+        expect(testPerioder[0]!.erAnnenPartEøs).toEqual(false);
+        if (!testPerioder[0]!.erAnnenPartEøs) {
+            expect(testPerioder[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
         }
-        expect(testPerioder[1].fom).toEqual(splitPeriodeFedrekvote.tom);
-        expect(testPerioder[1].tom).toEqual(splitPeriodeFedrekvote.tom);
-        expect(testPerioder[1].erAnnenPartEøs).toEqual(splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs);
-        if (!testPerioder[1].erAnnenPartEøs && !splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs) {
-            expect(testPerioder[1].morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);
+        expect(testPerioder[1]!.fom).toEqual(splitPeriodeFedrekvote.tom);
+        expect(testPerioder[1]!.tom).toEqual(splitPeriodeFedrekvote.tom);
+        expect(testPerioder[1]!.erAnnenPartEøs).toEqual(splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs);
+        if (!testPerioder[1]!.erAnnenPartEøs && !splitPeriodeBFHRMedAktivitetskrav.erAnnenPartEøs) {
+            expect(testPerioder[1]!.morsAktivitet).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitet);
         }
     });
 });

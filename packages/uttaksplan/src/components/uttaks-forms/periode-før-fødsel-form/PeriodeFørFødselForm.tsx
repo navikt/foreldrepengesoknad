@@ -72,8 +72,14 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                 tidsperiode={tidsperiode}
                                 familiehendelsesdato={familiehendelsesdato}
                                 onBekreft={(currentValues) => {
-                                    setFieldValue(PeriodeFørFødselFormField.fom, ISOStringToDate(currentValues.fom));
-                                    setFieldValue(PeriodeFørFødselFormField.tom, ISOStringToDate(currentValues.tom));
+                                    void setFieldValue(
+                                        PeriodeFørFødselFormField.fom,
+                                        ISOStringToDate(currentValues.fom),
+                                    );
+                                    void setFieldValue(
+                                        PeriodeFørFødselFormField.tom,
+                                        ISOStringToDate(currentValues.tom),
+                                    );
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -104,12 +110,12 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
-                                        setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
+                                        void setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
+                                        void setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
                                     }}
                                     changeTidsperiode={(currentValues) => {
-                                        setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
-                                        setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
+                                        void setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
+                                        void setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
                                     }}
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => setTidsperiodeIsOpen(false)}

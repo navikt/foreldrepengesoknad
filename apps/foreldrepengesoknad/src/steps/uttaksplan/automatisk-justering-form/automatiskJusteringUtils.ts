@@ -29,7 +29,7 @@ export const getKanPerioderRundtFødselAutomatiskJusteres = (
     return (
         kanSøkersituasjonAutomatiskJustereRundtFødsel &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato)
+        getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0]!, termindato)
     );
 };
 

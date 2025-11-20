@@ -27,7 +27,7 @@ export const Step = <TYPE extends string>({
         throw new Error('Ingen valgte steg funnet');
     }
 
-    const title = steps[currentStepIndex].label;
+    const title = steps[currentStepIndex]!.label;
 
     return (
         <VStack gap="space-24">

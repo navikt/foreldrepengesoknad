@@ -16,7 +16,7 @@ function TypedFormikWrapper<FormValues>(props: Props<FormValues>) {
         <Formik<Partial<FormValues>>
             initialValues={initialValues}
             onSubmit={(values, { setSubmitting, setTouched }) => {
-                setTouched({});
+                void setTouched({});
                 setSubmitting(false);
                 onSubmit(values);
             }}

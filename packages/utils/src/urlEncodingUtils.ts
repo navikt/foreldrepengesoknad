@@ -15,6 +15,7 @@ function bytesToBase64(bytes: Uint8Array) {
 // encodeURIComponent() throws an error for lone surrogates, which is essentially the same.
 function isWellFormed(str: string) {
     if (typeof str.isWellFormed != 'undefined') {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call
         return str.isWellFormed();
     } else {
         // Use the older encodeURIComponent().

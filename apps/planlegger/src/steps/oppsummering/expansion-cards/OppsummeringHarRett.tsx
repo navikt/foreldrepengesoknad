@@ -155,7 +155,7 @@ export const OppsummeringHarRett = ({
                                             id="OppsummeringSteg.Periodene"
                                             values={{
                                                 hvem: capitalizeFirstLetter(fornavnSøker1Genitiv),
-                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
+                                                fom: intl.formatDate(planforslag.søker1[0]!.fom, {
                                                     day: '2-digit',
                                                     month: 'short',
                                                     year: 'numeric',
@@ -176,7 +176,7 @@ export const OppsummeringHarRett = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: capitalizeFirstLetter(fornavnSøker2Genitiv),
-                                            fom: intl.formatDate(planforslag.søker2[0].fom, {
+                                            fom: intl.formatDate(planforslag.søker2[0]!.fom, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -210,7 +210,7 @@ export const OppsummeringHarRett = ({
                                         <FormattedMessage
                                             id="OppsummeringSteg.Periode"
                                             values={{
-                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
+                                                fom: intl.formatDate(planforslag.søker1[0]!.fom, {
                                                     day: '2-digit',
                                                     month: 'short',
                                                     year: 'numeric',
@@ -257,6 +257,7 @@ export const OppsummeringHarRett = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
                             modus="planlegger"
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                             valgtStønadskonto={{} as any}
                             aleneOmOmsorg={erAleneOmOmsorg}
                             erMedmorDelAvSøknaden={false}
