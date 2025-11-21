@@ -12,6 +12,8 @@ import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpo
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
+    hentBeregningOptions,
+    hentBeregningerOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
     hentTidslinjehendelserOptions,
@@ -72,6 +74,7 @@ export const Saksoversikt = ({ søkerinfo }: Props) => {
 const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string }>();
+    useQuery(hentBeregningOptions(params.saksnummer!));
 
     // Gjør denne dataen klar i cachen slik at bruker slipper loader senere.
     useQuery(hentDokumenterOptions(params.saksnummer!));
