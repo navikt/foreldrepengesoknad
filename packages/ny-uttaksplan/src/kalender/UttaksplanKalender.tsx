@@ -107,7 +107,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                 )}
 
                 <div className="ax-md:flex-row flex flex-col">
-                    <div className={readOnly ? 'flex-1' : 'ax-md:w-[300px]'}>
+                    <div className={readOnly ? 'flex-1' : 'ax-md:w-[295px]'}>
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
