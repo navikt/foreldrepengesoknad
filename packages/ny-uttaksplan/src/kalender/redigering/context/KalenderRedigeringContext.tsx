@@ -62,10 +62,9 @@ export const KalenderRedigeringProvider = ({
     );
 
     const oppdater = useCallback(
-        (oppdatertPeriode: Planperiode[]) => {
-            const planperioder = erKunEnHelEksisterendePeriodeValgt
-                ? uttaksplanBuilder.oppdaterPerioder(oppdatertPeriode)
-                : uttaksplanBuilder.leggTilPerioder(oppdatertPeriode);
+        (perioder: Planperiode[]) => {
+            const planperioder = uttaksplanBuilder.leggTilPerioder(perioder);
+
             const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
             oppdaterUttaksplan(
@@ -74,7 +73,7 @@ export const KalenderRedigeringProvider = ({
                 ),
             );
         },
-        [erKunEnHelEksisterendePeriodeValgt, uttaksplanBuilder, oppdaterUttaksplan],
+        [erKunEnHelEksisterendePeriodeValgt, uttaksplanBuilder, oppdaterUttaksplan, uttaksplan],
     );
 
     const value = useMemo(() => {

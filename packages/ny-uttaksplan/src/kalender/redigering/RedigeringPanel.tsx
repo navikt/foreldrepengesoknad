@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -127,17 +128,12 @@ export const RedigeringPanel = ({ children }: Props) => {
 };
 
 const PeriodeDetaljerOgInfoMeldinger = () => {
-    const { erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { familiehendelsedato } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, eksisterendePerioderSomErValgt, oppdaterUttaksplan, setValgtePerioder } =
         useKalenderRedigeringContext();
 
-    const slettPeriode = getSlettPeriodeFn(
-        sammenslåtteValgtePerioder,
-        erFarEllerMedmor,
-        oppdaterUttaksplan,
-        setValgtePerioder,
-    );
+    const slettPeriode = getSlettPeriodeFn(sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder);
 
     const harPeriodeFørEllerEtter = sammenslåtteValgtePerioder.some(
         (p) => dayjs(p.fom).isBefore(familiehendelsedato) || dayjs(p.tom).isSameOrAfter(familiehendelsedato),
@@ -180,11 +176,10 @@ const finnAntallDager = (perioder: CalendarPeriod[]): number => {
 const getSlettPeriodeFn =
     (
         sammenslåtteValgtePerioder: CalendarPeriod[],
-        erFarEllerMedmor: boolean,
         oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void,
         setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>,
     ) =>
-    (periode: { fom: string; tom: string }) => {
+    (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
         const start = dayjs(periode.fom);
         const end = dayjs(periode.tom);
 
@@ -198,10 +193,10 @@ const getSlettPeriodeFn =
         oppdaterUttaksplan(
             perioder.map<Planperiode>((p) => ({
                 erAnnenPartEøs: false,
-                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+                forelder: periode.forelder,
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-                fom: p.fom,
-                tom: p.tom,
+                fom: dayjs(p.fom).isBefore(periode.fom) ? periode.fom : p.fom,
+                tom: dayjs(p.tom).isAfter(periode.tom) ? periode.tom : p.tom,
                 readOnly: false,
                 id: uniqueId(),
             })),

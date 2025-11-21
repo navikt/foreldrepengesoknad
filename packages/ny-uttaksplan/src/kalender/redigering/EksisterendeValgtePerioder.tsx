@@ -10,13 +10,15 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
+
 import { Planperiode } from '../../types/Planperiode';
 
 export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
 
 interface Props {
     perioder: PlanperiodeMedAntallDager[];
-    slettPeriode: (periode: { fom: string; tom: string }) => void;
+    slettPeriode: (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => void;
 }
 
 export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) => {
