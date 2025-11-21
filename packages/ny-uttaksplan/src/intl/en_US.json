@@ -223,7 +223,7 @@
     "RedigeringPanel.Ferie": "Vacation",
     "RedigeringPanel.Arbeid": "Work",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",
-    "RedigeringPanel.Dager": "{dato} {antall} {antall, select, 1 {day} other {days}}",
+    "RedigeringPanel.Dager": "{antall} {antall, select, 1 {day} other {days}} selected in the period",
     "RedigeringPanel.FerieForEllerEtterTermin": "You lose days if you do not have parental benefits before the due date or in the first six weeks after birth. You can postpone due to illness.",
     "RedigeringPanel.NyeDagerForklaring": "You have marked days that are not yet included in the plan. Select 'Add' to create a new period.",
     "RedigeringPanel.Maksimer": "Expand panel",

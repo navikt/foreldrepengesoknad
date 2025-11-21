@@ -174,22 +174,22 @@ describe('UttaksplanKalender', () => {
         const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
         expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
-        expect(fpFørFødselPeriode.getByText('15. Mar - 3. Apr. 20 dager')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('20 dager valgt i perioden')).toBeInTheDocument();
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(foreldrepengerPeriode.getByText('Mors kvote')).toBeInTheDocument();
-        expect(foreldrepengerPeriode.getByText('4.-18. Apr. 15 dager')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('15 dager valgt i perioden')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
         expect(arbeidPeriode.getByText('Mor')).toBeInTheDocument();
         expect(arbeidPeriode.getAllByText('Arbeid')).toHaveLength(2);
-        expect(arbeidPeriode.getByText('17.-23. May. 7 dager')).toBeInTheDocument();
+        expect(arbeidPeriode.getByText('7 dager valgt i perioden')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
         expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);
         expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(fellesperiode.getByText('31. May - 13. Jun. 1 dag')).toBeInTheDocument();
+        expect(fellesperiode.getByText('1 dag valgt i perioden')).toBeInTheDocument();
     });
 
     it('skal vise infomelding når en velger dag før fødselsdato', async () => {
@@ -270,5 +270,28 @@ describe('UttaksplanKalender', () => {
         expect(screen.getAllByText('Ja')[1]).toBeInTheDocument();
         expect(screen.getAllByText('Nei')[1]).toBeInTheDocument();
         expect(screen.getAllByLabelText('Nei')[1]).toBeChecked();
+    });
+
+    it('skal slette foreldrepenger før fødsel og fremdeles beholde markering for dagene etter fødsel', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const mars = screen.getByTestId('year:2024;month:2');
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(mars).getByTestId('day:18;dayColor:BLUE'));
+        await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
+
+        const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
+
+        await userEvent.click(foreldrepengerFørFødsel.getByText('Slett dager fra periode'));
+
+        expect(within(mars).getByTestId('day:18;dayColor:NONE')).toBeInTheDocument();
+        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(1);
+        expect(within(april).getByTestId('day:1;dayColor:NONE')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:3;dayColor:NONE')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:4;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:DARKBLUE', { exact: false })).toHaveLength(11);
     });
 });

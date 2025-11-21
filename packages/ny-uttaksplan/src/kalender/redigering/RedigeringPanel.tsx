@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
@@ -176,32 +177,64 @@ const getSlettPeriodeFn =
         oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void,
         setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>,
     ) =>
-    (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
-        const start = dayjs(periode.fom);
-        const end = dayjs(periode.tom);
+    (periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
+        const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
+        const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
 
-        const perioder = sammenslåtteValgtePerioder.filter((p) => {
-            const pStart = dayjs(p.fom);
-            const pEnd = dayjs(p.tom);
-
-            return start.isSameOrBefore(pEnd, 'day') && end.isSameOrAfter(pStart, 'day');
-        });
+        const perioder = sammenslåtteValgtePerioder.filter(
+            (p) =>
+                fomPeriodeSomSkalSlettes.isSameOrBefore(dayjs(p.tom), 'day') &&
+                tomPeriodeSomSkalSlettes.isSameOrAfter(dayjs(p.fom), 'day'),
+        );
 
         oppdaterUttaksplan(
             perioder.map<Planperiode>((p) => ({
                 erAnnenPartEøs: false,
-                forelder: periode.forelder,
+                forelder: periodeSomSkalSlettes.forelder,
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-                fom: dayjs(p.fom).isBefore(periode.fom) ? periode.fom : p.fom,
-                tom: dayjs(p.tom).isAfter(periode.tom) ? periode.tom : p.tom,
+                fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+                tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
                 readOnly: false,
                 id: uniqueId(),
             })),
         );
 
-        const erPerioderOverlappendeFn = getErPerioderOverlappende(perioder);
-        setValgtePerioder((oldPeriods) => oldPeriods.filter(erPerioderOverlappendeFn));
+        setValgtePerioder((oldPeriods) => justerPerioder(oldPeriods, periodeSomSkalSlettes));
     };
 
-const getErPerioderOverlappende = (perioder: CalendarPeriod[]) => (p: CalendarPeriod) =>
-    !perioder.some((rp) => dayjs(p.fom).isSameOrBefore(rp.tom, 'day') && dayjs(p.tom).isSameOrAfter(rp.fom, 'day'));
+const justerPerioder = (valgtePerioder: CalendarPeriod[], periodeSomSkalSlettes: { fom: string; tom: string }) => {
+    const fomSlett = dayjs(periodeSomSkalSlettes.fom);
+    const tomSlett = dayjs(periodeSomSkalSlettes.tom);
+
+    return valgtePerioder.flatMap((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        // Hvis perioden ikke overlapper perioden som skal slettes, behold hele perioden
+        if (tom.isBefore(fomSlett, 'day') || fom.isAfter(tomSlett, 'day')) {
+            return [periode];
+        }
+
+        const nyePerioder = [];
+
+        // Behold delen av valgt periode som ligger før perioden som skal slettes
+        if (fom.isBefore(fomSlett, 'day')) {
+            nyePerioder.push({
+                ...periode,
+                fom: fom.format(ISO_DATE_FORMAT),
+                tom: fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT),
+            });
+        }
+
+        // Behold delen av valgt periode som ligger etter delen som skal slettes
+        if (tom.isAfter(tomSlett, 'day')) {
+            nyePerioder.push({
+                ...periode,
+                fom: tomSlett.add(1, 'day').format(ISO_DATE_FORMAT),
+                tom: tom.format(ISO_DATE_FORMAT),
+            });
+        }
+
+        return nyePerioder;
+    });
+};

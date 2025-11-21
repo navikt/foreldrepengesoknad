@@ -5,7 +5,6 @@ import {
     PersonSuitFillIcon,
     TrashIcon,
 } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -114,10 +113,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 )}
                             </BodyShort>
                             <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ dato: formaterDato(p.fom, p.tom), antall: p.overlappendeDager }}
-                                />
+                                <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
                             </BodyShort>
                         </VStack>
                         <Spacer />
@@ -132,27 +128,4 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
             })}
         </VStack>
     );
-};
-
-const formaterDato = (fom: string, tom: string): string => {
-    const start = dayjs(fom);
-    const end = dayjs(tom);
-
-    const sameDay = start.isSame(end, 'day');
-    const sameMonth = start.isSame(end, 'month');
-    const sameYear = start.isSame(end, 'year');
-
-    if (sameDay) {
-        return start.format('D. MMM YYYY.');
-    }
-
-    if (sameMonth && sameYear) {
-        return `${start.format('D.')}-${end.format('D. MMM.')}`;
-    }
-
-    if (!sameMonth && sameYear) {
-        return `${start.format('D. MMM')} - ${end.format('D. MMM.')}`;
-    }
-
-    return `${start.format('D. MMM YY')} - ${end.format('D. MMM YY.')}`;
 };
