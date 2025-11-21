@@ -46,22 +46,15 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const allePerioderBortsettFraFamiliehendelseperioden = uttaksplan.filter(
-        (p) =>
-            !(dayjs(p.fom).isSame(familiehendelsesdato, 'd') && dayjs(p.tom).isSame(familiehendelsesdato, 'd')) &&
-            p.fom !== undefined &&
-            p.tom !== undefined,
-    );
 
-    const unikePerioder = allePerioderBortsettFraFamiliehendelseperioden.reduce((alle, periode) => {
+    // Filtrer bort annen parts perioder som er identiske med søker sine perioder
+    const unikePerioder = uttaksplan.reduce<Planperiode[]>((alle, periode) => {
         const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
-        const filtrerte = allePerioderBortsettFraFamiliehendelseperioden.filter(
-            (p) => p.fom === periode.fom && p.tom === periode.tom,
-        );
+        const filtrerte = uttaksplan.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
-    }, [] as Planperiode[]);
+    }, []);
 
-    const res = unikePerioder.reduce((acc, periode) => {
+    const res = unikePerioder.reduce<CalendarPeriodWithLabel[]>((acc, periode) => {
         const color = erIPlanleggerModus
             ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, uttaksplan)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, uttaksplan, barn);
@@ -75,14 +68,14 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                 {
                     fom: periode.fom,
                     tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
-                    color: color,
                     legendLabel: getLegendLabelFromPeriode(periode),
+                    color,
                 },
                 {
                     fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
                     tom: periode.tom,
-                    color: color,
                     legendLabel: getLegendLabelFromPeriode(periode),
+                    color,
                 },
             ];
         }
@@ -93,12 +86,14 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                 fom: dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
                     ? formatDateIso(UttaksdagenString(periode.fom).neste())
                     : formatDateIso(periode.fom),
-                tom: formatDateIso(periode.tom),
-                color,
+                tom: dayjs(periode.tom).isSame(dayjs(familiehendelsesdato), 'd')
+                    ? formatDateIso(UttaksdagenString(periode.tom).forrige())
+                    : formatDateIso(periode.tom),
                 legendLabel: getLegendLabelFromPeriode(periode),
+                color,
             },
         ];
-    }, [] as CalendarPeriodWithLabel[]);
+    }, []);
 
     const perioderForVisning =
         barnehagestartdato === undefined
