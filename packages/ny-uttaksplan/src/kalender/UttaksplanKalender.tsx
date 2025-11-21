@@ -25,7 +25,7 @@ interface Props {
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {
     const intl = useIntl();
-    const { erFarEllerMedmor, navnPåForeldre } = useUttaksplanData();
+    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato } = useUttaksplanData();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -113,6 +113,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             isRangeSelection={isRangeSelection}
+                            familiehendelsedato={familiehendelsedato}
                         />
                     </div>
                     {oppdaterUttaksplan && valgtePerioder.length > 0 && (

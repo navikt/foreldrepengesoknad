@@ -18,6 +18,7 @@ interface Props {
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     isRangeSelection?: boolean;
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
+    familiehendelsedato: string;
 }
 
 export const Calendar = ({
@@ -27,8 +28,12 @@ export const Calendar = ({
     setSelectedPeriods,
     isRangeSelection = false,
     getSrTextForSelectedPeriod,
+    familiehendelsedato,
 }: Props) => {
-    const allMonths = useMemo(() => findMonths(periods[0]!.fom, findLatestTom(periods)), [periods]);
+    const allMonths = useMemo(
+        () => findMonths(findLatestTom(periods), familiehendelsedato),
+        [periods, familiehendelsedato],
+    );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
@@ -113,13 +118,13 @@ export const Calendar = ({
 const findLatestTom = (periods: CalendarPeriod[]): string =>
     periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0]!.tom);
 
-const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
-    const first = dayjs(firstDate);
+const findMonths = (lastDate: string, familiehendelsedato?: string): Array<{ month: number; year: number }> => {
     const last = dayjs(lastDate);
-    const numberOfMonthsToAddStart = first.month() % 3;
+    const famdato = dayjs(familiehendelsedato);
+    const numberOfMonthsToAddStart = 3;
     const numberOfMonthsToAddEnd = 3 - (last.month() % 3);
 
-    const firstDateInCalendar = first.subtract(numberOfMonthsToAddStart, 'month');
+    const firstDateInCalendar = famdato.subtract(numberOfMonthsToAddStart, 'month');
     const lastDateInCalendar = last.add(numberOfMonthsToAddEnd, 'month');
 
     const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
