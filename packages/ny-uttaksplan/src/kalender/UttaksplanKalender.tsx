@@ -9,6 +9,7 @@ import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-rea
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
+import { dateToISOString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -25,7 +26,7 @@ interface Props {
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan }: Props) => {
     const intl = useIntl();
-    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato } = useUttaksplanData();
+    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan } = useUttaksplanData();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -113,8 +114,12 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             isRangeSelection={isRangeSelection}
-                            firstDateInCalendar={familiehendelsedato}
-                            lastDateInCalendar={barnehagestartdato}
+                            firstDateInCalendar={dateToISOString(
+                                dayjs(familiehendelsedato).subtract(3, 'month').toDate(),
+                            )}
+                            lastDateInCalendar={
+                                (barnehagestartdato ?? uttaksplan.length > 0) ? uttaksplan.at(-1)!.tom : undefined
+                            }
                         />
                     </div>
                     {oppdaterUttaksplan && valgtePerioder.length > 0 && (

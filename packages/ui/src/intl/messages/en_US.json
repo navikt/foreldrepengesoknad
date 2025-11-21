@@ -58,5 +58,5 @@
     "ProgressStepper.ShowSteps": "Show all steps",
     "ProgressStepper.HideSteps": "Hide all steps",
     "ProgressStepper.StepCounter": "Step {activeStep} of {totalSteps}",
-    "Calendar.LeggTilMåneder": "Add months"
+    "Calendar.LeggTilMåneder": "Show more months"
 }

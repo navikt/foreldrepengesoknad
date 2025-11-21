@@ -8,12 +8,12 @@ const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
 describe('<Calendar>', () => {
     it('skal vise korrekt antall dager uten markering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:NONE', { exact: false })).toHaveLength(43);
+        expect(await screen.findAllByTestId('dayColor:NONE', { exact: false })).toHaveLength(22);
     });
 
     it('skal vise korrekt antall dager med helgemarkering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:GRAY', { exact: false })).toHaveLength(78);
+        expect(await screen.findAllByTestId('dayColor:GRAY', { exact: false })).toHaveLength(69);
     });
 
     it('skal vise korrekt antall dager med blå markering', async () => {
@@ -35,18 +35,11 @@ describe('<Calendar>', () => {
     it('skal vise korrekt navn på måneder når perioden går over to år', async () => {
         render(<PeriodsThatSpanOverAYear />);
 
-        expect(await screen.findByText('Januar 2024')).toBeInTheDocument();
-        expect(screen.getByText('Februar 2024')).toBeInTheDocument();
+        expect(await screen.findByText('Februar 2024')).toBeInTheDocument();
         expect(screen.getByText('Mars 2024')).toBeInTheDocument();
         expect(screen.getByText('April 2024')).toBeInTheDocument();
         expect(screen.getByText('Mai 2024')).toBeInTheDocument();
         expect(screen.getByText('Juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Juli 2024')).toBeInTheDocument();
-        expect(screen.getByText('August 2024')).toBeInTheDocument();
-        expect(screen.getByText('September 2024')).toBeInTheDocument();
-        expect(screen.getByText('Oktober 2024')).toBeInTheDocument();
-        expect(screen.getByText('November 2024')).toBeInTheDocument();
-        expect(screen.getByText('Desember 2024')).toBeInTheDocument();
-        expect(screen.getByText('Januar 2025')).toBeInTheDocument();
     });
 });

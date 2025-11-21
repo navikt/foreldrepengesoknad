@@ -21,8 +21,6 @@ interface Props {
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
     firstDateInCalendar: string;
     lastDateInCalendar?: string;
-    monthsToAddToStart?: number;
-    monthsToAddToLast?: number;
 }
 
 export const Calendar = ({
@@ -34,26 +32,11 @@ export const Calendar = ({
     getSrTextForSelectedPeriod,
     firstDateInCalendar,
     lastDateInCalendar,
-    monthsToAddToLast = 2,
-    monthsToAddToStart = 3,
 }: Props) => {
     const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
     const allMonths = useMemo(
-        () =>
-            findMonths(
-                additionalMonthsToAddToLast + monthsToAddToLast,
-                monthsToAddToStart,
-                firstDateInCalendar,
-                lastDateInCalendar,
-            ),
-        [
-            periods,
-            firstDateInCalendar,
-            lastDateInCalendar,
-            additionalMonthsToAddToLast,
-            monthsToAddToLast,
-            monthsToAddToStart,
-        ],
+        () => findMonths(additionalMonthsToAddToLast, firstDateInCalendar, lastDateInCalendar),
+        [periods, firstDateInCalendar, lastDateInCalendar, additionalMonthsToAddToLast],
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
@@ -131,34 +114,34 @@ export const Calendar = ({
                         />
                     );
                 })}
-                <Button
-                    onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
-                    type="button"
-                    variant="secondary"
-                    size="small"
-                >
-                    <FormattedMessage id="Calendar.LeggTilMåneder" />
-                </Button>
             </HGrid>
+            <Button
+                onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
+                type="button"
+                variant="secondary"
+                size="small"
+                className="mt-4 w-full"
+            >
+                <FormattedMessage id="Calendar.LeggTilMåneder" />
+            </Button>
         </>
     );
 };
 
 const findMonths = (
-    monthsToAddToLast: number,
-    monthsToAddToStart: number,
+    additionalMonthsToAddToLast: number,
     firstDateInCalendar: string,
     lastDateInCalendar?: string,
 ): Array<{ month: number; year: number }> => {
     const firstDate = dayjs(firstDateInCalendar);
     const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
 
-    const firstDateInCalendarAdjusted = firstDate.subtract(monthsToAddToStart, 'month');
-    const lastDateInCalendarAdjusted = lastDate.add(monthsToAddToLast, 'month');
+    const firstDateInCalendarAdjusted = firstDate;
+    const lastDateInCalendarAdjusted = lastDate.add(additionalMonthsToAddToLast, 'month');
 
     const numberOfMonthsBetween = monthDiff(firstDateInCalendarAdjusted.toDate(), lastDateInCalendarAdjusted.toDate());
 
-    return Array.from({ length: numberOfMonthsBetween }, (_, i) => {
+    return Array.from({ length: numberOfMonthsBetween + 1 }, (_, i) => {
         const date = firstDateInCalendarAdjusted.add(i, 'month');
         return { month: date.month(), year: date.year() };
     });
