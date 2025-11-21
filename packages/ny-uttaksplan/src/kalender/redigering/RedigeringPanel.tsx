@@ -156,9 +156,6 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
 
             {!erFerieValgbart && harPeriodeFørEllerEtter && (
                 <Alert variant="info" size="small">
-                    <Heading size="xsmall" level="3">
-                        <FormattedMessage id="RedigeringPanel.OmFerie" />
-                    </Heading>
                     <FormattedMessage id="RedigeringPanel.FerieForEllerEtterTermin" />
                 </Alert>
             )}
