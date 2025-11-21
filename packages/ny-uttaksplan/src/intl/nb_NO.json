@@ -223,7 +223,7 @@
     "RedigeringPanel.Far": "Far",
     "RedigeringPanel.Mor": "Mor",
     "RedigeringPanel.Dager": "{dato} {antall} {antall, select, 1 {dag} other {dager}}",
-    "RedigeringPanel.FerieForEllerEtterTermin": "Du mister foreldrepenger hvis du velger ferie før termin eller i de seks første ukene etter fødsel.",
+    "RedigeringPanel.FerieForEllerEtterTermin": "Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel. Du kan utsette ved sykdom.",
     "RedigeringPanel.DuHarMarkertNyeDager": "Du har markert nye dager",
     "RedigeringPanel.NyeDagerForklaring": "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
     "RedigeringPanel.Maksimer": "Utvid panel",

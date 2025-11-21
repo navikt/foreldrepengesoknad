@@ -203,7 +203,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du mister foreldrepenger hvis du velger ferie før termin eller i de seks første ukene etter fødsel.',
+                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel. Du kan utsette ved sykdom.',
             ),
         ).toBeInTheDocument();
     });
@@ -219,7 +219,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du mister foreldrepenger hvis du velger ferie før termin eller i de seks første ukene etter fødsel.',
+                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel. Du kan utsette ved sykdom.',
             ),
         ).toBeInTheDocument();
     });
