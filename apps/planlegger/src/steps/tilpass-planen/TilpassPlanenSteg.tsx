@@ -165,87 +165,81 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         />
                     </Heading>
 
-                    <VStack gap="space-24">
-                        <HvaErMulig
-                            hvemPlanlegger={hvemPlanlegger}
-                            arbeidssituasjon={arbeidssituasjon}
-                            barnet={omBarnet}
+                    <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
+
+                    <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
+
+                    {visningsmodus === 'liste' && (
+                        <UttaksplanNy
+                            oppdaterUttaksplan={oppdaterUttaksplan}
+                            isAllAccordionsOpen={isAllAccordionsOpen}
                         />
+                    )}
 
-                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
+                    {visningsmodus === 'kalender' && (
+                        <UttaksplanKalender
+                            readOnly={!erUttaksplanKalenderRedigerbar()}
+                            barnehagestartdato={barnehagestartdato}
+                            oppdaterUttaksplan={oppdaterUttaksplan}
+                        />
+                    )}
+
+                    <HStack gap="space-16">
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
+                            onClick={() => {
+                                setCurrentUttaksplanIndex(0);
+                                lagreUttaksplan([originalUttaksplan]);
+                            }}
+                        >
+                            <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
+                        </Button>
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
+                            onClick={() => {
+                                if (currentUttaksplanIndex > 0) {
+                                    setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+                                }
+                            }}
+                        >
+                            <FormattedMessage id="TilpassPlanenSteg.Angre" />
+                        </Button>
                         {visningsmodus === 'liste' && (
-                            <>
-                                <UttaksplanNy
-                                    oppdaterUttaksplan={oppdaterUttaksplan}
-                                    isAllAccordionsOpen={isAllAccordionsOpen}
-                                />
-                                <HStack gap="space-16">
-                                    <Button
-                                        size="small"
-                                        variant="secondary"
-                                        icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
-                                        onClick={() => {
-                                            setCurrentUttaksplanIndex(0);
-                                            lagreUttaksplan([originalUttaksplan]);
-                                        }}
-                                    >
-                                        <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        variant="secondary"
-                                        icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
-                                        onClick={() => {
-                                            if (currentUttaksplanIndex > 0) {
-                                                setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
-                                            }
-                                        }}
-                                    >
-                                        <FormattedMessage id="TilpassPlanenSteg.Angre" />
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
-                                        icon={
-                                            isAllAccordionsOpen ? (
-                                                <XMarkIcon aria-hidden height={24} width={24} />
-                                            ) : (
-                                                <PencilIcon aria-hidden height={24} width={24} />
-                                            )
-                                        }
-                                        onClick={handleToggleAllAccordions}
-                                    >
-                                        {isAllAccordionsOpen ? (
-                                            <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
-                                        ) : (
-                                            <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
-                                        )}
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        variant="secondary"
-                                        icon={<TrashIcon aria-hidden height={24} width={24} />}
-                                        onClick={() => setOpen(true)}
-                                    >
-                                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                                    </Button>
-                                </HStack>
-                                <KvoteOppsummering visStatusIkoner rettighetType={utledRettighetType()} />
-                            </>
+                            <Button
+                                size="small"
+                                variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
+                                icon={
+                                    isAllAccordionsOpen ? (
+                                        <XMarkIcon aria-hidden height={24} width={24} />
+                                    ) : (
+                                        <PencilIcon aria-hidden height={24} width={24} />
+                                    )
+                                }
+                                onClick={handleToggleAllAccordions}
+                            >
+                                {isAllAccordionsOpen ? (
+                                    <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
+                                ) : (
+                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
+                                )}
+                            </Button>
                         )}
-                    </VStack>
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            icon={<TrashIcon aria-hidden height={24} width={24} />}
+                            onClick={() => setOpen(true)}
+                        >
+                            <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
+                        </Button>
+                    </HStack>
 
-                    <VStack gap="space-20">
-                        {visningsmodus === 'kalender' && (
-                            <div className="max-[479px]:p-0">
-                                <UttaksplanKalender
-                                    readOnly={!erUttaksplanKalenderRedigerbar()}
-                                    barnehagestartdato={barnehagestartdato}
-                                    oppdaterUttaksplan={oppdaterUttaksplan}
-                                />
-                            </div>
-                        )}
-                    </VStack>
+                    <KvoteOppsummering visStatusIkoner rettighetType={utledRettighetType()} />
+
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={navigator.goToNextDefaultStep}

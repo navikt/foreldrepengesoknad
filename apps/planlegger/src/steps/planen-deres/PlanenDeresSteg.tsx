@@ -254,25 +254,22 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             )}
                     </VStack>
 
-                    <VStack gap="space-20">
-                        <div className="max-[479px]:p-0">
-                            <UttaksplanDataProvider
-                                barn={mapOmBarnetTilBarn(omBarnet)}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                navnPåForeldre={getNavnPåForeldre(hvemPlanlegger, intl)}
-                                modus="planlegger"
-                                valgtStønadskonto={valgtStønadskonto}
-                                aleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
-                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
-                                bareFarMedmorHarRett={bareFarMedmorHarRett}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                erDeltUttak={fordeling !== undefined}
-                                saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
-                            >
-                                <UttaksplanKalender readOnly={true} barnehagestartdato={barnehagestartdato} />
-                            </UttaksplanDataProvider>
-                        </div>
-                    </VStack>
+                    <UttaksplanDataProvider
+                        barn={mapOmBarnetTilBarn(omBarnet)}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        navnPåForeldre={getNavnPåForeldre(hvemPlanlegger, intl)}
+                        modus="planlegger"
+                        valgtStønadskonto={valgtStønadskonto}
+                        aleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
+                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
+                        bareFarMedmorHarRett={bareFarMedmorHarRett}
+                        harAktivitetskravIPeriodeUtenUttak={false}
+                        erDeltUttak={fordeling !== undefined}
+                        saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
+                    >
+                        <UttaksplanKalender readOnly={true} barnehagestartdato={barnehagestartdato} />
+                    </UttaksplanDataProvider>
+
                     <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
                         color="gray"
