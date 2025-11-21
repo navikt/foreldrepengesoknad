@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { HGrid } from '@navikt/ds-react';
+import { Button, HGrid } from '@navikt/ds-react';
 
 import { Month } from './Month';
 import { CalendarPeriod } from './types/CalendarPeriod';
@@ -30,9 +30,10 @@ export const Calendar = ({
     getSrTextForSelectedPeriod,
     familiehendelsedato,
 }: Props) => {
+    const [monthsToAddToLast, setMonthsToAddToLast] = useState(0);
     const allMonths = useMemo(
-        () => findMonths(findLatestTom(periods), familiehendelsedato),
-        [periods, familiehendelsedato],
+        () => findMonths(findLatestTom(periods), monthsToAddToLast, familiehendelsedato),
+        [periods, familiehendelsedato, monthsToAddToLast],
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
@@ -110,6 +111,14 @@ export const Calendar = ({
                         />
                     );
                 })}
+                <Button
+                    onClick={() => setMonthsToAddToLast((value) => value + 3)}
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                >
+                    Vis flere måneder
+                </Button>
             </HGrid>
         </>
     );
@@ -118,11 +127,15 @@ export const Calendar = ({
 const findLatestTom = (periods: CalendarPeriod[]): string =>
     periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0]!.tom);
 
-const findMonths = (lastDate: string, familiehendelsedato?: string): Array<{ month: number; year: number }> => {
+const findMonths = (
+    lastDate: string,
+    monthsToAddToLast: number,
+    familiehendelsedato?: string,
+): Array<{ month: number; year: number }> => {
     const last = dayjs(lastDate);
     const famdato = dayjs(familiehendelsedato);
     const numberOfMonthsToAddStart = 3;
-    const numberOfMonthsToAddEnd = 3 - (last.month() % 3);
+    const numberOfMonthsToAddEnd = 2 + monthsToAddToLast;
 
     const firstDateInCalendar = famdato.subtract(numberOfMonthsToAddStart, 'month');
     const lastDateInCalendar = last.add(numberOfMonthsToAddEnd, 'month');
