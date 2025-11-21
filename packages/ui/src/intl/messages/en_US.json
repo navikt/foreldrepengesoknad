@@ -57,5 +57,6 @@
     "RegisterdataUtdatert.Message": "Information about you has changed since you last filled out the application. You must therefore start filling out the application again.",
     "ProgressStepper.ShowSteps": "Show all steps",
     "ProgressStepper.HideSteps": "Hide all steps",
-    "ProgressStepper.StepCounter": "Step {activeStep} of {totalSteps}"
+    "ProgressStepper.StepCounter": "Step {activeStep} of {totalSteps}",
+    "Calendar.LeggTilMåneder": "Add months"
 }

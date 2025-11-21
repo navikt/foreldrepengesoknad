@@ -113,7 +113,8 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             isRangeSelection={isRangeSelection}
-                            familiehendelsedato={familiehendelsedato}
+                            firstDateInCalendar={familiehendelsedato}
+                            lastDateInCalendar={barnehagestartdato}
                         />
                     </div>
                     {oppdaterUttaksplan && valgtePerioder.length > 0 && (

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Button, HGrid } from '@navikt/ds-react';
 
@@ -18,7 +19,10 @@ interface Props {
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     isRangeSelection?: boolean;
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
-    familiehendelsedato: string;
+    firstDateInCalendar: string;
+    lastDateInCalendar?: string;
+    monthsToAddToStart?: number;
+    monthsToAddToLast?: number;
 }
 
 export const Calendar = ({
@@ -28,12 +32,28 @@ export const Calendar = ({
     setSelectedPeriods,
     isRangeSelection = false,
     getSrTextForSelectedPeriod,
-    familiehendelsedato,
+    firstDateInCalendar,
+    lastDateInCalendar,
+    monthsToAddToLast = 2,
+    monthsToAddToStart = 3,
 }: Props) => {
-    const [monthsToAddToLast, setMonthsToAddToLast] = useState(0);
+    const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
     const allMonths = useMemo(
-        () => findMonths(findLatestTom(periods), monthsToAddToLast, familiehendelsedato),
-        [periods, familiehendelsedato, monthsToAddToLast],
+        () =>
+            findMonths(
+                additionalMonthsToAddToLast + monthsToAddToLast,
+                monthsToAddToStart,
+                firstDateInCalendar,
+                lastDateInCalendar,
+            ),
+        [
+            periods,
+            firstDateInCalendar,
+            lastDateInCalendar,
+            additionalMonthsToAddToLast,
+            monthsToAddToLast,
+            monthsToAddToStart,
+        ],
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
@@ -112,38 +132,34 @@ export const Calendar = ({
                     );
                 })}
                 <Button
-                    onClick={() => setMonthsToAddToLast((value) => value + 3)}
+                    onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
                     type="button"
                     variant="secondary"
                     size="small"
                 >
-                    Vis flere måneder
+                    <FormattedMessage id="Calendar.LeggTilMåneder" />
                 </Button>
             </HGrid>
         </>
     );
 };
 
-const findLatestTom = (periods: CalendarPeriod[]): string =>
-    periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0]!.tom);
-
 const findMonths = (
-    lastDate: string,
     monthsToAddToLast: number,
-    familiehendelsedato?: string,
+    monthsToAddToStart: number,
+    firstDateInCalendar: string,
+    lastDateInCalendar?: string,
 ): Array<{ month: number; year: number }> => {
-    const last = dayjs(lastDate);
-    const famdato = dayjs(familiehendelsedato);
-    const numberOfMonthsToAddStart = 3;
-    const numberOfMonthsToAddEnd = 2 + monthsToAddToLast;
+    const firstDate = dayjs(firstDateInCalendar);
+    const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
 
-    const firstDateInCalendar = famdato.subtract(numberOfMonthsToAddStart, 'month');
-    const lastDateInCalendar = last.add(numberOfMonthsToAddEnd, 'month');
+    const firstDateInCalendarAdjusted = firstDate.subtract(monthsToAddToStart, 'month');
+    const lastDateInCalendarAdjusted = lastDate.add(monthsToAddToLast, 'month');
 
-    const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
+    const numberOfMonthsBetween = monthDiff(firstDateInCalendarAdjusted.toDate(), lastDateInCalendarAdjusted.toDate());
 
     return Array.from({ length: numberOfMonthsBetween }, (_, i) => {
-        const date = firstDateInCalendar.add(i, 'month');
+        const date = firstDateInCalendarAdjusted.add(i, 'month');
         return { month: date.month(), year: date.year() };
     });
 };
