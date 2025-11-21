@@ -179,7 +179,7 @@ const getSlettPeriodeFn =
         oppdaterUttaksplan: (oppdatertePerioder: Planperiode[]) => void,
         setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>,
     ) =>
-    (periode: { fom: string; tom: string; forelder: BrukerRolleSak_fpoversikt }) => {
+    (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
         const start = dayjs(periode.fom);
         const end = dayjs(periode.tom);
 

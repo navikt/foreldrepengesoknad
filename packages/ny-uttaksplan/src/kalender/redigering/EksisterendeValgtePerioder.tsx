@@ -18,7 +18,7 @@ export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: numbe
 
 interface Props {
     perioder: PlanperiodeMedAntallDager[];
-    slettPeriode: (periode: { fom: string; tom: string; forelder: BrukerRolleSak_fpoversikt }) => void;
+    slettPeriode: (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => void;
 }
 
 export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) => {
@@ -125,7 +125,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                             title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
                             fontSize="1.5rem"
                             className="cursor-pointer hover:opacity-70"
-                            onClick={() => slettPeriode(p as any)}
+                            onClick={() => slettPeriode(p)}
                         />
                     </HStack>
                 );
