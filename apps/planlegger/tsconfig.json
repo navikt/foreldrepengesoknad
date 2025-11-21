@@ -12,6 +12,6 @@
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "include": ["src", "mock-api"],
+    "include": ["src", "mock-api", "../../@types/vite.env.d.ts"],
     "exclude": ["node_modules"]
 }
