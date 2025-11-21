@@ -31,6 +31,7 @@ export const API_URLS = {
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     tidslinje: `${urlPrefiks}/fpoversikt/api/tidslinje`,
     manglendeVedlegg: `${urlPrefiks}/fpoversikt/api/oppgaver/manglendevedlegg`,
+    beregning: `${urlPrefiks}/fpoversikt/api/beregning`,
 
     ettersend: `${urlPrefiks}/fpsoknad/api/soknad/ettersend`,
     lastOppFPVedlegg: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER/vedlegg`,
@@ -67,6 +68,14 @@ export const hentDokumenterOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['DOKUMENTER', saksnummer],
         queryFn: () => ky.get(API_URLS.dokumenter, { searchParams: { saksnummer } }).json<DokumentDto_fpoversikt[]>(),
+    });
+
+export const hentBeregningOptions = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['BEREGNING', saksnummer],
+        queryFn: async () => {
+            return await ky.get(API_URLS.beregning, { searchParams: { saksnummer } }).json<unknown[]>();
+        },
     });
 
 export const hentInntektsmelding = (saksnummer: string) =>
