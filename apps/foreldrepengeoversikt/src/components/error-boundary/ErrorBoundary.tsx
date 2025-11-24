@@ -1,6 +1,8 @@
 import * as Sentry from '@sentry/browser';
 import { Component, ErrorInfo } from 'react';
 
+import { Alert } from '@navikt/ds-react';
+
 type Props = {
     children: React.ReactNode;
 };
@@ -29,7 +31,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
     render() {
         if (this.state.hasError) {
-            return <div className="m-0 ml-auto mr-auto w-[704px] p-8">{this.state.error?.message}</div>;
+            return (
+                <Alert variant="info" className="m-8 ml-auto mr-auto w-[704px]">
+                    {this.state.error?.message}
+                </Alert>
+            );
         }
 
         return this.props.children;
