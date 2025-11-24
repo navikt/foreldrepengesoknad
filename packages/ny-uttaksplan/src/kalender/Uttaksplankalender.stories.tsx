@@ -56,7 +56,11 @@ const meta = {
                 erDeltUttak={args.erDeltUttak || false}
                 saksperioder={perioder}
             >
-                <UttaksplanKalender {...args} oppdaterUttaksplan={handleOnPlanChange} />
+                <UttaksplanKalender
+                    {...args}
+                    oppdaterUttaksplan={handleOnPlanChange}
+                    endreUttaksplan={action('button-click')}
+                />
             </UttaksplanDataProvider>
         );
     },

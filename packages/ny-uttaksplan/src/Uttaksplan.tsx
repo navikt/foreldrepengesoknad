@@ -7,6 +7,7 @@ import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
+import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnapper';
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { useUttaksplanData } from './context/UttaksplanDataContext';
@@ -16,15 +17,21 @@ import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
     oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
-    isAllAccordionsOpen?: boolean;
+    endreUttaksplan?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 }
 
-export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props) => {
+export const UttaksplanNy = ({ oppdaterUttaksplan, endreUttaksplan }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
     const { modus, uttaksplan } = useUttaksplanData();
 
     const uttaksplanBuilder = useUttaksplanBuilder();
+
+    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
+
+    const toggleAllAccordions = () => {
+        setIsAllAccordionsOpen(!isAllAccordionsOpen);
+    };
 
     return (
         <>
@@ -71,6 +78,15 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, isAllAccordionsOpen }: Props)
                         modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
                         setIsLeggTilPeriodePanelOpen(false);
                     }}
+                />
+            )}
+            {oppdaterUttaksplan && endreUttaksplan && (
+                <UttaksplanHandlingKnapper
+                    toggleAllAccordions={toggleAllAccordions}
+                    visKnapper
+                    angreEndring={() => endreUttaksplan('angre')}
+                    tilbakestillPlan={() => endreUttaksplan('tilbakestill')}
+                    fjernAltIPlanen={() => endreUttaksplan('fjernAlt')}
                 />
             )}
         </>

@@ -1,4 +1,3 @@
-import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
@@ -8,7 +7,7 @@ import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåF
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { Alert, BodyLong, Button, HStack, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Heading, Modal, VStack } from '@navikt/ds-react';
 
 import { KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
@@ -27,7 +26,6 @@ interface Props {
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const [open, setOpen] = useState(false);
-    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
@@ -69,17 +67,6 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
-    const utledRettighetType = () => {
-        if (erDeltUttak) {
-            return 'BEGGE_RETT';
-        }
-        if (erAleneOmOmsorg) {
-            return 'ALENEOMSORG';
-        }
-
-        return 'BARE_SØKER_RETT';
-    };
-
     const oppdaterUttaksplan = (perioder: UttakPeriode_fpoversikt[]) => {
         let nyUttaksplan = [];
 
@@ -94,11 +81,18 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         lagreUttaksplan(nyUttaksplan);
     };
 
-    const handleToggleAllAccordions = () => {
-        setIsAllAccordionsOpen(!isAllAccordionsOpen);
-    };
-
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
+
+    const endreUttaksplan = (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => {
+        if (handling === 'angre' && currentUttaksplanIndex > 0) {
+            setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+        } else if (handling === 'tilbakestill') {
+            setCurrentUttaksplanIndex(0);
+            lagreUttaksplan([originalUttaksplan]);
+        } else if (handling === 'fjernAlt') {
+            setOpen(true);
+        }
+    };
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -170,10 +164,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
 
                     {visningsmodus === 'liste' && (
-                        <UttaksplanNy
-                            oppdaterUttaksplan={oppdaterUttaksplan}
-                            isAllAccordionsOpen={isAllAccordionsOpen}
-                        />
+                        <UttaksplanNy oppdaterUttaksplan={oppdaterUttaksplan} endreUttaksplan={endreUttaksplan} />
                     )}
 
                     {visningsmodus === 'kalender' && (
@@ -181,64 +172,11 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                             readOnly={!erUttaksplanKalenderRedigerbar()}
                             barnehagestartdato={barnehagestartdato}
                             oppdaterUttaksplan={oppdaterUttaksplan}
+                            endreUttaksplan={endreUttaksplan}
                         />
                     )}
 
-                    <HStack gap="space-16">
-                        <Button
-                            size="small"
-                            variant="secondary"
-                            icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
-                            onClick={() => {
-                                setCurrentUttaksplanIndex(0);
-                                lagreUttaksplan([originalUttaksplan]);
-                            }}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                        </Button>
-                        <Button
-                            size="small"
-                            variant="secondary"
-                            icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
-                            onClick={() => {
-                                if (currentUttaksplanIndex > 0) {
-                                    setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
-                                }
-                            }}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.Angre" />
-                        </Button>
-                        {visningsmodus === 'liste' && (
-                            <Button
-                                size="small"
-                                variant={isAllAccordionsOpen ? 'primary' : 'secondary'}
-                                icon={
-                                    isAllAccordionsOpen ? (
-                                        <XMarkIcon aria-hidden height={24} width={24} />
-                                    ) : (
-                                        <PencilIcon aria-hidden height={24} width={24} />
-                                    )
-                                }
-                                onClick={handleToggleAllAccordions}
-                            >
-                                {isAllAccordionsOpen ? (
-                                    <FormattedMessage id="TilpassPlanenSteg.LukkPerioder" />
-                                ) : (
-                                    <FormattedMessage id="TilpassPlanenSteg.EndrePlanen" />
-                                )}
-                            </Button>
-                        )}
-                        <Button
-                            size="small"
-                            variant="secondary"
-                            icon={<TrashIcon aria-hidden height={24} width={24} />}
-                            onClick={() => setOpen(true)}
-                        >
-                            <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                        </Button>
-                    </HStack>
-
-                    <KvoteOppsummering visStatusIkoner rettighetType={utledRettighetType()} />
+                    <KvoteOppsummering visStatusIkoner />
 
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}

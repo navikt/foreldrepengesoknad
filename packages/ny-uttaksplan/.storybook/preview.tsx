@@ -1,6 +1,7 @@
 import { Preview } from '@storybook/react-vite';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/intl/nb_NO.json';
@@ -8,8 +9,8 @@ import nnMessages from '../src/intl/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...formHookMessages.nb },
-    nn: { ...nnMessages, ...formHookMessages.nn },
+    nb: { ...nbMessages, ...formHookMessages.nb, ...uiMessages.nb },
+    nn: { ...nnMessages, ...formHookMessages.nn, ...uiMessages.nn },
 });
 
 export const parameters = {

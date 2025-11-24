@@ -235,5 +235,12 @@
     "UttaksplanKalender.VelgPeriode": "Periode (fra - til)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Velg dager eller periode",
     "UttaksplanKalender.ValgtPeriodeSrTekst": "Har valgt periode fra {fom} til {tom}",
-    "LeggTilPeriodePanel.Dager": "Valgte dager:"
+    "LeggTilPeriodePanel.Dager": "Valgte dager:",
+    "UttaksplanHandlingKnapper.Tilbakestill": "Tilbakestill",
+    "UttaksplanHandlingKnapper.FjernAlt": "Fjern alt",
+    "UttaksplanHandlingKnapper.EndrePlanen": "Endre planen",
+    "UttaksplanHandlingKnapper.LukkPerioder": "Lukk perioder",
+    "UttaksplanHandlingKnapper.Angre": "Angre",
+    "RedigeringKalenderIndex.VelgDatoerIKalender": "Du kan velge datoer i kalenderen",
+    "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på siden"
 }
