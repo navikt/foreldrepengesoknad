@@ -1,7 +1,7 @@
 import { omitOne } from '@navikt/fp-utils';
 
-import { Planperiode } from '../types/Planperiode';
-import { settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 const perioder: Planperiode[] = [
     {
@@ -434,6 +434,56 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             expect(result[1]!.readOnly).toEqual(true);
         },
     );
+
+    it('Hvis periode uten uttak krysser famdato skal den splittes på famdato', () => {
+        const uttakMedHullSomStarterFørFamdatoOgEnderEtter: Planperiode[] = [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2026-01-12',
+                tom: '2026-01-29',
+                erAnnenPartEøs: false,
+                id: '1',
+                readOnly: false,
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2026-02-16',
+                tom: '2026-05-15',
+                erAnnenPartEøs: false,
+                id: '2',
+                readOnly: false,
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2026-05-18',
+                tom: '2026-09-04',
+                erAnnenPartEøs: false,
+                id: '3',
+                readOnly: false,
+            },
+        ];
+
+        const resultMedHull = finnOgSettInnHull(
+            uttakMedHullSomStarterFørFamdatoOgEnderEtter,
+            false,
+            '2026-02-01',
+            false,
+            false,
+            false,
+            undefined,
+        );
+
+        expect(resultMedHull.length).toBe(5);
+        expect(resultMedHull[1]!.fom).toBe('2026-01-30');
+        expect(resultMedHull[1]!.tom).toBe('2026-01-30');
+        expect(resultMedHull[1]!.periodeHullÅrsak).toBe(PeriodeHullType.PERIODE_UTEN_UTTAK);
+        expect(resultMedHull[2]!.fom).toBe('2026-02-02');
+        expect(resultMedHull[2]!.tom).toBe('2026-02-13');
+        expect(resultMedHull[2]!.periodeHullÅrsak).toBe(PeriodeHullType.TAPTE_DAGER);
+    });
 
     const erForeldreLike = (periode1: Planperiode, periode2: Planperiode) => {
         expect(periode1.erAnnenPartEøs).toEqual(periode2.erAnnenPartEøs);
