@@ -22,6 +22,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
+        firstDateInCalendar: '2024-01-31',
+        lastDateInCalendar: '2024-08-30',
         periods: [
             {
                 fom: '2024-01-31',
@@ -92,7 +94,15 @@ export const VisKalenderMedValgAvEnkeltdager: Story = {
             });
         };
 
-        return <Calendar periods={perioder} isRangeSelection={false} setSelectedPeriods={setSelectedPeriods} />;
+        return (
+            <Calendar
+                periods={perioder}
+                isRangeSelection={false}
+                setSelectedPeriods={setSelectedPeriods}
+                firstDateInCalendar={allePerioder[0]!.fom}
+                lastDateInCalendar={allePerioder[1]!.tom}
+            />
+        );
     },
 };
 
@@ -122,7 +132,15 @@ export const VisKalenderMedValgAvPerioder: Story = {
             });
         };
 
-        return <Calendar periods={perioder} isRangeSelection setSelectedPeriods={setSelectedPeriods} />;
+        return (
+            <Calendar
+                periods={perioder}
+                isRangeSelection
+                setSelectedPeriods={setSelectedPeriods}
+                firstDateInCalendar={allePerioder[0]!.fom}
+                lastDateInCalendar={allePerioder[1]!.tom}
+            />
+        );
     },
 };
 
@@ -140,6 +158,8 @@ export const PeriodsWithGap: Story = {
                 color: 'LIGHTGREEN',
             },
         ],
+        firstDateInCalendar: '2024-01-31',
+        lastDateInCalendar: '2024-08-30',
     },
 };
 
@@ -157,5 +177,7 @@ export const PeriodsThatSpanOverAYear: Story = {
                 color: 'LIGHTGREEN',
             },
         ],
+        firstDateInCalendar: '2024-02-01',
+        lastDateInCalendar: '2025-07-30',
     },
 };

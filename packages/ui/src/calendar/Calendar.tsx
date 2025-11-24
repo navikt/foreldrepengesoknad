@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import { HGrid } from '@navikt/ds-react';
+import { Button, HGrid } from '@navikt/ds-react';
 
 import { Month } from './Month';
 import { CalendarPeriod } from './types/CalendarPeriod';
@@ -18,7 +19,11 @@ interface Props {
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     isRangeSelection?: boolean;
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
+    firstDateInCalendar: string;
+    lastDateInCalendar?: string;
 }
+
+const MAKS_ANTALL_EKSTRA_MÅNEDER = 36;
 
 export const Calendar = ({
     periods,
@@ -27,8 +32,14 @@ export const Calendar = ({
     setSelectedPeriods,
     isRangeSelection = false,
     getSrTextForSelectedPeriod,
+    firstDateInCalendar,
+    lastDateInCalendar,
 }: Props) => {
-    const allMonths = useMemo(() => findMonths(periods[0]!.fom, findLatestTom(periods)), [periods]);
+    const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
+    const allMonths = useMemo(
+        () => findMonths(additionalMonthsToAddToLast, firstDateInCalendar, lastDateInCalendar),
+        [periods, firstDateInCalendar, lastDateInCalendar, additionalMonthsToAddToLast],
+    );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
@@ -106,26 +117,35 @@ export const Calendar = ({
                     );
                 })}
             </HGrid>
+            {additionalMonthsToAddToLast <= MAKS_ANTALL_EKSTRA_MÅNEDER && (
+                <Button
+                    onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                    className="mt-4 w-full"
+                >
+                    <FormattedMessage id="Calendar.LeggTilMåneder" />
+                </Button>
+            )}
         </>
     );
 };
 
-const findLatestTom = (periods: CalendarPeriod[]): string =>
-    periods.reduce((last, p) => (dayjs(p.tom).isAfter(dayjs(last)) ? p.tom : last), periods[0]!.tom);
+const findMonths = (
+    additionalMonthsToAddToLast: number,
+    firstDateInCalendar: string,
+    lastDateInCalendar?: string,
+): Array<{ month: number; year: number }> => {
+    const firstDate = dayjs(firstDateInCalendar);
+    const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
 
-const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
-    const first = dayjs(firstDate);
-    const last = dayjs(lastDate);
-    const numberOfMonthsToAddStart = first.month() % 3;
-    const numberOfMonthsToAddEnd = 3 - (last.month() % 3);
+    const lastDateInCalendarAdjusted = lastDate.add(additionalMonthsToAddToLast, 'month');
 
-    const firstDateInCalendar = first.subtract(numberOfMonthsToAddStart, 'month');
-    const lastDateInCalendar = last.add(numberOfMonthsToAddEnd, 'month');
+    const numberOfMonthsBetween = monthDiff(firstDate.toDate(), lastDateInCalendarAdjusted.toDate());
 
-    const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
-
-    return Array.from({ length: numberOfMonthsBetween }, (_, i) => {
-        const date = firstDateInCalendar.add(i, 'month');
+    return Array.from({ length: numberOfMonthsBetween + 1 }, (_, i) => {
+        const date = firstDate.add(i, 'month');
         return { month: date.month(), year: date.year() };
     });
 };

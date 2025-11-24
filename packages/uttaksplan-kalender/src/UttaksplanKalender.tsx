@@ -28,6 +28,7 @@ import {
 import { Calendar, type CalendarPeriod, type CalendarPeriodColor } from '@navikt/fp-ui';
 import {
     Uttaksdagen,
+    dateToISOString,
     formatDateIso,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
@@ -264,7 +265,11 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} />
+                <Calendar
+                    periods={periods}
+                    firstDateInCalendar={dateToISOString(dayjs(familiehendelsesdato).subtract(3, 'month').toDate())}
+                    lastDateInCalendar={periods.length > 0 ? periods.at(-1)!.tom : undefined}
+                />
             </div>
             <Button className="mt-8 print:hidden" variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
