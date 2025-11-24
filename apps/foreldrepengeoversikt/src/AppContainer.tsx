@@ -23,8 +23,8 @@ const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error) => {
             if (error instanceof HTTPError) {
-                if (error.response?.status === 401) {
-                    window.location.reload();
+                if (error.response?.status === 401 || error.response?.status === 403) {
+                    location.reload();
                 }
             }
         },
