@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { KontoDto, KontoTypeUttak, RettighetType_fpoversikt, UttakOppholdÅrsak_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, KontoTypeUttak, UttakOppholdÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
@@ -13,14 +13,13 @@ import { Planperiode } from './types/Planperiode';
 import { getVarighetString } from './utils/dateUtils';
 
 interface Props {
-    rettighetType: RettighetType_fpoversikt;
     visStatusIkoner: boolean;
 }
 
-export const KvoteOppsummering = ({ rettighetType, visStatusIkoner }: Props) => {
+export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
     return (
         <ExpansionCard aria-label="Kvoteoversikt" size="small">
-            <OppsummeringsTittel rettighetType={rettighetType} visStatusIkoner={visStatusIkoner} />
+            <KvoteOppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
             <ExpansionCard.Content>
                 <VStack gap="space-16">
                     <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
@@ -35,20 +34,30 @@ export const KvoteOppsummering = ({ rettighetType, visStatusIkoner }: Props) => 
     );
 };
 
-const OppsummeringsTittel = ({
-    rettighetType,
+export const KvoteOppsummeringsTittel = ({
     visStatusIkoner,
+    brukEnkelVisning,
 }: {
-    rettighetType: RettighetType_fpoversikt;
     visStatusIkoner: boolean;
+    brukEnkelVisning: boolean;
 }) => {
+    const { rettighetType } = useUttaksplanData();
+
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
-        return <KvoteTittelKunEnHarForeldrepenger visStatusIkoner={visStatusIkoner} />;
+        return (
+            <KvoteTittelKunEnHarForeldrepenger visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />
+        );
     }
-    return <KvoteTittel visStatusIkoner={visStatusIkoner} />;
+    return <KvoteTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />;
 };
 
-const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const KvoteTittelKunEnHarForeldrepenger = ({
+    visStatusIkoner,
+    brukEnkelVisning,
+}: {
+    visStatusIkoner: boolean;
+    brukEnkelVisning: boolean;
+}) => {
     const { uttaksplan, familiesituasjon, valgtStønadskonto, modus } = useUttaksplanData();
 
     const intl = useIntl();
@@ -111,6 +120,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
         return (
             <TittelKomponent
                 ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                brukEnkelVisning={brukEnkelVisning}
                 tittel={
                     <FormattedMessage
                         id="kvote.tittel.forMyeTidIPlan"
@@ -132,6 +142,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
         return (
             <TittelKomponent
                 ikon={<AllTidIPlanIkon size="stor" />}
+                brukEnkelVisning={brukEnkelVisning}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
                 visStatusIkoner={visStatusIkoner}
                 beskrivelse={
@@ -147,6 +158,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
+            brukEnkelVisning={brukEnkelVisning}
             tittel={
                 <FormattedMessage
                     id="kvote.beskrivelse.gjenståendeTid"
@@ -159,7 +171,13 @@ const KvoteTittelKunEnHarForeldrepenger = ({ visStatusIkoner }: { visStatusIkone
     );
 };
 
-const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const KvoteTittel = ({
+    visStatusIkoner,
+    brukEnkelVisning,
+}: {
+    visStatusIkoner: boolean;
+    brukEnkelVisning: boolean;
+}) => {
     const { uttaksplan, familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus } =
         useUttaksplanData();
     const intl = useIntl();
@@ -246,6 +264,7 @@ const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
         return (
             <TittelKomponent
                 ikon={<ForMyeTidBruktIPlanIkon size="stor" />}
+                brukEnkelVisning={brukEnkelVisning}
                 tittel={
                     <FormattedMessage
                         id="kvote.tittel.forMyeTidIPlan"
@@ -298,6 +317,7 @@ const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
         return (
             <TittelKomponent
                 ikon={<AllTidIPlanIkon size="stor" />}
+                brukEnkelVisning={brukEnkelVisning}
                 tittel={<FormattedMessage id="kvote.tittel.allTidIPlan" />}
                 visStatusIkoner={visStatusIkoner}
                 beskrivelse={
@@ -348,6 +368,7 @@ const KvoteTittel = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     return (
         <TittelKomponent
             ikon={<MerTidÅBrukeIPlanIkon size="stor" />}
+            brukEnkelVisning={brukEnkelVisning}
             tittel={
                 <FormattedMessage
                     id="kvote.tittel.gjenståendeTid"
@@ -386,12 +407,17 @@ const TittelKomponent = ({
     beskrivelse,
     ikon,
     visStatusIkoner,
+    brukEnkelVisning,
 }: {
     tittel: ReactNode;
     beskrivelse: ReactNode;
     ikon: ReactNode;
     visStatusIkoner: boolean;
+    brukEnkelVisning: boolean;
 }) => {
+    if (brukEnkelVisning) {
+        return tittel;
+    }
     return (
         <ExpansionCard.Header>
             <HStack wrap={false} gap="space-16" align="start">

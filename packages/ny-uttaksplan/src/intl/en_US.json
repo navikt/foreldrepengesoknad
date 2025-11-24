@@ -235,5 +235,12 @@
     "UttaksplanKalender.VelgPeriode": "Period (from - to)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Select days or period",
     "UttaksplanKalender.ValgtPeriodeSrTekst": "Has selected period from {fom} to {tom}",
-    "LeggTilPeriodePanel.Dager": "Selected days:"
+    "LeggTilPeriodePanel.Dager": "Selected days:",
+    "UttaksplanHandlingKnapper.Tilbakestill": "Reset",
+    "UttaksplanHandlingKnapper.FjernAlt": "Remove everything",
+    "UttaksplanHandlingKnapper.EndrePlanen": "Edit the plan",
+    "UttaksplanHandlingKnapper.LukkPerioder": "Close periods",
+    "UttaksplanHandlingKnapper.Angre": "Undo",
+    "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
+    "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page"
 }

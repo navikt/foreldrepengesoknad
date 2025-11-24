@@ -28,14 +28,10 @@ const meta = {
         erDeltUttak: false,
     },
     render: (args) => {
-        const { rettighetType, visStatusIkoner, ...rest } = args;
+        const { visStatusIkoner, ...rest } = args;
         return (
-            <UttaksplanDataProvider
-                {...rest}
-                aleneOmOmsorg={rettighetType === 'ALENEOMSORG'}
-                erDeltUttak={rettighetType === 'BEGGE_RETT'}
-            >
-                <KvoteOppsummering rettighetType={rettighetType} visStatusIkoner={visStatusIkoner} />
+            <UttaksplanDataProvider {...rest}>
+                <KvoteOppsummering visStatusIkoner={visStatusIkoner} />
             </UttaksplanDataProvider>
         );
     },
@@ -79,7 +75,8 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
         saksperioder: [],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
         erMedmorDelAvSøknaden: false,
     },
@@ -136,7 +133,8 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
     },
 };
@@ -189,7 +187,8 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
         erMedmorDelAvSøknaden: false,
     },
@@ -235,7 +234,8 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
     },
 };
@@ -287,7 +287,8 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
     },
 };
@@ -344,7 +345,8 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
     },
 };
@@ -391,7 +393,8 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: 'BARE_SØKER_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
         erFarEllerMedmor: true,
     },
 };
@@ -418,7 +421,8 @@ export const EnRettFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: 'BARE_SØKER_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
         erFarEllerMedmor: true,
     },
 };
@@ -463,7 +467,8 @@ export const EnRettMorAlleDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BARE_SØKER_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
         erFarEllerMedmor: false,
     },
 };
@@ -487,7 +492,8 @@ export const EnRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BARE_SØKER_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
         erFarEllerMedmor: false,
     },
 };
@@ -511,7 +517,8 @@ export const AleneomsorgMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'ALENEOMSORG',
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
         erFarEllerMedmor: false,
     },
 };
@@ -550,7 +557,8 @@ export const AleneomsorgFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: 'ALENEOMSORG',
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
         erFarEllerMedmor: true,
     },
 };
@@ -589,7 +597,8 @@ export const AleneomsorgFarForMangeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: 'ALENEOMSORG',
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
         erFarEllerMedmor: true,
     },
 };
@@ -665,7 +674,8 @@ export const MorHarPrematuruker: Story = {
                 forelder: 'MOR',
             },
         ],
-        rettighetType: 'BEGGE_RETT',
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
         erFarEllerMedmor: false,
     },
 };

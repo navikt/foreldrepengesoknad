@@ -4,7 +4,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HGrid } from '@navikt/ds-react';
+import { Button, HGrid, VStack } from '@navikt/ds-react';
 
 import { Month } from './Month';
 import { CalendarPeriod } from './types/CalendarPeriod';
@@ -87,7 +87,7 @@ export const Calendar = ({
     );
 
     return (
-        <>
+        <VStack gap="space-16">
             {!setSelectedPeriods && periods.some((p) => p.srText) && (
                 <div className="sr-only">
                     {periods
@@ -128,7 +128,7 @@ export const Calendar = ({
                     <FormattedMessage id="Calendar.LeggTilMåneder" />
                 </Button>
             )}
-        </>
+        </VStack>
     );
 };
 

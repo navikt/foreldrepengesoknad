@@ -5,6 +5,7 @@ import {
     Familiesituasjon,
     KontoBeregningDto,
     NavnPåForeldre,
+    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     UttaksplanModus,
@@ -32,6 +33,7 @@ type Props = {
 type ContextValues = Omit<Props, 'children'> & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
+    rettighetType: RettighetType_fpoversikt;
     uttaksplan: Planperiode[];
 };
 
@@ -58,6 +60,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
+            rettighetType: utledRettighetType(otherProps.erDeltUttak, otherProps.aleneOmOmsorg),
             uttaksplan: utledKomplettPlan({
                 familiehendelsedato,
                 erFarEllerMedmor: otherProps.erFarEllerMedmor,
@@ -106,4 +109,16 @@ export const getAnnenpartsPerioder = (
               (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
           )
         : [];
+};
+
+// TODO (TOR) Burde kunne senda rettighetstype inn som prop i staden for erDeltUttak og aleneOmOmsorg
+const utledRettighetType = (erDeltUttak: boolean, aleneOmOmsorg: boolean): RettighetType_fpoversikt => {
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+    if (aleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+
+    return 'BARE_SØKER_RETT';
 };
