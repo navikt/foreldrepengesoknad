@@ -136,13 +136,12 @@ const findMonths = (
     const firstDate = dayjs(firstDateInCalendar);
     const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
 
-    const firstDateInCalendarAdjusted = firstDate;
     const lastDateInCalendarAdjusted = lastDate.add(additionalMonthsToAddToLast, 'month');
 
-    const numberOfMonthsBetween = monthDiff(firstDateInCalendarAdjusted.toDate(), lastDateInCalendarAdjusted.toDate());
+    const numberOfMonthsBetween = monthDiff(firstDate.toDate(), lastDateInCalendarAdjusted.toDate());
 
     return Array.from({ length: numberOfMonthsBetween + 1 }, (_, i) => {
-        const date = firstDateInCalendarAdjusted.add(i, 'month');
+        const date = firstDate.add(i, 'month');
         return { month: date.month(), year: date.year() };
     });
 };
