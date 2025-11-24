@@ -23,8 +23,6 @@ interface Props {
     lastDateInCalendar?: string;
 }
 
-const MAKS_ANTALL_EKSTRA_MÅNEDER = 36;
-
 export const Calendar = ({
     periods,
     showWeekNumbers = true,
@@ -43,6 +41,18 @@ export const Calendar = ({
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+
+    // Beregn maksimalt antall ekstra måneder basert på firstDateInCalendar
+    const maksAntallEkstraMåneder = useMemo(() => {
+        const firstDate = dayjs(firstDateInCalendar);
+        const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : firstDate.add(6, 'month');
+        const treÅrEtterFirstDate = firstDate.add(3, 'year');
+
+        // Beregn hvor mange måneder som kan legges til før vi når 3 år etter firstDateInCalendar
+        const monthsUntilThreeYears = monthDiff(lastDate.toDate(), treÅrEtterFirstDate.toDate());
+
+        return monthsUntilThreeYears;
+    }, [firstDateInCalendar, lastDateInCalendar]);
 
     const dateClickCallback = useCallback(
         (selectedDate: string) => {
@@ -117,7 +127,7 @@ export const Calendar = ({
                     );
                 })}
             </HGrid>
-            {additionalMonthsToAddToLast <= MAKS_ANTALL_EKSTRA_MÅNEDER && (
+            {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && (
                 <Button
                     onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
                     type="button"
