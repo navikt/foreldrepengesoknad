@@ -119,7 +119,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                 dayjs(familiehendelsedato).subtract(3, 'month').toDate(),
                             )}
                             lastDateInCalendar={
-                                (barnehagestartdato ?? uttaksplan.length > 0) ? uttaksplan.at(-1)!.tom : undefined
+                                barnehagestartdato ?? (uttaksplan.length > 0 ? uttaksplan.at(-1)!.tom : undefined)
                             }
                         />
                     </div>
