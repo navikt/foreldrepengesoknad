@@ -23,6 +23,8 @@ interface Props {
     lastDateInCalendar?: string;
 }
 
+const MAKS_ANTALL_EKSTRA_MÅNEDER = 36;
+
 export const Calendar = ({
     periods,
     showWeekNumbers = true,
@@ -115,15 +117,17 @@ export const Calendar = ({
                     );
                 })}
             </HGrid>
-            <Button
-                onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
-                type="button"
-                variant="secondary"
-                size="small"
-                className="mt-4 w-full"
-            >
-                <FormattedMessage id="Calendar.LeggTilMåneder" />
-            </Button>
+            {additionalMonthsToAddToLast <= MAKS_ANTALL_EKSTRA_MÅNEDER && (
+                <Button
+                    onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                    className="mt-4 w-full"
+                >
+                    <FormattedMessage id="Calendar.LeggTilMåneder" />
+                </Button>
+            )}
         </>
     );
 };
