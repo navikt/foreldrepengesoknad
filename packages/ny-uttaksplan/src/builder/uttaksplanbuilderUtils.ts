@@ -330,17 +330,61 @@ export const finnOgSettInnHull = (
         const uttaksdagerITidsperiode = TidsperiodenString(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            res.push(
-                ...getPeriodeHullEllerPeriodeUtenUttak(
-                    tidsperiodeMellomPerioder,
-                    harAktivitetskravIPeriodeUtenUttak,
-                    familiehendelsesdato,
-                    erAdopsjon,
-                    bareFarHarRett,
-                    erFarEllerMedmor,
-                    førsteUttaksdagNesteBarnsSak,
-                ),
-            );
+            const fom = dayjs(tidsperiodeMellomPerioder.fom);
+            const tom = dayjs(tidsperiodeMellomPerioder.tom);
+            const familiehendelse = dayjs(familiehendelsesdato);
+
+            // Sjekk om perioden går over familiehendelsesdato
+            if (fom.isBefore(familiehendelse, 'day') && tom.isAfter(familiehendelse, 'day')) {
+                // Periode før familiehendelsesdato
+                const periodeFørFamiliehendelse: Tidsperiode = {
+                    fom: tidsperiodeMellomPerioder.fom,
+                    tom: UttaksdagenString(familiehendelsesdato).forrige(),
+                };
+
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        periodeFørFamiliehendelse,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+
+                // Periode fra og med familiehendelsesdato
+                const periodeEtterFamiliehendelse: Tidsperiode = {
+                    fom: UttaksdagenString(familiehendelsesdato).denneEllerNeste(),
+                    tom: tidsperiodeMellomPerioder.tom,
+                };
+
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        periodeEtterFamiliehendelse,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+            } else {
+                // Perioden går ikke over familiehendelsesdato, håndter normalt
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        tidsperiodeMellomPerioder,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+            }
         }
 
         return res;
