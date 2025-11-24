@@ -20,7 +20,7 @@ export const UttaksplanHandlingKnapper = ({
     toggleAllAccordions,
     isAllAccordionsOpen,
 }: Props) => {
-    const erListevisning = Boolean(toggleAllAccordions);
+    const erListevisning = !!toggleAllAccordions;
 
     return (
         <HStack gap="space-16">
