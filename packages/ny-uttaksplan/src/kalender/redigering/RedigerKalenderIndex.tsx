@@ -5,7 +5,7 @@ import { Box, VStack } from '@navikt/ds-react';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { KvoteOppsummering } from '../../KvoteOppsummering';
+import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
 import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { ValgteDagerPanel } from './ValgteDagerPanel';
@@ -55,7 +55,7 @@ export const RedigerKalender = () => {
                             angreEndring={() => endreUttaksplan('angre')}
                             fjernAltIPlanen={() => endreUttaksplan('fjernAlt')}
                         />
-                        <KvoteOppsummering visStatusIkoner={false} brukEnkelVisning />
+                        <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
                         <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
                     </VStack>
                 </VStack>

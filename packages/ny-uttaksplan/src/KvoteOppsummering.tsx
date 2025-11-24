@@ -14,17 +14,12 @@ import { getVarighetString } from './utils/dateUtils';
 
 interface Props {
     visStatusIkoner: boolean;
-    brukEnkelVisning?: boolean;
 }
 
-export const KvoteOppsummering = ({ visStatusIkoner, brukEnkelVisning = false }: Props) => {
-    if (brukEnkelVisning) {
-        return <OppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning />;
-    }
-
+export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
     return (
         <ExpansionCard aria-label="Kvoteoversikt" size="small">
-            <OppsummeringsTittel visStatusIkoner={visStatusIkoner} />
+            <KvoteOppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
             <ExpansionCard.Content>
                 <VStack gap="space-16">
                     <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
@@ -39,12 +34,12 @@ export const KvoteOppsummering = ({ visStatusIkoner, brukEnkelVisning = false }:
     );
 };
 
-const OppsummeringsTittel = ({
+export const KvoteOppsummeringsTittel = ({
     visStatusIkoner,
-    brukEnkelVisning = false,
+    brukEnkelVisning,
 }: {
     visStatusIkoner: boolean;
-    brukEnkelVisning?: boolean;
+    brukEnkelVisning: boolean;
 }) => {
     const { rettighetType } = useUttaksplanData();
 
