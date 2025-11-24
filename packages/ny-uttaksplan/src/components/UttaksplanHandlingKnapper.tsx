@@ -1,5 +1,4 @@
 import { ArrowCirclepathIcon, ArrowUndoIcon, PencilIcon, TrashIcon, XMarkIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack } from '@navikt/ds-react';
@@ -10,6 +9,7 @@ interface Props {
     angreEndring: () => void;
     fjernAltIPlanen: () => void;
     toggleAllAccordions?: () => void;
+    isAllAccordionsOpen?: boolean;
 }
 
 export const UttaksplanHandlingKnapper = ({
@@ -18,16 +18,9 @@ export const UttaksplanHandlingKnapper = ({
     angreEndring,
     fjernAltIPlanen,
     toggleAllAccordions,
+    isAllAccordionsOpen,
 }: Props) => {
-    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
-
     const erListevisning = Boolean(toggleAllAccordions);
-    const handleToggleAllAccordions = () => {
-        if (toggleAllAccordions) {
-            toggleAllAccordions();
-            setIsAllAccordionsOpen(!isAllAccordionsOpen);
-        }
-    };
 
     return (
         <HStack gap="space-16">
@@ -58,7 +51,7 @@ export const UttaksplanHandlingKnapper = ({
                             <PencilIcon aria-hidden height={24} width={24} />
                         )
                     }
-                    onClick={handleToggleAllAccordions}
+                    onClick={toggleAllAccordions}
                 >
                     {isAllAccordionsOpen ? (
                         <FormattedMessage id="UttaksplanHandlingKnapper.LukkPerioder" />
