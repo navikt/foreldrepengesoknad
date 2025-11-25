@@ -242,5 +242,6 @@
     "UttaksplanHandlingKnapper.LukkPerioder": "Close periods",
     "UttaksplanHandlingKnapper.Angre": "Undo",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
-    "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page"
+    "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page",
+    "UttaksplanKalender.LeggTilMåneder": "Show more months"
 }

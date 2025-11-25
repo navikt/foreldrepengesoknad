@@ -242,5 +242,6 @@
     "UttaksplanHandlingKnapper.LukkPerioder": "Lukk perioder",
     "UttaksplanHandlingKnapper.Angre": "Angre",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "Du kan velge datoer i kalenderen",
-    "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på siden"
+    "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på siden",
+    "UttaksplanKalender.LeggTilMåneder": "Legg til flere måneder"
 }

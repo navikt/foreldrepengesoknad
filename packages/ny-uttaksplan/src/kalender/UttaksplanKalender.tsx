@@ -161,7 +161,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                 size="small"
                                 className="mt-4 w-full"
                             >
-                                <FormattedMessage id="Calendar.LeggTilMåneder" />
+                                <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
                             </Button>
                         )}
                         {additionalMonthsToAddToLast > maksAntallEkstraMåneder && (
