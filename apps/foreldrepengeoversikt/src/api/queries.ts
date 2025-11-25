@@ -5,6 +5,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
+    BeregningV1_fpoversikt,
     DokumentDto_fpoversikt,
     EttersendelseDto,
     FpOversiktInntektsmeldingDto_fpoversikt,
@@ -74,7 +75,7 @@ export const hentBeregningOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['BEREGNING', saksnummer],
         queryFn: async () => {
-            return await ky.get(API_URLS.beregning, { searchParams: { saksnummer } }).json<unknown>();
+            return await ky.get(API_URLS.beregning, { searchParams: { saksnummer } }).json<BeregningV1_fpoversikt>();
         },
     });
 
