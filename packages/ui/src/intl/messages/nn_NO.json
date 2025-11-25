@@ -57,6 +57,5 @@
     "RegisterdataUtdatert.Message": "Opplysningar om deg er endra sidan sist du fylte ut søknaden. Du må derfor starta utfyllinga av søknaden på nytt.",
     "ProgressStepper.ShowSteps": "Vis alle steg",
     "ProgressStepper.HideSteps": "Skjul alle steg",
-    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}",
-    "Calendar.LeggTilMåneder": "Vis fleire månader"
+    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}"
 }
