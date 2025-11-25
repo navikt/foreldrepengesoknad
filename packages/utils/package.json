@@ -31,7 +31,7 @@
         "@testing-library/jest-dom": "6.7.0",
         "@types/react": "19.1.13",
         "@vitest/browser": "3.2.4",
-        "eslint": "9.36.0",
+        "eslint": "9.39.1",
         "fast-glob": "3.3.3",
         "playwright": "1.55.1",
         "typescript": "5.9.2",

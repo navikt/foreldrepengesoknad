@@ -16,7 +16,7 @@
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/node": "24.5.2",
-        "eslint": "9.36.0",
+        "eslint": "9.39.1",
         "typescript": "5.9.2"
     },
     "packageManager": "pnpm@10.18.3"

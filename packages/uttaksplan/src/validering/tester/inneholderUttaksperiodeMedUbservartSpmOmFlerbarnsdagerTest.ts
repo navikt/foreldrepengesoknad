@@ -27,6 +27,7 @@ export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
                 grunnlag.søkerErFarEllerMedmor,
                 grunnlag.familiehendelsesdato,
                 p.tidsperiode,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.konto,
                 bareFarMedmorHarRett,
                 grunnlag.antallBarn,
