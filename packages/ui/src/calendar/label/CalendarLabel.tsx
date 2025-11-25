@@ -7,7 +7,6 @@ interface Props {
     children: React.ReactNode;
     color: CalendarPeriodColor;
     onClick?: () => void;
-    selected?: boolean;
 }
 
 export const CalendarLabel = ({ children, color, onClick }: Props) => {

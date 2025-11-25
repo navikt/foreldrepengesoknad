@@ -85,7 +85,7 @@ export const UttaksplanLegend = ({
                         }
                         tabIndex={!unselectableColors.includes(info.color) && !readOnly ? 0 : -1}
                     >
-                        <CalendarLabel color={info.color} selected={selectedLabel === info.label}>
+                        <CalendarLabel color={info.color}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
                             </BodyShort>
