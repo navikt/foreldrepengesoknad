@@ -12,7 +12,7 @@ import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType, Periode } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
@@ -88,14 +88,12 @@ const defaultBarn = {
     type: BarnType.FØDT,
     fødselsdatoer: ['2021-03-15'],
     antallBarn: 1,
-    datoForAleneomsorg: '2021-03-15',
-    dokumentasjonAvAleneomsorg: [],
-} as Barn;
+} satisfies Barn;
 
 const defaultSøkersituasjon = {
     situasjon: 'fødsel',
     rolle: 'mor',
-} as SøkersituasjonFp;
+} satisfies SøkersituasjonFp;
 
 const defaultAnnenForelder = {
     kanIkkeOppgis: true,
@@ -109,7 +107,7 @@ const defaultUtenlandsopphold = {
 const defaultUttaksplan = [
     {
         id: '0',
-        type: 'uttak',
+        type: Periodetype.Uttak,
         forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
         tidsperiode: {
@@ -119,8 +117,10 @@ const defaultUttaksplan = [
     },
     {
         id: '1',
-        type: 'utsettelse',
+        type: Periodetype.Utsettelse,
         årsak: 'INSTITUSJONSOPPHOLD_SØKER',
+        forelder: 'MOR',
+        erArbeidstaker: true,
         tidsperiode: {
             fom: new Date('2021-12-14T23:00:00.000Z'),
             tom: new Date('2022-01-24T23:00:00.000Z'),
@@ -128,7 +128,7 @@ const defaultUttaksplan = [
     },
     {
         id: '2',
-        type: 'periodeUtenUttak',
+        type: Periodetype.PeriodeUtenUttak,
         tidsperiode: {
             fom: new Date('2022-01-25T23:00:00.000Z'),
             tom: new Date('2022-03-28T23:00:00.000Z'),
@@ -136,7 +136,7 @@ const defaultUttaksplan = [
     },
     {
         id: '3',
-        type: 'uttak',
+        type: Periodetype.Uttak,
         forelder: 'MOR',
         konto: 'FELLESPERIODE',
         tidsperiode: {
@@ -146,13 +146,13 @@ const defaultUttaksplan = [
         ønskerSamtidigUttak: false,
         gradert: false,
     },
-] as Periode[];
+] satisfies Periode[];
 
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
     harJobbetSomSelvstendigNæringsdrivende: false,
-} as ArbeidsforholdOgInntektFp;
+} satisfies ArbeidsforholdOgInntektFp;
 
 const defaultVedlegg = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
@@ -472,9 +472,7 @@ export const MorMedAdoptertBarn: Story = {
             antallBarn: 1,
             adopsjonsdato: '2021-10-01',
             fødselsdatoer: ['2021-01-01'],
-            adoptertIUtlandet: false,
-            omsorgsovertakelse: [],
-        } as Barn,
+        } satisfies Barn,
     },
 };
 
@@ -1030,7 +1028,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             ...defaultUttaksplan.slice(0, 3), // Behold de første periodene
             {
                 id: '3',
-                type: 'uttak',
+                type: Periodetype.Uttak,
                 forelder: 'MOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
@@ -1039,7 +1037,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                 },
                 ønskerSamtidigUttak: true,
                 gradert: false,
-            } as Periode,
+            } satisfies Periode,
         ];
 
         return (

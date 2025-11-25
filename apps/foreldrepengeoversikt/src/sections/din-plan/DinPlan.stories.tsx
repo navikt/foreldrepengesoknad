@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
-import { stønadskontoer as stønadskontoer1 } from 'storybookData/stønadskontoer/stønadskontoer1';
-import { stønadskontoer as stønadskontoer2 } from 'storybookData/stønadskontoer/stønadskontoer2';
+import { stønadskontoer1 } from 'storybookData/stønadskontoer/stønadskontoer1';
+import { stønadskontoer2 } from 'storybookData/stønadskontoer/stønadskontoer2';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 

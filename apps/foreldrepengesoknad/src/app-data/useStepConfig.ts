@@ -14,7 +14,6 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-// TODO Bør denne flyttast ut?
 const getPathToLabelMap = (intl: IntlShape) =>
     ({
         [SøknadRoutes.SØKERSITUASJON]: intl.formatMessage({ id: 'steps.label.søkersituasjon' }),
@@ -32,7 +31,10 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.UTTAKSPLAN]: intl.formatMessage({ id: 'steps.label.uttaksplan' }),
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
         [SøknadRoutes.DOKUMENTASJON]: intl.formatMessage({ id: 'søknad.manglendeVedlegg' }),
-    }) as Record<string, string>;
+        [SøknadRoutes.KVITTERING]: '',
+        [SøknadRoutes.VELKOMMEN]: '',
+        [SøknadRoutes.IKKE_MYNDIG]: '',
+    }) satisfies Record<SøknadRoutes, string>;
 
 const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
     return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
@@ -169,7 +171,7 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
             appPathList.map((p, index) => ({
                 index,
                 id: p,
-                label: pathToLabelMap[p]!,
+                label: pathToLabelMap[p],
                 isSelected: p === currentPath,
             })),
         [appPathList, currentPath, pathToLabelMap],

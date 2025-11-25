@@ -145,7 +145,8 @@ export const Default: Story = {
         tilrettelegging: {
             type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+            behovForTilretteleggingFom: '2023-09-01',
+        } satisfies DelvisTilrettelegging,
     },
 };
 
@@ -155,7 +156,8 @@ export const FremTilFødselsdato: Story = {
         tilrettelegging: {
             type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+            behovForTilretteleggingFom: '2023-09-01',
+        } satisfies DelvisTilrettelegging,
         barn: {
             erBarnetFødt: true,
             termindato: '2024-01-18',
@@ -173,6 +175,6 @@ export const FlereStillinger: Story = {
             behovForTilretteleggingFom: '2023-09-01',
             type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+        } satisfies DelvisTilrettelegging,
     },
 };
