@@ -64,11 +64,23 @@ export const UttaksplanKalender = ({
         [intl],
     );
 
+    const getBaseLastDateInCalendar = useCallback(() => {
+        if (barnehagestartdato && uttaksplan.length > 0) {
+            return dayjs(barnehagestartdato).isSameOrAfter(dayjs(uttaksplan.at(-1)!.tom))
+                ? barnehagestartdato
+                : uttaksplan.at(-1)!.tom;
+        }
+        if (uttaksplan.length > 0) {
+            return uttaksplan.at(-1)!.tom;
+        }
+        return dateToISOString(dayjs(familiehendelsedato).add(6, 'month').toDate());
+    }, [barnehagestartdato, familiehendelsedato, uttaksplan]);
+
     const firstDateInCalendar =
         familiesituasjon === 'adopsjon'
             ? familiehendelsedato
             : dateToISOString(dayjs(familiehendelsedato).subtract(12, 'weeks').toDate());
-    let baseLastDateInCalendar = barnehagestartdato ?? (uttaksplan.length > 0 ? uttaksplan.at(-1)!.tom : undefined);
+    let baseLastDateInCalendar = getBaseLastDateInCalendar();
 
     if (!baseLastDateInCalendar) {
         baseLastDateInCalendar = dateToISOString(dayjs(familiehendelsedato).add(6, 'month').toDate());
