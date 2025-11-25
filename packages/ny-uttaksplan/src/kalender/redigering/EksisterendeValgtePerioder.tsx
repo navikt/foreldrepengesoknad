@@ -30,6 +30,10 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                     p.kontoType === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder === 'MOR';
                 const erFellesperiodeOgFar =
                     p.kontoType === 'FELLESPERIODE' && !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR';
+                const erForeldrepengerOgMor =
+                    p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.forelder === 'MOR';
+                const erForeldrepengerOgFar =
+                    p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR';
 
                 return (
                     <HStack
@@ -40,6 +44,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                     >
                         {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
                             p.kontoType === 'MØDREKVOTE' ||
+                            erForeldrepengerOgMor ||
                             erFellesperiodeOgMor) && (
                             <PersonPregnantFillIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -49,7 +54,7 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 color="var(--ax-bg-meta-purple-strong)"
                             />
                         )}
-                        {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar) && (
+                        {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar || erForeldrepengerOgFar) && (
                             <PersonSuitFillIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
                                 fontSize="1.5rem"
@@ -80,8 +85,9 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                             <Heading size="xsmall">
                                 {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
                                     p.kontoType === 'MØDREKVOTE' ||
-                                    erFellesperiodeOgMor) && <FormattedMessage id="RedigeringPanel.Mor" />}
-                                {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar) && (
+                                    erFellesperiodeOgMor ||
+                                    erForeldrepengerOgMor) && <FormattedMessage id="RedigeringPanel.Mor" />}
+                                {(p.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar || erForeldrepengerOgFar) && (
                                     <FormattedMessage id="RedigeringPanel.Far" />
                                 )}
                                 {!p.erAnnenPartEøs &&
