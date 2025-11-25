@@ -757,17 +757,6 @@ export type EttersendelseDto = {
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus = {
-    saksnummer?: string;
-    status: no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status;
-};
-
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status =
-    | 'PENDING'
-    | 'MIDLERTIDIG'
-    | 'ENDELIG'
-    | 'FORSENDELSE_FINNES_IKKE';
-
 export type no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType =
     | 'FORELDREPENGER'
     | 'SVANGERSKAPSPENGER'

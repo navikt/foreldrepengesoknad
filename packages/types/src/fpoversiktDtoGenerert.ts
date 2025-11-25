@@ -39,6 +39,49 @@ export type DokumentDto_fpoversikt = {
 
 export type JournalpostType_fpoversikt = 'INNGÅENDE_DOKUMENT' | 'UTGÅENDE_DOKUMENT';
 
+export type Beregning_fpoversikt = {
+    type: '1';
+} & BeregningV1_fpoversikt & {
+        type: string;
+    };
+
+export type BeregningV1_fpoversikt = {
+    beregningAktivitetStatuser?: BeregningAktivitetStatus_fpoversikt[];
+    beregningsAndeler?: BeregningsAndel_fpoversikt[];
+    skjæringsTidspunkt?: string;
+};
+
+export type Arbeidsforhold_fpoversikt = {
+    arbeidsgiverIdent?: string;
+    refusjonPrMnd?: number;
+};
+
+export type BeregningAktivitetStatus_fpoversikt = {
+    aktivitetStatus?: {
+        [key: string]: unknown;
+    };
+    hjemmel?: {
+        [key: string]: unknown;
+    };
+};
+
+export type BeregningsAndel_fpoversikt = {
+    aktivitetStatus?: {
+        [key: string]: unknown;
+    };
+    arbeidsforhold?: Arbeidsforhold_fpoversikt;
+    dagsats?: number;
+    fastsattPrMnd?: number;
+    inntektsKilde?: InntektsKilde_fpoversikt;
+};
+
+export type InntektsKilde_fpoversikt =
+    | 'INNTEKTSMELDING'
+    | 'A_INNTEKT'
+    | 'VEDTAK_ANNEN_YTELSE'
+    | 'SKJØNNSFASTSATT'
+    | 'PGI';
+
 export type BortfaltNaturalytelse_fpoversikt = {
     beløpPerMnd: number;
     fomDato: string;
