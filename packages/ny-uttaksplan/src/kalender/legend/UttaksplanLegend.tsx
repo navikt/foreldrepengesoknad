@@ -49,7 +49,7 @@ export const UttaksplanLegend = ({
         });
     }
 
-    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] satisfies CalendarPeriodColor[];
+    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] as CalendarPeriodColor[];
 
     const selectableLegends = legendInfo.filter((info) => !unselectableColors.some((color) => color === info.color));
     const nonSelectableLegends = legendInfo.filter((info) => unselectableColors.some((color) => color === info.color));
@@ -76,14 +76,14 @@ export const UttaksplanLegend = ({
                                   }
                         }
                         className={
-                            `rounded-sm ${getSelectableStyle(!unselectableColors.some((color) => color === info.color) && !readOnly)}` +
+                            `rounded-sm ${getSelectableStyle(!unselectableColors.includes(info.color) && !readOnly)}` +
                             ` ${getFocusStyle(info.color)} ${getSelectedStyle(selectedLabel === info.label, info.color)} `
                         }
                         onKeyDown={(keyEvent) => {
                             if (keyEvent.code === 'Space' || keyEvent.code === 'Enter') {
                                 keyEvent.preventDefault();
 
-                                if (unselectableColors.some((color) => color === info.color) || readOnly) {
+                                if (unselectableColors.includes(info.color) || readOnly) {
                                     return;
                                 } else {
                                     selectLegend(info.color);
@@ -97,7 +97,7 @@ export const UttaksplanLegend = ({
                             }
                         }}
                         role="button"
-                        tabIndex={unselectableColors.some((color) => color === info.color) || readOnly ? -1 : 0}
+                        tabIndex={unselectableColors.includes(info.color) || readOnly ? -1 : 0}
                     >
                         <CalendarLabel color={info.color} selected={selectedLabel === info.label}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
