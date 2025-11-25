@@ -58,7 +58,7 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorAlleDagerBrukt >', () => {
         render(<BeggeRettMorAlleDagerBrukt />);
 
-        expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
+        expect(screen.getByText('Alle dager er lagt inn i planen')).toBeInTheDocument();
         expect(
             screen.getByText('16 uker av fellesperioden, 18 uker til Helga og 15 uker til Espen er lagt til i planen.'),
         ).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('<KvoteOppsummering >', () => {
     it('<EnRettFarAlleDagerBrukt >', () => {
         render(<EnRettFarAlleDagerBrukt />);
 
-        expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
+        expect(screen.getByText('Alle dager er lagt inn i planen')).toBeInTheDocument();
         expect(screen.getByText('Du har lagt til 40 uker i planen.')).toBeInTheDocument();
     });
     it('<EnRettFarLedigeDager >', async () => {
