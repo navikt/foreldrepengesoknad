@@ -244,5 +244,6 @@
     "UttaksplanHandlingKnapper.Angre": "Undo",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
     "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page",
-    "UttaksplanKalender.LeggTilMåneder": "Show more months"
+    "UttaksplanKalender.LeggTilMåneder": "Show more months",
+    "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)"
 }

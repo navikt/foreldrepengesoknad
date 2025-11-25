@@ -243,5 +243,6 @@
     "UttaksplanHandlingKnapper.Angre": "Angre",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "Du kan velge datoar i kalenderen",
     "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på sidan",
-    "UttaksplanKalender.LeggTilMåneder": "Legg til fleire månader"
+    "UttaksplanKalender.LeggTilMåneder": "Legg til fleire månader",
+    "UttaksplanKalender.Maks3År": "Du viser maks antall månader (3 år)"
 }

@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -170,7 +170,9 @@ export const UttaksplanKalender = ({
                             </Button>
                         )}
                         {additionalMonthsToAddToLast > maksAntallEkstraMåneder && (
-                            <div className="pt-2">Du har lagt til maks antall måneder</div>
+                            <InlineMessage className="mt-2" status="info" role="status">
+                                <FormattedMessage id="UttaksplanKalender.Maks3År" />
+                            </InlineMessage>
                         )}
                     </div>
                     {oppdaterUttaksplan && uttaksplanHandlinger && (
