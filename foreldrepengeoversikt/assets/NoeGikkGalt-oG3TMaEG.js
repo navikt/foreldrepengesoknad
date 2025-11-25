@@ -1,1 +1,0 @@
-import{j as a,a4 as r}from"./iframe--LXeAaZx.js";const s=({children:e,className:t})=>a.jsx(r,{className:t,variant:"info",children:e});s.__docgenInfo={description:"",methods:[],displayName:"NoeGikkGalt",props:{children:{required:!0,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""},className:{required:!1,tsType:{name:"string"},description:""}}};export{s as N};
