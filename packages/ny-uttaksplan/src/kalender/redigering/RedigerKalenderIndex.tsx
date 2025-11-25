@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Box, VStack } from '@navikt/ds-react';
@@ -7,6 +8,7 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
 import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { ValgteDagerPanel } from './ValgteDagerPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -18,7 +20,7 @@ type Props = {
         oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    endreUttaksplan: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
+    uttaksplanHandlinger: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 };
 
 export const RedigerKalenderIndex = (props: Props) => (
@@ -30,8 +32,23 @@ export const RedigerKalenderIndex = (props: Props) => (
 export const RedigerKalender = () => {
     useMediaActions();
 
-    const { erIRedigeringsmodus, erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder, endreUttaksplan } =
-        useKalenderRedigeringContext();
+    const { erFlereUttaksplanversjoner } = useUttaksplanData();
+
+    const {
+        erIRedigeringsmodus,
+        erKunEnHelEksisterendePeriodeValgt,
+        sammenslåtteValgtePerioder,
+        uttaksplanHandlinger,
+        setErIRedigeringsmodus,
+        setErMinimert,
+    } = useKalenderRedigeringContext();
+
+    useEffect(() => {
+        if (sammenslåtteValgtePerioder.length === 0) {
+            setErIRedigeringsmodus(false);
+            setErMinimert(false);
+        }
+    }, [sammenslåtteValgtePerioder]);
 
     return (
         <Box.New
@@ -51,9 +68,11 @@ export const RedigerKalender = () => {
                     <VStack gap="space-16" className="px-4 pb-4">
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
-                            tilbakestillPlan={() => endreUttaksplan('tilbakestill')}
-                            angreEndring={() => endreUttaksplan('angre')}
-                            fjernAltIPlanen={() => endreUttaksplan('fjernAlt')}
+                            tilbakestillPlan={
+                                erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
+                            }
+                            angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
+                            fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
                         />
                         <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
                         <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />

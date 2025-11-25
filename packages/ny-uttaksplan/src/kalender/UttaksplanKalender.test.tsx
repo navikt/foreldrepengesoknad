@@ -115,7 +115,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Du har markert nye dager')).toBeInTheDocument();
         expect(
             screen.getByText(
-                "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
+                "Du har markert dager som ikke er lagt til i planen ennå. Velg 'Legg til' for å opprette en ny periode.",
             ),
         ).toBeInTheDocument();
         expect(screen.queryByText('Valgte datoer inneholder eksisterende perioder')).not.toBeInTheDocument();
@@ -167,7 +167,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.queryByText('Du har markert nye dager')).not.toBeInTheDocument();
         expect(
             screen.queryByText(
-                "Du har markert dager som ikke er lagt til i planen enda. Velg 'Legg til' for å opprette en ny periode.",
+                "Du har markert dager som ikke er lagt til i planen ennå. Velg 'Legg til' for å opprette en ny periode.",
             ),
         ).not.toBeInTheDocument();
 
@@ -203,7 +203,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel. Du kan utsette ved sykdom.',
+                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel.',
             ),
         ).toBeInTheDocument();
     });
@@ -219,7 +219,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel. Du kan utsette ved sykdom.',
+                'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel.',
             ),
         ).toBeInTheDocument();
     });

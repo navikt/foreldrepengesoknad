@@ -21,6 +21,7 @@ const meta = {
         erMedmorDelAvSøknaden: false,
         modus: 'planlegger',
         harAktivitetskravIPeriodeUtenUttak: false,
+        erFlereUttaksplanversjoner: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);

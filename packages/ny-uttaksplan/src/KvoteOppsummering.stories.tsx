@@ -26,6 +26,7 @@ const meta = {
         harAktivitetskravIPeriodeUtenUttak: true,
         bareFarMedmorHarRett: false,
         erDeltUttak: false,
+        erFlereUttaksplanversjoner: false,
     },
     render: (args) => {
         const { visStatusIkoner, ...rest } = args;

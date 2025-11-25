@@ -86,37 +86,35 @@ function getPeriode(perioder: Periode[], id: string): Periode | undefined {
 }
 
 function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
-    return perioder.filter((periode) => isUttaksperiode(periode)) as Uttaksperiode[];
+    return perioder.filter((periode) => isUttaksperiode(periode));
 }
 
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter((periode) => isUtsettelsesperiode(periode)) as Utsettelsesperiode[];
+    return perioder.filter((periode) => isUtsettelsesperiode(periode));
 }
 
 function getFerieUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter((periode) => isUtsettelsePgaFerie(periode)) as Utsettelsesperiode[];
+    return perioder.filter((periode) => isUtsettelsePgaFerie(periode));
 }
 
 function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
-    return perioder.filter((periode) => isOverføringsperiode(periode)) as Overføringsperiode[];
+    return perioder.filter((periode) => isOverføringsperiode(periode));
 }
 
 function getHull(perioder: Periode[]): PeriodeHull[] {
-    return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
+    return perioder.filter((periode) => isHull(periode));
 }
 
 function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak> {
-    return perioder.filter(
-        (periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode),
-    ) as Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak>;
+    return perioder.filter((periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode));
 }
 
 function getInfoperioder(perioder: Periode[]): InfoPeriode[] {
-    return perioder.filter((periode) => isInfoPeriode(periode)) as InfoPeriode[];
+    return perioder.filter((periode) => isInfoPeriode(periode));
 }
 
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
-    return perioder.filter((periode) => isOppholdsperiode(periode)) as Oppholdsperiode[];
+    return perioder.filter((periode) => isOppholdsperiode(periode));
 }
 
 function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {

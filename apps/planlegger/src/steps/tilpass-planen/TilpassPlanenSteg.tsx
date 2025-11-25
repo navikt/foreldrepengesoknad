@@ -83,9 +83,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
-    const endreUttaksplan = (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => {
+    const uttaksplanHandlinger = (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => {
         if (handling === 'angre' && currentUttaksplanIndex > 0) {
             setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
+            lagreUttaksplan(uttaksplan.slice(0, currentUttaksplanIndex));
         } else if (handling === 'tilbakestill') {
             setCurrentUttaksplanIndex(0);
             lagreUttaksplan([originalUttaksplan]);
@@ -141,6 +142,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={erDeltUttak}
                 saksperioder={gjeldendeUttaksplan}
+                erFlereUttaksplanversjoner={uttaksplan.length > 1}
             >
                 <VStack gap="space-24">
                     <Alert variant="info">
@@ -164,7 +166,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
 
                     {visningsmodus === 'liste' && (
-                        <UttaksplanNy oppdaterUttaksplan={oppdaterUttaksplan} endreUttaksplan={endreUttaksplan} />
+                        <UttaksplanNy
+                            oppdaterUttaksplan={oppdaterUttaksplan}
+                            uttaksplanHandlinger={uttaksplanHandlinger}
+                        />
                     )}
 
                     {visningsmodus === 'kalender' && (
@@ -172,7 +177,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                             readOnly={!erUttaksplanKalenderRedigerbar()}
                             barnehagestartdato={barnehagestartdato}
                             oppdaterUttaksplan={oppdaterUttaksplan}
-                            endreUttaksplan={endreUttaksplan}
+                            uttaksplanHandlinger={uttaksplanHandlinger}
                         />
                     )}
 
