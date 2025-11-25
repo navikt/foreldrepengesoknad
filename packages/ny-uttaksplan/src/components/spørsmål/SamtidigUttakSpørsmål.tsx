@@ -23,8 +23,10 @@ export const SamtidigUttakSpørsmål = () => {
             <RhfRadioGroup
                 control={control}
                 name="samtidigUttak"
-                label="Skal du ha samtidig uttak?"
-                validate={[isRequired('Du må fylle ut')]}
+                label={<FormattedMessage id="SamtidigUttakSpørsmål.SamtidigUttakSpørsmål" />}
+                validate={[
+                    isRequired(intl.formatMessage({ id: 'SamtidigUttakSpørsmål.SamtidigUttakSpørsmålRequired' })),
+                ]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="uttaksplan.ja" />
@@ -37,7 +39,7 @@ export const SamtidigUttakSpørsmål = () => {
                 <RhfNumericField
                     control={control}
                     className="max-w-xs"
-                    label="Hvor mange prosent?"
+                    label={<FormattedMessage id="SamtidigUttakSpørsmål.Prosent" />}
                     name="samtidigUttaksprosent"
                     validate={[valideringSamtidigUttak(intl, stillingsprosentValue)]}
                     maxLength={5}

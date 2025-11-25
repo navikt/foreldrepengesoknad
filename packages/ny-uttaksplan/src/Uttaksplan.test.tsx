@@ -94,7 +94,7 @@ describe('Uttaksplan', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(await screen.findByText('Skal du ha samtidig uttak?')).toBeInTheDocument();
+        expect(await screen.findByText('Skal dere ha foreldrepenger samtidig?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         expect(await screen.findByText('Hvor mange prosent?')).toBeInTheDocument();

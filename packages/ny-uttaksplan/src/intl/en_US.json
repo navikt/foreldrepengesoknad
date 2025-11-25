@@ -245,5 +245,8 @@
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
     "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page",
     "UttaksplanKalender.LeggTilMåneder": "Show more months",
-    "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)"
+    "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)",
+    "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Are you going to take parental benefits at the same time?",
+    "SamtidigUttakSpørsmål.SamtidigUttakSpørsmålRequired": "You must fill out whether you will take parental benefits at the same time",
+    "SamtidigUttakSpørsmål.Prosent": "How many percent?"
 }

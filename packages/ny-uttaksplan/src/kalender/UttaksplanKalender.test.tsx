@@ -261,7 +261,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
 
-        expect(await screen.findByText('Skal du ha samtidig uttak?')).toBeInTheDocument();
+        expect(await screen.findByText('Skal dere ha foreldrepenger samtidig?')).toBeInTheDocument();
         expect(screen.getAllByText('Ja')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Nei')[0]).toBeInTheDocument();
         expect(screen.getAllByLabelText('Nei')[0]).toBeChecked();

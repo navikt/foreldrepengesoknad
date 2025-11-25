@@ -244,5 +244,8 @@
     "RedigeringKalenderIndex.VelgDatoerIKalender": "Du kan velge datoar i kalenderen",
     "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på sidan",
     "UttaksplanKalender.LeggTilMåneder": "Legg til fleire månader",
-    "UttaksplanKalender.Maks3År": "Du viser maks antall månader (3 år)"
+    "UttaksplanKalender.Maks3År": "Du viser maks antall månader (3 år)",
+    "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Skal dykk ha foreldrepengar samtidig?",
+    "SamtidigUttakSpørsmål.SamtidigUttakSpørsmålRequired": "Du må fylle ut om dykk skal ha foreldrepengar samtidig",
+    "SamtidigUttakSpørsmål.Prosent": "Hvor mange prosent?"
 }
