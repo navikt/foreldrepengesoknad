@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Box, VStack } from '@navikt/ds-react';
@@ -18,7 +19,7 @@ type Props = {
         oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    endreUttaksplan: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
+    uttaksplanHandlinger: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 };
 
 export const RedigerKalenderIndex = (props: Props) => (
@@ -30,8 +31,21 @@ export const RedigerKalenderIndex = (props: Props) => (
 export const RedigerKalender = () => {
     useMediaActions();
 
-    const { erIRedigeringsmodus, erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder, endreUttaksplan } =
-        useKalenderRedigeringContext();
+    const {
+        erIRedigeringsmodus,
+        erKunEnHelEksisterendePeriodeValgt,
+        sammenslåtteValgtePerioder,
+        uttaksplanHandlinger,
+        setErIRedigeringsmodus,
+        setErMinimert,
+    } = useKalenderRedigeringContext();
+
+    useEffect(() => {
+        if (sammenslåtteValgtePerioder.length === 0) {
+            setErIRedigeringsmodus(false);
+            setErMinimert(false);
+        }
+    }, [sammenslåtteValgtePerioder]);
 
     return (
         <Box.New
@@ -51,9 +65,9 @@ export const RedigerKalender = () => {
                     <VStack gap="space-16" className="px-4 pb-4">
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
-                            tilbakestillPlan={() => endreUttaksplan('tilbakestill')}
-                            angreEndring={() => endreUttaksplan('angre')}
-                            fjernAltIPlanen={() => endreUttaksplan('fjernAlt')}
+                            tilbakestillPlan={() => uttaksplanHandlinger('tilbakestill')}
+                            angreEndring={() => uttaksplanHandlinger('angre')}
+                            fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
                         />
                         <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
                         <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />

@@ -59,7 +59,7 @@ const meta = {
                 <UttaksplanKalender
                     {...args}
                     oppdaterUttaksplan={handleOnPlanChange}
-                    endreUttaksplan={action('button-click')}
+                    uttaksplanHandlinger={action('button-click')}
                 />
             </UttaksplanDataProvider>
         );
