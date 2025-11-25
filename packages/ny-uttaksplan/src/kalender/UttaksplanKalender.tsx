@@ -187,7 +187,7 @@ export const UttaksplanKalender = ({
                             </InlineMessage>
                         )}
                     </div>
-                    {oppdaterUttaksplan && uttaksplanHandlinger && (
+                    {!readOnly && oppdaterUttaksplan && uttaksplanHandlinger && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
