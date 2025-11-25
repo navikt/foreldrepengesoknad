@@ -6,6 +6,7 @@ import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
 import { Sak } from '../pages/Sak';
+import { BeregningPage } from '../pages/beregning-page/BeregningPage.tsx';
 import { DokumenterPage } from '../pages/dokumenter-page/DokumenterPage';
 import { EttersendingPage } from '../pages/ettersending/EttersendingPage';
 import { Forside } from '../pages/forside/Forside';
@@ -49,6 +50,7 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                                 path={`${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
                                 element={<InntektsmeldingPage />}
                             />
+                            <Route path={OversiktRoutes.BEREGNING} element={<BeregningPage />} />
                         </Route>
                         <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                     </Route>
