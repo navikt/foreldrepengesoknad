@@ -5,6 +5,7 @@ export enum OversiktRoutes {
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',
     INNTEKTSMELDING = 'inntektsmelding',
+    BEREGNING = 'beregning',
     TIDSLINJEN = 'tidslinjen',
     OPPGAVER = 'oppgaver',
     BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD = 'brukt-opplysninger-om-arbeidsforhold',

@@ -74,7 +74,7 @@ export const hentBeregningOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['BEREGNING', saksnummer],
         queryFn: async () => {
-            return await ky.get(API_URLS.beregning, { searchParams: { saksnummer } }).json<unknown[]>();
+            return await ky.get(API_URLS.beregning, { searchParams: { saksnummer } }).json<unknown>();
         },
     });
 

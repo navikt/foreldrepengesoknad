@@ -61,6 +61,12 @@ const inntektsmelding = {
     handleInApp: true,
 };
 
+const beregning = {
+    title: 'Beregning',
+    url: OversiktRoutes.BEREGNING,
+    handleInApp: true,
+};
+
 const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
@@ -79,6 +85,8 @@ const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
             return [minSide, hovedside, saksoversikt, oppgaver];
         case OversiktRoutes.INNTEKTSMELDING:
             return [minSide, hovedside, saksoversikt, inntektsmelding];
+        case OversiktRoutes.BEREGNING:
+            return [minSide, hovedside, saksoversikt, beregning];
         default:
             return assertUnreachable('En rute mangler brødsmulesti');
     }
