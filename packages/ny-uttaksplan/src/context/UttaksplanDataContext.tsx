@@ -27,6 +27,7 @@ type Props = {
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
     saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    erFlereUttaksplanversjoner: boolean;
     children: React.ReactNode;
 };
 

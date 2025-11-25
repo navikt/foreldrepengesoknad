@@ -35,7 +35,7 @@ export const RedigeringPanel = ({ children }: Props) => {
 
     return (
         <VStack
-            gap="space-24"
+            gap="space-16"
             className={
                 erIRedigeringsmodus && !erMinimert
                     ? 'bg-ax-bg-default fixed inset-0 z-50 max-h-[calc(100vh-100px)] overflow-y-auto md:static md:overflow-visible'
@@ -129,15 +129,21 @@ export const RedigeringPanel = ({ children }: Props) => {
 };
 
 const PeriodeDetaljerOgInfoMeldinger = () => {
-    const { familiehendelsedato } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
+
+    const erAdopsjon = familiesituasjon === 'adopsjon';
 
     const { sammenslåtteValgtePerioder, eksisterendePerioderSomErValgt, oppdaterUttaksplan, setValgtePerioder } =
         useKalenderRedigeringContext();
 
     const slettPeriode = getSlettPeriodeFn(sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder);
 
-    const harPeriodeFørEllerEtter = sammenslåtteValgtePerioder.some(
-        (p) => dayjs(p.fom).isBefore(familiehendelsedato) || dayjs(p.tom).isSameOrAfter(familiehendelsedato),
+    const harPeriodeFør = sammenslåtteValgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+    const harPeriodeEtter = sammenslåtteValgtePerioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
+    const harPeriodeFørEllerEtter = harPeriodeFør || harPeriodeEtter;
+
+    const harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato = !sammenslåtteValgtePerioder.some((periode) =>
+        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(3, 'week')),
     );
 
     const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
@@ -155,11 +161,20 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
                 <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} slettPeriode={slettPeriode} />
             )}
 
-            {!erFerieValgbart && harPeriodeFørEllerEtter && (
+            {erAdopsjon && harPeriodeFør && (
                 <Alert variant="info" size="small">
-                    <FormattedMessage id="RedigeringPanel.FerieForEllerEtterTermin" />
+                    <FormattedMessage id="RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato" />
                 </Alert>
             )}
+
+            {!erAdopsjon &&
+                !erFerieValgbart &&
+                harPeriodeFørEllerEtter &&
+                !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
+                    <Alert variant="info" size="small">
+                        <FormattedMessage id="RedigeringPanel.FerieForEllerEtterTermin" />
+                    </Alert>
+                )}
         </VStack>
     );
 };

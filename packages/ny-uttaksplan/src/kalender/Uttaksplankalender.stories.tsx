@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps, useState } from 'react';
-import { action } from 'storybook/internal/actions';
+import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -32,6 +32,7 @@ const meta = {
         aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+        erFlereUttaksplanversjoner: false,
         children: null,
     },
     render: (args) => {
@@ -55,11 +56,12 @@ const meta = {
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={args.erDeltUttak || false}
                 saksperioder={perioder}
+                erFlereUttaksplanversjoner={args.erFlereUttaksplanversjoner}
             >
                 <UttaksplanKalender
                     {...args}
                     oppdaterUttaksplan={handleOnPlanChange}
-                    endreUttaksplan={action('button-click')}
+                    uttaksplanHandlinger={action('button-click')}
                 />
             </UttaksplanDataProvider>
         );

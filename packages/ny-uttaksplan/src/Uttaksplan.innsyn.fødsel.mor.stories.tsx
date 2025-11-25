@@ -14,6 +14,7 @@ const meta = {
         oppdaterUttaksplan: () => null,
         children: null,
         erMedmorDelAvSøknaden: false,
+        erFlereUttaksplanversjoner: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);

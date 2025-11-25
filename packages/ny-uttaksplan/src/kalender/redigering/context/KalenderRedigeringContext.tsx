@@ -21,7 +21,7 @@ type Props = {
     oppdaterUttaksplan: (
         oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     ) => void;
-    endreUttaksplan: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
+    uttaksplanHandlinger: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
 };
 
@@ -42,7 +42,7 @@ export const KalenderRedigeringProvider = ({
     valgtePerioder,
     children,
     oppdaterUttaksplan,
-    endreUttaksplan,
+    uttaksplanHandlinger,
     setValgtePerioder,
 }: Props) => {
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
@@ -89,7 +89,7 @@ export const KalenderRedigeringProvider = ({
             setErMinimert,
             oppdaterUttaksplan: oppdater,
             setValgtePerioder,
-            endreUttaksplan,
+            uttaksplanHandlinger,
         };
     }, [
         erIRedigeringsmodus,
@@ -99,7 +99,7 @@ export const KalenderRedigeringProvider = ({
         eksisterendePerioderSomErValgt,
         oppdater,
         setValgtePerioder,
-        endreUttaksplan,
+        uttaksplanHandlinger,
     ]);
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;

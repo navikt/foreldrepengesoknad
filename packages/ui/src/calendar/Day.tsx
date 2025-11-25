@@ -105,6 +105,10 @@ const handleKeyNavigationAndSelection = (
     dateClickCallback: (date: string) => void,
     setFocusedDate: (date: Dayjs) => void,
 ) => {
+    if (e.key === 'Tab') {
+        return;
+    }
+
     e.preventDefault();
     const isClickable = !!dateClickCallback && !isWeekend(date);
 

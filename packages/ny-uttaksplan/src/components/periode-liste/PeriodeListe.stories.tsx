@@ -42,6 +42,7 @@ const customRenderer = ({
             harAktivitetskravIPeriodeUtenUttak={false}
             erDeltUttak
             saksperioder={[]}
+            erFlereUttaksplanversjoner={false}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <PeriodeListe
