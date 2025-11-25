@@ -6,6 +6,6 @@
         "rootDir": "src",
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*"],
+    "include": ["src", "vitest"],
     "exclude": ["node_modules"]
 }

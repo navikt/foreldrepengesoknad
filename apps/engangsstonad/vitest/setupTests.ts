@@ -11,7 +11,6 @@ beforeAll(annotations.beforeAll);
 
 expect.extend(matchers);
 
-// @ts-expect-error greit her
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
     globalThis.scrollTo = () => undefined;
 }

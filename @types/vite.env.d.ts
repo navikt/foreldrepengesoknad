@@ -6,6 +6,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
     readonly VITE_SENTRY_RELEASE: string;
+    readonly TEST_MODE?: string;
     // more env variables...
 }
 
