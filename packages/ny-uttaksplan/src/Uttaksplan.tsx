@@ -17,10 +17,10 @@ import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
 interface Props {
     oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
-    endreUttaksplan?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
+    uttaksplanHandlinger?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 }
 
-export const UttaksplanNy = ({ oppdaterUttaksplan, endreUttaksplan }: Props) => {
+export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
     const { modus, uttaksplan } = useUttaksplanData();
@@ -80,13 +80,13 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, endreUttaksplan }: Props) => 
                     }}
                 />
             )}
-            {oppdaterUttaksplan && endreUttaksplan && (
+            {oppdaterUttaksplan && uttaksplanHandlinger && (
                 <UttaksplanHandlingKnapper
                     toggleAllAccordions={toggleAllAccordions}
                     visKnapper
-                    angreEndring={() => endreUttaksplan('angre')}
-                    tilbakestillPlan={() => endreUttaksplan('tilbakestill')}
-                    fjernAltIPlanen={() => endreUttaksplan('fjernAlt')}
+                    angreEndring={() => uttaksplanHandlinger('angre')}
+                    tilbakestillPlan={() => uttaksplanHandlinger('tilbakestill')}
+                    fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
                 />
             )}
         </>

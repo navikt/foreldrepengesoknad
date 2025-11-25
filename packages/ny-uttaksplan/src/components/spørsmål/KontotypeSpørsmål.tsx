@@ -15,9 +15,14 @@ import { LeggTilPeriodePanelFormValues } from '../legg-til-periode-panel/types/L
 interface Props {
     gyldigeKontotyper?: KontoTypeUttak[];
     skalViseTittel?: boolean;
+    harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato?: boolean;
 }
 
-export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }: Props) => {
+export const KontotypeSpørsmål = ({
+    gyldigeKontotyper,
+    skalViseTittel = true,
+    harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato = false,
+}: Props) => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
     const { valgtStønadskonto, erMedmorDelAvSøknaden } = useUttaksplanData();
@@ -57,9 +62,13 @@ export const KontotypeSpørsmål = ({ gyldigeKontotyper, skalViseTittel = true }
                     <Radio value={'MOR'}>
                         <FormattedMessage id="uttaksplan.mor" />
                     </Radio>
-                    <Radio value={'FAR_MEDMOR'}>
-                        <FormattedMessage id="uttaksplan.far" />
-                    </Radio>
+                    <>
+                        {!harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
+                            <Radio value={'FAR_MEDMOR'}>
+                                <FormattedMessage id="uttaksplan.far" />
+                            </Radio>
+                        )}
+                    </>
                 </RhfRadioGroup>
             )}
         </VStack>

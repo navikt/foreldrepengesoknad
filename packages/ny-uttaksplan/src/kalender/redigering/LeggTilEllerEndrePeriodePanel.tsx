@@ -33,9 +33,9 @@ type FormValues = {
 export const LeggTilEllerEndrePeriodePanel = () => {
     const intl = useIntl();
 
-    const [feilmeldinger, setFeilmeldinger] = useState<string[]>([]);
+    const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
-    const { uttaksplan, aleneOmOmsorg } = useUttaksplanData();
+    const { uttaksplan, aleneOmOmsorg, familiehendelsedato } = useUttaksplanData();
 
     const {
         erMinimert,
@@ -67,10 +67,11 @@ export const LeggTilEllerEndrePeriodePanel = () => {
             ),
         );
 
-        setFeilmeldinger(valideringsfeil);
         if (valideringsfeil.length > 0) {
+            setFeilmelding(valideringsfeil.at(0));
             return;
         }
+        setFeilmelding(undefined);
 
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map((periode) => ({
@@ -91,6 +92,10 @@ export const LeggTilEllerEndrePeriodePanel = () => {
 
         lukkRedigeringsmodus();
     };
+
+    const harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato = !sammenslåtteValgtePerioder.some((periode) =>
+        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(3, 'week')),
+    );
 
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
@@ -113,9 +118,17 @@ export const LeggTilEllerEndrePeriodePanel = () => {
                     {gyldigeKontotyper.length > 0 && (
                         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                             <VStack gap="space-16">
-                                {feilmeldinger.length > 0 && <ErrorMessage>{feilmeldinger.join(', ')}</ErrorMessage>}
-                                <KontotypeSpørsmål gyldigeKontotyper={gyldigeKontotyper} skalViseTittel={false} />
-                                {!aleneOmOmsorg && <SamtidigUttakSpørsmål />}
+                                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                                <KontotypeSpørsmål
+                                    gyldigeKontotyper={gyldigeKontotyper}
+                                    skalViseTittel={false}
+                                    harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato={
+                                        harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato
+                                    }
+                                />
+                                {!aleneOmOmsorg && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
+                                    <SamtidigUttakSpørsmål />
+                                )}
                                 <GraderingSpørsmål />
                                 <PanelButtons
                                     onCancel={lukkRedigeringsmodus}

@@ -22,10 +22,15 @@ interface Props {
     readOnly: boolean;
     barnehagestartdato?: string;
     oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
-    endreUttaksplan?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
+    uttaksplanHandlinger?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 }
 
-export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttaksplan, endreUttaksplan }: Props) => {
+export const UttaksplanKalender = ({
+    readOnly,
+    barnehagestartdato,
+    oppdaterUttaksplan,
+    uttaksplanHandlinger,
+}: Props) => {
     const intl = useIntl();
     const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan } = useUttaksplanData();
 
@@ -123,7 +128,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                             }
                         />
                     </div>
-                    {oppdaterUttaksplan && endreUttaksplan && (
+                    {oppdaterUttaksplan && uttaksplanHandlinger && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
@@ -135,7 +140,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, oppdaterUttak
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setValgtePerioder}
                                 oppdaterUttaksplan={oppdaterUttaksplan}
-                                endreUttaksplan={endreUttaksplan}
+                                uttaksplanHandlinger={uttaksplanHandlinger}
                             />
                         </div>
                     )}

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
@@ -9,7 +10,7 @@ import { RedigeringPanel } from './RedigeringPanel';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export const ValgteDagerPanel = () => {
-    const { erFarEllerMedmor } = useUttaksplanData();
+    const { erFarEllerMedmor, familiehendelsedato, familiesituasjon } = useUttaksplanData();
 
     const {
         sammenslåtteValgtePerioder,
@@ -35,16 +36,22 @@ export const ValgteDagerPanel = () => {
         setValgtePerioder([]);
     };
 
+    const harValgtPeriodeFørFamDato = sammenslåtteValgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(familiehendelsedato),
+    );
+
     return (
         <RedigeringPanel>
             <VStack gap="space-12">
-                <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
-                    {erKunEnHelEksisterendePeriodeValgt ? (
-                        <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                    ) : (
-                        <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
-                    )}
-                </Button>
+                {!(harValgtPeriodeFørFamDato && familiesituasjon === 'adopsjon') && (
+                    <Button variant="primary" size="small" onClick={() => setErIRedigeringsmodus(true)} type="button">
+                        {erKunEnHelEksisterendePeriodeValgt ? (
+                            <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
+                        ) : (
+                            <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
+                        )}
+                    </Button>
+                )}
                 <HStack justify="space-between">
                     <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
                         <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
