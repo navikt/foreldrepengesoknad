@@ -67,7 +67,7 @@ export const UttaksplanKalender = ({
     const firstDateInCalendar =
         familiesituasjon === 'adopsjon'
             ? familiehendelsedato
-            : dateToISOString(dayjs(familiehendelsedato).subtract(3, 'month').toDate());
+            : dateToISOString(dayjs(familiehendelsedato).subtract(12, 'weeks').toDate());
     let baseLastDateInCalendar = barnehagestartdato ?? (uttaksplan.length > 0 ? uttaksplan.at(-1)!.tom : undefined);
 
     if (!baseLastDateInCalendar) {
