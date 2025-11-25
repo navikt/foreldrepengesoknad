@@ -68,6 +68,7 @@ export type { AktørType_fpoversikt } from './fpoversiktDtoGenerert';
 export type { Dokument_fpoversikt } from './fpoversiktDtoGenerert';
 export type { TidslinjeHendelseType_fpoversikt } from './fpoversiktDtoGenerert';
 export type { BeregningV1_fpoversikt } from './fpoversiktDtoGenerert';
+export type { BeregningsAndel_fpoversikt } from './fpoversiktDtoGenerert';
 
 // Types from fpsoknadDtoGenerert
 export type { com_neovisionaries_i18n_CountryCode as CountryCode } from './fpsoknadDtoGenerert';
