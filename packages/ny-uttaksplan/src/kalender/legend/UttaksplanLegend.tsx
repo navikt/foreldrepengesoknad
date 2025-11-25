@@ -49,7 +49,7 @@ export const UttaksplanLegend = ({
         });
     }
 
-    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE'] satisfies CalendarPeriodColor[];
+    const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] satisfies CalendarPeriodColor[];
 
     const selectableLegends = legendInfo.filter((info) => !unselectableColors.some((color) => color === info.color));
     const nonSelectableLegends = legendInfo.filter((info) => unselectableColors.some((color) => color === info.color));
@@ -60,7 +60,7 @@ export const UttaksplanLegend = ({
             {sortedLegends
                 .filter((info) => info.color !== 'NONE')
                 .map((info) => (
-                    <button
+                    <div
                         key={info.color}
                         onClick={
                             unselectableColors.some((color) => color === info.color) || readOnly
@@ -75,18 +75,87 @@ export const UttaksplanLegend = ({
                                       }
                                   }
                         }
-                        type="button"
-                        className={'inline-block w-fit pb-[0.46rem] pr-2 [all:unset]'}
+                        className={
+                            `rounded-sm ${getSelectableStyle(!unselectableColors.some((color) => color === info.color) && !readOnly)}` +
+                            ` ${getFocusStyle(info.color)} ${getSelectedStyle(selectedLabel === info.label, info.color)} `
+                        }
+                        onKeyDown={(keyEvent) => {
+                            if (keyEvent.code === 'Space' || keyEvent.code === 'Enter') {
+                                keyEvent.preventDefault();
+
+                                if (unselectableColors.some((color) => color === info.color) || readOnly) {
+                                    return;
+                                } else {
+                                    selectLegend(info.color);
+
+                                    if (selectedLabel === info.label) {
+                                        setSelectedLabel(undefined);
+                                    } else {
+                                        setSelectedLabel(info.label);
+                                    }
+                                }
+                            }
+                        }}
+                        role="button"
+                        tabIndex={unselectableColors.some((color) => color === info.color) || readOnly ? -1 : 0}
                     >
                         <CalendarLabel color={info.color} selected={selectedLabel === info.label}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
                             </BodyShort>
                         </CalendarLabel>
-                    </button>
+                    </div>
                 ))}
         </HStack>
     );
+};
+
+const getSelectableStyle = (selectable: boolean) => {
+    return selectable ? 'cursor-pointer ' : '';
+};
+
+const getSelectedStyle = (isSelected: boolean, color: CalendarPeriodColor) => {
+    if (isSelected) {
+        if (color === 'GREEN' || color === 'GREENSTRIPED' || color === 'LIGHTGREEN' || color === 'LIGHTGREENBLUE') {
+            return 'outline-2 outline-offset-4 outline-ax-success-600';
+        }
+        if (color === 'BLUE' || color === 'BLUESTRIPED' || color === 'LIGHTBLUE' || color === 'LIGHTBLUEGREEN') {
+            return 'outline-2 outline-offset-4 outline-ax-accent-600';
+        }
+        if (color === 'BLUEOUTLINE') {
+            return 'outline-2 outline-offset-4 outline-ax-accent-500';
+        }
+        if (color === 'BLACK') {
+            return 'outline-2 outline-offset-4 outline-ax-bg-neutral-strong';
+        }
+
+        if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+            return 'outline-2 outline-offset-4 outline-ax-success-600';
+        }
+    }
+
+    return '';
+};
+
+const getFocusStyle = (color: CalendarPeriodColor) => {
+    if (color === 'GREEN' || color === 'GREENSTRIPED' || color === 'LIGHTGREEN' || color === 'LIGHTGREENBLUE') {
+        return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-success-600';
+    }
+    if (color === 'BLUE' || color === 'BLUESTRIPED' || color === 'LIGHTBLUE' || color === 'LIGHTBLUEGREEN') {
+        return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-accent-600';
+    }
+    if (color === 'BLUEOUTLINE') {
+        return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-accent-500';
+    }
+    if (color === 'BLACK') {
+        return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-bg-neutral-strong';
+    }
+
+    if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+        return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-success-600';
+    }
+
+    return '';
 };
 
 const getCalendarLabel = (

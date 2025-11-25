@@ -10,35 +10,10 @@ interface Props {
     selected?: boolean;
 }
 
-export const CalendarLabel = ({ children, color, onClick, selected = false }: Props) => {
-    const getClassname = () => {
-        if (selected) {
-            if (color === 'GREEN' || color === 'GREENSTRIPED' || color === 'LIGHTGREEN' || color === 'LIGHTGREENBLUE') {
-                return styles.greenSelected;
-            }
-            if (color === 'BLUE' || color === 'BLUESTRIPED' || color === 'LIGHTBLUE' || color === 'LIGHTBLUEGREEN') {
-                return styles.blueSelected;
-            }
-            if (color === 'BLUEOUTLINE') {
-                return styles.blueOutlineSelected;
-            }
-            if (color === 'BLACK') {
-                return styles.blackSelected;
-            }
-
-            return styles.calendarLabelSelected;
-        }
-
-        if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
-            return [styles.calendarLabel, styles.selectableCalendarLabel].join(' ');
-        }
-
-        return styles.calendarLabel;
-    };
-
+export const CalendarLabel = ({ children, color, onClick }: Props) => {
     if (color !== 'DARKBLUE') {
         return (
-            <HStack className={getClassname()} gap="space-8" align="center" onClick={onClick}>
+            <HStack gap="space-8" align="center" onClick={onClick}>
                 {getRect(color)}
                 {children}
             </HStack>
