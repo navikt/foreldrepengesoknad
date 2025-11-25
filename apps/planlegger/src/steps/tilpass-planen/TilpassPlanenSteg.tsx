@@ -1,7 +1,12 @@
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import {
+    ContextDataType,
+    useContextComplete,
+    useContextGetData,
+    useContextSaveData,
+} from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
@@ -11,6 +16,7 @@ import { Alert, BodyLong, Button, Heading, Modal, VStack } from '@navikt/ds-reac
 
 import { KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
+import { encodeToBase64 } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
@@ -44,6 +50,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         useContextGetData(ContextDataType.ORIGINAL_UTTAKSPLAN),
         'Uttaksplan ikke oppgitt',
     );
+    const context = useContextComplete();
 
     // Uttaksplan lagrer hver state av planen i et array. Når denne siden laster vil vi starte på den siste endringen.
     const initiellUttaksplanIndex = uttaksplan.length - 1;
@@ -66,6 +73,23 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
+
+    const oppdaterUrlMedEnkodetData = (oppdatertUttaksplan: UttakPeriode_fpoversikt[][]) => {
+        const contextData = {
+            ...context,
+            [ContextDataType.UTTAKSPLAN]: [oppdatertUttaksplan[oppdatertUttaksplan.length - 1]],
+        };
+
+        const encodedData = encodeToBase64(JSON.stringify(contextData));
+        const currentPath = window.location.pathname;
+        const newUrl = `${currentPath}?data=${encodedData}`;
+
+        window.history.replaceState(null, '', newUrl);
+    };
+
+    useEffect(() => {
+        oppdaterUrlMedEnkodetData(uttaksplan);
+    }, [uttaksplan]);
 
     const oppdaterUttaksplan = (perioder: UttakPeriode_fpoversikt[]) => {
         let nyUttaksplan = [];
