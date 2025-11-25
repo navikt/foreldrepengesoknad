@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Loader, VStack } from '@navikt/ds-react';
 
-import { BeregningV1_fpoversikt } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { BeregningV1_fpoversikt, BeregningsAndel_fpoversikt } from '@navikt/fp-types';
+import { formatCurrency, formatDate } from '@navikt/fp-utils';
 
 import { hentBeregningOptions } from '../../api/queries.ts';
 import { BeregningHeader } from '../../components/header/Header.tsx';
@@ -35,23 +35,57 @@ export const BeregningPage = () => {
     const beregning = beregningQuery.data;
     return (
         <PageRouteLayout header={<BeregningHeader />}>
-            <BeregningStatuser beregning={beregning} />
-            <p>Dette er bestemt utifra hvilke aktiviteter du hadde {formatDate(beregning.skjæringsTidspunkt)}</p>
+            <VStack gap="2">
+                <BeregningStatuser beregning={beregning} />
+                <BodyShort>
+                    Dette er bestemt utifra hvilke aktiviteter du hadde {formatDate(beregning.skjæringsTidspunkt)}
+                </BodyShort>
+                <BodyShort>Beregningen din er gjort utifra disse andelene</BodyShort>
+                <VStack gap="2">
+                    {beregning.beregningsAndeler.map((andel) => (
+                        <BeregningAndel andel={andel} key={andel.aktivitetStatus} />
+                    ))}
+                </VStack>
+            </VStack>
         </PageRouteLayout>
     );
 };
 
+const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    return (
+        <VStack>
+            <BodyShort>
+                {finnStatus(andel.aktivitetStatus)} - {andel.arbeidsforhold?.arbeidsgiverIdent}
+            </BodyShort>
+            <BodyShort>
+                Din inntekt for denne andelen er satt til {formatCurrency(andel.fastsattPrMnd ?? 0)} kroner per måned.
+            </BodyShort>
+            <BodyShort>Denne andelen har en dagsats på {formatCurrency(andel.dagsats ?? 0)} kroner.</BodyShort>
+            <BodyShort>
+                Denne dagsatsen vil bli utbetalt{' '}
+                {(andel.arbeidsforhold?.refusjonPrMnd ?? 0) > 0 ? 'til arbeidsgiver' : 'direkte til deg'}
+            </BodyShort>
+        </VStack>
+    );
+};
+// TODO enum
+const finnStatus = (status: string) => {
+    switch (status) {
+        case 'AT':
+            return 'arbeidstaker';
+        case 'FL':
+            return 'frilans';
+        case 'AT_FL':
+            return 'kombinert arbeidstaker og frilanser';
+        default:
+            return '';
+        // TODO mere greier
+    }
+};
+
 const BeregningStatuser = ({ beregning }: { beregning: BeregningV1_fpoversikt }) => {
     const statuser = beregning.beregningAktivitetStatuser.map((status) => {
-        switch (status.aktivitetStatus) {
-            case 'AT':
-                return 'arbeidstaker';
-            case 'AT_FL':
-                return 'kombinert arbeidstaker og frilanser';
-            default:
-                return '';
-            // TODO mere greier
-        }
+        return finnStatus(status.aktivitetStatus);
     });
     const hjemler = beregning.beregningAktivitetStatuser.map((status) => {
         switch (status.hjemmel) {

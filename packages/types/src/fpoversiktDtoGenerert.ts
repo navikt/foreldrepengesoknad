@@ -62,9 +62,7 @@ export type BeregningAktivitetStatus_fpoversikt = {
 };
 
 export type BeregningsAndel_fpoversikt = {
-    aktivitetStatus?: {
-        [key: string]: unknown;
-    };
+    aktivitetStatus: string;
     arbeidsforhold?: Arbeidsforhold_fpoversikt;
     dagsats?: number;
     fastsattPrMnd?: number;
