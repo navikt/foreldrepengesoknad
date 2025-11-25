@@ -5,8 +5,8 @@ import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
     visKnapper?: boolean;
-    tilbakestillPlan: () => void;
-    angreEndring: () => void;
+    tilbakestillPlan?: () => void;
+    angreEndring?: () => void;
     fjernAltIPlanen: () => void;
     toggleAllAccordions?: () => void;
     isAllAccordionsOpen?: boolean;
@@ -29,6 +29,7 @@ export const UttaksplanHandlingKnapper = ({
                 variant="secondary"
                 icon={visKnapper ? <ArrowCirclepathIcon aria-hidden height={24} width={24} /> : null}
                 onClick={tilbakestillPlan}
+                disabled={!tilbakestillPlan}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
             </Button>
@@ -37,6 +38,7 @@ export const UttaksplanHandlingKnapper = ({
                 variant="secondary"
                 icon={visKnapper ? <ArrowUndoIcon aria-hidden height={24} width={24} /> : null}
                 onClick={angreEndring}
+                disabled={!angreEndring}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
             </Button>

@@ -8,6 +8,7 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
 import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { ValgteDagerPanel } from './ValgteDagerPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -30,6 +31,8 @@ export const RedigerKalenderIndex = (props: Props) => (
 
 export const RedigerKalender = () => {
     useMediaActions();
+
+    const { erFlereUttaksplanversjoner } = useUttaksplanData();
 
     const {
         erIRedigeringsmodus,
@@ -65,8 +68,10 @@ export const RedigerKalender = () => {
                     <VStack gap="space-16" className="px-4 pb-4">
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
-                            tilbakestillPlan={() => uttaksplanHandlinger('tilbakestill')}
-                            angreEndring={() => uttaksplanHandlinger('angre')}
+                            tilbakestillPlan={
+                                erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
+                            }
+                            angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
                             fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
                         />
                         <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />

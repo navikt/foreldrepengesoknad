@@ -23,7 +23,7 @@ interface Props {
 export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { modus, uttaksplan } = useUttaksplanData();
+    const { modus, uttaksplan, erFlereUttaksplanversjoner } = useUttaksplanData();
 
     const uttaksplanBuilder = useUttaksplanBuilder();
 
@@ -84,8 +84,10 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props
                 <UttaksplanHandlingKnapper
                     toggleAllAccordions={toggleAllAccordions}
                     visKnapper
-                    angreEndring={() => uttaksplanHandlinger('angre')}
-                    tilbakestillPlan={() => uttaksplanHandlinger('tilbakestill')}
+                    tilbakestillPlan={
+                        erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
+                    }
+                    angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
                     fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
                 />
             )}
