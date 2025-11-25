@@ -174,17 +174,17 @@ describe('UttaksplanKalender', () => {
         const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
         expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
-        expect(fpFørFødselPeriode.getByText('20 dager valgt i perioden')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('14 dager valgt i perioden')).toBeInTheDocument();
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(foreldrepengerPeriode.getByText('Mors kvote')).toBeInTheDocument();
-        expect(foreldrepengerPeriode.getByText('15 dager valgt i perioden')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('11 dager valgt i perioden')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
         expect(arbeidPeriode.getByText('Mor')).toBeInTheDocument();
         expect(arbeidPeriode.getAllByText('Arbeid')).toHaveLength(2);
-        expect(arbeidPeriode.getByText('7 dager valgt i perioden')).toBeInTheDocument();
+        expect(arbeidPeriode.getByText('5 dager valgt i perioden')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
         expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);

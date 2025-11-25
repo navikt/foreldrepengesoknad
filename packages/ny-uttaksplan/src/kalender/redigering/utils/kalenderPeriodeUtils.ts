@@ -58,14 +58,24 @@ export const finnValgtePerioder = (
                 const start = fom1.isAfter(fom2) ? fom1 : fom2;
                 const end = tom1.isBefore(tom2) ? tom1 : tom2;
 
-                return start.isSameOrBefore(end, 'day') ? sum + end.diff(start, 'day') + 1 : sum;
+                if (!start.isSameOrBefore(end, 'day')) {
+                    return sum;
+                }
+
+                return sum + countWeekdaysBetween(start, end);
             }, 0);
 
             return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
         })
         .filter((p): p is PlanperiodeMedAntallDager => p !== null)
         .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
-            const duplikat = acc.find((p) => p.kontoType === curr.kontoType);
+            const duplikat = acc.find(
+                (p) =>
+                    p.kontoType === curr.kontoType &&
+                    !p.erAnnenPartEøs &&
+                    !curr.erAnnenPartEøs &&
+                    p.forelder === curr.forelder,
+            );
             if (duplikat) {
                 return acc
                     .filter((p) => p.kontoType !== duplikat.kontoType)
@@ -79,6 +89,21 @@ export const finnValgtePerioder = (
             }
             return acc.concat(curr);
         }, []);
+};
+
+const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
+    let count = 0;
+    let d = start;
+
+    while (d.isSameOrBefore(end, 'day')) {
+        const day = d.day();
+        if (day !== 0 && day !== 6) {
+            count++;
+        }
+        d = d.add(1, 'day');
+    }
+
+    return count;
 };
 
 export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod) =>
