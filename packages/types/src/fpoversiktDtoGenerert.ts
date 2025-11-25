@@ -46,9 +46,9 @@ export type Beregning_fpoversikt = {
     };
 
 export type BeregningV1_fpoversikt = {
-    beregningAktivitetStatuser?: BeregningAktivitetStatus_fpoversikt[];
-    beregningsAndeler?: BeregningsAndel_fpoversikt[];
-    skjæringsTidspunkt?: string;
+    beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
+    beregningsAndeler: BeregningsAndel_fpoversikt[];
+    skjæringsTidspunkt: string;
 };
 
 export type Arbeidsforhold_fpoversikt = {
@@ -57,12 +57,8 @@ export type Arbeidsforhold_fpoversikt = {
 };
 
 export type BeregningAktivitetStatus_fpoversikt = {
-    aktivitetStatus?: {
-        [key: string]: unknown;
-    };
-    hjemmel?: {
-        [key: string]: unknown;
-    };
+    aktivitetStatus: string;
+    hjemmel: string;
 };
 
 export type BeregningsAndel_fpoversikt = {
