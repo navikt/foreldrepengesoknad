@@ -239,7 +239,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du har valgt en kombinasjon av dager som ikke tillater noen kontotyper, og du kan derfor ikke legge til en periode.',
+                'Du har valgt en kombinasjon av dager som ikke tillater noen kvoter, og du kan derfor ikke legge til en periode.',
             ),
         ).toBeInTheDocument();
     });
@@ -256,7 +256,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Endre'));
 
-        expect(await screen.findByText('Velg kontotype')).toBeInTheDocument();
+        expect(await screen.findByText('Velg kvotetype')).toBeInTheDocument();
         expect(screen.getByLabelText('Mors kvote')).toBeChecked();
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
