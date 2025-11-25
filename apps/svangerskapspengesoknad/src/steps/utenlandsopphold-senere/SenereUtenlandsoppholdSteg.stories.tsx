@@ -17,7 +17,7 @@ const promiseAction = () => () => {
 const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
     skalBoUtenforNorgeNeste12Mnd: true,
-} as Utenlandsopphold;
+} satisfies Utenlandsopphold;
 
 type StoryArgs = {
     utenlandsforhold?: Utenlandsopphold;

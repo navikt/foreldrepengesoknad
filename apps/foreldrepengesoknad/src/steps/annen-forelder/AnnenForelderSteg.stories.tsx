@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 
-import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { BarnDto_fpoversikt, PersonDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -54,12 +54,12 @@ const defaultAnnenForelder = {
     etternavn: 'Utvikler',
     kanIkkeOppgis: false,
     erAleneOmOmsorg: false,
-} satisfies AnnenForelderType;
+} satisfies AnnenForelder;
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
-    annenForelder?: AnnenForelderType;
+    annenForelder?: AnnenForelder;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof AnnenForelderSteg>;
 
