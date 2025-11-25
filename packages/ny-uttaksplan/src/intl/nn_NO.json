@@ -224,7 +224,7 @@
     "RedigeringPanel.Mor": "Mor",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {dag} other {dagar}} valgt i perioden",
     "RedigeringPanel.FerieForEllerEtterTermin": "Du mistar dagar hvis du ikkje har foreldrepengar før termin eller i dei seks første vekene etter fødsel.",
-    "RedigeringPanel.NyeDagerForklaring": "Du har markert dagar som ikkje er lagt til i planen enda. Velg 'Legg til' for å opprette ein ny periode.",
+    "RedigeringPanel.NyeDagerForklaring": "Du har markert dagar som ikkje er lagt til i planen enno. Velg 'Legg til' for å opprette ein ny periode.",
     "RedigeringPanel.Maksimer": "Utvid panel",
     "RedigeringPanel.Minimer": "Minimer panel",
     "RedigeringPanel.SkjulDetaljer": "Skjul periodeinformasjon",
