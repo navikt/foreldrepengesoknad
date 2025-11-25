@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 
-import { Alert, BodyShort, Checkbox as DsCheckbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Checkbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfCheckbox } from './RhfCheckbox';
 import { RhfCheckboxGroup } from './RhfCheckboxGroup';
@@ -58,16 +58,16 @@ const meta = {
                             control={formMethods.control}
                             label="Dette er en gruppe med checkboxes"
                         >
-                            <DsCheckbox value="test1">test1</DsCheckbox>
-                            <DsCheckbox value="test2">test2</DsCheckbox>
+                            <Checkbox value="test1">test1</Checkbox>
+                            <Checkbox value="test2">test2</Checkbox>
                         </RhfCheckboxGroup>
                         <RhfCheckboxGroup
                             name="checkpanelpre"
                             control={formMethods.control}
                             label="Dette er en gruppe med checkboxes som er preutfyllt"
                         >
-                            <DsCheckbox value="test1">test1</DsCheckbox>
-                            <DsCheckbox value="test2">test2</DsCheckbox>
+                            <Checkbox value="test1">test1</Checkbox>
+                            <Checkbox value="test2">test2</Checkbox>
                         </RhfCheckboxGroup>
                         <RhfTextField name="textfield" control={formMethods.control} label="Dette er et tekstfelt" />
                         <RhfTextField
