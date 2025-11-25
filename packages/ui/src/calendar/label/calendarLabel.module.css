@@ -4,19 +4,19 @@
     border-radius: 4px;
     background: linear-gradient(
         45deg,
-        var(--ax-success-500) 0%,
-        var(--ax-success-500) 25%,
+        var(--ax-success-400) 0%,
+        var(--ax-success-400) 25%,
         white 25%,
         white 40%,
-        var(--ax-success-500) 40%,
-        var(--ax-success-500) 60%,
+        var(--ax-success-400) 40%,
+        var(--ax-success-400) 60%,
         white 60%,
         white 75%,
-        var(--ax-success-500) 75%,
-        var(--ax-success-500) 100%,
+        var(--ax-success-400) 75%,
+        var(--ax-success-400) 100%,
         white 100%
     ) !important;
-    border: 2px solid var(--ax-success-400) !important;
+    border: 2px solid var(--ax-success-500) !important;
     print-color-adjust: exact;
 }
 
@@ -26,16 +26,16 @@
     border-radius: 4px;
     background: linear-gradient(
         45deg,
-        var(--ax-accent-500) 0%,
-        var(--ax-accent-500) 25%,
+        var(--ax-accent-400) 0%,
+        var(--ax-accent-400) 25%,
         white 25%,
         white 40%,
-        var(--ax-accent-500) 40%,
-        var(--ax-accent-500) 60%,
+        var(--ax-accent-400) 40%,
+        var(--ax-accent-400) 60%,
         white 60%,
         white 75%,
-        var(--ax-accent-500) 75%,
-        var(--ax-accent-500) 100%,
+        var(--ax-accent-400) 75%,
+        var(--ax-accent-400) 100%,
         white 100%
     ) !important;
     border: 2px solid var(--ax-accent-500) !important;

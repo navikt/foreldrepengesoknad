@@ -118,21 +118,21 @@
         var(--ax-bg-default) 90%,
         var(--ax-success-400) 90%
     ) !important;
-    border: 2px solid var(--ax-success-400);
+    border: 2px solid var(--ax-success-500);
     print-color-adjust: exact;
 }
 
 .greenStripedDay.firstDay {
-    border-left: 2px solid var(--ax-success-400);
+    border-left: 2px solid var(--ax-success-500);
 }
 
 .greenStripedDay.lastDay {
-    border-right: 2px solid var(--ax-success-400);
+    border-right: 2px solid var(--ax-success-500);
 }
 
 .greenStripedDay.firstAndLastDay {
-    border-left: 2px solid var(--ax-success-400);
-    border-right: 2px solid var(--ax-success-400);
+    border-left: 2px solid var(--ax-success-500);
+    border-right: 2px solid var(--ax-success-500);
 }
 
 .blueStripedDay {
