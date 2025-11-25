@@ -105,6 +105,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     const { search } = useLocation();
+    // TODO: bruk useSearchParams
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
     const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
     const alleYtelser = getAlleYtelser(saker);

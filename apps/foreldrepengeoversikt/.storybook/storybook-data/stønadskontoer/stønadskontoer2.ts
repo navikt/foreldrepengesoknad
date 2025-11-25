@@ -1,6 +1,6 @@
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 
-export const stønadskontoer = {
+export const stønadskontoer2 = {
     '80': {
         kontoer: [
             {
