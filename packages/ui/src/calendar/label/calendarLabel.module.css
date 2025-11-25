@@ -148,39 +148,3 @@
     background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
 }
-
-.calendarLabel {
-    padding: 6px;
-}
-
-.selectableCalendarLabel {
-    cursor: pointer;
-}
-
-.blueOutlineSelected {
-    cursor: pointer;
-    border: 2px solid var(--ax-accent-600);
-    border-radius: 0.5rem;
-    padding: 4px;
-}
-
-.blackSelected {
-    cursor: pointer;
-    border: 2px solid var(--ax-neutral-900);
-    border-radius: 0.5rem;
-    padding: 4px;
-}
-
-.greenSelected {
-    cursor: pointer;
-    border: 2px solid var(--ax-success-600);
-    border-radius: 0.5rem;
-    padding: 4px;
-}
-
-.blueSelected {
-    cursor: pointer;
-    border: 2px solid var(--ax-accent-600);
-    border-radius: 0.5rem;
-    padding: 4px;
-}
