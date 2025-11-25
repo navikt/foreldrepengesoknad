@@ -60,7 +60,7 @@ export const UttaksplanLegend = ({
             {sortedLegends
                 .filter((info) => info.color !== 'NONE')
                 .map((info) => (
-                    <div
+                    <button
                         key={info.color}
                         onClick={
                             unselectableColors.some((color) => color === info.color) || readOnly
@@ -79,32 +79,14 @@ export const UttaksplanLegend = ({
                             `rounded-sm ${getSelectableStyle(!unselectableColors.includes(info.color) && !readOnly)}` +
                             ` ${getFocusStyle(info.color)} ${getSelectedStyle(selectedLabel === info.label, info.color)} `
                         }
-                        onKeyDown={(keyEvent) => {
-                            if (keyEvent.code === 'Space' || keyEvent.code === 'Enter') {
-                                keyEvent.preventDefault();
-
-                                if (unselectableColors.includes(info.color) || readOnly) {
-                                    return;
-                                } else {
-                                    selectLegend(info.color);
-
-                                    if (selectedLabel === info.label) {
-                                        setSelectedLabel(undefined);
-                                    } else {
-                                        setSelectedLabel(info.label);
-                                    }
-                                }
-                            }
-                        }}
-                        role="button"
-                        tabIndex={unselectableColors.includes(info.color) || readOnly ? -1 : 0}
+                        tabIndex={!unselectableColors.includes(info.color) && !readOnly ? 0 : -1}
                     >
                         <CalendarLabel color={info.color} selected={selectedLabel === info.label}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
                                 {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
                             </BodyShort>
                         </CalendarLabel>
-                    </div>
+                    </button>
                 ))}
         </HStack>
     );
