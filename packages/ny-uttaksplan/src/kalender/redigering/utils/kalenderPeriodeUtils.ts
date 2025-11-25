@@ -84,5 +84,7 @@ export const finnValgtePerioder = (
 export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod) =>
     uttaksplan.some(
         (p) =>
-            dayjs(p.fom).isSame(dayjs(valgtPeriode.fom), 'day') && dayjs(p.tom).isSame(dayjs(valgtPeriode.tom), 'day'),
+            dayjs(p.fom).isSame(dayjs(valgtPeriode.fom), 'day') &&
+            dayjs(p.tom).isSame(dayjs(valgtPeriode.tom), 'day') &&
+            !p.periodeHullÅrsak,
     );

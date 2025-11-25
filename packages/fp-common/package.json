@@ -14,7 +14,7 @@
         "@navikt/fp-types": "workspace:*"
     },
     "devDependencies": {
-        "eslint": "9.36.0"
+        "eslint": "9.39.1"
     },
     "packageManager": "pnpm@10.18.3"
 }

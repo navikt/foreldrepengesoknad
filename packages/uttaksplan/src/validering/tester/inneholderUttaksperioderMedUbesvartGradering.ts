@@ -11,9 +11,11 @@ export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsi
         .filter((p) =>
             graderingSkalBesvares(
                 p.type,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.konto,
                 grunnlag.familiehendelsesdato,
                 grunnlag.søkerErFarEllerMedmor,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.erMorForSyk,
                 p.tidsperiode,
             ),
