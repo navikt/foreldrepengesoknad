@@ -1,14 +1,14 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
+import { Calendar, CalendarPeriod, CalendarPeriodColor, monthDiff } from '@navikt/fp-ui';
 import { dateToISOString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -32,7 +32,8 @@ export const UttaksplanKalender = ({
     uttaksplanHandlinger,
 }: Props) => {
     const intl = useIntl();
-    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan } = useUttaksplanData();
+    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
+    const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -62,6 +63,40 @@ export const UttaksplanKalender = ({
         },
         [intl],
     );
+
+    const firstDateInCalendar =
+        familiesituasjon === 'adopsjon'
+            ? familiehendelsedato
+            : dateToISOString(dayjs(familiehendelsedato).subtract(3, 'month').toDate());
+    let baseLastDateInCalendar = barnehagestartdato ?? (uttaksplan.length > 0 ? uttaksplan.at(-1)!.tom : undefined);
+
+    if (!baseLastDateInCalendar) {
+        baseLastDateInCalendar = dateToISOString(dayjs(familiehendelsedato).add(6, 'month').toDate());
+    }
+
+    // Beregn den absolutte maksgrensen (3 år etter familiehendelsedato)
+    const absoluteMaksGrense = dateToISOString(dayjs(familiehendelsedato).add(3, 'year').toDate());
+
+    // Beregn maksimalt antall ekstra måneder som kan legges til
+    const maksAntallEkstraMåneder = useMemo(() => {
+        const baseLastDate = dayjs(baseLastDateInCalendar);
+        const maksGrense = dayjs(absoluteMaksGrense);
+
+        // Beregn hvor mange hele måneder det er mellom base siste dato og maksgrensen
+        return monthDiff(baseLastDate.toDate(), maksGrense.toDate());
+    }, [baseLastDateInCalendar, absoluteMaksGrense]);
+
+    // Beregn faktisk siste dato som skal vises i kalenderen
+    let lastDateInCalendar = baseLastDateInCalendar;
+    if (additionalMonthsToAddToLast > 0) {
+        const proposedLastDate = dayjs(baseLastDateInCalendar).add(additionalMonthsToAddToLast, 'month');
+        const maxDate = dayjs(absoluteMaksGrense);
+
+        // Sørg for at vi ikke overskrider 3 år etter familiehendelsedato
+        lastDateInCalendar = dateToISOString(
+            proposedLastDate.isAfter(maxDate) ? maxDate.toDate() : proposedLastDate.toDate(),
+        );
+    }
 
     return (
         <VStack gap="space-8">
@@ -120,13 +155,25 @@ export const UttaksplanKalender = ({
                             setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             isRangeSelection={isRangeSelection}
-                            firstDateInCalendar={dateToISOString(
-                                dayjs(familiehendelsedato).subtract(3, 'month').toDate(),
-                            )}
-                            lastDateInCalendar={
-                                barnehagestartdato ?? (uttaksplan.length > 0 ? uttaksplan.at(-1)!.tom : undefined)
-                            }
+                            firstDateInCalendar={firstDateInCalendar}
+                            lastDateInCalendar={lastDateInCalendar}
                         />
+                        {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && (
+                            <Button
+                                onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
+                                type="button"
+                                variant="secondary"
+                                size="small"
+                                className="mt-4 w-full"
+                            >
+                                <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
+                            </Button>
+                        )}
+                        {additionalMonthsToAddToLast > maksAntallEkstraMåneder && (
+                            <InlineMessage className="mt-2" status="info" role="status">
+                                <FormattedMessage id="UttaksplanKalender.Maks3År" />
+                            </InlineMessage>
+                        )}
                     </div>
                     {oppdaterUttaksplan && uttaksplanHandlinger && (
                         <div
