@@ -2,9 +2,8 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 
-import { Button, HGrid, VStack } from '@navikt/ds-react';
+import { HGrid, VStack } from '@navikt/ds-react';
 
 import { Month } from './Month';
 import { CalendarPeriod } from './types/CalendarPeriod';
@@ -33,26 +32,13 @@ export const Calendar = ({
     firstDateInCalendar,
     lastDateInCalendar,
 }: Props) => {
-    const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
     const allMonths = useMemo(
-        () => findMonths(additionalMonthsToAddToLast, firstDateInCalendar, lastDateInCalendar),
-        [periods, firstDateInCalendar, lastDateInCalendar, additionalMonthsToAddToLast],
+        () => findMonths(firstDateInCalendar, lastDateInCalendar),
+        [periods, firstDateInCalendar, lastDateInCalendar],
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
-
-    // Beregn maksimalt antall ekstra måneder basert på firstDateInCalendar
-    const maksAntallEkstraMåneder = useMemo(() => {
-        const firstDate = dayjs(firstDateInCalendar);
-        const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : firstDate.add(6, 'month');
-        const treÅrEtterFirstDate = firstDate.add(3, 'year');
-
-        // Beregn hvor mange måneder som kan legges til før vi når 3 år etter firstDateInCalendar
-        const monthsUntilThreeYears = monthDiff(lastDate.toDate(), treÅrEtterFirstDate.toDate());
-
-        return monthsUntilThreeYears;
-    }, [firstDateInCalendar, lastDateInCalendar]);
 
     const dateClickCallback = useCallback(
         (selectedDate: string) => {
@@ -127,32 +113,18 @@ export const Calendar = ({
                     );
                 })}
             </HGrid>
-            {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && (
-                <Button
-                    onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
-                    type="button"
-                    variant="secondary"
-                    size="small"
-                    className="mt-4 w-full"
-                >
-                    <FormattedMessage id="Calendar.LeggTilMåneder" />
-                </Button>
-            )}
         </VStack>
     );
 };
 
 const findMonths = (
-    additionalMonthsToAddToLast: number,
     firstDateInCalendar: string,
     lastDateInCalendar?: string,
 ): Array<{ month: number; year: number }> => {
     const firstDate = dayjs(firstDateInCalendar);
     const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
 
-    const lastDateInCalendarAdjusted = lastDate.add(additionalMonthsToAddToLast, 'month');
-
-    const numberOfMonthsBetween = monthDiff(firstDate.toDate(), lastDateInCalendarAdjusted.toDate());
+    const numberOfMonthsBetween = monthDiff(firstDate.toDate(), lastDate.toDate());
 
     return Array.from({ length: numberOfMonthsBetween + 1 }, (_, i) => {
         const date = firstDate.add(i, 'month');
@@ -160,7 +132,7 @@ const findMonths = (
     });
 };
 
-const monthDiff = (d1: Date, d2: Date): number => {
+export const monthDiff = (d1: Date, d2: Date): number => {
     let months = (d2.getFullYear() - d1.getFullYear()) * 12;
     months += d2.getMonth() - d1.getMonth();
     return Math.max(months, 0);
