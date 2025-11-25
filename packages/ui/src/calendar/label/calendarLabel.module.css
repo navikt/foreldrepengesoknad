@@ -48,12 +48,12 @@
     border-radius: 4px;
     background: linear-gradient(
         to top,
-        var(--ax-success-400),
-        var(--ax-success-400) 50%,
-        var(--ax-accent-200) 50%,
-        var(--ax-accent-200) 100%
+        var(--ax-success-200),
+        var(--ax-success-200) 50%,
+        var(--ax-accent-400) 50%,
+        var(--ax-accent-400) 100%
     ) !important;
-    border: 2px solid var(--ax-success-400) !important;
+    border: 2px solid var(--ax-success-200) !important;
     print-color-adjust: exact;
 }
 
@@ -63,12 +63,12 @@
     border-radius: 4px;
     background: linear-gradient(
         to top,
-        var(--ax-accent-500),
-        var(--ax-accent-500) 50%,
+        var(--ax-accent-400),
+        var(--ax-accent-400) 50%,
         var(--ax-success-200) 50%,
         var(--ax-success-200) 100%
     ) !important;
-    border: 2px solid var(--ax-accent-500) !important;
+    border: 2px solid var(--ax-accent-400) !important;
     print-color-adjust: exact;
 }
 
