@@ -4,6 +4,7 @@ import {
     ExternalLinkIcon,
     FileIcon,
     InboxDownIcon,
+    InboxUpIcon,
     TasklistSendIcon,
     ThumbDownIcon,
     ThumbUpIcon,
@@ -101,56 +102,25 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
     );
 
     const aktivtStegIndex = getAktivTidslinjeStegIndex(hendelserForVisning, erInnvilgetForeldrepengesøknad);
-    const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
-        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
-    );
 
     return (
         <Process>
             <>
-                {hendelserForVisning.map((hendelse, index) => (
-                    <Hendelse søkersBarn={søkersBarn} sak={sak} hendelse={hendelse} key={hendelse.opprettet + index} />
-                ))}
+                {hendelserForVisning.map((hendelse, index) => {
+                    const erAktivt = aktivtStegIndex === index;
+                    const erUtført = aktivtStegIndex > index;
+                    const status = erAktivt ? 'active' : erUtført ? 'completed' : 'uncompleted';
+                    return (
+                        <Hendelse
+                            status={status}
+                            søkersBarn={søkersBarn}
+                            sak={sak}
+                            hendelse={hendelse}
+                            key={hendelse.opprettet + index}
+                        />
+                    );
+                })}
             </>
-            <Process.Event
-                status="completed"
-                title="Barnet ble født"
-                timestamp="04. august 2025"
-                bullet={<BabyWrappedIcon />}
-            />
-            <Process.Event
-                status="completed"
-                title="Du søkte om FORELDREPENGER"
-                timestamp="22. august 2025"
-                bullet={<TasklistSendIcon />}
-            >
-                <Link href="/eksempel">
-                    <FileIcon aria-hidden fontSize={24} />
-                    Søknad om foreldrepenger ved fødsel
-                </Link>
-            </Process.Event>
-            <Process.Event
-                status="completed"
-                title="Søknaden din ble innvilget"
-                timestamp="25. august 2025"
-                bullet={<ThumbUpIcon />}
-            >
-                <Link href="/eksempel">
-                    <FileIcon aria-hidden fontSize={24} />
-                    Innvilgelsesbrev Foreldrepenger
-                </Link>
-            </Process.Event>
-            <Process.Event status="completed" title="Du har fått et svar på søknaden din" timestamp="8. september 2025">
-                <Link href="/eksempel">
-                    <FileIcon aria-hidden fontSize={24} />
-                    Opphør Foreldrepenger
-                </Link>
-            </Process.Event>
-            <Process.Event status="active" title="Nav har etterspurt opplysninger" timestamp="8. september 2025" />
-            <Process.Event title="Barnet fyller 3 år" timestamp="22. august 2028" bullet={<ChildHairEyesIcon />}>
-                Du må ta ut foreldrepengene før barnet fyller 3 år. Venter dere nytt barn, må dere ta ut foreldrepengene
-                før ny foreldrepengeperiode starter.
-            </Process.Event>
         </Process>
     );
 };
@@ -159,14 +129,17 @@ const Hendelse = ({
     hendelse,
     sak,
     søkersBarn,
+    status,
 }: {
     sak: Sak;
+    status?: 'active' | 'completed' | 'uncompleted';
     hendelse: Tidslinjehendelse;
     søkersBarn: BarnDto_fpoversikt[];
 }) => {
     const intl = useIntl();
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const { familiehendelse } = sak;
+
     console.log(hendelse);
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
@@ -178,7 +151,7 @@ const Hendelse = ({
 
             return (
                 <Process.Event
-                    status="completed"
+                    status={status}
                     title={tittel}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
                     bullet={<BabyWrappedIcon />}
@@ -188,13 +161,13 @@ const Hendelse = ({
         case 'FØRSTEGANGSSØKNAD': {
             return (
                 <Process.Event
-                    status="completed"
+                    status={status}
                     title={intl.formatMessage(
                         { id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' },
                         { ytelse: sak.ytelse.toLowerCase() },
                     )}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
-                    bullet={<BabyWrappedIcon />}
+                    bullet={<TasklistSendIcon />}
                 >
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
@@ -204,6 +177,7 @@ const Hendelse = ({
             // TODO: hva er denne?
             return (
                 <Process.Event title="" bullet={<ChildHairEyesIcon />}>
+                    status={status}
                     TODO
                 </Process.Event>
             );
@@ -224,6 +198,7 @@ const Hendelse = ({
 
             return (
                 <Process.Event
+                    status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={tittel}
                     bullet={ikon}
@@ -236,6 +211,7 @@ const Hendelse = ({
             // TODO
             return (
                 <Process.Event
+                    status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.ETTERSENDING' })}
                     bullet={<ChildHairEyesIcon />}
@@ -247,6 +223,7 @@ const Hendelse = ({
         case 'VENT_DOKUMENTASJON': {
             return (
                 <Process.Event
+                    status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
                     bullet={<ChildHairEyesIcon />}
@@ -264,9 +241,10 @@ const Hendelse = ({
         case 'UTGÅENDE_INNHENT_OPPLYSNINGER': {
             return (
                 <Process.Event
+                    status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' })}
-                    bullet={<ChildHairEyesIcon />}
+                    bullet={<InboxUpIcon />}
                 >
                     <Button size="small" className="mt-2" to={`/sak/${sak.saksnummer}/ettersend`} as={LinkInternal}>
                         {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' })}
@@ -284,7 +262,7 @@ const Hendelse = ({
             }
             return (
                 <Process.Event
-                    status="uncompleted" // TODO: aktiver når 3+ år er gått?
+                    status={status}
                     title={getTidslinjeTittelForBarnTreÅr({
                         barnFraSak,
                         intl,
@@ -485,5 +463,3 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
         </div>
     );
 };
-
-const HendelseLink = () => {};
