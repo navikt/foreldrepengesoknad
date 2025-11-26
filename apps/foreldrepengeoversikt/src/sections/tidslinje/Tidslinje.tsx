@@ -2,7 +2,6 @@ import {
     BabyWrappedIcon,
     ChildHairEyesIcon,
     ExternalLinkIcon,
-    FileIcon,
     InboxDownIcon,
     InboxUpIcon,
     TasklistSendIcon,
@@ -105,22 +104,20 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
 
     return (
         <Process>
-            <>
-                {hendelserForVisning.map((hendelse, index) => {
-                    const erAktivt = aktivtStegIndex === index;
-                    const erUtført = aktivtStegIndex > index;
-                    const status = erAktivt ? 'active' : erUtført ? 'completed' : 'uncompleted';
-                    return (
-                        <Hendelse
-                            status={status}
-                            søkersBarn={søkersBarn}
-                            sak={sak}
-                            hendelse={hendelse}
-                            key={hendelse.opprettet + index}
-                        />
-                    );
-                })}
-            </>
+            {hendelserForVisning.map((hendelse, index) => {
+                const erAktivt = aktivtStegIndex === index;
+                const erUtført = aktivtStegIndex > index;
+                const status = erAktivt ? 'active' : erUtført ? 'completed' : 'uncompleted';
+                return (
+                    <Hendelse
+                        status={status}
+                        søkersBarn={søkersBarn}
+                        sak={sak}
+                        hendelse={hendelse}
+                        key={hendelse.opprettet + index}
+                    />
+                );
+            })}
         </Process>
     );
 };
@@ -140,7 +137,6 @@ const Hendelse = ({
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const { familiehendelse } = sak;
 
-    console.log(hendelse);
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
             const tittel = tidslinjeTittelForFamiliehendelse({
