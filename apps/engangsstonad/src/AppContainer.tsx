@@ -1,7 +1,8 @@
 import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
+import { HTTPError } from 'ky';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -65,6 +66,15 @@ declare global {
 }
 
 const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error) => {
+            if (error instanceof HTTPError) {
+                if (error.response?.status === 401 || error.response?.status === 403) {
+                    location.reload();
+                }
+            }
+        },
+    }),
     defaultOptions: {
         queries: {
             retry: process.env.NODE_ENV === 'test' ? false : 3,
