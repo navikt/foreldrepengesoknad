@@ -84,6 +84,7 @@ export const getCalendarLabel = (
     label: LegendLabel,
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
+    erIPlanleggerModus: boolean,
     intl: IntlShape,
 ): ReactNode => {
     switch (label) {
@@ -100,6 +101,10 @@ export const getCalendarLabel = (
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         case 'MORS_DEL':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.morsPeriode' });
+            }
+
             return erFarEllerMedmor
                 ? intl.formatMessage(
                       { id: 'kalender.annenPartPeriode' },
@@ -107,10 +112,18 @@ export const getCalendarLabel = (
                   )
                 : intl.formatMessage({ id: 'kalender.dinPeriode' });
         case 'MORS_DEL_GRADERT':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
+            }
+
             return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart })
                 : intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
         case 'FARS_DEL':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.farsPeriode' });
+            }
+
             return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.dinPeriode' })
                 : intl.formatMessage(
@@ -118,6 +131,10 @@ export const getCalendarLabel = (
                       { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
                   );
         case 'FARS_DEL_GRADERT':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.farsPeriode.gradert' });
+            }
+
             return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.dinPeriode.gradert' })
                 : intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
@@ -126,8 +143,16 @@ export const getCalendarLabel = (
         case 'FARS_DEL_AKTIVITETSFRI_GRADERT':
             return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri.gradert' });
         case 'TAPTE_DAGER':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.tapteDager.planlegger' });
+            }
+
             return intl.formatMessage({ id: 'kalender.tapteDager' });
         case 'SAMTIDIG_UTTAK':
+            if (erIPlanleggerModus) {
+                return intl.formatMessage({ id: 'kalender.samtidigUttak.planlegger' });
+            }
+
             return intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
             return label;
