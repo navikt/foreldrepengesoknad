@@ -233,7 +233,18 @@ const Hendelse = ({
         case 'VENTER_INNTEKTSMELDING': {
             return 'TODO';
         }
-
+        case 'INNTEKTSMELDING': {
+            return (
+                <Process.Event
+                    status={status}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.INNTEKTSMELDING' })}
+                    bullet={<InboxDownIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
         case 'UTGÅENDE_INNHENT_OPPLYSNINGER': {
             return (
                 <Process.Event
