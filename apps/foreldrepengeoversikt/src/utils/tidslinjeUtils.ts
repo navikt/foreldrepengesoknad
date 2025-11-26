@@ -659,7 +659,6 @@ export const getAlleTidslinjehendelser = (
         const familiehendelse = getTidslinjeFamiliehendelse(sak.familiehendelse);
         tidslinjeHendelser.push(familiehendelse);
     }
-
     if (
         barnFraSak.alleBarnaLever &&
         !erAvslåttForeldrepengesøknad &&
@@ -682,7 +681,6 @@ export const getAlleTidslinjehendelser = (
         const vedtakHendelse = getTidslinjeVedtakHendelse(intl, sak.ytelse);
         tidslinjeHendelser.push(vedtakHendelse);
     }
-
     return [...tidslinjeHendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet));
 };
 

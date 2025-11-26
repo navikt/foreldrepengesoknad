@@ -2,6 +2,7 @@ import {
     BabyWrappedIcon,
     ChildHairEyesIcon,
     ExternalLinkIcon,
+    HourglassBottomFilledIcon,
     InboxDownIcon,
     InboxUpIcon,
     TasklistSendIcon,
@@ -75,9 +76,8 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
 
     const førsteUttaksdagISaken = getFørsteUttaksdagIForeldrepengesaken(sak);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
-    const erAvslåttForeldrepengesøknad = (sak.gjeldendeVedtak?.perioder ?? []).every(
-        (p) => p.resultat?.innvilget === false,
-    );
+    const erAvslåttForeldrepengesøknad =
+        sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false) ?? false;
     const erInnvilgetForeldrepengesøknad = sak.åpenBehandling === undefined && sak.gjeldendeVedtak !== undefined;
 
     const åpenBehandlingPåVent =
@@ -231,7 +231,22 @@ const Hendelse = ({
         case 'VENTER_MELDEKORT':
         case 'VENTER_PGA_TIDLIG_SØKNAD':
         case 'VENTER_INNTEKTSMELDING': {
-            return 'TODO';
+            return (
+                <Process.Event
+                    status={status}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.VENTER_INNTEKTSMELDING' })}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
+                    bullet={<HourglassBottomFilledIcon />}
+                >
+                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
+                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                        <BodyShort size="small">
+                            {intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.linkTittel' })}
+                        </BodyShort>
+                        <ExternalLinkIcon aria-hidden={true} />
+                    </Link>
+                </Process.Event>
+            );
         }
         case 'INNTEKTSMELDING': {
             return (
@@ -242,6 +257,24 @@ const Hendelse = ({
                     bullet={<InboxDownIcon />}
                 >
                     <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
+        case 'FREMTIDIG_VEDTAK': {
+            return (
+                <Process.Event
+                    status={status}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
+                    bullet={<InboxDownIcon />}
+                >
+                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
+                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                        <BodyShort size="small">
+                            {intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.linkTittel' })}
+                        </BodyShort>
+                        <ExternalLinkIcon aria-hidden={true} />
+                    </Link>
                 </Process.Event>
             );
         }
@@ -278,7 +311,7 @@ const Hendelse = ({
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
                     bullet={<ChildHairEyesIcon />}
                 >
-                    {hendelse.merInformasjon}
+                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
                     <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.linkTittel' })}
@@ -368,6 +401,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
     const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
         dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
     );
+
     return (
         <div>
             {hendelserForVisning.map((hendelse, index) => {
