@@ -85,6 +85,8 @@ export const getCalendarLabel = (
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
     erIPlanleggerModus: boolean,
+    erDeltUttak: boolean,
+    erMedmorDelAvSøknaden: boolean,
     intl: IntlShape,
 ): ReactNode => {
     switch (label) {
@@ -101,7 +103,7 @@ export const getCalendarLabel = (
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         case 'MORS_DEL':
-            if (erIPlanleggerModus) {
+            if (erIPlanleggerModus && erDeltUttak) {
                 return intl.formatMessage({ id: 'kalender.morsPeriode' });
             }
 
@@ -120,7 +122,11 @@ export const getCalendarLabel = (
                 ? intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart })
                 : intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
         case 'FARS_DEL':
-            if (erIPlanleggerModus) {
+            if (erIPlanleggerModus && erDeltUttak) {
+                if (erMedmorDelAvSøknaden) {
+                    return intl.formatMessage({ id: 'kalender.medmorsPeriode' });
+                }
+
                 return intl.formatMessage({ id: 'kalender.farsPeriode' });
             }
 
@@ -131,7 +137,11 @@ export const getCalendarLabel = (
                       { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
                   );
         case 'FARS_DEL_GRADERT':
-            if (erIPlanleggerModus) {
+            if (erIPlanleggerModus && erDeltUttak) {
+                if (erMedmorDelAvSøknaden) {
+                    return intl.formatMessage({ id: 'kalender.medmorsPeriode.gradert' });
+                }
+
                 return intl.formatMessage({ id: 'kalender.farsPeriode.gradert' });
             }
 

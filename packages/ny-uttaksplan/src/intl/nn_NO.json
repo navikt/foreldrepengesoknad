@@ -191,6 +191,8 @@
     "kalender.morsPeriode.gradert": "Mor kombinerer jobb og foreldrepengar",
     "kalender.farsPeriode": "Fars periode",
     "kalender.farsPeriode.gradert": "Far kombinerer jobb og foreldrepengar",
+    "kalender.medmorsPeriode": "Medmors periode",
+    "kalender.medmorsPeriode.gradert": "Medmor kombinerer jobb og foreldrepengar",
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
     "kalender.samtidigUttak.planlegger": "Dere har permisjon samtidig",
     "kalender.dinUtsettelse": "Du utset foreldrepengar",

@@ -192,6 +192,8 @@
     "kalender.morsPeriode.gradert": "Mom combines work and parental benefits",
     "kalender.farsPeriode": "Dad's period",
     "kalender.farsPeriode.gradert": "Dad combines work and parental benefits",
+    "kalender.medmorsPeriode": "Co-mother's period",
+    "kalender.medmorsPeriode.gradert": "Co-mother combines work and parental benefits",
     "kalender.samtidigUttak": "You and {navnAnnenPart} are on leave at the same time",
     "kalender.samtidigUttak.planlegger": "You are both on leave at the same time",
     "kalender.dinUtsettelse": "You postpone parental benefits",

@@ -34,7 +34,7 @@ export const UttaksplanLegend = ({
     readOnly,
 }: Props) => {
     const intl = useIntl();
-    const { modus } = useUttaksplanData();
+    const { modus, erDeltUttak, erMedmorDelAvSøknaden } = useUttaksplanData();
 
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
@@ -94,6 +94,8 @@ export const UttaksplanLegend = ({
                                     navnAnnenPart,
                                     erFarEllerMedmor,
                                     modus === 'planlegger',
+                                    erDeltUttak,
+                                    erMedmorDelAvSøknaden,
                                     intl,
                                 )}
                             </BodyShort>
