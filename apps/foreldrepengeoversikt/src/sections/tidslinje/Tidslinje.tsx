@@ -261,6 +261,18 @@ const Hendelse = ({
                 </Process.Event>
             );
         }
+        case 'UTGÅENDE_VARSEL_TILBAKEBETALING': {
+            return (
+                <Process.Event
+                    status={status}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: skrive idag for idag?
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' })}
+                    bullet={<InboxDownIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
         case 'INNTEKTSMELDING': {
             return (
                 <Process.Event
