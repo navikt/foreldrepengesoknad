@@ -102,9 +102,6 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                     {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
                                         <FormattedMessage id="RedigeringPanel.Ferie" />
                                     )}
-                                    {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'ARBEID' && (
-                                        <FormattedMessage id="RedigeringPanel.Arbeid" />
-                                    )}
                                 </BodyShort>
                                 {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (
                                     <BodyShort>
