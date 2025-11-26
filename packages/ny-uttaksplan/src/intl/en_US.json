@@ -222,7 +222,6 @@
     "RedigeringPanel.FarKvote": "Father's quota",
     "RedigeringPanel.Ferie": "Vacation",
     "RedigeringPanel.SamtidigUttak": "({prosent} % leave)",
-    "RedigeringPanel.Arbeid": "Work",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {day} other {days}} selected in the period",
     "RedigeringPanel.KanMisteDager": "You lose days if you do not have parental benefits before the due date or in the first six weeks after birth.",

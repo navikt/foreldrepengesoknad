@@ -220,7 +220,6 @@
     "RedigeringPanel.SlettPeriode": "Slett dager fra periode",
     "RedigeringPanel.Ferie": "Ferie",
     "RedigeringPanel.SamtidigUttak": "({prosent} % uttak)",
-    "RedigeringPanel.Arbeid": "Arbeid",
     "RedigeringPanel.Far": "Far",
     "RedigeringPanel.Mor": "Mor",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {dag} other {dager}} valgt i perioden",
