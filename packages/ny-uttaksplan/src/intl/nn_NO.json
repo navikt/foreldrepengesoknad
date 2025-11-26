@@ -219,6 +219,7 @@
     "RedigeringPanel.FarKvote": "Fars kvote",
     "RedigeringPanel.SlettPeriode": "Slett dagar fra periode",
     "RedigeringPanel.Arbeid": "Arbeid",
+    "RedigeringPanel.SamtidigUttak": "({prosent} % uttak)",
     "RedigeringPanel.Ferie": "Ferie",
     "RedigeringPanel.Far": "Far",
     "RedigeringPanel.Mor": "Mor",

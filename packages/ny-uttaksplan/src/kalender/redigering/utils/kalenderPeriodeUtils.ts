@@ -74,7 +74,8 @@ export const finnValgtePerioder = (
                     p.kontoType === curr.kontoType &&
                     !p.erAnnenPartEøs &&
                     !curr.erAnnenPartEøs &&
-                    p.forelder === curr.forelder,
+                    p.forelder === curr.forelder &&
+                    p.samtidigUttak === curr.samtidigUttak,
             );
             if (duplikat) {
                 return acc
@@ -91,7 +92,7 @@ export const finnValgtePerioder = (
         }, []);
 };
 
-const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
+export const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
     let count = 0;
     let d = start;
 
@@ -111,5 +112,6 @@ export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[]
         (p) =>
             dayjs(p.fom).isSame(dayjs(valgtPeriode.fom), 'day') &&
             dayjs(p.tom).isSame(dayjs(valgtPeriode.tom), 'day') &&
-            !p.periodeHullÅrsak,
+            !p.periodeHullÅrsak &&
+            (p.erAnnenPartEøs || p.samtidigUttak === undefined),
     );

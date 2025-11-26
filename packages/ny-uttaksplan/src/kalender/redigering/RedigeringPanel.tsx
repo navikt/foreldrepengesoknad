@@ -14,6 +14,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { countWeekdaysBetween } from './utils/kalenderPeriodeUtils';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type Props = {
@@ -181,7 +182,7 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
 
 const finnAntallDager = (perioder: CalendarPeriod[]): number => {
     return perioder.reduce((acc, periode) => {
-        const dager = dayjs(periode.tom).diff(dayjs(periode.fom), 'day') + 1;
+        const dager = countWeekdaysBetween(dayjs(periode.fom), dayjs(periode.tom));
         return acc + dager;
     }, 0);
 };

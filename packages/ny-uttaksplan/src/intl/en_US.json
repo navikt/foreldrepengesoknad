@@ -221,6 +221,7 @@
     "RedigeringPanel.MorKvote": "Mother's quota",
     "RedigeringPanel.FarKvote": "Father's quota",
     "RedigeringPanel.Ferie": "Vacation",
+    "RedigeringPanel.SamtidigUttak": "({prosent} % leave)",
     "RedigeringPanel.Arbeid": "Work",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {day} other {days}} selected in the period",

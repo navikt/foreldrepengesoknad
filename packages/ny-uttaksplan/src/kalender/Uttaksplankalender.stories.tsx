@@ -733,3 +733,57 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
         erDeltUttak: true,
     },
 };
+
+export const FellesPeriodeForMorOgSaSamtidigUttakOgSa: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-03-15',
+                tom: '2024-04-03',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                kontoType: 'MØDREKVOTE',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-18',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-18',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'FAR_MEDMOR',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-06-19',
+                tom: '2024-07-15',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarMedmorHarRett: false,
+    },
+};
