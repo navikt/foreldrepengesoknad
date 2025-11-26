@@ -362,16 +362,6 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): 
     );
 };
 
-export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !isInfoPeriode(p))
-            .slice()
-            .reverse()
-            .findIndex((periode) => periode.type === Periodetype.Opphold) === 0
-    );
-};
-
 export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
     return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
 };

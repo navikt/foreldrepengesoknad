@@ -271,7 +271,6 @@
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode": "Du kan ikkje søke om utsetjing på grunn av arbeid eller ferie mindre enn seks veker etter fødsel",
     "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikkje ha ein plan med berre ei utsetjing.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Planen din kan ikkje slutte med at den andre forelderen er heime.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Planen din kan ikkje starte med at den andre forelderen er heime.",
     "uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager": "Du har for mykje uttak av flerbarnsdager.",
     "uttaksplan.validering.feil.periodeStarterPåDatoSomIkkeErUttaksdag": "Perioden kan ikkje starte på ein laurdag eller sundag",

@@ -1,7 +1,7 @@
 import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
+import { uttaksplanErBareOpphold, uttaksplanStarterMedOpphold } from './Periodene';
 
 const familiehendelsesdato = dateToISOString(new Date());
 const førsteUttaksdag = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
@@ -56,28 +56,6 @@ describe('Periodene - uttaksplan er bare opphold', () => {
 
     it('denne regelen skal ikke bry seg om en tom uttaksplan', () => {
         const result = uttaksplanErBareOpphold([]);
-        expect(result).toBe(false);
-    });
-});
-
-describe('Periodene -  uttaksplan slutter med opphold', () => {
-    it('skal ikke godta en plan med bare opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...opphold }]);
-        expect(result).toBe(true);
-    });
-
-    it('skal godta en plan som ikke er bare opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...uttak }, { ...opphold }, { ...uttak }]);
-        expect(result).toBe(false);
-    });
-
-    it('skal ikke godta en plan som slutter med opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...uttak }, { ...opphold }]);
-        expect(result).toBe(true);
-    });
-
-    it('denne regelen skal ikke bry seg om en tom uttaksplan', () => {
-        const result = uttaksplanSlutterMedOpphold([]);
         expect(result).toBe(false);
     });
 });
