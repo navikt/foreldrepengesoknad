@@ -2,7 +2,7 @@ import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import { Link } from '@navikt/ds-react';
+import { HStack, Link } from '@navikt/ds-react';
 
 import { Dokument_fpoversikt } from '@navikt/fp-types';
 
@@ -17,7 +17,7 @@ interface Props {
 // TODO: oppdater farger
 export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     return (
-        <li
+        <HStack
             className={
                 visesITidslinjen
                     ? 'text-ax-font-size-medium flex items-center'
@@ -32,7 +32,7 @@ export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
             >
                 {dokument.tittel}
             </Link>
-        </li>
+        </HStack>
     );
 };
 
@@ -45,7 +45,7 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
     )?.arbeidsgiverNavn;
 
     return (
-        <li
+        <HStack
             className={
                 visesITidslinjen
                     ? 'text-ax-font-size-medium flex items-center'
@@ -61,6 +61,6 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
                 {tittel}
                 {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}
             </Link>
-        </li>
+        </HStack>
     );
 };
