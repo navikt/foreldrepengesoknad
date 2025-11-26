@@ -1,14 +1,28 @@
-import { ExternalLinkIcon } from '@navikt/aksel-icons';
+import {
+    BabyWrappedIcon,
+    ChildHairEyesIcon,
+    ExternalLinkIcon,
+    FileIcon,
+    TasklistSendIcon,
+    ThumbUpIcon,
+} from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { BodyShort, Button, Link, List, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Button, Link, List, Process, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import {
+    BarnDto_fpoversikt,
+    EsSak_fpoversikt,
+    FpSak_fpoversikt,
+    SvpSak_fpoversikt,
+    TidslinjeHendelseDto_fpoversikt,
+} from '@navikt/fp-types';
 
-import { Sak } from '../../types/Sak';
+import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../../types/Sak';
+import { Tidslinjehendelse } from '../../types/Tidslinjehendelse.ts';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils';
 import {
@@ -21,13 +35,154 @@ import {
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import { TidslinjeHendelse } from './TidslinjeHendelse';
 
-interface Props {
-    sak: Sak;
+type TidslinjeProps = {
     visHeleTidslinjen: boolean;
     søkersBarn: BarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto_fpoversikt[];
-}
+};
+
+type Props = {
+    sak: Sak;
+} & TidslinjeProps;
+
+export const TidslinjeNy = (props: Props) => {
+    const { sak, ...rest } = props;
+
+    if (props.tidslinjeHendelser.length === 0) {
+        return null;
+    }
+
+    switch (sak.ytelse) {
+        case 'ENGANGSSTØNAD':
+            return <TidslinjeES {...rest} sak={sak} />;
+        case 'SVANGERSKAPSPENGER':
+            return <TidslinjeSVP {...rest} sak={sak} />;
+        case 'FORELDREPENGER':
+            return <TidslinjeFP {...rest} sak={sak} />;
+    }
+};
+
+export const TidslinjeES = (props: TidslinjeProps & { sak: EngangsstønadSak }) => {
+    return '';
+};
+
+export const TidslinjeSVP = (props: TidslinjeProps & { sak: SvangerskapspengeSak }) => {
+    return '';
+};
+
+export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) => {
+    const intl = useIntl();
+    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen } = props;
+
+    const førsteUttaksdagISaken = getFørsteUttaksdagIForeldrepengesaken(sak);
+    const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
+    const erAvslåttForeldrepengesøknad = (sak.gjeldendeVedtak?.perioder ?? []).every(
+        (p) => p.resultat?.innvilget === false,
+    );
+    const erInnvilgetForeldrepengesøknad = sak.åpenBehandling === undefined && sak.gjeldendeVedtak !== undefined;
+
+    const åpenBehandlingPåVent =
+        sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
+
+    const alleSorterteHendelser = getAlleTidslinjehendelser(
+        tidslinjeHendelser,
+        åpenBehandlingPåVent,
+        manglendeVedlegg,
+        sak,
+        barnFraSak,
+        erAvslåttForeldrepengesøknad,
+        intl,
+    );
+
+    const hendelserForVisning = getHendelserForVisning(
+        visHeleTidslinjen,
+        alleSorterteHendelser,
+        erAvslåttForeldrepengesøknad,
+        erInnvilgetForeldrepengesøknad,
+    );
+
+    const aktivtStegIndex = getAktivTidslinjeStegIndex(hendelserForVisning, erInnvilgetForeldrepengesøknad);
+    const finnesHendelserFørAktivtSteg = alleSorterteHendelser.find((hendelse) =>
+        dayjs(hendelse.opprettet).isSameOrBefore(dayjs(), 'd'),
+    );
+
+    return (
+        <Process>
+            <>
+                {hendelserForVisning.map((hendelse, index) => (
+                    <Hendelse hendelse={hendelse} key={hendelse.opprettet + index} />
+                ))}
+            </>
+            <Process.Event
+                status="completed"
+                title="Barnet ble født"
+                timestamp="04. august 2025"
+                bullet={<BabyWrappedIcon />}
+            />
+            <Process.Event
+                status="completed"
+                title="Du søkte om FORELDREPENGER"
+                timestamp="22. august 2025"
+                bullet={<TasklistSendIcon />}
+            >
+                <Link href="/eksempel">
+                    <FileIcon aria-hidden fontSize={24} />
+                    Søknad om foreldrepenger ved fødsel
+                </Link>
+            </Process.Event>
+            <Process.Event
+                status="completed"
+                title="Søknaden din ble innvilget"
+                timestamp="25. august 2025"
+                bullet={<ThumbUpIcon />}
+            >
+                <Link href="/eksempel">
+                    <FileIcon aria-hidden fontSize={24} />
+                    Innvilgelsesbrev Foreldrepenger
+                </Link>
+            </Process.Event>
+            <Process.Event status="completed" title="Du har fått et svar på søknaden din" timestamp="8. september 2025">
+                <Link href="/eksempel">
+                    <FileIcon aria-hidden fontSize={24} />
+                    Opphør Foreldrepenger
+                </Link>
+            </Process.Event>
+            <Process.Event status="active" title="Nav har etterspurt opplysninger" timestamp="8. september 2025" />
+            <Process.Event title="Barnet fyller 3 år" timestamp="22. august 2028" bullet={<ChildHairEyesIcon />}>
+                Du må ta ut foreldrepengene før barnet fyller 3 år. Venter dere nytt barn, må dere ta ut foreldrepengene
+                før ny foreldrepengeperiode starter.
+            </Process.Event>
+        </Process>
+    );
+};
+
+const Hendelse = ({ hendelse }: { hendelse: Tidslinjehendelse }) => {
+    switch (hendelse.utvidetTidslinjeHendelseType) {
+        case 'FAMILIEHENDELSE': {
+            const gjelderAdopsjon = 'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined;
+            const tittel = getTidslinjeTittelForFamiliehendelse(
+                familiehendelse,
+                gjelderAdopsjon,
+                barnFraSak,
+                antallBarn,
+                ytelse,
+                intl,
+            );
+
+            return (
+                <Process.Event
+                    status="completed"
+                    title="Barnet ble født"
+                    timestamp="04. august 2025"
+                    bullet={<BabyWrappedIcon />}
+                />
+            );
+        }
+        default:
+            return null;
+    }
+};
 
 export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
