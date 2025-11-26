@@ -19,6 +19,7 @@ import { BodyShort, Button, Link, List, Process, ReadMore } from '@navikt/ds-rea
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import { formatDate } from '@navikt/fp-utils';
 
 import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../../types/Sak';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse.ts';
@@ -218,32 +219,55 @@ const Hendelse = ({
             );
         }
         case 'ETTERSENDING': {
-            // TODO
             return (
                 <Process.Event
                     status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.ETTERSENDING' })}
-                    bullet={<ChildHairEyesIcon />}
+                    bullet={<InboxUpIcon />}
                 >
-                    TODO
+                    <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
         }
         case 'VENT_DOKUMENTASJON': {
+            // TODO: hvordan verifisere
             return (
                 <Process.Event
                     status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
                     bullet={<ChildHairEyesIcon />}
+                ></Process.Event>
+            );
+        }
+        case 'VENTER_MELDEKORT': // TODO: hvordan?
+        case 'VENTER_PGA_TIDLIG_SØKNAD': {
+            if (!hendelse.tidligstBehandlingsDato) {
+                return null;
+            }
+            return (
+                <Process.Event
+                    status={status}
+                    title={intl.formatMessage(
+                        { id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' },
+                        {
+                            tidlistBehandlingsdato: formatDate(hendelse.tidligstBehandlingsDato),
+                        },
+                    )}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')} // TODO: bedre dato
+                    bullet={<HourglassBottomFilledIcon />}
                 >
-                    TODO
+                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
+                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                        <BodyShort size="small">
+                            {intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.linkTittel' })}
+                        </BodyShort>
+                        <ExternalLinkIcon aria-hidden={true} />
+                    </Link>
                 </Process.Event>
             );
         }
-        case 'VENTER_MELDEKORT':
-        case 'VENTER_PGA_TIDLIG_SØKNAD':
         case 'VENTER_INNTEKTSMELDING': {
             return (
                 <Process.Event
@@ -302,7 +326,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: senere
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
                     bullet={<InboxDownIcon />}
                 >
