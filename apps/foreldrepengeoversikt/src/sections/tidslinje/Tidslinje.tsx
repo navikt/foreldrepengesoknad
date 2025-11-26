@@ -1,6 +1,7 @@
 import {
     BabyWrappedIcon,
     ChildHairEyesIcon,
+    DocPencilIcon,
     ExternalLinkIcon,
     HourglassBottomFilledIcon,
     InboxDownIcon,
@@ -175,6 +176,18 @@ const Hendelse = ({
                 <Process.Event title="" bullet={<ChildHairEyesIcon />}>
                     status={status}
                     TODO
+                </Process.Event>
+            );
+        }
+        case 'ENDRINGSSØKNAD': {
+            return (
+                <Process.Event
+                    status={status}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.ENDRINGSSØKNAD' })}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    bullet={<DocPencilIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
         }
