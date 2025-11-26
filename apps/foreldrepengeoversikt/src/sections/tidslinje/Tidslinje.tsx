@@ -279,6 +279,12 @@ const Hendelse = ({
                     bullet={<ChildHairEyesIcon />}
                 >
                     {hendelse.merInformasjon}
+                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                        <BodyShort size="small">
+                            {intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.linkTittel' })}
+                        </BodyShort>
+                        <ExternalLinkIcon aria-hidden={true} />
+                    </Link>
                 </Process.Event>
             );
         }
