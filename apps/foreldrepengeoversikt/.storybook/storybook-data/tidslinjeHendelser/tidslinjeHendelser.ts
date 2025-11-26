@@ -1,6 +1,6 @@
 import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
-export const tidslinjeHendelser = [
+export const tidslinjeHendelserFP = [
     {
         opprettet: '2023-01-31T09:06:46.541655',
         aktørType: 'BRUKER',

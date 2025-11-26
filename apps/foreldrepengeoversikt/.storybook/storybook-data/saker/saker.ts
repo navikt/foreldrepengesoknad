@@ -166,7 +166,18 @@ export const saker = {
             dekningsgrad: 'HUNDRE',
         },
     ],
-    engangsstønad: [],
+    engangsstønad: [
+        {
+            saksnummer: '2',
+            sakAvsluttet: false,
+            gjelderAdopsjon: false,
+            familiehendelse: {
+                fødselsdato: '2020-01-01',
+                antallBarn: 1,
+            },
+            oppdatertTidspunkt: '2024-02-28T21:19:08.911',
+        },
+    ],
     svangerskapspenger: [
         {
             saksnummer: '308',

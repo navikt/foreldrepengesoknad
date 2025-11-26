@@ -37,11 +37,11 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
-    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending || !sak) {
+    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending || sak === undefined) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
-    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
+    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError) {
         return (
             <NoeGikkGalt>
                 Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos

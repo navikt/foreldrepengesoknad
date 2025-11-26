@@ -32,14 +32,18 @@ interface Props {
 export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
 
+    // if (sak.ytelse !== "FORELDREPENGER") {
+    //     return null;
+    // }
+
     const førsteUttaksdagISaken =
         sak.ytelse === 'FORELDREPENGER' ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const erAvslåttForeldrepengesøknad =
-        sak.ytelse === 'FORELDREPENGER' &&
-        !!sak.gjeldendeVedtak &&
-        sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false);
+        (sak.ytelse === 'FORELDREPENGER' &&
+            sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
+        false;
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
