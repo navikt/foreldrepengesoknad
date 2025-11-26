@@ -1,0 +1,1 @@
+import{a1 as a,bo as o}from"./iframe-CLKvCa0D.js";a.extend(o);const u=10,i=1e3,T=s=>s!==""&&s!==void 0&&s!==null,l=(s,t)=>{let e=t;if(s&&T(s)){const n=a.max([a(t),a(s)]);e=n?n.toDate():t}return e},d=(s,t)=>a().isBefore(a(s),"d")?t.formatMessage({id:"slutter"}):t.formatMessage({id:"sluttet"});export{i as T,d as a,u as b,l as g,T as h};
