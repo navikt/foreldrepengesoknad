@@ -75,7 +75,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
     args: {
         saksperioder: [
             {
-                fom: '2024-03-15',
+                fom: '2024-03-14',
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',

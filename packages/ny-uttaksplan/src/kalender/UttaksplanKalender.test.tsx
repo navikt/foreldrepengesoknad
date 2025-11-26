@@ -24,7 +24,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(11);
+        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(12);
         expect(within(mars).getByTestId('day:29;dayColor:BLUE')).toBeInTheDocument();
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:3;dayColor:BLUE')).toBeInTheDocument();
@@ -159,7 +159,7 @@ describe('UttaksplanKalender', () => {
         const mars = screen.getByTestId('year:2024;month:2');
         const mai = screen.getByTestId('year:2024;month:4');
 
-        await userEvent.click(within(mars).getByText('14', { exact: false }));
+        await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
         await userEvent.click(within(mai).getByTestId('day:31;dayColor:BLUE'));
 
         expect(await screen.findByText('57 dager valgt')).toBeInTheDocument();
@@ -171,10 +171,10 @@ describe('UttaksplanKalender', () => {
             ),
         ).not.toBeInTheDocument();
 
-        const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
+        const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
         expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
-        expect(fpFørFødselPeriode.getByText('14 dager valgt i perioden')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('15 dager valgt i perioden')).toBeInTheDocument();
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
@@ -283,12 +283,12 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:18;dayColor:BLUE'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
-        const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-15-2024-04-03`));
+        const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
         await userEvent.click(foreldrepengerFørFødsel.getByText('Slett dager fra periode'));
 
         expect(within(mars).getByTestId('day:18;dayColor:NONE')).toBeInTheDocument();
-        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(1);
+        expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(2);
         expect(within(april).getByTestId('day:1;dayColor:NONE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:3;dayColor:NONE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:4;dayColor:DARKBLUE')).toBeInTheDocument();
