@@ -39,7 +39,7 @@ export const RedigeringPanel = ({ children }: Props) => {
             gap="space-16"
             className={
                 erIRedigeringsmodus && !erMinimert
-                    ? 'bg-ax-bg-default fixed inset-0 z-50 max-h-[calc(100vh-100px)] overflow-y-auto md:static md:overflow-visible'
+                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
                     : undefined
             }
         >

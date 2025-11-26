@@ -206,15 +206,17 @@ export const UttaksplanKalender = ({
                 </div>
             </VStack>
 
-            <Button
-                className="ax-md:pb-0 mt-8 pb-20 print:hidden"
-                variant="tertiary"
-                icon={<DownloadIcon aria-hidden />}
-                onClick={() => toPDF()}
-                type="button"
-            >
-                <FormattedMessage id="kalender.lastNed" />
-            </Button>
+            <HStack justify="center">
+                <Button
+                    className="ax-md:pb-0 mt-2 print:hidden"
+                    variant="tertiary"
+                    icon={<DownloadIcon aria-hidden />}
+                    onClick={() => toPDF()}
+                    type="button"
+                >
+                    <FormattedMessage id="kalender.lastNed" />
+                </Button>
+            </HStack>
         </VStack>
     );
 };
