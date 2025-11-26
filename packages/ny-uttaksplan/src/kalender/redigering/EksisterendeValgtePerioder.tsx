@@ -130,6 +130,14 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                     </BodyShort>
                                 )}
                             </HStack>
+                            {!p.erAnnenPartEøs && p.gradering !== undefined && (
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="RedigeringPanel.Gradering"
+                                        values={{ prosent: p.gradering.arbeidstidprosent }}
+                                    />
+                                </BodyShort>
+                            )}
                             <BodyShort>
                                 <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
                             </BodyShort>
