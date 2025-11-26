@@ -166,7 +166,7 @@ const getTidslinjeTittelForFamiliehendelse = (
 
 const getTittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
     const dokumenter = hendelse.dokumenter;
-    if (dokumenter && dokumenter.length > 0) {
+    if (dokumenter.length > 0) {
         if (dokumenter.some((d) => d.tittel.includes(Vedtaksbrev.AVSLAGSBREV))) {
             return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
         }

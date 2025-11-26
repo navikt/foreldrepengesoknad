@@ -5,6 +5,7 @@ import { Sak } from 'types/Sak.ts';
 import { Familiehendelse_fpoversikt } from '@navikt/fp-types';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
+import { Tidslinjehendelse } from '../types/Tidslinjehendelse.ts';
 import { getNavnPåBarna } from './sakerUtils.ts';
 
 type TidslinjeTittelForFamiliehendelseProps = {
@@ -106,4 +107,17 @@ export const getTidslinjeTittelForBarnTreÅr = ({
             navn: barnNavnTekst,
         },
     );
+};
+
+export const tittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
+    const dokumenter = hendelse.dokumenter;
+    if (dokumenter.length > 0) {
+        if (dokumenter.some((d) => d.tittel.includes('Avslagsbrev'))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
+        }
+        if (dokumenter.some((d) => d.tittel.includes('Innvilgelsesbrev'))) {
+            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
+        }
+    }
+    return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
 };

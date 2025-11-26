@@ -3,7 +3,9 @@ import {
     ChildHairEyesIcon,
     ExternalLinkIcon,
     FileIcon,
+    InboxDownIcon,
     TasklistSendIcon,
+    ThumbDownIcon,
     ThumbUpIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
@@ -165,7 +167,7 @@ const Hendelse = ({
     const intl = useIntl();
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const { familiehendelse } = sak;
-
+    console.log(hendelse);
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
             const tittel = tidslinjeTittelForFamiliehendelse({
@@ -181,6 +183,95 @@ const Hendelse = ({
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
                     bullet={<BabyWrappedIcon />}
                 />
+            );
+        }
+        case 'FØRSTEGANGSSØKNAD': {
+            return (
+                <Process.Event
+                    status="completed"
+                    title={intl.formatMessage(
+                        { id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' },
+                        { ytelse: sak.ytelse.toLowerCase() },
+                    )}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    bullet={<BabyWrappedIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
+        case 'FØRSTEGANGSSØKNAD_NY': {
+            // TODO: hva er denne?
+            return (
+                <Process.Event title="" bullet={<ChildHairEyesIcon />}>
+                    TODO
+                </Process.Event>
+            );
+        }
+        case 'VEDTAK': {
+            const harAvslag = hendelse.dokumenter.some((d) => d.tittel.includes('Avslagsbrev'));
+            const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.includes('Innvilgelsesbrev'));
+
+            // TODO: heller funksjon?
+            const tittel = harAvslag
+                ? intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' })
+                : harInnvilget
+                  ? intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' })
+                  : intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+
+            // TODO: litt brutalt med thumbs down?
+            const ikon = harAvslag ? <ThumbDownIcon /> : harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
+
+            return (
+                <Process.Event
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={tittel}
+                    bullet={ikon}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
+        case 'ETTERSENDING': {
+            // TODO
+            return (
+                <Process.Event
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.ETTERSENDING' })}
+                    bullet={<ChildHairEyesIcon />}
+                >
+                    TODO
+                </Process.Event>
+            );
+        }
+        case 'VENT_DOKUMENTASJON': {
+            return (
+                <Process.Event
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
+                    bullet={<ChildHairEyesIcon />}
+                >
+                    TODO
+                </Process.Event>
+            );
+        }
+        case 'VENTER_MELDEKORT':
+        case 'VENTER_PGA_TIDLIG_SØKNAD':
+        case 'VENTER_INNTEKTSMELDING': {
+            return 'TODO';
+        }
+
+        case 'UTGÅENDE_INNHENT_OPPLYSNINGER': {
+            return (
+                <Process.Event
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' })}
+                    bullet={<ChildHairEyesIcon />}
+                >
+                    <Button size="small" className="mt-2" to={`/sak/${sak.saksnummer}/ettersend`} as={LinkInternal}>
+                        {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' })}
+                    </Button>
+                </Process.Event>
             );
         }
         case 'BARNET_TRE_ÅR': {
@@ -209,6 +300,35 @@ const Hendelse = ({
         default:
             return null;
     }
+};
+
+const DokumenterTilHendelse = ({ hendelse }: { hendelse: Tidslinjehendelse }) => {
+    const alleDokumenter = hendelse.dokumenter.map((dokument) => {
+        if (hendelse.utvidetTidslinjeHendelseType === 'INNTEKTSMELDING') {
+            return (
+                <InntektsmeldingDokumentHendelse
+                    key={`${dokument.journalpostId}-${dokument.dokumentId}`}
+                    dokument={{ ...dokument, tittel: 'Inntektsmelding' }}
+                    visesITidslinjen={true}
+                />
+            );
+        }
+        return (
+            <DokumentHendelse
+                dokument={dokument}
+                key={`${dokument.journalpostId}-${dokument.dokumentId}`}
+                visesITidslinjen={true}
+            />
+        );
+    });
+    if (alleDokumenter.length > 0 && alleDokumenter.length <= 3) {
+        return alleDokumenter;
+    }
+    return (
+        <ReadMore className="text-ax-font-size-medium" header={`Du sendte ${hendelse.dokumenter.length} dokumenter`}>
+            {alleDokumenter}
+        </ReadMore>
+    );
 };
 
 export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
@@ -365,3 +485,5 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
         </div>
     );
 };
+
+const HendelseLink = () => {};
