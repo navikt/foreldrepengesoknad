@@ -94,7 +94,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
     };
 
     const harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato = !sammenslåtteValgtePerioder.some((periode) =>
-        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(3, 'week')),
+        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(22, 'days')),
     );
 
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);

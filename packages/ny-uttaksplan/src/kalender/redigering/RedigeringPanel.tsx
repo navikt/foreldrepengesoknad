@@ -144,7 +144,7 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
     const harPeriodeFørEllerEtter = harPeriodeFør || harPeriodeEtter;
 
     const harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato = !sammenslåtteValgtePerioder.some((periode) =>
-        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(3, 'week')),
+        dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(22, 'days')),
     );
 
     const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
@@ -173,7 +173,7 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
                 harPeriodeFørEllerEtter &&
                 !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
                     <Alert variant="info" size="small">
-                        <FormattedMessage id="RedigeringPanel.FerieForEllerEtterTermin" />
+                        <FormattedMessage id="RedigeringPanel.KanMisteDager" />
                     </Alert>
                 )}
         </VStack>
