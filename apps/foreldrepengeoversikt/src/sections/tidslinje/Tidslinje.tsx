@@ -1,5 +1,6 @@
 import {
     BabyWrappedIcon,
+    BellIcon,
     ChildHairEyesIcon,
     DocPencilIcon,
     ExternalLinkIcon,
@@ -268,6 +269,18 @@ const Hendelse = ({
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: skrive idag for idag?
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' })}
                     bullet={<InboxDownIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
+        }
+        case 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING': {
+            return (
+                <Process.Event
+                    status={status}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: skrive idag for idag?
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_ETTERLYS_INNTEKTSMELDING' })}
+                    bullet={<BellIcon />}
                 >
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
