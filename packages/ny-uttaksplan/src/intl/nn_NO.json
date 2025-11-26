@@ -232,6 +232,7 @@
     "RedigeringPanel.VisDetaljer": "Vis periodeinformasjon",
     "RedigeringPanel.LukkRedigeringsmodus": "Avbryt",
     "RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato": "Du kan ikkje ha foreldrepengar før du overtek omsorga for barnet",
+    "RedigeringPanel.Gradering": "Gradering: {prosent} %",
     "UttaksplanKalender.VelgEnkeltDager": "Enkeltdager",
     "UttaksplanKalender.VelgPeriode": "Periode (fra - til)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Velg dager eller periode",

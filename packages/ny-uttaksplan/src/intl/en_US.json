@@ -233,6 +233,7 @@
     "RedigeringPanel.VisDetaljer": "Show period information",
     "RedigeringPanel.LukkRedigeringsmodus": "Cancel",
     "RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato": "You cannot have parental benefits before you take over the care of the child",
+    "RedigeringPanel.Gradering": "Work: {prosent} %",
     "UttaksplanKalender.VelgEnkeltDager": "Single days",
     "UttaksplanKalender.VelgPeriode": "Period (from - to)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Select days or period",

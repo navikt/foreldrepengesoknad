@@ -130,7 +130,7 @@ export const RedigeringPanel = ({ children }: Props) => {
 };
 
 const PeriodeDetaljerOgInfoMeldinger = () => {
-    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon, bareFarMedmorHarRett } = useUttaksplanData();
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
@@ -169,6 +169,7 @@ const PeriodeDetaljerOgInfoMeldinger = () => {
             )}
 
             {!erAdopsjon &&
+                !bareFarMedmorHarRett &&
                 !erFerieValgbart &&
                 harPeriodeFørEllerEtter &&
                 !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
