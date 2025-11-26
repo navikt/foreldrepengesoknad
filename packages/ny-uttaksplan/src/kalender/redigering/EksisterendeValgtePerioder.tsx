@@ -83,55 +83,53 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                         )}
                         <VStack gap="space-0">
                             {(p.erAnnenPartEøs || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
-                                <HStack gap="space-4">
-                                    <Heading size="xsmall">
-                                        {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
-                                            p.kontoType === 'MØDREKVOTE' ||
-                                            erFellesperiodeOgMor ||
-                                            erForeldrepengerOgMor) && <FormattedMessage id="RedigeringPanel.Mor" />}
-                                        {(p.kontoType === 'FEDREKVOTE' ||
-                                            erFellesperiodeOgFar ||
-                                            erForeldrepengerOgFar) && <FormattedMessage id="RedigeringPanel.Far" />}
-                                        {!p.erAnnenPartEøs &&
-                                            p.kontoType === undefined &&
-                                            p.utsettelseÅrsak !== undefined &&
-                                            p.forelder === 'MOR' && <FormattedMessage id="RedigeringPanel.Mor" />}
-                                        {!p.erAnnenPartEøs &&
-                                            p.kontoType === undefined &&
-                                            p.utsettelseÅrsak !== undefined &&
-                                            p.forelder === 'FAR_MEDMOR' && (
-                                                <FormattedMessage id="RedigeringPanel.Far" />
-                                            )}
-                                    </Heading>
-                                    {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (
-                                        <Heading size="xsmall">
-                                            <FormattedMessage
-                                                id="RedigeringPanel.SamtidigUttak"
-                                                values={{ prosent: p.samtidigUttak }}
-                                            />
-                                        </Heading>
-                                    )}
-                                </HStack>
+                                <Heading size="xsmall">
+                                    {(p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
+                                        p.kontoType === 'MØDREKVOTE' ||
+                                        erFellesperiodeOgMor ||
+                                        erForeldrepengerOgMor) && <FormattedMessage id="RedigeringPanel.Mor" />}
+                                    {(p.kontoType === 'FEDREKVOTE' ||
+                                        erFellesperiodeOgFar ||
+                                        erForeldrepengerOgFar) && <FormattedMessage id="RedigeringPanel.Far" />}
+                                    {!p.erAnnenPartEøs &&
+                                        p.kontoType === undefined &&
+                                        p.utsettelseÅrsak !== undefined &&
+                                        p.forelder === 'MOR' && <FormattedMessage id="RedigeringPanel.Mor" />}
+                                    {!p.erAnnenPartEøs &&
+                                        p.kontoType === undefined &&
+                                        p.utsettelseÅrsak !== undefined &&
+                                        p.forelder === 'FAR_MEDMOR' && <FormattedMessage id="RedigeringPanel.Far" />}
+                                </Heading>
                             )}
-                            <BodyShort>
-                                {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
-                                    <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+                            <HStack gap="space-4">
+                                <BodyShort>
+                                    {p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' && (
+                                        <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+                                    )}
+                                    {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.MorKvote" />}
+                                    {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.FarKvote" />}
+                                    {p.kontoType === 'FORELDREPENGER' && (
+                                        <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
+                                    )}
+                                    {p.kontoType === 'FELLESPERIODE' && (
+                                        <FormattedMessage id="RedigeringPanel.Fellesperiode" />
+                                    )}
+                                    {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
+                                        <FormattedMessage id="RedigeringPanel.Ferie" />
+                                    )}
+                                    {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'ARBEID' && (
+                                        <FormattedMessage id="RedigeringPanel.Arbeid" />
+                                    )}
+                                </BodyShort>
+                                {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="RedigeringPanel.SamtidigUttak"
+                                            values={{ prosent: p.samtidigUttak }}
+                                        />
+                                    </BodyShort>
                                 )}
-                                {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.MorKvote" />}
-                                {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.FarKvote" />}
-                                {p.kontoType === 'FORELDREPENGER' && (
-                                    <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
-                                )}
-                                {p.kontoType === 'FELLESPERIODE' && (
-                                    <FormattedMessage id="RedigeringPanel.Fellesperiode" />
-                                )}
-                                {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
-                                    <FormattedMessage id="RedigeringPanel.Ferie" />
-                                )}
-                                {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'ARBEID' && (
-                                    <FormattedMessage id="RedigeringPanel.Arbeid" />
-                                )}
-                            </BodyShort>
+                            </HStack>
                             <BodyShort>
                                 <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
                             </BodyShort>
