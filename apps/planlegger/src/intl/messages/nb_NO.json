@@ -1,6 +1,7 @@
 {
-    "Liste": "Liste",
-    "Kalender": "Kalender",
+    "PlanvisningToggle.velgVisningsmodus": "Velg visningsmodus",
+    "PlanvisningToggle.liste": "Liste",
+    "PlanvisningToggle.kalender": "Kalender",
     "Du": "du",
     "Dere": "dere",
     "HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
