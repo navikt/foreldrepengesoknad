@@ -13,16 +13,11 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, List, Process, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import {
-    BarnDto_fpoversikt,
-    EsSak_fpoversikt,
-    FpSak_fpoversikt,
-    SvpSak_fpoversikt,
-    TidslinjeHendelseDto_fpoversikt,
-} from '@navikt/fp-types';
+import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../../types/Sak';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse.ts';
+import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils';
 import {
@@ -32,6 +27,7 @@ import {
     getHendelserForVisning,
     getTidslinjehendelseTittel,
 } from '../../utils/tidslinjeUtils';
+import { getTidslinjeTittelForBarnTreÅr, tidslinjeTittelForFamiliehendelse } from '../../utils/tidslinjeUtils2.ts';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import { TidslinjeHendelse } from './TidslinjeHendelse';
 
@@ -111,7 +107,7 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
         <Process>
             <>
                 {hendelserForVisning.map((hendelse, index) => (
-                    <Hendelse hendelse={hendelse} key={hendelse.opprettet + index} />
+                    <Hendelse søkersBarn={søkersBarn} sak={sak} hendelse={hendelse} key={hendelse.opprettet + index} />
                 ))}
             </>
             <Process.Event
@@ -157,26 +153,57 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
     );
 };
 
-const Hendelse = ({ hendelse }: { hendelse: Tidslinjehendelse }) => {
+const Hendelse = ({
+    hendelse,
+    sak,
+    søkersBarn,
+}: {
+    sak: Sak;
+    hendelse: Tidslinjehendelse;
+    søkersBarn: BarnDto_fpoversikt[];
+}) => {
+    const intl = useIntl();
+    const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
+    const { familiehendelse } = sak;
+
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
-            const gjelderAdopsjon = 'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined;
-            const tittel = getTidslinjeTittelForFamiliehendelse(
-                familiehendelse,
-                gjelderAdopsjon,
+            const tittel = tidslinjeTittelForFamiliehendelse({
+                sak,
                 barnFraSak,
-                antallBarn,
-                ytelse,
                 intl,
-            );
+            });
 
             return (
                 <Process.Event
                     status="completed"
-                    title="Barnet ble født"
-                    timestamp="04. august 2025"
+                    title={tittel}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
                     bullet={<BabyWrappedIcon />}
                 />
+            );
+        }
+        case 'BARNET_TRE_ÅR': {
+            // TODO: Hva er logikken?
+            const skalVises =
+                (familiehendelse?.fødselsdato || familiehendelse?.omsorgsovertakelse) && familiehendelse.antallBarn;
+
+            if (!skalVises) {
+                return null;
+            }
+            return (
+                <Process.Event
+                    status="uncompleted" // TODO: aktiver når 3+ år er gått?
+                    title={getTidslinjeTittelForBarnTreÅr({
+                        barnFraSak,
+                        intl,
+                        familiehendelse,
+                    })}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
+                    bullet={<ChildHairEyesIcon />}
+                >
+                    {hendelse.merInformasjon}
+                </Process.Event>
             );
         }
         default:
