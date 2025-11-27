@@ -98,7 +98,7 @@ export const UttaksplanNy = () => {
                     toggleAllAccordions={toggleAllAccordions}
                     visKnapper
                     tilbakestillPlan={
-                        uttaksplanRedigering.uttaksplanVersjoner.length > 0
+                        uttaksplanRedigering.harEndretPlan
                             ? () => uttaksplanRedigering.tilbakestillUttaksplan()
                             : undefined
                     }

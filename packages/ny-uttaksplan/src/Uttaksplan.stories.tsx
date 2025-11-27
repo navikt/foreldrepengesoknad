@@ -22,6 +22,7 @@ const meta = {
         modus: 'planlegger',
         harAktivitetskravIPeriodeUtenUttak: false,
         oppdaterUttaksplan: action('button-click'),
+        harEndretPlan: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
@@ -36,7 +37,10 @@ const meta = {
 
         return (
             <UttaksplanDataProvider {...args} saksperioder={perioder ?? []}>
-                <UttaksplanRedigeringProvider oppdaterUttaksplan={handleOnPlanChange}>
+                <UttaksplanRedigeringProvider
+                    oppdaterUttaksplan={handleOnPlanChange}
+                    harEndretPlan={perioder !== undefined}
+                >
                     <UttaksplanNy />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
