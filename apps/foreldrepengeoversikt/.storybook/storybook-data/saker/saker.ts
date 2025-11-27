@@ -700,3 +700,152 @@ export const saker_ES_under_behandling = {
     ],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_SVP_innvilget = {
+    foreldrepenger: [],
+    engangsstønad: [],
+    svangerskapspenger: [
+        {
+            saksnummer: '843',
+            familiehendelse: {
+                termindato: '2025-12-25',
+                antallBarn: 0,
+            },
+            sakAvsluttet: false,
+            gjeldendeVedtak: {
+                arbeidsforhold: [
+                    {
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: {
+                                id: '889640782',
+                                type: 'ORGANISASJON',
+                            },
+                            arbeidsgiverNavn: 'ARBEIDS- OG VELFERDSETATEN',
+                        },
+                        behovFrom: '2025-11-20',
+                        tilrettelegginger: [
+                            {
+                                fom: '2025-11-20',
+                                tom: '2025-12-03',
+                                type: 'INGEN',
+                                resultat: {
+                                    resultatType: 'INNVILGET',
+                                    utbetalingsgrad: 100.0,
+                                },
+                            },
+                        ],
+                        oppholdsperioder: [],
+                        avslutningÅrsak: 'NORMAL',
+                    },
+                    {
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: {
+                                id: '991078045',
+                                type: 'ORGANISASJON',
+                            },
+                            arbeidsgiverNavn: 'NAV KLAGEINSTANS MIDT-NORGE',
+                        },
+                        behovFrom: '2025-11-27',
+                        tilrettelegginger: [
+                            {
+                                fom: '2025-11-27',
+                                tom: '2025-12-03',
+                                type: 'INGEN',
+                                resultat: {
+                                    resultatType: 'INNVILGET',
+                                    utbetalingsgrad: 100.0,
+                                },
+                            },
+                        ],
+                        oppholdsperioder: [],
+                        avslutningÅrsak: 'NORMAL',
+                    },
+                ],
+            },
+            oppdatertTidspunkt: '2025-11-27T11:02:02.251',
+        },
+    ],
+} satisfies Saker_fpoversikt;
+
+export const saker_SVP_under_behandling = {
+    foreldrepenger: [],
+    engangsstønad: [],
+    svangerskapspenger: [
+        {
+            saksnummer: '848',
+            familiehendelse: {
+                termindato: '2026-02-27',
+                antallBarn: 0,
+            },
+            sakAvsluttet: false,
+            åpenBehandling: {
+                tilstand: 'UNDER_BEHANDLING',
+                søknad: {
+                    arbeidsforhold: [
+                        {
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: {
+                                    id: '992257822',
+                                    type: 'ORGANISASJON',
+                                },
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                            },
+                            behovFrom: '2025-12-27',
+                            tilrettelegginger: [
+                                {
+                                    fom: '2025-12-27',
+                                    tom: '2026-02-05',
+                                    type: 'DELVIS',
+                                    arbeidstidprosent: 40.0,
+                                },
+                            ],
+                            oppholdsperioder: [],
+                        },
+                        {
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: {
+                                    id: '992260432',
+                                    type: 'ORGANISASJON',
+                                },
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                            },
+                            behovFrom: '2025-11-27',
+                            tilrettelegginger: [
+                                {
+                                    fom: '2025-11-27',
+                                    tom: '2026-02-05',
+                                    type: 'HEL',
+                                },
+                            ],
+                            oppholdsperioder: [],
+                        },
+                        {
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: {
+                                    id: '992260475',
+                                    type: 'ORGANISASJON',
+                                },
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                            },
+                            behovFrom: '2025-12-27',
+                            tilrettelegginger: [
+                                {
+                                    fom: '2025-12-27',
+                                    tom: '2026-02-05',
+                                    type: 'INGEN',
+                                },
+                            ],
+                            oppholdsperioder: [],
+                        },
+                    ],
+                },
+            },
+            oppdatertTidspunkt: '2025-11-27T11:07:57.455',
+        },
+    ],
+} satisfies Saker_fpoversikt;

@@ -294,3 +294,92 @@ export const tidslinjehendelser_ES_under_behandling = [
         ],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_SVP_innvilget = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091739',
+                dokumentId: '112091739',
+                tittel: 'Søknad om svangerskapspenger',
+            },
+            {
+                journalpostId: '112091739',
+                dokumentId: '112091740',
+                tittel: 'Skjema for tilrettelegging og omplassering ved graviditet',
+            },
+            {
+                journalpostId: '112091739',
+                dokumentId: '112091741',
+                tittel: 'Skjema for tilrettelegging og omplassering ved graviditet',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T11:01:57.032',
+        aktørType: 'ARBEIDSGIVER',
+        tidslinjeHendelseType: 'INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091740',
+                tittel: '',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T11:01:57.94',
+        aktørType: 'ARBEIDSGIVER',
+        tidslinjeHendelseType: 'INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091741',
+                tittel: '',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T11:02:01',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091742',
+                dokumentId: '112091744',
+                tittel: 'Innvilgelsesbrev svangerskapspenger',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_SVP_under_behandling = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091757',
+                dokumentId: '112091765',
+                tittel: 'Søknad om svangerskapspenger',
+            },
+            {
+                journalpostId: '112091757',
+                dokumentId: '112091766',
+                tittel: 'Skjema for tilrettelegging og omplassering ved graviditet',
+            },
+            {
+                journalpostId: '112091757',
+                dokumentId: '112091767',
+                tittel: 'Skjema for tilrettelegging og omplassering ved graviditet',
+            },
+            {
+                journalpostId: '112091757',
+                dokumentId: '112091768',
+                tittel: 'Skjema for tilrettelegging og omplassering ved graviditet',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];

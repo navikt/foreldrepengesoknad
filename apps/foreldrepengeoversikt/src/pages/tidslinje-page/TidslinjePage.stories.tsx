@@ -13,6 +13,8 @@ import {
     saker_FP_for_tidlig_søknad,
     saker_FP_fødsel_tilbakekreving,
     saker_FP_termin_innvilget,
+    saker_SVP_innvilget,
+    saker_SVP_under_behandling,
 } from 'storybookData/saker/saker';
 import {
     tidslinjeHendelserFP,
@@ -24,6 +26,8 @@ import {
     tidslinjehendelser_ES_adopsjon_innvilget,
     tidslinjehendelser_ES_under_behandling,
     tidslinjehendelser_FP_for_tidlig_søknad,
+    tidslinjehendelser_SVP_innvilget,
+    tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
@@ -163,19 +167,35 @@ export const FPForTidligSøknad: Story = {
     },
 };
 
-export const SVP: Story = {
+export const SVPInnvilget: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)), // TODO
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_SVP_innvilget)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_SVP_innvilget)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
             ],
         },
     },
     args: {
         søkersBarn,
-        saksnummer: '308',
+        saksnummer: '843',
+    },
+};
+
+export const SVPUnderBehandling: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_SVP_under_behandling)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_SVP_under_behandling)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '848',
     },
 };
 
