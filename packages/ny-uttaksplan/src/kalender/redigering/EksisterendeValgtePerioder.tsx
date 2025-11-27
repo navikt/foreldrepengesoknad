@@ -7,7 +7,7 @@ import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
 
 import { Planperiode } from '../../types/Planperiode';
 
-export type PlanperiodeMedAntallDager = Planperiode & { overlappendeDager: number };
+export type PlanperiodeMedAntallDager = Planperiode & { valgteDagerIPeriode: number };
 
 interface Props {
     perioder: PlanperiodeMedAntallDager[];
@@ -121,7 +121,10 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 </BodyShort>
                             )}
                             <BodyShort>
-                                <FormattedMessage id="RedigeringPanel.Dager" values={{ antall: p.overlappendeDager }} />
+                                <FormattedMessage
+                                    id="RedigeringPanel.Dager"
+                                    values={{ antall: p.valgteDagerIPeriode }}
+                                />
                             </BodyShort>
                         </VStack>
                         <Spacer />
