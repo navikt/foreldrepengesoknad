@@ -14,7 +14,6 @@ interface Props {
     visesITidslinjen: boolean;
 }
 
-// TODO: oppdater farger
 export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     return (
         <HStack

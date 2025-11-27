@@ -57,8 +57,8 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
                 Dette skjer i saken
             </Heading>
             {/*TODO: midleritid wrapper for sammenligning*/}
-            <Bleed asChild marginInline="full">
-                <HGrid columns="50% 50%" gap="4">
+            <Bleed asChild marginInline="full" className="pl-10">
+                <HGrid columns="50% 50%" gap="4" className="pr-10">
                     <Tidslinje
                         sak={sak}
                         visHeleTidslinjen={true}
