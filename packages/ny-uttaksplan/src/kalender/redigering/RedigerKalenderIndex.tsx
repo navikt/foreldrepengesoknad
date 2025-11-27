@@ -72,7 +72,7 @@ export const RedigerKalender = () => {
                                     ? () => uttaksplanRedigering.angreSisteEndring()
                                     : undefined
                             }
-                            fjernAltIPlanen={() => uttaksplanRedigering.fjernAltIUttaksplan()}
+                            fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
                         />
                         <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
                         <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />

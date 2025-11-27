@@ -107,7 +107,7 @@ export const UttaksplanNy = () => {
                             ? () => uttaksplanRedigering.angreSisteEndring()
                             : undefined
                     }
-                    fjernAltIPlanen={() => uttaksplanRedigering.fjernAltIUttaksplan()}
+                    fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
                 />
             )}
         </>
