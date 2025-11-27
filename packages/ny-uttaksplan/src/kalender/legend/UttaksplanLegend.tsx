@@ -34,7 +34,8 @@ export const UttaksplanLegend = ({
     readOnly,
 }: Props) => {
     const intl = useIntl();
-    const { modus, erDeltUttak, erMedmorDelAvSøknaden } = useUttaksplanData();
+    const { modus, erDeltUttak, erMedmorDelAvSøknaden, valgtStønadskonto } = useUttaksplanData();
+    const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
@@ -96,6 +97,7 @@ export const UttaksplanLegend = ({
                                     modus === 'planlegger',
                                     erDeltUttak,
                                     erMedmorDelAvSøknaden,
+                                    harAktivitetsfriKvote,
                                     intl,
                                 )}
                             </BodyShort>

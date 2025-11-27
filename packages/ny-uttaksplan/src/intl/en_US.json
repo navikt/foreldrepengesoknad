@@ -186,6 +186,8 @@
     "kalender.dinPeriode.gradert": "You combine work and parental benefits",
     "kalender.dinPeriode.aktivitetsfri": "Your period with no activity requirement",
     "kalender.dinPeriode.aktivitetsfri.gradert": "You combine work and parental benefits with no activity requirement",
+    "kalender.dinPeriode.medAktivitetskrav": "Your period with activity requirement",
+    "kalender.dinPeriode.medAktivitetskrav.gradert": "You combine work and parental benefits with activity requirement",
     "kalender.annenPartPeriode": "{navnAnnenPart} period",
     "kalender.annenPartPeriode.gradert": "{navnAnnenPart} combines work and parental benefits",
     "kalender.morsPeriode": "Mom's period",

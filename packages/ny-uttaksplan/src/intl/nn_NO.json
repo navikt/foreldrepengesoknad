@@ -185,6 +185,8 @@
     "kalender.dinPeriode.gradert": "Du kombinerer jobb og foreldrepengar",
     "kalender.dinPeriode.aktivitetsfri": "Din periode utan aktivitetskrav",
     "kalender.dinPeriode.aktivitetsfri.gradert": "Du kombinerer jobb og foreldrepengar utan aktivitetskrav",
+    "kalender.dinPeriode.medAktivitetskrav": "Din periode med aktivitetskrav",
+    "kalender.dinPeriode.medAktivitetskrav.gradert": "Du kombinerer jobb og foreldrepengar med aktivitetskrav",
     "kalender.annenPartPeriode": "{navnAnnenPart} periode",
     "kalender.annenPartPeriode.gradert": "{navnAnnenPart} kombinerer jobb og foreldrepengar",
     "kalender.morsPeriode": "Mors periode",
