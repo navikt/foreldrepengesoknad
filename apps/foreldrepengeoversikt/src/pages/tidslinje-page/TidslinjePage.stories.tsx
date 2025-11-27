@@ -5,7 +5,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import {
     saker,
-    sakerTidligFPSøknad,
+    saker_ES_adopsjon_avslag,
+    saker_ES_adopsjon_innvilget,
+    saker_ES_under_behandling,
     saker_FP_adopsjon,
     saker_FP_etterlyst_IM,
     saker_FP_for_tidlig_søknad,
@@ -18,6 +20,9 @@ import {
     tidslinjeHendelser_FP_etterlys_IM,
     tidslinjeHendelser_FP_termin_innvilget,
     tidslinjeHendelser_FP_tilbakekreving,
+    tidslinjehendelser_ES_adopsjon_avslag,
+    tidslinjehendelser_ES_adopsjon_innvilget,
+    tidslinjehendelser_ES_under_behandling,
     tidslinjehendelser_FP_for_tidlig_søknad,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
@@ -174,18 +179,50 @@ export const SVP: Story = {
     },
 };
 
-export const ES: Story = {
+export const ESAdopsjonInnvilget: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)), // TODO
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_adopsjon_innvilget)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_adopsjon_innvilget)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
             ],
         },
     },
     args: {
         søkersBarn,
-        saksnummer: '2',
+        saksnummer: '838',
+    },
+};
+
+export const ESAdopsjonAvslag: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_adopsjon_avslag)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_adopsjon_avslag)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '839',
+    },
+};
+
+export const ESUnderBehandling: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_under_behandling)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_under_behandling)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '842',
     },
 };

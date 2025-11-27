@@ -643,3 +643,60 @@ export const saker_FP_for_tidlig_søknad = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_ES_adopsjon_innvilget = {
+    foreldrepenger: [],
+    engangsstønad: [
+        {
+            saksnummer: '838',
+            familiehendelse: {
+                fødselsdato: '2015-11-27',
+                antallBarn: 1,
+                omsorgsovertakelse: '2025-12-27',
+            },
+            sakAvsluttet: true,
+            gjelderAdopsjon: false,
+            oppdatertTidspunkt: '2025-11-27T10:51:02.396',
+        },
+    ],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
+
+export const saker_ES_adopsjon_avslag = {
+    foreldrepenger: [],
+    engangsstønad: [
+        {
+            saksnummer: '839',
+            familiehendelse: {
+                fødselsdato: '2015-11-27',
+                antallBarn: 1,
+                omsorgsovertakelse: '2025-12-27',
+            },
+            sakAvsluttet: true,
+            gjelderAdopsjon: false,
+            oppdatertTidspunkt: '2025-11-27T10:53:21.382',
+        },
+    ],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
+
+export const saker_ES_under_behandling = {
+    foreldrepenger: [],
+    engangsstønad: [
+        {
+            saksnummer: '842',
+            familiehendelse: {
+                fødselsdato: '2025-04-27',
+                termindato: '2025-04-27',
+                antallBarn: 1,
+            },
+            sakAvsluttet: false,
+            åpenBehandling: {
+                tilstand: 'UNDER_BEHANDLING',
+            },
+            gjelderAdopsjon: false,
+            oppdatertTidspunkt: '2025-11-27T10:57:33.262',
+        },
+    ],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;

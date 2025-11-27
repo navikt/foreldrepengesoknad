@@ -225,3 +225,72 @@ export const tidslinjehendelser_FP_for_tidlig_søknad = [
         ],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_ES_adopsjon_innvilget = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091728',
+                dokumentId: '112091728',
+                tittel: 'Søknad om engangsstønad ved adopsjon',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T10:51:02',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091729',
+                dokumentId: '112091729',
+                tittel: 'Vedtak om innvilgelse av engangsstønad',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_ES_adopsjon_avslag = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091730',
+                dokumentId: '112091730',
+                tittel: 'Søknad om engangsstønad ved adopsjon',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T10:53:21',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091731',
+                dokumentId: '112091731',
+                tittel: 'Avslag engangsstønad',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_ES_under_behandling = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091738',
+                dokumentId: '112091738',
+                tittel: 'Søknad om engangsstønad ved fødsel',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
