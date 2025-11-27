@@ -34,7 +34,8 @@ export const UttaksplanLegend = ({
     readOnly,
 }: Props) => {
     const intl = useIntl();
-    const { modus, erDeltUttak, erMedmorDelAvSøknaden } = useUttaksplanData();
+    const { modus, erDeltUttak, erMedmorDelAvSøknaden, valgtStønadskonto } = useUttaksplanData();
+    const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
@@ -59,7 +60,7 @@ export const UttaksplanLegend = ({
 
     const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] as CalendarPeriodColor[];
 
-    const sortedLegends = [...legendInfo.sort(sortLegendInfoByLabel)];
+    const sortedLegends = legendInfo.toSorted(sortLegendInfoByLabel);
 
     return (
         <HStack gap="space-16" align="center">
@@ -96,6 +97,7 @@ export const UttaksplanLegend = ({
                                     modus === 'planlegger',
                                     erDeltUttak,
                                     erMedmorDelAvSøknaden,
+                                    harAktivitetsfriKvote,
                                     intl,
                                 )}
                             </BodyShort>

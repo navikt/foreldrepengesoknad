@@ -97,7 +97,7 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                     hendelse.utvidetTidslinjeHendelseType !== 'FAMILIEHENDELSE' &&
                     dayjs(hendelse.opprettet).isSameOrBefore(dayjs());
                 const erSisteHendelsenIHeleTidslinjen =
-                    alleSorterteHendelser.findIndex((h) => h === hendelse) === alleSorterteHendelser.length - 1;
+                    alleSorterteHendelser.indexOf(hendelse) === alleSorterteHendelser.length - 1;
                 const erSistePåForsidenMenIkkeSisteIHeleTidslinjen =
                     !visHeleTidslinjen && index === hendelserForVisning.length - 1 && !erSisteHendelsenIHeleTidslinjen;
                 return (

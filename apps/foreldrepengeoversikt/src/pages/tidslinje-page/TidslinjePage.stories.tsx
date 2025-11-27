@@ -3,6 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -17,7 +18,7 @@ const meta = {
     decorators: [withQueryClient],
     render: (props) => {
         return (
-            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
+            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/1`]}>
                 <Routes>
                     <Route element={<TidslinjePage {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
                 </Routes>
@@ -36,6 +37,7 @@ export const Default: Story = {
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             ],
         },
     },

@@ -16,8 +16,6 @@ export enum ContextDataType {
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
     UTTAKSPLAN = 'UTTAKSPLAN',
-    ORIGINAL_UTTAKSPLAN = 'ORIGINAL_UTTAKSPLAN',
-    TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
 export type ContextDataMap = {
@@ -27,9 +25,7 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[][];
-    [ContextDataType.ORIGINAL_UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
-    [ContextDataType.TILPASS_PLAN]?: boolean;
+    [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
 };
 
 const defaultInitialState: ContextDataMap = {};

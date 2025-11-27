@@ -23,7 +23,7 @@ interface Props {
 export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
-    if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
+    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
         return null;
     }
 

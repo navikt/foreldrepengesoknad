@@ -20,35 +20,22 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
+import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
-import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
-
-const finnAntallDagerSøker1 = (
-    dekningsgrad: Dekningsgrad,
-    stønadskontoer: KontoBeregningResultatDto,
-    fordeling: Fordeling,
-) => {
-    const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
-        dekningsgrad === '100' ? stønadskontoer['100'] : stønadskontoer['80'],
-    );
-
-    return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
-};
 
 interface Props {
     stønadskontoer: KontoBeregningResultatDto;
@@ -65,14 +52,11 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || [];
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
-    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
-    const lagreOriginalUttaksplan = useContextSaveData(ContextDataType.ORIGINAL_UTTAKSPLAN);
-    const lagreTilpassPlan = useContextSaveData(ContextDataType.TILPASS_PLAN);
 
     const stønadskonto100 = stønadskontoer['100'];
     const stønadskonto80 = stønadskontoer['80'];
@@ -93,12 +77,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
         }
     };
 
-    const oppdaterOgLagreUttaksplan = () => {
-        const nyUttaksplan = [...uttaksplan];
-        nyUttaksplan.push([...planforslag.søker1, ...planforslag.søker2]);
-        return nyUttaksplan;
-    };
-
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
@@ -106,39 +84,15 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
-    const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
 
-    let startdato = undefined;
-
-    if (
-        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
-        hvemHarRett === 'kunSøker2HarRett'
-    ) {
-        startdato = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
-    }
-
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
 
-    const planforslag = lagForslagTilPlan({
-        erDeltUttak: fordeling !== undefined,
-        famDato: familiehendelsedato,
-        startdato,
-        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
-        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
-        bareFarMedmorHarRett,
-        erAdopsjon: erBarnetAdoptert(omBarnet),
-        erFarEllerMedmor: erFarEllerMedmor,
-        erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        erAleneOmOmsorg:
-            hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR,
-        farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
-    });
+    const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -160,9 +114,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 type="button"
                                 icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                                 onClick={() => {
-                                    lagreUttaksplan(oppdaterOgLagreUttaksplan());
-                                    lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
-                                    lagreTilpassPlan(true);
                                     navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
                                 }}
                             >
@@ -265,7 +216,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                         bareFarMedmorHarRett={bareFarMedmorHarRett}
                         harAktivitetskravIPeriodeUtenUttak={false}
                         erDeltUttak={fordeling !== undefined}
-                        saksperioder={[...planforslag.søker1, ...planforslag.søker2]}
+                        saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                     >
                         <UttaksplanKalender readOnly={true} barnehagestartdato={barnehagestartdato} />
                     </UttaksplanDataProvider>
@@ -287,9 +238,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                     variant="primary"
                                     type="button"
                                     onClick={() => {
-                                        lagreUttaksplan(oppdaterOgLagreUttaksplan());
-                                        lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
-                                        lagreTilpassPlan(true);
                                         navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
                                     }}
                                 >
@@ -315,9 +263,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => {
-                            lagreUttaksplan(oppdaterOgLagreUttaksplan());
-                            lagreOriginalUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
-                            lagreTilpassPlan(false);
                             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
                         }}
                         isJumpToEndButton
@@ -327,4 +272,16 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
             </PlanleggerStepPage>
         </form>
     );
+};
+
+const finnAntallDagerSøker1 = (
+    dekningsgrad: Dekningsgrad,
+    stønadskontoer: KontoBeregningResultatDto,
+    fordeling: Fordeling,
+) => {
+    const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
+        dekningsgrad === '100' ? stønadskontoer['100'] : stønadskontoer['80'],
+    );
+
+    return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
 };
