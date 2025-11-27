@@ -67,7 +67,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
                 readOnly: false,
-                forelder: 'MOR',
+                forelder,
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
@@ -77,7 +77,7 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 readOnly: false,
-                forelder: 'MOR',
+                forelder,
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
