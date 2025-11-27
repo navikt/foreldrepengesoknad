@@ -345,3 +345,45 @@ export const endringFPSøknad = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_FP_adopsjon = {
+    foreldrepenger: [
+        {
+            saksnummer: '818',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: false,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: true,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '18498942799',
+            },
+            familiehendelse: {
+                fødselsdato: '2015-11-27',
+                antallBarn: 1,
+                omsorgsovertakelse: '2025-11-25',
+            },
+            åpenBehandling: {
+                tilstand: 'UNDER_BEHANDLING',
+                søknadsperioder: [
+                    {
+                        fom: '2025-11-25',
+                        tom: '2026-02-03',
+                        kontoType: 'MØDREKVOTE',
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T08:49:20.215',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;

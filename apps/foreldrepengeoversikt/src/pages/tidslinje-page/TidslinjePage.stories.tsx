@@ -3,8 +3,11 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
-import { saker } from 'storybookData/saker/saker';
-import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
+import { saker, saker_FP_adopsjon } from 'storybookData/saker/saker';
+import {
+    tidslinjeHendelserFP,
+    tidslinjeHendelser_FP_Adopsjon,
+} from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -60,6 +63,22 @@ export const FP: Story = {
     args: {
         søkersBarn,
         saksnummer: '1',
+    },
+};
+
+export const FPAdopsjon: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_adopsjon)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_Adopsjon)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '818',
     },
 };
 

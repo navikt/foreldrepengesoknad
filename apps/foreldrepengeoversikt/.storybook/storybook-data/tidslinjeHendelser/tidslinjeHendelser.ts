@@ -56,3 +56,18 @@ export const tidslinjeHendelserFP = [
         dokumenter: [],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_Adopsjon = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091674',
+                dokumentId: '112091674',
+                tittel: 'Søknad om foreldrepenger ved adopsjon',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
