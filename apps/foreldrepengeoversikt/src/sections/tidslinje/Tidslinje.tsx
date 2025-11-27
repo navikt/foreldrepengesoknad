@@ -22,7 +22,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
-import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../../types/Sak';
+import { Sak } from '../../types/Sak';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
@@ -50,39 +50,20 @@ type Props = {
 } & TidslinjeProps;
 
 export const TidslinjeNy = (props: Props) => {
-    const { sak, ...rest } = props;
+    const intl = useIntl();
+    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen } = props;
 
     if (props.tidslinjeHendelser.length === 0) {
         return null;
     }
 
-    switch (sak.ytelse) {
-        case 'ENGANGSSTØNAD':
-            return <TidslinjeES {...rest} sak={sak} />;
-        case 'SVANGERSKAPSPENGER':
-            return <TidslinjeSVP {...rest} sak={sak} />;
-        case 'FORELDREPENGER':
-            return <TidslinjeFP {...rest} sak={sak} />;
-    }
-};
-
-export const TidslinjeES = (props: TidslinjeProps & { sak: EngangsstønadSak }) => {
-    return '';
-};
-
-export const TidslinjeSVP = (props: TidslinjeProps & { sak: SvangerskapspengeSak }) => {
-    return '';
-};
-
-export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) => {
-    const intl = useIntl();
-    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen } = props;
-
-    const førsteUttaksdagISaken = getFørsteUttaksdagIForeldrepengesaken(sak);
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const erAvslåttForeldrepengesøknad =
-        sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false) ?? false;
-    const erInnvilgetForeldrepengesøknad = sak.åpenBehandling === undefined && sak.gjeldendeVedtak !== undefined;
+        (sak.ytelse === 'FORELDREPENGER' &&
+            sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
+        false;
+    const erInnvilgetForeldrepengesøknad =
+        sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
     const åpenBehandlingPåVent =
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;

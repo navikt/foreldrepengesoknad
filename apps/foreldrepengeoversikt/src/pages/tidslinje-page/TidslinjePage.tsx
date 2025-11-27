@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { Heading, Loader } from '@navikt/ds-react';
+import { Bleed, HGrid, HStack, Heading, Loader } from '@navikt/ds-react';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
@@ -55,20 +55,24 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
             <Heading spacing level="2" size="medium">
                 Dette skjer i saken
             </Heading>
-            <Tidslinje
-                sak={sak}
-                visHeleTidslinjen={true}
-                søkersBarn={søkersBarn}
-                tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
-                manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-            />
-            <TidslinjeNy
-                sak={sak}
-                visHeleTidslinjen={true}
-                søkersBarn={søkersBarn}
-                tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
-                manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-            />
+            <Bleed asChild marginInline="full">
+                <HGrid columns="50% 50%" gap="4">
+                    <Tidslinje
+                        sak={sak}
+                        visHeleTidslinjen={true}
+                        søkersBarn={søkersBarn}
+                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
+                    />
+                    <TidslinjeNy
+                        sak={sak}
+                        visHeleTidslinjen={true}
+                        søkersBarn={søkersBarn}
+                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
+                    />
+                </HGrid>
+            </Bleed>
         </div>
     );
 };
