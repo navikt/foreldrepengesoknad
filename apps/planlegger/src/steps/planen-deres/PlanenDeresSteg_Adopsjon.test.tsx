@@ -91,7 +91,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -117,7 +117,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -201,7 +201,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -227,7 +227,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -363,7 +363,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
