@@ -387,3 +387,209 @@ export const saker_FP_adopsjon = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_FP_termin_innvilget = {
+    foreldrepenger: [
+        {
+            saksnummer: '821',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '02487625925',
+            },
+            familiehendelse: {
+                termindato: '2025-11-20',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2025-10-30',
+                        tom: '2025-11-19',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2025-11-20',
+                        tom: '2026-03-04',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-03-05',
+                        tom: '2026-06-24',
+                        kontoType: 'FELLESPERIODE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T09:10:56.442',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+};
+
+export const saker_FP_fødsel_tilbakekreving = {
+    foreldrepenger: [
+        {
+            saksnummer: '827',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: false,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '13468028500',
+            },
+            familiehendelse: {
+                fødselsdato: '2025-10-27',
+                termindato: '2025-10-27',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2025-10-06',
+                        tom: '2025-10-24',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        resultat: {
+                            innvilget: false,
+                            trekkerMinsterett: false,
+                            trekkerDager: false,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2025-10-27',
+                        tom: '2026-02-06',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: false,
+                            trekkerMinsterett: false,
+                            trekkerDager: false,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-02-09',
+                        tom: '2026-05-29',
+                        kontoType: 'FELLESPERIODE',
+                        resultat: {
+                            innvilget: false,
+                            trekkerMinsterett: false,
+                            trekkerDager: false,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+            },
+            barn: [
+                {
+                    fnr: '26502394265',
+                },
+            ],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T09:33:34.47',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
+
+export const saker_FP_etterlyst_IM = {
+    foreldrepenger: [
+        {
+            saksnummer: '830',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: false,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'ALENEOMSORG',
+            annenPart: {
+                fnr: '05437017915',
+            },
+            familiehendelse: {
+                termindato: '2025-12-04',
+                antallBarn: 1,
+            },
+            åpenBehandling: {
+                tilstand: 'VENT_INNTEKTSMELDING',
+                søknadsperioder: [
+                    {
+                        fom: '2025-11-13',
+                        tom: '2025-12-03',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2025-12-04',
+                        tom: '2026-03-18',
+                        kontoType: 'FORELDREPENGER',
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-04-23',
+                        tom: '2026-08-12',
+                        kontoType: 'FORELDREPENGER',
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T09:42:36.251',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;

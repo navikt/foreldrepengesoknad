@@ -3,10 +3,19 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
-import { saker, saker_FP_adopsjon } from 'storybookData/saker/saker';
+import {
+    saker,
+    saker_FP_adopsjon,
+    saker_FP_etterlyst_IM,
+    saker_FP_fødsel_tilbakekreving,
+    saker_FP_termin_innvilget,
+} from 'storybookData/saker/saker';
 import {
     tidslinjeHendelserFP,
     tidslinjeHendelser_FP_Adopsjon,
+    tidslinjeHendelser_FP_etterlys_IM,
+    tidslinjeHendelser_FP_termin_innvilget,
+    tidslinjeHendelser_FP_tilbakekreving,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
@@ -79,6 +88,54 @@ export const FPAdopsjon: Story = {
     args: {
         søkersBarn,
         saksnummer: '818',
+    },
+};
+
+export const FPTerminInnvilget: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_termin_innvilget)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_termin_innvilget)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '821',
+    },
+};
+
+export const FPMedTilbakekreving: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_fødsel_tilbakekreving)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_tilbakekreving)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '827',
+    },
+};
+
+export const FPEtterlysIM: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_etterlyst_IM)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_etterlys_IM)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '830',
     },
 };
 

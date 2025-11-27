@@ -71,3 +71,142 @@ export const tidslinjeHendelser_FP_Adopsjon = [
         ],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_termin_innvilget = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091677',
+                dokumentId: '112091677',
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:10:50',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091678',
+                dokumentId: '112091678',
+                tittel: 'Etterlys inntektsmelding',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:10:52.744',
+        aktørType: 'ARBEIDSGIVER',
+        tidslinjeHendelseType: 'INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091679',
+                tittel: '',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:10:55',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091680',
+                dokumentId: '112091680',
+                tittel: 'Innvilgelsesbrev Foreldrepenger',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_tilbakekreving = [
+    {
+        opprettet: '2025-11-27T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091702',
+                dokumentId: '112091702',
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:33:21.731',
+        aktørType: 'ARBEIDSGIVER',
+        tidslinjeHendelseType: 'INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091703',
+                tittel: '',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:33:24',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091704',
+                dokumentId: '112091704',
+                tittel: 'Innvilgelsesbrev Foreldrepenger',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:33:33',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'VEDTAK',
+        dokumenter: [
+            {
+                journalpostId: '112091705',
+                dokumentId: '112091705',
+                tittel: 'Opphør Foreldrepenger',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:33:34',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'UTGÅENDE_VARSEL_TILBAKEBETALING',
+        dokumenter: [
+            {
+                journalpostId: '112091706',
+                dokumentId: '112091706',
+                tittel: 'Varsel tilbakebetaling foreldrepenger',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_etterlys_IM = [
+    {
+        opprettet: '2025-10-30T01:00:00',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '112091710',
+                dokumentId: '112091710',
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T09:42:36',
+        aktørType: 'NAV',
+        tidslinjeHendelseType: 'UTGÅENDE_ETTERLYS_INNTEKTSMELDING',
+        dokumenter: [
+            {
+                journalpostId: '112091711',
+                dokumentId: '112091711',
+                tittel: 'Etterlys inntektsmelding',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
