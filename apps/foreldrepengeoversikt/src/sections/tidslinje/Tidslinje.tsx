@@ -180,6 +180,9 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
+                    timestamp={intl.formatMessage({
+                        id: 'tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY.ukjentDatoFørstSøknad', // TODO: trenger vi si presist tidspunkt?
+                    })}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD_NY' })}
                     bullet={<TasklistSendIcon />}
                 >
@@ -240,7 +243,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp="SNAREST" // TODO: intl
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
                     bullet={<PaperplaneIcon />}
                 >
@@ -357,7 +360,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: senere
+                    timestamp="SENERE" // TODO: intl
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
                     bullet={<InboxDownIcon />}
                 >
