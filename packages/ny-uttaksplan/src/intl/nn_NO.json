@@ -102,6 +102,7 @@
     "uttaksplan.periodeListeHeader.dagerDuKanTape": "Dagar du kan tape",
     "uttaksplan.periodeListeHeader.periodeUtenUttak": "Utan foreldrepengar",
     "uttaksplan.periodeListeHeader.samtidigUttak": "De har foreldrepengar",
+    "uttaksplan.periodeListeHeader.DuHarForeldrepenger": "Du har foreldrepengar",
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepengar",
     "uttaksplan.periodeListeHeader.pleiepenger": "Pleiepengar",
     "uttaksplan.slettPeriode.tittel": "Slett periode",
