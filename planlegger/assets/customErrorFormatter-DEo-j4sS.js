@@ -1,1 +1,0 @@
-import{j as o}from"./iframe-hn0jJc8I.js";const t=r=>r?o.jsx("span",{role:"alert",style:{borderRadius:4,width:"100%"},children:r}):void 0;t.__docgenInfo={description:"",methods:[],displayName:"formatError"};export{t as f};

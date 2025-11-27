@@ -1,1 +1,0 @@
-import{r as o}from"./iframe-hn0jJc8I.js";const c=()=>{const r=o.useRef(null),[e,t]=o.useState(0),s=()=>t(e+1);return o.useEffect(()=>{globalThis.scrollTo(0,0)},[]),o.useEffect(()=>{r.current&&e>0&&r.current.scrollIntoView({behavior:"smooth",block:"nearest"})},[e]),{ref:r,scrollToBottom:s}};export{c as u};
