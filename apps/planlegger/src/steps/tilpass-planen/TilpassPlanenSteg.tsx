@@ -126,7 +126,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
 
-                    <UttaksplanRedigeringProvider oppdaterUttaksplan={lagreUttaksplanOgOppdaterUrl}>
+                    <UttaksplanRedigeringProvider
+                        oppdaterUttaksplan={lagreUttaksplanOgOppdaterUrl}
+                        harEndretPlan={uttaksplan !== undefined}
+                    >
                         <FjernAltIUttaksplanModal />
                         {visningsmodus === 'liste' && <UttaksplanNy />}
 

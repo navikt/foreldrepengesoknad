@@ -63,7 +63,7 @@ export const RedigerKalender = () => {
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
                             tilbakestillPlan={
-                                uttaksplanRedigering.uttaksplanVersjoner.length > 0
+                                uttaksplanRedigering.harEndretPlan
                                     ? () => uttaksplanRedigering.tilbakestillUttaksplan()
                                     : undefined
                             }
