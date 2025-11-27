@@ -5,8 +5,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import {
     saker,
+    sakerTidligFPSøknad,
     saker_FP_adopsjon,
     saker_FP_etterlyst_IM,
+    saker_FP_for_tidlig_søknad,
     saker_FP_fødsel_tilbakekreving,
     saker_FP_termin_innvilget,
 } from 'storybookData/saker/saker';
@@ -16,6 +18,7 @@ import {
     tidslinjeHendelser_FP_etterlys_IM,
     tidslinjeHendelser_FP_termin_innvilget,
     tidslinjeHendelser_FP_tilbakekreving,
+    tidslinjehendelser_FP_for_tidlig_søknad,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
@@ -136,6 +139,22 @@ export const FPEtterlysIM: Story = {
     args: {
         søkersBarn,
         saksnummer: '830',
+    },
+};
+
+export const FPForTidligSøknad: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_for_tidlig_søknad)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_for_tidlig_søknad)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '837',
     },
 };
 

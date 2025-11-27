@@ -593,3 +593,53 @@ export const saker_FP_etterlyst_IM = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_FP_for_tidlig_søknad = {
+    foreldrepenger: [
+        {
+            saksnummer: '837',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: false,
+            sakTilhørerMor: false,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BARE_SØKER_RETT',
+            annenPart: {
+                fnr: '30519210416',
+            },
+            familiehendelse: {
+                termindato: '2026-02-01',
+                antallBarn: 1,
+            },
+            åpenBehandling: {
+                tilstand: 'VENT_TIDLIG_SØKNAD',
+                søknadsperioder: [
+                    {
+                        fom: '2026-02-02',
+                        tom: '2026-04-10',
+                        kontoType: 'FORELDREPENGER',
+                        morsAktivitet: 'IKKE_OPPGITT',
+                        flerbarnsdager: false,
+                        forelder: 'FAR_MEDMOR',
+                    },
+                    {
+                        fom: '2026-04-13',
+                        tom: '2026-11-06',
+                        kontoType: 'FORELDREPENGER',
+                        morsAktivitet: 'ARBEID',
+                        flerbarnsdager: false,
+                        forelder: 'FAR_MEDMOR',
+                    },
+                ],
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T10:44:22.498',
+            forelder: 'FAR_MEDMOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
