@@ -27,7 +27,6 @@ type Props = {
     bareFarMedmorHarRett: boolean;
     erDeltUttak: boolean;
     saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    erFlereUttaksplanversjoner?: boolean;
     children: React.ReactNode;
 };
 
@@ -41,7 +40,7 @@ type ContextValues = Omit<Props, 'children'> & {
 const UttaksplanDataContext = createContext<ContextValues | null>(null);
 
 export const UttaksplanDataProvider = (props: Props) => {
-    const { children, erFlereUttaksplanversjoner, ...otherProps } = props;
+    const { children, ...otherProps } = props;
 
     const value = useMemo(() => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
@@ -61,7 +60,6 @@ export const UttaksplanDataProvider = (props: Props) => {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
-            erFlereUttaksplanversjoner: erFlereUttaksplanversjoner || false,
             rettighetType: utledRettighetType(otherProps.erDeltUttak, otherProps.aleneOmOmsorg),
             uttaksplan: utledKomplettPlan({
                 familiehendelsedato,
@@ -76,7 +74,7 @@ export const UttaksplanDataProvider = (props: Props) => {
                 modus: otherProps.modus,
             }),
         };
-    }, [otherProps, erFlereUttaksplanversjoner]);
+    }, [otherProps]);
 
     return <UttaksplanDataContext value={value}>{children}</UttaksplanDataContext>;
 };

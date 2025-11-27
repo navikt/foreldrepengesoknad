@@ -11,7 +11,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -27,7 +27,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
-    tilpassPlan?: boolean;
+    uttaksplan?: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -42,7 +42,7 @@ const meta = {
         stønadskontoer,
         satser,
         hvorMye,
-        tilpassPlan = false,
+        uttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -54,7 +54,7 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.HVOR_MYE]: hvorMye,
-                        [ContextDataType.TILPASS_PLAN]: tilpassPlan,
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
                     <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
@@ -121,6 +121,38 @@ export const FlereForsørgereHundreProsentTermin: Story = {
                 },
             },
         },
+        uttaksplan: [
+            {
+                fom: '2025-07-03',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2025-07-23',
+            },
+            {
+                fom: '2025-07-24',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-11-05',
+            },
+            {
+                fom: '2025-11-06',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-12-10',
+            },
+            {
+                fom: '2025-12-11',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2026-02-25',
+            },
+            {
+                fom: '2026-02-26',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2026-06-10',
+            },
+        ],
     },
 };
 
@@ -164,6 +196,20 @@ export const MorOgFarKunFarHarRett: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-09-04',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                tom: '2024-11-12',
+            },
+            {
+                fom: '2024-11-13',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                tom: '2025-06-10',
+            },
+        ],
     },
 };
 
@@ -215,6 +261,14 @@ export const FarOgFarFødsel: Story = {
                 },
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-11-25',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                tom: '2025-03-07',
+            },
+        ],
     },
 };
 
@@ -253,6 +307,14 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-10-14',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                tom: '2025-07-18',
+            },
+        ],
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
@@ -285,6 +347,38 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        uttaksplan: [
+            {
+                fom: '2024-09-23',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2024-10-11',
+            },
+            {
+                fom: '2024-10-14',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-01-24',
+            },
+            {
+                fom: '2025-01-27',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-02-28',
+            },
+            {
+                fom: '2025-03-03',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-05-16',
+            },
+            {
+                fom: '2025-05-19',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2025-08-29',
+            },
+        ],
     },
 };
 
@@ -327,8 +421,23 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-07-25',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                morsAktivitet: undefined,
+                tom: '2024-08-14',
+            },
+            {
+                fom: '2024-08-15',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: undefined,
+                tom: '2026-02-20',
+            },
+        ],
     },
 };
+
 export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
         satser: DEFAULT_SATSER,
@@ -362,6 +471,14 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-08-12',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: undefined,
+                tom: '2025-09-22',
+            },
+        ],
     },
 };
 
@@ -395,6 +512,38 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        uttaksplan: [
+            {
+                fom: '2024-09-19',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2024-10-09',
+            },
+            {
+                fom: '2024-10-10',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-01-22',
+            },
+            {
+                fom: '2025-01-23',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-02-26',
+            },
+            {
+                fom: '2025-02-27',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-05-14',
+            },
+            {
+                fom: '2025-05-15',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2025-08-27',
+            },
+        ],
     },
 };
 
@@ -487,6 +636,20 @@ export const KunMorHarRett: Story = {
                 },
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-11-11',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                morsAktivitet: undefined,
+                tom: '2024-11-29',
+            },
+            {
+                fom: '2024-12-02',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: undefined,
+                tom: '2025-10-17',
+            },
+        ],
     },
 };
 
@@ -554,5 +717,13 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
                 },
             },
         },
+        uttaksplan: [
+            {
+                fom: '2024-10-24',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                tom: '2025-09-10',
+            },
+        ],
     },
 };

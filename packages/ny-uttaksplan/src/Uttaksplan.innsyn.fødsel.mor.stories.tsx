@@ -6,34 +6,31 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
+import { UttaksplanRedigeringProvider } from './context/UttaksplanRedigeringContext';
 
 const meta = {
     title: 'Uttaksplan - Innsyn',
     component: UttaksplanNy,
     args: {
-        oppdaterUttaksplan: () => null,
         children: null,
         erMedmorDelAvSøknaden: false,
-        erFlereUttaksplanversjoner: false,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[]) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
             setPerioder(oppdatertePerioder);
-
-            if (args.oppdaterUttaksplan) {
-                args.oppdaterUttaksplan(oppdatertePerioder);
-            }
         };
 
         return (
-            <UttaksplanDataProvider {...args} saksperioder={perioder}>
-                <UttaksplanNy oppdaterUttaksplan={handleOnPlanChange} />
+            <UttaksplanDataProvider {...args} saksperioder={perioder ?? []}>
+                <UttaksplanRedigeringProvider oppdaterUttaksplan={handleOnPlanChange}>
+                    <UttaksplanNy />
+                </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanNy>>;
+} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
