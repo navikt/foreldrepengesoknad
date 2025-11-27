@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { KontoType, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 export const getStønadskontoNavnSimple = (intl: IntlShape, konto: KontoTypeUttak, erMedmorDelAvSøknaden?: boolean) => {
@@ -13,9 +13,10 @@ export const getStønadskontoNavnSimple = (intl: IntlShape, konto: KontoTypeUtta
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak,
+    konto: KontoType,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
+    morsAktivitet: MorsAktivitet | undefined,
     erAleneOmOmsorg?: boolean,
 ) => {
     let navn;
@@ -39,12 +40,11 @@ export const getStønadskontoNavn = (
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
-        if (konto === 'AKTIVITETSFRI_KVOTE') {
+        if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
-        if (konto === 'FORELDREPENGER') {
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
-        }
+        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
     }
+
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };

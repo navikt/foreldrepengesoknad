@@ -91,10 +91,13 @@ export const SlettPeriodePanel = ({
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
                             {perioder.map((p, index) => {
+                                const morsAktivitet =
+                                    !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
+
                                 return (
                                     <Checkbox key={p.id} name={p.id} value={p.id} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
+                                        ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
                                     </Checkbox>
                                 );
                             })}
