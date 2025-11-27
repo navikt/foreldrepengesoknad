@@ -60,7 +60,7 @@ export const UttaksplanLegend = ({
 
     const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] as CalendarPeriodColor[];
 
-    const sortedLegends = [...legendInfo.sort(sortLegendInfoByLabel)];
+    const sortedLegends = legendInfo.toSorted(sortLegendInfoByLabel);
 
     return (
         <HStack gap="space-16" align="center">

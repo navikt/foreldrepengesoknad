@@ -81,10 +81,10 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
         };
 
         const encodedData = encodeToBase64(JSON.stringify(contextData));
-        const currentPath = window.location.pathname;
+        const currentPath = globalThis.location.pathname;
         const newUrl = `${currentPath}?data=${encodedData}`;
 
-        window.history.replaceState(null, '', newUrl);
+        globalThis.history.replaceState(null, '', newUrl);
     };
 
     useEffect(() => {
