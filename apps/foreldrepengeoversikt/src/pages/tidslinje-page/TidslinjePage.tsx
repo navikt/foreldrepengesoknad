@@ -61,14 +61,14 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
                 <HGrid columns="50% 50%" gap="4" className="pr-10">
                     <Tidslinje
                         sak={sak}
-                        visHeleTidslinjen={true}
+                        visHeleTidslinjen={false}
                         søkersBarn={søkersBarn}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                     />
                     <TidslinjeNy
                         sak={sak}
-                        visHeleTidslinjen={true}
+                        visHeleTidslinjen={false}
                         søkersBarn={søkersBarn}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}

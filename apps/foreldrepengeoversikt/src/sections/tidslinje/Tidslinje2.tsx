@@ -48,7 +48,7 @@ type Props = {
 
 export const TidslinjeNy = (props: Props) => {
     const intl = useIntl();
-    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen } = props;
+    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg } = props;
 
     if (props.tidslinjeHendelser.length === 0) {
         return null;
@@ -68,11 +68,31 @@ export const TidslinjeNy = (props: Props) => {
 
     const aktivtStegIndex = getAktivTidslinjeStegIndex(alleSorterteHendelser, erInnvilgetForeldrepengesøknad);
 
+    // Beregn vindu med maks 5 hendelser, forsøk å ha aktiv hendelse i midten (2 før og 2 etter)
+    const maksVindu = 3;
+
+    // Hvis vi skal vise hele tidslinjen, ikke slice
+    const windowStart = props.visHeleTidslinjen
+        ? 0
+        : Math.max(0, Math.min(aktivtStegIndex - 1, Math.max(0, alleSorterteHendelser.length - maksVindu)));
+    const windowEnd = props.visHeleTidslinjen
+        ? alleSorterteHendelser.length
+        : Math.min(alleSorterteHendelser.length, windowStart + maksVindu);
+
+    const hendelser = alleSorterteHendelser.slice(windowStart, windowEnd);
+    const aktivtStegIndexISnitt = props.visHeleTidslinjen
+        ? aktivtStegIndex
+        : Math.max(0, aktivtStegIndex - windowStart);
+
+    const truncateStart = windowStart !== 0;
+    const truncateEnd = windowEnd !== alleSorterteHendelser.length;
+    const isTruncated = truncateStart && truncateEnd ? 'both' : truncateStart && !truncateEnd ? 'start' : 'end';
+
     return (
-        <Process>
-            {alleSorterteHendelser.map((hendelse, index) => {
-                const erAktivt = aktivtStegIndex === index;
-                const erUtført = aktivtStegIndex > index;
+        <Process isTruncated={isTruncated}>
+            {hendelser.map((hendelse, index) => {
+                const erAktivt = aktivtStegIndexISnitt === index;
+                const erUtført = aktivtStegIndexISnitt > index;
                 const status = erAktivt ? 'active' : erUtført ? 'completed' : 'uncompleted';
                 return (
                     <Hendelse
