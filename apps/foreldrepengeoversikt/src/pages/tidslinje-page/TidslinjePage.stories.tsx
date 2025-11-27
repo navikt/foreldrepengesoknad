@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
+import { manglendeVedlegg, manglendeVedlegg_FP } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import {
     saker,
     saker_ES_adopsjon_avslag,
@@ -12,6 +12,7 @@ import {
     saker_FP_etterlyst_IM,
     saker_FP_for_tidlig_søknad,
     saker_FP_fødsel_tilbakekreving,
+    saker_FP_mangler_dokumentasjon,
     saker_FP_termin_innvilget,
     saker_SVP_innvilget,
     saker_SVP_under_behandling,
@@ -26,6 +27,7 @@ import {
     tidslinjehendelser_ES_adopsjon_innvilget,
     tidslinjehendelser_ES_under_behandling,
     tidslinjehendelser_FP_for_tidlig_søknad,
+    tidslinjehendelser_FP_mangler_dokumentasjon,
     tidslinjehendelser_SVP_innvilget,
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
@@ -164,6 +166,22 @@ export const FPForTidligSøknad: Story = {
     args: {
         søkersBarn,
         saksnummer: '837',
+    },
+};
+
+export const FPManglerDokumentasjon: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_mangler_dokumentasjon)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_mangler_dokumentasjon)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg_FP)),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '352028412',
     },
 };
 

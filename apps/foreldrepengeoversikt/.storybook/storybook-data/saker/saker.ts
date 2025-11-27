@@ -849,3 +849,53 @@ export const saker_SVP_under_behandling = {
         },
     ],
 } satisfies Saker_fpoversikt;
+
+export const saker_FP_mangler_dokumentasjon = {
+    foreldrepenger: [
+        {
+            saksnummer: '352028412',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: false,
+            sakTilhørerMor: false,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BARE_SØKER_RETT',
+            annenPart: {
+                fnr: '10528544822',
+            },
+            familiehendelse: {
+                termindato: '2025-12-11',
+                antallBarn: 1,
+            },
+            åpenBehandling: {
+                tilstand: 'VENT_DOKUMENTASJON',
+                søknadsperioder: [
+                    {
+                        fom: '2025-12-11',
+                        tom: '2026-02-18',
+                        kontoType: 'FORELDREPENGER',
+                        morsAktivitet: 'IKKE_OPPGITT',
+                        flerbarnsdager: false,
+                        forelder: 'FAR_MEDMOR',
+                    },
+                    {
+                        fom: '2026-02-19',
+                        tom: '2026-09-16',
+                        kontoType: 'FORELDREPENGER',
+                        morsAktivitet: 'UTDANNING',
+                        flerbarnsdager: false,
+                        forelder: 'FAR_MEDMOR',
+                    },
+                ],
+            },
+            barn: [],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-11-27T12:33:52.644',
+            forelder: 'FAR_MEDMOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
