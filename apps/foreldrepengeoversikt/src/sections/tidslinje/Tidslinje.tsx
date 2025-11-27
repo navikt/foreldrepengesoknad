@@ -7,6 +7,7 @@ import {
     HourglassBottomFilledIcon,
     InboxDownIcon,
     InboxUpIcon,
+    PaperplaneIcon,
     TasklistSendIcon,
     ThumbDownIcon,
     ThumbUpIcon,
@@ -15,7 +16,7 @@ import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { BodyShort, Button, Link, List, Process, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
@@ -116,6 +117,7 @@ export const TidslinjeFP = (props: TidslinjeProps & { sak: Foreldrepengesak }) =
                         status={status}
                         søkersBarn={søkersBarn}
                         sak={sak}
+                        manglendeVedlegg={manglendeVedlegg}
                         hendelse={hendelse}
                         key={hendelse.opprettet + index}
                     />
@@ -130,11 +132,13 @@ const Hendelse = ({
     sak,
     søkersBarn,
     status,
+    manglendeVedlegg,
 }: {
     sak: Sak;
     status?: 'active' | 'completed' | 'uncompleted';
     hendelse: Tidslinjehendelse;
     søkersBarn: BarnDto_fpoversikt[];
+    manglendeVedlegg: Skjemanummer[];
 }) => {
     const intl = useIntl();
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
@@ -233,14 +237,38 @@ const Hendelse = ({
             );
         }
         case 'VENT_DOKUMENTASJON': {
-            // TODO: hvordan verifisere
             return (
                 <Process.Event
                     status={status}
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
-                    bullet={<ChildHairEyesIcon />}
-                ></Process.Event>
+                    bullet={<PaperplaneIcon />}
+                >
+                    <VStack>
+                        <BodyShort>
+                            {intl.formatMessage({
+                                id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
+                            })}
+                        </BodyShort>
+                        <List>
+                            {manglendeVedlegg.map((skjemaId) => {
+                                return (
+                                    <List.Item key={guid()}>
+                                        {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
+                                    </List.Item>
+                                );
+                            })}
+                        </List>
+                        <Button
+                            className="mt-2 w-fit"
+                            size="small"
+                            to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
+                            as={LinkInternal}
+                        >
+                            {hendelse.linkTittel}
+                        </Button>
+                    </VStack>
+                </Process.Event>
             );
         }
         case 'VENTER_MELDEKORT': // TODO: hvordan?
@@ -289,6 +317,7 @@ const Hendelse = ({
             );
         }
         case 'UTGÅENDE_VARSEL_TILBAKEBETALING': {
+            // TODO: story
             return (
                 <Process.Event
                     status={status}
@@ -350,6 +379,7 @@ const Hendelse = ({
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' })}
                     bullet={<InboxUpIcon />}
                 >
+                    {/*// TODO: story*/}
                     <Button size="small" className="mt-2" to={`/sak/${sak.saksnummer}/ettersend`} as={LinkInternal}>
                         {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' })}
                     </Button>
