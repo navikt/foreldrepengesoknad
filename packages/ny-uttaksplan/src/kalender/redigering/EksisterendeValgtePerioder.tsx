@@ -1,10 +1,4 @@
-import {
-    BriefcaseFillIcon,
-    ParasolBeachIcon,
-    PersonPregnantFillIcon,
-    PersonSuitFillIcon,
-    TrashIcon,
-} from '@navikt/aksel-icons';
+import { ParasolBeachIcon, PersonPregnantFillIcon, PersonSuitFillIcon, TrashIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -72,15 +66,6 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                 color="var(--ax-bg-warning-strong)"
                             />
                         )}
-                        {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'ARBEID' && (
-                            <BriefcaseFillIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Arbeid' })}
-                                fontSize="1.5rem"
-                                height="35px"
-                                width="35px"
-                                color="var(--ax-bg-info-strong)"
-                            />
-                        )}
                         <VStack gap="space-0">
                             {(p.erAnnenPartEøs || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
                                 <Heading size="xsmall">
@@ -116,9 +101,6 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
                                     )}
                                     {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE' && (
                                         <FormattedMessage id="RedigeringPanel.Ferie" />
-                                    )}
-                                    {!p.erAnnenPartEøs && p.utsettelseÅrsak === 'ARBEID' && (
-                                        <FormattedMessage id="RedigeringPanel.Arbeid" />
                                     )}
                                 </BodyShort>
                                 {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (

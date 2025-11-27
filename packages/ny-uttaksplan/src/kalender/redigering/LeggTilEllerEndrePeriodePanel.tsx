@@ -79,7 +79,7 @@ export const LeggTilEllerEndrePeriodePanel = () => {
                 fom: periode.fom,
                 tom: periode.tom,
                 readOnly: false,
-                id: `${periode.fom} - ${periode.tom} - ${values.kontoType}`,
+                id: `${periode.fom} - ${periode.tom} - ${values.kontoType} - ${values.forelder}`,
                 kontoType: values.kontoType,
                 forelder: getForelderFraKontoType(values.kontoType, values.forelder),
                 gradering: values.skalDuJobbe

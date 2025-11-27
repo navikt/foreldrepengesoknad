@@ -87,12 +87,8 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juni).getByTestId('day:30;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        const juli = screen.getByTestId('year:2021;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(10);
+        expect(within(juni).getByTestId('day:29;dayColor:NONE')).toBeInTheDocument();
     });
     it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
         render(<KortPeriodeUtenHelg />);
@@ -182,8 +178,7 @@ describe('UttaksplanKalender', () => {
         expect(foreldrepengerPeriode.getByText('11 dager valgt i perioden')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
-        expect(arbeidPeriode.getByText('Mor')).toBeInTheDocument();
-        expect(arbeidPeriode.getAllByText('Arbeid')).toHaveLength(2);
+        expect(arbeidPeriode.getAllByText('Ferie')).toHaveLength(2);
         expect(arbeidPeriode.getByText('5 dager valgt i perioden')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
