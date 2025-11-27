@@ -49,12 +49,12 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const tilbakestillUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
         oppdater(undefined);
-    }, [setUttaksplanVersjoner, oppdater]);
+    }, [oppdater]);
 
     const fjernAltIUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
         oppdater([]);
-    }, [oppdater, setUttaksplanVersjoner]);
+    }, [oppdater]);
 
     const value = useMemo(
         () => ({
@@ -73,7 +73,6 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
             angreSisteEndring,
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
-            setVisFjernAltModal,
         ],
     );
 
