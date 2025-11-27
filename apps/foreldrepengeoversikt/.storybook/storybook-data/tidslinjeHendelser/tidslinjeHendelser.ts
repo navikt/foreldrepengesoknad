@@ -398,3 +398,30 @@ export const tidslinjehendelser_FP_mangler_dokumentasjon = [
         ],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjehendelser_FP_ny_søknad = [
+    {
+        opprettet: '2025-11-27T12:33:41',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                journalpostId: '454050815',
+                dokumentId: '454469976',
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+            },
+        ],
+    },
+    {
+        opprettet: '2025-11-27T12:45:48',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD_NY',
+        dokumenter: [
+            {
+                journalpostId: '454051057',
+                dokumentId: '454470234',
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];

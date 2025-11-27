@@ -13,6 +13,7 @@ import {
     saker_FP_for_tidlig_søknad,
     saker_FP_fødsel_tilbakekreving,
     saker_FP_mangler_dokumentasjon,
+    saker_FP_ny_søknad,
     saker_FP_termin_innvilget,
     saker_SVP_innvilget,
     saker_SVP_under_behandling,
@@ -28,6 +29,7 @@ import {
     tidslinjehendelser_ES_under_behandling,
     tidslinjehendelser_FP_for_tidlig_søknad,
     tidslinjehendelser_FP_mangler_dokumentasjon,
+    tidslinjehendelser_FP_ny_søknad,
     tidslinjehendelser_SVP_innvilget,
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
@@ -175,6 +177,22 @@ export const FPManglerDokumentasjon: Story = {
             handlers: [
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_mangler_dokumentasjon)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_mangler_dokumentasjon)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg_FP)),
+            ],
+        },
+    },
+    args: {
+        søkersBarn,
+        saksnummer: '352028412',
+    },
+};
+
+export const FPNySøknad: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_ny_søknad)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_ny_søknad)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg_FP)),
             ],
         },
