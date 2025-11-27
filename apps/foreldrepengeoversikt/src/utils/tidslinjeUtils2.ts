@@ -2,11 +2,16 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'types/Sak.ts';
 
-import { Familiehendelse_fpoversikt } from '@navikt/fp-types';
+import {
+    BehandlingTilstand_fpoversikt,
+    Familiehendelse_fpoversikt,
+    TidslinjeHendelseDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse } from '../types/Tidslinjehendelse.ts';
-import { getNavnPåBarna } from './sakerUtils.ts';
+import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
+import { VENTEÅRSAKER } from './tidslinjeUtils.ts';
 
 type TidslinjeTittelForFamiliehendelseProps = {
     sak: Sak;
@@ -109,15 +114,126 @@ export const getTidslinjeTittelForBarnTreÅr = ({
     );
 };
 
-export const tittelSvarPåSøknad = (hendelse: Tidslinjehendelse, intl: IntlShape) => {
-    const dokumenter = hendelse.dokumenter;
-    if (dokumenter.length > 0) {
-        if (dokumenter.some((d) => d.tittel.includes('Avslagsbrev'))) {
-            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
-        }
-        if (dokumenter.some((d) => d.tittel.includes('Innvilgelsesbrev'))) {
-            return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
-        }
+// TODO: burde håndteres backend
+export const getAlleTidslinjehendelser2 = (props: {
+    tidslinjeHendelserBackend: TidslinjeHendelseDto_fpoversikt[];
+    sak: Sak;
+    barnFraSak: BarnGruppering;
+    intl: IntlShape;
+}): Tidslinjehendelse[] => {
+    const { tidslinjeHendelserBackend, sak, barnFraSak } = props;
+    const tidslinjeHendelser: Tidslinjehendelse[] = tidslinjeHendelserBackend.map((hendelse) => {
+        return {
+            ...hendelse,
+            utvidetTidslinjeHendelseType: hendelse.tidslinjeHendelseType,
+        };
+    });
+
+    const åpenBehandlingPåVent =
+        sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
+
+    const nåDato = dayjs(new Date()).add(1, 'd').toISOString();
+
+    const erAvslåttForeldrepengesøknad =
+        (sak.ytelse === 'FORELDREPENGER' &&
+            sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
+        false;
+
+    if (åpenBehandlingPåVent) {
+        console.log('påvent', åpenBehandlingPåVent);
+        // TODO: her var det egentlig en til, men tror ikke den noensinne slår inn?
+        tidslinjeHendelser.push({
+            aktørType: getAktørtypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
+            opprettet: nåDato,
+            utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
+            dokumenter: [],
+            manglendeVedlegg: [], //TODO: slettes?
+        });
     }
-    return intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+
+    if (sak.familiehendelse?.termindato || (sak.familiehendelse && barnFraSak.alleBarnaLever)) {
+        const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
+        tidslinjeHendelser.push({
+            opprettet: familiehendelsedato,
+            utvidetTidslinjeHendelseType: 'FAMILIEHENDELSE',
+            aktørType: 'BRUKER',
+            dokumenter: [],
+            manglendeVedlegg: [], //TODO: slettes?
+        });
+    }
+
+    const skalVise3ÅrsHendelse =
+        barnFraSak.alleBarnaLever &&
+        !erAvslåttForeldrepengesøknad &&
+        sak.ytelse === 'FORELDREPENGER' &&
+        !sak.sakAvsluttet &&
+        (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato);
+    if (skalVise3ÅrsHendelse) {
+        const dato = dayjs(
+            sak.gjelderAdopsjon ? sak.familiehendelse.omsorgsovertakelse : sak.familiehendelse.fødselsdato,
+        )
+            .add(3, 'y')
+            .toISOString();
+
+        tidslinjeHendelser.push({
+            opprettet: dato,
+            utvidetTidslinjeHendelseType: 'BARNET_TRE_ÅR',
+            aktørType: 'BRUKER',
+            dokumenter: [],
+            manglendeVedlegg: [],
+        });
+    }
+
+    if (sak.åpenBehandling) {
+        tidslinjeHendelser.push({
+            type: 'søknad',
+            opprettet: nåDato,
+            utvidetTidslinjeHendelseType: 'FREMTIDIG_VEDTAK',
+            aktørType: 'NAV',
+            dokumenter: [],
+            manglendeVedlegg: [],
+        });
+    }
+
+    return [...tidslinjeHendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet));
+};
+
+const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand_fpoversikt) => {
+    if (venteårsak === 'VENT_INNTEKTSMELDING') {
+        return 'VENTER_INNTEKTSMELDING';
+    }
+    if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
+        return 'VENTER_PGA_TIDLIG_SØKNAD';
+    }
+    if (venteårsak === 'VENT_DOKUMENTASJON') {
+        return 'VENT_DOKUMENTASJON';
+    }
+    if (venteårsak === 'VENT_MELDEKORT') {
+        return 'VENTER_MELDEKORT';
+    } else {
+        throw new Error('Ukjent venteårsak');
+    }
+};
+
+// TODO: brukes egentlig ikke
+const getAktørtypeAvVenteårsak = (
+    venteårsak: BehandlingTilstand_fpoversikt,
+): TidslinjeHendelseDto_fpoversikt['aktørType'] => {
+    if (venteårsak === 'VENT_INNTEKTSMELDING') {
+        return 'ARBEIDSGIVER';
+    }
+    if (venteårsak === 'VENT_TIDLIG_SØKNAD') {
+        return 'NAV';
+    }
+    return 'BRUKER';
+};
+
+const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
+    if (dayjs(opprettet1).isBefore(opprettet2)) {
+        return -1;
+    } else if (dayjs(opprettet1).isAfter(opprettet2)) {
+        return 1;
+    } else {
+        return 0;
+    }
 };

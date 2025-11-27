@@ -5,7 +5,7 @@ import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
  */
 export type Tidslinjehendelse = Omit<TidslinjeHendelseDto_fpoversikt, 'tidslinjeHendelseType'> & {
     type?: string;
-    manglendeVedlegg: unknown[];
+    manglendeVedlegg?: unknown[];
     merInformasjon?: string;
     linkTittel?: string;
     eksternalUrl?: string;

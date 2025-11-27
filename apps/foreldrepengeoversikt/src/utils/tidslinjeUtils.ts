@@ -333,7 +333,7 @@ const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: SvpÅpen
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-const getTidligstBehandlingsDatoForTidligSøknad = (
+export const getTidligstBehandlingsDatoForTidligSøknad = (
     ytelse: Ytelse,
     åpenBehandling: EsÅpenBehandling_fpoversikt | FpÅpenBehandling_fpoversikt | SvpÅpenBehandling_fpoversikt,
 ) => {
@@ -510,6 +510,8 @@ const getTidslinjehendelserFraBehandlingPåVent = (
     ytelse: Ytelse,
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
+    console.log('her');
+    console.log(åpenBehandling.tilstand);
     if (
         ['VENT_INNTEKTSMELDING', 'VENT_MELDEKORT', 'VENT_TIDLIG_SØKNAD'].includes(åpenBehandling.tilstand) &&
         manglendeVedleggData &&
@@ -528,6 +530,7 @@ const getTidslinjehendelserFraBehandlingPåVent = (
             internalUrl: createEttersendUrl(manglendeVedleggData),
             tidligstBehandlingsDato: undefined,
         } satisfies Tidslinjehendelse;
+        console.log('DENNA', hendelseVenterPåDokumentasjon);
     }
     const merInfo =
         åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD'
@@ -552,6 +555,7 @@ const getTidslinjehendelserFraBehandlingPåVent = (
     } satisfies Tidslinjehendelse;
 
     if (hendelseVenterPåDokumentasjon) {
+        console.log(hendelseVenterPåDokumentasjon, tidslinjeHendelse);
         return [hendelseVenterPåDokumentasjon, tidslinjeHendelse];
     }
 
