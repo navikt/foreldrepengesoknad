@@ -173,11 +173,13 @@ const Hendelse = ({
             );
         }
         case 'FØRSTEGANGSSØKNAD_NY': {
-            // TODO: hva er denne?
             return (
-                <Process.Event title="" bullet={<ChildHairEyesIcon />}>
+                <Process.Event
                     status={status}
-                    TODO
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD_NY' })}
+                    bullet={<TasklistSendIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
         }
