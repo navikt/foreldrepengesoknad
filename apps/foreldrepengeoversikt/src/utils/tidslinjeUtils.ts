@@ -510,8 +510,6 @@ const getTidslinjehendelserFraBehandlingPåVent = (
     ytelse: Ytelse,
 ): Tidslinjehendelse[] => {
     let hendelseVenterPåDokumentasjon = undefined;
-    console.log('her');
-    console.log(åpenBehandling.tilstand);
     if (
         ['VENT_INNTEKTSMELDING', 'VENT_MELDEKORT', 'VENT_TIDLIG_SØKNAD'].includes(åpenBehandling.tilstand) &&
         manglendeVedleggData &&
@@ -530,7 +528,6 @@ const getTidslinjehendelserFraBehandlingPåVent = (
             internalUrl: createEttersendUrl(manglendeVedleggData),
             tidligstBehandlingsDato: undefined,
         } satisfies Tidslinjehendelse;
-        console.log('DENNA', hendelseVenterPåDokumentasjon);
     }
     const merInfo =
         åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD'
@@ -555,7 +552,6 @@ const getTidslinjehendelserFraBehandlingPåVent = (
     } satisfies Tidslinjehendelse;
 
     if (hendelseVenterPåDokumentasjon) {
-        console.log(hendelseVenterPåDokumentasjon, tidslinjeHendelse);
         return [hendelseVenterPåDokumentasjon, tidslinjeHendelse];
     }
 

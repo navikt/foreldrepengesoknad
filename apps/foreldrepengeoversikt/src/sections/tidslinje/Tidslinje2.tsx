@@ -55,10 +55,7 @@ export const TidslinjeNy = (props: Props) => {
     }
 
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
-    const erAvslåttForeldrepengesøknad =
-        (sak.ytelse === 'FORELDREPENGER' &&
-            sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
-        false;
+
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
@@ -68,14 +65,6 @@ export const TidslinjeNy = (props: Props) => {
         barnFraSak,
         intl,
     });
-    console.log(alleSorterteHendelser);
-
-    // const hendelserForVisning = getHendelserForVisning(
-    //     visHeleTidslinjen,
-    //     alleSorterteHendelser,
-    //     erAvslåttForeldrepengesøknad,
-    //     erInnvilgetForeldrepengesøknad,
-    // );
 
     const aktivtStegIndex = getAktivTidslinjeStegIndex(alleSorterteHendelser, erInnvilgetForeldrepengesøknad);
 

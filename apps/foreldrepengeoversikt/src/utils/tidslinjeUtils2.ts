@@ -140,7 +140,6 @@ export const getAlleTidslinjehendelser2 = (props: {
         false;
 
     if (åpenBehandlingPåVent) {
-        console.log('påvent', åpenBehandlingPåVent);
         // TODO: her var det egentlig en til, men tror ikke den noensinne slår inn?
         tidslinjeHendelser.push({
             aktørType: getAktørtypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
