@@ -14,7 +14,7 @@ type ContextValues = {
     fjernAltIUttaksplan: () => void;
     visFjernAltModal: boolean;
     setVisFjernAltModal: (open: boolean) => void;
-    uttakplanVersjoner: UttakPeriode_fpoversikt[][];
+    uttaksplanVersjoner: UttakPeriode_fpoversikt[][];
 };
 
 const UttaksplanRedigeringContext = createContext<ContextValues | null>(null);
@@ -23,7 +23,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
 
-    const [uttakplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriode_fpoversikt[][]>([]);
+    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriode_fpoversikt[][]>([]);
 
     const oppdaterUttaksplan = useCallback(
         (nyUttaksplan: UttakPeriode_fpoversikt[]) => {
@@ -59,7 +59,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const value = useMemo(
         () => ({
             visFjernAltModal,
-            uttakplanVersjoner,
+            uttaksplanVersjoner,
             oppdaterUttaksplan,
             angreSisteEndring,
             tilbakestillUttaksplan,
@@ -68,7 +68,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         }),
         [
             visFjernAltModal,
-            uttakplanVersjoner,
+            uttaksplanVersjoner,
             oppdaterUttaksplan,
             angreSisteEndring,
             tilbakestillUttaksplan,

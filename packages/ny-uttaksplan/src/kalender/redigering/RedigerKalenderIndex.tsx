@@ -63,12 +63,12 @@ export const RedigerKalender = () => {
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
                             tilbakestillPlan={
-                                uttaksplanRedigering.uttakplanVersjoner.length > 0
+                                uttaksplanRedigering.uttaksplanVersjoner.length > 0
                                     ? () => uttaksplanRedigering.tilbakestillUttaksplan()
                                     : undefined
                             }
                             angreEndring={
-                                uttaksplanRedigering.uttakplanVersjoner.length > 0
+                                uttaksplanRedigering.uttaksplanVersjoner.length > 0
                                     ? () => uttaksplanRedigering.angreSisteEndring()
                                     : undefined
                             }

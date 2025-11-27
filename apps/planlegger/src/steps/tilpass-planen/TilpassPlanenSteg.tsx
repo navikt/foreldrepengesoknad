@@ -1,4 +1,9 @@
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
+import {
+    ContextDataType,
+    useContextComplete,
+    useContextGetData,
+    useContextSaveData,
+} from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { useState } from 'react';
@@ -10,8 +15,9 @@ import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { KontoBeregningResultatDto } from '@navikt/fp-types';
+import { KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
+import { encodeToBase64 } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
@@ -46,6 +52,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const completeAppContext = useContextComplete();
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -65,6 +72,21 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const erDeltUttak = fordeling !== undefined;
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
+
+    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => {
+        lagreUttaksplan(oppdatertUttaksplan);
+
+        const contextData = {
+            ...completeAppContext,
+            [ContextDataType.UTTAKSPLAN]: oppdatertUttaksplan,
+        };
+
+        const encodedData = encodeToBase64(JSON.stringify(contextData));
+        const currentPath = window.location.pathname;
+        const newUrl = `${currentPath}?data=${encodedData}`;
+
+        window.history.replaceState(null, '', newUrl);
+    };
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
 
@@ -104,7 +126,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
 
-                    <UttaksplanRedigeringProvider oppdaterUttaksplan={lagreUttaksplan}>
+                    <UttaksplanRedigeringProvider oppdaterUttaksplan={lagreUttaksplanOgOppdaterUrl}>
                         <FjernAltIUttaksplanModal />
                         {visningsmodus === 'liste' && <UttaksplanNy />}
 
