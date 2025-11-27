@@ -257,8 +257,7 @@ export const OppsummeringHarRett = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
                             modus="planlegger"
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                            valgtStønadskonto={{} as any}
+                            valgtStønadskonto={valgtStønadskonto}
                             aleneOmOmsorg={erAleneOmOmsorg}
                             erMedmorDelAvSøknaden={false}
                             bareFarMedmorHarRett={bareFarMedmorHarRett}
