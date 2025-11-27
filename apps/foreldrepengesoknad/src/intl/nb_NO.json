@@ -529,7 +529,7 @@
     "uttaksplan.automatiskJustering.spørsmål": "Planen din inneholder én periode med din egen kvote rundt fødsel. Siden denne perioden starter på termin, ønsker du at vi endrer den til å starte fra fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "uttaksplan.automatiskJustering.svar.påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
     "uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
-    "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR": "Foreldrepenger",
+    "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR": "Foreldrepenger uten aktivitetskrav",
     "uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR": "Foreldrepenger med aktivitetskrav",
     "uttaksplan.stønadskontotype.dinKvote": "Din kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
