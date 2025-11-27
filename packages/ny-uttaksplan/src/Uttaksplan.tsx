@@ -11,19 +11,17 @@ import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnappe
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { useUttaksplanData } from './context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
 import { useUttaksplanBuilder } from './context/useUttaksplanBuilder';
 import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
-interface Props {
-    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
-    uttaksplanHandlinger?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
-}
-
-export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props) => {
+export const UttaksplanNy = () => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { modus, uttaksplan, erFlereUttaksplanversjoner } = useUttaksplanData();
+    const { modus, uttaksplan } = useUttaksplanData();
+
+    const uttaksplanRedigering = useUttaksplanRedigering();
 
     const uttaksplanBuilder = useUttaksplanBuilder();
 
@@ -39,16 +37,28 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props
                 <PeriodeListe
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
+                        modifyPlan(
+                            uttaksplanBuilder.leggTilPeriode(nyPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
                     }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode), oppdaterUttaksplan);
+                        modifyPlan(
+                            uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
                     }}
                     handleDeletePeriode={(slettetPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.slettPeriode(slettetPeriode), oppdaterUttaksplan);
+                        modifyPlan(
+                            uttaksplanBuilder.slettPeriode(slettetPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
-                        modifyPlan(uttaksplanBuilder.slettPerioder(slettedePerioder), oppdaterUttaksplan);
+                        modifyPlan(
+                            uttaksplanBuilder.slettPerioder(slettedePerioder),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
                 />
@@ -71,24 +81,33 @@ export const UttaksplanNy = ({ oppdaterUttaksplan, uttaksplanHandlinger }: Props
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isLeggTilPeriodePanelOpen && oppdaterUttaksplan && (
+            {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        modifyPlan(uttaksplanBuilder.leggTilPeriode(nyPeriode), oppdaterUttaksplan);
+                        modifyPlan(
+                            uttaksplanBuilder.leggTilPeriode(nyPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
                         setIsLeggTilPeriodePanelOpen(false);
                     }}
                 />
             )}
-            {oppdaterUttaksplan && uttaksplanHandlinger && (
+            {uttaksplanRedigering && (
                 <UttaksplanHandlingKnapper
                     toggleAllAccordions={toggleAllAccordions}
                     visKnapper
                     tilbakestillPlan={
-                        erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
+                        uttaksplanRedigering.uttakplanVersjoner.length > 0
+                            ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                            : undefined
                     }
-                    angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
-                    fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
+                    angreEndring={
+                        uttaksplanRedigering.uttakplanVersjoner.length > 0
+                            ? () => uttaksplanRedigering.angreSisteEndring()
+                            : undefined
+                    }
+                    fjernAltIPlanen={() => uttaksplanRedigering.fjernAltIUttaksplan()}
                 />
             )}
         </>

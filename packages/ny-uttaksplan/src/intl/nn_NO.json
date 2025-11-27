@@ -256,5 +256,9 @@
     "UttaksplanKalender.Maks3År": "Du viser maks antall månader (3 år)",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Skal dykk ha foreldrepengar samtidig?",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmålRequired": "Du må fylle ut om dykk skal ha foreldrepengar samtidig",
-    "SamtidigUttakSpørsmål.Prosent": "Hvor mange prosent?"
+    "SamtidigUttakSpørsmål.Prosent": "Hvor mange prosent?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Vil du fjerna alt i planen?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Er du sikker på at du vil fjerna alt i planen?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Ja, fjerna alt",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt"
 }

@@ -26,8 +26,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-    uttaksplan: UttakPeriode_fpoversikt[][];
-    originalUttaksplan: UttakPeriode_fpoversikt[];
+    uttaksplan: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof TilpassPlanenSteg>;
 
 const meta = {
@@ -42,7 +41,6 @@ const meta = {
         arbeidssituasjon,
         stønadskontoer,
         uttaksplan,
-        originalUttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -55,7 +53,6 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
-                        [ContextDataType.ORIGINAL_UTTAKSPLAN]: originalUttaksplan,
                     }}
                 >
                     <TilpassPlanenSteg stønadskontoer={stønadskontoer} />
@@ -112,34 +109,6 @@ export const MorOgFarBeggeHarRett: Story = {
             },
         },
         uttaksplan: [
-            [
-                {
-                    forelder: 'MOR',
-                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                    fom: '2025-04-18',
-                    tom: '2025-05-08',
-                },
-                {
-                    forelder: 'MOR',
-                    kontoType: 'MØDREKVOTE',
-                    fom: '2025-05-09',
-                    tom: '2025-08-21',
-                },
-                {
-                    forelder: 'MOR',
-                    kontoType: 'FELLESPERIODE',
-                    fom: '2025-08-22',
-                    tom: '2025-12-11',
-                },
-                {
-                    forelder: 'FAR_MEDMOR',
-                    kontoType: 'FEDREKVOTE',
-                    fom: '2025-12-12',
-                    tom: '2026-03-26',
-                },
-            ],
-        ],
-        originalUttaksplan: [
             {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -193,22 +162,6 @@ export const MorOgFarKunMorHarRett: Story = {
             },
         },
         uttaksplan: [
-            [
-                {
-                    forelder: 'MOR',
-                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                    fom: '2025-04-18',
-                    tom: '2025-05-08',
-                },
-                {
-                    forelder: 'MOR',
-                    kontoType: 'FORELDREPENGER',
-                    fom: '2025-05-09',
-                    tom: '2026-03-26',
-                },
-            ],
-        ],
-        originalUttaksplan: [
             {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',

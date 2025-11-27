@@ -7,12 +7,12 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Calendar, CalendarPeriod, CalendarPeriodColor, monthDiff } from '@navikt/fp-ui';
 import { dateToISOString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -21,19 +21,14 @@ import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervis
 interface Props {
     readOnly: boolean;
     barnehagestartdato?: string;
-    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void;
-    uttaksplanHandlinger?: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 }
 
-export const UttaksplanKalender = ({
-    readOnly,
-    barnehagestartdato,
-    oppdaterUttaksplan,
-    uttaksplanHandlinger,
-}: Props) => {
+export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
     const intl = useIntl();
     const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
     const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
+
+    const uttaksplanRedigering = useUttaksplanRedigering();
 
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -187,7 +182,7 @@ export const UttaksplanKalender = ({
                             </InlineMessage>
                         )}
                     </div>
-                    {!readOnly && oppdaterUttaksplan && uttaksplanHandlinger && (
+                    {!readOnly && uttaksplanRedigering && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
@@ -198,8 +193,6 @@ export const UttaksplanKalender = ({
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setValgtePerioder}
-                                oppdaterUttaksplan={oppdaterUttaksplan}
-                                uttaksplanHandlinger={uttaksplanHandlinger}
                             />
                         </div>
                     )}

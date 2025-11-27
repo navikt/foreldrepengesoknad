@@ -1,24 +1,26 @@
-import {
-    ContextDataType,
-    useContextComplete,
-    useContextGetData,
-    useContextSaveData,
-} from 'appData/PlanleggerDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 
-import { Alert, BodyLong, Button, Heading, Modal, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
-import { encodeToBase64 } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import {
+    FjernAltIUttaksplanModal,
+    KvoteOppsummering,
+    UttaksplanDataProvider,
+    UttaksplanKalender,
+    UttaksplanNy,
+    UttaksplanRedigeringProvider,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
@@ -31,8 +33,6 @@ interface Props {
 }
 
 export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
-    const [open, setOpen] = useState(false);
-
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -45,25 +45,15 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
-    const originalUttaksplan = notEmpty(
-        useContextGetData(ContextDataType.ORIGINAL_UTTAKSPLAN),
-        'Uttaksplan ikke oppgitt',
-    );
-    const context = useContextComplete();
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    // Uttaksplan lagrer hver state av planen i et array. Når denne siden laster vil vi starte på den siste endringen.
-    const initiellUttaksplanIndex = uttaksplan.length - 1;
-    const [currentUttaksplanIndex, setCurrentUttaksplanIndex] = useState(Math.max(initiellUttaksplanIndex, 0));
+    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const stønadskonto100 = stønadskontoer['100'];
     const stønadskonto80 = stønadskontoer['80'];
     const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
-    const gjeldendeUttaksplan = uttaksplan.length > 0 ? uttaksplan[currentUttaksplanIndex]! : [];
-
-    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
@@ -74,86 +64,12 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
-    const oppdaterUrlMedEnkodetData = (oppdatertUttaksplan: UttakPeriode_fpoversikt[][]) => {
-        const contextData = {
-            ...context,
-            [ContextDataType.UTTAKSPLAN]: [oppdatertUttaksplan[oppdatertUttaksplan.length - 1]],
-        };
-
-        const encodedData = encodeToBase64(JSON.stringify(contextData));
-        const currentPath = window.location.pathname;
-        const newUrl = `${currentPath}?data=${encodedData}`;
-
-        window.history.replaceState(null, '', newUrl);
-    };
-
-    useEffect(() => {
-        oppdaterUrlMedEnkodetData(uttaksplan);
-    }, [uttaksplan]);
-
-    const oppdaterUttaksplan = (perioder: UttakPeriode_fpoversikt[]) => {
-        let nyUttaksplan = [];
-
-        if (currentUttaksplanIndex !== uttaksplan.length - 1) {
-            nyUttaksplan = uttaksplan.slice(0, currentUttaksplanIndex + 1);
-        } else {
-            nyUttaksplan = uttaksplan.length >= 6 ? [...uttaksplan.toSpliced(1, 1)] : [...uttaksplan];
-        }
-
-        nyUttaksplan.push(perioder);
-        setCurrentUttaksplanIndex(nyUttaksplan.length - 1);
-        lagreUttaksplan(nyUttaksplan);
-    };
-
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
-    const uttaksplanHandlinger = (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => {
-        if (handling === 'angre' && currentUttaksplanIndex > 0) {
-            setCurrentUttaksplanIndex(currentUttaksplanIndex - 1);
-            lagreUttaksplan(uttaksplan.slice(0, currentUttaksplanIndex));
-        } else if (handling === 'tilbakestill') {
-            setCurrentUttaksplanIndex(0);
-            lagreUttaksplan([originalUttaksplan]);
-        } else if (handling === 'fjernAlt') {
-            setOpen(true);
-        }
-    };
+    const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Modal
-                open={open}
-                onClose={() => setOpen(false)}
-                header={{
-                    heading: intl.formatMessage({ id: 'TilpassPlanenSteg.FjernAlt.Modal.Tittel' }),
-                    size: 'small',
-                    closeButton: false,
-                }}
-                width="small"
-            >
-                <Modal.Body>
-                    <BodyLong>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Body" />
-                    </BodyLong>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        type="button"
-                        variant="danger"
-                        onClick={() => {
-                            lagreUttaksplan([[]]);
-                            setCurrentUttaksplanIndex(0);
-                            setOpen(false);
-                        }}
-                    >
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Bekreft" />
-                    </Button>
-                    <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-                        <FormattedMessage id="TilpassPlanenSteg.FjernAlt.Modal.Knapp.Avbryt" />
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
             <UttaksplanDataProvider
                 barn={mapOmBarnetTilBarn(omBarnet)}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -165,8 +81,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                 bareFarMedmorHarRett={bareFarMedmorHarRett}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={erDeltUttak}
-                saksperioder={gjeldendeUttaksplan}
-                erFlereUttaksplanversjoner={uttaksplan.length > 1}
+                saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
             >
                 <VStack gap="space-24">
                     <Alert variant="info">
@@ -189,21 +104,17 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
                     <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
 
-                    {visningsmodus === 'liste' && (
-                        <UttaksplanNy
-                            oppdaterUttaksplan={oppdaterUttaksplan}
-                            uttaksplanHandlinger={uttaksplanHandlinger}
-                        />
-                    )}
+                    <UttaksplanRedigeringProvider oppdaterUttaksplan={lagreUttaksplan}>
+                        <FjernAltIUttaksplanModal />
+                        {visningsmodus === 'liste' && <UttaksplanNy />}
 
-                    {visningsmodus === 'kalender' && (
-                        <UttaksplanKalender
-                            readOnly={!erUttaksplanKalenderRedigerbar()}
-                            barnehagestartdato={barnehagestartdato}
-                            oppdaterUttaksplan={oppdaterUttaksplan}
-                            uttaksplanHandlinger={uttaksplanHandlinger}
-                        />
-                    )}
+                        {visningsmodus === 'kalender' && (
+                            <UttaksplanKalender
+                                readOnly={!erUttaksplanKalenderRedigerbar()}
+                                barnehagestartdato={barnehagestartdato}
+                            />
+                        )}
+                    </UttaksplanRedigeringProvider>
 
                     <KvoteOppsummering visStatusIkoner />
 

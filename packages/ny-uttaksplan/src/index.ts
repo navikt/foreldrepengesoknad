@@ -27,6 +27,8 @@ export { UttaksplanNy } from './Uttaksplan';
 export { KvoteOppsummering } from './KvoteOppsummering';
 export { UttaksplanKalender } from './kalender/UttaksplanKalender';
 export { UttaksplanDataProvider } from './context/UttaksplanDataContext';
+export { UttaksplanRedigeringProvider } from './context/UttaksplanRedigeringContext';
+export { FjernAltIUttaksplanModal } from './components/FjernAltIUttaksplanModal';
 
 export const nyUttaksplanMessages = {
     nb: nbMessages,

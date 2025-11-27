@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps, useState } from 'react';
-import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
+import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
 
 const MINSTERETTER = {
@@ -18,7 +18,6 @@ const meta = {
     component: UttaksplanKalender,
     args: {
         modus: 'søknad',
-        oppdaterUttaksplan: action('button-click'),
         readOnly: false,
         valgtStønadskonto: {
             kontoer: [
@@ -32,15 +31,13 @@ const meta = {
         aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
-        erFlereUttaksplanversjoner: false,
         children: null,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[]) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
             setPerioder(oppdatertePerioder);
-            args.oppdaterUttaksplan?.(oppdatertePerioder);
         };
 
         return (
@@ -55,14 +52,11 @@ const meta = {
                 bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={args.erDeltUttak || false}
-                saksperioder={perioder}
-                erFlereUttaksplanversjoner={args.erFlereUttaksplanversjoner}
+                saksperioder={perioder ?? []}
             >
-                <UttaksplanKalender
-                    {...args}
-                    oppdaterUttaksplan={handleOnPlanChange}
-                    uttaksplanHandlinger={action('button-click')}
-                />
+                <UttaksplanRedigeringProvider oppdaterUttaksplan={handleOnPlanChange}>
+                    <UttaksplanKalender readOnly={false} />
+                </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },

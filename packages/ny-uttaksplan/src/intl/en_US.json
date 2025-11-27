@@ -257,5 +257,9 @@
     "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Are you going to take parental benefits at the same time?",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmålRequired": "You must fill out whether you will take parental benefits at the same time",
-    "SamtidigUttakSpørsmål.Prosent": "How many percent?"
+    "SamtidigUttakSpørsmål.Prosent": "How many percent?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Do you want to remove everything from the plan?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Are you sure you want to remove everything from the plan?",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Yes, remove everything",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel"
 }

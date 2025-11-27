@@ -3,12 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { Box, VStack } from '@navikt/ds-react';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
 import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { ValgteDagerPanel } from './ValgteDagerPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -16,11 +15,7 @@ import { useMediaActions } from './utils/useMediaActions';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (
-        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    uttaksplanHandlinger: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 };
 
 export const RedigerKalenderIndex = (props: Props) => (
@@ -32,13 +27,12 @@ export const RedigerKalenderIndex = (props: Props) => (
 export const RedigerKalender = () => {
     useMediaActions();
 
-    const { erFlereUttaksplanversjoner } = useUttaksplanData();
+    const uttaksplanRedigering = useUttaksplanRedigering();
 
     const {
         erIRedigeringsmodus,
         erKunEnHelEksisterendePeriodeValgt,
         sammenslåtteValgtePerioder,
-        uttaksplanHandlinger,
         setErIRedigeringsmodus,
         setErMinimert,
     } = useKalenderRedigeringContext();
@@ -60,7 +54,7 @@ export const RedigerKalender = () => {
             overflow={erIRedigeringsmodus ? 'auto' : 'hidden'}
             background="default"
         >
-            {sammenslåtteValgtePerioder.length === 0 && (
+            {sammenslåtteValgtePerioder.length === 0 && !!uttaksplanRedigering && (
                 <VStack gap="space-16">
                     <Box.New background="accent-soft" padding="4">
                         <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
@@ -69,10 +63,16 @@ export const RedigerKalender = () => {
                         <UttaksplanHandlingKnapper
                             visKnapper={false}
                             tilbakestillPlan={
-                                erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
+                                uttaksplanRedigering.uttakplanVersjoner.length > 0
+                                    ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                                    : undefined
                             }
-                            angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
-                            fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
+                            angreEndring={
+                                uttaksplanRedigering.uttakplanVersjoner.length > 0
+                                    ? () => uttaksplanRedigering.angreSisteEndring()
+                                    : undefined
+                            }
+                            fjernAltIPlanen={() => uttaksplanRedigering.fjernAltIUttaksplan()}
                         />
                         <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
                         <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
