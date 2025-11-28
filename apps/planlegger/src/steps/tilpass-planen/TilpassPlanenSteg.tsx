@@ -134,10 +134,7 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         {visningsmodus === 'liste' && <UttaksplanNy />}
 
                         {visningsmodus === 'kalender' && (
-                            <UttaksplanKalender
-                                readOnly={!erUttaksplanKalenderRedigerbar()}
-                                barnehagestartdato={barnehagestartdato}
-                            />
+                            <UttaksplanKalender readOnly={false} barnehagestartdato={barnehagestartdato} />
                         )}
                     </UttaksplanRedigeringProvider>
 
@@ -152,9 +149,4 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
             </UttaksplanDataProvider>
         </PlanleggerStepPage>
     );
-};
-
-const erUttaksplanKalenderRedigerbar = () => {
-    const hostname = globalThis.location.hostname;
-    return hostname === 'localhost' || hostname === 'www.intern.dev.nav.no';
 };
