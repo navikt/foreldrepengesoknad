@@ -165,7 +165,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
                             firstDateInCalendar={firstDateInCalendar}
                             lastDateInCalendar={lastDateInCalendar}
                         />
-                        {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && (
+                        {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && !readOnly && (
                             <Button
                                 onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
                                 type="button"
