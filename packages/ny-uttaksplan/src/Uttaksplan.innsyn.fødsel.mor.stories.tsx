@@ -24,7 +24,10 @@ const meta = {
 
         return (
             <UttaksplanDataProvider {...args} saksperioder={perioder ?? []}>
-                <UttaksplanRedigeringProvider oppdaterUttaksplan={handleOnPlanChange}>
+                <UttaksplanRedigeringProvider
+                    oppdaterUttaksplan={handleOnPlanChange}
+                    harEndretPlan={perioder !== undefined}
+                >
                     <UttaksplanNy />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>

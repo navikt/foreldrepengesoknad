@@ -54,7 +54,10 @@ const meta = {
                 erDeltUttak={args.erDeltUttak || false}
                 saksperioder={perioder ?? []}
             >
-                <UttaksplanRedigeringProvider oppdaterUttaksplan={handleOnPlanChange}>
+                <UttaksplanRedigeringProvider
+                    oppdaterUttaksplan={handleOnPlanChange}
+                    harEndretPlan={perioder !== undefined}
+                >
                     <UttaksplanKalender readOnly={false} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>

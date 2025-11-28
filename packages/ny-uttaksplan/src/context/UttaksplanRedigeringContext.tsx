@@ -3,24 +3,26 @@ import { createContext, useCallback, useContext, useMemo, useState } from 'react
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 type Props = {
+    harEndretPlan: boolean;
     oppdaterUttaksplan: (uttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
     children: React.ReactNode;
 };
 
 type ContextValues = {
-    oppdaterUttaksplan: (uttaksplan: UttakPeriode_fpoversikt[]) => void;
-    angreSisteEndring: () => void;
-    tilbakestillUttaksplan: () => void;
-    fjernAltIUttaksplan: () => void;
-    visFjernAltModal: boolean;
-    setVisFjernAltModal: (open: boolean) => void;
     uttaksplanVersjoner: UttakPeriode_fpoversikt[][];
+    visFjernAltModal: boolean;
+    harEndretPlan: boolean;
+    setVisFjernAltModal: (open: boolean) => void;
+    angreSisteEndring: () => void;
+    fjernAltIUttaksplan: () => void;
+    oppdaterUttaksplan: (uttaksplan: UttakPeriode_fpoversikt[]) => void;
+    tilbakestillUttaksplan: () => void;
 };
 
 const UttaksplanRedigeringContext = createContext<ContextValues | null>(null);
 
 export const UttaksplanRedigeringProvider = (props: Props) => {
-    const { oppdaterUttaksplan: oppdater, children } = props;
+    const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
 
     const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriode_fpoversikt[][]>([]);
@@ -60,6 +62,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         () => ({
             visFjernAltModal,
             uttaksplanVersjoner,
+            harEndretPlan,
             oppdaterUttaksplan,
             angreSisteEndring,
             tilbakestillUttaksplan,
@@ -69,6 +72,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         [
             visFjernAltModal,
             uttaksplanVersjoner,
+            harEndretPlan,
             oppdaterUttaksplan,
             angreSisteEndring,
             tilbakestillUttaksplan,

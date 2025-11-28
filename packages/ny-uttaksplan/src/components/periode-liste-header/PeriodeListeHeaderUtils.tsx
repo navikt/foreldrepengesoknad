@@ -95,6 +95,7 @@ export const getTekst = (
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
     familiesituasjon: Familiesituasjon,
+    erDeltUttak: boolean,
     erFamiliehendelse?: boolean,
 ) => {
     const { erUtsettelse, erHull, forelder } = permisjonsperiode;
@@ -162,6 +163,10 @@ export const getTekst = (
 
     if (erSamtidigUttak) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.samtidigUttak' });
+    }
+
+    if (!erDeltUttak) {
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.DuHarForeldrepenger' });
     }
 
     return intl.formatMessage(

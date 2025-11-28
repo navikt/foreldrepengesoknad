@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, ErrorMessage, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
@@ -22,7 +22,7 @@ import { useKalenderRedigeringContext } from './context/KalenderRedigeringContex
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type FormValues = {
-    kontoType?: KontoType;
+    kontoType?: KontoTypeUttak;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe?: boolean;
     stillingsprosent?: string;
@@ -80,7 +80,8 @@ export const LeggTilEllerEndrePeriodePanel = () => {
                 tom: periode.tom,
                 readOnly: false,
                 id: `${periode.fom} - ${periode.tom} - ${values.kontoType} - ${values.forelder}`,
-                kontoType: values.kontoType,
+                kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 forelder: getForelderFraKontoType(values.kontoType, values.forelder),
                 gradering: values.skalDuJobbe
                     ? getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType)
@@ -179,7 +180,12 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
     }
 
     return {
-        kontoType: eksisterendePeriode.kontoType,
+        kontoType:
+            eksisterendePeriode.kontoType === 'FORELDREPENGER' &&
+            !eksisterendePeriode.erAnnenPartEøs &&
+            eksisterendePeriode.morsAktivitet === 'IKKE_OPPGITT'
+                ? 'AKTIVITETSFRI_KVOTE'
+                : eksisterendePeriode.kontoType,
         forelder: eksisterendePeriode.forelder,
         skalDuJobbe: !!eksisterendePeriode.gradering,
         stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),

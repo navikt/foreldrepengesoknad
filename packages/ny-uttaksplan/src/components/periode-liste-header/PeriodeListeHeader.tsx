@@ -20,7 +20,8 @@ interface Props {
 export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpen }: Props) => {
     const intl = useIntl();
 
-    const { familiehendelsedato, navnPåForeldre, erFarEllerMedmor, familiesituasjon } = useUttaksplanData();
+    const { familiehendelsedato, navnPåForeldre, erFarEllerMedmor, familiesituasjon, erDeltUttak } =
+        useUttaksplanData();
 
     const { tidsperiode } = permisjonsperiode;
 
@@ -39,6 +40,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
         erFarEllerMedmor,
         navnPåForeldre,
         familiesituasjon,
+        erDeltUttak,
         erFamiliehendelse,
     );
 

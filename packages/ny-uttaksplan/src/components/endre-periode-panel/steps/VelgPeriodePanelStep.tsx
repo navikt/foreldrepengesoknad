@@ -62,9 +62,11 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                     ]}
                 >
                     {perioder.map((p, index) => {
+                        const morsAktivitet = !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
                         return (
                             <Radio key={p.id} value={p.id} autoFocus={index === 0}>
-                                {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor)}`}
+                                {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
+                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
                             </Radio>
                         );
                     })}
