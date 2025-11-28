@@ -230,7 +230,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByText('28', { exact: false }));
         await userEvent.click(within(april).getByText('12', { exact: false }));
 
-        await userEvent.click(screen.getByText('Legg til'));
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
 
         expect(
             await screen.findByText(
@@ -249,7 +249,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:4;dayColor:PINK'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
-        await userEvent.click(screen.getByText('Endre'));
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(await screen.findByText('Velg kvotetype')).toBeInTheDocument();
         expect(screen.getByLabelText('Mors kvote')).toBeChecked();

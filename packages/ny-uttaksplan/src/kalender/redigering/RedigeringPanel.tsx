@@ -9,6 +9,7 @@ import { Alert, BodyShort, Box, HStack, Heading, Show, VStack } from '@navikt/ds
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
@@ -45,17 +46,19 @@ export const RedigeringPanel = ({ children }: Props) => {
         >
             <Box.New background="accent-soft" padding="4">
                 <VStack gap="space-8">
-                    {!erIRedigeringsmodus && (
-                        <HStack gap="space-8" align="center" wrap={false}>
-                            <PencilIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
-                                fontSize="1.5rem"
-                            />
-                            <Heading size="small">
-                                <FormattedMessage id="RedigeringPanel.EndreTil" />
-                            </Heading>
-                        </HStack>
-                    )}
+                    <Show above="md">
+                        {!erIRedigeringsmodus && (
+                            <HStack gap="space-8" align="center" wrap={false}>
+                                <PencilIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
+                                    fontSize="1.5rem"
+                                />
+                                <Heading size="small">
+                                    <FormattedMessage id="RedigeringPanel.EndreTil" />
+                                </Heading>
+                            </HStack>
+                        )}
+                    </Show>
                     <HStack justify="space-between" align="center" wrap={false}>
                         <Heading size="xsmall">
                             <FormattedMessage
@@ -238,8 +241,8 @@ const justerPerioder = (valgtePerioder: CalendarPeriod[], periodeSomSkalSlettes:
         if (fom.isBefore(fomSlett, 'day')) {
             nyePerioder.push({
                 ...periode,
-                fom: fom.format(ISO_DATE_FORMAT),
-                tom: fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT),
+                fom: periode.fom,
+                tom: UttaksdagenString(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).denneEllerForrige(),
             });
         }
 
@@ -247,8 +250,8 @@ const justerPerioder = (valgtePerioder: CalendarPeriod[], periodeSomSkalSlettes:
         if (tom.isAfter(tomSlett, 'day')) {
             nyePerioder.push({
                 ...periode,
-                fom: tomSlett.add(1, 'day').format(ISO_DATE_FORMAT),
-                tom: tom.format(ISO_DATE_FORMAT),
+                fom: UttaksdagenString(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).denneEllerNeste(),
+                tom: periode.tom,
             });
         }
 
