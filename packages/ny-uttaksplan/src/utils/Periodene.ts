@@ -298,16 +298,6 @@ export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
     return perioderUtenInfoPerioder.every((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined);
 };
 
-export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !p.readOnly)
-            .slice()
-            .reverse()
-            .findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0
-    );
-};
-
 export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
     return (
         perioder

@@ -273,7 +273,6 @@
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode": "Du kan ikke søke om utsettelse på grunn av arbeid eller ferie mindre enn 6 uker etter fødsel",
     "uttaksplan.validering.feil.stønadskontoMangler": "Perioden er ikke gyldig.",
     "uttaksplan.validering.feil.uttaksplanErBareOpphold": "Du kan ikke ha en plan med kun en utsettelse.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Planen din kan ikke slutte med at den andre forelderen skal være hjemme.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Planen din kan ikke starte med at den andre forelderen skal være hjemme.",
     "uttaksplan.validering.feil.uttaksplanHarForMangeFlerbarnsdager": "Du har lagt inn for mange flerbarnsdager.",
     "uttaksplan.validering.feil.periodeStarterPåDatoSomIkkeErUttaksdag": "Til og med dato kan ikke være en helgedag",
