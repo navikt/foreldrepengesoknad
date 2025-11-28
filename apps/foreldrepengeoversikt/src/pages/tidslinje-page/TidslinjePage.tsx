@@ -21,12 +21,13 @@ import { Sak } from '../../types/Sak';
 
 type OuterProps = {
     søkersBarn: BarnDto_fpoversikt[];
+    visHeleTidslinjen?: boolean;
 };
 type InnerProps = OuterProps & {
     sak?: Sak;
 };
 
-const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
+const TidslinjePageInner = ({ søkersBarn, sak, visHeleTidslinjen = true }: InnerProps) => {
     const intl = useIntl();
     useDocumentTitle(
         `${intl.formatMessage({ id: 'heleProsessen' })} -${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
@@ -61,14 +62,14 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
                 <HGrid columns="50% 50%" gap="4" className="pr-10">
                     <Tidslinje
                         sak={sak}
-                        visHeleTidslinjen={false}
+                        visHeleTidslinjen={visHeleTidslinjen}
                         søkersBarn={søkersBarn}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                     />
                     <TidslinjeNy
                         sak={sak}
-                        visHeleTidslinjen={false}
+                        visHeleTidslinjen={visHeleTidslinjen}
                         søkersBarn={søkersBarn}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -79,12 +80,13 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
     );
 };
 
-export const TidslinjePage = ({ søkersBarn }: OuterProps) => {
+// visHeleTidslinjen kunne vært inlinet i Tidslinje komponenten. Men har den herfra slik at man kan toggle den i storybook.
+export const TidslinjePage = ({ søkersBarn, visHeleTidslinjen = true }: OuterProps) => {
     const sak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>
-            <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} />
+            <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} visHeleTidslinjen={visHeleTidslinjen} />
         </PageRouteLayout>
     );
 };

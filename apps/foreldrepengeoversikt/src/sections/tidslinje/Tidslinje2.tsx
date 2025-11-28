@@ -86,7 +86,14 @@ export const TidslinjeNy = (props: Props) => {
 
     const truncateStart = windowStart !== 0;
     const truncateEnd = windowEnd !== alleSorterteHendelser.length;
-    const isTruncated = truncateStart && truncateEnd ? 'both' : truncateStart && !truncateEnd ? 'start' : 'end';
+    const isTruncated =
+        truncateStart && truncateEnd
+            ? 'both'
+            : truncateStart && !truncateEnd
+              ? 'start'
+              : !truncateStart && truncateEnd
+                ? 'end'
+                : undefined;
 
     return (
         <Process isTruncated={isTruncated}>

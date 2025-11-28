@@ -184,6 +184,7 @@ export const FPManglerDokumentasjon: Story = {
     args: {
         søkersBarn,
         saksnummer: '352028412',
+        visHeleTidslinjen: true,
     },
 };
 
