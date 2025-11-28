@@ -13,6 +13,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { getVarighetString } from '../../utils/dateUtils';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { countWeekdaysBetween } from './utils/kalenderPeriodeUtils';
@@ -63,7 +64,9 @@ export const RedigeringPanel = ({ children }: Props) => {
                         <Heading size="xsmall">
                             <FormattedMessage
                                 id="RedigeringPanel.ValgteDager"
-                                values={{ antall: finnAntallDager(sammenslåtteValgtePerioder) }}
+                                values={{
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                }}
                             />
                         </Heading>
                         <Show below="md" asChild>

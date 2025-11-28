@@ -222,7 +222,7 @@
     "RedigeringPanel.RedigerUttaksplan": "Change",
     "RedigeringPanel.NyUttaksplan": "Add",
     "RedigeringPanel.EndreTil": "What do you want to change to?",
-    "RedigeringPanel.ValgteDager": "{antall} {antall, select, 1 {day} other {days}} selected",
+    "RedigeringPanel.ValgteDager": "{varighet} selected",
     "RedigeringPanel.EksisterendePerioder": "The selected dates include {antall, select, 1 {an existing period} other {existing periods}}",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Parental benefits before birth",
     "RedigeringPanel.Far": "Father",

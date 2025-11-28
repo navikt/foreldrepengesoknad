@@ -221,7 +221,7 @@
     "RedigeringPanel.NyUttaksplan": "Legg til",
     "RedigeringPanel.RedigerUttaksplan": "Endre",
     "RedigeringPanel.EndreTil": "Hva vil du endre til?",
-    "RedigeringPanel.ValgteDager": "{antall} {antall, select, 1 {dag} other {dager}} valgt",
+    "RedigeringPanel.ValgteDager": "{varighet} valgt",
     "RedigeringPanel.EksisterendePerioder": "Valgte datoer inneholder {antall, select, 1 {en eksisterende periode} other {eksisterende perioder}}",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Foreldrepenger før fødsel",
     "RedigeringPanel.Foreldrepenger": "Foreldrepenger",

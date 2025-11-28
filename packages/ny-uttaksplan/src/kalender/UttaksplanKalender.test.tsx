@@ -107,7 +107,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(januar).getByText('10', { exact: false }));
         await userEvent.click(within(januar).getByText('26', { exact: false }));
 
-        expect(await screen.findByText('13 dager valgt')).toBeInTheDocument();
+        expect(await screen.findByText('2 uker og 3 dager valgt')).toBeInTheDocument();
         expect(screen.getByText('Du har markert nye dager')).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -158,7 +158,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
         await userEvent.click(within(mai).getByTestId('day:31;dayColor:BLUE'));
 
-        expect(await screen.findByText('57 dager valgt')).toBeInTheDocument();
+        expect(await screen.findByText('11 uker og 2 dager valgt')).toBeInTheDocument();
         expect(screen.getByText('Valgte datoer inneholder eksisterende perioder')).toBeInTheDocument();
         expect(screen.queryByText('Du har markert nye dager')).not.toBeInTheDocument();
         expect(
