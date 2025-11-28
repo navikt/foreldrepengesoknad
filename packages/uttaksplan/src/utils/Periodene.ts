@@ -347,7 +347,9 @@ export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
         return false;
     }
 
-    return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
+    return perioderUtenInfoPerioder.every(
+        (periode) => periode.type === Periodetype.Opphold || periode.type === Periodetype.PeriodeUtenUttak,
+    );
 };
 
 export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): boolean => {
