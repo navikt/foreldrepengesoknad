@@ -12,6 +12,9 @@ export const useMediaRemoveScrollingOnMobile = (erMinimert: boolean) => {
         if (!isDesktop && !erMinimert) {
             document.body.style.overflow = 'hidden';
         }
+        return () => {
+            document.body.style.overflow = '';
+        };
     }, [isDesktop, erMinimert]);
 };
 

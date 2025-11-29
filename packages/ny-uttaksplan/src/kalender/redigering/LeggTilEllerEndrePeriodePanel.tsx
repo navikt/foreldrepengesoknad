@@ -112,7 +112,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
             gap="space-2"
             className={
                 !erMinimert
-                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
+                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto pt-[70px] md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
                     : undefined
             }
         >
