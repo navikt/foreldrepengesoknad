@@ -1,21 +1,28 @@
 import { ParasolBeachIcon, PersonPregnantFillIcon, PersonSuitFillIcon, TrashIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import { uniqueId } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
+import { CalendarPeriod } from '@navikt/fp-ui';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../types/Planperiode';
+import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type PlanperiodeMedAntallDager = Planperiode & { valgteDagerIPeriode: number };
 
 interface Props {
     perioder: PlanperiodeMedAntallDager[];
-    slettPeriode: (periode: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const intl = useIntl();
+
+    const slettPeriode = useSlettPeriodeFn();
 
     return (
         <VStack gap="space-12">
@@ -139,4 +146,73 @@ export const EksisterendeValgtePerioder = ({ perioder, slettPeriode }: Props) =>
             })}
         </VStack>
     );
+};
+
+const useSlettPeriodeFn = () => {
+    const { sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } = useKalenderRedigeringContext();
+
+    return (periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
+        const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
+        const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
+
+        const perioder = sammenslåtteValgtePerioder.filter(
+            (p) =>
+                fomPeriodeSomSkalSlettes.isSameOrBefore(dayjs(p.tom), 'day') &&
+                tomPeriodeSomSkalSlettes.isSameOrAfter(dayjs(p.fom), 'day'),
+        );
+
+        oppdaterUttaksplan(
+            perioder.map<Planperiode>((p) => ({
+                erAnnenPartEøs: false,
+                forelder: periodeSomSkalSlettes.forelder,
+                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+                fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+                tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
+                readOnly: false,
+                id: uniqueId(),
+            })),
+        );
+
+        setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
+    };
+};
+
+const justerValgteKalenderperioder = (
+    valgtePerioder: CalendarPeriod[],
+    periodeSomSkalSlettes: { fom: string; tom: string },
+) => {
+    const fomSlett = dayjs(periodeSomSkalSlettes.fom);
+    const tomSlett = dayjs(periodeSomSkalSlettes.tom);
+
+    return valgtePerioder.flatMap((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        // Hvis perioden ikke overlapper perioden som skal slettes, behold hele perioden
+        if (tom.isBefore(fomSlett, 'day') || fom.isAfter(tomSlett, 'day')) {
+            return [periode];
+        }
+
+        const nyePerioder = [];
+
+        // Behold delen av valgt periode som ligger før perioden som skal slettes
+        if (fom.isBefore(fomSlett, 'day')) {
+            nyePerioder.push({
+                ...periode,
+                fom: periode.fom,
+                tom: UttaksdagenString(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).denneEllerForrige(),
+            });
+        }
+
+        // Behold delen av valgt periode som ligger etter delen som skal slettes
+        if (tom.isAfter(tomSlett, 'day')) {
+            nyePerioder.push({
+                ...periode,
+                fom: UttaksdagenString(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).denneEllerNeste(),
+                tom: periode.tom,
+            });
+        }
+
+        return nyePerioder;
+    });
 };

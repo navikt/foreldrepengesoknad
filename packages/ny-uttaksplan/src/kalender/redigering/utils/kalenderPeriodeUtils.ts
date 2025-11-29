@@ -118,3 +118,10 @@ export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[]
             !p.periodeHullÅrsak &&
             (p.erAnnenPartEøs || p.samtidigUttak === undefined),
     );
+
+export const finnAntallDager = (perioder: CalendarPeriod[]): number => {
+    return perioder.reduce((acc, periode) => {
+        const dager = countWeekdaysBetween(dayjs(periode.fom), dayjs(periode.tom));
+        return acc + dager;
+    }, 0);
+};
