@@ -1,0 +1,12 @@
+import{k as m,j as t}from"./iframe-B9HSP4qp.js";import{h as r,H as e}from"./index-9iwXPaj4.js";import{s as n}from"./saker-D6DZJrGh.js";import{s as a}from"./sokerinfo-FGFcAlJL.js";import{A as o}from"./queries-DSExmaaY.js";import{O as s}from"./routes-C7yRzVAD.js";import{M as i}from"./ForeldrepengeoversiktRoutes-JStjYdXE.js";import{M as l,R as u,a as d}from"./chunk-TMI4QPZX-DtADhXcR.js";import"./preload-helper-PPVm8Dsz.js";import"./useBackgroundColor-Bc5DUcE1.js";import"./useSelectedSak-Co5tv0WF.js";import"./useQuery-D9LfzJmJ.js";import"./sakerUtils-BATY1Oe2.js";import"./Snarveier-Cu4Uld-K.js";import"./LenkePanel-CqhZs_xM.js";import"./index-muUyurbi.js";import"./Header-DIuiN90_.js";import"./LayoutWrapper-C6MSbLx_.js";import"./StatusTag-DYRadPNX.js";import"./Tag-91CngL8I.js";import"./Stroller-DuDPoM5T.js";import"./NoeGikkGalt-B0_mLrIM.js";import"./skjemanummer-BXy5Numa.js";import"./MinidialogSkjema-ydq-e4vS.js";import"./HarIkkeSaker-yOObQw3l.js";import"./SøkelenkerPanel-DJACNlF1.js";import"./HarSaker-B0ByfHOh.js";import"./SakLink-BAyDdCz4.js";import"./guid-CsArkN6i.js";import"./ContentSection-CdlJxfAi.js";import"./BekreftelseSendtSøknad-BkhdoB_7.js";import"./KontonummerInfo-DUGELnay.js";import"./Accordion-CHHxxy_z.js";import"./Svangerskapspenger-CX-gurM_.js";import"./DinPlan-D8_Qn6-l.js";import"./Oppgaver-DXsxeApa.js";import"./OppgaveLenkepanel-CygVlwqD.js";import"./KontaktOss-1AupsRPI.js";const X={title:"MinidialogPage",component:i,decorators:[m],render:()=>t.jsx(l,{initialEntries:[`/${s.DIN_PLAN}/1/${s.OPPGAVER}`],children:t.jsx(u,{children:t.jsx(d,{element:t.jsx(i,{}),path:`/${s.DIN_PLAN}/:saksnummer/${s.OPPGAVER}`})})})},p={parameters:{msw:{handlers:[r.get(o.minidialog,()=>e.json([{saksnummer:"1",opprettet:"2023-02-09"}])),r.get(o.saker,()=>e.json(n)),r.get(o.søkerInfo,()=>e.json(a)),r.post(o.ettersend,()=>new e(null,{status:200}))]}}};p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+  parameters: {
+    msw: {
+      handlers: [http.get(API_URLS.minidialog, () => HttpResponse.json([{
+        saksnummer: '1',
+        opprettet: '2023-02-09'
+      }] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[])), http.get(API_URLS.saker, () => HttpResponse.json(saker)), http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)), http.post(API_URLS.ettersend, () => new HttpResponse(null, {
+        status: 200
+      }))]
+    }
+  }
+}`,...p.parameters?.docs?.source}}};const Y=["Default"];export{p as Default,Y as __namedExportsOrder,X as default};
