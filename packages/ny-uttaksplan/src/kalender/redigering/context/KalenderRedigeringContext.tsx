@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { omitMany } from '@navikt/fp-utils';
@@ -22,22 +22,15 @@ type Props = {
 };
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
-    erIRedigeringsmodus: boolean;
-    erMinimert: boolean;
     eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     erKunEnHelEksisterendePeriodeValgt: boolean;
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    setErIRedigeringsmodus: React.Dispatch<React.SetStateAction<boolean>>;
-    setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
     oppdaterUttaksplan: (perioder: Planperiode[]) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
-    const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
-    const [erMinimert, setErMinimert] = useState(false);
-
     const { uttaksplan } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -72,19 +65,13 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
 
     const value = useMemo(() => {
         return {
-            erIRedigeringsmodus,
-            erMinimert,
             sammenslåtteValgtePerioder,
             erKunEnHelEksisterendePeriodeValgt,
             eksisterendePerioderSomErValgt,
-            setErIRedigeringsmodus,
-            setErMinimert,
             oppdaterUttaksplan: oppdater,
             setValgtePerioder,
         };
     }, [
-        erIRedigeringsmodus,
-        erMinimert,
         sammenslåtteValgtePerioder,
         erKunEnHelEksisterendePeriodeValgt,
         eksisterendePerioderSomErValgt,
