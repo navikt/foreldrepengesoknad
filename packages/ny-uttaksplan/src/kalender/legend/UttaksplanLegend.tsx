@@ -68,6 +68,7 @@ export const UttaksplanLegend = ({
                 .filter((info) => info.color !== 'NONE')
                 .map((info) => (
                     <button
+                        type="button"
                         key={info.color}
                         onClick={
                             unselectableColors.some((color) => color === info.color) || readOnly
