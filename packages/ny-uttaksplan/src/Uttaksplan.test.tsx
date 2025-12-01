@@ -49,6 +49,7 @@ describe('Uttaksplan', () => {
             {
                 fom: '2025-06-30',
                 tom: '2025-08-28',
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
