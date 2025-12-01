@@ -55,7 +55,7 @@
         "classnames": "2.5.1",
         "compression": "1.8.1",
         "dayjs": "1.11.18",
-        "express": "5.1.0",
+        "express": "5.2.0",
         "formik": "2.4.6",
         "i18n-iso-countries": "7.14.0",
         "jsdom": "26.1.0",

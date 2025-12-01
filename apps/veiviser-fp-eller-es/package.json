@@ -45,7 +45,7 @@
         "compression": "1.8.1",
         "dayjs": "1.11.18",
         "dotenv": "17.2.2",
-        "express": "5.1.0",
+        "express": "5.2.0",
         "i18n-iso-countries": "7.14.0",
         "jsdom": "26.1.0",
         "ky": "1.7.5",
