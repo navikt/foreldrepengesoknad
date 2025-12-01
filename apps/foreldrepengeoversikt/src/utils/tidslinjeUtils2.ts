@@ -236,3 +236,51 @@ const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
         return 0;
     }
 };
+
+type TidslinjeVinduResult = {
+    hendelser: Tidslinjehendelse[];
+    aktivtStegIndexISnitt: number;
+    isTruncated: 'both' | 'start' | 'end' | undefined;
+};
+
+type BeregnTidslinjeVinduProps = {
+    alleSorterteHendelser: Tidslinjehendelse[];
+    aktivtStegIndex: number;
+    visHeleTidslinjen: boolean;
+    maksVindu?: number;
+};
+
+export const beregnTidslinjeVindu = ({
+    alleSorterteHendelser,
+    aktivtStegIndex,
+    visHeleTidslinjen,
+    maksVindu = 3,
+}: BeregnTidslinjeVinduProps): TidslinjeVinduResult => {
+    // Hvis vi skal vise hele tidslinjen, ikke slice
+    const windowStart = visHeleTidslinjen
+        ? 0
+        : Math.max(0, Math.min(aktivtStegIndex - 1, Math.max(0, alleSorterteHendelser.length - maksVindu)));
+    const windowEnd = visHeleTidslinjen
+        ? alleSorterteHendelser.length
+        : Math.min(alleSorterteHendelser.length, windowStart + maksVindu);
+
+    const hendelser = alleSorterteHendelser.slice(windowStart, windowEnd);
+    const aktivtStegIndexISnitt = visHeleTidslinjen ? aktivtStegIndex : Math.max(0, aktivtStegIndex - windowStart);
+
+    const truncateStart = windowStart !== 0;
+    const truncateEnd = windowEnd !== alleSorterteHendelser.length;
+    const isTruncated =
+        truncateStart && truncateEnd
+            ? 'both'
+            : truncateStart && !truncateEnd
+              ? 'start'
+              : !truncateStart && truncateEnd
+                ? 'end'
+                : undefined;
+
+    return {
+        hendelser,
+        aktivtStegIndexISnitt,
+        isTruncated,
+    };
+};
