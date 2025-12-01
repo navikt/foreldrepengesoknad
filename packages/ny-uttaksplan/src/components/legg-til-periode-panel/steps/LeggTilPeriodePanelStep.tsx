@@ -56,6 +56,7 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 fom: fomValue,
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
+                forelder: 'FAR_MEDMOR',
                 readOnly: false,
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
