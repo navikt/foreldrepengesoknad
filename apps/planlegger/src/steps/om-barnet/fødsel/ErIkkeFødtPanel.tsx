@@ -82,6 +82,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             }),
                         ),
                     ]}
+                    showMonthAndYearDropdowns
                     customErrorFormatter={formatError}
                     onChange={scrollToBottom}
                 />
