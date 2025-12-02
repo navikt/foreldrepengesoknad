@@ -85,6 +85,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                     showMonthAndYearDropdowns
                     customErrorFormatter={formatError}
                     onSelect={scrollToBottom}
+                    onBlur={scrollToBottom}
                 />
             </BluePanel>
             {/* kan søke tilbake i tid */}

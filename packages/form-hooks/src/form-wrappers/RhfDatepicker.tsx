@@ -38,6 +38,7 @@ type Props<T extends FieldValues> = {
     validate?: Array<(value: string) => ValidationReturnType>;
     onChange?: (value: string) => void;
     onSelect?: (val?: ComponentProps<typeof DatePicker>['selected']) => void;
+    onBlur?: () => void;
     minDate?: Date | Dayjs | string;
     maxDate?: Date | Dayjs | string;
     defaultMonth?: Date | Dayjs | string;
@@ -54,6 +55,8 @@ export const RhfDatepicker = <T extends FieldValues>({
     description,
     validate = [],
     onChange,
+    onSelect,
+    onBlur,
     minDate,
     maxDate,
     defaultMonth,
@@ -62,7 +65,6 @@ export const RhfDatepicker = <T extends FieldValues>({
     autofocusWhenEmpty,
     customErrorFormatter,
     useStrategyAbsolute = false,
-    onSelect,
     ...controllerProps
 }: Props<T>): JSX.Element => {
     const { name, control } = controllerProps;
@@ -132,6 +134,7 @@ export const RhfDatepicker = <T extends FieldValues>({
             toDate={toDate}
             disableWeekends={disableWeekends}
             onSelect={onSelect}
+            onBlur={onBlur}
         >
             <DatePicker.Input
                 {...inputProps}

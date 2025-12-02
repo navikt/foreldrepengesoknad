@@ -63,6 +63,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         showMonthAndYearDropdowns
                         customErrorFormatter={formatError}
                         onSelect={scrollToBottom}
+                        onBlur={scrollToBottom}
                     />
                     <RhfDatepicker
                         name="termindato"
@@ -82,6 +83,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         customErrorFormatter={formatError}
                         useStrategyAbsolute
                         onSelect={scrollToBottom}
+                        onBlur={scrollToBottom}
                     />
                 </VStack>
             </BluePanel>
