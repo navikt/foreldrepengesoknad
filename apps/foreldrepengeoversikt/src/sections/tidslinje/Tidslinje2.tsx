@@ -339,10 +339,6 @@ const Hendelse = ({
             );
         }
         case 'FREMTIDIG_VEDTAK': {
-            const merInformasjon =
-                sak.ytelse === 'ENGANGSSTØNAD'
-                    ? intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon.engangsstønad' })
-                    : intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' });
             let url = NavRoutes.SAKSBEHANDLINGSTIDER_FP;
             if (sak.ytelse === 'SVANGERSKAPSPENGER') {
                 url = NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
@@ -358,7 +354,7 @@ const Hendelse = ({
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
                     bullet={<InboxDownIcon />}
                 >
-                    <BodyShort>{merInformasjon}</BodyShort>
+                    <BodyShort>{intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' })}</BodyShort>
                     <Link href={url} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.linkTittel' })}
