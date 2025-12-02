@@ -172,8 +172,8 @@ const Hendelse = ({
             );
         }
         case 'VEDTAK': {
-            const harAvslag = hendelse.dokumenter.some((d) => d.tittel.includes('Avslagsbrev'));
-            const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.includes('Innvilgelsesbrev'));
+            const harAvslag = hendelse.dokumenter.some((d) => d.tittel.includes('Avslag'));
+            const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.includes('Innvilgelse'));
 
             // TODO: heller funksjon?
             const tittel = harAvslag
