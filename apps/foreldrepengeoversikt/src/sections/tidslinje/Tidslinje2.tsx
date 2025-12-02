@@ -2,6 +2,7 @@ import {
     BabyWrappedIcon,
     BellIcon,
     ChildHairEyesIcon,
+    ClockIcon,
     DocPencilIcon,
     ExternalLinkIcon,
     HourglassBottomFilledIcon,
@@ -10,7 +11,6 @@ import {
     InformationIcon,
     PaperplaneIcon,
     TasklistSendIcon,
-    ThumbDownIcon,
     ThumbUpIcon,
 } from '@navikt/aksel-icons';
 import { useIntl } from 'react-intl';
@@ -74,6 +74,8 @@ export const TidslinjeNy = (props: Props) => {
         aktivtStegIndex: getAktivTidslinjeStegIndex(alleSorterteHendelser, erInnvilgetForeldrepengesøknad),
         visHeleTidslinjen,
     });
+
+    console.log(hendelser);
 
     return (
         <Process isTruncated={isTruncated}>
@@ -150,12 +152,15 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={intl.formatMessage({
-                        id: 'tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY.ukjentDatoFørstSøknad', // TODO: trenger vi si presist tidspunkt?
-                    })}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD_NY' })}
                     bullet={<TasklistSendIcon />}
                 >
+                    <BodyShort>
+                        {intl.formatMessage({
+                            id: 'tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY.ukjentDatoFørstSøknad',
+                        })}
+                    </BodyShort>
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
@@ -173,8 +178,8 @@ const Hendelse = ({
             );
         }
         case 'VEDTAK': {
-            const harAvslag = hendelse.dokumenter.some((d) => d.tittel.includes('Avslag'));
-            const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.includes('Innvilgelse'));
+            const harAvslag = hendelse.dokumenter.some((d) => d.tittel.toLowerCase().includes('avslag'));
+            const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.toLowerCase().includes('innvilgelse'));
 
             // TODO: heller funksjon?
             const tittel = harAvslag
@@ -183,8 +188,7 @@ const Hendelse = ({
                   ? intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' })
                   : intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
 
-            // TODO: litt brutalt med thumbs down?
-            const ikon = harAvslag ? <ThumbDownIcon /> : harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
+            const ikon = harAvslag ? <InboxDownIcon /> : harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
 
             return (
                 <Process.Event status={status} timestamp={hendelseDatoMedKlokkeslett} title={tittel} bullet={ikon}>
@@ -288,7 +292,7 @@ const Hendelse = ({
                     )}
                     timestamp={intl.formatMessage(
                         { id: 'tidslinje.tidligst' },
-                        { dato: formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY') },
+                        { dato: formaterDato(tidligstBehandlingsDato, 'D. MMMM YYYY') },
                     )}
                     bullet={<HourglassBottomFilledIcon />}
                 >
@@ -307,7 +311,9 @@ const Hendelse = ({
                 <Process.Event
                     status={status}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENTER_INNTEKTSMELDING' })}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
+                    timestamp={intl.formatMessage({
+                        id: 'tidslinje.snarest',
+                    })}
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.informasjon' })}</BodyShort>
@@ -370,7 +376,7 @@ const Hendelse = ({
                     status={status}
                     timestamp={intl.formatMessage({ id: 'tidslinje.senere' })}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
-                    bullet={<InboxDownIcon />}
+                    bullet={<ClockIcon />}
                 >
                     <BodyShort>{intl.formatMessage({ id: 'tidslinje.FREMTIDIG_VEDTAK.informasjon' })}</BodyShort>
                     <Link href={url} className="text-ax-brand-blue-700 mt-2">

@@ -107,6 +107,7 @@ export const FPAdopsjon: Story = {
     },
 };
 
+// TODO: hvorfor ikke barnet 3 år?
 export const FPTerminInnvilget: Story = {
     parameters: {
         msw: {
@@ -204,6 +205,7 @@ export const FPNySøknad: Story = {
     },
 };
 
+// TODO: termindato burde ikke være aktivt?
 export const SVPInnvilget: Story = {
     parameters: {
         msw: {
@@ -236,6 +238,7 @@ export const SVPUnderBehandling: Story = {
     },
 };
 
+// TODO: kun blå for etter fødsel
 export const ESAdopsjonInnvilget: Story = {
     parameters: {
         msw: {

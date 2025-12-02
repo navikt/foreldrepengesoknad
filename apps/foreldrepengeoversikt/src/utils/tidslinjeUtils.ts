@@ -154,12 +154,10 @@ export const getAlleTidslinjehendelser = (props: {
         });
     }
 
-    const skalVise3ÅrsHendelse =
-        barnFraSak.alleBarnaLever &&
-        !erAvslåttForeldrepengesøknad &&
-        sak.ytelse === 'FORELDREPENGER' &&
-        !sak.sakAvsluttet &&
-        (sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato);
+    const harAktivFPSak = !erAvslåttForeldrepengesøknad && sak.ytelse === 'FORELDREPENGER' && !sak.sakAvsluttet;
+    const barnetErFødt = sak.familiehendelse.omsorgsovertakelse || sak.familiehendelse.fødselsdato;
+    const skalVise3ÅrsHendelse = barnFraSak.alleBarnaLever && harAktivFPSak && barnetErFødt;
+
     if (skalVise3ÅrsHendelse) {
         const dato = dayjs(
             sak.gjelderAdopsjon ? sak.familiehendelse.omsorgsovertakelse : sak.familiehendelse.fødselsdato,
