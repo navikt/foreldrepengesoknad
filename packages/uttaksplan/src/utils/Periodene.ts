@@ -347,7 +347,9 @@ export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
         return false;
     }
 
-    return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
+    return perioderUtenInfoPerioder.every(
+        (periode) => periode.type === Periodetype.Opphold || periode.type === Periodetype.PeriodeUtenUttak,
+    );
 };
 
 export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): boolean => {
@@ -359,16 +361,6 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): 
 
     return perioderUtenInfoPerioderEllerHull.every(
         (periode) => periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL',
-    );
-};
-
-export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !isInfoPeriode(p))
-            .slice()
-            .reverse()
-            .findIndex((periode) => periode.type === Periodetype.Opphold) === 0
     );
 };
 

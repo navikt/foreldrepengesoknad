@@ -2,6 +2,7 @@ import {
     Søknadsinfo,
     isHull,
     isInfoPeriode,
+    isOppholdsperiode,
     isPeriodeUtenUttak,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
@@ -18,6 +19,7 @@ export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Søknadsin
                         !isInfoPeriode(p) &&
                         !isPeriodeUtenUttak(p) &&
                         !isHull(p) &&
+                        !isOppholdsperiode(p) &&
                         !isSkalIkkeHaForeldrepengerFørFødselPeriode(p),
                 )
                 .filter((periode) => isValidTidsperiodeString(periode.tidsperiode)).length > 0,

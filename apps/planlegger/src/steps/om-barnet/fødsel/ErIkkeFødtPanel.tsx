@@ -13,7 +13,7 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
@@ -82,6 +82,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             }),
                         ),
                     ]}
+                    showMonthAndYearDropdowns
                     customErrorFormatter={formatError}
                     onChange={scrollToBottom}
                 />
@@ -149,25 +150,28 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                         color="green"
                     >
                         <VStack gap="space-8">
-                            <BodyShort>
-                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
-
-                                {erFedre || erFar ? (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: false,
-                                        }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: true,
-                                        }}
-                                    />
-                                )}
-                            </BodyShort>
+                            <HStack gap="space-2">
+                                <BodyShort>
+                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+                                </BodyShort>
+                                <BodyShort>
+                                    {erFedre || erFar ? (
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: false,
+                                            }}
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: true,
+                                            }}
+                                        />
+                                    )}
+                                </BodyShort>
+                            </HStack>
                             {!erFedre && (
                                 <>
                                     <BodyShort>

@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
@@ -28,17 +28,17 @@ interface Props {
     inneholderKunEnPeriode: boolean;
 }
 
-export interface EndrePeriodePanelStepFormValues {
+export type EndrePeriodePanelStepFormValues = {
     fom: string | undefined;
     tom: string | undefined;
-    kontoType: KontoType;
+    kontoType: KontoTypeUttak;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe: boolean;
     stillingsprosent?: string;
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
     hvaVilDuGjøre: HvaVilDuGjøre;
-}
+};
 
 export const EndrePeriodePanelStep = ({
     panelData,
@@ -70,19 +70,25 @@ export const EndrePeriodePanelStep = ({
     };
 
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
-        defaultValues: valgtPeriode?.erAnnenPartEøs
-            ? undefined
-            : {
-                  fom: valgtPeriode?.fom,
-                  tom: valgtPeriode?.tom,
-                  forelder: valgtPeriode?.forelder,
-                  kontoType: valgtPeriode?.kontoType,
-                  skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
-                  stillingsprosent: graderingsInfo?.stillingsprosent,
-                  samtidigUttak: valgtPeriode?.samtidigUttak !== undefined,
-                  samtidigUttaksprosent: valgtPeriode?.samtidigUttak?.toString(),
-                  hvaVilDuGjøre: getHvaVilDuGjøre(),
-              },
+        defaultValues:
+            !valgtPeriode || valgtPeriode?.erAnnenPartEøs
+                ? undefined
+                : {
+                      fom: valgtPeriode.fom,
+                      tom: valgtPeriode.tom,
+                      forelder: valgtPeriode.forelder,
+                      kontoType:
+                          valgtPeriode.kontoType === 'FORELDREPENGER' &&
+                          !valgtPeriode.erAnnenPartEøs &&
+                          valgtPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                              ? 'AKTIVITETSFRI_KVOTE'
+                              : valgtPeriode.kontoType,
+                      skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
+                      stillingsprosent: graderingsInfo?.stillingsprosent,
+                      samtidigUttak: valgtPeriode.samtidigUttak !== undefined,
+                      samtidigUttaksprosent: valgtPeriode.samtidigUttak?.toString(),
+                      hvaVilDuGjøre: getHvaVilDuGjøre(),
+                  },
     });
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
@@ -158,7 +164,8 @@ export const EndrePeriodePanelStep = ({
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
-                kontoType: values.kontoType,
+                kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });

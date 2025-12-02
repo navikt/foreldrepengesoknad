@@ -8,6 +8,7 @@ import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanKalenderLegendInfo } from '../../types/UttaksplanKalenderLegendInfo';
 import { CalendarPeriodWithLabel } from '../utils/usePerioderForKalendervisning.ts';
+import { useUttaksplanData } from './../../context/UttaksplanDataContext.tsx';
 import {
     getCalendarLabel,
     getFocusStyle,
@@ -33,6 +34,8 @@ export const UttaksplanLegend = ({
     readOnly,
 }: Props) => {
     const intl = useIntl();
+    const { modus, erDeltUttak, erMedmorDelAvSøknaden, valgtStønadskonto } = useUttaksplanData();
+    const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
@@ -57,7 +60,7 @@ export const UttaksplanLegend = ({
 
     const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] as CalendarPeriodColor[];
 
-    const sortedLegends = [...legendInfo.sort(sortLegendInfoByLabel)];
+    const sortedLegends = legendInfo.toSorted(sortLegendInfoByLabel);
 
     return (
         <HStack gap="space-16" align="center">
@@ -65,6 +68,7 @@ export const UttaksplanLegend = ({
                 .filter((info) => info.color !== 'NONE')
                 .map((info) => (
                     <button
+                        type="button"
                         key={info.color}
                         onClick={
                             unselectableColors.some((color) => color === info.color) || readOnly
@@ -87,7 +91,16 @@ export const UttaksplanLegend = ({
                     >
                         <CalendarLabel color={info.color}>
                             <BodyShort style={{ whiteSpace: 'nowrap' }}>
-                                {getCalendarLabel(info.label, navnAnnenPart, erFarEllerMedmor, intl)}
+                                {getCalendarLabel(
+                                    info.label,
+                                    navnAnnenPart,
+                                    erFarEllerMedmor,
+                                    modus === 'planlegger',
+                                    erDeltUttak,
+                                    erMedmorDelAvSøknaden,
+                                    harAktivitetsfriKvote,
+                                    intl,
+                                )}
                             </BodyShort>
                         </CalendarLabel>
                     </button>

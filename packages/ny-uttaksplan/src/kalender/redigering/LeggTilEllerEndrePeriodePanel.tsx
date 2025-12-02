@@ -1,12 +1,13 @@
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Button, ErrorMessage, VStack } from '@navikt/ds-react';
+import { Alert, Box, Button, ErrorMessage, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoType, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
@@ -16,13 +17,16 @@ import { KontotypeSpørsmål } from '../../components/spørsmål/KontotypeSpørs
 import { SamtidigUttakSpørsmål } from '../../components/spørsmål/SamtidigUttakSpørsmål';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
+import { getVarighetString } from '../../utils/dateUtils';
 import { getGradering } from '../../utils/graderingUtils';
-import { RedigeringPanel } from './RedigeringPanel';
+import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { finnAntallDager } from './utils/kalenderPeriodeUtils';
+import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from './utils/useMediaActions';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 type FormValues = {
-    kontoType?: KontoType;
+    kontoType?: KontoTypeUttak;
     forelder?: BrukerRolleSak_fpoversikt;
     skalDuJobbe?: boolean;
     stillingsprosent?: string;
@@ -30,26 +34,29 @@ type FormValues = {
     samtidigUttaksprosent?: string;
 };
 
-export const LeggTilEllerEndrePeriodePanel = () => {
-    const intl = useIntl();
+interface Props {
+    lukkRedigeringsmodus: () => void;
+}
 
-    const [feilmelding, setFeilmelding] = useState<string | undefined>();
+export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) => {
+    const intl = useIntl();
 
     const { uttaksplan, aleneOmOmsorg, familiehendelsedato } = useUttaksplanData();
 
-    const {
-        erMinimert,
-        erKunEnHelEksisterendePeriodeValgt,
-        sammenslåtteValgtePerioder,
-        setErIRedigeringsmodus,
-        oppdaterUttaksplan,
-        setValgtePerioder,
-    } = useKalenderRedigeringContext();
+    const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } =
+        useKalenderRedigeringContext();
+
+    const [feilmelding, setFeilmelding] = useState<string | undefined>();
+
+    const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(false);
+
+    const [erMinimert, setErMinimert] = useState(false);
+
+    useMediaResetMinimering(setErMinimert);
+    useMediaRemoveScrollingOnMobile(erMinimert);
 
     const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
         usePeriodeValidator(sammenslåtteValgtePerioder);
-
-    const lukkRedigeringsmodus = () => setErIRedigeringsmodus(false);
 
     const formMethods = useForm<FormValues>({
         defaultValues: erKunEnHelEksisterendePeriodeValgt
@@ -79,8 +86,9 @@ export const LeggTilEllerEndrePeriodePanel = () => {
                 fom: periode.fom,
                 tom: periode.tom,
                 readOnly: false,
-                id: `${periode.fom} - ${periode.tom} - ${values.kontoType}`,
-                kontoType: values.kontoType,
+                id: `${periode.fom} - ${periode.tom} - ${values.kontoType} - ${values.forelder}`,
+                kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 forelder: getForelderFraKontoType(values.kontoType, values.forelder),
                 gradering: values.skalDuJobbe
                     ? getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType)
@@ -100,47 +108,133 @@ export const LeggTilEllerEndrePeriodePanel = () => {
     const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
-        <RedigeringPanel>
-            <div className={erMinimert ? 'hidden' : 'block'}>
-                <div className="px-4 pb-4 pt-4">
-                    {gyldigeKontotyper.length === 0 && (
-                        <VStack gap="space-16">
-                            <Alert variant="info" role="alert">
-                                <FormattedMessage id="LeggTilPeriodePanel.IngenGyldigeKontotyper" />
-                            </Alert>
-                            <div>
-                                <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                                    <FormattedMessage id="uttaksplan.gåTilbake" />
-                                </Button>
-                            </div>
+        <VStack
+            gap="space-2"
+            className={
+                !erMinimert
+                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto pt-[70px] md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
+                    : undefined
+            }
+        >
+            <Show above="md">
+                <Box.New background="accent-soft" padding="4">
+                    <VStack gap="space-8">
+                        <HStack justify="space-between" align="center" wrap={false}>
+                            <Heading size="xsmall">
+                                <FormattedMessage
+                                    id="RedigeringPanel.ValgteDager"
+                                    values={{
+                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                    }}
+                                />
+                            </Heading>
+                            {visPeriodeDetaljer ? (
+                                <ChevronUpIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
+                                    fontSize="1.5rem"
+                                    onClick={() => setVisPeriodeDetaljer(false)}
+                                />
+                            ) : (
+                                <ChevronDownIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.VisDetaljer' })}
+                                    fontSize="1.5rem"
+                                    onClick={() => setVisPeriodeDetaljer(true)}
+                                />
+                            )}
+                        </HStack>
+                        {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
+                    </VStack>
+                </Box.New>
+            </Show>
+
+            <Show below="md">
+                <VStack gap="space-12">
+                    <Box.New
+                        background="accent-soft"
+                        padding="space-12"
+                        onClick={() => setErMinimert(!erMinimert)}
+                        className="hover:bg-ax-shadow-dialog cursor-pointer hover:border-b hover:border-t"
+                    >
+                        <VStack gap="space-4" align="center">
+                            {erMinimert ? (
+                                <ChevronUpIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
+                                    height={24}
+                                    width={24}
+                                />
+                            ) : (
+                                <ChevronDownIcon
+                                    title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
+                                    height={24}
+                                    width={24}
+                                />
+                            )}
+
+                            <HStack justify="space-between" align="center" wrap={false}>
+                                <Heading size="xsmall">
+                                    <FormattedMessage
+                                        id="RedigeringPanel.ValgteDager"
+                                        values={{
+                                            varighet: getVarighetString(
+                                                finnAntallDager(sammenslåtteValgtePerioder),
+                                                intl,
+                                            ),
+                                        }}
+                                    />
+                                </Heading>
+                            </HStack>
                         </VStack>
+                    </Box.New>
+                    {!erMinimert && (
+                        <div className="px-4 pb-4">
+                            <PeriodeDetaljerOgInfoMeldinger />
+                        </div>
                     )}
-                    {gyldigeKontotyper.length > 0 && (
-                        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                </VStack>
+            </Show>
+
+            <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
+                <div className={erMinimert ? 'hidden' : 'block'}>
+                    <div className="px-4 pb-4 pt-4">
+                        {gyldigeKontotyper.length === 0 && (
                             <VStack gap="space-16">
-                                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
-                                <KontotypeSpørsmål
-                                    gyldigeKontotyper={gyldigeKontotyper}
-                                    skalViseTittel={false}
-                                    harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato={
-                                        harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato
-                                    }
-                                />
-                                {!aleneOmOmsorg && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
-                                    <SamtidigUttakSpørsmål />
-                                )}
-                                <GraderingSpørsmål />
-                                <PanelButtons
-                                    onCancel={lukkRedigeringsmodus}
-                                    isFinalStep={true}
-                                    addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
-                                />
+                                <Alert variant="info" role="alert">
+                                    <FormattedMessage id="LeggTilPeriodePanel.IngenGyldigeKontotyper" />
+                                </Alert>
+                                <div>
+                                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
+                                        <FormattedMessage id="uttaksplan.gåTilbake" />
+                                    </Button>
+                                </div>
                             </VStack>
-                        </RhfForm>
-                    )}
+                        )}
+                        {gyldigeKontotyper.length > 0 && (
+                            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                                <VStack gap="space-16">
+                                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                                    <KontotypeSpørsmål
+                                        gyldigeKontotyper={gyldigeKontotyper}
+                                        skalViseTittel={false}
+                                        harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato={
+                                            harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato
+                                        }
+                                    />
+                                    {!aleneOmOmsorg && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
+                                        <SamtidigUttakSpørsmål />
+                                    )}
+                                    <GraderingSpørsmål />
+                                    <PanelButtons
+                                        onCancel={lukkRedigeringsmodus}
+                                        isFinalStep={true}
+                                        addButtonText={intl.formatMessage({ id: 'LeggTilPeriodePanel.LeggTil' })}
+                                    />
+                                </VStack>
+                            </RhfForm>
+                        )}
+                    </div>
                 </div>
             </div>
-        </RedigeringPanel>
+        </VStack>
     );
 };
 
@@ -179,7 +273,12 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
     }
 
     return {
-        kontoType: eksisterendePeriode.kontoType,
+        kontoType:
+            eksisterendePeriode.kontoType === 'FORELDREPENGER' &&
+            !eksisterendePeriode.erAnnenPartEøs &&
+            eksisterendePeriode.morsAktivitet === 'IKKE_OPPGITT'
+                ? 'AKTIVITETSFRI_KVOTE'
+                : eksisterendePeriode.kontoType,
         forelder: eksisterendePeriode.forelder,
         skalDuJobbe: !!eksisterendePeriode.gradering,
         stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),

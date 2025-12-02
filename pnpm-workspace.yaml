@@ -3,3 +3,7 @@ packages:
   - 'packages/*'
   - 'server'
   - 'server-uinnlogget'
+
+minimumReleaseAge: 2880
+minimumReleaseAgeExclude:
+  - '@navikt/*'

@@ -111,7 +111,6 @@ const showTilpassPlanenStep = (
 ) => {
     if (path === PlanleggerRoutes.TILPASS_PLANEN) {
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const visTilpassPlan = getData(ContextDataType.TILPASS_PLAN);
         const omBarnet = getData(ContextDataType.OM_BARNET);
 
         if (
@@ -122,7 +121,7 @@ const showTilpassPlanenStep = (
         ) {
             return false;
         }
-        return !!visTilpassPlan;
+        return true;
     }
     return false;
 };

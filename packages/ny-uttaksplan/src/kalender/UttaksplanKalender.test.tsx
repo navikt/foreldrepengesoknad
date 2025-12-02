@@ -87,12 +87,8 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juni).getByTestId('day:30;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        const juli = screen.getByTestId('year:2021;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(10);
+        expect(within(juni).getByTestId('day:29;dayColor:NONE')).toBeInTheDocument();
     });
     it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
         render(<KortPeriodeUtenHelg />);
@@ -111,14 +107,15 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(januar).getByText('10', { exact: false }));
         await userEvent.click(within(januar).getByText('26', { exact: false }));
 
-        expect(await screen.findByText('13 dager valgt')).toBeInTheDocument();
-        expect(screen.getByText('Du har markert nye dager')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getAllByText('2 uker og 3 dager valgt')).toHaveLength(2);
         expect(
             screen.getByText(
                 "Du har markert dager som ikke er lagt til i planen ennå. Velg 'Legg til' for å opprette en ny periode.",
             ),
         ).toBeInTheDocument();
-        expect(screen.queryByText('Valgte datoer inneholder eksisterende perioder')).not.toBeInTheDocument();
+        expect(screen.queryByText('Valgte datoer inneholder eksisterende perioder:')).not.toBeInTheDocument();
 
         expect(within(januar).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
         expect(within(januar).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
@@ -162,9 +159,13 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
         await userEvent.click(within(mai).getByTestId('day:31;dayColor:BLUE'));
 
-        expect(await screen.findByText('57 dager valgt')).toBeInTheDocument();
-        expect(screen.getByText('Valgte datoer inneholder eksisterende perioder')).toBeInTheDocument();
-        expect(screen.queryByText('Du har markert nye dager')).not.toBeInTheDocument();
+        expect(screen.getByText('57')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(await screen.findAllByText('11 uker og 2 dager valgt')).toHaveLength(2);
+
+        expect(screen.getByText('Valgte datoer inneholder eksisterende perioder:')).toBeInTheDocument();
         expect(
             screen.queryByText(
                 "Du har markert dager som ikke er lagt til i planen ennå. Velg 'Legg til' for å opprette en ny periode.",
@@ -182,8 +183,7 @@ describe('UttaksplanKalender', () => {
         expect(foreldrepengerPeriode.getByText('11 dager valgt i perioden')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
-        expect(arbeidPeriode.getByText('Mor')).toBeInTheDocument();
-        expect(arbeidPeriode.getAllByText('Arbeid')).toHaveLength(2);
+        expect(arbeidPeriode.getAllByText('Ferie')).toHaveLength(2);
         expect(arbeidPeriode.getByText('5 dager valgt i perioden')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
@@ -201,6 +201,8 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByText('28', { exact: false }));
 
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
         expect(
             await screen.findByText(
                 'Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel.',
@@ -216,6 +218,8 @@ describe('UttaksplanKalender', () => {
         const april = screen.getByTestId('year:2024;month:3');
 
         await userEvent.click(within(april).getByText('12', { exact: false }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
         expect(
             await screen.findByText(
@@ -235,7 +239,9 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByText('28', { exact: false }));
         await userEvent.click(within(april).getByText('12', { exact: false }));
 
-        await userEvent.click(screen.getByText('Legg til'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
 
         expect(
             await screen.findByText(
@@ -254,7 +260,9 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:4;dayColor:PINK'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
-        await userEvent.click(screen.getByText('Endre'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(await screen.findByText('Velg kvotetype')).toBeInTheDocument();
         expect(screen.getByLabelText('Mors kvote')).toBeChecked();
@@ -282,6 +290,8 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByTestId('day:18;dayColor:BLUE'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 

@@ -51,7 +51,7 @@ export const finnValgtePerioder = (
             const fom2 = dayjs(p.fom);
             const tom2 = dayjs(p.tom);
 
-            const overlappendeDager = valgtePerioder.reduce((sum, periode) => {
+            const valgteDagerIPeriode = valgtePerioder.reduce((sum, periode) => {
                 const fom1 = dayjs(periode.fom);
                 const tom1 = dayjs(periode.tom);
 
@@ -65,7 +65,7 @@ export const finnValgtePerioder = (
                 return sum + countWeekdaysBetween(start, end);
             }, 0);
 
-            return overlappendeDager > 0 ? { ...p, overlappendeDager } : null;
+            return valgteDagerIPeriode > 0 ? { ...p, valgteDagerIPeriode } : null;
         })
         .filter((p): p is PlanperiodeMedAntallDager => p !== null)
         .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
@@ -75,19 +75,22 @@ export const finnValgtePerioder = (
                     !p.erAnnenPartEøs &&
                     !curr.erAnnenPartEøs &&
                     p.forelder === curr.forelder &&
-                    p.samtidigUttak === curr.samtidigUttak,
+                    p.samtidigUttak === curr.samtidigUttak &&
+                    p.gradering === curr.gradering &&
+                    p.utsettelseÅrsak === curr.utsettelseÅrsak,
             );
+
             if (duplikat) {
-                return acc
-                    .filter((p) => p.kontoType !== duplikat.kontoType)
-                    .concat({
-                        ...duplikat,
-                        // Keep earliest fom and latest tom across all merged periods
-                        fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
-                        tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
-                        overlappendeDager: duplikat.overlappendeDager + curr.overlappendeDager,
-                    });
+                const index = acc.indexOf(duplikat);
+                const nyPeriode = {
+                    ...duplikat,
+                    fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
+                    tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,
+                    valgteDagerIPeriode: duplikat.valgteDagerIPeriode + curr.valgteDagerIPeriode,
+                };
+                return [...acc.slice(0, index), nyPeriode, ...acc.slice(index + 1)];
             }
+
             return acc.concat(curr);
         }, []);
 };
@@ -115,3 +118,10 @@ export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[]
             !p.periodeHullÅrsak &&
             (p.erAnnenPartEøs || p.samtidigUttak === undefined),
     );
+
+export const finnAntallDager = (perioder: CalendarPeriod[]): number => {
+    return perioder.reduce((acc, periode) => {
+        const dager = countWeekdaysBetween(dayjs(periode.fom), dayjs(periode.tom));
+        return acc + dager;
+    }, 0);
+};

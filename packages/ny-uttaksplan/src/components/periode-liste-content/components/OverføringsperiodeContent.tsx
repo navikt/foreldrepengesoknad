@@ -19,12 +19,14 @@ interface Props {
 
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
+    const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
         // TODO fiks bruk av !
         periode.kontoType!,
         navnPåForeldre,
         !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR',
+        morsAktivitet,
     );
     const navnPåAnnenForelder =
         !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;

@@ -29,7 +29,6 @@ import { overlapperPeriodeAndrePerioder } from './tester/overlapperPeriodeAndreP
 import { overskriverEndringerAnnenPartsPerioder } from './tester/overskriverEndringerAnnenPartsPerioder';
 import { overstigerMinsterettVedToTette } from './tester/overstigerMinsterettVedToTette';
 import periodevalideringsregler from './tester/periodevalideringstester';
-import { slutterUttaksplanMedOppholdTest } from './tester/slutterUttaksplanMedOppholdTest';
 import { starterUttaksplanMedOppholdTest } from './tester/starterUttaksplanMedOppholdTest';
 import { stønadskontoInneholderForMyeUttakKunSøkerTest } from './tester/stønadskontoInneholderForMyeUttakKunSøkerTest';
 import { Regel, RegelAlvorlighet } from './utils/types/regelTypes';
@@ -44,7 +43,6 @@ enum UttaksplanRegelKey {
     'stønadskontoInneholderForMyeUttakKunSøker' = 'stønadskontoInneholderForMyeUttakKunSøker',
     'uttaksplanErBareOpphold' = 'uttaksplanErBareOpphold',
     'uttaksplanStarterMedOpphold' = 'uttaksplanStarterMedOpphold',
-    'uttaksplanSlutterMedOpphold' = 'uttaksplanSlutterMedOpphold',
     'uttaksplanGraderingStørreEnnSamtidigUttak' = 'uttaksplanGraderingStørreEnnSamtidigUttak',
     'uttaksplanHarForMangeFlerbarnsdager' = 'uttaksplanHarForMangeFlerbarnsdager',
     'uttaksplanInneholderDatoSomIkkeErUttaksdag' = 'uttaksplanInneholderDatoSomIkkeErUttaksdag',
@@ -119,11 +117,6 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.uttaksplanStarterMedOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: starterUttaksplanMedOppholdTest,
-    },
-    {
-        key: UttaksplanRegelKey.uttaksplanSlutterMedOpphold,
-        alvorlighet: RegelAlvorlighet.FEIL,
-        test: slutterUttaksplanMedOppholdTest,
     },
     {
         key: UttaksplanRegelKey.uttaksplanGraderingStørreEnnSamtidigUttak,

@@ -48,8 +48,8 @@ describe('Uttaksplan', () => {
             },
             {
                 fom: '2025-06-30',
-                forelder: 'MOR',
                 tom: '2025-08-28',
+                forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {

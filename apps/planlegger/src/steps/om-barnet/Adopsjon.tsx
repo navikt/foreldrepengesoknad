@@ -49,6 +49,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         control={formMethods.control}
                         label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         minDate={dayjs().subtract(6, 'month').toDate()}
+                        showMonthAndYearDropdowns
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'Overtakelsesdato.Required' }, { erAlenesøker, flereBarn }),
@@ -77,6 +78,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         minDate={dayjs().subtract(15, 'years').toDate()}
                         maxDate={dayjs().toDate()}
+                        showMonthAndYearDropdowns
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),

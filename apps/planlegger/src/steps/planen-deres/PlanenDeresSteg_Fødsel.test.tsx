@@ -35,8 +35,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
@@ -99,7 +99,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -134,7 +134,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -170,8 +170,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til medmor' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Helga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Medmors periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
@@ -233,7 +233,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -269,7 +269,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -429,8 +429,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
@@ -470,8 +470,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
                 .selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
@@ -501,8 +501,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 8 til mor, 8 til far' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 

@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps, useState } from 'react';
-import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
+import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
 
 const MINSTERETTER = {
@@ -18,7 +18,6 @@ const meta = {
     component: UttaksplanKalender,
     args: {
         modus: 'søknad',
-        oppdaterUttaksplan: action('button-click'),
         readOnly: false,
         valgtStønadskonto: {
             kontoer: [
@@ -32,15 +31,13 @@ const meta = {
         aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
-        erFlereUttaksplanversjoner: false,
         children: null,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[]>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[]) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
             setPerioder(oppdatertePerioder);
-            args.oppdaterUttaksplan?.(oppdatertePerioder);
         };
 
         return (
@@ -55,14 +52,14 @@ const meta = {
                 bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erDeltUttak={args.erDeltUttak || false}
-                saksperioder={perioder}
-                erFlereUttaksplanversjoner={args.erFlereUttaksplanversjoner}
+                saksperioder={perioder ?? []}
             >
-                <UttaksplanKalender
-                    {...args}
+                <UttaksplanRedigeringProvider
                     oppdaterUttaksplan={handleOnPlanChange}
-                    uttaksplanHandlinger={action('button-click')}
-                />
+                    harEndretPlan={perioder !== undefined}
+                >
+                    <UttaksplanKalender readOnly={false} />
+                </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
@@ -89,14 +86,8 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: 'ARBEID',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: false,
-                    trekkerMinsterett: false,
-                    årsak: 'ANNET',
-                },
             },
             {
                 fom: '2024-05-31',
@@ -196,7 +187,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
                 fom: '2021-06-29',
                 tom: '2021-07-16',
                 forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'ARBEID',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -224,13 +215,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
                 forelder: 'MOR',
-                utsettelseÅrsak: 'BARN_INNLAGT',
-            },
-            {
-                fom: '2021-06-29',
-                tom: '2021-07-16',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'SØKER_INNLAGT',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -293,7 +278,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                utsettelseÅrsak: 'HV_ØVELSE',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
             },
             {
@@ -309,28 +294,6 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseMorArbeid: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-06-15',
-                tom: '2021-06-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'ARBEID',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-06-14'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
@@ -362,166 +325,6 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
-    },
-};
-
-export const UtsettelseMorFri: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-06-15',
-                tom: '2021-06-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'FRI',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-06-14'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseMorInstitusjonBarnet: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-04-05',
-                tom: '2021-05-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'BARN_INNLAGT',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-04-04'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseMorInstitusjonSøker: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-04-05',
-                tom: '2021-05-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'SØKER_INNLAGT',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-04-04'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseMorNavTiltak: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-04-05',
-                tom: '2021-05-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'NAV_TILTAK',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-04-04'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseFarSykdom: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-06-15',
-                tom: '2021-06-28',
-                forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'SØKER_SYKDOM',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-06-14'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: true,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseFarHvØvelse: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2024-06-11',
-                tom: '2024-06-24',
-                forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'HV_ØVELSE',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2024-04-04'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: true,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-    },
-};
-
-export const UtsettelseFarFlereÅrsaker: Story = {
-    args: {
-        saksperioder: [
-            {
-                fom: '2021-04-05',
-                tom: '2021-06-14',
-                forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'ARBEID',
-            },
-            {
-                fom: '2021-06-15',
-                tom: '2021-06-28',
-                forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'HV_ØVELSE',
-            },
-        ] satisfies UttakPeriode_fpoversikt[],
-        barn: {
-            type: BarnType.FØDT,
-            fødselsdatoer: ['2021-04-04'],
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: true,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
     },
 };
 

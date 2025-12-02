@@ -23,12 +23,14 @@ interface Props {
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const { aleneOmOmsorg } = useUttaksplanData();
+    const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
         periode.kontoType!,
         navnPåForeldre,
         erFarEllerMedmor,
+        morsAktivitet,
         aleneOmOmsorg,
     );
 
@@ -49,9 +51,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 </HStack>
                 <VStack gap="space-8">
                     <BodyShort>{stønadskontoNavn}</BodyShort>
-                    {!periode.erAnnenPartEøs && periode.morsAktivitet !== undefined && (
-                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
-                    )}
+                    {morsAktivitet !== undefined && <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>}
                     {periode.erAnnenPartEøs && periode.trekkdager !== undefined ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />

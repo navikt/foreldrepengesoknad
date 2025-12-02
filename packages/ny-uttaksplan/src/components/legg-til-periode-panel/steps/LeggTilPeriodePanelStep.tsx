@@ -16,28 +16,18 @@ import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsm
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../spørsmål/SamtidigUttakSpørsmål';
 import { TidsperiodeSpørsmål } from '../../spørsmål/TidsperiodeSpørsmål';
-import { PanelData } from '../LeggTilPeriodePanel';
 import { HvaVilDuGjøre, LeggTilPeriodePanelFormValues } from '../types/LeggTilPeriodePanelFormValues';
 
 interface Props {
-    panelData: PanelData;
     closePanel: () => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
 }
 
-export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriode }: Props) => {
+export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props) => {
     const intl = useIntl();
-    const { forelder, kontoType, fom, tom } = panelData;
     const { erDeltUttak } = useUttaksplanData();
 
-    const formMethods = useForm<LeggTilPeriodePanelFormValues>({
-        defaultValues: {
-            forelder: forelder,
-            kontoType: kontoType,
-            fom,
-            tom,
-        },
-    });
+    const formMethods = useForm<LeggTilPeriodePanelFormValues>();
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
@@ -66,8 +56,8 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                 fom: fomValue,
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
+                forelder: 'FAR_MEDMOR',
                 readOnly: false,
-                forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
@@ -77,7 +67,6 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 readOnly: false,
-                forelder: 'MOR',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
@@ -85,9 +74,10 @@ export const LeggTilPeriodePanelStep = ({ panelData, closePanel, handleAddPeriod
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${kontoType}`,
+                id: `${fomValue} - ${tomValue} - ${values.kontoType}`,
+                kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 readOnly: false,
-                kontoType: values.kontoType,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,

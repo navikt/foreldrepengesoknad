@@ -195,7 +195,7 @@ router.delete('/fpsoknad/api/storage/foreldrepenger', (_req, res) => {
     return res.sendStatus(200);
 });
 
-router.get('/fpoversikt/api/innsyn/v2/saker', (_req, res) => {
+router.get('/fpoversikt/api/saker', (_req, res) => {
     res.send(getSaker());
 });
 
@@ -211,7 +211,7 @@ router.get('/fpoversikt/api/innsyn/uttaksplanannen', (_req, res) => {
     res.send(getUttaksplanannen());
 });
 
-router.post('/fpoversikt/api/konto', async (req, res) => {
+router.post('/fpgrunndata/api/konto', async (req, res) => {
     const response = await getStønadskontoer(req);
     res.send(response);
 });

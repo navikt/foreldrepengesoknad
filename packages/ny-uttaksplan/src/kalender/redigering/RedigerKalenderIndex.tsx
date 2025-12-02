@@ -1,26 +1,17 @@
-import { useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useEffect, useState } from 'react';
 
-import { Box, VStack } from '@navikt/ds-react';
+import { Box } from '@navikt/ds-react';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
-import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
-import { ValgteDagerPanel } from './ValgteDagerPanel';
+import { PeriodeIkkeValgtPanel } from './PeriodeIkkeValgtPanel';
+import { PeriodeOversiktPanel } from './PeriodeOversiktPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { useMediaActions } from './utils/useMediaActions';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
-    oppdaterUttaksplan: (
-        oppdatertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    ) => void;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    uttaksplanHandlinger: (handling: 'angre' | 'tilbakestill' | 'fjernAlt') => void;
 };
 
 export const RedigerKalenderIndex = (props: Props) => (
@@ -29,24 +20,16 @@ export const RedigerKalenderIndex = (props: Props) => (
     </KalenderRedigeringProvider>
 );
 
-export const RedigerKalender = () => {
-    useMediaActions();
+const RedigerKalender = () => {
+    const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
-    const { erFlereUttaksplanversjoner } = useUttaksplanData();
-
-    const {
-        erIRedigeringsmodus,
-        erKunEnHelEksisterendePeriodeValgt,
-        sammenslåtteValgtePerioder,
-        uttaksplanHandlinger,
-        setErIRedigeringsmodus,
-        setErMinimert,
-    } = useKalenderRedigeringContext();
+    const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
     useEffect(() => {
+        // Reset redigeringmodus hvis alle perioder fjernes
         if (sammenslåtteValgtePerioder.length === 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setErIRedigeringsmodus(false);
-            setErMinimert(false);
         }
     }, [sammenslåtteValgtePerioder]);
 
@@ -60,33 +43,18 @@ export const RedigerKalender = () => {
             overflow={erIRedigeringsmodus ? 'auto' : 'hidden'}
             background="default"
         >
-            {sammenslåtteValgtePerioder.length === 0 && (
-                <VStack gap="space-16">
-                    <Box.New background="accent-soft" padding="4">
-                        <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
-                    </Box.New>
-                    <VStack gap="space-16" className="px-4 pb-4">
-                        <UttaksplanHandlingKnapper
-                            visKnapper={false}
-                            tilbakestillPlan={
-                                erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('tilbakestill') : undefined
-                            }
-                            angreEndring={erFlereUttaksplanversjoner ? () => uttaksplanHandlinger('angre') : undefined}
-                            fjernAltIPlanen={() => uttaksplanHandlinger('fjernAlt')}
-                        />
-                        <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
-                        <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
-                    </VStack>
-                </VStack>
-            )}
+            {sammenslåtteValgtePerioder.length === 0 && <PeriodeIkkeValgtPanel />}
             {sammenslåtteValgtePerioder.length > 0 && (
                 <>
                     {erIRedigeringsmodus && (
                         <LeggTilEllerEndrePeriodePanel
                             key={erKunEnHelEksisterendePeriodeValgt ? 1 : 0} // Reset av form når en går fra endre til legg til og omvendt
+                            lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
                         />
                     )}
-                    {!erIRedigeringsmodus && <ValgteDagerPanel />}
+                    {!erIRedigeringsmodus && (
+                        <PeriodeOversiktPanel åpneRedigeringsmodus={() => setErIRedigeringsmodus(true)} />
+                    )}
                 </>
             )}
         </Box.New>

@@ -290,6 +290,7 @@ export const mapSaksperiodeTilPlanperiode = (
             dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
 
         const oppholdsårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
+        const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdsårsak);
 
         if (tidsperiodenKrysserFamdato) {
             const planperiodeFør: Planperiode = {
@@ -297,8 +298,8 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: p.fom,
                 tom: UttaksdagenString(familiehendelsedato).forrige(),
-                id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
-                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdsårsak),
+                id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
@@ -307,8 +308,8 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
                 tom: p.tom,
-                id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
-                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdsårsak),
+                id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
@@ -317,8 +318,8 @@ export const mapSaksperiodeTilPlanperiode = (
             const planperiode: Planperiode = {
                 ...p,
                 erAnnenPartEøs: false,
-                id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
-                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdsårsak),
+                id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
