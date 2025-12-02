@@ -35,7 +35,7 @@ import {
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
-import { withQueryClient } from '@navikt/fp-utils-test';
+import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
@@ -60,7 +60,7 @@ type StoryArgs = {
 const meta = {
     title: 'TidslinjePage',
     component: TidslinjePage,
-    decorators: [withQueryClient],
+    decorators: [withQueryClient, withMockDate(new Date('2025-11-27'))],
     render: ({ saksnummer, ...props }) => {
         return (
             <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/${saksnummer}`]}>
