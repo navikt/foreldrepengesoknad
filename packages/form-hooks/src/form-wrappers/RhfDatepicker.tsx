@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { JSX, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -37,6 +37,7 @@ type Props<T extends FieldValues> = {
     description?: string;
     validate?: Array<(value: string) => ValidationReturnType>;
     onChange?: (value: string) => void;
+    onSelect?: (val?: ComponentProps<typeof DatePicker>['selected']) => void;
     minDate?: Date | Dayjs | string;
     maxDate?: Date | Dayjs | string;
     defaultMonth?: Date | Dayjs | string;
@@ -61,6 +62,7 @@ export const RhfDatepicker = <T extends FieldValues>({
     autofocusWhenEmpty,
     customErrorFormatter,
     useStrategyAbsolute = false,
+    onSelect,
     ...controllerProps
 }: Props<T>): JSX.Element => {
     const { name, control } = controllerProps;
@@ -129,6 +131,7 @@ export const RhfDatepicker = <T extends FieldValues>({
             fromDate={fromDate}
             toDate={toDate}
             disableWeekends={disableWeekends}
+            onSelect={onSelect}
         >
             <DatePicker.Input
                 {...inputProps}
