@@ -38,20 +38,16 @@ import {
 } from '../../utils/tidslinjeUtils.ts';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 
-type TidslinjeProps = {
+type Props = {
     visHeleTidslinjen: boolean;
     søkersBarn: BarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto_fpoversikt[];
+    sak: Sak;
 };
 
-type Props = {
-    sak: Sak;
-} & TidslinjeProps;
-
-export const TidslinjeNy = (props: Props) => {
+export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen }: Props) => {
     const intl = useIntl();
-    const { sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen } = props;
 
     if (tidslinjeHendelser.length === 0) {
         return null;
@@ -79,12 +75,12 @@ export const TidslinjeNy = (props: Props) => {
                 const status = erUtført ? 'completed' : 'uncompleted';
                 return (
                     <Hendelse
+                        key={hendelse.opprettet + index}
                         status={status}
                         søkersBarn={søkersBarn}
                         sak={sak}
                         manglendeVedlegg={manglendeVedlegg}
                         hendelse={hendelse}
-                        key={hendelse.opprettet + index}
                     />
                 );
             })}

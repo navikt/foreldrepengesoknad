@@ -15,7 +15,7 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { TidslinjeNy } from '../../sections/tidslinje/Tidslinje2.tsx';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje2.tsx';
 import { Sak } from '../../types/Sak';
 
 type OuterProps = {
@@ -56,7 +56,7 @@ const TidslinjePageInner = ({ søkersBarn, sak, visHeleTidslinjen = true }: Inne
             <Heading spacing level="2" size="medium">
                 Dette skjer i saken
             </Heading>
-            <TidslinjeNy
+            <Tidslinje
                 sak={sak}
                 visHeleTidslinjen={visHeleTidslinjen}
                 søkersBarn={søkersBarn}
