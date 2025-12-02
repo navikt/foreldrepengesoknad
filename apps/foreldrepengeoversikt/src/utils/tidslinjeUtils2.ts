@@ -10,6 +10,7 @@ import {
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
 import { VENTEÅRSAKER } from './tidslinjeUtils.ts';
 
@@ -115,7 +116,7 @@ export const getTidslinjeTittelForBarnTreÅr = ({
 };
 
 // TODO: burde håndteres backend
-export const getAlleTidslinjehendelser2 = (props: {
+export const getAlleTidslinjehendelser = (props: {
     tidslinjeHendelserBackend: TidslinjeHendelseDto_fpoversikt[];
     sak: Sak;
     barnFraSak: BarnGruppering;
@@ -278,4 +279,40 @@ export const beregnTidslinjeVindu = ({
         aktivtStegIndexISnitt,
         isTruncated,
     };
+};
+
+export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak) => {
+    if (sak.ytelse === 'SVANGERSKAPSPENGER') {
+        const tilretteleggingerFomDatoer =
+            sak.åpenBehandling?.søknad.arbeidsforhold.flatMap((a) => {
+                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
+                return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
+            }) ?? [];
+        const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.toDate();
+        return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+    }
+
+    if (sak.ytelse === 'FORELDREPENGER') {
+        const søknadsperioder = sak.åpenBehandling?.søknadsperioder ?? [];
+        const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).toDate();
+        return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+    }
+
+    return undefined;
+};
+
+export const getAktivTidslinjeStegIndex = (
+    hendelserForVisning: Tidslinjehendelse2[],
+    erInnvilgetForeldrepengesøknad: boolean,
+): number => {
+    if (erInnvilgetForeldrepengesøknad) {
+        const indexForSisteVedtak = hendelserForVisning.findLastIndex(
+            (hendelse) => hendelse.utvidetTidslinjeHendelseType === 'VEDTAK',
+        );
+
+        if (indexForSisteVedtak >= 0) {
+            return indexForSisteVedtak;
+        }
+    }
+    return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
 };

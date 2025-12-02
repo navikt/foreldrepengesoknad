@@ -27,10 +27,11 @@ import { Tidslinjehendelse, Tidslinjehendelse2 } from '../../types/Tidslinjehend
 import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak } from '../../utils/sakerUtils';
-import { getAktivTidslinjeStegIndex, getTidligstBehandlingsDatoForTidligSøknad } from '../../utils/tidslinjeUtils';
 import {
     beregnTidslinjeVindu,
-    getAlleTidslinjehendelser2,
+    getAktivTidslinjeStegIndex,
+    getAlleTidslinjehendelser,
+    getTidligstBehandlingsDatoForTidligSøknad,
     getTidslinjeTittelForBarnTreÅr,
     tidslinjeTittelForFamiliehendelse,
 } from '../../utils/tidslinjeUtils2.ts';
@@ -60,7 +61,7 @@ export const TidslinjeNy = (props: Props) => {
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
 
-    const alleSorterteHendelser = getAlleTidslinjehendelser2({
+    const alleSorterteHendelser = getAlleTidslinjehendelser({
         tidslinjeHendelserBackend: tidslinjeHendelser,
         sak,
         barnFraSak,
@@ -247,7 +248,13 @@ const Hendelse = ({
             if (sak.åpenBehandling === undefined) {
                 return null;
             }
-            const tidligstBehandlingsDato = getTidligstBehandlingsDatoForTidligSøknad(sak.ytelse, sak.åpenBehandling);
+
+            const tidligstBehandlingsDato = getTidligstBehandlingsDatoForTidligSøknad(sak);
+
+            if (!tidligstBehandlingsDato) {
+                // Burde ikke skje
+                return null;
+            }
 
             const merInformasjon =
                 sak.ytelse === 'FORELDREPENGER'
