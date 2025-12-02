@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { Bleed, HGrid, Heading, Loader } from '@navikt/ds-react';
+import { Heading, Loader } from '@navikt/ds-react';
 
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
@@ -15,7 +15,6 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { TidslinjeNy } from '../../sections/tidslinje/Tidslinje2.tsx';
 import { Sak } from '../../types/Sak';
 
@@ -57,25 +56,13 @@ const TidslinjePageInner = ({ søkersBarn, sak, visHeleTidslinjen = true }: Inne
             <Heading spacing level="2" size="medium">
                 Dette skjer i saken
             </Heading>
-            {/*TODO: midleritid wrapper for sammenligning*/}
-            <Bleed asChild marginInline="full" className="pl-10">
-                <HGrid columns="50% 50%" gap="4" className="pr-10">
-                    <Tidslinje
-                        sak={sak}
-                        visHeleTidslinjen={visHeleTidslinjen}
-                        søkersBarn={søkersBarn}
-                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
-                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                    />
-                    <TidslinjeNy
-                        sak={sak}
-                        visHeleTidslinjen={visHeleTidslinjen}
-                        søkersBarn={søkersBarn}
-                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
-                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                    />
-                </HGrid>
-            </Bleed>
+            <TidslinjeNy
+                sak={sak}
+                visHeleTidslinjen={visHeleTidslinjen}
+                søkersBarn={søkersBarn}
+                tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                manglendeVedlegg={manglendeVedleggQuery.data ?? []}
+            />
         </div>
     );
 };

@@ -23,7 +23,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { NavRoutes, OversiktRoutes } from '../../routes/routes.ts';
 import { Sak } from '../../types/Sak';
-import { Tidslinjehendelse, Tidslinjehendelse2 } from '../../types/Tidslinjehendelse.ts';
+import { Tidslinjehendelse2 } from '../../types/Tidslinjehendelse.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak } from '../../utils/sakerUtils';
@@ -432,7 +432,7 @@ const Hendelse = ({
     }
 };
 
-const DokumenterTilHendelse = ({ hendelse }: { hendelse: Tidslinjehendelse }) => {
+const DokumenterTilHendelse = ({ hendelse }: { hendelse: Tidslinjehendelse2 }) => {
     const alleDokumenter = hendelse.dokumenter.map((dokument) => {
         if (hendelse.utvidetTidslinjeHendelseType === 'INNTEKTSMELDING') {
             return (

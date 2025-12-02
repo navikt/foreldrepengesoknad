@@ -15,7 +15,7 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
 import { getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils.ts';
-import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts';
+import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils2.ts';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {

@@ -12,7 +12,6 @@ import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
-import { VENTEÅRSAKER } from './tidslinjeUtils.ts';
 
 type TidslinjeTittelForFamiliehendelseProps = {
     sak: Sak;
@@ -130,6 +129,12 @@ export const getAlleTidslinjehendelser = (props: {
         };
     });
 
+    const VENTEÅRSAKER: BehandlingTilstand_fpoversikt[] = [
+        'VENT_INNTEKTSMELDING',
+        'VENT_DOKUMENTASJON',
+        'VENT_TIDLIG_SØKNAD',
+        'VENT_MELDEKORT',
+    ];
     const åpenBehandlingPåVent =
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
@@ -315,4 +320,31 @@ export const getAktivTidslinjeStegIndex = (
         }
     }
     return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
+};
+
+export const getRelevantNyTidslinjehendelse = (
+    tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[],
+): TidslinjeHendelseDto_fpoversikt | undefined => {
+    const søknadHendelser = new Set(['FØRSTEGANGSSØKNAD', 'FØRSTEGANGSSØKNAD_NY', 'ENDRINGSSØKNAD']);
+
+    const sorterteHendelser = tidslinjehendelser
+        ? [...tidslinjehendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).reverse()
+        : undefined;
+    const relevantNyHendelse = sorterteHendelser
+        ? sorterteHendelser.find(
+              (hendelse) =>
+                  søknadHendelser.has(hendelse.tidslinjeHendelseType) &&
+                  hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
+                  dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
+          )
+        : undefined;
+    return relevantNyHendelse;
+};
+
+export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string | undefined) => {
+    return førsteUttaksdagISaken
+        ? dayjs(førsteUttaksdagISaken)
+              .subtract(4 * 7, 'day')
+              .toDate()
+        : undefined;
 };
