@@ -32,7 +32,7 @@ import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { TidslinjeNy } from '../../sections/tidslinje/Tidslinje2.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
-import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils2.ts';
+import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
 dayjs.extend(isSameOrBefore);

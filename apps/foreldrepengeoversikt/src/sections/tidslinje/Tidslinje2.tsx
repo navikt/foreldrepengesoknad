@@ -35,7 +35,7 @@ import {
     getTidligstBehandlingsDatoForTidligSøknad,
     getTidslinjeTittelForBarnTreÅr,
     tidslinjeTittelForFamiliehendelse,
-} from '../../utils/tidslinjeUtils2.ts';
+} from '../../utils/tidslinjeUtils.ts';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 
 type TidslinjeProps = {
