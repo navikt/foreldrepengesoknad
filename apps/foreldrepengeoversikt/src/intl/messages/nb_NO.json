@@ -104,7 +104,7 @@
     "kontaktOss.ringOss.flereTelefonnummere": "Se flere telefonnummer",
     "tidslinje.snarest": "SNAREST",
     "tidslinje.senere": "SENERE",
-    "tidslinje.tidligst": "TIDLIGST",
+    "tidslinje.tidligst": "TIDLIGST {dato}",
     "tidslinje.tittel.FØRSTEGANGSSØKNAD": "Du søkte om {ytelse}",
     "tidslinje.tittel.FØRSTEGANGSSØKNAD_NY": "Du sendte en ny søknad",
     "tidslinje.merInformasjon.FØRSTEGANGSSØKNAD_NY": "Den nye søknaden erstatter søknaden du sendte {datoFørsteSøknad}.",

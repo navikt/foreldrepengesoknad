@@ -213,7 +213,9 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp="SNAREST" // TODO: intl
+                    timestamp={intl.formatMessage({
+                        id: 'tidslinje.snarest',
+                    })}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
                     bullet={<PaperplaneIcon />}
                 >
@@ -286,10 +288,10 @@ const Hendelse = ({
                             tidlistBehandlingsdato: formatDate(tidligstBehandlingsDato),
                         },
                     )}
-                    timestamp={
-                        intl.formatMessage({ id: 'tidslinje.tidligst' }) +
-                        formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY')
-                    } // TODO: bedre dato, intl
+                    timestamp={intl.formatMessage(
+                        { id: 'tidslinje.tidligst' },
+                        { dato: formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY') },
+                    )}
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{merInformasjon}</BodyShort>
@@ -369,7 +371,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp="SENERE" // TODO: intl
+                    timestamp={intl.formatMessage({ id: 'tidslinje.senere' })}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.FREMTIDIG_VEDTAK' })}
                     bullet={<InboxDownIcon />}
                 >
@@ -403,7 +405,6 @@ const Hendelse = ({
                 return null;
             }
 
-            // TODO: utlede slikt per prosesspunkt, eller der hvor hendelser lages?
             const { antallBarn } = sak.familiehendelse;
             const merInformasjon = sak.gjelderAdopsjon
                 ? intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.adopsjon.informasjon' }, { antallBarn })
