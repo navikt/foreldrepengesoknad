@@ -7,6 +7,7 @@ import {
     HourglassBottomFilledIcon,
     InboxDownIcon,
     InboxUpIcon,
+    InformationIcon,
     PaperplaneIcon,
     TasklistSendIcon,
     ThumbDownIcon,
@@ -427,6 +428,19 @@ const Hendelse = ({
                 </Process.Event>
             );
         }
+        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV':
+            return (
+                <Process.Event
+                    status={status}
+                    title={intl.formatMessage({
+                        id: 'tidslinje.tittel.FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV',
+                    })}
+                    timestamp={hendelseDatoMedKlokkeslett}
+                    bullet={<InformationIcon />}
+                >
+                    <DokumenterTilHendelse hendelse={hendelse} />
+                </Process.Event>
+            );
         default:
             return null;
     }
