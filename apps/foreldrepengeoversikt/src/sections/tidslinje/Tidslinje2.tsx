@@ -21,9 +21,9 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
-import { NavRoutes } from '../../routes/routes.ts';
+import { NavRoutes, OversiktRoutes } from '../../routes/routes.ts';
 import { Sak } from '../../types/Sak';
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse.ts';
+import { Tidslinjehendelse, Tidslinjehendelse2 } from '../../types/Tidslinjehendelse.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak } from '../../utils/sakerUtils';
@@ -103,7 +103,7 @@ const Hendelse = ({
 }: {
     sak: Sak;
     status?: 'active' | 'completed' | 'uncompleted';
-    hendelse: Tidslinjehendelse;
+    hendelse: Tidslinjehendelse2;
     søkersBarn: BarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
 }) => {
@@ -207,6 +207,9 @@ const Hendelse = ({
             );
         }
         case 'VENT_DOKUMENTASJON': {
+            const ids = manglendeVedlegg.join(',');
+            const queryPart = ids ? `?skjematype=${encodeURIComponent(ids)}` : '';
+            const url = `/sak/${sak.saksnummer}/${OversiktRoutes.ETTERSEND}${queryPart}`;
             return (
                 <Process.Event
                     status={status}
@@ -232,12 +235,7 @@ const Hendelse = ({
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' })}
                         </BodyShort>
-                        <Button
-                            className="mt-2 w-fit"
-                            size="small"
-                            to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
-                            as={LinkInternal}
-                        >
+                        <Button className="mt-2 w-fit" size="small" to={url} as={LinkInternal}>
                             {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' })}
                         </Button>
                     </VStack>
@@ -251,6 +249,11 @@ const Hendelse = ({
             }
             const tidligstBehandlingsDato = getTidligstBehandlingsDatoForTidligSøknad(sak.ytelse, sak.åpenBehandling);
 
+            const merInformasjon =
+                sak.ytelse === 'FORELDREPENGER'
+                    ? intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.foreldrepenger' })
+                    : intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.informasjon.svangerskapspenger' });
+
             return (
                 <Process.Event
                     status={status}
@@ -263,8 +266,8 @@ const Hendelse = ({
                     timestamp={'TIDLIGST ' + formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY')} // TODO: bedre dato, intl
                     bullet={<HourglassBottomFilledIcon />}
                 >
-                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
-                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                    <BodyShort>{merInformasjon}</BodyShort>
+                    <Link href={NavRoutes.SØKNADSFRISTER} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.linkTittel' })}
                         </BodyShort>
@@ -281,8 +284,8 @@ const Hendelse = ({
                     timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
                     bullet={<HourglassBottomFilledIcon />}
                 >
-                    <BodyShort>{hendelse.merInformasjon}</BodyShort>
-                    <Link href={hendelse.eksternalUrl} className="text-ax-brand-blue-700 mt-2">
+                    <BodyShort>{intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.informasjon' })}</BodyShort>
+                    <Link href={NavRoutes.VENT_INNTEKTSMELDING} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.linkTittel' })}
                         </BodyShort>

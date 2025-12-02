@@ -9,7 +9,7 @@ import {
 } from '@navikt/fp-types';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
-import { Tidslinjehendelse } from '../types/Tidslinjehendelse.ts';
+import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
 import { VENTEÅRSAKER } from './tidslinjeUtils.ts';
 
@@ -120,9 +120,9 @@ export const getAlleTidslinjehendelser2 = (props: {
     sak: Sak;
     barnFraSak: BarnGruppering;
     intl: IntlShape;
-}): Tidslinjehendelse[] => {
+}): Tidslinjehendelse2[] => {
     const { tidslinjeHendelserBackend, sak, barnFraSak } = props;
-    const tidslinjeHendelser: Tidslinjehendelse[] = tidslinjeHendelserBackend.map((hendelse) => {
+    const tidslinjeHendelser: Tidslinjehendelse2[] = tidslinjeHendelserBackend.map((hendelse) => {
         return {
             ...hendelse,
             utvidetTidslinjeHendelseType: hendelse.tidslinjeHendelseType,
@@ -146,7 +146,6 @@ export const getAlleTidslinjehendelser2 = (props: {
             opprettet: nåDato,
             utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
             dokumenter: [],
-            manglendeVedlegg: [], //TODO: slettes?
         });
     }
 
@@ -157,7 +156,6 @@ export const getAlleTidslinjehendelser2 = (props: {
             utvidetTidslinjeHendelseType: 'FAMILIEHENDELSE',
             aktørType: 'BRUKER',
             dokumenter: [],
-            manglendeVedlegg: [], //TODO: slettes?
         });
     }
 
@@ -179,18 +177,15 @@ export const getAlleTidslinjehendelser2 = (props: {
             utvidetTidslinjeHendelseType: 'BARNET_TRE_ÅR',
             aktørType: 'BRUKER',
             dokumenter: [],
-            manglendeVedlegg: [],
         });
     }
 
     if (sak.åpenBehandling) {
         tidslinjeHendelser.push({
-            type: 'søknad',
             opprettet: nåDato,
             utvidetTidslinjeHendelseType: 'FREMTIDIG_VEDTAK',
             aktørType: 'NAV',
             dokumenter: [],
-            manglendeVedlegg: [],
         });
     }
 
@@ -238,13 +233,13 @@ const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
 };
 
 type TidslinjeVinduResult = {
-    hendelser: Tidslinjehendelse[];
+    hendelser: Tidslinjehendelse2[];
     aktivtStegIndexISnitt: number;
     isTruncated: 'both' | 'start' | 'end' | undefined;
 };
 
 type BeregnTidslinjeVinduProps = {
-    alleSorterteHendelser: Tidslinjehendelse[];
+    alleSorterteHendelser: Tidslinjehendelse2[];
     aktivtStegIndex: number;
     visHeleTidslinjen: boolean;
     maksVindu?: number;
