@@ -128,17 +128,18 @@ export const getAlleTidslinjehendelser = (props: {
     const åpenBehandlingPåVent =
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
-    const nåDato = dayjs(new Date()).add(1, 'd').toISOString();
-
     const erAvslåttForeldrepengesøknad =
         (sak.ytelse === 'FORELDREPENGER' &&
             sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
         false;
 
+    // Vi setter opprettet til imorgen. Det er litt misvisende, men poenget er at den brukes til å finne "aktiv hendelse".
+    const imorgen = dayjs(new Date()).add(1, 'd').toISOString();
+
     if (åpenBehandlingPåVent) {
         tidslinjeHendelser.push({
             aktørType: getAktørtypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
-            opprettet: nåDato,
+            opprettet: imorgen,
             utvidetTidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
             dokumenter: [],
         });
@@ -175,7 +176,7 @@ export const getAlleTidslinjehendelser = (props: {
 
     if (sak.åpenBehandling) {
         tidslinjeHendelser.push({
-            opprettet: nåDato,
+            opprettet: imorgen,
             utvidetTidslinjeHendelseType: 'FREMTIDIG_VEDTAK',
             aktørType: 'NAV',
             dokumenter: [],
@@ -292,20 +293,15 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak) => {
     return undefined;
 };
 
-export const getAktivTidslinjeStegIndex = (
-    hendelserForVisning: Tidslinjehendelse2[],
-    erInnvilgetForeldrepengesøknad: boolean,
-): number => {
-    if (erInnvilgetForeldrepengesøknad) {
-        const indexForSisteVedtak = hendelserForVisning.findLastIndex(
-            (hendelse) => hendelse.utvidetTidslinjeHendelseType === 'VEDTAK',
-        );
+export const finnIndex = (hendelserForVisning: Tidslinjehendelse2[]): number => {
+    const index = hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')) - 1;
 
-        if (indexForSisteVedtak >= 0) {
-            return indexForSisteVedtak;
-        }
+    // Fant ingen hendelser etter idag. Mao er alle fullført
+    if (index < 0) {
+        return hendelserForVisning.length;
     }
-    return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
+
+    return index;
 };
 
 export const getRelevantNyTidslinjehendelse = (

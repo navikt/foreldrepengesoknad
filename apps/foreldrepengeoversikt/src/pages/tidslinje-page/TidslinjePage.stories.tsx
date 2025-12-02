@@ -107,7 +107,6 @@ export const FPAdopsjon: Story = {
     },
 };
 
-// TODO: hvorfor ikke barnet 3 år?
 export const FPTerminInnvilget: Story = {
     parameters: {
         msw: {

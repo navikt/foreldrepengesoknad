@@ -30,7 +30,7 @@ import { guid } from '../../utils/guid';
 import { getBarnGrupperingFraSak } from '../../utils/sakerUtils';
 import {
     beregnTidslinjeVindu,
-    getAktivTidslinjeStegIndex,
+    finnIndex,
     getAlleTidslinjehendelser,
     getTidligstBehandlingsDatoForTidligSøknad,
     getTidslinjeTittelForBarnTreÅr,
@@ -59,9 +59,6 @@ export const TidslinjeNy = (props: Props) => {
 
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
 
-    const erInnvilgetForeldrepengesøknad =
-        sak.ytelse === 'FORELDREPENGER' && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
-
     const alleSorterteHendelser = getAlleTidslinjehendelser({
         tidslinjeHendelserBackend: tidslinjeHendelser,
         sak,
@@ -71,11 +68,9 @@ export const TidslinjeNy = (props: Props) => {
 
     const { hendelser, aktivtStegIndexISnitt, isTruncated } = beregnTidslinjeVindu({
         alleSorterteHendelser,
-        aktivtStegIndex: getAktivTidslinjeStegIndex(alleSorterteHendelser, erInnvilgetForeldrepengesøknad),
+        aktivtStegIndex: finnIndex(alleSorterteHendelser),
         visHeleTidslinjen,
     });
-
-    console.log(hendelser);
 
     return (
         <Process isTruncated={isTruncated}>
