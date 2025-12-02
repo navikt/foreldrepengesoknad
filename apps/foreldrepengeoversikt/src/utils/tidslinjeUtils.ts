@@ -72,7 +72,6 @@ const getTidslinjeTittelForAdopsjon = (navn: string, omsorgsovertakelse: string,
     }
 };
 
-// TODO: forenkles??
 export const getTidslinjeTittelForBarnTreÅr = ({
     barnFraSak,
     familiehendelse,
@@ -137,7 +136,6 @@ export const getAlleTidslinjehendelser = (props: {
         false;
 
     if (åpenBehandlingPåVent) {
-        // TODO: her var det egentlig en til, men tror ikke den noensinne slår inn?
         tidslinjeHendelser.push({
             aktørType: getAktørtypeAvVenteårsak(åpenBehandlingPåVent.tilstand),
             opprettet: nåDato,
@@ -206,7 +204,6 @@ const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand_fp
     }
 };
 
-// TODO: brukes egentlig ikke
 const getAktørtypeAvVenteårsak = (
     venteårsak: BehandlingTilstand_fpoversikt,
 ): TidslinjeHendelseDto_fpoversikt['aktørType'] => {
