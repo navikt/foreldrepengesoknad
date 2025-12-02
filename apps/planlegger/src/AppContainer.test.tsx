@@ -59,7 +59,9 @@ describe('<AppContainer>', () => {
             await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
             expect(screen.getByText('Steg 4 av 10')).toBeInTheDocument();
             await userEvent.click(
-                screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 65 080 kr det siste året'),
+                screen.getByText(
+                    'Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året',
+                ),
             );
             await userEvent.click(screen.getByText('Ja'));
             await userEvent.click(screen.getByText('Neste'));
