@@ -9,7 +9,6 @@ import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor, monthDiff } from '@navikt/fp-ui';
 import { dateToISOString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
@@ -117,19 +116,15 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
                         erFarEllerMedmor={erFarEllerMedmor}
                         readOnly={readOnly}
                         selectLegend={(color: CalendarPeriodColor) => {
-                            const periode = notEmpty(perioderForKalendervisning.find((p) => p.color === color));
-                            setValgtePerioder((old) =>
-                                old.some((p) => p.fom === periode.fom || p.tom === periode.tom)
-                                    ? []
-                                    : [
-                                          {
-                                              color: 'DARKBLUE',
-                                              fom: periode?.fom,
-                                              tom: periode?.tom,
-                                              isSelected: true,
-                                              srText: getSrTextForSelectedPeriod(periode),
-                                          },
-                                      ],
+                            const perioder = perioderForKalendervisning.filter((p) => p.color === color);
+                            setValgtePerioder(
+                                perioder.map((periode) => ({
+                                    color: 'DARKBLUE',
+                                    fom: periode?.fom,
+                                    tom: periode?.tom,
+                                    isSelected: true,
+                                    srText: getSrTextForSelectedPeriod(periode),
+                                })),
                             );
                         }}
                     />
