@@ -23,28 +23,19 @@ export const tidslinjeTittelForFamiliehendelse = ({
     barnFraSak,
     intl,
 }: TidslinjeTittelForFamiliehendelseProps): string => {
-    const { ytelse, familiehendelse } = sak;
+    const { familiehendelse } = sak;
     const gjelderAdopsjon = ('gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined) ?? false;
 
-    // TODO: trengs ytelse her?
-    if (ytelse === 'FORELDREPENGER') {
-        const brukGeneriskNavn =
-            barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever;
-        const navn = brukGeneriskNavn
-            ? getTidslinjetekstForAntallBarn(familiehendelse.antallBarn, intl, gjelderAdopsjon)
-            : getNavnPåBarna(barnFraSak.fornavn ?? []);
+    const brukGeneriskNavn =
+        barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever;
+    const navn = brukGeneriskNavn
+        ? getTidslinjetekstForAntallBarn(familiehendelse.antallBarn, intl, gjelderAdopsjon)
+        : getNavnPåBarna(barnFraSak.fornavn ?? []);
 
-        if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
-            return getTidslinjeTittelForAdopsjon(navn, familiehendelse.omsorgsovertakelse, intl);
-        } else if (familiehendelse.fødselsdato) {
-            return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.fødsel' }, { navn });
-        } else {
-            return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
-        }
-    } else if (familiehendelse.omsorgsovertakelse) {
-        return 'Adopsjonsdato'; // TODO: intl
+    if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
+        return getTidslinjeTittelForAdopsjon(navn, familiehendelse.omsorgsovertakelse, intl);
     } else if (familiehendelse.fødselsdato) {
-        return 'Barnet ble født'; // TODO: intl
+        return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.fødsel' }, { navn });
     } else {
         return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
     }
@@ -330,7 +321,8 @@ export const getRelevantNyTidslinjehendelse = (
     const sorterteHendelser = tidslinjehendelser
         ? [...tidslinjehendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).reverse()
         : undefined;
-    const relevantNyHendelse = sorterteHendelser
+
+    return sorterteHendelser
         ? sorterteHendelser.find(
               (hendelse) =>
                   søknadHendelser.has(hendelse.tidslinjeHendelseType) &&
@@ -338,7 +330,6 @@ export const getRelevantNyTidslinjehendelse = (
                   dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
           )
         : undefined;
-    return relevantNyHendelse;
 };
 
 export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string | undefined) => {
