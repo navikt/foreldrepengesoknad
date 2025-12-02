@@ -163,6 +163,7 @@
     "OppsummeringSteg.VeiviserFpEllerEs": "Parental benefit or lump sum grant?",
     "OppsummeringHeader.Tittel": "Summary",
     "OppsummeringSteg.KopierUrl": "Copy link",
+    "OppsummeringSteg.KopiertUrl": "The link has been copied",
     "PlanenDeresOppsummering.Tittel": "Your plan",
     "OppgittInformasjon.OppgittInformasjon": "This is what you answered",
     "OppgittInformasjon.InformasjonOmBarn": "The {antallBarn, select, 1 {child} other {children}} {erFødt, select, true {was born} other {has due date}} {dato}{erFødt, select, false {.} other { and due date was {dato2}.}}",
