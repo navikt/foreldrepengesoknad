@@ -111,6 +111,8 @@ const Hendelse = ({
     const barnFraSak = getBarnGrupperingFraSak(sak, søkersBarn);
     const { familiehendelse } = sak;
 
+    const hendelseDatoMedKlokkeslett = formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm');
+
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
             const tittel = tidslinjeTittelForFamiliehendelse({
@@ -123,7 +125,7 @@ const Hendelse = ({
                 <Process.Event
                     status={status}
                     title={tittel}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY')}
                     bullet={<BabyWrappedIcon />}
                 />
             );
@@ -136,7 +138,7 @@ const Hendelse = ({
                         { id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' },
                         { ytelse: sak.ytelse.toLowerCase() },
                     )}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     bullet={<TasklistSendIcon />}
                 >
                     <DokumenterTilHendelse hendelse={hendelse} />
@@ -162,7 +164,7 @@ const Hendelse = ({
                 <Process.Event
                     status={status}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.ENDRINGSSØKNAD' })}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     bullet={<DocPencilIcon />}
                 >
                     <DokumenterTilHendelse hendelse={hendelse} />
@@ -184,12 +186,7 @@ const Hendelse = ({
             const ikon = harAvslag ? <ThumbDownIcon /> : harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
 
             return (
-                <Process.Event
-                    status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
-                    title={tittel}
-                    bullet={ikon}
-                >
+                <Process.Event status={status} timestamp={hendelseDatoMedKlokkeslett} title={tittel} bullet={ikon}>
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
@@ -198,7 +195,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.ETTERSENDING' })}
                     bullet={<InboxUpIcon />}
                 >
@@ -323,11 +320,10 @@ const Hendelse = ({
             );
         }
         case 'UTGÅENDE_VARSEL_TILBAKEBETALING': {
-            // TODO: story
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: skrive idag for idag?
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_VARSEL_TILBAKEBETALING' })}
                     bullet={<InboxDownIcon />}
                 >
@@ -339,7 +335,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')} // TODO: skrive idag for idag?
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_ETTERLYS_INNTEKTSMELDING' })}
                     bullet={<BellIcon />}
                 >
@@ -351,7 +347,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.INNTEKTSMELDING' })}
                     bullet={<InboxDownIcon />}
                 >
@@ -389,7 +385,7 @@ const Hendelse = ({
             return (
                 <Process.Event
                     status={status}
-                    timestamp={formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm')}
+                    timestamp={hendelseDatoMedKlokkeslett}
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' })}
                     bullet={<InboxUpIcon />}
                 >
