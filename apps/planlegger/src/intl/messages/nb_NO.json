@@ -162,6 +162,7 @@
     "OppsummeringSteg.VeiviserHvorMye": "Hvor mye?",
     "OppsummeringSteg.VeiviserFpEllerEs": "Foreldrepenger eller engangsstønad?",
     "OppsummeringSteg.KopierUrl": "Kopier lenken",
+    "OppsummeringSteg.KopiertUrl": "Lenken er kopiert",
     "OppsummeringHeader.Tittel": "Oppsummering",
     "PlanenDeresOppsummering.Tittel": "Planen {erAlenesøker, select, true {din} other {deres}}",
     "OppgittInformasjon.OppgittInformasjon": "Dette svarte {erAlenesøker, select, true {du} other {dere}}",

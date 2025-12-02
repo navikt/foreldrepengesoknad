@@ -1,48 +1,46 @@
-import { BookmarkIcon, LinkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { BookmarkIcon } from '@navikt/aksel-icons';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, CopyButton, HStack, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Infobox } from '@navikt/fp-ui';
 
-const copyUrlToClipboard = async () => {
+const logCopyEvent = () => {
     loggUmamiEvent({
         origin: 'planlegger',
         eventName: 'kopier',
         eventData: { tittel: 'OppsummeringSteg.KopierUrl' },
     });
-    try {
-        await navigator.clipboard.writeText(globalThis.location.href);
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to copy: ', err);
-    }
 };
 
 interface Props {
     erAlenesøker: boolean;
 }
 
-export const ShareDataInfobox = ({ erAlenesøker }: Props) => (
-    <Infobox
-        header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" values={{ erAlenesøker }} />}
-        color="gray"
-        icon={<BookmarkIcon aria-hidden height={24} width={24} />}
-    >
-        <VStack gap="space-16">
-            <BodyShort>
-                <FormattedMessage id="OmPlanleggerenSteg.TaVarePå" values={{ erAlenesøker }} />
-            </BodyShort>
-            <HStack>
-                <Button
-                    variant="primary"
-                    icon={<LinkIcon aria-hidden height={24} width={24} />}
-                    onClick={() => void copyUrlToClipboard()}
-                >
-                    <FormattedMessage id="OppsummeringSteg.KopierUrl" />
-                </Button>
-            </HStack>
-        </VStack>
-    </Infobox>
-);
+export const ShareDataInfobox = ({ erAlenesøker }: Props) => {
+    const intl = useIntl();
+    return (
+        <Infobox
+            header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" values={{ erAlenesøker }} />}
+            color="gray"
+            icon={<BookmarkIcon aria-hidden height={24} width={24} />}
+        >
+            <VStack gap="space-16">
+                <BodyShort>
+                    <FormattedMessage id="OmPlanleggerenSteg.TaVarePå" values={{ erAlenesøker }} />
+                </BodyShort>
+                <HStack>
+                    <CopyButton
+                        className="bg-ax-bg-accent-strong hover:bg-ax-bg-accent-strong-hover text-ax-text-neutral-contrast"
+                        copyText={globalThis.location.href}
+                        text={intl.formatMessage({ id: 'OppsummeringSteg.KopierUrl' })}
+                        activeText={intl.formatMessage({ id: 'OppsummeringSteg.KopiertUrl' })}
+                        variant="action"
+                        onClick={logCopyEvent}
+                    />
+                </HStack>
+            </VStack>
+        </Infobox>
+    );
+};
