@@ -242,7 +242,24 @@ const Hendelse = ({
                 </Process.Event>
             );
         }
-        case 'VENTER_MELDEKORT': // TODO: hvordan?
+        case 'VENTER_MELDEKORT': {
+            return (
+                <Process.Event
+                    status={status}
+                    title={intl.formatMessage({ id: 'tidslinje.tittel.VENTER_MELDEKORT' })}
+                    timestamp={formaterDato(hendelse.opprettet, 'D. MMM YYYY')}
+                    bullet={<HourglassBottomFilledIcon />}
+                >
+                    <BodyShort>{intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.informasjon' })}</BodyShort>
+                    <Link href={NavRoutes.VENT_MELDEKORT} className="text-ax-brand-blue-700 mt-2">
+                        <BodyShort size="small">
+                            {intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.linkTittel' })}
+                        </BodyShort>
+                        <ExternalLinkIcon aria-hidden={true} />
+                    </Link>
+                </Process.Event>
+            );
+        }
         case 'VENTER_PGA_TIDLIG_SØKNAD': {
             if (sak.åpenBehandling === undefined) {
                 return null;
@@ -269,7 +286,10 @@ const Hendelse = ({
                             tidlistBehandlingsdato: formatDate(tidligstBehandlingsDato),
                         },
                     )}
-                    timestamp={'TIDLIGST ' + formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY')} // TODO: bedre dato, intl
+                    timestamp={
+                        intl.formatMessage({ id: 'tidslinje.tidligst' }) +
+                        formaterDato(tidligstBehandlingsDato, 'D. MMM YYYY')
+                    } // TODO: bedre dato, intl
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{merInformasjon}</BodyShort>
