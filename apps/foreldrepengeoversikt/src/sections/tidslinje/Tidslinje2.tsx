@@ -77,9 +77,8 @@ export const TidslinjeNy = (props: Props) => {
     return (
         <Process isTruncated={isTruncated}>
             {hendelser.map((hendelse, index) => {
-                const erAktivt = aktivtStegIndexISnitt === index;
-                const erUtført = aktivtStegIndexISnitt > index;
-                const status = erAktivt ? 'active' : erUtført ? 'completed' : 'uncompleted';
+                const erUtført = aktivtStegIndexISnitt >= index;
+                const status = erUtført ? 'completed' : 'uncompleted';
                 return (
                     <Hendelse
                         status={status}
