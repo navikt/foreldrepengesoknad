@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
+import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -42,7 +42,7 @@ export const Default: Story = {
         msw: {
             handlers: [
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
             ],
         },

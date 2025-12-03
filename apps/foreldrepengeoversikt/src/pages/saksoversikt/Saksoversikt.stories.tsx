@@ -7,7 +7,7 @@ import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedleg
 import { saker } from 'storybookData/saker/saker';
 import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
+import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -46,7 +46,7 @@ export const Foreldrepenger: Story = {
             handlers: [
                 http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
@@ -127,7 +127,7 @@ export const Svangerskapspenger: Story = {
                         svangerskapspenger: [SAK_1],
                     }),
                 ),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],

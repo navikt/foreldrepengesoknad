@@ -7,7 +7,7 @@ import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedleg
 import { miniDialog } from 'storybookData/miniDialog/miniDialog';
 import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
+import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { AppContainer } from './AppContainer';
 import { API_URLS } from './api/queries.ts';
@@ -30,7 +30,7 @@ const meta = {
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
                 http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
                 http.post(API_URLS.lastOppFPVedlegg, () => HttpResponse.json({})),
             ],
