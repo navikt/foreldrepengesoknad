@@ -1,10 +1,11 @@
+import MockDate from 'mockdate';
 import type { DecoratorFunction } from 'storybook/internal/types';
 
 export const withMockDate =
     (defaultDate: number): DecoratorFunction =>
     (Story, context) => {
         const mockDateSinceEpoch = (context.args.mockDate ?? defaultDate) as number;
-        Date.now = () => mockDateSinceEpoch;
+        MockDate.set(mockDateSinceEpoch);
 
         return (
             <>

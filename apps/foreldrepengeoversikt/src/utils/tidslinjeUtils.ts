@@ -55,7 +55,7 @@ const getTidslinjetekstForAntallBarn = (antallBarn: number, intl: IntlShape, gje
 };
 
 const getTidslinjeTittelForAdopsjon = (navn: string, omsorgsovertakelse: string, intl: IntlShape) => {
-    if (dayjs(omsorgsovertakelse).isSameOrBefore(dayjs(Date.now()), 'd')) {
+    if (dayjs(omsorgsovertakelse).isSameOrBefore(dayjs(), 'd')) {
         return intl.formatMessage(
             { id: 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.tilbakeITid' },
             {
@@ -134,7 +134,7 @@ export const getAlleTidslinjehendelser = (props: {
         false;
 
     // Vi setter opprettet til imorgen. Det er litt misvisende, men poenget er at den brukes til å finne "aktiv hendelse".
-    const imorgen = dayjs(Date.now()).add(1, 'd').toISOString();
+    const imorgen = dayjs().add(1, 'd').toISOString();
 
     if (åpenBehandlingPåVent) {
         tidslinjeHendelser.push({
@@ -287,7 +287,7 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak) => {
 };
 
 export const finnIndex = (hendelserForVisning: Tidslinjehendelse2[]): number => {
-    const index = hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(Date.now(), 'd')) - 1;
+    const index = hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd')) - 1;
 
     // Siden vi trekker 1 fra index må vi sjekke fra -2 for å bestemme om vi ikke fant noen index.
     // Isåfall er alle hendelsene passert.
@@ -312,7 +312,7 @@ export const getRelevantNyTidslinjehendelse = (
               (hendelse) =>
                   søknadHendelser.has(hendelse.tidslinjeHendelseType) &&
                   hendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad')) &&
-                  dayjs(hendelse.opprettet).isSameOrAfter(dayjs(Date.now()).subtract(1, 'd')),
+                  dayjs(hendelse.opprettet).isSameOrAfter(dayjs().subtract(1, 'd')),
           )
         : undefined;
 };
