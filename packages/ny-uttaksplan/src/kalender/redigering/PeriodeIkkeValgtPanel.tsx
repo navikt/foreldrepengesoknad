@@ -2,14 +2,19 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Box, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
 
 import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
 import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
 import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
+import { RødRamme } from './utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
-export const PeriodeIkkeValgtPanel = () => {
+interface Props {
+    scrollToKvoteOppsummering: () => void;
+}
+
+export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering }: Props) => {
     const intl = useIntl();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -23,15 +28,16 @@ export const PeriodeIkkeValgtPanel = () => {
     return (
         <VStack gap="space-16">
             <Box.New
-                background="accent-soft"
                 padding="space-12"
                 onClick={erDesktop ? undefined : () => setErMinimert(!erMinimert)}
                 className={
-                    erDesktop ? undefined : 'hover:bg-ax-shadow-dialog cursor-pointer hover:border-b hover:border-t'
+                    erDesktop
+                        ? 'bg-ax-bg-accent-soft'
+                        : 'bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer'
                 }
             >
                 <Show below="md">
-                    <VStack gap="space-4" align="center">
+                    <VStack gap="space-1" align="center">
                         {erMinimert ? (
                             <ChevronUpIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
@@ -45,7 +51,12 @@ export const PeriodeIkkeValgtPanel = () => {
                                 width={24}
                             />
                         )}
-                        <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                        <BodyShort size="small">
+                            <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                        </BodyShort>
+                        <RødRamme>
+                            <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
+                        </RødRamme>
                     </VStack>
                 </Show>
                 <Show above="md">
@@ -54,8 +65,16 @@ export const PeriodeIkkeValgtPanel = () => {
             </Box.New>
             {!erMinimert && (
                 <VStack gap="space-16" className="px-4 pb-4">
-                    <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
-                    <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
+                    <VStack gap="space-16">
+                        <Show above="md">
+                            <RødRamme>
+                                <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
+                            </RødRamme>
+                        </Show>
+                        <Link as="button" onClick={scrollToKvoteOppsummering}>
+                            <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
+                        </Link>
+                    </VStack>
                     <UttaksplanHandlingKnapper
                         visKnapper={false}
                         tilbakestillPlan={

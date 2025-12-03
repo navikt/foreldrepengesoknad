@@ -6,7 +6,7 @@ import {
 } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker, erMedmorDelAvSøknaden, getErFarEllerMedmor, getNavnPåForeldre } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
@@ -90,6 +90,13 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
 
+    const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
+    const scrollToKvoteOppsummering = () => {
+        if (kvoteOppsummeringRef.current) {
+            kvoteOppsummeringRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <UttaksplanDataProvider
@@ -134,11 +141,17 @@ export const TilpassPlanenSteg = ({ stønadskontoer }: Props) => {
                         {visningsmodus === 'liste' && <UttaksplanNy />}
 
                         {visningsmodus === 'kalender' && (
-                            <UttaksplanKalender readOnly={false} barnehagestartdato={barnehagestartdato} />
+                            <UttaksplanKalender
+                                readOnly={false}
+                                barnehagestartdato={barnehagestartdato}
+                                scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                            />
                         )}
                     </UttaksplanRedigeringProvider>
 
-                    <KvoteOppsummering visStatusIkoner />
+                    <div ref={kvoteOppsummeringRef}>
+                        <KvoteOppsummering visStatusIkoner />
+                    </div>
 
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}

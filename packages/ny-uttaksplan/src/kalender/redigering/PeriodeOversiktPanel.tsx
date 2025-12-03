@@ -1,16 +1,17 @@
 import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { uniqueId } from 'lodash';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Planperiode } from '../../types/Planperiode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { RødRamme } from './utils/RødRamme';
 import { finnAntallDager } from './utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
@@ -64,15 +65,20 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
                                 <FormattedMessage id="RedigeringPanel.EndreTil" />
                             </Heading>
                         </HStack>
-                        <HStack justify="space-between" align="center" wrap={false}>
-                            <Heading size="xsmall">
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{
-                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    }}
-                                />
-                            </Heading>
+                        <HStack>
+                            <RødRamme>
+                                <BodyShort size="small">
+                                    <FormattedMessage
+                                        id="RedigeringPanel.ValgteDager"
+                                        values={{
+                                            varighet: getVarighetString(
+                                                finnAntallDager(sammenslåtteValgtePerioder),
+                                                intl,
+                                            ),
+                                        }}
+                                    />
+                                </BodyShort>
+                            </RødRamme>
                         </HStack>
                     </VStack>
                 </Box.New>
@@ -80,10 +86,9 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
 
             <Show below="md">
                 <Box.New
-                    background="accent-soft"
                     padding="space-12"
                     onClick={() => setErMinimert(!erMinimert)}
-                    className="hover:bg-ax-shadow-dialog cursor-pointer hover:border-b hover:border-t"
+                    className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
                 >
                     <VStack gap="space-4" align="center">
                         {erMinimert ? (
@@ -109,19 +114,19 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
                                 <Heading size="small">
                                     <FormattedMessage id="RedigeringPanel.EndreTil" />
                                 </Heading>
-                                {erMinimert && <RødSirkel>{finnAntallDager(sammenslåtteValgtePerioder)}</RødSirkel>}
+                                {erMinimert && <RødRamme>{finnAntallDager(sammenslåtteValgtePerioder)}</RødRamme>}
                             </HStack>
                         </HStack>
 
                         {!erMinimert && (
-                            <RødSirkel>
+                            <RødRamme>
                                 <FormattedMessage
                                     id="RedigeringPanel.ValgteDager"
                                     values={{
                                         varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
                                     }}
                                 />
-                            </RødSirkel>
+                            </RødRamme>
                         )}
                     </VStack>
                 </Box.New>
@@ -158,17 +163,6 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
         </VStack>
     );
 };
-
-const RødSirkel = ({ children }: { children: ReactNode }) => (
-    <span
-        className={
-            'bg-ax-bg-danger-strong text-ax-bg-default inline-flex h-7 min-w-7 ' +
-            'items-center justify-center rounded-full px-2'
-        }
-    >
-        {children}
-    </span>
-);
 
 const LeggTilOgEndreKnapp = ({ åpneRedigeringsmodus }: { åpneRedigeringsmodus: () => void }) => {
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();

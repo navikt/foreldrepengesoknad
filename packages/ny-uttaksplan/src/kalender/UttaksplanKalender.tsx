@@ -20,9 +20,10 @@ import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervis
 interface Props {
     readOnly: boolean;
     barnehagestartdato?: string;
+    scrollToKvoteOppsummering?: () => void;
 }
 
-export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
+export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvoteOppsummering }: Props) => {
     const intl = useIntl();
     const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
     const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
@@ -177,7 +178,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
                             </InlineMessage>
                         )}
                     </div>
-                    {!readOnly && uttaksplanRedigering && (
+                    {!readOnly && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',
@@ -188,6 +189,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato }: Props) => {
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setValgtePerioder}
+                                scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                             />
                         </div>
                     )}
