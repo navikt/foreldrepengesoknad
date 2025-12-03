@@ -5,5 +5,19 @@ export const withMockDate =
     (Story) => {
         Date.now = () => mockDate.getTime();
 
-        return <Story />;
+        return (
+            <>
+                <div
+                    style={{
+                        fontSize: '18px',
+                        borderRadius: '4px',
+                        padding: '8px',
+                        background: '#F68282',
+                    }}
+                >
+                    Dato er mocket til {mockDate.toLocaleDateString()}
+                </div>
+                <Story />
+            </>
+        );
     };
