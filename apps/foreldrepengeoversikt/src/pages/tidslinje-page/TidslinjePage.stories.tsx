@@ -18,6 +18,7 @@ import {
     saker_SVP_innvilget,
     saker_SVP_under_behandling,
 } from 'storybookData/saker/saker';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 import {
     tidslinjeHendelserFP,
     tidslinjeHendelser_FP_Adopsjon,
@@ -61,7 +62,7 @@ type StoryArgs = {
 const meta = {
     title: 'TidslinjePage',
     component: TidslinjePage,
-    decorators: [withQueryClient, withMockDate],
+    decorators: [withQueryClient, withMockDate(new Date('2025-11-27').getTime())],
     argTypes: {
         mockDate: {
             control: 'date',
@@ -86,6 +87,7 @@ export const FP: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
@@ -102,6 +104,7 @@ export const FPAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_adopsjon)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_Adopsjon)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -118,6 +121,7 @@ export const FPTerminInnvilget: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_termin_innvilget)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_termin_innvilget)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -134,6 +138,7 @@ export const FPMedTilbakekreving: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_fødsel_tilbakekreving)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_tilbakekreving)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -150,6 +155,7 @@ export const FPEtterlysIM: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_etterlyst_IM)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_etterlys_IM)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -166,6 +172,7 @@ export const FPForTidligSøknad: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_for_tidlig_søknad)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_for_tidlig_søknad)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -182,6 +189,7 @@ export const FPManglerDokumentasjon: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_mangler_dokumentasjon)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_mangler_dokumentasjon)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg_FP)),
@@ -199,6 +207,7 @@ export const FPNySøknad: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_ny_søknad)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_FP_ny_søknad)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg_FP)),
@@ -215,6 +224,7 @@ export const SVPInnvilget: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_SVP_innvilget)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_SVP_innvilget)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -231,6 +241,7 @@ export const SVPUnderBehandling: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_SVP_under_behandling)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_SVP_under_behandling)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -247,6 +258,7 @@ export const ESAdopsjonInnvilget: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_adopsjon_innvilget)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_adopsjon_innvilget)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -263,6 +275,7 @@ export const ESAdopsjonAvslag: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_adopsjon_avslag)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_adopsjon_avslag)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
@@ -279,6 +292,7 @@ export const ESUnderBehandling: Story = {
     parameters: {
         msw: {
             handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker_ES_under_behandling)),
                 http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjehendelser_ES_under_behandling)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
