@@ -14,7 +14,7 @@
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "3.6.1",
         "@navikt/vite-mode": "0.13.6",
-        "express": "5.1.0"
+        "express": "5.2.0"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",

@@ -9,7 +9,7 @@
         "build": "ncc build ./src/index.ts -o dist -t --no-cache"
     },
     "dependencies": {
-        "express": "5.1.0",
+        "express": "5.2.0",
         "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {

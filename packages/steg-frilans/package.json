@@ -18,22 +18,22 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/ds-css": "7.34.0",
-        "@navikt/ds-react": "7.34.0",
+        "@navikt/ds-css": "7.35.0",
+        "@navikt/ds-react": "7.35.0",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@tailwindcss/vite": "4.1.13",
-        "dayjs": "1.11.18",
-        "react": "19.1.1",
-        "react-dom": "19.1.1",
-        "react-hook-form": "7.63.0",
-        "react-intl": "7.1.11"
+        "@tailwindcss/vite": "4.1.17",
+        "dayjs": "1.11.19",
+        "react": "19.2.0",
+        "react-dom": "19.2.0",
+        "react-hook-form": "7.67.0",
+        "react-intl": "7.1.14"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "7.4.4",
-        "@navikt/ds-tailwind": "7.34.0",
+        "@navikt/ds-tailwind": "7.35.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
