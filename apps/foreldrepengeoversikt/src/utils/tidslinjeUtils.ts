@@ -289,8 +289,9 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak) => {
 export const finnIndex = (hendelserForVisning: Tidslinjehendelse2[]): number => {
     const index = hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(Date.now(), 'd')) - 1;
 
-    // Fant ingen hendelser etter idag. Mao er alle fullført
-    if (index < 0) {
+    // Siden vi trekker 1 fra index må vi sjekke fra -2 for å bestemme om vi ikke fant noen index.
+    // Isåfall er alle hendelsene passert.
+    if (index <= -2) {
         return hendelserForVisning.length;
     }
 

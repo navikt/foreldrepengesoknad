@@ -55,12 +55,19 @@ const søkersBarn = [
 
 type StoryArgs = {
     saksnummer: string;
+    mockDate?: number;
 } & ComponentProps<typeof TidslinjePage>;
 
 const meta = {
     title: 'TidslinjePage',
     component: TidslinjePage,
-    decorators: [withQueryClient, withMockDate(new Date('2025-11-27'))],
+    decorators: [withQueryClient, withMockDate],
+    argTypes: {
+        mockDate: {
+            control: 'date',
+            description: 'Mock the current date for the story',
+        },
+    },
     render: ({ saksnummer, ...props }) => {
         return (
             <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/${saksnummer}`]}>
