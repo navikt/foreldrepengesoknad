@@ -55,7 +55,7 @@ const createTilretteleggingSteps = ({
     tilretteleggingId,
     typeArbeidsgiver,
 }: {
-    currentPath: SøknadRoute | string;
+    currentPath: string;
     labels: Record<SøknadRoute, string>;
     tilretteleggingId: string;
     tilrettelegging?: DelvisTilrettelegging | IngenTilrettelegging;
@@ -120,7 +120,7 @@ const getTilretteleggingLabels = (
     return getStepLabels(intl, erFlereTilrettelegginger, navn);
 };
 
-const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<SøknadRoute | string> => ({
+const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<string> => ({
     id: route,
     label: getStepLabels(intl)[route],
     isSelected: currentPath === route.toString(),
@@ -128,10 +128,10 @@ const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): 
 
 const getStepConfig = (
     intl: IntlShape,
-    currentPath: SøknadRoute | string,
+    currentPath: string,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-): Array<ProgressStep<SøknadRoute | string>> => {
+): Array<ProgressStep<string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
     const valgteArbeidsforhold = getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
@@ -233,9 +233,7 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-): Array<ProgressStep<SøknadRoute | string>> => {
+export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Array<ProgressStep<string>> => {
     const intl = useIntl();
 
     const location = useLocation();

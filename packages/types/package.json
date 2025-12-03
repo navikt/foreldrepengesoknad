@@ -17,7 +17,7 @@
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "@hey-api/openapi-ts": "0.87.5",
+        "@hey-api/openapi-ts": "0.88.0",
         "eslint": "9.39.1"
     },
     "packageManager": "pnpm@10.18.3"

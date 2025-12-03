@@ -33,6 +33,7 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;

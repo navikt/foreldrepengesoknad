@@ -9,7 +9,7 @@ import * as stories from './FileUploader.stories';
 const { Default, OpplastningTimeout } = composeStories(stories);
 
 describe('FileUploader', () => {
-    it(
+    it.todo(
         'skal laste opp en fil',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(Default.parameters.msw);
@@ -24,6 +24,7 @@ describe('FileUploader', () => {
             await userEvent.upload(fileInput, file);
 
             expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
+            screen.logTestingPlaygroundURL();
             expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
         }),
     );

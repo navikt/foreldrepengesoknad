@@ -27,10 +27,10 @@ export interface Søknadsinfo {
     stønadskontoer: KontoBeregningDto;
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
-    eksisterendeSak: EksisterendeSak | undefined;
+    eksisterendeSak?: EksisterendeSak;
     perioderSomSkalSendesInn: Periode[];
     barn: Barn;
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
-    minsterettUkerToTette: number | undefined;
+    minsterettUkerToTette?: number;
 }

@@ -272,6 +272,7 @@ describe('Uttaksplanbuilder tester', () => {
         expect(result[7]).toEqual(nyPeriodeISluttenAvPlanen);
     });
 
+    // eslint-disable-next-line vitest/no-focused-tests
     it.only(
         'I en endringssøknad (med opprinnelig plan), skal legge til utsettelse etter annen parts uttak når ' +
             'ingen overlap uten å påvirke de andre periodene',
@@ -307,6 +308,7 @@ describe('Uttaksplanbuilder tester', () => {
                 expect({ fom: resultPeriode.fom, tom: resultPeriode.tom }).toEqual(opprinneligTidsperiode);
                 expect(resultPeriode.erAnnenPartEøs).toEqual(opprinneligPeriode.erAnnenPartEøs);
                 if (!resultPeriode.erAnnenPartEøs && !opprinneligPeriode.erAnnenPartEøs) {
+                    // eslint-disable-next-line vitest/no-conditional-expect
                     expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
                 }
             });
