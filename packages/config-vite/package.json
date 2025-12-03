@@ -6,8 +6,8 @@
     "dependencies": {
         "@tailwindcss/vite": "4.1.13",
         "@vitejs/plugin-react": "5.1.1",
-        "@vitest/browser": "3.2.4",
-        "vite": "7.2.4",
+        "@vitest/browser": "4.0.14",
+        "vite": "7.2.6",
         "vitest": "3.2.4"
     },
     "packageManager": "pnpm@10.18.3"
