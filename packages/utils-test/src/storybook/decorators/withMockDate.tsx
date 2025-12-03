@@ -6,6 +6,7 @@ export const withMockDate =
     (Story, context) => {
         const mockDateSinceEpoch = (context.args.mockDate ?? defaultDate) as number;
         MockDate.set(mockDateSinceEpoch);
+        console.log('mockdate set in story');
 
         return (
             <>
