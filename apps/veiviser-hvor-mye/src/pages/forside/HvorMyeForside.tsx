@@ -21,7 +21,7 @@ export const HvorMyeForside = () => {
                 goToNextDefaultStep={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
                 icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
             />
-            <div className="bg-ax-neutral-200">
+            <div className="bg-ax-neutral-200 pb-5">
                 <LinkCard className="mx-auto max-w-[560px]">
                     <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
                         <LinkCard.Icon>
