@@ -21,6 +21,7 @@ import { getVarighetString } from '../../utils/dateUtils';
 import { getGradering } from '../../utils/graderingUtils';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { RødRamme } from './utils/RødRamme';
 import { finnAntallDager } from './utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from './utils/useMediaActions';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
@@ -112,7 +113,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
             gap="space-2"
             className={
                 !erMinimert
-                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto pt-[70px] md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
+                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
                     : undefined
             }
         >
@@ -120,14 +121,19 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
                 <Box.New background="accent-soft" padding="4">
                     <VStack gap="space-8">
                         <HStack justify="space-between" align="center" wrap={false}>
-                            <Heading size="xsmall">
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{
-                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    }}
-                                />
-                            </Heading>
+                            <RødRamme>
+                                <Heading size="xsmall">
+                                    <FormattedMessage
+                                        id="RedigeringPanel.ValgteDager"
+                                        values={{
+                                            varighet: getVarighetString(
+                                                finnAntallDager(sammenslåtteValgtePerioder),
+                                                intl,
+                                            ),
+                                        }}
+                                    />
+                                </Heading>
+                            </RødRamme>
                             {visPeriodeDetaljer ? (
                                 <ChevronUpIcon
                                     title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
@@ -150,10 +156,9 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
             <Show below="md">
                 <VStack gap="space-12">
                     <Box.New
-                        background="accent-soft"
                         padding="space-12"
                         onClick={() => setErMinimert(!erMinimert)}
-                        className="hover:bg-ax-shadow-dialog cursor-pointer hover:border-b hover:border-t"
+                        className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
                     >
                         <VStack gap="space-4" align="center">
                             {erMinimert ? (
@@ -170,18 +175,20 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
                                 />
                             )}
 
-                            <HStack justify="space-between" align="center" wrap={false}>
-                                <Heading size="xsmall">
-                                    <FormattedMessage
-                                        id="RedigeringPanel.ValgteDager"
-                                        values={{
-                                            varighet: getVarighetString(
-                                                finnAntallDager(sammenslåtteValgtePerioder),
-                                                intl,
-                                            ),
-                                        }}
-                                    />
-                                </Heading>
+                            <HStack>
+                                <RødRamme>
+                                    <Heading size="xsmall">
+                                        <FormattedMessage
+                                            id="RedigeringPanel.ValgteDager"
+                                            values={{
+                                                varighet: getVarighetString(
+                                                    finnAntallDager(sammenslåtteValgtePerioder),
+                                                    intl,
+                                                ),
+                                            }}
+                                        />
+                                    </Heading>
+                                </RødRamme>
                             </HStack>
                         </VStack>
                     </Box.New>
