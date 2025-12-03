@@ -11,7 +11,7 @@ import { RødRamme } from './utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
 interface Props {
-    scrollToKvoteOppsummering?: () => void;
+    scrollToKvoteOppsummering: () => void;
 }
 
 export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering }: Props) => {

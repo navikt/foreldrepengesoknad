@@ -178,7 +178,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             </InlineMessage>
                         )}
                     </div>
-                    {!readOnly && uttaksplanRedigering && (
+                    {!readOnly && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
                                 'fixed bottom-0 left-0 right-0 z-40 w-full',

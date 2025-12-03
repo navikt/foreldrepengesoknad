@@ -12,7 +12,7 @@ import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './cont
 type Props = {
     valgtePerioder: CalendarPeriod[];
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    scrollToKvoteOppsummering?: () => void;
+    scrollToKvoteOppsummering: () => void;
 };
 
 export const RedigerKalenderIndex = (props: Props) => (
@@ -21,7 +21,7 @@ export const RedigerKalenderIndex = (props: Props) => (
     </KalenderRedigeringProvider>
 );
 
-const RedigerKalender = ({ scrollToKvoteOppsummering }: { scrollToKvoteOppsummering?: () => void }) => {
+const RedigerKalender = ({ scrollToKvoteOppsummering }: { scrollToKvoteOppsummering: () => void }) => {
     const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
