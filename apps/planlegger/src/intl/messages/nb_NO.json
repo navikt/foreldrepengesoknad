@@ -146,7 +146,7 @@
     "OmPlanleggerenSteg.TaVarePåHeader": "{erAlenesøker, select, true {Du} other {Dere}} kan ta vare på resultatet",
     "OmPlanleggerenSteg.TaVarePå": "Ved å kopiere lenken kan {erAlenesøker, select, true {du} other {dere}} ta vare på resultatet for å se på det senere, endre eller dele. Det {erAlenesøker, select, true {du} other {dere}} har oppgitt vil da bli synlig for den du deler med",
     "PlanleggerForside.Tittel": "Planlegg foreldrepenger",
-    "PlanleggerForside.Label": "Ca 5 min",
+    "PlanleggerForside.Label": "Ca 5-10 min",
     "OppsummeringSteg.Infoboks.IngenHarRettDeg": "Du har ikke rett til foreldrepenger",
     "OppsummeringSteg.Infoboks.IngenHarRett": "Ingen av dere har rett til foreldrepenger",
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Basert på svarene {erAleneforsørger, select, true {dine har du ikke} other {deres har ingen av dere}} rett på foreldrepenger.",

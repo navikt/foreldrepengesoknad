@@ -290,7 +290,7 @@ export const MorOgMedmorKunMedmorHarRettMorIngenAvDisse: Story = {
 
 export const BareMorSøkerOgHarRett: Story = {
     args: {
-        ...MorOgFarBeggeHarRett.args,
+        ...MorOgFarKunMorHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -347,6 +347,7 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        stønadskontoer: MorOgFarKunFarHarRettMorIngenAvDisse.args.stønadskontoer,
     },
 };
 
@@ -358,6 +359,7 @@ export const FarOgFarKunMedfarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
+        stønadskontoer: MorOgFarKunFarHarRettMorIngenAvDisse.args.stønadskontoer,
     },
 };
 
