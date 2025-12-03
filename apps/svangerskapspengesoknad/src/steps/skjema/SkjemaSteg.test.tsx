@@ -43,7 +43,7 @@ describe('<SkjemaSteg>', () => {
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
-
+            screen.logTestingPlaygroundURL();
             expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
             expect(
                 await screen.findByText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
