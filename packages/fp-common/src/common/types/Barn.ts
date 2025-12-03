@@ -37,23 +37,19 @@ export interface AdoptertBarn extends Common {
     fnr?: string[];
 }
 
-export interface AdoptertStebarn extends AdoptertBarn {
-    type: BarnType.ADOPTERT_STEBARN;
-}
-
 export interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
     ankomstdato?: string;
 }
 
-export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
+export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
 
 export interface BarnFraNesteSak {
     familiehendelsesdato: Date;
     startdatoFørsteStønadsperiode: Date;
-    fnr: string[] | undefined;
-    annenForelderFnr: string | undefined;
+    fnr?: string[];
+    annenForelderFnr?: string;
 }
 
 export const isIkkeUtfyltTypeBarn = (barn: Barn): barn is IkkeUtfyltTypeBarn => {
@@ -72,7 +68,7 @@ export const isAdoptertBarn = (barn: Barn): barn is AdoptertBarn => {
     return barn.type === BarnType.ADOPTERT_STEBARN || barn.type === BarnType.ADOPTERT_ANNET_BARN;
 };
 
-export const isAdoptertStebarn = (barn: Barn): barn is AdoptertStebarn => {
+export const isAdoptertStebarn = (barn: Barn): barn is AdoptertBarn => {
     return barn.type === BarnType.ADOPTERT_STEBARN;
 };
 

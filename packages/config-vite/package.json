@@ -6,7 +6,7 @@
     "dependencies": {
         "@tailwindcss/vite": "4.1.17",
         "@vitejs/plugin-react": "5.1.1",
-        "@vitest/browser": "4.0.14",
+        "@vitest/browser": "3.2.4",
         "vite": "7.2.6",
         "vitest": "3.2.4"
     },

@@ -2,19 +2,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import {
-    AdoptertAnnetBarn,
-    AdoptertBarn,
-    AdoptertStebarn,
-    isAdoptertAnnetBarn,
-    isAdoptertStebarn,
-} from '@navikt/fp-common';
+import { AdoptertAnnetBarn, AdoptertBarn, isAdoptertAnnetBarn, isAdoptertStebarn } from '@navikt/fp-common';
 import { formatDate } from '@navikt/fp-utils';
 
 import { getAntallBarnTekst } from './BarnFødselOppsummering';
 
 interface Props {
-    barn: AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;
+    barn: AdoptertBarn | AdoptertAnnetBarn;
 }
 
 export const BarnAdoptertOppsummering = ({ barn }: Props) => {

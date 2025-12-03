@@ -82,7 +82,7 @@ interface AvslåttPeriode extends InfoPeriodeBase {
     type: Periodetype.Info;
     infotype: PeriodeInfoType.avslåttPeriode;
     avslåttPeriodeType?: Periodetype;
-    kontoType: KontoTypeUttak | undefined;
+    kontoType?: KontoTypeUttak;
     forelder: BrukerRolleSak_fpoversikt;
     overskrives: true;
     visPeriodeIPlan: boolean;

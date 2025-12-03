@@ -31,17 +31,13 @@ interface AdoptertBarn extends Common {
     fnr?: string[];
 }
 
-interface AdoptertStebarn extends AdoptertBarn {
-    type: BarnType.ADOPTERT_STEBARN;
-}
-
 interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
     ankomstdato?: string;
 }
 
-export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
+export type Barn = FødtBarn | UfødtBarn | AdoptertBarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
 export const isIkkeUtfyltTypeBarn = (barn: Barn): barn is IkkeUtfyltTypeBarn => {
     return barn.type === BarnType.IKKE_UTFYLT;
 };

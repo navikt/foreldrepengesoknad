@@ -16,7 +16,7 @@ import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
 interface Props {
-    closePanel: () => void | undefined;
+    closePanel: () => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     permisjonsperiode: Permisjonsperiode;

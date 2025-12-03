@@ -287,6 +287,7 @@ export const getRuteVelgArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): SøknadRoute | string => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
