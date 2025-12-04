@@ -247,6 +247,7 @@ vi.mock('ky');
 describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     it('skal sende inn korrekt søknad', async () => {

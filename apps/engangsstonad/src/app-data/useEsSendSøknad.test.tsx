@@ -101,6 +101,7 @@ vi.mock('ky');
 describe('useEsSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     it('skal sende inn korrekt data ved adopsjon', async () => {

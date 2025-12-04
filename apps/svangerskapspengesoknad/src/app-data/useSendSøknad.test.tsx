@@ -175,6 +175,7 @@ vi.mock('ky');
 describe('useSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
