@@ -77,7 +77,6 @@
         "@types/lodash": "4.17.21",
         "@types/react": "19.2.7",
         "@types/react-dom": "19.2.3",
-        "@vitest/browser": "3.2.4",
         "eslint": "9.39.1",
         "fast-glob": "3.3.3",
         "http-proxy-middleware": "3.0.5",
@@ -88,7 +87,7 @@
         "ts-node": "^10.9.2",
         "typescript": "5.9.3",
         "vite": "7.2.6",
-        "vitest": "3.2.4"
+        "vitest": "4.0.15"
     },
     "packageManager": "pnpm@10.18.3"
 }
