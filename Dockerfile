@@ -65,6 +65,7 @@ FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist/index.js /app
+COPY --from=server-build /usr/src/app/${SERVER}/dist/default-stylesheet.css /app
 COPY --from=client /public /app/public
 WORKDIR /app
 
