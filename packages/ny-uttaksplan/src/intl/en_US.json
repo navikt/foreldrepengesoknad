@@ -264,5 +264,8 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Do you want to remove everything from the plan?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Are you sure you want to remove everything from the plan?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Yes, remove everything",
-    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel"
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel",
+    "UttaksplanLegend.HvaFargeneBetyr": "What the colors mean",
+    "UttaksplanLegend.ApneFargeForklaring": "Open color explanation",
+    "UttaksplanLegend.LukkFargeForklaring": "Close color explanation"
 }

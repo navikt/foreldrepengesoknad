@@ -12,9 +12,10 @@ import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
 interface Props {
     scrollToKvoteOppsummering: () => void;
+    labels: React.ReactNode;
 }
 
-export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering }: Props) => {
+export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Props) => {
     const intl = useIntl();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -65,6 +66,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering }: Props) => {
             </Box.New>
             {!erMinimert && (
                 <VStack gap="space-16" className="px-4 pb-4">
+                    {labels}
                     <VStack gap="space-16">
                         <Show above="md">
                             <RødRamme>
