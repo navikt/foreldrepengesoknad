@@ -1,1 +1,0 @@
-import{I as r}from"./IkkeKvinne-68cyxF1B.js";import"./iframe-CAcyJ73M.js";import"./preload-helper-PPVm8Dsz.js";const s={title:"pages/IkkeKvinne",component:r},e={};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:"{}",...e.parameters?.docs?.source}}};const m=["Default"];export{e as Default,m as __namedExportsOrder,s as default};
