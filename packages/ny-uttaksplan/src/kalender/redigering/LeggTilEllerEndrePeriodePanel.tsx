@@ -202,7 +202,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <div className={erMinimert ? 'hidden' : 'block'}>
-                    <div className="px-4 pb-4 pt-4">
+                    <div className="px-4 pt-4 pb-4">
                         {gyldigeKontotyper.length === 0 && (
                             <VStack gap="space-16">
                                 <Alert variant="info" role="alert">

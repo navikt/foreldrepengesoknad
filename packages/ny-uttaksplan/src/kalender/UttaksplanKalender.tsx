@@ -181,7 +181,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     {!readOnly && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
-                                'fixed bottom-0 left-0 right-0 z-40 w-full',
+                                'fixed right-0 bottom-0 left-0 z-40 w-full',
                                 'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-[20.5rem] ax-md:self-start',
                                 'pb-[env(safe-area-inset-bottom,1rem)]',
                             ].join(' ')}
