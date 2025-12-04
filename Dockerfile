@@ -44,7 +44,7 @@ COPY . .
 FROM --platform=${BUILDPLATFORM} builder AS server-build
 ARG SERVER
 WORKDIR /usr/src/app/${SERVER}
-RUN pnpm exec turbo test
+RUN pnpm exec turbo build
 
 #########################################
 # Client
@@ -55,7 +55,7 @@ ARG SENTRY_RELEASE
 WORKDIR /usr/src/app/apps/${APP}
 ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
-    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo test
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo build
 RUN mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
@@ -65,6 +65,7 @@ FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist/index.js /app
+COPY --from=server-build /usr/src/app/${SERVER}/dist/default-stylesheet.css /app
 COPY --from=client /public /app/public
 WORKDIR /app
 
