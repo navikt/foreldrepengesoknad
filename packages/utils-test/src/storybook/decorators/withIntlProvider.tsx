@@ -1,4 +1,4 @@
-import { ReactRenderer } from '@storybook/react';
+import { ReactRenderer } from '@storybook/react-vite';
 import { RawIntlProvider, createIntl } from 'react-intl';
 import { DecoratorFunction } from 'storybook/internal/csf';
 

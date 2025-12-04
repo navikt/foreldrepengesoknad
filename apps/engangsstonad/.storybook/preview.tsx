@@ -79,17 +79,14 @@ export const globalTypes = {
     },
 };
 
+initialize({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+        url: './mockServiceWorker.js',
+    },
+});
 const preview: Preview = {
     decorators: [withIntlProvider, withThemeDecorator],
-    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
-    beforeAll: async () => {
-        initialize({
-            onUnhandledRequest: 'bypass',
-            serviceWorker: {
-                url: './mockServiceWorker.js',
-            },
-        });
-    },
     loaders: [mswLoader],
 };
 
