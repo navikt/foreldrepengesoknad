@@ -68,9 +68,7 @@
     "@navikt/fp-types": "workspace:*",
     "@navikt/fp-utils-test": "workspace:*",
     "@navikt/nav-dekoratoren-moduler": "3.6.1",
-    "@storybook/addon-actions": "9.0.8",
     "@storybook/cli": "10.1.4",
-    "@storybook/react": "10.1.4",
     "@storybook/react-vite": "10.1.4",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
@@ -93,7 +91,8 @@
     "ts-node": "^10.9.2",
     "typescript": "5.9.3",
     "vite": "7.2.6",
-    "vitest": "3.2.4"
+    "vitest": "3.2.4",
+    "eslint-plugin-storybook": "10.1.4"
   },
   "packageManager": "pnpm@10.18.3"
 }

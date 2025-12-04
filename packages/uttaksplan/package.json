@@ -51,11 +51,12 @@
     "@testing-library/user-event": "14.6.1",
     "@types/lodash": "4.17.21",
     "@vitejs/plugin-react": "5.1.1",
+    "eslint-plugin-storybook": "10.1.4",
     "fast-glob": "3.3.3",
     "mockdate": "3.0.5",
     "sass-embedded": "^1.93.2",
     "storybook": "10.1.4",
-    "storybook-react-intl": "4.0.7",
+    "storybook-react-intl": "10.0.1",
     "vite": "7.2.6",
     "vitest": "3.2.4"
   },
