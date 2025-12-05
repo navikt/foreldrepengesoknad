@@ -191,7 +191,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 labels={
                                     <UttaksplanLegend
                                         perioderForKalendervisning={perioderForKalendervisning}
-                                        readOnly={readOnly}
+                                        readOnly
                                         selectLegend={setValgtLegend}
                                         skjulTekstSomDefault
                                     />

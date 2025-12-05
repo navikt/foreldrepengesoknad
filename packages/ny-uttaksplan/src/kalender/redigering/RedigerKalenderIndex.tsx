@@ -65,10 +65,14 @@ const RedigerKalender = ({
                         <LeggTilEllerEndrePeriodePanel
                             key={erKunEnHelEksisterendePeriodeValgt ? 1 : 0} // Reset av form når en går fra endre til legg til og omvendt
                             lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
+                            labels={labels}
                         />
                     )}
                     {!erIRedigeringsmodus && (
-                        <PeriodeOversiktPanel åpneRedigeringsmodus={() => setErIRedigeringsmodus(true)} />
+                        <PeriodeOversiktPanel
+                            åpneRedigeringsmodus={() => setErIRedigeringsmodus(true)}
+                            labels={labels}
+                        />
                     )}
                 </>
             )}

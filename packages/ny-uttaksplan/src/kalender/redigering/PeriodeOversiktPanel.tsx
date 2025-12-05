@@ -17,9 +17,10 @@ import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
 interface Props {
     åpneRedigeringsmodus: () => void;
+    labels: React.ReactNode;
 }
 
-export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
+export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
 
     const { erFarEllerMedmor } = useUttaksplanData();
@@ -134,7 +135,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus }: Props) => {
 
             {!erMinimert && (
                 <div className="block px-4 pb-4">
-                    <VStack gap="space-24">
+                    <VStack gap="space-12">
+                        {labels}
                         <PeriodeDetaljerOgInfoMeldinger />
                         <VStack gap="space-12">
                             <Show above="md">
