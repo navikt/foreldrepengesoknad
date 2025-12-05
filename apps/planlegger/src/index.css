@@ -1,4 +1,14 @@
 @import 'tailwindcss';
 @import '@navikt/ds-css/darkside' layer(components);
-@config "@navikt/ds-tailwind/darkside-tw3";
-@source "../../../packages/*/src/**";
+@config '@navikt/ds-tailwind/darkside-tw3';
+@source '../../../packages/*/src/**';
+
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    overflow: auto;
+    height: 100%;
+}
