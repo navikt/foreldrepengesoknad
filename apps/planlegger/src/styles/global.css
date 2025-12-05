@@ -1,3 +1,8 @@
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: 'Source Sans Pro', Arial !important;
     font-size: 16px;
@@ -6,7 +11,8 @@ body {
     font-weight: 400;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
+    overflow: auto;
 }
 
 #app {
