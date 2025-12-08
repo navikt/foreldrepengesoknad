@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
@@ -29,18 +29,18 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 4, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /barnet ble adoptert/i,
-                /du søkte om foreldrepenger/i,
-                /du vil få et svar på søknaden din/i,
-                /3 år siden adopsjonsdato/i,
-            ]);
-            verifiserTeksterIKronologiskRekkefølge([
-                /25. november 2025/i,
-                /27. november 2025 kl 01:00/i,
-                /senere/i,
-                /25. nov. 2028/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(timelineEvents[3]!).getByText(/3 år siden adopsjonsdato/i)).toBeInTheDocument();
+
+            const timelineDatoer = container.querySelectorAll<HTMLElement>('.aksel-process__timestamp');
+            expect(within(timelineDatoer[0]!).getByText(/25. november 2025/i)).toBeInTheDocument();
+            expect(within(timelineDatoer[1]!).getByText(/27. november 2025 kl 01:00/i)).toBeInTheDocument();
+            expect(within(timelineDatoer[2]!).getByText(/senere/i)).toBeInTheDocument();
+            expect(within(timelineDatoer[3]!).getByText(/25. nov. 2028/i)).toBeInTheDocument();
         }),
     );
 
@@ -52,11 +52,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /barnet ble adoptert/i,
-                /du søkte om foreldrepenger/i,
-                /du vil få et svar på søknaden din/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
         }),
     );
 
@@ -68,13 +68,15 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 5, completed: 5 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /termindato/i,
-                /du søkte om foreldrepenger/i,
-                /nav har sendt deg brev fordi vi mangler inntektsmelding/i,
-                /nav mottok inntektsmelding/i,
-                /søknaden din ble innvilget/i,
-            ]);
+
+            const items = screen.getAllByRole('listitem');
+            expect(within(items[0]!).getByText(/termindato/i)).toBeInTheDocument();
+            expect(within(items[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(
+                within(items[2]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
+            ).toBeInTheDocument();
+            expect(within(items[3]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+            expect(within(items[4]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
         }),
     );
 
@@ -86,14 +88,16 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 6, completed: 6 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /barnet ble født/i,
-                /du søkte om foreldrepenger/i,
-                /nav mottok inntektsmelding/i,
-                /søknaden din ble innvilget/i,
-                /du har fått et svar på søknaden din/i,
-                /nav har sendt deg varsel om tilbakebetaling/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+            expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+            expect(within(timelineEvents[4]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
+            expect(
+                within(timelineEvents[5]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
+            ).toBeInTheDocument();
         }),
     );
 
@@ -105,11 +109,13 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /søknaden din ble innvilget/i,
-                /du har fått et svar på søknaden din/i,
-                /nav har sendt deg varsel om tilbakebetaling/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
+            expect(
+                within(timelineEvents[2]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
+            ).toBeInTheDocument();
         }),
     );
 
@@ -121,13 +127,15 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om foreldrepenger/i,
-                /nav har sendt deg brev fordi vi mangler inntektsmelding/i,
-                /arbeidsgiver skal sende inntektsmelding til nav/i,
-                /Du vil få et svar på søknaden din/i,
-                /termindato/i,
-            ]);
+
+            const items = screen.getAllByRole('listitem');
+            expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(
+                within(items[1]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
+            ).toBeInTheDocument();
+            expect(within(items[2]!).getByText(/arbeidsgiver skal sende inntektsmelding til nav/i)).toBeInTheDocument();
+            expect(within(items[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(items[4]!).getByText(/termindato/i)).toBeInTheDocument();
         }),
     );
 
@@ -139,12 +147,14 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om foreldrepenger/i,
-                /vi kan tidligst behandle søknaden din 05.01.2026/i,
-                /Du vil få et svar på søknaden din/i,
-                /termindato/i,
-            ]);
+
+            const items = screen.getAllByRole('listitem');
+            expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(
+                within(items[1]!).getByText(/vi kan tidligst behandle søknaden din 05.01.2026/i),
+            ).toBeInTheDocument();
+            expect(within(items[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(items[3]!).getByText(/termindato/i)).toBeInTheDocument();
         }),
     );
 
@@ -156,12 +166,12 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om foreldrepenger/i,
-                /du må sende inn dokumentasjon/i,
-                /Du vil få et svar på søknaden din/i,
-                /termindato/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(timelineEvents[3]!).getByText(/termindato/i)).toBeInTheDocument();
 
             // Verify manglende vedlegg list items
             const terminbekreftelse = screen.getByText(/Terminbekreftelse/i);
@@ -187,11 +197,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om foreldrepenger/i,
-                /du må sende inn dokumentasjon/i,
-                /Du vil få et svar på søknaden din/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
         }),
     );
 
@@ -203,13 +213,13 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om foreldrepenger/i,
-                /du sendte en ny søknad/i,
-                /du må sende inn dokumentasjon/i,
-                /Du vil få et svar på søknaden din/i,
-                /termindato/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du sendte en ny søknad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+            expect(within(timelineEvents[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
         }),
     );
 
@@ -221,16 +231,13 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 5, completed: 4 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om svangerskapspenger/i,
-                /søknaden din ble innvilget/i,
-                /termindato/i,
-            ]);
 
-            // NOTE: Disse skulle ideelt vært testet i verifiserTeksterIKronologiskRekkefølge,
-            // men å utvide funksjonen til å støtte duplikater som også skal være kronologisk forkludret veldig.
-            // Siden det bare gjelder denne testen gjør vi heller et unntak.
-            expect(screen.getAllByText(/nav mottok inntektsmelding/i)).toHaveLength(2);
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+            expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+            expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
         }),
     );
 
@@ -242,11 +249,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om svangerskapspenger/i,
-                /du vil få et svar på søknaden din/i,
-                /termindato/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/termindato/i)).toBeInTheDocument();
 
             screen.getByText('Du sendte 4 dokumenter').click();
             expect(screen.getByText('Søknad om svangerskapspenger')).toBeInTheDocument();
@@ -262,11 +269,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om engangsstønad/i,
-                /søknaden din ble innvilget/i,
-                /barnet blir adoptert/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
         }),
     );
 
@@ -278,11 +285,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om engangsstønad/i,
-                /søknaden din ble innvilget/i,
-                /barnet ble adoptert/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
         }),
     );
 
@@ -294,11 +301,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /du søkte om engangsstønad/i,
-                /søknaden din ble avslått/i,
-                /barnet blir adoptert/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/søknaden din ble avslått/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
         }),
     );
 
@@ -310,11 +317,11 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /barnet ble født/i,
-                /du søkte om engangsstønad/i,
-                /du vil få et svar på søknaden din/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
         }),
     );
 
@@ -326,43 +333,14 @@ describe('<TidslinjePage>', () => {
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-            verifiserTeksterIKronologiskRekkefølge([
-                /barnet ble født/i,
-                /du søkte om engangsstønad/i,
-                /du vil få et svar på søknaden din/i,
-            ]);
+
+            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+            expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
         }),
     );
 });
-
-/**
- * Util funksjon for å sjekke rekkefølge til DOM elementer utifra tekst.
- * Laget av ChatGPT
- */
-const verifiserTeksterIKronologiskRekkefølge = (tekster: Array<string | RegExp>) => {
-    const elements = tekster.map((tekst) => screen.getByText(tekst));
-
-    // Verify all texts are in the document
-    elements.forEach((element) => {
-        expect(element).toBeInTheDocument();
-    });
-
-    // Verify chronological order by comparing DOM positions
-    for (let i = 0; i < elements.length - 1; i++) {
-        const currentElement = elements[i];
-        const nextElement = elements[i + 1];
-
-        if (!currentElement || !nextElement) {
-            continue;
-        }
-
-        // compareDocumentPosition returns a bitmask
-        // DOCUMENT_POSITION_FOLLOWING (4) means the next element comes after the current one
-        const position = currentElement.compareDocumentPosition(nextElement);
-
-        expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    }
-};
 
 const verifiserHendelseStatus = ({
     container,
@@ -373,7 +351,7 @@ const verifiserHendelseStatus = ({
     antall: number;
     completed: number;
 }) => {
-    expect(container.querySelectorAll('.aksel-process__event')).toHaveLength(antall);
-    expect(container.querySelectorAll('[data-status="completed"]')).toHaveLength(completed);
-    expect(container.querySelectorAll('[data-status="uncompleted"]')).toHaveLength(antall - completed);
+    expect(container.querySelectorAll<HTMLElement>('.aksel-process__event')).toHaveLength(antall);
+    expect(container.querySelectorAll<HTMLElement>('[data-status="completed"]')).toHaveLength(completed);
+    expect(container.querySelectorAll<HTMLElement>('[data-status="uncompleted"]')).toHaveLength(antall - completed);
 };
