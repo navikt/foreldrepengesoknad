@@ -54,5 +54,10 @@ describe('<FormHooks>', () => {
         await userEvent.clear(inputfelt);
         await userEvent.type(inputfelt, '-1000,123');
         expect(inputfelt).toHaveValue(`${norskMinusTegn}1${norskMellomRom}000,12`);
+
+        // Skal ignorere mellomrom
+        await userEvent.clear(inputfelt);
+        await userEvent.type(inputfelt, '1 00');
+        expect(inputfelt).toHaveValue(`100`);
     });
 });
