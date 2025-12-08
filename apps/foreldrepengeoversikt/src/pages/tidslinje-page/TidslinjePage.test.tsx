@@ -35,6 +35,12 @@ describe('<TidslinjePage>', () => {
                 /du vil få et svar på søknaden din/i,
                 /3 år siden adopsjonsdato/i,
             ]);
+            verifiserTeksterIKronologiskRekkefølge([
+                /25. november 2025/i,
+                /27. november 2025 kl 01:00/i,
+                /senere/i,
+                /25. nov. 2028/i,
+            ]);
         }),
     );
 
@@ -110,7 +116,6 @@ describe('<TidslinjePage>', () => {
         }),
     );
 
-    // TODO: sjekk dokumenter og knapp
     it(
         'FP - Mangler dokumentasjon',
         mswWrapper(async ({ setHandlers }) => {
@@ -125,6 +130,20 @@ describe('<TidslinjePage>', () => {
                 /Du vil få et svar på søknaden din/i,
                 /termindato/i,
             ]);
+
+            // Verify manglende vedlegg list items
+            const terminbekreftelse = screen.getByText(/Terminbekreftelse/i);
+            expect(terminbekreftelse).toBeInTheDocument();
+            expect(terminbekreftelse.closest('.aksel-list__item')).toBeInTheDocument();
+
+            const dokumentasjonStudier = screen.getByText(/Dokumentasjon på at mor studerer på heltid/i);
+            expect(dokumentasjonStudier).toBeInTheDocument();
+            expect(dokumentasjonStudier.closest('.aksel-list__item')).toBeInTheDocument();
+
+            // Verify button with link
+            const button = screen.getByRole('button', { name: /Last opp dokumentasjon/i });
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveAttribute('href', expect.stringContaining('/ettersend'));
         }),
     );
 
@@ -146,7 +165,6 @@ describe('<TidslinjePage>', () => {
         }),
     );
 
-    // TODO: dokumenter
     it(
         'SVP - Innvilget',
         mswWrapper(async ({ setHandlers }) => {
@@ -181,6 +199,10 @@ describe('<TidslinjePage>', () => {
                 /du vil få et svar på søknaden din/i,
                 /termindato/i,
             ]);
+
+            screen.getByText('Du sendte 4 dokumenter').click();
+            expect(screen.getByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+            expect(screen.getAllByText(/skjema for tilrettelegging og omplassering ved graviditet/i)).toHaveLength(3);
         }),
     );
 
