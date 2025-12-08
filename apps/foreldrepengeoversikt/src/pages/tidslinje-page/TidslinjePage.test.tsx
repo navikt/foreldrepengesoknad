@@ -1,6 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
-import MockDate from 'mockdate';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
@@ -29,7 +28,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPAdopsjon />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 4, completed: 2, uncompleted: 2 });
+            verifiserHendelseStatus({ container, antall: 4, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /barnet ble adoptert/i,
                 /du søkte om foreldrepenger/i,
@@ -52,7 +51,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPTerminInnvilget />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 5, completed: 5, uncompleted: 0 });
+            verifiserHendelseStatus({ container, antall: 5, completed: 5 });
             verifiserTeksterIKronologiskRekkefølge([
                 /termindato/i,
                 /du søkte om foreldrepenger/i,
@@ -70,7 +69,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPMedTilbakekreving />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 6, completed: 6, uncompleted: 0 });
+            verifiserHendelseStatus({ container, antall: 6, completed: 6 });
             verifiserTeksterIKronologiskRekkefølge([
                 /barnet ble født/i,
                 /du søkte om foreldrepenger/i,
@@ -89,7 +88,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPEtterlysIM />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 5, completed: 2, uncompleted: 3 });
+            verifiserHendelseStatus({ container, antall: 5, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om foreldrepenger/i,
                 /nav har sendt deg brev fordi vi mangler inntektsmelding/i,
@@ -107,7 +106,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPForTidligSøknad />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 4, completed: 1, uncompleted: 3 });
+            verifiserHendelseStatus({ container, antall: 4, completed: 1 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om foreldrepenger/i,
                 /vi kan tidligst behandle søknaden din 05.01.2026/i,
@@ -124,7 +123,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPManglerDokumentasjon />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 4, completed: 1, uncompleted: 3 });
+            verifiserHendelseStatus({ container, antall: 4, completed: 1 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om foreldrepenger/i,
                 /du må sende inn dokumentasjon/i,
@@ -155,7 +154,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<FPNySøknad />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 5, completed: 2, uncompleted: 3 });
+            verifiserHendelseStatus({ container, antall: 5, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om foreldrepenger/i,
                 /du sendte en ny søknad/i,
@@ -173,7 +172,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<SVPInnvilget />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 5, completed: 4, uncompleted: 1 });
+            verifiserHendelseStatus({ container, antall: 5, completed: 4 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om svangerskapspenger/i,
                 /søknaden din ble innvilget/i,
@@ -194,7 +193,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<SVPUnderBehandling />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 1, uncompleted: 2 });
+            verifiserHendelseStatus({ container, antall: 3, completed: 1 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om svangerskapspenger/i,
                 /du vil få et svar på søknaden din/i,
@@ -214,7 +213,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<ESAdopsjonInnvilget />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om engangsstønad/i,
                 /søknaden din ble innvilget/i,
@@ -230,7 +229,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<ESAdopsjonInnvilget mockDate={new Date('2025-12-31').getTime()} />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 3, uncompleted: 0 });
+            verifiserHendelseStatus({ container, antall: 3, completed: 3 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om engangsstønad/i,
                 /søknaden din ble innvilget/i,
@@ -246,7 +245,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<ESAdopsjonAvslag />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om engangsstønad/i,
                 /søknaden din ble avslått/i,
@@ -262,7 +261,7 @@ describe('<TidslinjePage>', () => {
             const { container } = render(<ESUnderBehandling />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
             verifiserTeksterIKronologiskRekkefølge([
                 /barnet ble født/i,
                 /du søkte om engangsstønad/i,
@@ -305,14 +304,12 @@ const verifiserHendelseStatus = ({
     container,
     antall,
     completed,
-    uncompleted,
 }: {
     container: HTMLElement;
     antall: number;
     completed: number;
-    uncompleted: number;
 }) => {
     expect(container.querySelectorAll('.aksel-process__event')).toHaveLength(antall);
     expect(container.querySelectorAll('[data-status="completed"]')).toHaveLength(completed);
-    expect(container.querySelectorAll('[data-status="uncompleted"]')).toHaveLength(uncompleted);
+    expect(container.querySelectorAll('[data-status="uncompleted"]')).toHaveLength(antall - completed);
 };
