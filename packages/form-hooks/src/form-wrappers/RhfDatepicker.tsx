@@ -32,6 +32,25 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
     return disabledDays;
 };
 
+const formatDateInput = (value: string): string => {
+    // Håndter 8-sifret format: "22102022" → "22.10.2022"
+    if (/^\d{8}$/.test(value)) {
+        return `${value.slice(0, 2)}.${value.slice(2, 4)}.${value.slice(4, 8)}`;
+    }
+
+    // Håndter 6-sifret format hvis man bare vil skrive inn to desimaler for året: "221019" → "22.10.2019"
+    if (/^\d{6}$/.test(value)) {
+        const twoDigitYear = value.slice(4, 6);
+        // Hopp over hvis året starter med "20" (sannsynligvis 4-sifret år)
+        if (twoDigitYear !== '20') {
+            const fullYear = parseInt(twoDigitYear, 10) < 50 ? `20${twoDigitYear}` : `19${twoDigitYear}`;
+            return `${value.slice(0, 2)}.${value.slice(2, 4)}.${fullYear}`;
+        }
+    }
+
+    return value;
+};
+
 type Props<T extends FieldValues> = {
     label?: string | ReactNode;
     description?: string;
@@ -105,14 +124,15 @@ export const RhfDatepicker = <T extends FieldValues>({
 
     const onChangeInput = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            const verdi = dayjs(event.target.value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+            const inputValue = formatDateInput(event.target.value);
+            const verdi = dayjs(inputValue, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
             const isValidDate = isValidDateString(verdi);
 
-            setFieldValue(event.target.value);
+            setFieldValue(inputValue);
             if (onChange) {
-                onChange(isValidDate ? verdi : event.target.value);
+                onChange(isValidDate ? verdi : inputValue);
             }
-            field.onChange(isValidDate ? verdi : event.target.value);
+            field.onChange(isValidDate ? verdi : inputValue);
         },
         [setFieldValue, onChange, field],
     );
