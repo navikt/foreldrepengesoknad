@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
+import MockDate from 'mockdate';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
@@ -217,7 +218,23 @@ describe('<TidslinjePage>', () => {
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om engangsstønad/i,
                 /søknaden din ble innvilget/i,
-                /barnet ble født/i, // TODO: feil
+                /barnet blir adoptert/i,
+            ]);
+        }),
+    );
+
+    it(
+        'ES - adopsjon innvilget - senere dato',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(ESAdopsjonInnvilget.parameters.msw);
+            const { container } = render(<ESAdopsjonInnvilget mockDate={new Date('2025-12-31').getTime()} />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 3, uncompleted: 0 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om engangsstønad/i,
+                /søknaden din ble innvilget/i,
+                /barnet ble adoptert/i,
             ]);
         }),
     );
@@ -233,7 +250,7 @@ describe('<TidslinjePage>', () => {
             verifiserTeksterIKronologiskRekkefølge([
                 /du søkte om engangsstønad/i,
                 /søknaden din ble avslått/i,
-                /barnet ble født/i, // TODO: feil
+                /barnet blir adoptert/i,
             ]);
         }),
     );

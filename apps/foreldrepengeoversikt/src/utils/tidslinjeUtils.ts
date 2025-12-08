@@ -25,7 +25,6 @@ export const tidslinjeTittelForFamiliehendelse = ({
 }: TidslinjeTittelForFamiliehendelseProps): string => {
     const { familiehendelse } = sak;
     const gjelderAdopsjon = ('gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined) ?? false;
-
     const brukGeneriskNavn =
         barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever;
     const navn = brukGeneriskNavn
