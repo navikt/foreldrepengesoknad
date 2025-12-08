@@ -12,7 +12,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { TilpassPlanenSteg } from './TilpassPlanenSteg';
+import { PlanenDeresSteg } from './PlanenDeresSteg';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,
@@ -27,11 +27,11 @@ type StoryArgs = {
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
     uttaksplan: UttakPeriode_fpoversikt[];
-} & ComponentProps<typeof TilpassPlanenSteg>;
+} & ComponentProps<typeof PlanenDeresSteg>;
 
 const meta = {
-    title: 'steg/TilpassPlanenSteg',
-    component: TilpassPlanenSteg,
+    title: 'steg/PlanenDeresSteg',
+    component: PlanenDeresSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         hvemPlanlegger,
@@ -55,7 +55,7 @@ const meta = {
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
-                    <TilpassPlanenSteg stønadskontoer={stønadskontoer} />
+                    <PlanenDeresSteg stønadskontoer={stønadskontoer} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

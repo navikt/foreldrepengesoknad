@@ -8,7 +8,6 @@ export enum PlanleggerRoutes {
     HVOR_LANG_PERIODE = '/hvor-lenge',
     FORDELING = '/fordeling',
     PLANEN_DERES = '/planen-deres',
-    TILPASS_PLANEN = '/tilpass-planen',
     OPPSUMMERING = '/oppsummering',
 }
 
@@ -22,7 +21,6 @@ export const PATH_ORDER = [
     PlanleggerRoutes.HVOR_LANG_PERIODE,
     PlanleggerRoutes.FORDELING,
     PlanleggerRoutes.PLANEN_DERES,
-    PlanleggerRoutes.TILPASS_PLANEN,
     PlanleggerRoutes.OPPSUMMERING,
 ];
 

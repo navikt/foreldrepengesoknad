@@ -1,20 +1,21 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { set } from 'lodash';
+import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, Button, Chips, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { Calendar, CalendarPeriod, CalendarPeriodColor, monthDiff } from '@navikt/fp-ui';
-import { dateToISOString } from '@navikt/fp-utils';
+import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
+import { useAntallMånederIKalenderData } from './utils/useAntallMånederIKalenderData';
 import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervisning';
 
 interface Props {
@@ -25,19 +26,32 @@ interface Props {
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvoteOppsummering }: Props) => {
     const intl = useIntl();
-    const { familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
-    const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
 
-    const uttaksplanRedigering = useUttaksplanRedigering();
-
+    const [antallMånederLagtTilKalender, setAntallMånederLagtTilKalender] = useState(0);
+    const [erRedigeringAktiv, setErRedigeringAktiv] = useState(false);
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
 
+    const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
+        (periode) => {
+            setErRedigeringAktiv(true);
+            setValgtePerioder(periode);
+        },
+        [],
+    );
+
+    const uttaksplanRedigering = useUttaksplanRedigering();
+
     const perioderForKalendervisning = usePerioderForKalendervisning(barnehagestartdato);
+
+    const { førsteDatoIKalender, sisteDatoIKalender, maksAntallEkstraMåneder } = useAntallMånederIKalenderData(
+        antallMånederLagtTilKalender,
+        barnehagestartdato,
+    );
 
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
-        resolution: Resolution.HIGH,
+        resolution: Resolution.NORMAL,
         page: {
             margin: Margin.MEDIUM,
         },
@@ -57,55 +71,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         [intl],
     );
 
-    const getBaseLastDateInCalendar = useCallback(() => {
-        if (barnehagestartdato && uttaksplan.length > 0) {
-            return dayjs(barnehagestartdato).isSameOrAfter(dayjs(uttaksplan.at(-1)!.tom))
-                ? barnehagestartdato
-                : uttaksplan.at(-1)!.tom;
-        }
-        if (uttaksplan.length > 0) {
-            return uttaksplan.at(-1)!.tom;
-        }
-        return dateToISOString(dayjs(familiehendelsedato).add(6, 'month').toDate());
-    }, [barnehagestartdato, familiehendelsedato, uttaksplan]);
-
-    const firstDateInCalendar =
-        familiesituasjon === 'adopsjon'
-            ? familiehendelsedato
-            : dateToISOString(dayjs(familiehendelsedato).subtract(12, 'weeks').toDate());
-    let baseLastDateInCalendar = getBaseLastDateInCalendar();
-
-    if (!baseLastDateInCalendar) {
-        baseLastDateInCalendar = dateToISOString(dayjs(familiehendelsedato).add(6, 'month').toDate());
-    }
-
-    // Beregn den absolutte maksgrensen (3 år etter familiehendelsedato)
-    const absoluteMaksGrense = dateToISOString(dayjs(familiehendelsedato).add(3, 'year').toDate());
-
-    // Beregn maksimalt antall ekstra måneder som kan legges til
-    const maksAntallEkstraMåneder = useMemo(() => {
-        const baseLastDate = dayjs(baseLastDateInCalendar);
-        const maksGrense = dayjs(absoluteMaksGrense);
-
-        // Beregn hvor mange hele måneder det er mellom base siste dato og maksgrensen
-        return monthDiff(baseLastDate.toDate(), maksGrense.toDate());
-    }, [baseLastDateInCalendar, absoluteMaksGrense]);
-
-    // Beregn faktisk siste dato som skal vises i kalenderen
-    let lastDateInCalendar = baseLastDateInCalendar;
-    if (additionalMonthsToAddToLast > 0) {
-        const proposedLastDate = dayjs(baseLastDateInCalendar).add(additionalMonthsToAddToLast, 'month');
-        const maxDate = dayjs(absoluteMaksGrense);
-
-        // Sørg for at vi ikke overskrider 3 år etter familiehendelsedato
-        lastDateInCalendar = dateToISOString(
-            proposedLastDate.isAfter(maxDate) ? maxDate.toDate() : proposedLastDate.toDate(),
-        );
-    }
-
     const setValgtLegend = (color: CalendarPeriodColor) => {
         const perioder = perioderForKalendervisning.filter((p) => p.color === color);
-        setValgtePerioder(
+        setRedigeringAktivOgValgtePerioder(
             perioder.map((periode) => ({
                 color: 'DARKBLUE',
                 fom: periode?.fom,
@@ -116,24 +84,18 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         );
     };
 
+    const erRedigeringInaktiv = !erRedigeringAktiv && valgtePerioder.length === 0;
+
     return (
         <VStack gap="space-8">
             <AvslåttePerioder />
 
             <VStack gap="space-16" ref={targetRef}>
-                <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
-                    <UttaksplanLegend
-                        perioderForKalendervisning={perioderForKalendervisning}
-                        readOnly={readOnly}
-                        selectLegend={setValgtLegend}
-                    />
-                </div>
-
                 {!readOnly && (
                     <RadioGroup
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
                         onChange={() => {
-                            setValgtePerioder([]);
+                            setRedigeringAktivOgValgtePerioder([]);
                             setIsRangeSelection(!isRangeSelection);
                         }}
                         value={isRangeSelection}
@@ -149,19 +111,40 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
+                <Chips>
+                    <Chips.Toggle
+                        selected={erRedigeringAktiv}
+                        onClick={() => {
+                            setErRedigeringAktiv(!erRedigeringAktiv);
+                            setValgtePerioder([]);
+                        }}
+                    >
+                        {intl.formatMessage({ id: 'TilpassPlanenSteg.Redigeringsmodus' })}
+                    </Chips.Toggle>
+                </Chips>
+
+                <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
+                    <UttaksplanLegend
+                        perioderForKalendervisning={perioderForKalendervisning}
+                        readOnly={readOnly}
+                        selectLegend={setValgtLegend}
+                    />
+                </div>
+
                 <div className="ax-md:flex-row flex flex-col">
-                    <div className={readOnly ? 'flex-1' : 'ax-md:w-[295px]'}>
+                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-[295px]'}>
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
-                            setSelectedPeriods={readOnly ? undefined : setValgtePerioder}
+                            setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
+                            nrOfColumns={erRedigeringInaktiv ? 2 : 1}
                             isRangeSelection={isRangeSelection}
-                            firstDateInCalendar={firstDateInCalendar}
-                            lastDateInCalendar={lastDateInCalendar}
+                            firstDateInCalendar={førsteDatoIKalender}
+                            lastDateInCalendar={sisteDatoIKalender}
                         />
-                        {additionalMonthsToAddToLast <= maksAntallEkstraMåneder && !readOnly && (
+                        {antallMånederLagtTilKalender <= maksAntallEkstraMåneder && !erRedigeringInaktiv && (
                             <Button
-                                onClick={() => setAdditionalMonthsToAddToLast((value) => value + 3)}
+                                onClick={() => setAntallMånederLagtTilKalender((value) => value + 3)}
                                 type="button"
                                 variant="secondary"
                                 size="small"
@@ -170,13 +153,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
                             </Button>
                         )}
-                        {additionalMonthsToAddToLast > maksAntallEkstraMåneder && (
+                        {antallMånederLagtTilKalender > maksAntallEkstraMåneder && !erRedigeringInaktiv && (
                             <InlineMessage className="mt-2" status="info" role="status">
                                 <FormattedMessage id="UttaksplanKalender.Maks3År" />
                             </InlineMessage>
                         )}
                     </div>
-                    {!readOnly && uttaksplanRedigering && scrollToKvoteOppsummering && (
+                    {!readOnly && !erRedigeringInaktiv && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
                                 'fixed right-0 bottom-0 left-0 z-40 w-full',
@@ -186,7 +169,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                         >
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
-                                setValgtePerioder={setValgtePerioder}
+                                setValgtePerioder={setRedigeringAktivOgValgtePerioder}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                                 labels={
                                     <UttaksplanLegend

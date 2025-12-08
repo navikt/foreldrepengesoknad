@@ -1,11 +1,11 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
-import * as stories from './TilpassPlanenSteg.stories';
+import * as stories from './PlanenDeresSteg.stories';
 
 const { MorOgFarBeggeHarRett } = composeStories(stories);
 
-describe('<TilpassPlanenSteg - fødsel>', () => {
+describe('<PlanenDeresSteg - fødsel>', () => {
     it('skal vise expansion card: Hva er mulig når man tilpasser?', () => {
         render(<MorOgFarBeggeHarRett />);
 

@@ -29,7 +29,7 @@ type StoryArgs = {
 } & ComponentProps<typeof PlanenDeresSteg>;
 
 const meta = {
-    title: 'steg/PlanenDeresSteg/Adopsjon',
+    title: 'steg/PlanenDeresStegOld/Adopsjon',
     component: PlanenDeresSteg,
     render: ({
         gåTilNesteSide = action('button-click'),

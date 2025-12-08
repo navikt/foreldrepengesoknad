@@ -15,8 +15,6 @@ import { Loader } from '@navikt/ds-react';
 
 import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 
-import { TilpassPlanenSteg } from './steps/tilpass-planen/TilpassPlanenSteg';
-
 interface Props {
     stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
@@ -42,10 +40,6 @@ export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
             <Route
                 path={PlanleggerRoutes.PLANEN_DERES}
                 element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
-            />
-            <Route
-                path={PlanleggerRoutes.TILPASS_PLANEN}
-                element={stønadskontoer ? <TilpassPlanenSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
