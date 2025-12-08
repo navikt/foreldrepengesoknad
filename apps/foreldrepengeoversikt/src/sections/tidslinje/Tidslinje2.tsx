@@ -106,7 +106,6 @@ const Hendelse = ({
     const { familiehendelse } = sak;
 
     const hendelseDatoMedKlokkeslett = formaterDato(hendelse.opprettet, 'D. MMMM YYYY [kl] HH:mm');
-
     switch (hendelse.utvidetTidslinjeHendelseType) {
         case 'FAMILIEHENDELSE': {
             const tittel = tidslinjeTittelForFamiliehendelse({

@@ -1,18 +1,28 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
-import dayjs from 'dayjs';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './TidslinjePage.stories';
 
-const { FPAdopsjon } = composeStories(stories);
-
-const defaultDate = new Date('2025-11-29');
+const {
+    FPAdopsjon,
+    FPTerminInnvilget,
+    FPMedTilbakekreving,
+    FPEtterlysIM,
+    FPForTidligSøknad,
+    FPManglerDokumentasjon,
+    FPNySøknad,
+    SVPInnvilget,
+    SVPUnderBehandling,
+    ESAdopsjonAvslag,
+    ESAdopsjonInnvilget,
+    ESUnderBehandling,
+} = composeStories(stories);
 
 describe('<TidslinjePage>', () => {
     it(
-        'skal vise hvor mye engangsstønad en har rett på',
+        'FP - Adopsjon',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPAdopsjon.parameters.msw);
             const { container } = render(<FPAdopsjon />);
@@ -29,16 +39,196 @@ describe('<TidslinjePage>', () => {
     );
 
     it(
-        'skal vise hvor mye engangsstønad en har rett på1',
+        'FP- Termin innvilget',
         mswWrapper(async ({ setHandlers }) => {
-            const nåDato = dayjs(defaultDate).add(4, 'year').valueOf();
-
-            setHandlers(FPAdopsjon.parameters.msw);
-            const { container } = render(<FPAdopsjon mockDate={nåDato} />);
+            setHandlers(FPTerminInnvilget.parameters.msw);
+            const { container } = render(<FPTerminInnvilget />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 5, completed: 5, uncompleted: 0 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /termindato/i,
+                /du søkte om foreldrepenger/i,
+                /nav har sendt deg brev fordi vi mangler inntektsmelding/i,
+                /nav mottok inntektsmelding/i,
+                /søknaden din ble innvilget/i,
+            ]);
+        }),
+    );
 
-            verifiserHendelseStatus({ container: container, antall: 4, completed: 3, uncompleted: 1 });
+    it(
+        'FP - Med tilbakekreving',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPMedTilbakekreving.parameters.msw);
+            const { container } = render(<FPMedTilbakekreving />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 6, completed: 6, uncompleted: 0 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /barnet ble født/i,
+                /du søkte om foreldrepenger/i,
+                /nav mottok inntektsmelding/i,
+                /søknaden din ble innvilget/i,
+                /du har fått et svar på søknaden din/i,
+                /nav har sendt deg varsel om tilbakebetaling/i,
+            ]);
+        }),
+    );
+
+    it(
+        'FP - Etterlys IM',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPEtterlysIM.parameters.msw);
+            const { container } = render(<FPEtterlysIM />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 5, completed: 2, uncompleted: 3 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om foreldrepenger/i,
+                /nav har sendt deg brev fordi vi mangler inntektsmelding/i,
+                /arbeidsgiver skal sende inntektsmelding til nav/i,
+                /Du vil få et svar på søknaden din/i,
+                /termindato/i,
+            ]);
+        }),
+    );
+
+    it(
+        'FP - For tidlig søknad',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPForTidligSøknad.parameters.msw);
+            const { container } = render(<FPForTidligSøknad />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 4, completed: 1, uncompleted: 3 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om foreldrepenger/i,
+                /vi kan tidligst behandle søknaden din 05.01.2026/i,
+                /Du vil få et svar på søknaden din/i,
+                /termindato/i,
+            ]);
+        }),
+    );
+
+    // TODO: sjekk dokumenter og knapp
+    it(
+        'FP - Mangler dokumentasjon',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPManglerDokumentasjon.parameters.msw);
+            const { container } = render(<FPManglerDokumentasjon />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 4, completed: 1, uncompleted: 3 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om foreldrepenger/i,
+                /du må sende inn dokumentasjon/i,
+                /Du vil få et svar på søknaden din/i,
+                /termindato/i,
+            ]);
+        }),
+    );
+
+    it(
+        'FP - Ny søknad',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPNySøknad.parameters.msw);
+            const { container } = render(<FPNySøknad />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 5, completed: 2, uncompleted: 3 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om foreldrepenger/i,
+                /du sendte en ny søknad/i,
+                /du må sende inn dokumentasjon/i,
+                /Du vil få et svar på søknaden din/i,
+                /termindato/i,
+            ]);
+        }),
+    );
+
+    // TODO: dokumenter
+    it(
+        'SVP - Innvilget',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SVPInnvilget.parameters.msw);
+            const { container } = render(<SVPInnvilget />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 5, completed: 4, uncompleted: 1 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om svangerskapspenger/i,
+                /søknaden din ble innvilget/i,
+                /termindato/i,
+            ]);
+
+            // NOTE: Disse skulle ideelt vært testet i verifiserTeksterIKronologiskRekkefølge,
+            // men å utvide funksjonen til å støtte duplikater som også skal være kronologisk forkludret veldig.
+            // Siden det bare gjelder denne testen gjør vi heller et unntak.
+            expect(screen.getAllByText(/nav mottok inntektsmelding/i)).toHaveLength(2);
+        }),
+    );
+
+    it(
+        'SVP - Under behandling',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(SVPUnderBehandling.parameters.msw);
+            const { container } = render(<SVPUnderBehandling />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 1, uncompleted: 2 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om svangerskapspenger/i,
+                /du vil få et svar på søknaden din/i,
+                /termindato/i,
+            ]);
+        }),
+    );
+
+    it(
+        'ES - adopsjon innvilget',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(ESAdopsjonInnvilget.parameters.msw);
+            const { container } = render(<ESAdopsjonInnvilget />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om engangsstønad/i,
+                /søknaden din ble innvilget/i,
+                /barnet ble født/i, // TODO: feil
+            ]);
+        }),
+    );
+
+    it(
+        'ES - adopsjon avslag',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(ESAdopsjonAvslag.parameters.msw);
+            const { container } = render(<ESAdopsjonAvslag />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om engangsstønad/i,
+                /søknaden din ble avslått/i,
+                /barnet ble født/i, // TODO: feil
+            ]);
+        }),
+    );
+
+    it(
+        'ES - under behandling',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(ESUnderBehandling.parameters.msw);
+            const { container } = render(<ESUnderBehandling />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2, uncompleted: 1 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /barnet ble født/i,
+                /du søkte om engangsstønad/i,
+                /du vil få et svar på søknaden din/i,
+            ]);
         }),
     );
 });
