@@ -1,13 +1,14 @@
+import dayjs from 'dayjs';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
-import { omitMany } from '@navikt/fp-utils';
+import { UttaksdagenString, omitMany } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { useUttaksplanBuilder } from '../../../context/useUttaksplanBuilder';
 import { Planperiode } from '../../../types/Planperiode';
-import { isHull, isPeriodeUtenUttak } from '../../../utils/periodeUtils';
+import { getForelderForPeriode, isHull, isPeriodeUtenUttak } from '../../../utils/periodeUtils';
 import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
 import {
     erValgtPeriodeEnHelEksisterendePeriode,
@@ -30,8 +31,40 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
+export const splttFeriePåFamiliehendelsesdatoOmNødvendig = (
+    periode: Planperiode,
+    famDato: string,
+    erFarEllerMedmor: boolean,
+): Planperiode[] => {
+    if (!('utsettelseÅrsak' in periode)) {
+        return [periode];
+    }
+
+    const forelder = getForelderForPeriode(erFarEllerMedmor, false, undefined);
+
+    if (dayjs(periode.fom).isBefore(famDato) && dayjs(periode.tom).isAfter(famDato)) {
+        const periodeFørFamDato: Planperiode = {
+            ...periode,
+            fom: periode.fom,
+            tom: UttaksdagenString(famDato).forrige(),
+            id: `${periode.fom} - ${UttaksdagenString(famDato).forrige()} - ${periode.utsettelseÅrsak} - ${forelder}`,
+        };
+
+        const periodeFraOgMedFamDato: Planperiode = {
+            ...periode,
+            id: `${UttaksdagenString(periodeFørFamDato.tom).neste()} - ${periode.tom} - ${periode.utsettelseÅrsak} - ${forelder}`,
+            fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
+            tom: periode.tom,
+        };
+
+        return [periodeFørFamDato, periodeFraOgMedFamDato];
+    }
+
+    return [periode];
+};
+
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
-    const { uttaksplan } = useUttaksplanData();
+    const { uttaksplan, familiehendelsedato, erFarEllerMedmor } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -50,7 +83,11 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
 
     const oppdater = useCallback(
         (perioder: Planperiode[]) => {
-            const planperioder = uttaksplanBuilder.leggTilPerioder(perioder);
+            const planperioder = uttaksplanBuilder.leggTilPerioder(
+                perioder
+                    .map((p) => splttFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor))
+                    .flat(),
+            );
 
             const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
@@ -60,7 +97,7 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
                 ),
             );
         },
-        [erKunEnHelEksisterendePeriodeValgt, uttaksplanBuilder, uttaksplanRedigering, uttaksplan],
+        [uttaksplanBuilder, uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor],
     );
 
     const value = useMemo(() => {
