@@ -254,7 +254,7 @@
     "UttaksplanHandlingKnapper.LukkPerioder": "Lukk periodar",
     "UttaksplanHandlingKnapper.Angre": "Angre",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "Du kan velge datoar i kalenderen",
-    "RedigeringKalenderIndex.SeDetaljer": ". Se detaljer nederst på sidan",
+    "RedigeringKalenderIndex.SeDetaljer": "Se detaljer om planen nederst på sida",
     "UttaksplanKalender.LeggTilMåneder": "Vis fleire månader",
     "UttaksplanKalender.Maks3År": "Du viser maks antall månader (3 år)",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Skal dykk ha foreldrepengar samtidig?",
@@ -263,5 +263,8 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Vil du fjerna alt i planen?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Er du sikker på at du vil fjerna alt i planen?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Ja, fjerna alt",
-    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt"
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt",
+    "UttaksplanLegend.HvaFargeneBetyr": "Kva fargane betyr",
+    "UttaksplanLegend.ApneFargeForklaring": "Åpne fargeforklaring",
+    "UttaksplanLegend.LukkFargeForklaring": "Lukk fargeforklaring"
 }

@@ -69,7 +69,7 @@ export const AppContainer = () => {
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools />
                         <Provider locale={getDsProviderLocale(locale)}>
-                            <FpEllerEsRouter satser={DEFAULT_SATSER} />;
+                            <FpEllerEsRouter satser={DEFAULT_SATSER} />
                         </Provider>
                     </QueryClientProvider>
                 </ErrorBoundary>

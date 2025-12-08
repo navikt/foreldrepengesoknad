@@ -37,6 +37,7 @@ export interface TimeInputLayoutProps {
 }
 
 interface TimeInputProps extends TimeInputLayoutProps, TestProps, TimeInputRefProps {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     time?: InputTime | Partial<InputTime> | undefined;
     maxHours?: number;
     maxMinutes?: number;

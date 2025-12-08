@@ -15,7 +15,7 @@ import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
 const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 
 interface Props {
-    closePanel: () => void | undefined;
+    closePanel: () => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;

@@ -23,6 +23,7 @@ const getNextRoute = (
     termindato: string,
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     values: ArbeidsforholdOgInntektSvp,
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
         return SøknadRoute.FRILANS;

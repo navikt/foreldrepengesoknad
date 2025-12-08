@@ -255,7 +255,7 @@
     "UttaksplanHandlingKnapper.LukkPerioder": "Close periods",
     "UttaksplanHandlingKnapper.Angre": "Undo",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
-    "RedigeringKalenderIndex.SeDetaljer": ". See details at the bottom of the page",
+    "RedigeringKalenderIndex.SeDetaljer": "See details about the plan at the bottom of the page",
     "UttaksplanKalender.LeggTilMåneder": "Show more months",
     "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)",
     "SamtidigUttakSpørsmål.SamtidigUttakSpørsmål": "Are you going to take parental benefits at the same time?",
@@ -264,5 +264,8 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Do you want to remove everything from the plan?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Are you sure you want to remove everything from the plan?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Yes, remove everything",
-    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel"
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel",
+    "UttaksplanLegend.HvaFargeneBetyr": "What the colors mean",
+    "UttaksplanLegend.ApneFargeForklaring": "Open color explanation",
+    "UttaksplanLegend.LukkFargeForklaring": "Close color explanation"
 }

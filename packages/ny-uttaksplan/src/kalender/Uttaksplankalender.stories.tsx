@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -58,7 +59,7 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanKalender readOnly={false} />
+                    <UttaksplanKalender readOnly={false} scrollToKvoteOppsummering={action('button-click')} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
