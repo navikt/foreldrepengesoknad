@@ -45,6 +45,22 @@ describe('<TidslinjePage>', () => {
     );
 
     it(
+        'FP - Adopsjon - visHeleTidslinjen=false',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPAdopsjon.parameters.msw);
+            const { container } = render(<FPAdopsjon visHeleTidslinjen={false} />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /barnet ble adoptert/i,
+                /du søkte om foreldrepenger/i,
+                /du vil få et svar på søknaden din/i,
+            ]);
+        }),
+    );
+
+    it(
         'FP- Termin innvilget',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPTerminInnvilget.parameters.msw);
@@ -74,6 +90,22 @@ describe('<TidslinjePage>', () => {
                 /barnet ble født/i,
                 /du søkte om foreldrepenger/i,
                 /nav mottok inntektsmelding/i,
+                /søknaden din ble innvilget/i,
+                /du har fått et svar på søknaden din/i,
+                /nav har sendt deg varsel om tilbakebetaling/i,
+            ]);
+        }),
+    );
+
+    it(
+        'FP - Med tilbakekreving - visHeleTidslinjen=false',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPMedTilbakekreving.parameters.msw);
+            const { container } = render(<FPMedTilbakekreving visHeleTidslinjen={false} />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 3 });
+            verifiserTeksterIKronologiskRekkefølge([
                 /søknaden din ble innvilget/i,
                 /du har fått et svar på søknaden din/i,
                 /nav har sendt deg varsel om tilbakebetaling/i,
@@ -144,6 +176,22 @@ describe('<TidslinjePage>', () => {
             const button = screen.getByRole('button', { name: /Last opp dokumentasjon/i });
             expect(button).toBeInTheDocument();
             expect(button).toHaveAttribute('href', expect.stringContaining('/ettersend'));
+        }),
+    );
+
+    it(
+        'FP - Mangler dokumentasjon - visHeleTidslinjen=false',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FPManglerDokumentasjon.parameters.msw);
+            const { container } = render(<FPManglerDokumentasjon visHeleTidslinjen={false} />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 1 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /du søkte om foreldrepenger/i,
+                /du må sende inn dokumentasjon/i,
+                /Du vil få et svar på søknaden din/i,
+            ]);
         }),
     );
 
@@ -259,6 +307,22 @@ describe('<TidslinjePage>', () => {
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(ESUnderBehandling.parameters.msw);
             const { container } = render(<ESUnderBehandling />);
+
+            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+            verifiserTeksterIKronologiskRekkefølge([
+                /barnet ble født/i,
+                /du søkte om engangsstønad/i,
+                /du vil få et svar på søknaden din/i,
+            ]);
+        }),
+    );
+
+    it(
+        'ES - under behandling - visHeleTidslinjen=false',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(ESUnderBehandling.parameters.msw);
+            const { container } = render(<ESUnderBehandling visHeleTidslinjen={false} />);
 
             expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
