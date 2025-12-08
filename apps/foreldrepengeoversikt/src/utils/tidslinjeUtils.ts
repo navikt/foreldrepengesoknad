@@ -256,7 +256,14 @@ export const beregnTidslinjeVindu = ({
 
     const truncateStart = windowStart !== 0;
     const truncateEnd = windowEnd !== alleSorterteHendelser.length;
-    const isTruncated = truncateStart ? (truncateEnd ? 'both' : 'start') : truncateEnd ? 'end' : undefined;
+    let isTruncated: 'both' | 'start' | 'end' | undefined;
+    if (truncateStart && truncateEnd) {
+        isTruncated = 'both';
+    } else if (truncateStart) {
+        isTruncated = 'start';
+    } else if (truncateEnd) {
+        isTruncated = 'end';
+    }
 
     return {
         hendelser,

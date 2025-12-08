@@ -171,14 +171,17 @@ const Hendelse = ({
             const harAvslag = hendelse.dokumenter.some((d) => d.tittel.toLowerCase().includes('avslag'));
             const harInnvilget = hendelse.dokumenter.some((d) => d.tittel.toLowerCase().includes('innvilgelse'));
 
-            // TODO: heller funksjon?
-            const tittel = harAvslag
-                ? intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' })
-                : harInnvilget
-                  ? intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' })
-                  : intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+            let tittel = intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK' });
+            if (harAvslag) {
+                tittel = intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.avslått' });
+            } else if (harInnvilget) {
+                tittel = intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
+            }
 
-            const ikon = harAvslag ? <InboxDownIcon /> : harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
+            let ikon = <InboxDownIcon />;
+            if (harInnvilget) {
+                ikon = <ThumbUpIcon />;
+            }
 
             return (
                 <Process.Event status={status} timestamp={hendelseDatoMedKlokkeslett} title={tittel} bullet={ikon}>
@@ -386,7 +389,6 @@ const Hendelse = ({
                     title={intl.formatMessage({ id: 'tidslinje.tittel.UTGÅENDE_INNHENT_OPPLYSNINGER' })}
                     bullet={<InboxUpIcon />}
                 >
-                    {/*// TODO: story*/}
                     <Button size="small" className="mt-2" to={`/sak/${sak.saksnummer}/ettersend`} as={LinkInternal}>
                         {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.linkTittel' })}
                     </Button>
