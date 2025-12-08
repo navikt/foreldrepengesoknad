@@ -1,1 +1,1 @@
-{"v":5,"entries":{"formhooks--vis-formkomponenter":{"type":"story","id":"formhooks--vis-formkomponenter","name":"Vis Formkomponenter","title":"FormHooks","importPath":"./src/form-wrappers/FormHooks.stories.tsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"formhooks--vis-formkomponenter":{"type":"story","subtype":"story","id":"formhooks--vis-formkomponenter","name":"Vis Formkomponenter","title":"FormHooks","importPath":"./src/form-wrappers/FormHooks.stories.tsx","tags":["dev","test"],"exportName":"VisFormkomponenter"}}}

@@ -1,1 +1,1 @@
-{"v":5,"entries":{"frilans--default":{"type":"story","id":"frilans--default","name":"Default","title":"Frilans","importPath":"./src/Frilans.stories.tsx","componentPath":"./src/FrilansPanel.tsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"frilans--default":{"type":"story","subtype":"story","id":"frilans--default","name":"Default","title":"Frilans","importPath":"./src/Frilans.stories.tsx","componentPath":"./src/FrilansPanel.tsx","tags":["dev","test"],"exportName":"Default"}}}
