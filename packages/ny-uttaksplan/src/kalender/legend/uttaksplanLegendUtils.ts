@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { ReactNode } from 'react';
 import { IntlShape } from 'react-intl';
 
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -89,7 +88,7 @@ export const getCalendarLabel = (
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
-): ReactNode => {
+): string => {
     switch (label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
@@ -150,7 +149,7 @@ const getMorsDelLabel = (
     erIPlanleggerModus: boolean,
     erDeltUttak: boolean,
     intl: IntlShape,
-): ReactNode => {
+): string => {
     if (erIPlanleggerModus && erDeltUttak) {
         return intl.formatMessage({ id: 'kalender.morsPeriode' });
     }
@@ -168,7 +167,7 @@ const getMorsDelGradertLabel = (
     erFarEllerMedmor: boolean,
     erIPlanleggerModus: boolean,
     intl: IntlShape,
-): ReactNode => {
+): string => {
     if (erIPlanleggerModus) {
         return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
     }
@@ -186,7 +185,7 @@ const getFarsDelLabel = (
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
-): ReactNode => {
+): string => {
     if (erIPlanleggerModus && erDeltUttak) {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode' });
@@ -215,7 +214,7 @@ const getFarsDelGradertLabel = (
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
-): ReactNode => {
+): string => {
     if (erIPlanleggerModus && erDeltUttak) {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode.gradert' });

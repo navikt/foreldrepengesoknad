@@ -263,5 +263,8 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Vil du fjerne alt i planen?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Er du sikker på at du vil fjerne alt i planen?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Ja, fjern alt",
-    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt"
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt",
+    "UttaksplanLegend.HvaFargeneBetyr": "Hva fargene betyr",
+    "UttaksplanLegend.ApneFargeForklaring": "Åpne fargeforklaring",
+    "UttaksplanLegend.LukkFargeForklaring": "Lukk fargeforklaring"
 }

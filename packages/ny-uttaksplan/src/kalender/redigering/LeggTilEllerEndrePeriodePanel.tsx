@@ -37,9 +37,10 @@ type FormValues = {
 
 interface Props {
     lukkRedigeringsmodus: () => void;
+    labels: React.ReactNode;
 }
 
-export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) => {
+export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
 
     const { uttaksplan, aleneOmOmsorg, familiehendelsedato } = useUttaksplanData();
@@ -119,7 +120,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
         >
             <Show above="md">
                 <Box.New background="accent-soft" padding="4">
-                    <VStack gap="space-8">
+                    <VStack gap="space-16">
                         <HStack justify="space-between" align="center" wrap={false}>
                             <RødRamme>
                                 <Heading size="xsmall">
@@ -148,6 +149,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
                                 />
                             )}
                         </HStack>
+                        {labels}
                         {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
                     </VStack>
                 </Box.New>
@@ -193,16 +195,17 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus }: Props) =
                         </VStack>
                     </Box.New>
                     {!erMinimert && (
-                        <div className="px-4 pb-4">
+                        <VStack gap="space-16" className="px-4 pb-4">
+                            {labels}
                             <PeriodeDetaljerOgInfoMeldinger />
-                        </div>
+                        </VStack>
                     )}
                 </VStack>
             </Show>
 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <div className={erMinimert ? 'hidden' : 'block'}>
-                    <div className="px-4 pb-4 pt-4">
+                    <div className="px-4 pt-4 pb-4">
                         {gyldigeKontotyper.length === 0 && (
                             <VStack gap="space-16">
                                 <Alert variant="info" role="alert">

@@ -25,7 +25,7 @@ interface Props {
 
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvoteOppsummering }: Props) => {
     const intl = useIntl();
-    const { erFarEllerMedmor, navnPåForeldre, familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
+    const { familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
     const [additionalMonthsToAddToLast, setAdditionalMonthsToAddToLast] = useState(0);
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -43,8 +43,6 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         },
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
-
-    const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     const getSrTextForSelectedPeriod = useCallback(
         (periode: { fom: string; tom: string }) => {
@@ -105,6 +103,19 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         );
     }
 
+    const setValgtLegend = (color: CalendarPeriodColor) => {
+        const perioder = perioderForKalendervisning.filter((p) => p.color === color);
+        setValgtePerioder(
+            perioder.map((periode) => ({
+                color: 'DARKBLUE',
+                fom: periode?.fom,
+                tom: periode?.tom,
+                isSelected: true,
+                srText: getSrTextForSelectedPeriod(periode),
+            })),
+        );
+    };
+
     return (
         <VStack gap="space-8">
             <AvslåttePerioder />
@@ -113,21 +124,8 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
                     <UttaksplanLegend
                         perioderForKalendervisning={perioderForKalendervisning}
-                        navnAnnenPart={navnAnnenPart}
-                        erFarEllerMedmor={erFarEllerMedmor}
                         readOnly={readOnly}
-                        selectLegend={(color: CalendarPeriodColor) => {
-                            const perioder = perioderForKalendervisning.filter((p) => p.color === color);
-                            setValgtePerioder(
-                                perioder.map((periode) => ({
-                                    color: 'DARKBLUE',
-                                    fom: periode?.fom,
-                                    tom: periode?.tom,
-                                    isSelected: true,
-                                    srText: getSrTextForSelectedPeriod(periode),
-                                })),
-                            );
-                        }}
+                        selectLegend={setValgtLegend}
                     />
                 </div>
 
@@ -181,8 +179,8 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     {!readOnly && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
-                                'fixed bottom-0 left-0 right-0 z-40 w-full',
-                                'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-[20.5rem] ax-md:self-start',
+                                'fixed right-0 bottom-0 left-0 z-40 w-full',
+                                'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
                                 'pb-[env(safe-area-inset-bottom,1rem)]',
                             ].join(' ')}
                         >
@@ -190,6 +188,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setValgtePerioder}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                                labels={
+                                    <UttaksplanLegend
+                                        perioderForKalendervisning={perioderForKalendervisning}
+                                        readOnly
+                                        selectLegend={setValgtLegend}
+                                        skjulTekstSomDefault
+                                    />
+                                }
                             />
                         </div>
                     )}
