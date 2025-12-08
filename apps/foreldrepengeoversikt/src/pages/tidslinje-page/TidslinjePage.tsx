@@ -15,17 +15,18 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { Sak } from '../../types/Sak';
 
 type OuterProps = {
     søkersBarn: BarnDto_fpoversikt[];
+    visHeleTidslinjen?: boolean;
 };
 type InnerProps = OuterProps & {
     sak?: Sak;
 };
 
-const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
+const TidslinjePageInner = ({ søkersBarn, sak, visHeleTidslinjen = true }: InnerProps) => {
     const intl = useIntl();
     useDocumentTitle(
         `${intl.formatMessage({ id: 'heleProsessen' })} -${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
@@ -37,11 +38,11 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
-    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending || !sak) {
+    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending || sak === undefined) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
-    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
+    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError) {
         return (
             <NoeGikkGalt>
                 Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
@@ -57,7 +58,7 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
             </Heading>
             <Tidslinje
                 sak={sak}
-                visHeleTidslinjen={true}
+                visHeleTidslinjen={visHeleTidslinjen}
                 søkersBarn={søkersBarn}
                 tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                 manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -66,12 +67,13 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
     );
 };
 
-export const TidslinjePage = ({ søkersBarn }: OuterProps) => {
+// visHeleTidslinjen kunne vært inlinet i Tidslinje komponenten. Men har den herfra slik at man kan toggle den i storybook.
+export const TidslinjePage = ({ søkersBarn, visHeleTidslinjen = true }: OuterProps) => {
     const sak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>
-            <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} />
+            <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} visHeleTidslinjen={visHeleTidslinjen} />
         </PageRouteLayout>
     );
 };
