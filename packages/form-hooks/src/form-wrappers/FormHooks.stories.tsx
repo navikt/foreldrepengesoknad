@@ -10,6 +10,7 @@ import { RhfCombobox } from './RhfCombobox';
 import { RhfDateRangepicker } from './RhfDateRangepicker';
 import { RhfDatepicker } from './RhfDatepicker';
 import { RhfForm } from './RhfForm';
+import { RhfFormattertTallTextField } from './RhfFormattertTallTextField.tsx';
 import { RhfRadioGroup } from './RhfRadioGroup';
 import { RhfSelect } from './RhfSelect';
 import { RhfTextField } from './RhfTextField';
@@ -29,6 +30,7 @@ const meta = {
                 check: undefined,
                 checkpre: true,
                 textfield: undefined,
+                formattertTallTextField: undefined,
                 textfieldpre: 'Har en tekst',
                 textarea: undefined,
                 textareapre: 'Har en tekst',
@@ -74,6 +76,12 @@ const meta = {
                             name="textfieldpre"
                             control={formMethods.control}
                             label="Dette er et tekstfelt med preutfyllt verdi"
+                            description="Beskrivelse"
+                        />
+                        <RhfFormattertTallTextField
+                            name="formattertTallTextField"
+                            control={formMethods.control}
+                            label="Tekstfelt for formattert tall"
                             description="Beskrivelse"
                         />
                         <RhfTextarea
