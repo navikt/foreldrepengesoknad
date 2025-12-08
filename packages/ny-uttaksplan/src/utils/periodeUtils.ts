@@ -265,6 +265,20 @@ const getReadOnlyStatus = (modus: UttaksplanModus, gjelderAnnenPart: boolean) =>
     return gjelderAnnenPart;
 };
 
+export const genererPeriodeId = (
+    fom: string,
+    tom: string,
+    kontoType: any,
+    utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt | undefined,
+    oppholdårsak: UttakOppholdÅrsak_fpoversikt | undefined,
+    erFarEllerMedmor: boolean,
+    gjelderAnnenPart: boolean,
+) => {
+    const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdårsak);
+
+    return `${fom} - ${tom} - ${kontoType || oppholdårsak || utsettelseÅrsak} - ${forelder}`;
+};
+
 export const mapSaksperiodeTilPlanperiode = (
     saksperioder: UttakPeriode[],
     erFarEllerMedmor: boolean,
@@ -289,8 +303,9 @@ export const mapSaksperiodeTilPlanperiode = (
         const tidsperiodenKrysserFamdato =
             dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
 
-        const oppholdsårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
-        const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdsårsak);
+        const oppholdårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
+        const utsettelseårsak = 'utsettelseÅrsak' in p ? p.utsettelseÅrsak : undefined;
+        const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdårsak);
 
         if (tidsperiodenKrysserFamdato) {
             const planperiodeFør: Planperiode = {
@@ -298,7 +313,15 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: p.fom,
                 tom: UttaksdagenString(familiehendelsedato).forrige(),
-                id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                id: genererPeriodeId(
+                    p.fom,
+                    UttaksdagenString(familiehendelsedato).forrige(),
+                    p.kontoType,
+                    utsettelseårsak,
+                    oppholdårsak,
+                    erFarEllerMedmor,
+                    gjelderAnnenPart,
+                ),
                 forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
@@ -308,7 +331,15 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
                 tom: p.tom,
-                id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                id: genererPeriodeId(
+                    UttaksdagenString(familiehendelsedato).denneEllerNeste(),
+                    p.tom,
+                    p.kontoType,
+                    utsettelseårsak,
+                    oppholdårsak,
+                    erFarEllerMedmor,
+                    gjelderAnnenPart,
+                ),
                 forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
@@ -318,7 +349,15 @@ export const mapSaksperiodeTilPlanperiode = (
             const planperiode: Planperiode = {
                 ...p,
                 erAnnenPartEøs: false,
-                id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak} - ${forelder}`,
+                id: genererPeriodeId(
+                    p.fom,
+                    p.tom,
+                    p.kontoType,
+                    utsettelseårsak,
+                    oppholdårsak,
+                    erFarEllerMedmor,
+                    gjelderAnnenPart,
+                ),
                 forelder,
                 readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
@@ -330,7 +369,7 @@ export const mapSaksperiodeTilPlanperiode = (
     return result;
 };
 
-const getForelderForPeriode = (
+export const getForelderForPeriode = (
     søkerErFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,

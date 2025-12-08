@@ -46,7 +46,6 @@
         "@testing-library/react": "16.3.0",
         "@testing-library/user-event": "14.6.1",
         "@types/react-dom": "18.2.23",
-        "@vitest/browser": "3.2.4",
         "eslint": "9.39.1",
         "fast-glob": "3.3.3",
         "playwright": "1.57.0",
@@ -55,7 +54,7 @@
         "tailwindcss": "4.1.17",
         "typescript": "5.9.3",
         "vite": "7.2.6",
-        "vitest": "3.2.4"
+        "vitest": "4.0.15"
     },
     "peerDependencies": {
         "react": "18.2.0"
