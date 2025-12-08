@@ -15,7 +15,7 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Tidslinje } from '../../sections/tidslinje/Tidslinje2.tsx';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { Sak } from '../../types/Sak';
 
 type OuterProps = {

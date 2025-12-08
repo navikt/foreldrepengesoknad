@@ -29,7 +29,7 @@ import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from '../../sections/din-plan/DinPlan.tsx';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
-import { Tidslinje } from '../../sections/tidslinje/Tidslinje2.tsx';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
