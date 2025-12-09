@@ -32,7 +32,7 @@ export const UttaksplanNy = () => {
     };
 
     return (
-        <>
+        <VStack gap="space-16">
             {uttaksplan.length > 0 && (
                 <PeriodeListe
                     perioder={uttaksplan}
@@ -110,7 +110,7 @@ export const UttaksplanNy = () => {
                     fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
                 />
             )}
-        </>
+        </VStack>
     );
 };
 

@@ -10,12 +10,12 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { PlanenDeresSteg } from './PlanenDeresSteg';
 
 const MINSTERETTER = {
-    farRundtFødsel: 10,
+    farRundtFødsel: 0,
     toTette: 0,
 };
 
@@ -26,11 +26,10 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-    uttaksplan: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof PlanenDeresSteg>;
 
 const meta = {
-    title: 'steg/PlanenDeresSteg',
+    title: 'steg/PlanenDeresSteg/Adopsjon',
     component: PlanenDeresSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
@@ -40,7 +39,6 @@ const meta = {
         omBarnet,
         arbeidssituasjon,
         stønadskontoer,
-        uttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -52,7 +50,6 @@ const meta = {
                         [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
                     <PlanenDeresSteg stønadskontoer={stønadskontoer} />
@@ -73,9 +70,9 @@ export const MorOgFarBeggeHarRett: Story = {
             type: HvemPlanleggerType.MOR_OG_FAR,
         },
         omBarnet: {
-            erFødsel: true,
-            erBarnetFødt: false,
-            termindato: '2025-05-09',
+            erFødsel: false,
+            overtakelsesdato: '2024-07-08',
+            fødselsdato: '2020-04-11',
             antallBarn: '1',
         },
         fordeling: {
@@ -89,51 +86,23 @@ export const MorOgFarBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 95 },
-                    { konto: 'FEDREKVOTE', dager: 95 },
-                    { konto: 'FELLESPERIODE', dager: 101 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
-                minsteretter: MINSTERETTER,
-            },
             '100': {
                 kontoer: [
                     { konto: 'MØDREKVOTE', dager: 75 },
                     { konto: 'FEDREKVOTE', dager: 75 },
                     { konto: 'FELLESPERIODE', dager: 80 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+            '80': {
+                kontoer: [
+                    { konto: 'MØDREKVOTE', dager: 95 },
+                    { konto: 'FEDREKVOTE', dager: 95 },
+                    { konto: 'FELLESPERIODE', dager: 101 },
                 ],
                 minsteretter: MINSTERETTER,
             },
         },
-        uttaksplan: [
-            {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                fom: '2025-04-18',
-                tom: '2025-05-08',
-            },
-            {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                fom: '2025-05-09',
-                tom: '2025-08-21',
-            },
-            {
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
-                fom: '2025-08-22',
-                tom: '2025-12-11',
-            },
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                fom: '2025-12-12',
-                tom: '2026-03-26',
-            },
-        ],
     },
 };
 
@@ -146,39 +115,19 @@ export const MorOgFarKunMorHarRett: Story = {
             jobberAnnenPart: false,
         },
         stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 291 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+            '100': {
+                kontoer: [{ konto: 'FORELDREPENGER', dager: 230 }],
                 minsteretter: MINSTERETTER,
             },
-            '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 230 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+            '80': {
+                kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
                 minsteretter: MINSTERETTER,
             },
         },
-        uttaksplan: [
-            {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                fom: '2025-04-18',
-                tom: '2025-05-08',
-            },
-            {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2025-05-09',
-                tom: '2026-03-26',
-            },
-        ],
     },
 };
 
-export const MorOgFarKunFarHarRettMorUfør: Story = {
+export const MorOgFarKunFarHarRettMorErUfør: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         fordeling: undefined,
@@ -187,23 +136,23 @@ export const MorOgFarKunFarHarRettMorUfør: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 166 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 125 },
                     { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
                 ],
                 minsteretter: {
-                    farRundtFødsel: 10,
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    { konto: 'FORELDREPENGER', dager: 166 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
@@ -216,27 +165,27 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
         ...MorOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
+            status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
         stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 211 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 150 },
                     { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
                 ],
                 minsteretter: {
-                    farRundtFødsel: 10,
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    { konto: 'FORELDREPENGER', dager: 211 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
                     toTette: 0,
                 },
             },
@@ -266,9 +215,9 @@ export const MorOgMedmorKunMorHarRett: Story = {
     },
 };
 
-export const MorOgMedmorKunMedmorHarRettMorUfør: Story = {
+export const MorOgMedmorKunMedmorHarRettMorErUfør: Story = {
     args: {
-        ...MorOgFarKunFarHarRettMorUfør.args,
+        ...MorOgFarKunFarHarRettMorErUfør.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåMedmor: 'Helga Utvikler',
@@ -290,7 +239,7 @@ export const MorOgMedmorKunMedmorHarRettMorIngenAvDisse: Story = {
 
 export const BareMorSøkerOgHarRett: Story = {
     args: {
-        ...MorOgFarKunMorHarRett.args,
+        ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -300,6 +249,7 @@ export const BareMorSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
+        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
     },
 };
 
@@ -315,16 +265,7 @@ export const BareFarSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: {
-            '80': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
-                minsteretter: MINSTERETTER,
-            },
-            '100': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 230 }],
-                minsteretter: MINSTERETTER,
-            },
-        },
+        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
     },
 };
 
@@ -347,7 +288,22 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: MorOgFarKunFarHarRettMorIngenAvDisse.args.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 261 }],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 200 }],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };
 
@@ -356,21 +312,46 @@ export const FarOgFarKunMedfarHarRett: Story = {
         ...FarOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
-            status: Arbeidsstatus.INGEN,
+            status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
-        stønadskontoer: MorOgFarKunFarHarRettMorIngenAvDisse.args.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: 'FORELDREPENGER', dager: 211 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [
+                    { konto: 'FORELDREPENGER', dager: 150 },
+                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };
 
-export const BarnetErFødtDagenEtterTermindato: Story = {
+export const MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen: Story = {
     args: {
-        ...MorOgFarBeggeHarRett.args,
+        ...MorOgFarKunMorHarRett.args,
+        hvemPlanlegger: {
+            navnPåMor: 'Olga Utvikler',
+            navnPåMedmor: 'Helga Utvikler',
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        },
         omBarnet: {
-            erFødsel: true,
-            erBarnetFødt: true,
-            termindato: '2024-04-11',
-            fødselsdato: '2024-04-12',
+            erFødsel: false,
+            overtakelsesdato: '2024-07-07',
+            fødselsdato: '2020-04-11',
             antallBarn: '1',
         },
     },

@@ -1,11 +1,10 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { set } from 'lodash';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Alert, Button, Chips, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -90,46 +89,57 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         <VStack gap="space-8">
             <AvslåttePerioder />
 
-            <VStack gap="space-16" ref={targetRef}>
+            <VStack gap="space-24" ref={targetRef}>
                 {!readOnly && (
-                    <RadioGroup
-                        legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
-                        onChange={() => {
-                            setRedigeringAktivOgValgtePerioder([]);
-                            setIsRangeSelection(!isRangeSelection);
-                        }}
-                        value={isRangeSelection}
-                    >
-                        <HStack gap="space-16">
-                            <Radio value={true}>
-                                <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
-                            </Radio>
-                        </HStack>
-                    </RadioGroup>
+                    <VStack gap="space-24">
+                        <div>
+                            <Button
+                                type="button"
+                                size="small"
+                                variant="primary"
+                                onClick={() => {
+                                    setErRedigeringAktiv(!erRedigeringAktiv);
+                                    setValgtePerioder([]);
+                                }}
+                            >
+                                {erRedigeringAktiv ? (
+                                    <FormattedMessage id="UttaksplanKalender.StopRedigering" />
+                                ) : (
+                                    <FormattedMessage id="UttaksplanKalender.StartRedigering" />
+                                )}
+                            </Button>
+                        </div>
+                        {!erRedigeringInaktiv && (
+                            <RadioGroup
+                                legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
+                                onChange={() => {
+                                    setRedigeringAktivOgValgtePerioder([]);
+                                    setIsRangeSelection(!isRangeSelection);
+                                }}
+                                value={isRangeSelection}
+                            >
+                                <HStack gap="space-16">
+                                    <Radio value={true}>
+                                        <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
+                                    </Radio>
+                                    <Radio value={false}>
+                                        <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
+                                    </Radio>
+                                </HStack>
+                            </RadioGroup>
+                        )}
+                    </VStack>
                 )}
 
-                <Chips>
-                    <Chips.Toggle
-                        selected={erRedigeringAktiv}
-                        onClick={() => {
-                            setErRedigeringAktiv(!erRedigeringAktiv);
-                            setValgtePerioder([]);
-                        }}
-                    >
-                        {intl.formatMessage({ id: 'TilpassPlanenSteg.Redigeringsmodus' })}
-                    </Chips.Toggle>
-                </Chips>
-
-                <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
-                    <UttaksplanLegend
-                        perioderForKalendervisning={perioderForKalendervisning}
-                        readOnly={readOnly}
-                        selectLegend={setValgtLegend}
-                    />
-                </div>
+                {erRedigeringInaktiv && (
+                    <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
+                        <UttaksplanLegend
+                            perioderForKalendervisning={perioderForKalendervisning}
+                            readOnly={readOnly}
+                            selectLegend={setValgtLegend}
+                        />
+                    </div>
+                )}
 
                 <div className="ax-md:flex-row flex flex-col">
                     <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-[295px]'}>

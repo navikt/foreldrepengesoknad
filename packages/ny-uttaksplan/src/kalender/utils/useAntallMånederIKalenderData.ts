@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { Planperiode } from 'types/Planperiode';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { Planperiode } from '../../types/Planperiode';
 
 export const useAntallMånederIKalenderData = (antallMånederLagtTilKalender: number, barnehagestartdato?: string) => {
     const { familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
