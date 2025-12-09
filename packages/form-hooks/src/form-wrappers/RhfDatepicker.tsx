@@ -32,13 +32,23 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
     return disabledDays;
 };
 
-const formatDateInput = (value: string): string => {
+const formatDateInput = ({ nyVerdi, forrigeVerdi }: { nyVerdi: string; forrigeVerdi: string }) => {
+    let raw = nyVerdi;
+
     // Håndter 8-sifret format: "22102022" → "22.10.2022"
-    if (/^\d{8}$/.test(value)) {
-        return `${value.slice(0, 2)}.${value.slice(2, 4)}.${value.slice(4, 8)}`;
+    const verdiMedKunTall = nyVerdi.replace(/\D/g, '');
+    const forrigeVerdiMedKunTall = forrigeVerdi.replace(/\D/g, '');
+    const sisteInputVarEndringISiffer = verdiMedKunTall !== forrigeVerdiMedKunTall;
+    if (sisteInputVarEndringISiffer && /^\d{8}$/.test(verdiMedKunTall)) {
+        raw = `${verdiMedKunTall.slice(0, 2)}.${verdiMedKunTall.slice(2, 4)}.${verdiMedKunTall.slice(4, 8)}`;
     }
 
-    return value;
+    const dato = dayjs(raw, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+    const isValidDate = isValidDateString(dato);
+
+    raw = isValidDate ? raw : nyVerdi;
+
+    return { raw, dato: isValidDate ? dato : raw };
 };
 
 type Props<T extends FieldValues> = {
@@ -114,15 +124,13 @@ export const RhfDatepicker = <T extends FieldValues>({
 
     const onChangeInput = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            const inputValue = formatDateInput(event.target.value);
-            const verdi = dayjs(inputValue, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
-            const isValidDate = isValidDateString(verdi);
+            const { raw, dato } = formatDateInput({ nyVerdi: event.target.value, forrigeVerdi: fieldValue });
 
-            setFieldValue(inputValue);
+            setFieldValue(raw);
             if (onChange) {
-                onChange(isValidDate ? verdi : inputValue);
+                onChange(dato);
             }
-            field.onChange(isValidDate ? verdi : inputValue);
+            field.onChange(dato);
         },
         [setFieldValue, onChange, field],
     );

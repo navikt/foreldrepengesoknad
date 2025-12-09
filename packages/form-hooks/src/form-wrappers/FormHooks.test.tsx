@@ -42,5 +42,21 @@ describe('<FormHooks>', () => {
         await userEvent.clear(datofelt);
         await userEvent.type(datofelt, '22111995');
         expect(screen.getByText('datepickerField: 1995-11-22')).toBeInTheDocument();
+
+        // Test 8-sifret ugyldig format. Skal ikke sette "."
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '12345678');
+        expect(screen.getByText('datepickerField: 12345678')).toBeInTheDocument();
+
+        // Skriver 8 siffer. Formatterer med punktum. Deretter endrer dag
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '09112023');
+        // Edit from index 3 - select from position 3 to end and replace
+        datofelt.focus();
+        datofelt.setSelectionRange(3, 3);
+        const slettTreCharacters = '{Backspace}'.repeat(3);
+        await userEvent.keyboard(`${slettTreCharacters}22`);
+        screen.logTestingPlaygroundURL();
+        expect(screen.getByText('datepickerField: 2023-11-22')).toBeInTheDocument();
     });
 });
