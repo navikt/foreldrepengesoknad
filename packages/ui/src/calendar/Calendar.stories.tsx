@@ -11,7 +11,7 @@ const meta = {
     title: 'Calendar',
     component: Calendar,
     render: (args) => (
-        <div style={{ maxWidth: '704px' }}>
+        <div>
             <Calendar {...args} />
         </div>
     ),
@@ -179,5 +179,26 @@ export const PeriodsThatSpanOverAYear: Story = {
         ],
         firstDateInCalendar: '2024-02-01',
         lastDateInCalendar: '2025-07-30',
+    },
+};
+
+export const MedEnKolonne: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 1,
+    },
+};
+
+export const MedToKolonner: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 2,
+    },
+};
+
+export const MedTreKolonner: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 3,
     },
 };

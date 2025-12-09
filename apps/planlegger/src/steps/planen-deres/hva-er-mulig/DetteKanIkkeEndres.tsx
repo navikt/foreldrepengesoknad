@@ -1,4 +1,5 @@
 import { PersonPregnantIcon } from '@navikt/aksel-icons';
+import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -29,6 +30,8 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const morHarRett = hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett';
 
+    const bTag = (msg: ReactNode[]) => <b>{msg}</b>;
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -55,15 +58,12 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                                     <BodyLong>
                                         <FormattedMessage
                                             id="HvaErMulig.TreUkerFørTermin.Alenemor"
-                                            values={{ b: (msg) => <b>{msg}</b> }}
+                                            values={{ b: bTag }}
                                         />
                                     </BodyLong>
                                 ) : (
                                     <BodyLong>
-                                        <FormattedMessage
-                                            id="HvaErMulig.TreUkerFørTermin"
-                                            values={{ b: (msg) => <b>{msg}</b> }}
-                                        />
+                                        <FormattedMessage id="HvaErMulig.TreUkerFørTermin" values={{ b: bTag }} />
                                     </BodyLong>
                                 )}
                             </>
@@ -72,10 +72,7 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                         harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger) ||
                         hvemHarRett === 'kunSøker2HarRett') && (
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.SeksUkerEtterFødsel"
-                                values={{ b: (msg) => <b>{msg}</b> }}
-                            />
+                            <FormattedMessage id="HvaErMulig.SeksUkerEtterFødsel" values={{ b: bTag }} />
                             {morHarRett && !erFedre && (
                                 <FormattedMessage id="HvaErMulig.SeksUkerEtterFødsel.DeFørsteUkene" />
                             )}

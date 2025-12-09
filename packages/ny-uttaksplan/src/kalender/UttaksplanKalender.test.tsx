@@ -100,6 +100,10 @@ describe('UttaksplanKalender', () => {
     it('skal markere en periode som ikke overlapper med eksisterende perioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const januar = screen.getByTestId('year:2024;month:0');
@@ -128,6 +132,10 @@ describe('UttaksplanKalender', () => {
     it('skal velge enkeltperioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Enkeltdager'));
@@ -150,6 +158,10 @@ describe('UttaksplanKalender', () => {
 
     it('skal markere en periode som overlapper med eksisterende perioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
@@ -195,6 +207,10 @@ describe('UttaksplanKalender', () => {
     it('skal vise infomelding når en velger dag før fødselsdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
@@ -213,6 +229,10 @@ describe('UttaksplanKalender', () => {
     it('skal vise infomelding når en velger dag i de første 6 ukene etter fødselsdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -230,6 +250,10 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise infomelding når valg av dager gir ingen mulige kontotyper', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
@@ -252,6 +276,10 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise endre-knapp og preutfylte felter når en velger en hel periode', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
@@ -282,6 +310,10 @@ describe('UttaksplanKalender', () => {
 
     it('skal slette foreldrepenger før fødsel og fremdeles beholde markering for dagene etter fødsel', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 

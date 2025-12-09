@@ -9,7 +9,7 @@ import { HvaErMulig } from './HvaErMulig';
 type StoryArgs = ComponentProps<typeof HvaErMulig>;
 
 const meta = {
-    title: 'steg/TilpassPlanenSteg/HvaErMulig',
+    title: 'steg/PlanenDeresSteg/HvaErMulig',
     component: HvaErMulig,
     render: ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
         return <HvaErMulig arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />;

@@ -1,9 +1,13 @@
-import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes.ts';
+import { BulletListIcon, CalendarIcon, PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
+import {
+    ContextDataType,
+    useContextComplete,
+    useContextGetData,
+    useContextSaveData,
+} from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
-import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
+import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
@@ -18,23 +22,31 @@ import {
     getFornavnPåSøker2,
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
+import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Heading, Select, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
-import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
+import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import {
+    FjernAltIUttaksplanModal,
+    KvoteOppsummering,
+    UttaksplanDataProvider,
+    UttaksplanKalender,
+    UttaksplanNy,
+    UttaksplanRedigeringProvider,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
-import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
+import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
 interface Props {
@@ -52,20 +64,194 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const completeAppContext = useContextComplete();
+
+    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
+    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
+    const barnehagestartdato = barnehagestartDato(omBarnet);
+
+    const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+
+    const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
+
+    const bareFarMedmorHarRett =
+        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
+    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
+    const erDeltUttak = fordeling !== undefined;
+
+    const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
+
+    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => {
+        lagreUttaksplan(oppdatertUttaksplan);
+
+        const contextData = {
+            ...completeAppContext,
+            [ContextDataType.UTTAKSPLAN]: oppdatertUttaksplan,
+        };
+
+        const encodedData = encodeToBase64(JSON.stringify(contextData));
+        const currentPath = globalThis.location.pathname;
+        const newUrl = `${currentPath}?data=${encodedData}`;
+
+        globalThis.history.replaceState(null, '', newUrl);
+    };
+
+    const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
+
+    const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
+    const scrollToKvoteOppsummering = () => {
+        if (kvoteOppsummeringRef.current) {
+            kvoteOppsummeringRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const farOgFarKunEnPartHarRett =
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
+        (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
+
+    return (
+        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+            <VStack gap="space-24">
+                <Heading size="medium" spacing level="2">
+                    <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger: erAleneOmOmsorg }} />
+                </Heading>
+
+                <UttaksplanDataProvider
+                    barn={mapOmBarnetTilBarn(omBarnet)}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    navnPåForeldre={navnPåForeldre}
+                    modus="planlegger"
+                    valgtStønadskonto={valgtStønadskonto}
+                    aleneOmOmsorg={erAleneOmOmsorg}
+                    erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
+                    bareFarMedmorHarRett={bareFarMedmorHarRett}
+                    harAktivitetskravIPeriodeUtenUttak={false}
+                    erDeltUttak={erDeltUttak}
+                    saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                >
+                    <div ref={kvoteOppsummeringRef}>
+                        <KvoteOppsummering visStatusIkoner />
+                    </div>
+
+                    <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />
+
+                    {farOgFarKunEnPartHarRett && omBarnet.erFødsel && <FarOgFarKunEnPartHarRettInfoBox />}
+
+                    <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
+
+                    <UforutsetteEndringer
+                        arbeidssituasjon={arbeidssituasjon}
+                        hvemPlanlegger={hvemPlanlegger}
+                        barnet={omBarnet}
+                    />
+
+                    <AntallUkerVelger
+                        stønadskontoer={stønadskontoer}
+                        hvemHarRett={hvemHarRett}
+                        lagreUttaksplanOgOppdaterUrl={lagreUttaksplanOgOppdaterUrl}
+                    />
+
+                    <UttaksplanRedigeringProvider
+                        oppdaterUttaksplan={lagreUttaksplanOgOppdaterUrl}
+                        harEndretPlan={uttaksplan !== undefined}
+                    >
+                        <FjernAltIUttaksplanModal />
+
+                        <Tabs defaultValue="kalender">
+                            <Tabs.List>
+                                <Tabs.Tab
+                                    value="kalender"
+                                    label={<FormattedMessage id="PlanvisningToggle.kalender" />}
+                                    icon={<CalendarIcon aria-hidden />}
+                                />
+                                <Tabs.Tab
+                                    value="liste"
+                                    label={<FormattedMessage id="PlanvisningToggle.liste" />}
+                                    icon={<BulletListIcon aria-hidden />}
+                                />
+                            </Tabs.List>
+                            <Tabs.Panel value="kalender" className="pt-5">
+                                <UttaksplanKalender
+                                    readOnly={false}
+                                    barnehagestartdato={barnehagestartdato}
+                                    scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                                />
+                            </Tabs.Panel>
+                            <Tabs.Panel value="liste" className="pt-5">
+                                <UttaksplanNy />
+                            </Tabs.Panel>
+                        </Tabs>
+                    </UttaksplanRedigeringProvider>
+                </UttaksplanDataProvider>
+
+                <StepButtons
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    nextButtonOnClick={navigator.goToNextDefaultStep}
+                    isJumpToEndButton
+                    useSimplifiedTexts
+                />
+            </VStack>
+        </PlanleggerStepPage>
+    );
+};
+
+const FarOgFarKunEnPartHarRettInfoBox = () => (
+    <Infobox
+        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
+        icon={
+            <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="var(--ax-bg-accent-strong)" aria-hidden />
+        }
+        color="green"
+    >
+        <div>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
+            </BodyShort>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
+            </BodyShort>
+        </div>
+    </Infobox>
+);
+
+const DereKanTilpassePlanenInfoBox = ({ erAleneforsørger }: { erAleneforsørger: boolean }) => (
+    <Infobox
+        header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
+        color="gray"
+        icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
+    >
+        <BodyLong>
+            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
+        </BodyLong>
+    </Infobox>
+);
+
+const AntallUkerVelger = ({
+    stønadskontoer,
+    hvemHarRett,
+    lagreUttaksplanOgOppdaterUrl,
+}: {
+    stønadskontoer: KontoBeregningResultatDto;
+    hvemHarRett: string;
+    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
+}) => {
+    const intl = useIntl();
+
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
-    const stønadskonto100 = stønadskontoer['100'];
-    const stønadskonto80 = stønadskontoer['80'];
-
-    const barnehagestartdato = barnehagestartDato(omBarnet);
-
-    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
-
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+    const isDesktop = useMedia('screen and (min-width: 480)');
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
@@ -75,202 +261,80 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                 antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),
             });
         }
+        lagreUttaksplanOgOppdaterUrl(undefined);
     };
 
-    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const farOgFarKunEnPartHarRett =
-        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
-        (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
+    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
 
-    const erAleneforsørger = erAlenesøker(hvemPlanlegger);
-
-    const bareFarMedmorHarRett =
-        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
-
-    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
-
-    const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
-
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
-    const erOversiktSteg = true;
-    const isDesktop = useMedia('screen and (min-width: 480)');
 
     return (
-        <form>
-            <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-                <VStack gap="space-24">
-                    <HStack justify="space-between">
-                        <Heading size="medium" spacing level="2">
-                            <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
-                        </Heading>
-                        <VStack gap="space-4">
-                            <Button
-                                size="xsmall"
-                                variant="secondary"
-                                type="button"
-                                icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
-                                onClick={() => {
-                                    navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
-                                }}
-                            >
-                                <FormattedMessage id="OversiktSteg.Infoboks.Tilpass" />
-                            </Button>
-                        </VStack>
-                    </HStack>
-
-                    {farOgFarKunEnPartHarRett && omBarnet.erFødsel && (
-                        <Infobox
-                            header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
-                            icon={
-                                <PersonGroupIcon
-                                    height={24}
-                                    width={24}
-                                    fontSize="1.5rem"
-                                    color="var(--ax-bg-accent-strong)"
-                                    aria-hidden
-                                />
-                            }
-                            color="green"
-                        >
-                            <div>
-                                <BodyShort>
-                                    <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
-                                </BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
-                                </BodyShort>
-                            </div>
-                        </Infobox>
-                    )}
-                    <VStack gap="space-4">
-                        <ToggleGroup
-                            defaultValue={hvorLangPeriode?.dekningsgrad}
-                            size={isDesktop ? 'medium' : 'small'}
-                            variant="neutral"
-                            onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
-                            style={{ width: '100%' }}
-                        >
-                            <ToggleGroup.Item value={'100'}>
-                                <FormattedMessage
-                                    id="OversiktSteg.100"
-                                    values={{
-                                        uker: antallUkerOgDager100.uker,
-                                        dager: antallUkerOgDager100.dager,
-                                    }}
-                                />
-                            </ToggleGroup.Item>
-                            <ToggleGroup.Item value={'80'}>
-                                <FormattedMessage
-                                    id="OversiktSteg.80"
-                                    values={{
-                                        uker: antallUkerOgDager80.uker,
-                                        dager: antallUkerOgDager80.dager,
-                                    }}
-                                />
-                            </ToggleGroup.Item>
-                        </ToggleGroup>
-                        {hvemHarRett === 'beggeHarRett' &&
-                            (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                                <Select
-                                    defaultValue={fordeling?.antallDagerSøker1}
-                                    label="Velg fordeling fellesperiode"
-                                    hideLabel
-                                    name="antallDagerSøker1"
-                                    onChange={(e) => {
-                                        lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
-                                    }}
-                                >
-                                    {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(
-                                        (value) => (
-                                            <option
-                                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                            >
-                                                {finnFellesperiodeFordelingOptionTekst(
-                                                    intl,
-                                                    value,
-                                                    hvemPlanlegger,
-                                                    fornavnSøker1,
-                                                    fornavnSøker2,
-                                                    erOversiktSteg,
-                                                )}
-                                            </option>
-                                        ),
-                                    )}
-                                </Select>
-                            )}
-                    </VStack>
-
-                    <UttaksplanDataProvider
-                        barn={mapOmBarnetTilBarn(omBarnet)}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        navnPåForeldre={getNavnPåForeldre(hvemPlanlegger, intl)}
-                        modus="planlegger"
-                        valgtStønadskonto={valgtStønadskonto}
-                        aleneOmOmsorg={erAlenesøker(hvemPlanlegger)}
-                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden(hvemPlanlegger)}
-                        bareFarMedmorHarRett={bareFarMedmorHarRett}
-                        harAktivitetskravIPeriodeUtenUttak={false}
-                        erDeltUttak={fordeling !== undefined}
-                        saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
-                    >
-                        <UttaksplanKalender readOnly={true} barnehagestartdato={barnehagestartdato} />
-                    </UttaksplanDataProvider>
-
-                    <Infobox
-                        header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
-                        color="gray"
-                        icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
-                    >
-                        <VStack gap="space-8">
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="OversiktSteg.Infoboks.Utkast.Tekst"
-                                    values={{ erAleneforsørger }}
-                                />
-                            </BodyLong>
-                            <HStack>
-                                <Button
-                                    variant="primary"
-                                    type="button"
-                                    onClick={() => {
-                                        navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
-                                    }}
-                                >
-                                    <BodyShort size="small">
-                                        <FormattedMessage id="OversiktSteg.Infoboks.TilpassPlanen" />
-                                    </BodyShort>
-                                </Button>
-                            </HStack>
-                        </VStack>
-                    </Infobox>
-                    <VStack gap="space-4">
-                        <OmÅTilpassePlanen
-                            arbeidssituasjon={arbeidssituasjon}
-                            barnet={omBarnet}
-                            hvemPlanlegger={hvemPlanlegger}
-                        />
-                        <UforutsetteEndringer
-                            arbeidssituasjon={arbeidssituasjon}
-                            hvemPlanlegger={hvemPlanlegger}
-                            barnet={omBarnet}
-                        />
-                    </VStack>
-                    <StepButtons
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={() => {
-                            navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        <VStack gap="space-8">
+            <ToggleGroup
+                defaultValue={hvorLangPeriode?.dekningsgrad}
+                size={isDesktop ? 'medium' : 'small'}
+                variant="neutral"
+                onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
+                style={{ width: '100%' }}
+            >
+                <ToggleGroup.Item value={'100'}>
+                    <FormattedMessage
+                        id="OversiktSteg.100"
+                        values={{
+                            uker: antallUkerOgDager100.uker,
+                            dager: antallUkerOgDager100.dager,
                         }}
-                        isJumpToEndButton
-                        useSimplifiedTexts
                     />
-                </VStack>
-            </PlanleggerStepPage>
-        </form>
+                </ToggleGroup.Item>
+                <ToggleGroup.Item value={'80'}>
+                    <FormattedMessage
+                        id="OversiktSteg.80"
+                        values={{
+                            uker: antallUkerOgDager80.uker,
+                            dager: antallUkerOgDager80.dager,
+                        }}
+                    />
+                </ToggleGroup.Item>
+            </ToggleGroup>
+
+            {hvemHarRett === 'beggeHarRett' &&
+                (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
+                    <Select
+                        defaultValue={fordeling?.antallDagerSøker1}
+                        label="Velg fordeling fellesperiode"
+                        hideLabel
+                        name="antallDagerSøker1"
+                        onChange={(e) => {
+                            lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
+                            lagreUttaksplanOgOppdaterUrl(undefined);
+                        }}
+                    >
+                        {getFellesperiodefordelingSelectOptions(
+                            getAntallUkerOgDagerFellesperiode(valgtStønadskonto),
+                        ).map((value) => (
+                            <option
+                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                            >
+                                {finnFellesperiodeFordelingOptionTekst(
+                                    intl,
+                                    value,
+                                    hvemPlanlegger,
+                                    fornavnSøker1,
+                                    fornavnSøker2,
+                                    true,
+                                )}
+                            </option>
+                        ))}
+                    </Select>
+                )}
+        </VStack>
     );
 };
 

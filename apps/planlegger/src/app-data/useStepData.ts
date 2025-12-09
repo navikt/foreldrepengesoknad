@@ -24,7 +24,6 @@ const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.BARNEHAGEPLASS]: intl.formatMessage({ id: 'BarnehageplassSteg.Tittel' }),
     [PlanleggerRoutes.OM_PLANLEGGEREN]: intl.formatMessage({ id: 'OmPlanleggerenSteg.Ingress' }),
     [PlanleggerRoutes.PLANEN_DERES]: intl.formatMessage({ id: 'PlanenDeresSteg.Tittel' }),
-    [PlanleggerRoutes.TILPASS_PLANEN]: intl.formatMessage({ id: 'TilpassPlanenSteg.Tittel' }),
     [PlanleggerRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }),
 });
 
@@ -105,27 +104,6 @@ const showHvorMyeStep = (
     return false;
 };
 
-const showTilpassPlanenStep = (
-    path: PlanleggerRoutes,
-    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-) => {
-    if (path === PlanleggerRoutes.TILPASS_PLANEN) {
-        const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
-        const omBarnet = getData(ContextDataType.OM_BARNET);
-
-        if (
-            (!arbeidssituasjon?.jobberAnnenPart &&
-                (arbeidssituasjon?.status === Arbeidsstatus.INGEN ||
-                    arbeidssituasjon?.status === Arbeidsstatus.UFØR)) ||
-            !erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet)
-        ) {
-            return false;
-        }
-        return true;
-    }
-    return false;
-};
-
 export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
     const intl = useIntl();
@@ -147,7 +125,6 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
                 showBarnehageplassStep(path, getStateData) ||
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
-                showTilpassPlanenStep(path, getStateData) ||
                 showHvorLangPeriodeEllerOversiktStep(path, getStateData)
                     ? [path]
                     : [],

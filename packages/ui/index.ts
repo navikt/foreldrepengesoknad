@@ -22,7 +22,7 @@ export { IntlProvider } from './src/intl/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
-export { Calendar, monthDiff } from './src/calendar/Calendar';
+export { Calendar } from './src/calendar/Calendar';
 export { CalendarLabel } from './src/calendar/label/CalendarLabel';
 export type { CalendarPeriodColor } from './src/calendar/types/CalendarPeriodColor';
 export type { CalendarPeriod } from './src/calendar/types/CalendarPeriod';
