@@ -38,16 +38,6 @@ const formatDateInput = (value: string): string => {
         return `${value.slice(0, 2)}.${value.slice(2, 4)}.${value.slice(4, 8)}`;
     }
 
-    // Håndter 6-sifret format hvis man bare vil skrive inn to desimaler for året: "221019" → "22.10.2019"
-    if (/^\d{6}$/.test(value)) {
-        const twoDigitYear = value.slice(4, 6);
-        // Hopp over hvis året starter med "20" (sannsynligvis 4-sifret år)
-        if (twoDigitYear !== '20') {
-            const fullYear = parseInt(twoDigitYear, 10) < 50 ? `20${twoDigitYear}` : `19${twoDigitYear}`;
-            return `${value.slice(0, 2)}.${value.slice(2, 4)}.${fullYear}`;
-        }
-    }
-
     return value;
 };
 

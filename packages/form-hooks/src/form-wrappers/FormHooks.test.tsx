@@ -38,19 +38,9 @@ describe('<FormHooks>', () => {
         await userEvent.type(datofelt, '03022020');
         expect(screen.getByText('datepickerField: 2020-02-03')).toBeInTheDocument();
 
-        // Test 6-sifret format (DDMMYY) - år 19 blir 2019
+        // Test 8-sifret format (DDMMYYYY)
         await userEvent.clear(datofelt);
-        await userEvent.type(datofelt, '010219');
-        expect(screen.getByText('datepickerField: 2019-02-01')).toBeInTheDocument();
-
-        // Test 6-sifret format (DDMMYY) - år 85 blir 1985
-        await userEvent.clear(datofelt);
-        await userEvent.type(datofelt, '010285');
-        expect(screen.getByText('datepickerField: 1985-02-01')).toBeInTheDocument();
-
-        // Test 6-sifret format (DDMMYY) - år 49 blir 2049
-        await userEvent.clear(datofelt);
-        await userEvent.type(datofelt, '010249');
-        expect(screen.getByText('datepickerField: 2049-02-01')).toBeInTheDocument();
+        await userEvent.type(datofelt, '22111995');
+        expect(screen.getByText('datepickerField: 1995-11-22')).toBeInTheDocument();
     });
 });
