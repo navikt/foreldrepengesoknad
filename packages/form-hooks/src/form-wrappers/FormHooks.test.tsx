@@ -94,7 +94,6 @@ describe('<FormHooks>', () => {
         datofelt.setSelectionRange(3, 3);
         const slettTreCharacters = '{Backspace}'.repeat(3);
         await userEvent.keyboard(`${slettTreCharacters}22`);
-        screen.logTestingPlaygroundURL();
         expect(screen.getByText('datepickerField: 2023-11-22')).toBeInTheDocument();
     });
 });
