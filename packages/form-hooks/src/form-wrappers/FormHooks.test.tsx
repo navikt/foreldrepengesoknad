@@ -1,7 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import * as stories from './FormHooks.stories';
 
 const { VisFormkomponenter } = composeStories(stories);
@@ -16,7 +15,8 @@ describe('<FormHooks>', () => {
         //@ts-expect-error fiks
         expect(await screen.getByRole('option', { name: 'Test 1' }).selected).toBe(true);
 
-        const datofelt = screen.getByText('Dette er en datepicker');
+        const dateLabel = screen.getByText('Dette er en datepicker');
+        const datofelt = dateLabel.closest('div')?.querySelector('input') as HTMLInputElement;
         await userEvent.type(datofelt, '01.02.2020');
         fireEvent.blur(datofelt);
     });
@@ -59,5 +59,41 @@ describe('<FormHooks>', () => {
         await userEvent.clear(inputfelt);
         await userEvent.type(inputfelt, '1 00');
         expect(inputfelt).toHaveValue(`100`);
+    });
+
+    it('skal sjekke datoinput komponent støtter riktige formater', async () => {
+        render(<VisFormkomponenter />);
+
+        const dateLabel = screen.getByText('Dette er en datepicker');
+        const datofelt = dateLabel.closest('div')?.querySelector('input') as HTMLInputElement;
+
+        // Test standardformat med punkter
+        await userEvent.type(datofelt, '01.02.2020');
+        expect(screen.getByText('datepickerField: 2020-02-01')).toBeInTheDocument();
+
+        // Test 8-sifret format (DDMMYYYY)
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '03022020');
+        expect(screen.getByText('datepickerField: 2020-02-03')).toBeInTheDocument();
+
+        // Test 8-sifret format (DDMMYYYY)
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '22111995');
+        expect(screen.getByText('datepickerField: 1995-11-22')).toBeInTheDocument();
+
+        // Test 8-sifret ugyldig format. Skal ikke sette "."
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '12345678');
+        expect(screen.getByText('datepickerField: 12345678')).toBeInTheDocument();
+
+        // Skriver 8 siffer. Formatterer med punktum. Deretter endrer dag
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '09112023');
+        // Edit from index 3 - select from position 3 to end and replace
+        datofelt.focus();
+        datofelt.setSelectionRange(3, 3);
+        const slettTreCharacters = '{Backspace}'.repeat(3);
+        await userEvent.keyboard(`${slettTreCharacters}22`);
+        expect(screen.getByText('datepickerField: 2023-11-22')).toBeInTheDocument();
     });
 });
