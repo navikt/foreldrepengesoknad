@@ -36,8 +36,8 @@ const formatDateInput = ({ nyVerdi, forrigeVerdi }: { nyVerdi: string; forrigeVe
     let raw = nyVerdi;
 
     // Håndter 8-sifret format: "22102022" → "22.10.2022"
-    const verdiMedKunTall = nyVerdi.replace(/\D/g, '');
-    const forrigeVerdiMedKunTall = forrigeVerdi.replace(/\D/g, '');
+    const verdiMedKunTall = nyVerdi.replaceAll(/\D/g, '');
+    const forrigeVerdiMedKunTall = forrigeVerdi.replaceAll(/\D/g, '');
     const sisteInputVarEndringISiffer = verdiMedKunTall !== forrigeVerdiMedKunTall;
     if (sisteInputVarEndringISiffer && /^\d{8}$/.test(verdiMedKunTall)) {
         raw = `${verdiMedKunTall.slice(0, 2)}.${verdiMedKunTall.slice(2, 4)}.${verdiMedKunTall.slice(4, 8)}`;
