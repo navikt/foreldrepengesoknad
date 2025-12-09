@@ -23,7 +23,7 @@ const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] satisfies 
 
 interface Props {
     perioderForKalendervisning: CalendarPeriodWithLabel[];
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     skjulTekstSomDefault?: boolean;
 }
@@ -121,7 +121,7 @@ const LabelButtonMedEllerUtenToolip = ({
     visTekst,
 }: {
     info: UttaksplanKalenderLegendInfo;
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     visTekst: boolean;
 }) => {
@@ -181,7 +181,7 @@ const LabelButton = ({
     visTekst,
 }: {
     info: UttaksplanKalenderLegendInfo;
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     label?: React.ReactNode;
     readOnly: boolean;
     visTekst: boolean;
@@ -193,7 +193,7 @@ const LabelButton = ({
             type="button"
             key={info.color}
             onClick={
-                unselectableColors.some((color) => color === info.color) || readOnly
+                !selectLegend || unselectableColors.some((color) => color === info.color) || readOnly
                     ? undefined
                     : () => {
                           selectLegend(info.color);
