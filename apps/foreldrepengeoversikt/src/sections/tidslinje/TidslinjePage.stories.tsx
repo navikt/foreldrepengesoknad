@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { useQuery } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -38,8 +39,13 @@ import {
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
-import { API_URLS } from '../../api/queries.ts';
-import { TidslinjePage } from './TidslinjePage';
+import {
+    API_URLS,
+    hentDokumenterOptions,
+    hentManglendeVedleggOptions,
+    hentTidslinjehendelserOptions,
+} from '../../api/queries.ts';
+import { Tidslinje } from './Tidslinje.tsx';
 
 const søkersBarn = [
     {
@@ -56,11 +62,11 @@ const søkersBarn = [
 type StoryArgs = {
     saksnummer: string;
     mockDate?: number;
-} & ComponentProps<typeof TidslinjePage>;
+} & ComponentProps<typeof Tidslinje>;
 
 const meta = {
-    title: 'TidslinjePage',
-    component: TidslinjePage,
+    title: 'Tidslinje',
+    component: Tidslinje,
     decorators: [withQueryClient, withMockDate(new Date('2025-11-27').getTime())],
     argTypes: {
         mockDate: {
@@ -69,10 +75,13 @@ const meta = {
         },
     },
     render: ({ saksnummer, ...props }) => {
+        const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(saksnummer));
+        const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(saksnummer));
+
         return (
             <MemoryRouter initialEntries={[`/${saksnummer}`]}>
                 <Routes>
-                    <Route element={<TidslinjePage {...props} />} path={`/:saksnummer`} />
+                    <Route element={<Tidslinje {...props} />} path={`/:saksnummer`} />
                 </Routes>
             </MemoryRouter>
         );
