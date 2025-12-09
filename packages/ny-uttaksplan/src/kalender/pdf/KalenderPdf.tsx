@@ -1,5 +1,5 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -22,11 +22,22 @@ export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, 
     const [isCreatingPdf, setIsCreatingPdf] = useState(false);
     const [antallKolonner, setAntallKolonner] = useState<1 | 2 | 3>(2);
 
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => {
+        return () => clearTimeout(timeoutRef.current);
+    }, []);
+
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.NORMAL,
         page: {
             margin: Margin.MEDIUM,
+        },
+        overrides: {
+            canvas: {
+                windowWidth: 1200,
+            },
         },
     } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
@@ -68,24 +79,12 @@ export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, 
                                         icon={<DownloadIcon aria-hidden />}
                                         loading={isCreatingPdf}
                                         onClick={() => {
-                                            // Denne koden er nødvendig for å få korrekt antall kolonner i PDFen på alle enheter
                                             setIsCreatingPdf(true);
-                                            const originalWidth = globalThis.innerWidth;
-
-                                            Object.defineProperty(globalThis, 'innerWidth', {
-                                                configurable: true,
-                                                value: 1400,
-                                            });
-                                            globalThis.dispatchEvent(new Event('resize'));
 
                                             toPDF();
 
-                                            setTimeout(() => {
-                                                Object.defineProperty(globalThis, 'innerWidth', {
-                                                    configurable: true,
-                                                    value: originalWidth,
-                                                });
-                                                globalThis.dispatchEvent(new Event('resize'));
+                                            // Kun for visuell feedback til bruker
+                                            timeoutRef.current = setTimeout(() => {
                                                 setIsCreatingPdf(false);
                                             }, 500);
                                         }}
