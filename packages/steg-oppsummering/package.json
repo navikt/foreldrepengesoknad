@@ -18,21 +18,21 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/ds-css": "7.35.0",
-        "@navikt/ds-react": "7.35.0",
+        "@navikt/ds-css": "7.35.1",
+        "@navikt/ds-react": "7.35.1",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@tailwindcss/vite": "4.1.17",
         "dayjs": "1.11.19",
         "i18n-iso-countries": "7.14.0",
-        "react": "19.2.0",
-        "react-dom": "19.2.0",
+        "react": "19.2.1",
+        "react-dom": "19.2.1",
         "react-intl": "7.1.14"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "7.4.4",
-        "@navikt/ds-tailwind": "7.35.0",
+        "@navikt/ds-tailwind": "7.35.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",

@@ -13,9 +13,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "7.35.0",
-        "@navikt/ds-css": "7.35.0",
-        "@navikt/ds-react": "7.35.0",
+        "@navikt/aksel-icons": "7.35.1",
+        "@navikt/ds-css": "7.35.1",
+        "@navikt/ds-react": "7.35.1",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -31,9 +31,9 @@
         "formik": "2.4.9",
         "i18n-iso-countries": "7.14.0",
         "lodash": "4.17.21",
-        "react": "19.2.0",
+        "react": "19.2.1",
         "react-day-picker": "8.10.0",
-        "react-dom": "19.2.0",
+        "react-dom": "19.2.1",
         "react-dropzone": "14.3.8",
         "react-intl": "7.1.14",
         "typescript": "5.9.3"
