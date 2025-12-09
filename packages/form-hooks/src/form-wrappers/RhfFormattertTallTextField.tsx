@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FieldValues, UseControllerProps, useController, useFormContext, useWatch } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController, useWatch } from 'react-hook-form';
 
 import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react';
 
@@ -14,13 +14,10 @@ type Props<T extends FieldValues> = {
 /** Et tekstfelt som formaterer innholdet til et tall med tusenvise mellomrom. */
 export const RhfFormattertTallTextField = <T extends FieldValues>({
     name,
-    min,
-    max,
-    required,
     validate = [],
+    control,
     ...rest
 }: Props<T>) => {
-    const { control } = useFormContext();
     const { field, fieldState } = useController({
         name,
         rules: {
@@ -38,7 +35,6 @@ export const RhfFormattertTallTextField = <T extends FieldValues>({
     return (
         <TextField
             {...rest}
-            aria-label={field.value}
             autoComplete="off"
             error={fieldState.error?.message}
             onChange={(e) => {
