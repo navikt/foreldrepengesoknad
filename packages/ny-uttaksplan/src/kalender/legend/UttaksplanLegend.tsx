@@ -188,23 +188,26 @@ const LabelButton = ({
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
+    const erKlikkbar = !!selectLegend && !unselectableColors.some((color) => color === info.color) && !readOnly;
+
     return (
         <button
             type="button"
             key={info.color}
             onClick={
-                !selectLegend || unselectableColors.some((color) => color === info.color) || readOnly
-                    ? undefined
-                    : () => {
+                erKlikkbar
+                    ? () => {
                           selectLegend(info.color);
                           setSelectedLabel(selectedLabel === info.label ? undefined : info.label);
                       }
+                    : undefined
             }
             className={
                 `rounded-sm ${getSelectableStyle(!unselectableColors.some((color) => color === info.color) && !readOnly)}` +
                 ` ${getFocusStyle(info.color)} ${getSelectedStyle(selectedLabel === info.label, info.color)} `
             }
             tabIndex={!unselectableColors.some((color) => color === info.color) && !readOnly ? 0 : -1}
+            disabled={!erKlikkbar}
         >
             <CalendarLabel color={info.color}>
                 {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}

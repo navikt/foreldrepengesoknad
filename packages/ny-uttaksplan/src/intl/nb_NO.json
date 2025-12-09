@@ -215,7 +215,7 @@
     "kalender.lastNedSomPdf": "Last ned kalender som PDF",
     "kalender.lastNed": "Last ned",
     "kalender.avbryt": "Avbryt",
-    "kalender.AntallKolonner": "Velg antall kolonner",
+    "kalender.antallKolonner": "Velg antall kolonner",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
     "kalender.velgRange": "Periodeseleksjon",

@@ -62,8 +62,8 @@ export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, 
                         <VStack gap="space-48">
                             <VStack gap="space-16">
                                 <RadioGroup
-                                    legend={intl.formatMessage({ id: 'kalender.AntallKolonner' })}
-                                    onChange={setAntallKolonner as (value: React.SetStateAction<1 | 2 | 3>) => void}
+                                    legend={intl.formatMessage({ id: 'kalender.antallKolonner' })}
+                                    onChange={setAntallKolonner}
                                     value={antallKolonner}
                                 >
                                     <HStack gap="space-16">
