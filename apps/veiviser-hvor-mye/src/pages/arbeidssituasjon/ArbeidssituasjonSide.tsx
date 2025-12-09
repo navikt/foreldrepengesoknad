@@ -9,7 +9,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { BodyShort, Button, Heading, Label, Link, List, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { RhfCheckbox, RhfForm, RhfTextField } from '@navikt/fp-form-hooks';
+import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
@@ -171,7 +171,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                         )}
 
                                         <VStack gap="space-16">
-                                            <RhfTextField
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned1"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(
@@ -184,7 +184,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                     ),
                                                 ]}
                                             />
-                                            <RhfTextField
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned2"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(
@@ -197,7 +197,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                     ),
                                                 ]}
                                             />
-                                            <RhfTextField
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned3"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
