@@ -28,84 +28,6 @@ type Fellesperiodefordeling = {
     antallUkerOgDagerSøker2: UkerOgDager;
 };
 
-export const getFellesperiodefordelingSelectOptions = (
-    antallUkerOgDagerFellesperiode: UkerOgDager,
-): Fellesperiodefordeling[] => {
-    const values = [];
-    for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
-        const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
-        const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
-        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
-        values.push({
-            antallUkerOgDagerSøker1: {
-                uker: antallUkerOgDagerFellesperiode.uker - i,
-                dager: søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0,
-                totaltAntallDager: (antallUkerOgDagerFellesperiode.uker - i) * 5 + dagerSøker1,
-            },
-            antallUkerOgDagerSøker2: {
-                uker: i,
-                dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager,
-                totaltAntallDager: i * 5 + dagerSøker2,
-            },
-        });
-    }
-    return values;
-};
-
-export const finnFellesperiodeFordelingOptionTekst = (
-    intl: IntlShape,
-    value: Fellesperiodefordeling,
-    hvemPlanlegger: HvemPlanlegger,
-    fornavnSøker1?: string,
-    fornavnSøker2?: string,
-    erOversiktSteg?: boolean,
-) => {
-    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
-    const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
-    const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
-
-    if (value.antallUkerOgDagerSøker1.uker === 0) {
-        return (
-            <FormattedMessage
-                id="FordelingSteg.FordelingOptionAlt"
-                values={{
-                    hvem: søker2Tekst,
-                    uker: value.antallUkerOgDagerSøker2.uker,
-                    dager: value.antallUkerOgDagerSøker2.dager,
-                    erOversiktSteg,
-                }}
-            />
-        );
-    }
-    if (value.antallUkerOgDagerSøker2.uker === 0) {
-        return (
-            <FormattedMessage
-                id="FordelingSteg.FordelingOptionAlt"
-                values={{
-                    hvem: søker1Tekst,
-                    uker: value.antallUkerOgDagerSøker1.uker,
-                    dager: value.antallUkerOgDagerSøker1.dager,
-                    erOversiktSteg,
-                }}
-            />
-        );
-    }
-    return (
-        <FormattedMessage
-            id="FordelingSteg.FordelingOptions"
-            values={{
-                hvem: søker1Tekst,
-                hvem2: søker2Tekst,
-                uker: value.antallUkerOgDagerSøker1.uker,
-                dagerS1: value.antallUkerOgDagerSøker1.dager,
-                uker2: value.antallUkerOgDagerSøker2.uker,
-                dagerS2: value.antallUkerOgDagerSøker2.dager,
-                erOversiktSteg,
-            }}
-        />
-    );
-};
-
 interface Props {
     stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
 }
@@ -122,6 +44,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const formMethods = useForm<Fordeling>({
         defaultValues: fordeling,
@@ -133,6 +56,11 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
+
+        if (fordeling && fordeling.antallDagerSøker1 !== formValues.antallDagerSøker1) {
+            oppdaterUttaksplan(undefined);
+        }
+
         navigator.goToNextDefaultStep();
     };
 
@@ -237,5 +165,83 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                 </VStack>
             </RhfForm>
         </PlanleggerStepPage>
+    );
+};
+
+export const getFellesperiodefordelingSelectOptions = (
+    antallUkerOgDagerFellesperiode: UkerOgDager,
+): Fellesperiodefordeling[] => {
+    const values = [];
+    for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
+        const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
+        const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
+        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
+        values.push({
+            antallUkerOgDagerSøker1: {
+                uker: antallUkerOgDagerFellesperiode.uker - i,
+                dager: søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0,
+                totaltAntallDager: (antallUkerOgDagerFellesperiode.uker - i) * 5 + dagerSøker1,
+            },
+            antallUkerOgDagerSøker2: {
+                uker: i,
+                dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager,
+                totaltAntallDager: i * 5 + dagerSøker2,
+            },
+        });
+    }
+    return values;
+};
+
+export const finnFellesperiodeFordelingOptionTekst = (
+    intl: IntlShape,
+    value: Fellesperiodefordeling,
+    hvemPlanlegger: HvemPlanlegger,
+    fornavnSøker1?: string,
+    fornavnSøker2?: string,
+    erOversiktSteg?: boolean,
+) => {
+    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
+    const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
+    const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
+
+    if (value.antallUkerOgDagerSøker1.uker === 0) {
+        return (
+            <FormattedMessage
+                id="FordelingSteg.FordelingOptionAlt"
+                values={{
+                    hvem: søker2Tekst,
+                    uker: value.antallUkerOgDagerSøker2.uker,
+                    dager: value.antallUkerOgDagerSøker2.dager,
+                    erOversiktSteg,
+                }}
+            />
+        );
+    }
+    if (value.antallUkerOgDagerSøker2.uker === 0) {
+        return (
+            <FormattedMessage
+                id="FordelingSteg.FordelingOptionAlt"
+                values={{
+                    hvem: søker1Tekst,
+                    uker: value.antallUkerOgDagerSøker1.uker,
+                    dager: value.antallUkerOgDagerSøker1.dager,
+                    erOversiktSteg,
+                }}
+            />
+        );
+    }
+    return (
+        <FormattedMessage
+            id="FordelingSteg.FordelingOptions"
+            values={{
+                hvem: søker1Tekst,
+                hvem2: søker2Tekst,
+                uker: value.antallUkerOgDagerSøker1.uker,
+                dagerS1: value.antallUkerOgDagerSøker1.dager,
+                uker2: value.antallUkerOgDagerSøker2.uker,
+                dagerS2: value.antallUkerOgDagerSøker2.dager,
+                erOversiktSteg,
+            }}
+        />
     );
 };
