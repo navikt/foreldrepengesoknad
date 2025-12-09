@@ -132,7 +132,7 @@ export const RhfDatepicker = <T extends FieldValues>({
             }
             field.onChange(dato);
         },
-        [setFieldValue, onChange, field],
+        [setFieldValue, onChange, field, fieldValue],
     );
 
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
