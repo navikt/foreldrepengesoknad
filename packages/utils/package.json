@@ -30,13 +30,12 @@
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.7",
-        "@vitest/browser": "3.2.4",
         "eslint": "9.39.1",
         "fast-glob": "3.3.3",
         "playwright": "1.57.0",
         "typescript": "5.9.3",
         "vite": "7.2.6",
-        "vitest": "3.2.4"
+        "vitest": "4.0.15"
     },
     "packageManager": "pnpm@10.18.3"
 }

@@ -13,7 +13,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfFormattertTallTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
@@ -74,7 +74,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                         </Heading>
                         <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
-                                <RhfTextField
+                                <RhfFormattertTallTextField
                                     name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
                                     control={formMethods.control}
                                     label={
@@ -103,7 +103,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
                             <VStack gap="space-8">
                                 <BluePanel isDarkBlue={true}>
-                                    <RhfTextField
+                                    <RhfFormattertTallTextField
                                         name="lønnSøker2"
                                         control={formMethods.control}
                                         label={
