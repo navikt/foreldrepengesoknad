@@ -32,7 +32,6 @@ const TidslinjePageInner = ({ søkersBarn, sak, visHeleTidslinjen = true }: Inne
         `${intl.formatMessage({ id: 'heleProsessen' })} -${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
     useSetBackgroundColor('white');
-    useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));

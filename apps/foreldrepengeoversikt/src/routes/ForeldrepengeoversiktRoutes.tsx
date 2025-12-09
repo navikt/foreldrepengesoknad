@@ -12,7 +12,6 @@ import { InntektsmeldingOversiktPage } from '../pages/inntektsmelding-page/Innte
 import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
 import { MinidialogPage } from '../pages/minidialog-page/MinidialogPage';
 import { Saksoversikt } from '../pages/saksoversikt/Saksoversikt';
-import { TidslinjePage } from '../pages/tidslinje-page/TidslinjePage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { KontaktOss } from '../sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from '../types/SakOppslag';
@@ -37,10 +36,6 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                         <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`}>
                             <Route index element={<Saksoversikt søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
-                            <Route
-                                path={OversiktRoutes.TIDSLINJEN}
-                                element={<TidslinjePage søkersBarn={søkerinfo.person.barn} />}
-                            />
                             <Route path={`${OversiktRoutes.OPPGAVER}`} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />

@@ -39,7 +39,6 @@ import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
-import { OversiktRoutes } from '../../routes/routes';
 import { TidslinjePage } from './TidslinjePage';
 
 const søkersBarn = [
@@ -71,9 +70,9 @@ const meta = {
     },
     render: ({ saksnummer, ...props }) => {
         return (
-            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/${saksnummer}`]}>
+            <MemoryRouter initialEntries={[`/${saksnummer}`]}>
                 <Routes>
-                    <Route element={<TidslinjePage {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
+                    <Route element={<TidslinjePage {...props} />} path={`/:saksnummer`} />
                 </Routes>
             </MemoryRouter>
         );
