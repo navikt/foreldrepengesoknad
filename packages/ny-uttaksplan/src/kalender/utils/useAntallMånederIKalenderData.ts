@@ -52,7 +52,7 @@ const getSisteDatoIKalender = (familiehendelsedato: string, uttaksplan: Planperi
         return dayjs(barnehagestartdato).isSameOrAfter(dayjs(sisteTom)) ? barnehagestartdato : sisteTom;
     }
 
-    return sisteTom ? sisteTom : finnSeksMånederEtterFamiliehendelse(familiehendelsedato);
+    return sisteTom ?? finnSeksMånederEtterFamiliehendelse(familiehendelsedato);
 };
 
 const finnSeksMånederEtterFamiliehendelse = (familiehendelsedato: string) => {
