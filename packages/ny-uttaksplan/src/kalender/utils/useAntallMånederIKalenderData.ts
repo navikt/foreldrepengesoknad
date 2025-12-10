@@ -43,7 +43,7 @@ export const useAntallMånederIKalenderData = (
             !skalViseFørsteMuligeDatoIKalender &&
             familiesituasjon !== 'adopsjon' &&
             monthDiff(dayjs(førsteMuligeDato), dayjs(førsteDatoIKalenderFørManueltLagtTil)) !== 0,
-        kanLeggeTIlFlereMånederPåSlutten: antallMånederLagtTilKalender <= maksAntallEkstraMånederPåSlutten,
+        kanLeggeTilFlereMånederPåSlutten: antallMånederLagtTilKalender < maksAntallEkstraMånederPåSlutten,
     };
 };
 

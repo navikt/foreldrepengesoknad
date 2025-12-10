@@ -366,7 +366,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Vis flere måneder')).toBeInTheDocument();
     });
 
-    it('skal ikke kunne legge til flere månader på starten når en allerede viser maks antall måneder', async () => {
+    it('skal ikke kunne legge til flere måneder på starten når en allerede viser maks antall måneder', async () => {
         render(<HarPeriode11UkerFørFamiliehendelseDato />);
 
         expect(await screen.findByText('Start redigering')).toBeInTheDocument();
@@ -470,6 +470,6 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByTestId('year:2027;month:3')).toBeInTheDocument();
         expect(screen.queryByTestId('year:2027;month:4')).not.toBeInTheDocument();
 
-        expect(screen.getByText(/Du viser maks antall måneder/)).toBeInTheDocument();
+        expect(screen.getByText('Du viser maks antall måneder (3 år)')).toBeInTheDocument();
     });
 });

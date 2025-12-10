@@ -48,7 +48,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         førsteDatoIKalender,
         sisteDatoIKalender,
         kanLeggeTilFlereMånederPåStarten,
-        kanLeggeTIlFlereMånederPåSlutten,
+        kanLeggeTilFlereMånederPåSlutten,
     } = useAntallMånederIKalenderData(
         antallMånederLagtTilPåSluttenAvKalender,
         skalViseFørsteMuligeDatoIKalender,
@@ -161,7 +161,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             firstDateInCalendar={førsteDatoIKalender}
                             lastDateInCalendar={sisteDatoIKalender}
                         />
-                        {kanLeggeTIlFlereMånederPåSlutten && !erRedigeringInaktiv && (
+                        {kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
                             <Button
                                 onClick={() => setAntallMånederLagtTilPåSluttenAvKalender((value) => value + 3)}
                                 type="button"
@@ -172,7 +172,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
                             </Button>
                         )}
-                        {!kanLeggeTIlFlereMånederPåSlutten && !erRedigeringInaktiv && (
+                        {!kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
                             <InlineMessage className="mt-2" status="info" role="status">
                                 <FormattedMessage id="UttaksplanKalender.Maks3År" />
                             </InlineMessage>
