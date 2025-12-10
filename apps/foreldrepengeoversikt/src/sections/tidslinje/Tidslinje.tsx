@@ -13,6 +13,7 @@ import {
     TasklistSendIcon,
     ThumbUpIcon,
 } from '@navikt/aksel-icons';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
@@ -39,15 +40,15 @@ import {
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 
 type Props = {
-    visHeleTidslinjen: boolean;
     søkersBarn: BarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto_fpoversikt[];
     sak: Sak;
 };
 
-export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, visHeleTidslinjen }: Props) => {
+export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
+    const [visHeleTidslinjen, setVisHeleTidslinjen] = useState(false);
 
     if (tidslinjeHendelser.length === 0) {
         return null;
@@ -69,22 +70,29 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
     });
 
     return (
-        <Process isTruncated={isTruncated}>
-            {hendelser.map((hendelse, index) => {
-                const erUtført = aktivtStegIndexISnitt >= index;
-                const status = erUtført ? 'completed' : 'uncompleted';
-                return (
-                    <Hendelse
-                        key={hendelse.opprettet + index}
-                        status={status}
-                        søkersBarn={søkersBarn}
-                        sak={sak}
-                        manglendeVedlegg={manglendeVedlegg}
-                        hendelse={hendelse}
-                    />
-                );
-            })}
-        </Process>
+        <VStack gap="4">
+            <Process isTruncated={isTruncated}>
+                {hendelser.map((hendelse, index) => {
+                    const erUtført = aktivtStegIndexISnitt >= index;
+                    const status = erUtført ? 'completed' : 'uncompleted';
+                    return (
+                        <Hendelse
+                            key={hendelse.opprettet + index}
+                            status={status}
+                            søkersBarn={søkersBarn}
+                            sak={sak}
+                            manglendeVedlegg={manglendeVedlegg}
+                            hendelse={hendelse}
+                        />
+                    );
+                })}
+            </Process>
+            {visHeleTidslinjen ? undefined : (
+                <Button className="w-fit" variant="secondary" size="small" onClick={() => setVisHeleTidslinjen(true)}>
+                    Vis hele prosessen
+                </Button>
+            )}
+        </VStack>
     );
 };
 

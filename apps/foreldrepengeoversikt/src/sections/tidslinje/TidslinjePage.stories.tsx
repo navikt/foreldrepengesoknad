@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useQuery } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
-import { ComponentProps } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import { manglendeVedlegg, manglendeVedlegg_FP } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import {
     saker,
@@ -39,12 +38,8 @@ import {
 import { BarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
-import {
-    API_URLS,
-    hentDokumenterOptions,
-    hentManglendeVedleggOptions,
-    hentTidslinjehendelserOptions,
-} from '../../api/queries.ts';
+import { API_URLS, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/queries.ts';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { Tidslinje } from './Tidslinje.tsx';
 
 const søkersBarn = [
@@ -59,14 +54,39 @@ const søkersBarn = [
     },
 ] satisfies BarnDto_fpoversikt[];
 
+type MockProps = {
+    søkersBarn: BarnDto_fpoversikt[];
+};
+const MockTidslinjePage = (props: MockProps) => {
+    const params = useParams();
+    const sak = useGetSelectedSak();
+    const tidslinjeHendelser = useQuery(hentTidslinjehendelserOptions(params.saksnummer!)).data;
+    const manglendeVedleggData = useQuery(hentManglendeVedleggOptions(params.saksnummer!)).data;
+
+    if (!tidslinjeHendelser || !manglendeVedleggData || !sak) {
+        return 'Laster story...';
+    }
+
+    return (
+        <div style={{ marginTop: '1rem' }}>
+            <Tidslinje
+                {...props}
+                sak={sak}
+                manglendeVedlegg={manglendeVedleggData}
+                tidslinjeHendelser={tidslinjeHendelser}
+            />
+        </div>
+    );
+};
+
 type StoryArgs = {
     saksnummer: string;
     mockDate?: number;
-} & ComponentProps<typeof Tidslinje>;
+} & MockProps;
 
 const meta = {
     title: 'Tidslinje',
-    component: Tidslinje,
+    component: MockTidslinjePage,
     decorators: [withQueryClient, withMockDate(new Date('2025-11-27').getTime())],
     argTypes: {
         mockDate: {
@@ -75,18 +95,16 @@ const meta = {
         },
     },
     render: ({ saksnummer, ...props }) => {
-        const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(saksnummer));
-        const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(saksnummer));
-
         return (
             <MemoryRouter initialEntries={[`/${saksnummer}`]}>
                 <Routes>
-                    <Route element={<Tidslinje {...props} />} path={`/:saksnummer`} />
+                    <Route element={<MockTidslinjePage {...props} />} path={`/:saksnummer`} />
                 </Routes>
             </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
+
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -207,7 +225,6 @@ export const FPManglerDokumentasjon: Story = {
     args: {
         søkersBarn,
         saksnummer: '352028412',
-        visHeleTidslinjen: true,
     },
 };
 
