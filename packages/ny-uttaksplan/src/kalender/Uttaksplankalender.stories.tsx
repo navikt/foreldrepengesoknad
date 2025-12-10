@@ -591,3 +591,19 @@ export const FellesPeriodeForMorOgSaSamtidigUttakOgSa: Story = {
         bareFarMedmorHarRett: false,
     },
 };
+
+export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
+    args: {
+        ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args,
+        saksperioder: [
+            {
+                fom: '2024-01-18',
+                tom: '2024-02-23',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+
+            ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args.saksperioder,
+        ] satisfies UttakPeriode_fpoversikt[],
+    },
+};
