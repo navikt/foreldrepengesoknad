@@ -14,7 +14,7 @@ import {
     ThumbUpIcon,
 } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
 import { BodyShort, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
@@ -89,7 +89,7 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
             </Process>
             {visHeleTidslinjen ? undefined : (
                 <Button className="w-fit" variant="secondary" size="small" onClick={() => setVisHeleTidslinjen(true)}>
-                    Vis hele prosessen
+                    <FormattedMessage id="tidslinje.visHele" />
                 </Button>
             )}
         </VStack>
