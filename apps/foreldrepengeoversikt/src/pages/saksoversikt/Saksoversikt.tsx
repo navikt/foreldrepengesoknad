@@ -130,7 +130,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         sak={gjeldendeSak}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        // visHeleTidslinjen={false}
                         søkersBarn={søkerinfo.person.barn ?? []}
                     />
                 </ContentSection>
