@@ -53,6 +53,7 @@ export type BeregningV1_fpoversikt = {
 
 export type Arbeidsforhold_fpoversikt = {
     arbeidsgiverIdent?: string;
+    arbeidsgiverNavn?: string;
     refusjonPrMnd?: number;
 };
 
@@ -64,7 +65,9 @@ export type BeregningAktivitetStatus_fpoversikt = {
 export type BeregningsAndel_fpoversikt = {
     aktivitetStatus: string;
     arbeidsforhold?: Arbeidsforhold_fpoversikt;
-    dagsats?: number;
+    dagsatsBruker?: number;
+    dagsatsArbeidsgiver?: number;
+    // TODO Gå over til årsinntekt
     fastsattPrMnd?: number;
     inntektsKilde?: InntektsKilde_fpoversikt;
 };
