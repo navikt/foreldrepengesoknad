@@ -110,15 +110,15 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                         <FormattedMessage id="RedigeringPanel.Ferie" />
                                     )}
                                 </BodyShort>
-                                {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="RedigeringPanel.SamtidigUttak"
-                                            values={{ prosent: p.samtidigUttak }}
-                                        />
-                                    </BodyShort>
-                                )}
                             </HStack>
+                            {!p.erAnnenPartEøs && p.samtidigUttak !== undefined && (
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="RedigeringPanel.SamtidigUttak"
+                                        values={{ prosent: p.samtidigUttak }}
+                                    />
+                                </BodyShort>
+                            )}
                             {!p.erAnnenPartEøs && p.gradering !== undefined && (
                                 <BodyShort>
                                     <FormattedMessage
