@@ -127,8 +127,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -302,8 +302,8 @@ importers:
         specifier: 2.15.2
         version: 2.15.2(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.7)(react@19.2.1)
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -537,8 +537,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -733,8 +733,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -923,8 +923,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -1110,8 +1110,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -1282,8 +1282,8 @@ importers:
         specifier: 27.2.0
         version: 27.2.0
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -1484,8 +1484,8 @@ importers:
         specifier: 1.11.19
         version: 1.11.19
       ky:
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.8.0
+        version: 1.8.0
       react:
         specifier: 19.2.1
         version: 19.2.1
@@ -6566,8 +6566,8 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  ky@1.14.0:
-    resolution: {integrity: sha512-Rczb6FMM6JT0lvrOlP5WUOCB7s9XKxzwgErzhKlKde1bEV90FXplV1o87fpt4PU/asJFiqjYJxAJyzJhcrxOsQ==}
+  ky@1.8.0:
+    resolution: {integrity: sha512-DoKGmG27nT8t/1F9gV8vNzggJ3mLAyD49J8tTMWHeZvS8qLc7GlyTieicYtFzvDznMe/q2u38peOjkWc5/pjvw==}
     engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
@@ -12146,7 +12146,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  ky@1.14.0: {}
+  ky@1.8.0: {}
 
   language-subtag-registry@0.3.23: {}
 

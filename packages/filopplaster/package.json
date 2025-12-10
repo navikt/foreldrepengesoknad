@@ -24,7 +24,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "dayjs": "1.11.19",
-        "ky": "1.14.0",
+        "ky": "1.8.0",
         "react": "19.2.1",
         "react-dom": "19.2.1",
         "react-intl": "7.1.14"
