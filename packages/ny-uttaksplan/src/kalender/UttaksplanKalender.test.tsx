@@ -265,7 +265,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(
             await screen.findByText(

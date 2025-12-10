@@ -169,7 +169,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 const LeggTilOgEndreKnapp = ({ åpneRedigeringsmodus }: { åpneRedigeringsmodus: () => void }) => {
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, erKunEnHelEksisterendePeriodeValgt } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
     const harValgtPeriodeFørFamDato = sammenslåtteValgtePerioder.some((p) =>
         dayjs(p.fom).isBefore(familiehendelsedato),
@@ -178,11 +178,7 @@ const LeggTilOgEndreKnapp = ({ åpneRedigeringsmodus }: { åpneRedigeringsmodus:
     if (!(harValgtPeriodeFørFamDato && familiesituasjon === 'adopsjon')) {
         return (
             <Button variant="primary" size="small" onClick={åpneRedigeringsmodus} type="button" className="w-full">
-                {erKunEnHelEksisterendePeriodeValgt ? (
-                    <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
-                ) : (
-                    <FormattedMessage id="RedigeringPanel.NyUttaksplan" />
-                )}
+                <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
             </Button>
         );
     }
