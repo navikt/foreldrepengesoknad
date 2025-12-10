@@ -25,7 +25,9 @@ interface Props {
 export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvoteOppsummering }: Props) => {
     const intl = useIntl();
 
-    const [antallMånederLagtTilKalender, setAntallMånederLagtTilKalender] = useState(0);
+    const [antallMånederLagtTilPåSluttenAvKalender, setAntallMånederLagtTilPåSluttenAvKalender] = useState(0);
+    const [skalViseFørsteMuligeDatoIKalender, setSkalViseFørsteMuligeDatoIKalender] = useState(false);
+
     const [erRedigeringAktiv, setErRedigeringAktiv] = useState(false);
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
@@ -42,8 +44,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const perioderForKalendervisning = usePerioderForKalendervisning(barnehagestartdato);
 
-    const { førsteDatoIKalender, sisteDatoIKalender, maksAntallEkstraMåneder } = useAntallMånederIKalenderData(
-        antallMånederLagtTilKalender,
+    const {
+        førsteDatoIKalender,
+        sisteDatoIKalender,
+        kanLeggeTilFlereMånederPåStarten,
+        kanLeggeTIlFlereMånederPåSlutten,
+    } = useAntallMånederIKalenderData(
+        antallMånederLagtTilPåSluttenAvKalender,
+        skalViseFørsteMuligeDatoIKalender,
         barnehagestartdato,
     );
 
@@ -133,6 +141,17 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
                 <div className="ax-md:flex-row flex flex-col">
                     <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-[295px]'}>
+                        {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
+                            <Button
+                                onClick={() => setSkalViseFørsteMuligeDatoIKalender(true)}
+                                type="button"
+                                variant="secondary"
+                                size="small"
+                                className="mb-4 w-full"
+                            >
+                                <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
+                            </Button>
+                        )}
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
@@ -142,9 +161,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             firstDateInCalendar={førsteDatoIKalender}
                             lastDateInCalendar={sisteDatoIKalender}
                         />
-                        {antallMånederLagtTilKalender <= maksAntallEkstraMåneder && !erRedigeringInaktiv && (
+                        {kanLeggeTIlFlereMånederPåSlutten && !erRedigeringInaktiv && (
                             <Button
-                                onClick={() => setAntallMånederLagtTilKalender((value) => value + 3)}
+                                onClick={() => setAntallMånederLagtTilPåSluttenAvKalender((value) => value + 3)}
                                 type="button"
                                 variant="secondary"
                                 size="small"
@@ -153,7 +172,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
                             </Button>
                         )}
-                        {antallMånederLagtTilKalender > maksAntallEkstraMåneder && !erRedigeringInaktiv && (
+                        {!kanLeggeTIlFlereMånederPåSlutten && !erRedigeringInaktiv && (
                             <InlineMessage className="mt-2" status="info" role="status">
                                 <FormattedMessage id="UttaksplanKalender.Maks3År" />
                             </InlineMessage>
