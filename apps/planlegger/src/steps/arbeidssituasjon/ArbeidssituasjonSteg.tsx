@@ -38,6 +38,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -53,6 +54,13 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
+        if (
+            arbeidssituasjon &&
+            (arbeidssituasjon.jobberAnnenPart !== formValues.jobberAnnenPart ||
+                arbeidssituasjon.status !== formValues.status)
+        ) {
+            oppdaterUttaksplan(undefined);
+        }
 
         const minstEnJobber = formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart;
 

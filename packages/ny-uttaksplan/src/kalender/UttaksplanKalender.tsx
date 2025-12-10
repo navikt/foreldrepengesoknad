@@ -1,8 +1,6 @@
-import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
@@ -13,6 +11,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
+import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
 import { useAntallMånederIKalenderData } from './utils/useAntallMånederIKalenderData';
 import { usePerioderForKalendervisning } from './utils/usePerioderForKalendervisning';
@@ -48,15 +47,6 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         barnehagestartdato,
     );
 
-    const pdfOptions = {
-        filename: 'Min foreldrepengeplan.pdf',
-        resolution: Resolution.NORMAL,
-        page: {
-            margin: Margin.MEDIUM,
-        },
-    } satisfies Options;
-    const { toPDF, targetRef } = usePDF(pdfOptions);
-
     const getSrTextForSelectedPeriod = useCallback(
         (periode: { fom: string; tom: string }) => {
             return intl.formatMessage(
@@ -89,7 +79,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         <VStack gap="space-8">
             <AvslåttePerioder />
 
-            <VStack gap="space-24" ref={targetRef}>
+            <VStack gap="space-24">
                 {!readOnly && (
                     <VStack gap="space-24">
                         <div>
@@ -195,17 +185,11 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 </div>
             </VStack>
 
-            <HStack justify="center">
-                <Button
-                    className="ax-md:pb-0 mt-2 print:hidden"
-                    variant="tertiary"
-                    icon={<DownloadIcon aria-hidden />}
-                    onClick={() => toPDF()}
-                    type="button"
-                >
-                    <FormattedMessage id="kalender.lastNed" />
-                </Button>
-            </HStack>
+            <KalenderPdf
+                perioderForKalendervisning={perioderForKalendervisning}
+                førsteDatoIKalender={førsteDatoIKalender}
+                sisteDatoIKalender={sisteDatoIKalender}
+            />
         </VStack>
     );
 };

@@ -23,7 +23,7 @@ const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] satisfies 
 
 interface Props {
     perioderForKalendervisning: CalendarPeriodWithLabel[];
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     skjulTekstSomDefault?: boolean;
 }
@@ -121,7 +121,7 @@ const LabelButtonMedEllerUtenToolip = ({
     visTekst,
 }: {
     info: UttaksplanKalenderLegendInfo;
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     visTekst: boolean;
 }) => {
@@ -181,30 +181,33 @@ const LabelButton = ({
     visTekst,
 }: {
     info: UttaksplanKalenderLegendInfo;
-    selectLegend: (color: CalendarPeriodColor) => void;
+    selectLegend?: (color: CalendarPeriodColor) => void;
     label?: React.ReactNode;
     readOnly: boolean;
     visTekst: boolean;
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
+    const erKlikkbar = !!selectLegend && !unselectableColors.some((color) => color === info.color) && !readOnly;
+
     return (
         <button
             type="button"
             key={info.color}
             onClick={
-                unselectableColors.some((color) => color === info.color) || readOnly
-                    ? undefined
-                    : () => {
+                erKlikkbar
+                    ? () => {
                           selectLegend(info.color);
                           setSelectedLabel(selectedLabel === info.label ? undefined : info.label);
                       }
+                    : undefined
             }
             className={
                 `rounded-sm ${getSelectableStyle(!unselectableColors.some((color) => color === info.color) && !readOnly)}` +
                 ` ${getFocusStyle(info.color)} ${getSelectedStyle(selectedLabel === info.label, info.color)} `
             }
             tabIndex={!unselectableColors.some((color) => color === info.color) && !readOnly ? 0 : -1}
+            disabled={!erKlikkbar}
         >
             <CalendarLabel color={info.color}>
                 {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
