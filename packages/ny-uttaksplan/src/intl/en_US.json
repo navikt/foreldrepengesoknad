@@ -272,5 +272,15 @@
     "UttaksplanLegend.ApneFargeForklaring": "Open color explanation",
     "UttaksplanLegend.LukkFargeForklaring": "Close color explanation",
     "UttaksplanKalender.StartRedigering": "Start editing",
-    "UttaksplanKalender.StopRedigering": "Stop editing"
+    "UttaksplanKalender.StopRedigering": "Stop editing",
+    "AktivitetskravSpørsmål.Påkrevd": "You must specify what mom will do during this period",
+    "AktivitetskravSpørsmål.Label": "What is mom's activity during this period?",
+    "AktivitetskravSpørsmål.Arbeid": "Work",
+    "AktivitetskravSpørsmål.Utdanning": "Education",
+    "AktivitetskravSpørsmål.Kvalprog": "Qualification program",
+    "AktivitetskravSpørsmål.Introprog": "Introduction program",
+    "AktivitetskravSpørsmål.Trenger_hjelp": "Needs help caring for the child",
+    "AktivitetskravSpørsmål.Innlagt": "Hospitalized",
+    "AktivitetskravSpørsmål.Arbeid_og_utdanning": "Work and education",
+    "AktivitetskravSpørsmål.Description": "In order to receive parental benefits during this period, mom must be active"
 }

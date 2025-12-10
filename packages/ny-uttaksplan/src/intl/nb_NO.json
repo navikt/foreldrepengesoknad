@@ -271,5 +271,15 @@
     "UttaksplanLegend.ApneFargeForklaring": "Åpne fargeforklaring",
     "UttaksplanLegend.LukkFargeForklaring": "Lukk fargeforklaring",
     "UttaksplanKalender.StartRedigering": "Start redigering",
-    "UttaksplanKalender.StopRedigering": "Stopp redigering"
+    "UttaksplanKalender.StopRedigering": "Stopp redigering",
+    "AktivitetskravSpørsmål.Påkrevd": "Du må oppgi hva mor skal gjøre i denne perioden",
+    "AktivitetskravSpørsmål.Label": "Hva skal mor gjøre i denne perioden?",
+    "AktivitetskravSpørsmål.Arbeid": "Arbeid",
+    "AktivitetskravSpørsmål.Utdanning": "Utdanning",
+    "AktivitetskravSpørsmål.Kvalprog": "Kvalifiseringsprogram",
+    "AktivitetskravSpørsmål.Introprog": "Introduksjonsprogram",
+    "AktivitetskravSpørsmål.Trenger_hjelp": "Trenger hjelp",
+    "AktivitetskravSpørsmål.Innlagt": "Innlagt",
+    "AktivitetskravSpørsmål.Arbeid_og_utdanning": "Arbeid og utdanning",
+    "AktivitetskravSpørsmål.Description": "For at du skal kunne ta foreldrepenger i denne perioden må mor være i aktivitet"
 }
