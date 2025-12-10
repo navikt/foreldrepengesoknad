@@ -57,7 +57,7 @@ const søkersBarn = [
 type MockProps = {
     søkersBarn: BarnDto_fpoversikt[];
 };
-const MockTidslinjePage = (props: MockProps) => {
+const MockTidslinje = (props: MockProps) => {
     const params = useParams();
     const sak = useGetSelectedSak();
     const tidslinjeHendelser = useQuery(hentTidslinjehendelserOptions(params.saksnummer!)).data;
@@ -86,7 +86,7 @@ type StoryArgs = {
 
 const meta = {
     title: 'Tidslinje',
-    component: MockTidslinjePage,
+    component: MockTidslinje,
     decorators: [withQueryClient, withMockDate(new Date('2025-11-27').getTime())],
     argTypes: {
         mockDate: {
@@ -98,7 +98,7 @@ const meta = {
         return (
             <MemoryRouter initialEntries={[`/${saksnummer}`]}>
                 <Routes>
-                    <Route element={<MockTidslinjePage {...props} />} path={`/:saksnummer`} />
+                    <Route element={<MockTidslinje {...props} />} path={`/:saksnummer`} />
                 </Routes>
             </MemoryRouter>
         );
