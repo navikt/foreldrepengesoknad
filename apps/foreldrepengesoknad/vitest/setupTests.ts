@@ -14,15 +14,15 @@ expect.extend(matchers);
 
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
     globalThis.scrollTo = () => undefined;
-}
 
-// Only patch if jsdom provides a ReadableStream without a working cancel()
-if (globalThis.ReadableStream) {
-    const RS = globalThis.ReadableStream.prototype;
+    if (globalThis.ReadableStream) {
+        const RS = globalThis.ReadableStream.prototype;
 
-    // jsdom has a cancel(), but it hangs — override anyway
-    RS.cancel = function () {
-        // ignore original; just settle
-        return Promise.resolve();
-    };
+        // Denne var tricky å finne ut av. Den feiler ikke i jsdom, men den blir stående å vente/henge på et eller annet uvisst.
+        // Resolver den derfor umiddelbart. Det er oppførsel (retries, opploadprogress, etc.) som ikke er relevant å teste i jsdom.
+        // Om det i fremtiden skal testes bør det skje i ekte browser - ikke jsdom
+        RS.cancel = function () {
+            return Promise.resolve();
+        };
+    }
 }
