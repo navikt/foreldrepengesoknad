@@ -80,7 +80,7 @@ const queryClient = new QueryClient({
     }),
     defaultOptions: {
         queries: {
-            retry: process.env.NODE_ENV === 'test' ? false : 3,
+            retry: false,
         },
     },
 });
