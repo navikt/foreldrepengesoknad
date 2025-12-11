@@ -11,14 +11,14 @@
     },
     "dependencies": {
         "@storybook/react-vite": "10.1.4",
-        "@tanstack/react-query": "5.90.11",
+        "@tanstack/react-query": "5.90.12",
         "@tanstack/react-query-devtools": "5.91.1",
-        "react": "19.2.0",
-        "react-dom": "19.2.0",
+        "react": "19.2.1",
+        "react-dom": "19.2.1",
         "react-intl": "7.1.14"
     },
     "devDependencies": {
-        "@navikt/ds-react": "7.35.0",
+        "@navikt/ds-react": "7.35.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
@@ -28,7 +28,7 @@
         "mockdate": "3.0.5",
         "storybook": "10.1.4",
         "typescript": "5.9.3",
-        "vite": "7.2.6",
+        "vite": "7.2.7",
         "vitest": "4.0.15"
     },
     "packageManager": "pnpm@10.18.3"

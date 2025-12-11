@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Popover } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { formatDate } from '@navikt/fp-utils';
 
 import styles from './day.module.css';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
@@ -73,9 +74,9 @@ export const Day = React.memo(
                         ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
                         : undefined
                 }
+                aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
             >
                 {day}
-                {srText && <span className={styles.srOnly}>{srText}</span>}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>

@@ -38,7 +38,6 @@ export const UttaksplanLegend = ({
 
     const [visHorisontalt, setVisHorisontalt] = useState(true);
 
-    // TODO (TOR) vil ikkje kalender alltid inkludere helg?
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
 
     const unikeLegendLabels = [...new Set(perioderForKalendervisning.map((period) => period.legendLabel))];

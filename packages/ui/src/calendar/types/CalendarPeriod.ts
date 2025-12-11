@@ -4,6 +4,6 @@ export type CalendarPeriod = {
     fom: string;
     tom: string;
     color: CalendarPeriodColor;
-    srText?: string;
+    srText: string;
     isSelected?: boolean;
 };

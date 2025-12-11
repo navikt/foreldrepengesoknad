@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { HGrid, VStack } from '@navikt/ds-react';
+import { HGrid } from '@navikt/ds-react';
 
 import { Month } from './Month';
 import { CalendarPeriod } from './types/CalendarPeriod';
@@ -49,37 +49,27 @@ export const Calendar = ({
     );
 
     return (
-        <VStack gap="space-16">
-            {!setSelectedPeriods && periods.some((p) => p.srText) && (
-                <div className="sr-only">
-                    {periods
-                        .filter((p) => p.srText)
-                        .map((p) => p.srText)
-                        .toString()}
-                </div>
-            )}
-            <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }}>
-                {allMonths.map(({ month, year }, index) => {
-                    const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
-                    const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
+        <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }}>
+            {allMonths.map(({ month, year }, index) => {
+                const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
+                const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
 
-                    return (
-                        <Month
-                            key={`${year}-${month}`}
-                            isFirstMonth={index === 0}
-                            year={year}
-                            month={month}
-                            periods={monthPeriods}
-                            showWeekNumbers={showWeekNumbers}
-                            dateTooltipCallback={dateTooltipCallback}
-                            dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
-                            focusedDate={isMonthInFocus ? focusedDate : undefined}
-                            setFocusedDate={setFocusedDate}
-                        />
-                    );
-                })}
-            </HGrid>
-        </VStack>
+                return (
+                    <Month
+                        key={`${year}-${month}`}
+                        isFirstMonth={index === 0}
+                        year={year}
+                        month={month}
+                        periods={monthPeriods}
+                        showWeekNumbers={showWeekNumbers}
+                        dateTooltipCallback={dateTooltipCallback}
+                        dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
+                        focusedDate={isMonthInFocus ? focusedDate : undefined}
+                        setFocusedDate={setFocusedDate}
+                    />
+                );
+            })}
+        </HGrid>
     );
 };
 

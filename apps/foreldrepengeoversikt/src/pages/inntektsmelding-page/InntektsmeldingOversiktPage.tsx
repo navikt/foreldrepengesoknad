@@ -25,9 +25,6 @@ export const InntektsmeldingOversiktPage = () => {
     if (aktiveInntektsmeldinger.length === 0) {
         return <Navigate replace to={'..'} />;
     }
-    if (aktiveInntektsmeldinger.length === 1) {
-        return <Navigate replace to={`${aktiveInntektsmeldinger[0]!.journalpostId}`} />;
-    }
 
     return (
         <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>

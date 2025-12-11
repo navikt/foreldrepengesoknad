@@ -9,6 +9,8 @@ const {
     FarSøkerMedTapteDagerOgUtsettelse,
     MorSøkerMedFlereUtsettelser,
     KortPeriodeUtenHelg,
+    HarPeriode11UkerFørFamiliehendelseDato,
+    VisFarsAktivitetsfriKvote,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -106,6 +108,8 @@ describe('UttaksplanKalender', () => {
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[0]!);
+
         const januar = screen.getByTestId('year:2024;month:0');
 
         await userEvent.click(within(januar).getByText('10', { exact: false }));
@@ -139,6 +143,8 @@ describe('UttaksplanKalender', () => {
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Enkeltdager'));
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[0]!);
 
         const januar = screen.getByTestId('year:2024;month:0');
 
@@ -265,7 +271,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(
             await screen.findByText(
@@ -335,5 +341,152 @@ describe('UttaksplanKalender', () => {
         expect(within(april).getByTestId('day:3;dayColor:NONE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:4;dayColor:DARKBLUE')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:DARKBLUE', { exact: false })).toHaveLength(11);
+    });
+
+    it('skal vise flere måneder i starten av kalender', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        expect(screen.queryByText('Vis flere måneder')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(screen.getAllByText('Vis flere måneder')).toHaveLength(2);
+
+        expect(screen.getByTestId('year:2024;month:2')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2024;month:1')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2024;month:0')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[0]!);
+
+        expect(screen.getByTestId('year:2024;month:1')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:0')).toBeInTheDocument();
+
+        // Kun den på slutten vises
+        expect(screen.getByText('Vis flere måneder')).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne legge til flere måneder på starten når en allerede viser maks antall måneder', async () => {
+        render(<HarPeriode11UkerFørFamiliehendelseDato />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        expect(screen.queryByText('Vis flere måneder')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        // Kun den på slutten vises
+        expect(screen.getByText('Vis flere måneder')).toBeInTheDocument();
+
+        expect(screen.getByTestId('year:2024;month:2')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:1')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:0')).toBeInTheDocument();
+    });
+
+    it('skal legge til nye måneder på slutten helt til maks antall måneder er nådd', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(screen.getByTestId('year:2024;month:6')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2024;month:7')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2024;month:7')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:8')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:9')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2024;month:10')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2024;month:10')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2024;month:11')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:0')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:1')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2025;month:1')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:2')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:3')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:4')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2025;month:4')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:5')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:6')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:7')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2025;month:7')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:8')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:9')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:10')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2025;month:10')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2025;month:11')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:0')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:1')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2026;month:1')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:2')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:3')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:4')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2026;month:4')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:5')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:6')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:7')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2026;month:7')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:8')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:9')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:10')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2026;month:10')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2026;month:11')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2027;month:0')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2027;month:1')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
+        expect(screen.getByTestId('year:2027;month:1')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2027;month:2')).toBeInTheDocument();
+        expect(screen.getByTestId('year:2027;month:3')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2027;month:4')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Du viser maks antall måneder (3 år)')).toBeInTheDocument();
+    });
+
+    it('skal vise perioder med aktivitetsfri kvote', async () => {
+        render(<VisFarsAktivitetsfriKvote />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
+        await userEvent.click(within(juni).getByTestId('day:21;dayColor:LIGHTGREEN'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
+
+        expect(await screen.findAllByText('Foreldrepenger uten aktivitetskrav')).toHaveLength(2);
+        expect(screen.getByText('Gradering: 50 %')).toBeInTheDocument();
     });
 });

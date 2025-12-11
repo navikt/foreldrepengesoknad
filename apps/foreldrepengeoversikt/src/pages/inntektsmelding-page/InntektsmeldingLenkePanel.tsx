@@ -16,5 +16,15 @@ export const InntektsmeldingLenkePanel = () => {
         return null;
     }
 
+    if (aktiveInntektsmeldinger.length === 1) {
+        return (
+            <LenkePanel
+                tittel="Rapportert inntekt"
+                to={`${OversiktRoutes.INNTEKTSMELDING}/${aktiveInntektsmeldinger[0]!.journalpostId}`}
+                Ikon={SackKronerIcon}
+            />
+        );
+    }
+
     return <LenkePanel tittel="Rapportert inntekt" to={OversiktRoutes.INNTEKTSMELDING} Ikon={SackKronerIcon} />;
 };
