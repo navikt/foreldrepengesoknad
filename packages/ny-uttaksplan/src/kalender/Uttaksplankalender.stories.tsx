@@ -607,3 +607,45 @@ export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
         ] satisfies UttakPeriode_fpoversikt[],
     },
 };
+
+export const VisFarsAktivitetsfriKvote: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-03-15',
+                tom: '2024-04-03',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-18',
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'IKKE_OPPGITT',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                    },
+                    arbeidstidprosent: 50,
+                },
+            },
+            {
+                fom: '2024-06-19',
+                tom: '2024-07-15',
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'IKKE_OPPGITT',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarMedmorHarRett: false,
+    },
+};

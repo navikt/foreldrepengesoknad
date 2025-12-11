@@ -226,6 +226,7 @@
     "RedigeringPanel.ValgteDager": "{varighet} valgt",
     "RedigeringPanel.EksisterendePerioder": "Valgte datoar inneheld {antall, select, 1 {ein eksisterande periode} other {eksisterande periodar}}:",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Foreldrepenger før fødsel",
+    "RedigeringPanel.UtenAktivitetskrav": "Foreldrepenger uten aktivitetskrav",
     "RedigeringPanel.Foreldrepenger": "Foreldrepenger",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
     "RedigeringPanel.MorKvote": "Mors kvote",

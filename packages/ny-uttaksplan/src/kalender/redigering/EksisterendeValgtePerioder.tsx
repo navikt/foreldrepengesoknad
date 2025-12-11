@@ -36,6 +36,9 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                 const erForeldrepengerOgFar =
                     p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR';
 
+                const erAktivitetsfri =
+                    p.kontoType === 'FORELDREPENGER' && !p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT';
+
                 return (
                     <HStack
                         gap="space-8"
@@ -100,8 +103,11 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                     )}
                                     {p.kontoType === 'MØDREKVOTE' && <FormattedMessage id="RedigeringPanel.MorKvote" />}
                                     {p.kontoType === 'FEDREKVOTE' && <FormattedMessage id="RedigeringPanel.FarKvote" />}
-                                    {p.kontoType === 'FORELDREPENGER' && (
+                                    {p.kontoType === 'FORELDREPENGER' && !erAktivitetsfri && (
                                         <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
+                                    )}
+                                    {p.kontoType === 'FORELDREPENGER' && erAktivitetsfri && (
+                                        <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />
                                     )}
                                     {p.kontoType === 'FELLESPERIODE' && (
                                         <FormattedMessage id="RedigeringPanel.Fellesperiode" />
