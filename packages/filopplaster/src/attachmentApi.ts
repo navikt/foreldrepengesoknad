@@ -19,7 +19,6 @@ export const getSaveAttachmentFetch = async ({
         const response = await ky.post<string>(uploadPath, {
             body: formData,
             timeout, // Store vedlegg 10MB over dårlig nett kan ta så lang tid som 3 minutter
-            retry: 0,
         });
         return {
             success: true,
