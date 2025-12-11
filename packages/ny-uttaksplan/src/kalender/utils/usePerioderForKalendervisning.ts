@@ -456,6 +456,14 @@ const getKalenderSkjermleserPeriodetekst = (
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
+    if (period.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
+    }
+
+    if (period.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
+    }
+
     if (period.kontoType) {
         switch (period.kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
@@ -467,51 +475,35 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                if (!period.erAnnenPartEøs && period.morsAktivitet === 'IKKE_OPPGITT') {
-                    if (period.gradering?.arbeidstidprosent) {
-                        return (
-                            periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' })
-                        );
-                    }
-
-                    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
-                }
-
-                if (!period.erAnnenPartEøs && period.forelder === 'FAR_MEDMOR') {
-                    if (period.samtidigUttak && period.samtidigUttak > 0) {
-                        return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
-                    }
-
-                    if (period.gradering?.arbeidstidprosent) {
-                        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
-                    }
-
-                    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
-                }
-
-                if (!period.erAnnenPartEøs && period.samtidigUttak && period.samtidigUttak > 0) {
-                    return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
-                }
-
-                if (!period.erAnnenPartEøs && period.gradering?.arbeidstidprosent) {
-                    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
-                }
-
-                return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
+                return finnSkjermleserTekstForKvoteForeldrepenger(period, periodenTilhører, intl);
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
     }
 
-    if (period.periodeHullÅrsak) {
-        if (period.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-            return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
+    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Utsettelse' });
+};
+
+const finnSkjermleserTekstForKvoteForeldrepenger = (
+    period: Planperiode,
+    periodenTilhører: string,
+    intl: IntlShape,
+): string => {
+    if (!period.erAnnenPartEøs && period.morsAktivitet === 'IKKE_OPPGITT') {
+        if (period.gradering?.arbeidstidprosent) {
+            return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' });
         }
 
-        if (period.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
-            return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
-        }
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Utsettelse' });
+    if (!period.erAnnenPartEøs && period.samtidigUttak && period.samtidigUttak > 0) {
+        return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
+    }
+
+    if (!period.erAnnenPartEøs && period.gradering?.arbeidstidprosent) {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
+    }
+
+    return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
 };
