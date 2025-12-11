@@ -54,7 +54,7 @@ describe('personUtils', () => {
     it('skal finne kjønn kvinne fra annen foreldres fnr', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
-            fnr: '08088620241',
+            fnr: '05510552883',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
