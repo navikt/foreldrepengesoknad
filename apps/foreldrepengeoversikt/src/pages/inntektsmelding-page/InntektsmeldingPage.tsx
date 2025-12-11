@@ -13,7 +13,7 @@ import {
     FpOversiktInntektsmeldingDto_fpoversikt,
     NaturalytelseType_fpoversikt,
 } from '@navikt/fp-types';
-import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -90,10 +90,7 @@ export const InntektsmeldingPage = () => {
                             <span className="font-normal">
                                 <FormattedMessage id={'inntektsmelding.månedsinntekt.førSkatt'} />
                             </span>{' '}
-                            <strong>
-                                {intl.formatMessage({ id: 'felles.krPrefix' })}{' '}
-                                {formatCurrency(inntektsmelding.inntektPrMnd)}
-                            </strong>
+                            <strong>{formatCurrencyWithKr(inntektsmelding.inntektPrMnd)}</strong>
                         </>
                     }
                     Ikon={WalletIcon}
