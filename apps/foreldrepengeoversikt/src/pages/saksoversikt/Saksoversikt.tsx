@@ -9,7 +9,7 @@ import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -203,7 +203,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                         <Heading size="small">
                                             <FormattedMessage
                                                 id="saksoversikt.engangsstonad"
-                                                values={{ sum: formatCurrency(ENGANGSTØNAD) }}
+                                                values={{ sum: formatCurrencyWithKr(ENGANGSTØNAD) }}
                                             />
                                         </Heading>
                                     )}

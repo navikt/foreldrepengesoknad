@@ -258,7 +258,7 @@ const BortfaltNaturalytelseTekst = ({
             {
                 fom: formatDate(bortfaltNaturalytelse.fomDato),
                 type: NaturalytelseType[bortfaltNaturalytelse.type],
-                beløp: formatCurrency(bortfaltNaturalytelse.beløpPerMnd),
+                beløp: formatCurrencyWithKr(bortfaltNaturalytelse.beløpPerMnd),
             },
         );
     }
@@ -269,7 +269,7 @@ const BortfaltNaturalytelseTekst = ({
             fom: formatDate(bortfaltNaturalytelse.fomDato),
             tom: formatDate(bortfaltNaturalytelse.tomDato),
             type: NaturalytelseType[bortfaltNaturalytelse.type],
-            beløp: formatCurrency(bortfaltNaturalytelse.beløpPerMnd),
+            beløp: formatCurrencyWithKr(bortfaltNaturalytelse.beløpPerMnd),
         },
     );
 };

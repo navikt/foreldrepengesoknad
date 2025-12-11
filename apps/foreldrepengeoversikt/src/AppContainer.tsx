@@ -90,7 +90,7 @@ export const AppContainer = () => {
     ]);
 
     onLanguageSelect((lang) => {
-        setLocale(lang.locale as 'nb' | 'nn');
+        setLocale(lang.locale as 'nb' | 'nn' | 'en');
         document.documentElement.setAttribute('lang', lang.locale);
     });
 
