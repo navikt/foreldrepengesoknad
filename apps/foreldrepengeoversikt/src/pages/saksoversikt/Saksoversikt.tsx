@@ -102,7 +102,11 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
     if (!gjeldendeSak) {
-        return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
+        return (
+            <Alert variant="warning">
+                <FormattedMessage id="saksoversikt.finner.ikkeNoen" values={{ saksnummer: params.saksnummer }} />
+            </Alert>
+        );
     }
 
     return (
@@ -134,11 +138,19 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     />
                 </ContentSection>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
-                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                    <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
+                    <LenkePanel
+                        tittel={intl.formatMessage({ id: 'saksoversikt.dokumenter' })}
+                        to={OversiktRoutes.DOKUMENTER}
+                        Ikon={FolderFileIcon}
+                    />
+                    <LenkePanel
+                        tittel={intl.formatMessage({ id: 'saksoversikt.ettersendDokumenter' })}
+                        to={OversiktRoutes.ETTERSEND}
+                        Ikon={FilesIcon}
+                    />
                     {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                         <LenkePanel
-                            tittel="Endre planen din"
+                            tittel={intl.formatMessage({ id: 'saksoversikt.endrePlanenDin' })}
                             to="https://nav.no/foreldrepenger/soknad"
                             Ikon={PencilIcon}
                         />

@@ -52,7 +52,7 @@ export const BekreftelseSendtSøknad = ({
                 </div>
                 <VStack>
                     <Heading level="2" size="small">
-                        Søknaden din er sendt!
+                        <FormattedMessage id="søknad.sendt" />
                     </Heading>
                     {sendtInfoTekst && <BodyShort textColor="subtle">{sendtInfoTekst}</BodyShort>}
                 </VStack>

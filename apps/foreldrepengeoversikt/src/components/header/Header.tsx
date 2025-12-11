@@ -1,7 +1,7 @@
 import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -40,7 +40,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default border-ax-brand-blue-300 mb-8 border-b-2`}>
-            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pr-4 pb-6 pl-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -48,7 +48,7 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
 function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default`}>
-            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pr-4 pb-6 pl-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -73,12 +73,12 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pl-2 pt-2">
+                <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pt-2 pl-2">
                     <YtelseIkon fontSize={44} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
             <Show below="md">
-                <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pl-2 pt-2">
+                <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pt-2 pl-2">
                     <YtelseIkon fontSize={22} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
@@ -93,10 +93,10 @@ export function ForsideHeader() {
                 <BabyIkon ytelse={undefined} />
                 <VStack>
                     <Heading level="1" size="medium">
-                        Oversikt
+                        <FormattedMessage id="header.dineForeldrepenger" />
                     </Heading>
                     <Detail textColor="subtle">
-                        Dine saker om foreldrepenger, engangsstønad og svangerskapspenger
+                        <FormattedMessage id="header.dineSaker" />
                     </Detail>
                 </VStack>
             </HGrid>
@@ -114,10 +114,10 @@ export function DokumenterHeader() {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Dokumenter
+                <FormattedMessage id="header.dokumenter" />
             </Heading>
             <Detail textColor="subtle">
-                Dokumenter fra du, arbeidsgiver og Nav som tilhører saken din ({saksnummer})
+                <FormattedMessage id="header.dokumenterFra" values={{ saksnummer }} />
             </Detail>
         </SimpleHeaderWrapper>
     );
@@ -127,7 +127,7 @@ export function EttersendingHeader() {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Last opp dokumenter
+                <FormattedMessage id="header.lastOppDokumenter" />
             </Heading>
         </SimpleHeaderWrapper>
     );
@@ -141,9 +141,19 @@ export const InntektsmeldingHeader = ({
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Din inntekt rapportert av {capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}
+                <FormattedMessage
+                    id="header.dinInntekt"
+                    values={{
+                        arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn),
+                    }}
+                />
             </Heading>
-            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.mottattTidspunkt)}</Detail>
+            <Detail textColor="subtle">
+                <FormattedMessage
+                    id="header.endret"
+                    values={{ dato: formatDateMedUkedag(inntektsmelding.mottattTidspunkt) }}
+                />
+            </Detail>
         </SimpleHeaderWrapper>
     );
 };
@@ -152,7 +162,7 @@ export const InntektsmeldingOversiktHeader = () => {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Inntekt rapportert av dine arbeidsgivere
+                <FormattedMessage id="header.inntektRapportert" />
             </Heading>
         </SimpleHeaderWrapper>
     );

@@ -106,13 +106,13 @@ const DokumenterPageInner = () => {
                                 <Table.Header>
                                     <Table.Row>
                                         <Table.HeaderCell scope="col">
-                                            <FormattedMessage id={'dokumenter.tabell.navn' as any} />
+                                            <FormattedMessage id="dokumenter.tabell.navn" />
                                         </Table.HeaderCell>
                                         <Table.ColumnHeader sortKey="mottatt" sortable={true} scope="col">
                                             Mottatt
                                         </Table.ColumnHeader>
                                         <Table.HeaderCell scope="col">
-                                            <FormattedMessage id={'dokumenter.tabell.avsender' as any} />
+                                            <FormattedMessage id="dokumenter.tabell.avsender" />
                                         </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
