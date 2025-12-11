@@ -40,9 +40,14 @@ export const HvemPlanleggerSteg = () => {
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
     const oppdaterHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const lagre = (formValues: HvemPlanlegger) => {
         oppdaterHvemPlanlegger(formValues);
+        if (hvemPlanlegger && hvemPlanlegger.type !== formValues.type) {
+            oppdaterUttaksplan(undefined);
+        }
+
         navigator.goToNextDefaultStep();
     };
 

@@ -5,7 +5,6 @@ import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
-import { Sak } from '../pages/Sak';
 import { DokumenterPage } from '../pages/dokumenter-page/DokumenterPage';
 import { EttersendingPage } from '../pages/ettersending/EttersendingPage';
 import { Forside } from '../pages/forside/Forside';
@@ -13,7 +12,6 @@ import { InntektsmeldingOversiktPage } from '../pages/inntektsmelding-page/Innte
 import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
 import { MinidialogPage } from '../pages/minidialog-page/MinidialogPage';
 import { Saksoversikt } from '../pages/saksoversikt/Saksoversikt';
-import { TidslinjePage } from '../pages/tidslinje-page/TidslinjePage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { KontaktOss } from '../sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from '../types/SakOppslag';
@@ -35,13 +33,9 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                             path={`${OversiktRoutes.HOVEDSIDE}`}
                             element={<Forside saker={saker} søkerinfo={søkerinfo} />}
                         />
-                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`} element={<Sak />}>
+                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`}>
                             <Route index element={<Saksoversikt søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
-                            <Route
-                                path={OversiktRoutes.TIDSLINJEN}
-                                element={<TidslinjePage søkersBarn={søkerinfo.person.barn} />}
-                            />
                             <Route path={`${OversiktRoutes.OPPGAVER}`} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
@@ -88,7 +82,7 @@ export function PageRouteLayout({ header, children }: { readonly header: ReactNo
     return (
         <>
             {header}
-            <LayoutWrapper className="ax-md:pb-28 pb-4 pl-4 pr-4">{children}</LayoutWrapper>
+            <LayoutWrapper className="ax-md:pb-28 pr-4 pb-4 pl-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>

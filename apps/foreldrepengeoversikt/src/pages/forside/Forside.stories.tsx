@@ -10,7 +10,6 @@ import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
-import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
 import { Forside } from './Forside';
@@ -25,9 +24,9 @@ const meta = {
     decorators: [withQueryClient],
     render: (props) => {
         return (
-            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
+            <MemoryRouter initialEntries={['/']}>
                 <Routes>
-                    <Route element={<Forside {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
+                    <Route element={<Forside {...props} />} path="/" />
                 </Routes>
             </MemoryRouter>
         );

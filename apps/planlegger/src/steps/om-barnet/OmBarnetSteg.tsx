@@ -5,6 +5,7 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
+import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -40,9 +41,13 @@ export const OmBarnetSteg = () => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const lagre = (formValues: OmBarnet) => {
         oppdaterOmBarnet(formValues);
+        if (omBarnet && !isEqual(omBarnet, formValues)) {
+            oppdaterUttaksplan(undefined);
+        }
 
         if (erBarnetFødt(formValues) && dayjs(formValues.fødselsdato).isBefore(DATE_3_YEARS_AGO)) {
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);

@@ -42,6 +42,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
 
     const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
@@ -50,6 +51,11 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
 
     const onSubmit = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
+
+        if (periode && periode.dekningsgrad !== formValues.dekningsgrad) {
+            oppdaterUttaksplan(undefined);
+        }
+
         const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
         const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart;
         const nextRoute =
