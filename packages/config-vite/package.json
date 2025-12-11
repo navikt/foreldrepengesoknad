@@ -5,9 +5,9 @@
     "version": "1.0.0",
     "dependencies": {
         "@tailwindcss/vite": "4.1.17",
-        "@vitejs/plugin-react": "5.1.1",
+        "@vitejs/plugin-react": "5.1.2",
         "@vitest/browser-playwright": "4.0.15",
-        "vite": "7.2.6",
+        "vite": "7.2.7",
         "vitest": "4.0.15"
     },
     "packageManager": "pnpm@10.18.3"
