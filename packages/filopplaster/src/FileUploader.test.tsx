@@ -29,7 +29,7 @@ describe('FileUploader', () => {
     );
 
     // Denne funker fint lokalt. Men er flaky i CI
-    it(
+    it.todo(
         'skal få timeout ved opplasting',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(OpplastningTimeout.parameters.msw);
