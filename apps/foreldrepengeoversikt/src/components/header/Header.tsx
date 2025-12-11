@@ -235,7 +235,9 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     </HStack>
                     <Show above="md">
                         <HStack gap="3" align="center">
-                            <Detail uppercase>{sak.ytelse}</Detail>
+                            <Detail uppercase>
+                                <FormattedMessage id={`ytelse.${sak.ytelse}`} />{' '}
+                            </Detail>
                             <BlueDot />
                             <SaksnummerDetail />
 
@@ -246,8 +248,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     <Show below="md">
                         <VStack gap="space-4">
                             <HStack gap="space-8" align="center">
-                                <Detail uppercase>{sak.ytelse}</Detail>
-                                <BlueDot />
+                                <FormattedMessage id={`ytelse.${sak.ytelse}`} /> <BlueDot />
                                 <SaksnummerDetail />
                             </HStack>
                             <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />

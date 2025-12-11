@@ -137,7 +137,7 @@ const Hendelse = ({
                     status={status}
                     title={intl.formatMessage(
                         { id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' },
-                        { ytelse: sak.ytelse.toLowerCase() },
+                        { ytelse: intl.formatMessage({ id: `ytelse.${sak.ytelse}` }) },
                     )}
                     timestamp={hendelseDatoMedKlokkeslett}
                     bullet={<TasklistSendIcon />}
