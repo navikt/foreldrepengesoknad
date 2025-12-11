@@ -1,9 +1,0 @@
-import{j as e}from"./iframe-BArIh7qa.js";import{s}from"./saker-thaWTfcA.js";import{S as t}from"./SakLink-CzK5ob8y.js";import{M as a}from"./chunk-4WY6JWTD-CV3nTsTi.js";import"./preload-helper-PPVm8Dsz.js";import"./LenkePanel-By5czw1w.js";import"./index-CW-B1w6u.js";import"./StatusTag-BwwUO8PK.js";import"./Tag-CPCsV6cw.js";const u={title:"SakLink",component:t,render:o=>e.jsx(a,{children:e.jsx(t,{...o})})},r={args:{harMinstEttArbeidsforhold:!0,sak:{...s.foreldrepenger[0],ytelse:"FORELDREPENGER"}}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
-  args: {
-    harMinstEttArbeidsforhold: true,
-    sak: {
-      ...saker.foreldrepenger[0]!,
-      ytelse: 'FORELDREPENGER'
-    }
-  }
-}`,...r.parameters?.docs?.source}}};const k=["Default"];export{r as Default,k as __namedExportsOrder,u as default};
