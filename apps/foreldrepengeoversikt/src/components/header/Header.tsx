@@ -25,16 +25,16 @@ import {
 } from '../../utils/sakerUtils';
 import { StatusTag } from '../status-tag/StatusTag';
 
-export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
+export const getSaksoversiktHeading = (ytelse: Ytelse | undefined, intl: ReturnType<typeof useIntl>) => {
     if (ytelse === 'ENGANGSSTØNAD') {
-        return 'Engangsstønadsak';
+        return intl.formatMessage({ id: 'header.engangsstønadsak' });
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return 'Svangerskapspengesak';
+        return intl.formatMessage({ id: 'header.svangerskapspengesak' });
     }
 
-    return 'Din sak';
+    return intl.formatMessage({ id: 'header.dinSak' });
 };
 
 function HeaderWrapper({ children }: { children: ReactNode }) {
@@ -106,7 +106,11 @@ export function ForsideHeader() {
 
 function SaksnummerDetail() {
     const { saksnummer } = useParams();
-    return <Detail>SAKSNR {saksnummer}</Detail>;
+    return (
+        <Detail>
+            <FormattedMessage id="header.saksnr" /> {saksnummer}
+        </Detail>
+    );
 }
 
 export function DokumenterHeader() {
@@ -225,7 +229,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                 <VStack>
                     <HStack gap="space-24" align="center">
                         <Heading level="1" size="medium">
-                            Din sak
+                            <FormattedMessage id="header.dinSak" />
                         </Heading>
                         <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                     </HStack>

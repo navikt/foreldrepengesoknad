@@ -1,3 +1,5 @@
+import { useIntl } from 'react-intl';
+
 import { Ytelse } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
@@ -10,23 +12,24 @@ interface Props {
     harMinstEttArbeidsforhold: boolean;
 }
 
-const getHeading = (ytelse: Ytelse) => {
+const getHeading = (ytelse: Ytelse, intl: ReturnType<typeof useIntl>) => {
     switch (ytelse) {
         case 'ENGANGSSTØNAD':
-            return 'Engangsstønad';
+            return intl.formatMessage({ id: 'ytelse.engangsstønad' });
         case 'FORELDREPENGER':
-            return 'Foreldrepenger';
+            return intl.formatMessage({ id: 'ytelse.foreldrepenger' });
         case 'SVANGERSKAPSPENGER':
-            return 'Svangerskapspenger';
+            return intl.formatMessage({ id: 'ytelse.svangerskapspenger' });
     }
 };
 
 export const SakLink = ({ sak, harMinstEttArbeidsforhold }: Props) => {
+    const intl = useIntl();
     return (
         <LenkePanel
             tag={<StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />}
             undertittel={`Sist oppdatert ${formatDate(sak.oppdatertTidspunkt)}`}
-            tittel={getHeading(sak.ytelse)}
+            tittel={getHeading(sak.ytelse, intl)}
             to={`/sak/${sak.saksnummer}`}
         />
     );

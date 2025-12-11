@@ -175,7 +175,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                     <FormattedMessage id="ettersending.formatInformasjon" />
                 </BodyShort>
                 <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
-                    Les om hvordan du kan ta bilde av dokumenter med mobilen
+                    <FormattedMessage id="ettersending.bildeGuide" />
                 </NAVLink>
                 <Select
                     className="mb-4"

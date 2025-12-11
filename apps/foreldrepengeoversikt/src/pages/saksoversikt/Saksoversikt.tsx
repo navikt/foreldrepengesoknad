@@ -82,7 +82,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     useDocumentTitle(
-        `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+        `${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
