@@ -20,7 +20,9 @@ export const KontonummerInfo = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }
         <Accordion.Item>
             <Accordion.Header>
                 <VStack gap="space-4">
-                    <Detail textColor="subtle">KONTONUMMER</Detail>
+                    <Detail textColor="subtle">
+                        <FormattedMessage id={'kontonummer.label'} />
+                    </Detail>
                     <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
                 </VStack>
             </Accordion.Header>

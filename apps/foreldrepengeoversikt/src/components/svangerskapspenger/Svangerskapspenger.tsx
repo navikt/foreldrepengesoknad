@@ -9,6 +9,7 @@ import {
 import dayjs from 'dayjs';
 import { groupBy, sortBy } from 'lodash';
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -142,7 +143,7 @@ const DuHarArbeid = ({ prosentArbeid }: { prosentArbeid: number }) => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-brand-blue-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-brand-blue-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
             <BodyShort>{prosentArbeid} % i jobb</BodyShort>
             <JobbIkon />
@@ -163,7 +164,7 @@ const DuHarSvangerskapspenger = ({
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-success-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-success-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
             <VStack>
                 <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
@@ -180,10 +181,12 @@ const DuHarFerie = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-warning-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du har ferie</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.ferie'} />
+            </BodyShort>
             <ParasollIkon />
         </HStack>
     );
@@ -195,10 +198,12 @@ const DuErSykemeldt = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-warning-200 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du er sykmeldt</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.sykmeldt'} />
+            </BodyShort>
             <BandasjeIkon />
         </HStack>
     );
@@ -210,10 +215,12 @@ const TreUkerFørTermin = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-meta-purple-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-meta-purple-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du kan søke om foreldrepenger</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.kanSokeForeldrepenger'} />
+            </BodyShort>
             <BarnevognIkon />
         </HStack>
     );
@@ -225,9 +232,11 @@ const Termin = () => {
             gap="space-16"
             align="center"
             justify="space-between"
-            className="bg-ax-danger-100 rounded-3xl pb-2 pl-4 pr-4 pt-2"
+            className="bg-ax-danger-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
-            <BodyShort>Termin</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.termin'} />
+            </BodyShort>
             <HeartFillIcon fontSize="2.5rem" className="text-ax-text-danger-decoration p-05" aria-hidden />
         </HStack>
     );
