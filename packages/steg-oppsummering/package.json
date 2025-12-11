@@ -50,7 +50,7 @@
         "storybook-react-intl": "10.0.1",
         "tailwindcss": "4.1.17",
         "typescript": "5.9.3",
-        "vite": "7.2.6",
+        "vite": "7.2.7",
         "vitest": "4.0.15"
     },
     "packageManager": "pnpm@10.18.3"

@@ -7,3 +7,14 @@ import * as globalStorybookConfig from '../.storybook/preview';
 setProjectAnnotations(globalStorybookConfig);
 
 expect.extend(matchers);
+
+// Only patch if jsdom provides a ReadableStream without a working cancel()
+if (globalThis.ReadableStream) {
+    const RS = globalThis.ReadableStream.prototype;
+
+    // jsdom has a cancel(), but it hangs — override anyway
+    RS.cancel = function () {
+        // ignore original; just settle
+        return Promise.resolve();
+    };
+}
