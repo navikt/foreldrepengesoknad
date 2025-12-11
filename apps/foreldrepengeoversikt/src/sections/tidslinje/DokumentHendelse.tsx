@@ -1,5 +1,6 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import { FormattedMessage } from 'react-intl';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { HStack, Link } from '@navikt/ds-react';
@@ -58,7 +59,12 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
                 className="min-w-[24px]"
             >
                 {tittel}
-                {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}
+                {arbeidsgiverNavn && (
+                    <>
+                        {' '}
+                        <FormattedMessage id="inntektsmelding.for" values={{ arbeidsgiverNavn }} />
+                    </>
+                )}
             </Link>
         </HStack>
     );

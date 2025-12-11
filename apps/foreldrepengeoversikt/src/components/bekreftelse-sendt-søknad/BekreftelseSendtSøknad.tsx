@@ -1,7 +1,7 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
 import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
@@ -42,7 +42,7 @@ export const BekreftelseSendtSøknad = ({
         : undefined;
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
 
-    const sendtInfoTekst = getTidspunktTekst(mottattDato);
+    const sendtInfoTekst = getTidspunktTekst(mottattDato, intl);
 
     return (
         <VStack gap="space-24" className="bg-ax-bg-default rounded-lg p-6">
@@ -167,7 +167,7 @@ const ForeldrepengerBekreftelse = () => {
                     <Accordion.Header>
                         <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
-                                Neste steg
+                                <FormattedMessage id="søknad.nesteSteg" />
                             </Detail>
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="BekreftelseSendtSøknad.arbeidsgiver.maSendeImTilNav" />
@@ -249,7 +249,7 @@ const SvangerskapspengerBekreftelse = () => {
                     <Accordion.Header>
                         <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
-                                Neste steg
+                                <FormattedMessage id="søknad.nesteSteg" />
                             </Detail>
                             <BodyShort weight="semibold">
                                 <FormattedMessage id={'BekreftelseSendtSøknad.arbeidsgiver.maSendeImTilNav'} />
@@ -319,16 +319,19 @@ const TidligstMuligeSvar = () => {
     );
 };
 
-const getTidspunktTekst = (mottattDato: string | undefined) => {
+const getTidspunktTekst = (mottattDato: string | undefined, intl: IntlShape) => {
     if (!mottattDato) {
         return undefined;
     }
     if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
-        return `Sendt i dag kl. ${formatTime(mottattDato)}`;
+        return intl.formatMessage({ id: 'søknad.sendtIDag' }, { tid: formatTime(mottattDato) });
     } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
-        return `Sendt i går kl. ${formatTime(mottattDato)}`;
+        return intl.formatMessage({ id: 'søknad.sendtIGår' }, { tid: formatTime(mottattDato) });
     }
-    return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
+    return intl.formatMessage(
+        { id: 'søknad.sendtDato' },
+        { dato: formatDate(mottattDato), tid: formatTime(mottattDato) },
+    );
 };
 
 const useHarMinstEttArbeidsforhold = () => {

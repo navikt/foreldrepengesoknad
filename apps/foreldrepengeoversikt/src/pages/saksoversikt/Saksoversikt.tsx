@@ -176,7 +176,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.person.navn.fornavn,
-                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak),
+                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
                                 )}
                             />
                         </ContentSection>

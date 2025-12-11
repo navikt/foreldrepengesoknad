@@ -62,8 +62,8 @@ export const Breadcrumb = () => {
         handleInApp: true,
     };
 
-    const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
-        switch (selectedRoute) {
+    const getBreadcrumbs = (route: OversiktRoutes) => {
+        switch (route) {
             case OversiktRoutes.HOVEDSIDE:
                 return [minSide, hovedside];
             case OversiktRoutes.SAKSOVERSIKT:

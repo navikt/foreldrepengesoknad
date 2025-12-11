@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useIntl } from 'react-intl';
 
 import { Loader } from '@navikt/ds-react';
 
@@ -10,6 +11,7 @@ import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 export const Foreldrepengeoversikt = () => {
+    const intl = useIntl();
     const backgroundColor = useGetBackgroundColor();
 
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
@@ -23,9 +25,7 @@ export const Foreldrepengeoversikt = () => {
     });
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
-        throw new Error(
-            'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
-        );
+        throw new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
     }
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {
