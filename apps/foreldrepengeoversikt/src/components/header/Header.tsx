@@ -93,7 +93,7 @@ export function ForsideHeader() {
                 <BabyIkon ytelse={undefined} />
                 <VStack>
                     <Heading level="1" size="medium">
-                        <FormattedMessage id="header.dineForeldrepenger" />
+                        <FormattedMessage id="header.oversikt" />
                     </Heading>
                     <Detail textColor="subtle">
                         <FormattedMessage id="header.dineSaker" />
