@@ -179,7 +179,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                 </NAVLink>
                 <Select
                     className="mb-4"
-                    label="Hva inneholder dokumentene dine?"
+                    label={intl.formatMessage({ id: 'ettersending.hva' })}
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
                     value={type}
                 >

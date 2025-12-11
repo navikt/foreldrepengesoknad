@@ -262,6 +262,12 @@
     "kontonummer.tekst.gjeneral": "Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.",
     "lenkePanel.rapportertInntekt": "Rapportert inntekt",
     "søknad.sendt": "Søknaden din er sendt!",
+    "dokumenter.mottatt": "Mottatt",
+    "dokumenter.savner": "Er det noen dokumenter du savner?",
+    "dokumenter.savner.detaljer": "Vi har foreløpig ikke mulighet til å vise papirer du har sendt til Nav i posten, eller dokumenter som gjelder saken din, men som er sendt av andre på vegne av deg. Det kan for eksempel være en lege, advokat, verge eller fullmektig.",
+    "dokumenter.feil": "Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke hos deg. Prøv igjen senere.",
+    "ettersending.hva": "Hva inneholder dokumentene dine?",
+    "minidialog.feilISkjema": "Feil i skjema",
     "felles.ja": "Ja",
     "felles.nei": "Nei"
 }

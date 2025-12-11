@@ -109,7 +109,7 @@ const DokumenterPageInner = () => {
                                             <FormattedMessage id="dokumenter.tabell.navn" />
                                         </Table.HeaderCell>
                                         <Table.ColumnHeader sortKey="mottatt" sortable={true} scope="col">
-                                            Mottatt
+                                            <FormattedMessage id="dokumenter.mottatt" />
                                         </Table.ColumnHeader>
                                         <Table.HeaderCell scope="col">
                                             <FormattedMessage id="dokumenter.tabell.avsender" />
@@ -144,20 +144,17 @@ const DokumenterPageInner = () => {
                     </div>
                     <Alert variant="info" className="mb-8">
                         <Heading level="3" size="small">
-                            Er det noen dokumenter du savner?
+                            <FormattedMessage id="dokumenter.savner" />
                         </Heading>
                         <BodyLong>
-                            Vi har foreløpig ikke mulighet til å vise papirer du har sendt til Nav i posten, eller
-                            dokumenter som gjelder saken din, men som er sendt av andre på vegne av deg. Det kan for
-                            eksempel være en lege, advokat, verge eller fullmektig.
+                            <FormattedMessage id="dokumenter.savner.detaljer" />
                         </BodyLong>
                     </Alert>
                 </>
             )}
             {dokumenterQuery.isError && (
                 <NoeGikkGalt className="mb-8">
-                    Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke hos
-                    deg. Prøv igjen senere.
+                    <FormattedMessage id="dokumenter.feil" />
                 </NoeGikkGalt>
             )}
         </>

@@ -214,7 +214,7 @@ export const MinidialogSkjema = ({
                     </HStack>
                 )}
                 {brukerØnskerÅUttaleSeg && tilbakemeldingValideringsfeil && (
-                    <ErrorSummary heading="Feil i skjema">
+                    <ErrorSummary heading={intl.formatMessage({ id: 'minidialog.feilISkjema' })}>
                         <ErrorSummary.Item href="#1">{tilbakemeldingValideringsfeil}</ErrorSummary.Item>
                     </ErrorSummary>
                 )}
