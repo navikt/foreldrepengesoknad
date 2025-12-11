@@ -608,7 +608,7 @@ export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
     },
 };
 
-export const VisFarsAktivitetsfri: Story = {
+export const VisFarsAktivitetsfriKvote: Story = {
     args: {
         saksperioder: [
             {

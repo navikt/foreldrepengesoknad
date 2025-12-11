@@ -10,6 +10,7 @@ const {
     MorSøkerMedFlereUtsettelser,
     KortPeriodeUtenHelg,
     HarPeriode11UkerFørFamiliehendelseDato,
+    VisFarsAktivitetsfriKvote,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -471,5 +472,21 @@ describe('UttaksplanKalender', () => {
         expect(screen.queryByTestId('year:2027;month:4')).not.toBeInTheDocument();
 
         expect(screen.getByText('Du viser maks antall måneder (3 år)')).toBeInTheDocument();
+    });
+
+    it('skal vise perioder med aktivitetsfri kvote', async () => {
+        render(<VisFarsAktivitetsfriKvote />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
+        await userEvent.click(within(juni).getByTestId('day:21;dayColor:LIGHTGREEN'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
+
+        expect(await screen.findAllByText('Foreldrepenger uten aktivitetskrav')).toHaveLength(2);
+        expect(screen.getByText('Gradering: 50 %')).toBeInTheDocument();
     });
 });
