@@ -482,7 +482,7 @@ describe('UttaksplanKalender', () => {
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
-        await userEvent.click(within(juni).getByTestId('day:21;dayColor:LIGHTGREEN'));
+        await userEvent.click(within(juni).getByTestId('day:21;dayColor:GREEN'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
 
