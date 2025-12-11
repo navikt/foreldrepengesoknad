@@ -17,16 +17,12 @@ type Props = {
 const ikkeVisAktivitetskravSpørsmål = (
     forelder: BrukerRolleSak_fpoversikt | undefined,
     aleneOmOmsorg: boolean,
-    harAktivitetskravIPeriodeUtenUttak: boolean,
     kontoType: KontoTypeUttak | undefined,
 ) => {
-    if (
-        forelder === 'MOR' ||
-        !(!aleneOmOmsorg && (kontoType === 'FORELDREPENGER' || kontoType === 'FELLESPERIODE')) ||
-        harAktivitetskravIPeriodeUtenUttak ||
-        !kontoType ||
-        !forelder
-    ) {
+    const erFarMedmorUtenAleneomsorg =
+        !aleneOmOmsorg && (kontoType === 'FORELDREPENGER' || kontoType === 'FELLESPERIODE');
+    const forelderIkkeBesvartEnda = forelder === undefined && kontoType === 'FELLESPERIODE';
+    if (forelder === 'MOR' || !erFarMedmorUtenAleneomsorg || !kontoType || forelderIkkeBesvartEnda) {
         return true;
     }
 
@@ -37,12 +33,12 @@ export const AktivitetskravSpørsmål = ({ autoFocus }: Props) => {
     const intl = useIntl();
 
     const { control, watch } = useFormContext<LeggTilPeriodePanelFormValues>();
-    const { aleneOmOmsorg, harAktivitetskravIPeriodeUtenUttak } = useUttaksplanData();
+    const { aleneOmOmsorg } = useUttaksplanData();
 
     const forelder = watch('forelder');
     const kontoType = watch('kontoType');
 
-    if (ikkeVisAktivitetskravSpørsmål(forelder, aleneOmOmsorg, harAktivitetskravIPeriodeUtenUttak, kontoType)) {
+    if (ikkeVisAktivitetskravSpørsmål(forelder, aleneOmOmsorg, kontoType)) {
         return null;
     }
 
