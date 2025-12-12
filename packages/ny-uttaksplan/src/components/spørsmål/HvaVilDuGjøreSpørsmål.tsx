@@ -32,23 +32,23 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus, erEndring }: Props)
             >
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
                     {erEndring ? (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilFerie.endre'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
                     ) : (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilFerie'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
                     )}
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
                     {erEndring ? (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilOpphold.endre'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
                     ) : (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilOpphold'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
                     )}
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
                     {erEndring ? (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilPeriode.endre'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
                     ) : (
-                        <FormattedMessage id={'uttaksplan.valgPanel.leggTilPeriode'} />
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
                     )}
                 </Radio>
             </RhfRadioGroup>
