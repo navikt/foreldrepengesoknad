@@ -7,7 +7,12 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { UttaksplanKalenderLegendInfo } from '../../types/UttaksplanKalenderLegendInfo';
+
+export type UttaksplanKalenderLegendInfo = {
+    calendarPeriod: CalendarPeriod;
+    label: LegendLabel;
+    forelder?: 'MOR' | 'FAR_MEDMOR';
+};
 
 export const sortLegendInfoByLabel = (a: UttaksplanKalenderLegendInfo, b: UttaksplanKalenderLegendInfo): number => {
     const labelOrder: LegendLabel[] = [
@@ -82,7 +87,7 @@ export const getFocusStyle = (color: CalendarPeriodColor) => {
 };
 
 export const getCalendarLabel = (
-    label: LegendLabel,
+    info: UttaksplanKalenderLegendInfo,
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
     erIPlanleggerModus: boolean,
@@ -91,11 +96,14 @@ export const getCalendarLabel = (
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    switch (label) {
+    switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
         case 'UTSETTELSE':
-            return intl.formatMessage({ id: 'kalender.utsettelse' });
+            return intl.formatMessage(
+                { id: 'kalender.utsettelse' },
+                { erMor: info.forelder === 'MOR', harMedmor: erMedmorDelAvSøknaden },
+            );
         case 'TERMIN':
             return intl.formatMessage({ id: 'kalender.termin' });
         case 'FØDSEL':
@@ -143,7 +151,7 @@ export const getCalendarLabel = (
                 ? intl.formatMessage({ id: 'kalender.samtidigUttak.planlegger' })
                 : intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
-            return label;
+            return info.label;
     }
 };
 
