@@ -68,7 +68,7 @@ const DEFAULT_SØKER_INFO = {
             etternavn: 'Oravakangas',
             fornavn: 'Erlinga-Mask',
         },
-        fnr: '30088930610',
+        fnr: '1',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],

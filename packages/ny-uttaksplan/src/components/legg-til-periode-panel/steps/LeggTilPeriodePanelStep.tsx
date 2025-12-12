@@ -11,6 +11,7 @@ import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
+import { AktivitetskravSpørsmål } from '../../spørsmål/AktivitetskravSpørsmål';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
@@ -76,7 +77,7 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 tom: tomValue,
                 id: `${fomValue} - ${tomValue} - ${values.kontoType}`,
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
-                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 readOnly: false,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
@@ -98,6 +99,7 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? (
                     <>
                         <KontotypeSpørsmål />
+                        <AktivitetskravSpørsmål />
                         <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
                         {erDeltUttak && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />

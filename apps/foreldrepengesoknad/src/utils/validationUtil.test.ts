@@ -23,7 +23,7 @@ describe('validationUtil', () => {
 
     it('skal ikke gi feilmelding når søker oppgir gyldige fnr for seg og annen part', () => {
         const søkerFnr = '21091981146';
-        const andrePartFnr = '08088620241';
+        const andrePartFnr = '05510552883';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
@@ -31,8 +31,8 @@ describe('validationUtil', () => {
     });
 
     it('skal gi feilmelding når søker oppgir sitt eget fnr som andre parts fnr', () => {
-        const søkerFnr = '08088620241';
-        const andrePartFnr = '08088620241';
+        const søkerFnr = '05510552883';
+        const andrePartFnr = '05510552883';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
@@ -40,7 +40,7 @@ describe('validationUtil', () => {
     });
 
     it('skal gi feilmelding når andre parts fnr er tom string', () => {
-        const søkerFnr = '08088620241';
+        const søkerFnr = '05510552883';
         const andrePartFnr = '';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
@@ -49,7 +49,7 @@ describe('validationUtil', () => {
     });
 
     it('skal gi feilmelding når annen part er under seksten', () => {
-        const søkerFnr = '08088620241';
+        const søkerFnr = '05510552883';
         const andrePartFnr = '21091981146';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
@@ -58,7 +58,7 @@ describe('validationUtil', () => {
     });
 
     it('skal gi feilmelding når frn er utenlandsk og fnr er tom string', () => {
-        const søkerFnr = '08088620241';
+        const søkerFnr = '05510552883';
         const erUtenlandskFnr = true;
         const andrePartFnr = '';
 
@@ -68,16 +68,16 @@ describe('validationUtil', () => {
     });
 
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr ikke tom string', () => {
-        const søkerFnr = '08088620241';
+        const søkerFnr = '05510552883';
         const erUtenlandskFnr = true;
-        const andrePartFnr = '08088620241';
+        const andrePartFnr = '123';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
         expect(resultat).toBeUndefined();
     });
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
-        const søkerFnr = '08088620241';
+        const søkerFnr = '05510552883';
         const erUtenlandskFnr = true;
         const andrePartFnr = '887<>862024';
 

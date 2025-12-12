@@ -538,7 +538,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
     },
 };
 
-export const FellesPeriodeForMorOgSaSamtidigUttakOgSa: Story = {
+export const FellesPeriodeForMorOgSamtidigUttak: Story = {
     args: {
         saksperioder: [
             {
@@ -612,12 +612,6 @@ export const VisFarsAktivitetsfriKvote: Story = {
     args: {
         saksperioder: [
             {
-                fom: '2024-03-15',
-                tom: '2024-04-03',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: 'MOR',
-            },
-            {
                 fom: '2024-06-14',
                 tom: '2024-06-18',
                 kontoType: 'FORELDREPENGER',
@@ -643,9 +637,16 @@ export const VisFarsAktivitetsfriKvote: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
+        bareFarMedmorHarRett: true,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
+                { konto: 'FORELDREPENGER', dager: 125 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
     },
 };

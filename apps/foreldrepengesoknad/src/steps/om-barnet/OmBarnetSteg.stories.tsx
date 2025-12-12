@@ -21,7 +21,7 @@ const promiseAction = () => () => {
 
 const defaultSøkerinfo = {
     person: {
-        fnr: '19047815714',
+        fnr: '1',
         navn: {
             fornavn: 'TALENTFULL',
             etternavn: 'MYGG',

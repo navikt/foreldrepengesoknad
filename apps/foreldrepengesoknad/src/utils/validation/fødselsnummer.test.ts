@@ -2,7 +2,7 @@ import { isFødselsnummerFormatValid, isSixteenOrOlder } from './fødselsnummer'
 
 describe('<fødselsnummer>', () => {
     it('skal returnere F når fødselsnummer er gyldig', () => {
-        const fødselsnummer = '08088620241';
+        const fødselsnummer = '31128904843';
         const erGyldig = isFødselsnummerFormatValid(fødselsnummer);
         expect(erGyldig).toBe('fnr');
     });
@@ -14,7 +14,7 @@ describe('<fødselsnummer>', () => {
     });
 
     it('skal returnere true når fødselsnummeret tilhører er person over 16 år', () => {
-        const fødselsnummer = '08088620241';
+        const fødselsnummer = '05510552883';
         const erSekstenEllerEldre = isSixteenOrOlder(fødselsnummer, 'fnr');
         expect(erSekstenEllerEldre).toBe(true);
     });
