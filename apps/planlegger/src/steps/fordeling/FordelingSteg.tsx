@@ -21,6 +21,7 @@ import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { SliderComponent } from '../../components/slider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {
@@ -144,6 +145,18 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                     </option>
                                 ))}
                             </RhfSelect>
+                            <SliderComponent
+                                min={0}
+                                max={antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager}
+                                step={5}
+                                value={antallDagerSøker1 ? [antallDagerSøker1] : undefined}
+                                onValueChange={(value) => {
+                                    if (value[0] !== undefined) {
+                                        formMethods.setValue('antallDagerSøker1', value[0]);
+                                        scrollToBottom();
+                                    }
+                                }}
+                            />
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
