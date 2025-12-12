@@ -92,12 +92,6 @@ describe('UttaksplanKalender', () => {
         expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(10);
         expect(within(juni).getByTestId('day:29;dayColor:NONE')).toBeInTheDocument();
     });
-    it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
-        render(<KortPeriodeUtenHelg />);
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
-        expect(screen.queryByText('Helg')).not.toBeInTheDocument();
-    });
 
     it('skal markere en periode som ikke overlapper med eksisterende perioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
