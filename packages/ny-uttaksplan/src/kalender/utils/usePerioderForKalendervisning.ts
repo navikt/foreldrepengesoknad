@@ -15,7 +15,6 @@ import { UttaksdagenString, formatDateIso, formaterDatoUtenDag, getFamiliehendel
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { LegendLabel } from '../../types/LegendLabel';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import {
     getAnnenForelderSamtidigUttakPeriode,
@@ -24,10 +23,9 @@ import {
     isAvslåttPeriodeFørsteSeksUkerMor,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
+import { erPeriodeForSøker, filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
 
-export type CalendarPeriodWithLabel = CalendarPeriod & { legendLabel?: LegendLabel };
-
-export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriodWithLabel[] => {
+export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriod[] => {
     const intl = useIntl();
 
     const { uttaksplan, barn, erFarEllerMedmor, modus, navnPåForeldre } = useUttaksplanData();
@@ -36,19 +34,12 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
-    // Filtrer bort annen parts perioder som er identiske med søker sine perioder
-    const unikePerioder = uttaksplan.reduce<Planperiode[]>((alle, periode) => {
-        const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
-        const filtrerte = uttaksplan.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
-        return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
-    }, []);
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, erFarEllerMedmor);
 
-    const res = unikePerioder.reduce<CalendarPeriodWithLabel[]>((acc, periode) => {
+    const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
         const color = erIPlanleggerModus
             ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, uttaksplan)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, uttaksplan, barn);
-
-        const legendLabel = getLegendLabelFromPeriode(periode);
 
         if (
             barnehagestartdato !== undefined &&
@@ -59,7 +50,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                 {
                     fom: periode.fom,
                     tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
-                    legendLabel,
                     color,
                     srText: getKalenderSkjermlesertekstForPeriode(
                         {
@@ -74,7 +64,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                 {
                     fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
                     tom: periode.tom,
-                    legendLabel,
                     color,
                     srText: getKalenderSkjermlesertekstForPeriode(
                         {
@@ -100,7 +89,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
             {
                 fom,
                 tom,
-                legendLabel,
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode({ ...periode, fom, tom }, navnPåForeldre, intl),
             },
@@ -115,9 +103,8 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                       fom: barnehagestartdato,
                       tom: barnehagestartdato,
                       color: 'PURPLE',
-                      legendLabel: 'BARNEHAGEPLASS',
                       srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
-                  } satisfies CalendarPeriodWithLabel)
+                  } satisfies CalendarPeriod)
                   .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(uttaksplan, familiehendelsesdato) ?? 0;
@@ -125,7 +112,6 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: 'PINK',
-        legendLabel: getFamiliehendelseKalendarLabel(barn),
         srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
     });
 
@@ -195,62 +181,6 @@ const slåSammenPerioder = (periods: CalendarPeriod[]) => {
     }, [] as CalendarPeriod[]);
 };
 
-const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel => {
-    if (p.kontoType) {
-        switch (p.kontoType) {
-            case 'FORELDREPENGER_FØR_FØDSEL':
-                return 'MORS_DEL';
-            case 'MØDREKVOTE':
-            case 'FEDREKVOTE':
-            case 'FELLESPERIODE':
-            case 'FORELDREPENGER':
-                if (!p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT') {
-                    if (p.gradering?.arbeidstidprosent) {
-                        return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
-                    }
-
-                    return 'FARS_DEL_AKTIVITETSFRI';
-                }
-
-                if (!p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR') {
-                    if (p.samtidigUttak && p.samtidigUttak > 0) {
-                        return 'SAMTIDIG_UTTAK';
-                    }
-
-                    if (p.gradering?.arbeidstidprosent) {
-                        return 'FARS_DEL_GRADERT';
-                    }
-
-                    return 'FARS_DEL';
-                }
-
-                if (!p.erAnnenPartEøs && p.samtidigUttak && p.samtidigUttak > 0) {
-                    return 'SAMTIDIG_UTTAK';
-                }
-
-                if (!p.erAnnenPartEøs && p.gradering?.arbeidstidprosent) {
-                    return 'MORS_DEL_GRADERT';
-                }
-
-                return 'MORS_DEL';
-            default:
-                return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
-        }
-    }
-
-    if (p.periodeHullÅrsak) {
-        if (p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-            return 'NO_LABEL';
-        }
-
-        if (p.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
-            return 'TAPTE_DAGER';
-        }
-    }
-
-    return 'UTSETTELSE';
-};
-
 const getKalenderFargeForUttaksperiode = (
     periode: Planperiode,
     allePerioder: Planperiode[],
@@ -309,10 +239,6 @@ const getKalenderFargeForAnnenPart = (periode: Planperiode, erFarEllerMedmor: bo
 
     return 'NONE';
 };
-
-const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
-    !periode.erAnnenPartEøs &&
-    ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));
 
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: Planperiode,
@@ -405,13 +331,6 @@ const getKalenderFargeForPeriodeType = (
     return 'NONE';
 };
 
-const getFamiliehendelseKalendarLabel = (barn: Barn): LegendLabel => {
-    if (!isAdoptertBarn(barn)) {
-        return isFødtBarn(barn) ? 'FØDSEL' : 'TERMIN';
-    }
-    return 'ADOPSJON';
-};
-
 const getFamiliehendelseKalendarLabelForSkjermleser = (barn: Barn, intl: IntlShape): string => {
     if (!isAdoptertBarn(barn)) {
         return isFødtBarn(barn)
@@ -462,6 +381,10 @@ const getKalenderSkjermleserPeriodetekst = (
 
     if (period.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
+    }
+
+    if (!period.erAnnenPartEøs && period.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
     }
 
     if (period.kontoType) {
