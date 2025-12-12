@@ -53,6 +53,10 @@ export const UttaksplanLegend = ({
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
         const label = getLegendLabelFromPeriode(periode);
 
+        if (!label) {
+            return acc;
+        }
+
         const periodeForKalendervisning = notEmpty(
             perioderForKalendervisning.find(
                 (p) =>
@@ -63,14 +67,7 @@ export const UttaksplanLegend = ({
             ),
         );
 
-        if (
-            !label ||
-            acc.some(
-                (item) =>
-                    item.calendarPeriod.fom === periodeForKalendervisning.fom &&
-                    item.calendarPeriod.tom === periodeForKalendervisning.tom,
-            )
-        ) {
+        if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
             return acc;
         }
 

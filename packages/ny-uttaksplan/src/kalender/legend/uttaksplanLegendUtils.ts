@@ -102,7 +102,12 @@ export const getCalendarLabel = (
         case 'UTSETTELSE':
             return intl.formatMessage(
                 { id: 'kalender.utsettelse' },
-                { erMor: info.forelder === 'MOR', harMedmor: erMedmorDelAvSøknaden },
+                {
+                    erSokersPeriode:
+                        (!erFarEllerMedmor && info.forelder === 'MOR') ||
+                        (erFarEllerMedmor && info.forelder === 'FAR_MEDMOR'),
+                    navnAnnenPart,
+                },
             );
         case 'TERMIN':
             return intl.formatMessage({ id: 'kalender.termin' });

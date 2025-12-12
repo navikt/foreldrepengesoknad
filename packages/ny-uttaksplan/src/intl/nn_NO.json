@@ -204,7 +204,7 @@
     "kalender.tapteDager": "Dagar du kan tape",
     "kalender.tapteDager.planlegger": "Dagar mor kan tape",
     "kalender.pleiepenger": "Fratrekk for pleiepenger",
-    "kalender.utsettelse": "{erMor, select, true {Mor} other {{harMedmor, select, true {Medmor} other {Far}}}} bruker ikkje foreldrepengar",
+    "kalender.utsettelse": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} bruker ikkje foreldrepengar",
     "kalender.utsettelse.ARBEID": "fordi du skal jobbe",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "fordi barnet er innlagt",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "fordi du er innlagt",

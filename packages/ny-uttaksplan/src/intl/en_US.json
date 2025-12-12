@@ -220,7 +220,7 @@
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "kalender.velgRange": "Range selection",
     "kalender.barnehageplass": "Kindergarten",
-    "kalender.utsettelse": "{erMor, select, true {Mother} other {{harMedmor, select, true {Co-mother} other {Father}}}} are not using parental benefits",
+    "kalender.utsettelse": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} are not using parental benefits",
     "kalender.avslagFratrekkPleiepenger": "Avslag på fratrekk for pleiepenger",
     "kalender.srText.PeriodenTil": "Period belongs to {navn}. ",
     "kalender.srText.ForeldrepengerFørFødsel": "Parental benefits before birth",
