@@ -31,27 +31,25 @@ export const HvaVilDuGjøreSpørsmål = ({ label, autoFocus, erEndring }: Props)
                 validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
             >
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_FERIE} autoFocus={autoFocus}>
-                    <FormattedMessage
-                        id={erEndring ? 'uttaksplan.valgPanel.leggTilFerie.endre' : 'uttaksplan.valgPanel.leggTilFerie'}
-                    />
+                    {erEndring ? (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
+                    ) : (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
+                    )}
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_OPPHOLD}>
-                    <FormattedMessage
-                        id={
-                            erEndring
-                                ? 'uttaksplan.valgPanel.leggTilOpphold.endre'
-                                : 'uttaksplan.valgPanel.leggTilOpphold'
-                        }
-                    />
+                    {erEndring ? (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
+                    ) : (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
+                    )}
                 </Radio>
                 <Radio value={HvaVilDuGjøre.LEGG_TIL_PERIODE}>
-                    <FormattedMessage
-                        id={
-                            erEndring
-                                ? 'uttaksplan.valgPanel.leggTilPeriode.endre'
-                                : 'uttaksplan.valgPanel.leggTilPeriode'
-                        }
-                    />
+                    {erEndring ? (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
+                    ) : (
+                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
+                    )}
                 </Radio>
             </RhfRadioGroup>
         </VStack>
