@@ -220,6 +220,7 @@
     "kalender.skjermleser.periode": "{periodeNavn} frå den {fraDato} til den {tilDato}",
     "kalender.velgRange": "Periodeseleksjon",
     "kalender.barnehageplass": "Barnehageplass",
+    "kalender.avslagFratrekkPleiepenger": "Avslag på fratrekk for pleiepenger",
     "kalender.srText.PeriodenTil": "Perioden til {navn}. ",
     "kalender.srText.ForeldrepengerFørFødsel": "Foreldrepenger før fødsel",
     "kalender.srText.Mødrekvote": "Mødrekvote",

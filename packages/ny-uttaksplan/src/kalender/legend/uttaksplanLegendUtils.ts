@@ -3,8 +3,10 @@ import { IntlShape } from 'react-intl';
 
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { assertUnreachable } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
+import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
 import { UttaksplanKalenderLegendInfo } from '../../types/UttaksplanKalenderLegendInfo';
 
 export const sortLegendInfoByLabel = (a: UttaksplanKalenderLegendInfo, b: UttaksplanKalenderLegendInfo): number => {
@@ -130,6 +132,8 @@ export const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri' });
         case 'FARS_DEL_AKTIVITETSFRI_GRADERT':
             return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri.gradert' });
+        case 'AVSLAG_FRATREKK_PLEIEPENGER':
+            return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         case 'TAPTE_DAGER':
             return erIPlanleggerModus
                 ? intl.formatMessage({ id: 'kalender.tapteDager.planlegger' })
@@ -245,4 +249,64 @@ export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): bool
     const førsteDagNr = dayjs(førsteDag).get('day');
     const sisteDagNr = dayjs(sisteDag).get('day');
     return sisteDagNr < førsteDagNr;
+};
+
+export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefined => {
+    if (p.kontoType) {
+        switch (p.kontoType) {
+            case 'FORELDREPENGER_FØR_FØDSEL':
+                return 'MORS_DEL';
+            case 'MØDREKVOTE':
+            case 'FEDREKVOTE':
+            case 'FELLESPERIODE':
+            case 'FORELDREPENGER':
+                if (!p.erAnnenPartEøs && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+                    return 'AVSLAG_FRATREKK_PLEIEPENGER';
+                }
+
+                if (!p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT') {
+                    if (p.gradering?.arbeidstidprosent) {
+                        return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
+                    }
+
+                    return 'FARS_DEL_AKTIVITETSFRI';
+                }
+
+                if (!p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR') {
+                    if (p.samtidigUttak && p.samtidigUttak > 0) {
+                        return 'SAMTIDIG_UTTAK';
+                    }
+
+                    if (p.gradering?.arbeidstidprosent) {
+                        return 'FARS_DEL_GRADERT';
+                    }
+
+                    return 'FARS_DEL';
+                }
+
+                if (!p.erAnnenPartEøs && p.samtidigUttak && p.samtidigUttak > 0) {
+                    return 'SAMTIDIG_UTTAK';
+                }
+
+                if (!p.erAnnenPartEøs && p.gradering?.arbeidstidprosent) {
+                    return 'MORS_DEL_GRADERT';
+                }
+
+                return 'MORS_DEL';
+            default:
+                return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
+        }
+    }
+
+    if (p.periodeHullÅrsak) {
+        if (p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            return undefined;
+        }
+
+        if (p.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+            return 'TAPTE_DAGER';
+        }
+    }
+
+    return 'UTSETTELSE';
 };

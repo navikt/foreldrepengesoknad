@@ -1,28 +1,36 @@
 import { MinusCircleIcon, PlusCircleIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Tooltip, VStack } from '@navikt/ds-react';
 
-import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
+import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanKalenderLegendInfo } from '../../types/UttaksplanKalenderLegendInfo';
-import { CalendarPeriodWithLabel } from '../utils/usePerioderForKalendervisning.ts';
+import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils.ts';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext.tsx';
 import {
     getCalendarLabel,
     getFocusStyle,
-    getInneholderKalenderHelgedager,
+    getLegendLabelFromPeriode,
     getSelectableStyle,
     getSelectedStyle,
     sortLegendInfoByLabel,
 } from './uttaksplanLegendUtils.ts';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 const unselectableColors = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'] satisfies CalendarPeriodColor[];
 
 interface Props {
-    perioderForKalendervisning: CalendarPeriodWithLabel[];
+    perioderForKalendervisning: CalendarPeriod[];
     selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     skjulTekstSomDefault?: boolean;
@@ -38,27 +46,60 @@ export const UttaksplanLegend = ({
 
     const [visHorisontalt, setVisHorisontalt] = useState(true);
 
-    const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
+    const { uttaksplan, erFarEllerMedmor, barn } = useUttaksplanData();
 
-    const unikeLegendLabels = [...new Set(perioderForKalendervisning.map((period) => period.legendLabel))];
-    const unikeLegendColors = [...new Set(perioderForKalendervisning.map((period) => period.color))];
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, erFarEllerMedmor);
 
-    const legendInfo: UttaksplanKalenderLegendInfo[] = unikeLegendColors.map((color) => ({
-        color,
-        label:
-            unikeLegendLabels.find((label) =>
-                perioderForKalendervisning.some((p) => p.color === color && p.legendLabel === label),
-            ) ?? 'NO_LABEL',
-    }));
+    const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
+        const label = getLegendLabelFromPeriode(periode);
 
-    if (inkludererHelg) {
-        legendInfo.push({
-            color: 'GRAY',
-            label: 'HELG',
+        if (!label || acc.some((item) => item.label === label)) {
+            return acc;
+        }
+
+        const periodeForKalendervisning = notEmpty(
+            perioderForKalendervisning.find(
+                (p) =>
+                    dayjs(p.fom).isSameOrBefore(periode.tom) &&
+                    dayjs(p.tom).isSameOrAfter(periode.fom) &&
+                    p.color !== 'PINK' &&
+                    p.color !== 'PURPLE',
+            ),
+        );
+
+        return [
+            ...acc,
+            {
+                label,
+                color: periodeForKalendervisning.color,
+                srText: periodeForKalendervisning.srText,
+            },
+        ];
+    }, []);
+
+    const barnehageplassPeriode = perioderForKalendervisning.find((p) => p.color === 'PURPLE');
+    if (barnehageplassPeriode) {
+        unikePeriodeLabelsMedFarge.push({
+            color: 'PURPLE',
+            label: 'BARNEHAGEPLASS',
+            srText: barnehageplassPeriode.srText || '',
         });
     }
 
-    const sortedLegends = legendInfo.toSorted(sortLegendInfoByLabel);
+    unikePeriodeLabelsMedFarge.push(
+        {
+            color: 'PINK',
+            label: getFamiliehendelseKalendarLabel(barn),
+            srText: perioderForKalendervisning.find((p) => p.color === 'PINK')?.srText || '',
+        },
+        {
+            color: 'GRAY',
+            label: 'HELG',
+            srText: perioderForKalendervisning.find((p) => p.color === 'GRAY')?.srText || '',
+        },
+    );
+
+    const sortedLegends = unikePeriodeLabelsMedFarge.toSorted(sortLegendInfoByLabel);
 
     return (
         <HStackEllerVStack gap={skjulTekstSomDefault ? 'space-8' : 'space-16'} visHorisontalt={visHorisontalt}>
@@ -213,4 +254,11 @@ const LabelButton = ({
             </CalendarLabel>
         </button>
     );
+};
+
+const getFamiliehendelseKalendarLabel = (barn: Barn): LegendLabel => {
+    if (!isAdoptertBarn(barn)) {
+        return isFødtBarn(barn) ? 'FØDSEL' : 'TERMIN';
+    }
+    return 'ADOPSJON';
 };
