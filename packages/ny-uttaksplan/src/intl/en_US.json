@@ -221,7 +221,7 @@
     "kalender.velgRange": "Range selection",
     "kalender.barnehageplass": "Kindergarten",
     "kalender.utsettelse": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} are not using parental benefits",
-    "kalender.avslagFratrekkPleiepenger": "Avslag på fratrekk for pleiepenger",
+    "kalender.avslagFratrekkPleiepenger": "Rejection of deduction for care benefits",
     "kalender.srText.PeriodenTil": "Period belongs to {navn}. ",
     "kalender.srText.ForeldrepengerFørFødsel": "Parental benefits before birth",
     "kalender.srText.Mødrekvote": "Mother's quota",

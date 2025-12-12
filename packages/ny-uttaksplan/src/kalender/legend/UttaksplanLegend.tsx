@@ -57,15 +57,17 @@ export const UttaksplanLegend = ({
             return acc;
         }
 
-        const periodeForKalendervisning = notEmpty(
-            perioderForKalendervisning.find(
-                (p) =>
-                    dayjs(p.fom).isSameOrBefore(periode.tom) &&
-                    dayjs(p.tom).isSameOrAfter(periode.fom) &&
-                    p.color !== 'PINK' &&
-                    p.color !== 'PURPLE',
-            ),
+        const periodeForKalendervisning = perioderForKalendervisning.find(
+            (p) =>
+                dayjs(p.fom).isSameOrBefore(periode.tom) &&
+                dayjs(p.tom).isSameOrAfter(periode.fom) &&
+                p.color !== 'PINK' &&
+                p.color !== 'PURPLE',
         );
+
+        if (!periodeForKalendervisning) {
+            return acc;
+        }
 
         if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
             return acc;
@@ -105,7 +107,7 @@ export const UttaksplanLegend = ({
         },
     );
 
-    const sortedLegends = unikePeriodeLabelsMedFarge.toSorted(sortLegendInfoByLabel);
+    const sortedLegends = [...unikePeriodeLabelsMedFarge].sort(sortLegendInfoByLabel);
 
     return (
         <HStackEllerVStack gap={skjulTekstSomDefault ? 'space-8' : 'space-16'} visHorisontalt={visHorisontalt}>

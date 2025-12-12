@@ -118,7 +118,7 @@ export const VisAlleMedTekst: Story = {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
                 color: 'GREENSTRIPED',
-                srText: 'Fars del, aktivtetsfri',
+                srText: 'Fars del, aktivitetsfri',
             },
         ],
         saksperioder: [

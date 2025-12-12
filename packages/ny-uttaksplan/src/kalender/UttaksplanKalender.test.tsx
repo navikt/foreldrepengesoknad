@@ -8,7 +8,6 @@ const {
     MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering,
     FarSøkerMedTapteDagerOgUtsettelse,
     MorSøkerMedFlereUtsettelser,
-    KortPeriodeUtenHelg,
     HarPeriode11UkerFørFamiliehendelseDato,
     VisFarsAktivitetsfriKvote,
 } = composeStories(stories);
