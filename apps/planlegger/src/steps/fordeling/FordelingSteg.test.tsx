@@ -22,6 +22,20 @@ vi.mock('react-router-dom', async () => {
 
 const useNavigateMock = vi.mocked(useNavigate);
 
+const endreFordelingMedSlider = async (ønsketAntallDager: number) => {
+    const slider = screen.getByRole('slider', {
+        name: /Hvordan vil dere fordele 16 uker med fellesperiode\?/i,
+    });
+    await userEvent.click(slider);
+    const nåverdi = Number(slider.getAttribute('aria-valuenow') ?? 0);
+    const diff = ønsketAntallDager - nåverdi;
+    const steg = Math.abs(diff) / 5;
+    const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
+    for (let i = 0; i < steg; i += 1) {
+        await userEvent.keyboard(key);
+    }
+};
+
 describe('<FordelingSteg>', () => {
     it('skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
         const navigateMock = vi.fn();
@@ -39,10 +53,7 @@ describe('<FordelingSteg>', () => {
             screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
         ).toBeInTheDocument();
 
-        await userEvent.selectOptions(
-            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-            '45',
-        );
+        await endreFordelingMedSlider(45);
 
         expect(screen.getByText('Klara: 11. des. 2023 – 14. juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Espen: 17. juni 2024 – 15. nov. 2024')).toBeInTheDocument();
@@ -77,10 +88,8 @@ describe('<FordelingSteg>', () => {
             screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
         ).toBeInTheDocument();
 
-        await userEvent.selectOptions(
-            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-            '80',
-        );
+        await endreFordelingMedSlider(80);
+
         expect(
             screen.getByText(
                 'Dette er regnet ut fra at barnet blir født på termin og om dere tar sammenhengende permisjon fra tre uker før termin.',
@@ -132,10 +141,7 @@ describe('<FordelingSteg>', () => {
             screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
         ).toBeInTheDocument();
 
-        await userEvent.selectOptions(
-            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-            '80',
-        );
+        await endreFordelingMedSlider(80);
 
         expect(
             screen.getByText(
@@ -187,10 +193,8 @@ describe('<FordelingSteg>', () => {
             screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
         ).toBeInTheDocument();
 
-        await userEvent.selectOptions(
-            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-            '80',
-        );
+        await endreFordelingMedSlider(80);
+
         expect(screen.getByText('Perioden deres')).toBeInTheDocument();
         expect(
             screen.getByText(
