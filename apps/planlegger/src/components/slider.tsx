@@ -38,33 +38,10 @@ export const SliderComponent = ({
             step={step}
             onValueChange={onValueChange}
             {...rootProps}
-            style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                height: '20px',
-                userSelect: 'none',
-                touchAction: 'none',
-            }}
+            className="relative flex h-5 w-full touch-none items-center select-none"
         >
-            <Slider.Track
-                style={{
-                    position: 'relative',
-                    flexGrow: 1,
-                    backgroundColor: 'white',
-                    borderRadius: '9999px',
-                    height: '8px',
-                }}
-            >
-                <Slider.Range
-                    style={{
-                        position: 'absolute',
-                        backgroundColor: '#FFFFFF',
-                        borderRadius: '9999px',
-                        height: '100%',
-                    }}
-                />
+            <Slider.Track className="bg-ax-bg-default relative h-2 grow rounded-full">
+                <Slider.Range className="absolute h-full rounded-full" />
             </Slider.Track>
             <Slider.Thumb
                 aria-label={ariaLabel}
@@ -75,18 +52,10 @@ export const SliderComponent = ({
                 aria-valuemax={max}
                 aria-valuenow={currentValue}
                 aria-valuetext={getAriaValueText ? getAriaValueText(currentValue ?? min) : undefined}
-                style={{
-                    display: 'block',
-                    width: '20px',
-                    height: '20px',
-                    backgroundColor: 'blue',
-                    borderRadius: '50%',
-                    border: '2px solid white',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer',
-                    outline: '2px solid transparent',
-                    outlineOffset: '2px',
-                }}
+                className={
+                    'bg-ax-bg-brand-blue-strong block h-5 w-5 rounded-full border-2 border-white shadow-md ' +
+                    'cursor-pointer outline outline-offset-2 outline-transparent'
+                }
             />
         </Slider.Root>
     );

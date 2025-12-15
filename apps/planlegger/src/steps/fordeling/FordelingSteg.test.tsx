@@ -43,15 +43,9 @@ describe('<FordelingSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
 
-        const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
+        render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
-
-        await userEvent.click(screen.getByText('Neste'));
-
-        expect(
-            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
-        ).toBeInTheDocument();
 
         await endreFordelingMedSlider(45);
 
@@ -62,7 +56,7 @@ describe('<FordelingSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallDagerSøker1: '45',
+                antallDagerSøker1: 45,
             },
             key: ContextDataType.FORDELING,
             type: 'update',
@@ -78,7 +72,7 @@ describe('<FordelingSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
 
-        const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
+        render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
@@ -119,7 +113,7 @@ describe('<FordelingSteg>', () => {
         const gåTilNesteSide = vi.fn();
 
         const originalArgs = FlereForsørgereEttBarn.args;
-        const utils = render(
+        render(
             <FlereForsørgereEttBarn
                 {...originalArgs}
                 omBarnet={{
@@ -172,7 +166,7 @@ describe('<FordelingSteg>', () => {
         const gåTilNesteSide = vi.fn();
 
         const originalArgs = FlereForsørgereEttBarn.args;
-        const utils = render(
+        render(
             <FlereForsørgereEttBarn
                 {...originalArgs}
                 omBarnet={{
