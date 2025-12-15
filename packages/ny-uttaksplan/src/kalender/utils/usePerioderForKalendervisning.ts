@@ -140,7 +140,6 @@ const getKalenderFargeForPeriode = (
             return 'BLACKOUTLINE';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
-        // TODO Kvifor kun svartmarkering for mor, er det korrekt?
         return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato) ? 'BLACK' : 'NONE';
     }
 
@@ -155,8 +154,7 @@ const getKalenderFargeForPeriode = (
     }
 
     if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak) {
-        //TODO SKal ein ha to forskjellige fargar her? Må evt kunne legga til kven som skal ta ferie i forma
-        return periode.forelder === 'FAR_MEDMOR' ? 'GREENOUTLINE' : 'BLUEOUTLINE';
+        return 'BLUEOUTLINE';
     }
 
     if (periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
