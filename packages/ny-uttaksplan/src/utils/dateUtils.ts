@@ -46,9 +46,15 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
     if (dager > 0) {
-        return `${ukerStr}${intl.formatMessage({
-            id: format === 'full' ? `varighet.separator--full` : `varighet.separator--normal`,
-        })}${dagerStr}`;
+        const text =
+            format === 'full'
+                ? intl.formatMessage({
+                      id: `varighet.separator--full`,
+                  })
+                : intl.formatMessage({
+                      id: `varighet.separator--normal`,
+                  });
+        return `${ukerStr}${text}${dagerStr}`;
     }
     return ukerStr;
 };
