@@ -174,7 +174,7 @@ const getKalenderFargeForPeriode = (
             return 'BLUESTRIPED';
         }
 
-        return periode.kontoType === 'FELLESPERIODE' ? 'LIGHTGREENBLUE' : 'BLUE';
+        return 'BLUE';
     }
 
     if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
@@ -182,7 +182,7 @@ const getKalenderFargeForPeriode = (
             return 'GREENSTRIPED';
         }
 
-        return periode.kontoType === 'FELLESPERIODE' ? 'LIGHTBLUEGREEN' : 'GREEN';
+        return 'GREEN';
     }
 
     return 'NONE';
