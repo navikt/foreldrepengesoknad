@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { formatDate } from '@navikt/fp-utils';
 
 import { Sak } from '../../types/Sak';
+import { ytelseSomTekst } from '../../utils/sakerUtils.ts';
 import { LenkePanel } from '../lenke-panel/LenkePanel';
 import { StatusTag } from '../status-tag/StatusTag';
 
@@ -17,7 +18,7 @@ export const SakLink = ({ sak, harMinstEttArbeidsforhold }: Props) => {
         <LenkePanel
             tag={<StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />}
             undertittel={`Sist oppdatert ${formatDate(sak.oppdatertTidspunkt)}`}
-            tittel={intl.formatMessage({ id: `ytelse.${sak.ytelse}` })}
+            tittel={ytelseSomTekst(sak.ytelse, intl)}
             to={`/sak/${sak.saksnummer}`}
         />
     );

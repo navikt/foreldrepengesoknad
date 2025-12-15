@@ -22,6 +22,7 @@ import {
     grupperSakerPåBarn,
     mapSakerDTOToSaker,
     utledFamiliesituasjon,
+    ytelseSomTekst,
 } from '../../utils/sakerUtils';
 import { StatusTag } from '../status-tag/StatusTag';
 
@@ -214,6 +215,7 @@ function FamiliehendelseDescription({
 }
 
 export function DinSakHeader({ sak }: { sak?: Sak }) {
+    const intl = useIntl();
     const søkerinfo = useQuery(søkerInfoOptions()).data;
 
     if (!sak) {
@@ -235,12 +237,9 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     </HStack>
                     <Show above="md">
                         <HStack gap="3" align="center">
-                            <Detail uppercase>
-                                <FormattedMessage id={`ytelse.${sak.ytelse}`} />{' '}
-                            </Detail>
+                            <Detail uppercase>{ytelseSomTekst(sak.ytelse, intl)}</Detail>
                             <BlueDot />
                             <SaksnummerDetail />
-
                             <BlueDot />
                             <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
                         </HStack>
@@ -248,7 +247,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     <Show below="md">
                         <VStack gap="space-4">
                             <HStack gap="space-8" align="center">
-                                <FormattedMessage id={`ytelse.${sak.ytelse}`} /> <BlueDot />
+                                {ytelseSomTekst(sak.ytelse, intl)} <BlueDot />
                                 <SaksnummerDetail />
                             </HStack>
                             <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />

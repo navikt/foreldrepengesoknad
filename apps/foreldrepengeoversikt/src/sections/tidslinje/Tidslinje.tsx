@@ -28,7 +28,7 @@ import { Sak } from '../../types/Sak';
 import { Tidslinjehendelse2 } from '../../types/Tidslinjehendelse.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 import { guid } from '../../utils/guid';
-import { getBarnGrupperingFraSak } from '../../utils/sakerUtils';
+import { getBarnGrupperingFraSak, ytelseSomTekst } from '../../utils/sakerUtils';
 import {
     beregnTidslinjeVindu,
     finnIndex,
@@ -137,7 +137,7 @@ const Hendelse = ({
                     status={status}
                     title={intl.formatMessage(
                         { id: 'tidslinje.tittel.FØRSTEGANGSSØKNAD' },
-                        { ytelse: intl.formatMessage({ id: `ytelse.${sak.ytelse}` }) },
+                        { ytelse: ytelseSomTekst(sak.ytelse, intl) },
                     )}
                     timestamp={hendelseDatoMedKlokkeslett}
                     bullet={<TasklistSendIcon />}

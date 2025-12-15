@@ -28,6 +28,17 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
     return [...saker.engangsstønad, ...saker.foreldrepenger, ...saker.svangerskapspenger];
 };
 
+export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
+    switch (ytelse) {
+        case 'ENGANGSSTØNAD':
+            return intl.formatMessage({ id: 'ytelse.ENGANGSSTØNAD' });
+        case 'SVANGERSKAPSPENGER':
+            return intl.formatMessage({ id: 'ytelse.SVANGERSKAPSPENGER' });
+        case 'FORELDREPENGER':
+            return intl.formatMessage({ id: 'ytelse.FORELDREPENGER' });
+    }
+};
+
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
         return ISOStringToDate(sak.gjeldendeVedtak.perioder[0]!.fom);
