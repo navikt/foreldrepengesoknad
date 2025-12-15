@@ -72,13 +72,13 @@ describe('UttaksplanKalender', () => {
         expect(within(juni).getByTestId('day:18;dayColor:BLACK')).toBeInTheDocument();
         expect(within(juni).getAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(10);
         expect(within(juni).getByTestId('day:28;dayColor:BLACK')).toBeInTheDocument();
-        expect(within(juni).getByTestId('day:29;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(2);
-        expect(within(juni).getByTestId('day:30;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:29;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(2);
+        expect(within(juni).getByTestId('day:30;dayColor:BLUEOUTLINE')).toBeInTheDocument();
         const juli = screen.getByTestId('year:2021;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juli).getByTestId('day:16;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
+        expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
     });
     it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', () => {
         render(<MorSøkerMedFlereUtsettelser />);
