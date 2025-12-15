@@ -54,8 +54,8 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getByTestId('day:1;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:LIGHTGREENBLUE', { exact: false })).toHaveLength(2);
         expect(within(juli).getByTestId('day:2;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:3;dayColor:LIGHTGREEN')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:15;dayColor:LIGHTGREEN')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:3;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:15;dayColor:GREEN')).toBeInTheDocument();
     });
     it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', () => {
         render(<FarSøkerMedTapteDagerOgUtsettelse />);
@@ -66,7 +66,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:1;dayColor:GREEN')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
+        expect(within(juni).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(10);
         expect(within(juni).getByTestId('day:14;dayColor:GREEN')).toBeInTheDocument();
         expect(within(juni).getByTestId('day:15;dayColor:BLACK')).toBeInTheDocument();
         expect(within(juni).getByTestId('day:18;dayColor:BLACK')).toBeInTheDocument();
@@ -475,7 +475,7 @@ describe('UttaksplanKalender', () => {
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
-        await userEvent.click(within(juni).getByTestId('day:21;dayColor:LIGHTGREEN'));
+        await userEvent.click(within(juni).getByTestId('day:21;dayColor:GREEN'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
 
