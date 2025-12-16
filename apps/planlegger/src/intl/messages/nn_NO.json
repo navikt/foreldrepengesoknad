@@ -54,7 +54,6 @@
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "Fellesperioden",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "Foreldrepengane er delt inn i tre delar; ein til kvar av foreldra og ein fellesperiode. Med {prosent} % foreldrepengar er denne perioden på {uker} veker{dager, select, 1 { og ein dag} 2 { og to dagar} 3 { og tre dagar} 4 { og fire dagar} other{}}. De kan sjølv velja korleis perioden skal fordelast mellom dykk.",
     "FordelingSteg.FordelingTittel": "Korleis ynskjer dykk å fordela {uker} veker {dager, select, 1 {og ein dag} 2 {og to dagar} 3 {og tre dagar} 4 {og fire dagar} other{}} med fellesperiode?",
-    "FordelingSteg.FordelingTittel.Required": "Du må svare på korleis de vil fordela fellesperioden før de går vidare.",
     "FordelingSteg.FordelingOptionAlt": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker} veker til {hvem}",
     "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} til {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} til {hvem2}",
     "FordelingSteg.Slider.AriaValueText": "{uker1, plural, one {# veke} other {# veker}}{dager1, plural, =0 {} one { og # dag} other { og # dagar}} til {fornavn1}, {uker2, plural, one {# veke} other {# veker}}{dager2, plural, =0 {} one { og # dag} other { og # dagar}} til {fornavn2}",

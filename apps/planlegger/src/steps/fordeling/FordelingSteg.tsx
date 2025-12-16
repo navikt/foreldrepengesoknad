@@ -170,7 +170,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                             antallUkerOgDagerFellesperiode.dager
                                         }
                                         step={5}
-                                        value={antallDagerSøker1 === undefined ? undefined : [antallDagerSøker1]}
+                                        value={[antallDagerSøker1 ?? 0]}
                                         ariaLabelledby="fordeling-slider-label"
                                         getAriaValueText={(dager1) => {
                                             const total =
