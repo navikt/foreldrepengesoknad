@@ -22,7 +22,7 @@ const promiseAction = () => () => {
 
 const defaultSøkerinfo = {
     person: {
-        fnr: '19047815714',
+        fnr: '1',
         navn: {
             fornavn: 'TALENTFULL',
             etternavn: 'MYGG',
@@ -96,7 +96,7 @@ const defaultSøkerinfoFar = {
         fødselsdato: '1978-04-19',
         barn: [
             {
-                fnr: '19047815714',
+                fnr: '1',
                 fødselsdato: '2021-03-15',
                 annenPart: {
                     fnr: '12038517080',
