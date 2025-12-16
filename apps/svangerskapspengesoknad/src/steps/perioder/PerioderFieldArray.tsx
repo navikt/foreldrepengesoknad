@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { PeriodeMedVariasjon, TilOgMedDatoType } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjonForm, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -24,22 +24,21 @@ import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
+    getNesteDagEtterSistePeriode,
     getPeriodeDerSøkerErTilbakeIFullStilling,
     getPeriodeInfoTekst,
-    getUferdigPeriodeInput,
 } from './perioderStegUtils';
 import { validatePeriodeFom, validatePeriodeTom, validateStillingsprosentPåPerioder } from './perioderValidation';
 
 export const NEW_PERIODE = {
-    type: 'delvis',
     fom: '',
     tom: '',
     stillingsprosent: '',
     tomType: undefined,
-};
+} satisfies PeriodeMedVariasjonForm;
 
 type PerioderFormValues = {
-    varierendePerioder: PeriodeMedVariasjon[];
+    varierendePerioder: PeriodeMedVariasjonForm[];
 };
 
 interface Props {
@@ -86,7 +85,6 @@ export const PerioderFieldArray = ({
         name: 'varierendePerioder',
         control: formMethods.control,
     });
-    console.log(formMethods.watch());
 
     const alleVarierendePerioder = formMethods.watch(`varierendePerioder`);
 
@@ -100,11 +98,10 @@ export const PerioderFieldArray = ({
         opprinneligStillingsprosent,
     );
 
-    const uferdigDelvisTilretteleggingInput = getUferdigPeriodeInput(
-        sisteDagForSvangerskapspenger,
-        alleVarierendePerioder,
-    );
-    console.log(uferdigDelvisTilretteleggingInput);
+    // Skal hindre ny periode dersom siste periode slutter på 3 uker før termin. Det kan enten gjøres ved å velge med radio, eller sette manuelt
+    const sistePeriodeEnderMedTreUkerFørTermin =
+        alleVarierendePerioder.at(-1)?.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ||
+        dayjs(alleVarierendePerioder.at(-1)?.tom).isSame(sisteDagForSvangerskapspenger);
 
     return (
         <>
@@ -283,13 +280,21 @@ export const PerioderFieldArray = ({
                                 </VStack>
                             </Alert>
                         )}
-                        {alleVarierendePerioder && index === alleVarierendePerioder.length - 1 && (
+                        {!sistePeriodeEnderMedTreUkerFørTermin && index === alleVarierendePerioder.length - 1 && (
                             <HStack>
                                 <Button
                                     icon={<PlusIcon aria-hidden />}
                                     type="button"
                                     variant="secondary"
-                                    onClick={() => append(uferdigDelvisTilretteleggingInput)}
+                                    onClick={() => {
+                                        append({
+                                            ...NEW_PERIODE,
+                                            fom: getNesteDagEtterSistePeriode(
+                                                sisteDagForSvangerskapspenger,
+                                                alleVarierendePerioder,
+                                            ),
+                                        });
+                                    }}
                                 >
                                     <FormattedMessage id="perioder.varierende.leggTil" />
                                 </Button>

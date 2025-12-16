@@ -77,7 +77,6 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
     };
 
     const formMethods = useForm<TilretteleggingPerioderFormValues>({
-        shouldUnregister: true,
         defaultValues: { varierendePerioder: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? [NEW_PERIODE] },
     });
 

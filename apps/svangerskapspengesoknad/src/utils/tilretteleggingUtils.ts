@@ -5,6 +5,7 @@ import {
     DelvisTilrettelegging,
     IngenTilrettelegging,
     PeriodeMedVariasjon,
+    PeriodeMedVariasjonForm,
     Stilling,
     TilOgMedDatoType,
 } from 'types/Tilrettelegging';
@@ -51,7 +52,7 @@ const finnTilretteleggingstype = (stillingsprosent: number, opprinneligStillings
     return 'delvis';
 };
 
-const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjon, p2: PeriodeMedVariasjon) => {
+const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjonForm, p2: PeriodeMedVariasjonForm) => {
     if (dayjs(p1.fom).isBefore(p2.fom, 'day')) {
         return -1;
     }
@@ -163,12 +164,9 @@ export const mapFlereTilretteleggingPerioder = (
     return allePerioder;
 };
 
-export const getOpprinneligStillingsprosent = (
-    allePerioder: PeriodeMedVariasjon[] | undefined,
-    stillinger: Stilling[],
-) => {
-    const sorterePerioder = allePerioder ? [...allePerioder].sort(sorterTilretteleggingsperioder) : undefined;
-    const førstePeriodeFom = sorterePerioder && sorterePerioder.length > 0 ? sorterePerioder[0]!.fom : undefined;
+export const getOpprinneligStillingsprosent = (allePerioder: PeriodeMedVariasjonForm[], stillinger: Stilling[]) => {
+    const sorterePerioder = [...allePerioder].sort(sorterTilretteleggingsperioder);
+    const førstePeriodeFom = sorterePerioder.length > 0 ? sorterePerioder[0]!.fom : undefined;
     return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;
 };
 
@@ -287,7 +285,6 @@ export const getRuteVelgArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): SøknadRoute | string => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
