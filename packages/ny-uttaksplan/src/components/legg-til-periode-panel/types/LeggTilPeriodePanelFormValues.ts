@@ -1,4 +1,4 @@
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
 
 export enum HvaVilDuGjøre {
     LEGG_TIL_PERIODE = 'leggTilPeriode',
@@ -16,4 +16,5 @@ export type LeggTilPeriodePanelFormValues = {
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
+    morsAktivitet?: MorsAktivitet | undefined;
 };

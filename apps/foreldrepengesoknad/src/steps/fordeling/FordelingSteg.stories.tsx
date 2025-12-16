@@ -81,7 +81,7 @@ const vedtakMor = {
 };
 
 const søkerInfoKvinne = {
-    fnr: '19047815714',
+    fnr: '1',
     navn: {
         fornavn: 'Hanne',
         etternavn: 'Mygg',

@@ -9,7 +9,7 @@ import { AppContainer } from './AppContainer';
 
 const defaultSøkerinfo = {
     person: {
-        fnr: '30088930610',
+        fnr: '1',
         navn: {
             fornavn: 'ERLINGA-MASK',
             etternavn: 'ORAVAKANGAS',
