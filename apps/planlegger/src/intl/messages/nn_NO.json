@@ -57,6 +57,7 @@
     "FordelingSteg.FordelingOptionAlt": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker} veker til {hvem}",
     "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} til {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} til {hvem2}",
     "FordelingSteg.Slider.AriaValueText": "{uker1, plural, one {# veke} other {# veker}}{dager1, plural, =0 {} one { og # dag} other { og # dagar}} til {fornavn1}, {uker2, plural, one {# veke} other {# veker}}{dager2, plural, =0 {} one { og # dag} other { og # dagar}} til {fornavn2}",
+    "FordelingSteg.Uker": "{uker, plural, one {# veke} other {# veker}}",
     "FordelingsdetaljerPanel.InfoboksTittel": "Perioden dykkar",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnet": "Dette er rekna ut frå at {erFlereBarn, select, true {barna} other {barnet}} {erFødt, select, true {vart fødd {dato}} other {blir fødd på termin}} og om de tek samanhanhengande permisjon frå {erMorDelAvSøknaden, select, true {tre veker før} other {}} {erFødt, select, true {fødsel} other {termin}}.",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2": "Permisjonen kan sjå slik ut med fordelinga {erAlenesøker, select, true {du} other {de}} valde:",

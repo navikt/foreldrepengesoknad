@@ -132,20 +132,15 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                         }}
                                     />
                                 </Heading>
-                                <div
-                                    style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: 'auto 1fr auto',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        gap: '16px',
-                                    }}
-                                >
+                                <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4">
                                     <VStack gap="space-8" align="start">
                                         <BodyShort style={{ fontWeight: 600 }}>{fornavnSøker1}</BodyShort>
                                         {antallDagerSøker1 !== undefined && (
                                             <Heading size="small" level="4">
-                                                {Math.floor(antallDagerSøker1 / 5)} uker
+                                                <FormattedMessage
+                                                    id="FordelingSteg.Uker"
+                                                    values={{ uker: Math.floor(antallDagerSøker1 / 5) }}
+                                                />
                                             </Heading>
                                         )}
                                         {antallDagerSøker1 !== undefined && (
@@ -205,13 +200,17 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                         <BodyShort style={{ fontWeight: 600 }}>{fornavnSøker2}</BodyShort>
                                         {antallDagerSøker1 !== undefined && (
                                             <Heading size="small" level="4">
-                                                {Math.floor(
-                                                    (antallUkerOgDagerFellesperiode.uker * 5 +
-                                                        antallUkerOgDagerFellesperiode.dager -
-                                                        antallDagerSøker1) /
-                                                        5,
-                                                )}{' '}
-                                                uker
+                                                <FormattedMessage
+                                                    id="FordelingSteg.Uker"
+                                                    values={{
+                                                        uker: Math.floor(
+                                                            (antallUkerOgDagerFellesperiode.uker * 5 +
+                                                                antallUkerOgDagerFellesperiode.dager -
+                                                                antallDagerSøker1) /
+                                                                5,
+                                                        ),
+                                                    }}
+                                                />
                                             </Heading>
                                         )}
                                         {antallDagerSøker1 !== undefined && (

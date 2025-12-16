@@ -57,6 +57,7 @@
     "FordelingSteg.FordelingOptionAlt": "{erOversiktSteg, select, true {The joint period: } other{}} {uker} weeks to {hvem}",
     "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {The joint period: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} to {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} to {hvem2}",
     "FordelingSteg.Slider.AriaValueText": "{uker1, plural, one {# week} other {# weeks}}{dager1, plural, =0 {} one { and # day} other { and # days}} to {fornavn1}, {uker2, plural, one {# week} other {# weeks}}{dager2, plural, =0 {} one { and # day} other { and # days}} to {fornavn2}",
+    "FordelingSteg.Uker": "{uker, plural, one {# week} other {# weeks}}",
     "FordelingsdetaljerPanel.InfoboksTittel": "Your period",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnet": "This is calculated based on the child being born on {dato} and if you take continuous leave from three weeks before birth.",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2": "Your leave might look like this, based on the distribution you choose:",
