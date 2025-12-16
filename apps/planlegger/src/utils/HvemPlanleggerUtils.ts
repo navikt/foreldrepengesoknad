@@ -37,6 +37,12 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
+        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'Du' });
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'Du' });
+    }
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
         return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
     }
