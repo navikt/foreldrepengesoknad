@@ -30,6 +30,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { encodeToBase64, useMedia } from '@navikt/fp-utils';
@@ -163,7 +164,18 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     >
                         <FjernAltIUttaksplanModal />
 
-                        <Tabs defaultValue="kalender">
+                        <Tabs
+                            defaultValue="kalender"
+                            onChange={(value) => {
+                                loggUmamiEvent({
+                                    origin: 'planlegger',
+                                    eventName: 'tab klikk',
+                                    eventData: {
+                                        tittel: value,
+                                    },
+                                });
+                            }}
+                        >
                             <Tabs.List>
                                 <Tabs.Tab
                                     value="kalender"

@@ -20,7 +20,7 @@
         "dayjs": "1.11.19",
         "detect-browser": "5.3.0",
         "i18n-iso-countries": "7.14.0",
-        "react": "19.2.1",
+        "react": "19.2.3",
         "react-intl": "7.1.14"
     },
     "devDependencies": {
@@ -30,7 +30,7 @@
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.7",
-        "eslint": "9.39.1",
+        "eslint": "9.39.2",
         "fast-glob": "3.3.3",
         "playwright": "1.57.0",
         "typescript": "5.9.3",
