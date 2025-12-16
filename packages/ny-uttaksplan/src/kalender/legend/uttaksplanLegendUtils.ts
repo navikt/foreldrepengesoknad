@@ -96,6 +96,8 @@ export const getCalendarLabel = (
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
+    const erSøkersPeriode =
+        (!erFarEllerMedmor && info.forelder === 'MOR') || (erFarEllerMedmor && info.forelder === 'FAR_MEDMOR');
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
@@ -103,9 +105,7 @@ export const getCalendarLabel = (
             return intl.formatMessage(
                 { id: 'kalender.utsettelse' },
                 {
-                    erSokersPeriode:
-                        (!erFarEllerMedmor && info.forelder === 'MOR') ||
-                        (erFarEllerMedmor && info.forelder === 'FAR_MEDMOR'),
+                    erSokersPeriode: erSøkersPeriode,
                     navnAnnenPart,
                 },
             );
@@ -142,9 +142,21 @@ export const getCalendarLabel = (
                 intl,
             );
         case 'FARS_DEL_AKTIVITETSFRI':
-            return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri' });
+            return intl.formatMessage(
+                { id: 'kalender.dinPeriode.aktivitetsfri' },
+                {
+                    erSokersPeriode: erSøkersPeriode,
+                    navnAnnenPart,
+                },
+            );
         case 'FARS_DEL_AKTIVITETSFRI_GRADERT':
-            return intl.formatMessage({ id: 'kalender.dinPeriode.aktivitetsfri.gradert' });
+            return intl.formatMessage(
+                { id: 'kalender.dinPeriode.aktivitetsfri.gradert' },
+                {
+                    erSokersPeriode: erSøkersPeriode,
+                    navnAnnenPart,
+                },
+            );
         case 'AVSLAG_FRATREKK_PLEIEPENGER':
             return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         case 'TAPTE_DAGER':
