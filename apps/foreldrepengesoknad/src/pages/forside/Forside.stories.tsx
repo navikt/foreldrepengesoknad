@@ -20,7 +20,7 @@ const promiseAction = () => () => {
 };
 
 const defaultPerson = {
-    fnr: '19047815714',
+    fnr: '1',
     navn: {
         fornavn: 'TALENTFULL',
         etternavn: 'MYGG',

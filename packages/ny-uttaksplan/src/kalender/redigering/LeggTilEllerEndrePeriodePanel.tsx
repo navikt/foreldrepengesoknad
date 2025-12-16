@@ -7,11 +7,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Box, Button, ErrorMessage, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { PanelButtons } from '../../components/panel-buttons/PanelButtons';
+import { AktivitetskravSpørsmål } from '../../components/spørsmål/AktivitetskravSpørsmål';
 import { GraderingSpørsmål } from '../../components/spørsmål/GraderingSpørsmål';
 import { KontotypeSpørsmål } from '../../components/spørsmål/KontotypeSpørsmål';
 import { SamtidigUttakSpørsmål } from '../../components/spørsmål/SamtidigUttakSpørsmål';
@@ -33,6 +34,7 @@ type FormValues = {
     stillingsprosent?: string;
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
+    morsAktivitet?: MorsAktivitet;
 };
 
 interface Props {
@@ -90,7 +92,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                 readOnly: false,
                 id: `${periode.fom} - ${periode.tom} - ${values.kontoType} - ${values.forelder}`,
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
-                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 forelder: getForelderFraKontoType(values.kontoType, values.forelder),
                 gradering: values.skalDuJobbe
                     ? getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType)
@@ -229,6 +231,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                                             harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato
                                         }
                                     />
+                                    <AktivitetskravSpørsmål />
                                     {!aleneOmOmsorg && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
                                         <SamtidigUttakSpørsmål />
                                     )}
@@ -294,5 +297,6 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
         stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),
         samtidigUttak: !!eksisterendePeriode.samtidigUttak,
         samtidigUttaksprosent: eksisterendePeriode.samtidigUttak?.toString(),
+        morsAktivitet: eksisterendePeriode.morsAktivitet,
     };
 };
