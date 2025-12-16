@@ -90,7 +90,6 @@ export const getCalendarLabel = (
     info: UttaksplanKalenderLegendInfo,
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
     erDeltUttak: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,

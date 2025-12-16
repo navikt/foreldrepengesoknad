@@ -14,12 +14,13 @@ import { getVarighetString } from './utils/dateUtils';
 
 interface Props {
     visStatusIkoner: boolean;
+    erInnsyn: boolean;
 }
 
-export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
+export const KvoteOppsummering = ({ visStatusIkoner, erInnsyn }: Props) => {
     return (
         <ExpansionCard aria-label="Kvoteoversikt" size="small">
-            <KvoteOppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
+            <KvoteOppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} erInnsyn={erInnsyn} />
             <ExpansionCard.Content>
                 <VStack gap="space-16">
                     <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
@@ -37,28 +38,36 @@ export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
 export const KvoteOppsummeringsTittel = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
     const { rettighetType } = useUttaksplanData();
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return (
-            <KvoteTittelKunEnHarForeldrepenger visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />
+            <KvoteTittelKunEnHarForeldrepenger
+                erInnsyn={erInnsyn}
+                visStatusIkoner={visStatusIkoner}
+                brukEnkelVisning={brukEnkelVisning}
+            />
         );
     }
-    return <KvoteTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />;
+    return <KvoteTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} erInnsyn={erInnsyn} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
-    const { uttaksplan, familiesituasjon, valgtStønadskonto, modus } = useUttaksplanData();
+    const { uttaksplan, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
@@ -166,7 +175,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
                 />
             }
             visStatusIkoner={visStatusIkoner}
-            beskrivelse={modus === 'innsyn' ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
+            beskrivelse={erInnsyn ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
         />
     );
 };
@@ -174,12 +183,13 @@ const KvoteTittelKunEnHarForeldrepenger = ({
 const KvoteTittel = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
-    const { uttaksplan, familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus } =
-        useUttaksplanData();
+    const { uttaksplan, familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -361,8 +371,6 @@ const KvoteTittel = ({
               )
             : '';
 
-    const visInformasjonOmHvordanEndre = modus === 'innsyn';
-
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
@@ -387,7 +395,7 @@ const KvoteTittel = ({
                             ),
                         }}
                     />{' '}
-                    {visInformasjonOmHvordanEndre && (
+                    {erInnsyn && (
                         <>
                             <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
                             <FormattedMessage

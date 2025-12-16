@@ -14,6 +14,7 @@ const meta = {
     args: {
         children: null,
         erMedmorDelAvSøknaden: false,
+        isReadOnly: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
@@ -28,12 +29,12 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanNy />
+                    <UttaksplanNy isReadOnly={args.isReadOnly} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider>>;
+} satisfies Meta<ComponentProps<typeof UttaksplanNy> & ComponentProps<typeof UttaksplanDataProvider>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -51,7 +52,7 @@ export const MorAleneOmOmsorg: Story = {
         aleneOmOmsorg: true,
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'innsyn',
+        isReadOnly: true,
         navnPåForeldre: {
             farMedmor: 'Annen forelder',
             mor: 'Iris',
@@ -117,7 +118,7 @@ export const PrematurUker: Story = {
         erFarEllerMedmor: false,
         erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'innsyn',
+        isReadOnly: true,
         navnPåForeldre: {
             farMedmor: 'Annen forelder',
             mor: 'Avansert',

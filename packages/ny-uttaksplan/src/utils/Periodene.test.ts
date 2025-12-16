@@ -13,27 +13,21 @@ const uttakBase: Planperiode = {
     kontoType: 'FELLESPERIODE',
     fom: førsteUttaksdagTidsperiode.tom,
     tom: førsteUttaksdagTidsperiode.fom,
-    id: '1',
-    readOnly: false,
 };
 
 const oppholdsBase: Planperiode = {
     erAnnenPartEøs: false,
-    id: '2',
     oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
     forelder: 'FAR_MEDMOR',
-    readOnly: false,
 };
 
 const infoBase: Planperiode = {
     erAnnenPartEøs: false,
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
-    readOnly: false,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-    id: '3',
 };
 
 const uttak = uttakBase;

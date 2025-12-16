@@ -56,13 +56,13 @@ const customRenderer = ({
     handleDeletePeriode,
     handleDeletePerioder,
     barn,
+    isReadOnly,
 }: StoryArgs) => {
     return (
         <UttaksplanDataProvider
             erFarEllerMedmor={erFarEllerMedmor}
             barn={barn}
             aleneOmOmsorg={erAleneOmOmsorg}
-            modus="planlegger"
             navnPåForeldre={{
                 farMedmor: 'Far',
                 mor: 'Mor',
@@ -77,6 +77,7 @@ const customRenderer = ({
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
                     <PeriodeListeItem
+                        isReadOnly={isReadOnly}
                         handleAddPeriode={handleAddPeriode}
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
@@ -123,12 +124,10 @@ export const UttaksperiodeMor: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-30',
                     forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
-                    readOnly: false,
                 },
             ],
         },
@@ -159,21 +158,17 @@ export const UttaksperiodeMorFlerePerioder: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
-                    readOnly: false,
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
-                    readOnly: false,
                 },
             ],
         },
@@ -204,24 +199,19 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     kontoType: 'MØDREKVOTE',
-                    readOnly: false,
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
-                    readOnly: false,
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-29',
                     tom: '2024-08-23',
                     forelder: 'MOR',
@@ -236,7 +226,6 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                         },
                         arbeidstidprosent: 50,
                     },
-                    readOnly: false,
                 },
             ],
         },
@@ -267,12 +256,10 @@ export const UttaksperiodeFar: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FEDREKVOTE',
-                    readOnly: false,
                 },
             ],
         },
@@ -303,10 +290,8 @@ export const PeriodeUtenUttak: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-08-01',
                     tom: '2024-08-31',
-                    readOnly: false,
                     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
                 },
             ],

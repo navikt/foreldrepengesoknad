@@ -18,7 +18,6 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
-        modus: 'søknad',
         readOnly: false,
         valgtStønadskonto: {
             kontoer: [
@@ -46,7 +45,6 @@ const meta = {
                 barn={args.barn}
                 erFarEllerMedmor={args.erFarEllerMedmor}
                 navnPåForeldre={args.navnPåForeldre}
-                modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
                 aleneOmOmsorg={args.aleneOmOmsorg || false}
                 erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}

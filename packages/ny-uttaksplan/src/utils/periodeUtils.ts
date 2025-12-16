@@ -9,7 +9,6 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
-    UttaksplanModus,
 } from '@navikt/fp-types';
 import {
     TidsperiodenString,
@@ -57,10 +56,6 @@ export const isPrematuruker = (periode: Planperiode) => {
 };
 
 const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
-    if (!periode.readOnly) {
-        return false;
-    }
-
     return periode.kontoType !== undefined && (periode.erAnnenPartEøs || periode.utsettelseÅrsak === undefined);
 };
 
@@ -77,10 +72,6 @@ export const isUtsettelsesperiode = (periode: Planperiode) => {
 };
 
 export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
-    if (!periode.readOnly) {
-        return false;
-    }
-
     return !periode.erAnnenPartEøs && periode.utsettelseÅrsak !== undefined;
 };
 
@@ -203,7 +194,6 @@ const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoTy
 
         const oppPeriode = oppsplittetPeriode[index - 1]!;
         oppPeriode.tom = datoWrapper.erFom ? UttaksdagenString(datoWrapper.dato).forrige() : datoWrapper.dato;
-        oppPeriode.id = `${oppPeriode.fom} - ${oppPeriode.tom} - ${oppPeriode.kontoType || oppPeriode.periodeHullÅrsak || oppPeriode.utsettelseÅrsak}`;
 
         if (index < datoerIPerioden.length - 1) {
             const endretPeriode = {
@@ -278,18 +268,6 @@ export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode
     };
 };
 
-const getReadOnlyStatus = (modus: UttaksplanModus, gjelderAnnenPart: boolean) => {
-    if (modus === 'planlegger') {
-        return false;
-    }
-
-    if (modus === 'innsyn') {
-        return true;
-    }
-
-    return gjelderAnnenPart;
-};
-
 export const genererPeriodeId = (
     fom: string,
     tom: string,
@@ -304,12 +282,21 @@ export const genererPeriodeId = (
     return `${fom} - ${tom} - ${kontoType || oppholdårsak || utsettelseÅrsak} - ${forelder}`;
 };
 
+export const genererPeriodeIdNy = (periode: Planperiode) => {
+    if (periode.erAnnenPartEøs) {
+        return `erAnnenPartEøs - ${periode.fom} - ${periode.tom} - ${periode.kontoType} - ${periode.periodeHullÅrsak} 
+        - ${periode.skalIkkeHaUttakFørTermin} - ${periode.trekkdager}`;
+    }
+
+    return `!erAnnenPartEøs - ${periode.fom} - ${periode.tom} - ${periode.kontoType || periode.oppholdÅrsak || periode.utsettelseÅrsak} - ${periode.forelder}
+     - ${periode.flerbarnsdager} - ${periode.morsAktivitet} - ${periode.periodeHullÅrsak} - ${periode.samtidigUttak}`;
+};
+
 export const mapSaksperiodeTilPlanperiode = (
     saksperioder: UttakPeriode[],
     erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
     familiehendelsedato: string,
-    modus: UttaksplanModus,
 ) => {
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => {
@@ -329,7 +316,6 @@ export const mapSaksperiodeTilPlanperiode = (
             dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
 
         const oppholdårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
-        const utsettelseårsak = 'utsettelseÅrsak' in p ? p.utsettelseÅrsak : undefined;
         const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdårsak);
 
         if (tidsperiodenKrysserFamdato) {
@@ -338,17 +324,8 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: p.fom,
                 tom: UttaksdagenString(familiehendelsedato).forrige(),
-                id: genererPeriodeId(
-                    p.fom,
-                    UttaksdagenString(familiehendelsedato).forrige(),
-                    p.kontoType,
-                    utsettelseårsak,
-                    oppholdårsak,
-                    erFarEllerMedmor,
-                    gjelderAnnenPart,
-                ),
+
                 forelder,
-                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             const planperiodeEtter: Planperiode = {
@@ -356,17 +333,7 @@ export const mapSaksperiodeTilPlanperiode = (
                 erAnnenPartEøs: false,
                 fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
                 tom: p.tom,
-                id: genererPeriodeId(
-                    UttaksdagenString(familiehendelsedato).denneEllerNeste(),
-                    p.tom,
-                    p.kontoType,
-                    utsettelseårsak,
-                    oppholdårsak,
-                    erFarEllerMedmor,
-                    gjelderAnnenPart,
-                ),
                 forelder,
-                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             result.push(planperiodeFør, planperiodeEtter);
@@ -374,17 +341,7 @@ export const mapSaksperiodeTilPlanperiode = (
             const planperiode: Planperiode = {
                 ...p,
                 erAnnenPartEøs: false,
-                id: genererPeriodeId(
-                    p.fom,
-                    p.tom,
-                    p.kontoType,
-                    utsettelseårsak,
-                    oppholdårsak,
-                    erFarEllerMedmor,
-                    gjelderAnnenPart,
-                ),
                 forelder,
-                readOnly: getReadOnlyStatus(modus, gjelderAnnenPart),
             };
 
             result.push(planperiode);
@@ -452,7 +409,6 @@ type UtledKomplettPlanParams = {
     bareFarMedmorHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
-    modus: UttaksplanModus;
 };
 export const utledKomplettPlan = ({
     familiehendelsedato,
@@ -463,10 +419,9 @@ export const utledKomplettPlan = ({
     bareFarMedmorHarRett,
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
-    modus,
 }: UtledKomplettPlanParams) => {
     const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, modus),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -475,7 +430,7 @@ export const utledKomplettPlan = ({
         førsteUttaksdagNesteBarnsSak,
     );
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato)
         : undefined;
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(

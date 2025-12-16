@@ -175,7 +175,7 @@ const LabelButtonMedEllerUtenToolip = ({
 }) => {
     const intl = useIntl();
 
-    const { modus, erDeltUttak, erFarEllerMedmor, navnPåForeldre, erMedmorDelAvSøknaden, valgtStønadskonto } =
+    const { erDeltUttak, erFarEllerMedmor, navnPåForeldre, erMedmorDelAvSøknaden, valgtStønadskonto } =
         useUttaksplanData();
 
     const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
@@ -186,7 +186,6 @@ const LabelButtonMedEllerUtenToolip = ({
         info,
         navnAnnenPart,
         erFarEllerMedmor,
-        modus === 'planlegger',
         erDeltUttak,
         erMedmorDelAvSøknaden,
         harAktivitetsfriKvote,

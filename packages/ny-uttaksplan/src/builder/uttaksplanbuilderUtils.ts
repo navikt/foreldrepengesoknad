@@ -209,20 +209,16 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 
 const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
-    readOnly: false,
 });
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-    readOnly: false,
 });
 
 export const getTidsperiodeMellomPerioder = (

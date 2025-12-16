@@ -20,18 +20,18 @@ const meta = {
             antallBarn: 1,
         },
         visStatusIkoner: true,
-        modus: 'innsyn',
         aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: true,
         harAktivitetskravIPeriodeUtenUttak: true,
         bareFarMedmorHarRett: false,
         erDeltUttak: false,
+        erInnsyn: true,
     },
     render: (args) => {
-        const { visStatusIkoner, ...rest } = args;
+        const { visStatusIkoner, erInnsyn, ...rest } = args;
         return (
             <UttaksplanDataProvider {...rest}>
-                <KvoteOppsummering visStatusIkoner={visStatusIkoner} />
+                <KvoteOppsummering erInnsyn={erInnsyn} visStatusIkoner={visStatusIkoner} />
             </UttaksplanDataProvider>
         );
     },
@@ -401,7 +401,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        modus: 'planlegger',
+        erInnsyn: false,
         valgtStønadskonto: kontoNårBareFarHarRett,
         saksperioder: [
             {

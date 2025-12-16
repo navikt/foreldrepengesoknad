@@ -19,7 +19,7 @@ const meta = {
     args: {
         children: null,
         erMedmorDelAvSøknaden: false,
-        modus: 'planlegger',
+        isReadOnly: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         oppdaterUttaksplan: action('button-click'),
         harEndretPlan: false,
@@ -41,12 +41,16 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanNy />
+                    <UttaksplanNy isReadOnly={args.isReadOnly} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanRedigeringProvider>>;
+} satisfies Meta<
+    ComponentProps<typeof UttaksplanNy> &
+        ComponentProps<typeof UttaksplanDataProvider> &
+        ComponentProps<typeof UttaksplanRedigeringProvider>
+>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -93,7 +97,6 @@ export const Default: Story = {
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'planlegger',
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },

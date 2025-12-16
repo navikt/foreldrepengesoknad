@@ -8,7 +8,6 @@ export const useUttaksplanBuilder = () => {
         familiehendelsedato,
         erFarEllerMedmor,
         familiesituasjon,
-        modus,
         bareFarMedmorHarRett,
         erDeltUttak,
         saksperioder,
@@ -18,7 +17,7 @@ export const useUttaksplanBuilder = () => {
     const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, saksperioder, erFarEllerMedmor);
 
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato)
         : undefined;
 
     return Uttaksplanbuilder({
@@ -31,6 +30,5 @@ export const useUttaksplanBuilder = () => {
         //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
         førsteUttaksdagNesteBarnsSak: undefined,
         opprinneligPlan: annenPartsPlanperioder,
-        erIPlanleggerModus: modus === 'planlegger',
     });
 };

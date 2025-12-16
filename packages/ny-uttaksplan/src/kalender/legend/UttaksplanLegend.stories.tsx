@@ -16,8 +16,6 @@ const meta = {
     title: 'UttaksplanLegend',
     component: UttaksplanLegend,
     args: {
-        modus: 'søknad',
-
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
@@ -40,7 +38,6 @@ const meta = {
                 barn={args.barn}
                 erFarEllerMedmor={args.erFarEllerMedmor}
                 navnPåForeldre={args.navnPåForeldre}
-                modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
                 aleneOmOmsorg={args.aleneOmOmsorg || false}
                 erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}

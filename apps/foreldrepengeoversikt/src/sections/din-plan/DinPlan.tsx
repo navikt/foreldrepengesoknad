@@ -118,7 +118,6 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     barn={barn}
                     erFarEllerMedmor={søkerErFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
-                    modus="innsyn"
                     valgtStønadskonto={konto}
                     aleneOmOmsorg={søkerErAleneOmOmsorg}
                     erMedmorDelAvSøknaden={false}
@@ -128,11 +127,11 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy />
-                            <KvoteOppsummering visStatusIkoner={false} />
+                            <UttaksplanNy isReadOnly />
+                            <KvoteOppsummering visStatusIkoner={false} erInnsyn />
                         </>
                     )}
-                    {visKalender && <UttaksplanKalender readOnly={true} />}
+                    {visKalender && <UttaksplanKalender readOnly />}
                 </UttaksplanDataProvider>
             </VStack>
         </VStack>

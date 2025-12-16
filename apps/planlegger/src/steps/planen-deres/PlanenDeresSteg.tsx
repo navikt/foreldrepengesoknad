@@ -126,7 +126,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     barn={mapOmBarnetTilBarn(omBarnet)}
                     erFarEllerMedmor={erFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
-                    modus="planlegger"
                     valgtStønadskonto={valgtStønadskonto}
                     aleneOmOmsorg={erAleneOmOmsorg}
                     erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
@@ -136,7 +135,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                 >
                     <div ref={kvoteOppsummeringRef}>
-                        <KvoteOppsummering visStatusIkoner />
+                        <KvoteOppsummering visStatusIkoner erInnsyn={false} />
                     </div>
 
                     <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />
@@ -184,7 +183,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </Tabs.Panel>
                             <Tabs.Panel value="liste" className="pt-5">
-                                <UttaksplanNy />
+                                <UttaksplanNy isReadOnly={false} />
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>

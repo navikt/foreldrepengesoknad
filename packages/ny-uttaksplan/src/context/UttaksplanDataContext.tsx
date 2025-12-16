@@ -8,7 +8,6 @@ import {
     RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
-    UttaksplanModus,
 } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
@@ -19,7 +18,6 @@ type Props = {
     barn: Barn;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    modus: UttaksplanModus;
     valgtStønadskonto: KontoBeregningDto;
     aleneOmOmsorg: boolean;
     erMedmorDelAvSøknaden: boolean;
@@ -71,7 +69,6 @@ export const UttaksplanDataProvider = (props: Props) => {
                 harAktivitetskravIPeriodeUtenUttak: otherProps.harAktivitetskravIPeriodeUtenUttak,
                 //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
                 førsteUttaksdagNesteBarnsSak: undefined,
-                modus: otherProps.modus,
             }),
         };
     }, [otherProps]);
