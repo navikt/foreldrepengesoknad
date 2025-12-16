@@ -268,7 +268,11 @@ export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode
     };
 };
 
-export const genererPeriodeId = (periode: Planperiode) => {
+export const genererPeriodeId = (periode?: Planperiode) => {
+    if (!periode) {
+        return undefined;
+    }
+
     if (periode.erAnnenPartEøs) {
         return `erAnnenPartEøs - ${periode.fom} - ${periode.tom} - ${periode.kontoType} - ${periode.periodeHullÅrsak} 
         - ${periode.skalIkkeHaUttakFørTermin} - ${periode.trekkdager}`;

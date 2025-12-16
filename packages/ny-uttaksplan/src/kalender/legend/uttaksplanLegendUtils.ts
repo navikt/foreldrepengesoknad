@@ -175,20 +175,22 @@ export const getCalendarLabel = (
 const getMorsDelLabel = (
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
+    erSøkerMorOgHennesPeriode: boolean,
     erDeltUttak: boolean,
     intl: IntlShape,
 ): string => {
-    if (erIPlanleggerModus && erDeltUttak) {
+    if (erSøkerMorOgHennesPeriode) {
+        return intl.formatMessage({ id: 'kalender.dinPeriode' });
+    }
+
+    if (erFarEllerMedmor && erDeltUttak) {
         return intl.formatMessage({ id: 'kalender.morsPeriode' });
     }
 
-    return erFarEllerMedmor
-        ? intl.formatMessage(
-              { id: 'kalender.annenPartPeriode' },
-              { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
-          )
-        : intl.formatMessage({ id: 'kalender.dinPeriode' });
+    return intl.formatMessage(
+        { id: 'kalender.annenPartPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
 };
 
 const getMorsDelGradertLabel = (navnAnnenPart: string, erSøkerMorOgHennesPeriode: boolean, intl: IntlShape): string => {
